@@ -29,7 +29,7 @@ PACKAGEDIR =	at/dms
 
 TEMPDIR =	/tmp
 JARDIR =	/extra/kopi/jars
-VERSION =	2.2A
+VERSION =	2.2B
 ZIPDIR =	/extra/kopi/download
 
 # where javadoc files are stored

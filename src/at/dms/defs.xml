@@ -9,7 +9,7 @@
 	<!-- ================================= 
          DEFINITIONS              
         ================================= -->
-	<property name="release" value="&quot;Version 2.2A released 05 April 2005&quot;" />
+	<property name="release" value="&quot;Version 2.2B released 05 April 2005&quot;" />
 
 	<property environment="env" />
 	<property name="classroot" value="${env.CLASSROOT}" />
