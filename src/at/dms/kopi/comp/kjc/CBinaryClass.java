@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CBinaryClass.java,v 1.2 2004/09/28 10:34:01 graf Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -80,8 +80,14 @@ public class CBinaryClass extends CClass {
     for (int i = 0; i < fields.length; i++) {
       CBinaryField field = new CBinaryField(signatureParser, factory, this, fields[i]);
 
-      if (field.getIdent().equals(JAV_OUTER_THIS)) {
-	hasOuterThis = true;
+      // - jikes names his outer this as "this" and none "this$0"
+      // - jikes and javac 1.5 allow the use of "this$0" by users
+      // - javac rename its outer this with "this$0$" and 
+      //   for jikes it doesn't mutter coz' its outer this is named "this"
+      // - kjc crashes when a field is named "this$0"
+      if (field.getIdent().equals(JAV_OUTER_THIS) 
+          || field.getIdent().equals(JAV_THIS)) {
+        hasOuterThis = true;
       }
       fields_H.put(field.getIdent(), field);
     }
