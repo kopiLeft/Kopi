@@ -35,7 +35,8 @@ ZIPDIR =	/extra/kopi/download
 # where javadoc files are stored
 JAVADOCROOT =	/tmp/javadocs
 
-JAVADOC =	/opt/IBMJava2-13/bin/javadoc -J-Xmx128m
+JAVADOC =	javadoc -source 1.4 -J-Xmx128m
+#JAVADOC =	/opt/IBMJava2-13/bin/javadoc -J-Xmx128m
 #JAVADOC =	/opt/jdk/bin/javadoc -J-mx128m
 #JAVADOCFLAGS =	-package -use -windowtitle "Kopi Suite Version $(VERSION)"
 JAVADOCFLAGS =	-package 
