@@ -128,6 +128,7 @@ vkStringFieldType []
   int			w;
   int			h = 1;
   int			vh = 0;
+  int                   x = 0;
   int			c = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
@@ -136,9 +137,9 @@ vkStringFieldType []
    (
       "FIXED"
       (
-        "ON"    { c = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
+        "ON"    { x = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
       |
-        "OFF"   { c = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
+        "OFF"   { x = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
       )  
    )?
    (
@@ -151,7 +152,7 @@ vkStringFieldType []
         "NAME"  { c = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_NAME; }
       )
    )?
-    { self = new VKStringType(sourceRef, w, h, vh, c); }
+    { self = new VKStringType(sourceRef, w, h, vh, x | c); }
 ;
 
 vkTextFieldType []
@@ -160,7 +161,7 @@ vkTextFieldType []
   int			w;
   int			h;
   int			vh = 0;
-  int			c = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
+  int			x = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
@@ -168,12 +169,12 @@ vkTextFieldType []
   (
     "FIXED"
     (
-      "ON"    { c = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
+      "ON"    { x = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
     |
-      "OFF"   { c = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
+      "OFF"   { x = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
     )  
   )?
-    { self = new VKTextType(sourceRef, w, h, vh, c); }
+    { self = new VKTextType(sourceRef, w, h, vh, x); }
 ;
 
 vkImageFieldType []

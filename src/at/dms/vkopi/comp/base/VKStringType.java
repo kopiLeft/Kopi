@@ -109,12 +109,12 @@ public class VKStringType extends VKType implements VConstants {
 	new JIntLiteral(ref, getWidth()),
 	new JIntLiteral(ref, getHeight()),
 	new JIntLiteral(ref, getVisibleHeight()),
-	new JIntLiteral(ref, convert)};
+	new JIntLiteral(ref, convert & FDO_CONVERT_MASK)};
     } else {
       exprs = new JExpression[] {
 	new JIntLiteral(ref, getWidth()),
 	new JIntLiteral(ref, getHeight()),
-	new JIntLiteral(ref, convert)};
+	new JIntLiteral(ref, convert & FDO_CONVERT_MASK)};
     }
 
     return new JUnqualifiedInstanceCreation(ref, getType(), exprs);
