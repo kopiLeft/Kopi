@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VRReport.java,v 1.1 2004/07/28 18:43:29 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.comp.report;
@@ -218,7 +218,7 @@ class VRReport
     body.addElement(new JExpressionStatement(ref,
 					     new JMethodCallExpression(ref,
 								       null,
-								       "setTitle",
+								       "setPageTitle",
 								       new JExpression[] {
 									 VKUtils.toExpression(ref, getName())
 								       }),
@@ -266,7 +266,8 @@ class VRReport
     for (int i = 0; i < fields.length; i++) {
       init1[i] = fields[i].genConstructorCall();
     }
-    JExpression	expr = new JNameExpression(ref, "model");
+
+    JExpression         expr = new JNameExpression(ref, "model");
     expr = new JNameExpression(ref, expr, "columns");
     expr = new JAssignmentExpression(ref, expr, VKUtils.createArray(ref, VKStdType.VReportColumn, init1));
     body.addElement(new JExpressionStatement(ref, expr, null));
