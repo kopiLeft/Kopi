@@ -61,3 +61,19 @@ error		CANT_LOAD_CLASSES
 error		BAD_SQL_CASE_OPTION
 		"The only supported option for --sqlCase is \"upper\""
 		"VKJC"
+
+error		BAD_FIXED_NEW_LINE
+		"Option FIXED ON not allowed here"
+		"VKJC"
+
+error		BAD_DYNAMIC_NEW_LINE
+		"Option FIXED OFF not allowed here"
+		"VKJC"
+
+error		BAD_DYNAMIC_AND_FIXED
+		"Can't use FIXED ON and FIXED OFF together"
+		"VKJC"
+
+error		UNSET_DYNAMIC_AND_FIXED
+		"Option FIXED ON/OFF has to be set"
+		"VKJC"

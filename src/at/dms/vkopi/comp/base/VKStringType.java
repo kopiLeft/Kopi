@@ -15,11 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VKStringType.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.comp.base;
 
+import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.xkopi.comp.database.DatabaseColumn;
 import at.dms.xkopi.comp.database.DatabaseStringColumn;
@@ -29,11 +30,13 @@ import at.dms.kopi.comp.kjc.CType;
 import at.dms.kopi.comp.kjc.JExpression;
 import at.dms.kopi.comp.kjc.JIntLiteral;
 import at.dms.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import at.dms.kopi.comp.kjc.CStdType;
+import at.dms.vkopi.lib.form.VConstants;
 
 /**
  * This class represents the definition of a type
  */
-public class VKStringType extends VKType {
+public class VKStringType extends VKType implements VConstants {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -59,6 +62,27 @@ public class VKStringType extends VKType {
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
+
+  /**
+   * Check expression and evaluate and alter context
+   * @param block	the actual context of analyse
+   * @exception	PositionedError	Error catched as soon as possible
+   */
+  public void checkCode(VKContext context) throws PositionedError {
+    super.checkCode(context);
+    if (getHeight() == 1 && (convert & FDO_DYNAMIC_NL) > 0) {
+      throw new PositionedError(getTokenReference(), BaseMessages.BAD_DYNAMIC_NEW_LINE);
+    }
+    if (getHeight() == 1 && (convert & FDO_FIX_NL) > 0) {
+      throw new PositionedError(getTokenReference(), BaseMessages.BAD_FIXED_NEW_LINE);
+    }
+    if ((convert & (FDO_FIX_NL | FDO_DYNAMIC_NL)) == (FDO_FIX_NL | FDO_DYNAMIC_NL)) {
+      throw new PositionedError(getTokenReference(), BaseMessages.BAD_DYNAMIC_AND_FIXED);
+    }
+    if (getHeight() > 1 && (convert & (FDO_FIX_NL | FDO_DYNAMIC_NL)) == 0) {
+      throw new PositionedError(getTokenReference(), BaseMessages.UNSET_DYNAMIC_AND_FIXED);
+    }
+  }
 
   /**
    * Returns the column viewer
