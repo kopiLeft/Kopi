@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: MailPrinter.java,v 1.3 2004/12/17 18:10:58 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.util;
@@ -82,12 +82,21 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
    */
   public String print(PrintJob printdata) throws IOException, PrintException {
     try {
-      PrintJob        gsJob = convertToGhostscript(printdata);
-      File            dest = gsJob.getDataFile();
-      
-      if (sendPdf) {
+      PrintJob        gsJob;
+      File            dest;
+
+      if (printdata.getDataType() == PrintJob.DAT_PS) {
+        // convert if postcript
+        gsJob = convertToGhostscript(printdata);
+      } else {
+        gsJob = printdata;
+      }
+      dest = gsJob.getDataFile();
+
+      if (sendPdf && printdata.getDataType() == PrintJob.DAT_PS) {
         Process       process;
         
+        // convert if postcript
         dest = Utils.getTempFile("MAIL", "PDF");
         process = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + dest + " -sDEVICE=pdfwrite " +
                                             "-g" + (int)(gsJob.getWidth() * 10) + "x" + (int)(gsJob.getHeight() * 10) +
@@ -115,6 +124,7 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
                          (body == null) ? "" : body,
                          allattachments);
     } catch (Exception e) {
+      e.printStackTrace();
       throw new PrintException(Message.getMessage("mail_cant_send"), e, PrintException.EXC_UNKNOWN);
     }
     return "NYI";

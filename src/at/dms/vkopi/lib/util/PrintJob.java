@@ -57,6 +57,7 @@ public class PrintJob {
     this.height = 842;
     this.numberCopy = 1;
     this.numberOfPages = -1;
+    this.dataType = DAT_PS;
     // if the jvm is stopped before the objects are
     // finalized the file must be deleted!
     if (delete) {
@@ -221,6 +222,19 @@ public class PrintJob {
     this.documentType = documentType;
   }
 
+  public void setDataType(int dataType) {
+    this.dataType = dataType;
+  }
+
+  /**
+   * Kind of data to print (pdf, ps)
+   *
+   * @return A number representing the document type.
+   */
+  public int getDataType() {
+    return dataType;
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -233,8 +247,12 @@ public class PrintJob {
   private boolean		landscape;
   private String                media;
   private int                   documentType;
+  private int                   dataType;
   private int			numberCopy;
   private int			width;
   private int			height;
   private int			numberOfPages;
+
+  public static int             DAT_PDF = 1;
+  public static int             DAT_PS  = 2;
 }

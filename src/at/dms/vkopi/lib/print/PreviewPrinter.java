@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: PreviewPrinter.java,v 1.3 2004/12/17 18:44:15 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.print;
@@ -67,7 +67,7 @@ public class PreviewPrinter extends AbstractPrinter {
 
   public String print(PrintJob data) throws IOException, PrintException {
       try {
-        new VPreviewWindow().preview(convertToGhostscript(data), command);
+        new VPreviewWindow().preview((data.getDataType() != PrintJob.DAT_PS) ? data : convertToGhostscript(data), command);
       } catch (VException e) {
         throw new PSPrintException("PreviewPrinter.PrintTaskImpl::print()", e);
       }
