@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: PGenPS.java,v 1.6 2004/12/17 18:44:15 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.report;
@@ -730,7 +730,7 @@ public class PGenPS extends RDataExtractor {
       }
 
       writeln("(" + finalTitle + ") pageheader		% Page header");
-      writeln("(" + page_number + ") pagefooter		% Page footer");
+      writeln("(" + page_number + ") (" + finalTitle + ") pagefooter		% Page footer");
       writeln("( " + at.dms.vkopi.lib.form.VDateField.toText(date) + " " +  time + ") show");
       writeln(startX + " " + startY + " reportheader		% Report header\n[");
     }

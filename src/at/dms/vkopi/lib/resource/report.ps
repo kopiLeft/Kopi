@@ -116,10 +116,13 @@
 /pagefooter {
 	footFont
 	leftmargin footermargin 2 div bottommargin add moveto
-	(Seite ) show
+        show
+	( - Seite ) show
 	show
 	(/) show
 	nbsheet show
+% move to the place for date
+        pagewidth rightmargin sub 70 sub bottommargin moveto
 } def
 
 %param : x y
