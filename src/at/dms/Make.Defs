@@ -1,10 +1,10 @@
 ##
-## Copyright (C) 1990-2001 DMS Decision Management Systems Ges.m.b.H.
+## Copyright (C) 1990-2005 DMS Decision Management Systems Ges.m.b.H.
 ##
 ## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2 of the License, or
-## (at your option) any later version.
+## it under the terms of the GNU General Public License version 2
+## as published by the Free Software Foundation.
+##
 ##
 ## This program is distributed in the hope that it will be useful,
 ## but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,16 +39,16 @@ classroot-bad:
 ## DEFINITIONS
 
 ifndef RELEASE
-RELEASE =	"Version 2.2A released 26 August 2004"
+RELEASE =	"Version 2.2A released 05 April 2005"
 endif
 
 ifndef JAVA
 JAVA =		java
 endif
 
-#ifndef JAVAC
+ifndef JAVAC
 JAVAC =		jikes +E +P -source 1.4
-#endif
+endif
 
 ifndef TOKDEF
 TOKDEF =	$(JAVA) at.dms.compiler.tools.lexgen.Main

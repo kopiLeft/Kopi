@@ -1,9 +1,9 @@
 ##
-## Copyright (C) 1990-2001 DMS Decision Management Systems Ges.m.b.H.
+## Copyright (C) 1990-2005 DMS Decision Management Systems Ges.m.b.H.
 ##
 ## This library is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU Lesser General Public
-## License as published by the Free Software Foundation; either
+## License version 2 as published by the Free Software Foundation.
 ## version  2 of the License, or (at your option) any later version.
 ##
 ## This library is distributed in the hope that it will be useful,
