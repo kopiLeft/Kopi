@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: KopiUtils.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.xkopi.lib.base;
@@ -398,11 +398,11 @@ public class KopiUtils {
     int			id;
 
     stmt = conn.createStatement();
-    rset = stmt.executeQuery("SELECT MAX(ID) FROM " + table);
+    rset = stmt.executeQuery("SELECT  " + table + "Id.NEXTVAL FROM DUMMY");
     if (!rset.next()) {
       throw new DBRuntimeException("Database Internal Error");
     }
-    id = rset.getObject(1) == null ? 1 : rset.getInt(1) + 1;
+    id = rset.getInt(1);
     stmt.close();
 
     return id;

@@ -57,12 +57,14 @@ JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		PostgresDbiChecker					\
 		ReferentialConstraintDefinition	SapdbDbiChecker		\
 		SCompilationUnit ScriptHeadStatement			\
+		SequenceDefinition DropSequenceStatement		\
 		ShortType SpoolFileStatement				\
 		SpoolTableStatement StringType TransbaseDbiChecker	\
 		TableConstraint TableDefinition				\
 		TablePrivilege TextType TimeType			\
 		TimestampType UniqueConstraintDefinition		\
-		ViewColumn ViewDefinition WeekType
+		ViewColumn ViewDefinition WeekType 
+
 PROPERTIES =	dbi
 
 OPTIONS =	DbiOptions  ConsoleOptions

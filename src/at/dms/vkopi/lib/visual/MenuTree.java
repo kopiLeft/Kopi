@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: MenuTree.java,v 1.4 2004/11/12 13:31:26 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.visual;
@@ -321,7 +321,7 @@ public class MenuTree extends DWindow {
 	Module	module = (Module)modules.get(i);
 
 	new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-				  + "(SELECT MAX(ID) + 1 FROM FAVORITEN)" + ", "
+				  + "(SELECT FAVORITENId.NEXTVAL FROM DUMMY)" + ", "
 				  + (int)(System.currentTimeMillis()/1000) + ", "
 				  + getUserID() + ", "
 				  + module.getId()

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DbiVisitor.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.xkopi.comp.dbi;
@@ -175,6 +175,12 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a DropIndexStatement.
    */
   void visitDropIndexStatement(DropIndexStatement self, String indexName)
+    throws PositionedError;
+
+  /**
+   * Visits DropSequenceStatement
+   */
+  void visitDropSequenceStatement(DropSequenceStatement self, Expression sequenceName)
     throws PositionedError;
 
   /**
@@ -349,6 +355,14 @@ public interface DbiVisitor extends SqlVisitor {
 		       int width,
 		       int height,
 		       int convert)
+    throws PositionedError;
+  
+  /**
+   * Visits a Sequence.
+   */
+  void visitSequenceDefinition(SequenceDefinition self,
+                               Expression sequenceName,
+                               Integer startValue)
     throws PositionedError;
 
   /**

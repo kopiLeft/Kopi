@@ -109,6 +109,10 @@ dataDefinitionLanguageStatement []
   returns [DbiStatement self = null]
 :
   (
+    self = sequenceDefinition[]
+  |
+    self = dropSequenceStatement[]
+  |
     self = tableDefinition[]
   |
     self = viewDefinition[]
@@ -430,6 +434,28 @@ indexElem[]
     { self = new IndexElem(sourceRef, nameElem, isDesc); }
 ;
 
+sequenceDefinition[]
+  returns [SequenceDefinition self = null]
+{
+  Expression		tableName;
+  TokenReference	sourceRef = buildTokenReference();
+  Integer               startValue = null;
+  int                   value;
+  Vector		comments = null;
+}
+:
+  "CREATE" "SEQUENCE" tableName = sTableName[] 
+  ( 
+    "START" "WITH" value = sInteger[]
+  { startValue = new Integer(value); }
+  )?
+  {
+    comments = getComment();
+    self = new SequenceDefinition(sourceRef, tableName, startValue);
+    self.setComment(comments);
+  }
+;
+
 tableDefinition []
   returns [TableDefinition self = null]
 {
@@ -554,6 +580,17 @@ dropTableStatement []
 :
   "DROP" "TABLE" tableName = sTableName[]
     { self = new DropTableStatement(sourceRef,tableName); }
+;
+
+dropSequenceStatement []
+  returns [DropSequenceStatement self = null]
+{
+  Expression		sequenceName;
+  TokenReference	sourceRef = buildTokenReference();
+}
+:
+  "DROP" "SEQUENCE" sequenceName = sTableName[]
+    { self = new DropSequenceStatement(sourceRef, sequenceName); }
 ;
 
 dropIndexStatement []

@@ -41,9 +41,11 @@
 @literal	REFERENCES
 @literal	RESTRICT
 @literal	RESOURCE
+@literal        SEQUENCE
 @literal	SHORT
 @literal	SORTED
 @literal	SPOOL
+@literal        START
 @literal	TAB
 @literal	TEXT
 @literal	TIME

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DbiChecker.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.xkopi.comp.dbi;
@@ -338,6 +338,16 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   }
 
   /**
+   * Visits DropSequenceStatement
+   */
+  public void visitDropSequenceStatement(DropSequenceStatement self, Expression sequenceName)
+    throws PositionedError
+  {
+    current.append("DROP SEQUENCE ");
+    sequenceName.accept(this);
+  }
+
+  /**
    * Visits EnumType
    */
   public abstract void visitEnumType(EnumType self, ArrayList list) throws PositionedError;
@@ -567,6 +577,23 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits StringType
    */
   public abstract void visitStringType(StringType self, boolean fixed, int width, int height, int convert) throws PositionedError;
+
+
+  /**
+   * Visits SequenceDefinition
+   */
+  public void visitSequenceDefinition(SequenceDefinition self,
+                                      Expression sequenceName,
+                                      Integer startValue)
+    throws PositionedError
+  {
+    current.append("CREATE SEQUENCE ");
+    sequenceName.accept(this);
+    if (startValue != null) {
+      current.append(" START WITH ");
+      current.append(startValue);
+    }
+  }
 
   /**
    * Visits TableDefinition
