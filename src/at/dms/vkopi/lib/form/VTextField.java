@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VTextField.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.form;
@@ -43,8 +43,8 @@ public class VTextField extends VStringField {
   /**
    * Constructor
    */
-  public VTextField(int width, int height, int visibleHeight) {
-    super(width, height, visibleHeight, VConstants.FDO_CONVERT_NONE);
+  public VTextField(int width, int height, int visibleHeight, int convert) {
+    super(width, height, visibleHeight, convert);
   }
 
   public int getType() {

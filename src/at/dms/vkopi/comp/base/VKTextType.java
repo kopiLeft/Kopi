@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VKTextType.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.comp.base;
@@ -49,9 +49,11 @@ public class VKTextType extends VKType {
   public VKTextType(TokenReference where, 
                     int width,
                     int height,
-                    int visibleHeight)
+                    int visibleHeight,
+                    int convert)
   {
     super(where, width, height, visibleHeight);
+    this.convert = convert;
   }
 
   // ----------------------------------------------------------------------
@@ -78,16 +80,11 @@ public class VKTextType extends VKType {
 
     JExpression[]	exprs;
 
-    if (getVisibleHeight() != getHeight()) {
-      exprs = new JExpression[] {
+    exprs = new JExpression[] {
 	new JIntLiteral(ref, getWidth()),
 	new JIntLiteral(ref, getHeight()),
-	new JIntLiteral(ref, getVisibleHeight())};
-    } else {
-      exprs = new JExpression[] {
-	new JIntLiteral(ref, getWidth()),
-	new JIntLiteral(ref, getHeight())};
-    }
+	new JIntLiteral(ref, getVisibleHeight()),
+	new JIntLiteral(ref, convert)};
 
     return new JUnqualifiedInstanceCreation(ref, getType(), exprs);
   }
@@ -136,4 +133,5 @@ public class VKTextType extends VKType {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
+  private int			convert;
 }

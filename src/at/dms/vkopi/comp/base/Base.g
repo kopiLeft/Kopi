@@ -150,8 +150,7 @@ vkStringFieldType []
       |
         "OFF"   { c = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
       )  
-    ) 
-     
+    )
   )?
     { self = new VKStringType(sourceRef, w, h, vh, c); }
 ;
@@ -162,11 +161,20 @@ vkTextFieldType []
   int			w;
   int			h;
   int			vh = 0;
+  int			c = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
   "TEXT" LPAREN w = vkInteger[] COMMA h = vkInteger[] ( COMMA vh = vkInteger[] )? RPAREN
-    { self = new VKTextType(sourceRef, w, h, vh); }
+  (
+    "FIXED"
+    (
+      "ON"    { c = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
+    |
+      "OFF"   { c = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
+    )  
+  )?
+    { self = new VKTextType(sourceRef, w, h, vh, c); }
 ;
 
 vkImageFieldType []
