@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.xkopi.lib.base
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="at/dms/xkopi/lib/base" />
+  <property name="package.name" value="at.dms.xkopi.lib.base" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="Connection.java Cursor.java DBConstraintException.java 
+                   DBContext.java DBContextHandler.java 
+                   DBCursorException.java DBDeadLockException.java 
+                   DBException.java DBInterruptionException.java 
+                   DBInvalidDataException.java DBNoRowException.java 
+                   DBRuntimeException.java DBTooManyRowsException.java 
+                   DBUnspecifiedException.java DBDuplicateIndexException.java 
+                   DBForeignKeyException.java DefaultDBContextHandler.java 
+                   DriverInterface.java JdbcParser.java KopiSerializable.java 
+                   KopiUtils.java Query.java XKjcRtUtils.java 
+                   XInterruptProtectedException.java 
+                   As400DriverInterface.java 
+                   Db2UdbDriverInterface.java KconnectDriverInterface.java 
+                   MySqlDriverInterface.java OracleDriverInterface.java 
+                   PostgresDriverInterface.java SapdbDriverInterface.java 
+                   TbxDriverInterface.java
+                   ConnectionOptions.java" />
+
+  <property name="options" 
+            value="ConnectionOptions" />
+
+  <import file="${topdir}/defs.xml" />
+
+  <target name="jar">
+    <jar destfile="${classroot}/xlib.jar" basedir="${classroot}/${package}"/>
+  </target>
+
+
+</project>

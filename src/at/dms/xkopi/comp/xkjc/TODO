@@ -1,0 +1,10 @@
+overloading optimizer that look in a class only if it knows about this type
+overload constructor
+remove static variables
+error message
+
+
+use protected context to allow:
+#protected [conn] {
+  #insert ""{} // where conn is by default the one of the protected
+}

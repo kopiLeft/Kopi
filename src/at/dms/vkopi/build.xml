@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.vkopi
+    ==================================================================-->
+<project default="build" basedir=".">
+
+  <property name="topdir" value=".." />
+  <property name="node" value="yes"/>
+
+
+  <target name="node.build" description="-->  Runs subbuild files ">
+    <ant dir="lib"  inheritAll="false" target="${target}" />
+    <ant dir="comp" inheritAll="false" target="${target}" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

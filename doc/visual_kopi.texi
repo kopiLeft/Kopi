@@ -1,0 +1,2365 @@
+\input texinfo
+
+@setfilename visual_kopi
+@settitle DOCUMENTATION
+@headings single
+@ifinfo
+Copyright @copyright{}
+@end ifinfo
+
+@titlepage
+@title VISUAL KOPI
+@subtitle v 1.0 07, August 2001
+@author Mamisoa RAJOSVAH
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2001 Decision Management Systems G.m.b.H
+@end titlepage
+
+
+@macro rh{rulename}@c
+@i{\rulename\:}@anchor{\rulename\} @c
+@end macro
+
+@iftex
+@macro rc {rulename} @c
+@i{@uref{#\rulename\,\rulename\,\rulename\}}@c 
+@end macro
+@macro rcopt {rulename} @c
+@i{[@uref{#\rulename\,\rulename\,\rulename\}]}@c 
+@end macro
+@end iftex
+
+@ifinfo
+@macro rc {rulename} @c
+@i{@uref{#\rulename\,\rulename\,\rulename\}}@c 
+@end macro
+@macro rcopt {rulename} @c
+@i{[@uref{#\rulename\,\rulename\,\rulename\}]}@c 
+@end macro
+@end ifinfo
+
+@ifhtml
+@macro rc {rulename} @c
+@i{@uref{#\rulename\,\rulename\,\rulename\}} 
+@end macro
+@macro rcopt {rulename} @c
+@i{[@uref{#\rulename\,\rulename\,\rulename\}]}
+@end macro
+@macro sp1 {} @c
+@end macro
+@macro sp2 {} @c
+@end macro
+@end ifhtml
+
+
+
+@contents
+
+@node PREFACE, CHAPTER 1, , (Top)
+@unnumbered PREFACE
+
+@sp2
+Elaborated by DMS in collaboration with the ESSI, Kopi is a high-level programmation language based on  JAVA, JDBC and JFC/SWING.
+
+@sp1
+Being an extension of the Java language, it is a complete development system which enables you to create form-based applications by making use of databases. The name Kopi itself has been inspired from the word used by the Islanders of Java for coffee.
+
+@sp1
+The purpose of this User Guide is to give users a general understanding of Visual Kopi. Especially, it shows you how to create any kind of application quickly and easily.
+These applications will be highly efficient and will suit to your every special need.
+
+@sp1
+In Chapter 1, we introduce you to essential terms you need to carry out a programmation. 
+After reading the Chapters 2, 3 and 4, you will have the essential understanding of the different fieldtypes.
+In the 4 last chapters, we will explain the different steps in setting up a form. In so doing, we will show you  in a concrete way how to create a field, a block and a form.
+
+@sp1
+Finally, please note that DMS values and appreciates your comments as a Kopi user. We are constantly writing, evaluating and performing and this is why your opinions are the mosst important input we receive. If you want to share them with us, please refer to the mailing lists you find on our homepage under "The Kopi Project".
+
+
+@node CHAPTER 1, CHAPTER 2, PREFACE, (Top)
+@chapter Generalities
+
+The aim of Kopi is to enable you to create applications.
+An application is made up of forms. A form consists of blocks. A block is nothing else than a table which is divided into columns (vertical) and rows (horizontal). A row is made up of fields, and each field contains a data value at the intersection of a row and a column. Here are some general terms you will often use when creating a form:
+
+@section The Simple And The Qualified Names
+When setting up your own application, you will often have to enter a name in order to define either a field, a block or a form. You will then have to make use of either a simple or a qualified name.
+@itemize
+@item A @i{SimpleName} consists of a character row in which neither spaces nor points are permitted.
+
+@b{Syntax:}
+@example
+@rh{SimpleName}
+@end example 
+
+
+@b{Example}
+@example
+StudentGroup2
+@end example
+@item A @i{QualifiedName} is a row of characters in which no points are allowed.
+@example
+@rh{QualifiedName}
+@rc{SimpleName}@i{[}.@i{[}.@rc{QualifiedName}@i{]}
+@rh{QualifiedNameList}
+   @rc{QualifiedName} @rcopt{,QualifiedNameList}
+@end example
+
+@b{Example}
+@example
+StudentGroup2.ViennaUniversity
+@end example
+@end itemize
+
+
+@section Parameters And Parameterlists
+The Parameters and ParameterLists used in Visual Kopi are the same as the Formal Parameters used in Java.
+
+@b{Syntax:}
+@example
+@rh{Parameter}
+  @i{As described in JLS 8.4.1}
+@rh{ParameterList}
+   @rc{Parameter} @rcopt{, ParameterList}
+@end example 
+
+@section KopiJavaCode
+A KopiJavaCode is a JavaCode provided with one or more Kopi extensions.
+
+@b{Syntax:}
+@example
+@rh{KopiJavaCode}
+@end example 
+
+@section ExpressionLists
+The ExpressionLists used in Visual Kopi are the same as those used in Java.
+
+@b{Syntax:}
+@example
+@rh{ExpressionList}
+  @i{As described in JLS 15.27}
+@end example
+
+@sp1
+@section STRINGS
+A @i{StringLiteral} is a compound of characters which can contain spaces, points or comma. A @i{StringLiteral} is always entered in a ""
+
+@b{Syntax:}
+@example 
+@rh{StringLiteral}
+  @i{<As described in JLS 3.10.5>}
+@end example 
+
+
+
+@example
+Example: "Customers registered under aol.com"
+@end example
+
+@section INTEGERS
+An @i{ Integer} is the representation of a constant number without a fractional part.
+
+@b{Syntax:}
+@example 
+@rh{IntegerLiteral}
+  @i{<As described in JLS 3.10.1>}
+@end example 
+
+
+@b{Example}
+@example 
+1, -3, 565.
+@end example
+
+
+@node CHAPTER 2, CHAPTER 3, CHAPTER 1, (Top)
+@chapter The Standard Fieldtypes
+
+A form consists of several fields whose types have to be defined.
+There are 13 standard fieldtypes in Visual Kopi:
+
+@b{Syntax:}
+@example
+@rh{StandardFieldType}
+  @rc{ImageType}
+  @rc{StringType}
+  @rc{TextType}
+  @rc{ImageType}
+  @rc{StringType}
+  @rc{TextType}
+  @rc{FixedType}
+  @rc{IntegerType}
+  @rc{EnumType}
+  @rc{CodeTypes}
+  DATE
+  BOOL
+  COLOR
+  MONTH
+  TIME
+  WEEK
+@end example 
+
+@cindex IMAGE
+@section The Type IMAGE
+
+This fieldtype is used to insert an illustration or a picture. When introducing an IMAGE, you have to determine its width and height. These  values have to be integers and are measured in pixel. In this case, the two attributes are compulsory.
+
+@b{Syntax:}
+@example 
+@rh{ImageType}
+  IMAGE (@rc{IntegerLiteral}, @rc{IntegerLiteral})
+@end example 
+
+@b{Example:}
+@example
+IMAGE(20,10) 
+@end example
+
+In this field, the image will have a  width of 20 pixel and a height of 10 pixel.
+@cindex STRING
+@section The Type STRING
+
+A  STRING is used to enter characters which can be either letters, numbers or both. The width has always to be given. Moreover, you can determine how many lines it will contain and how many lines will finally be displayed on the form. 
+
+@b{Syntax:}
+@example 
+@rh{StringType}
+  STRING (@rc{IntegerLiteral}@i{[},@rc{IntegerLiteral}@i{[},@rc{IntegerLiteral}@i{]} @i{]})@rcopt{StringFormat}
+
+@rh{StringFormat}
+  CONVERT UPPER
+  CONVERT LOWER
+  CONVERT NAME
+@end example
+
+@b{Example}
+@example
+STRING (40,10,4)
+@end example
+
+In this example, the text inserted will contain  up to 40 characters  and  up to 10 lines. However, only the first 4 lines will be displayed on the form.
+
+Moreover, 3 other options are available for a STRING-field. These options are used in order to convert the type-face. There are:
+@subsection CONVERT UPPER
+which is used to convert the whole text in capital characters.
+@b{Example}
+@example
+STRING (3)
+CONVERT UPPER
+@end example
+
+@subsection CONVERT LOWER
+is used to undergo the opposite process i.e from capital into normal characters.
+@b{Example}
+@example
+STRING (3)
+CONVERT LOWER
+@end example
+
+@subsection CONVERT NAME
+is used to convert the first letter in each word in capital character.
+@b{Example}
+@example
+STRING (3)
+CONVERT NAME
+@end example
+
+@cindex CONVERT 
+
+@cindex  TEXT
+@section The Type TEXT
+A Text and a String are similar apart from the fact that in a text, two parameters have always to be given: namely the width and the height of the field whereas you only need to determine the width in a string.
+
+@b{Syntax:}
+@example 
+@rh{TextType}
+  TEXT (@rc{IntegerLiteral}, @rc{IntegerLiteral})
+@end example 
+For example, you can write  STRING (40, 10, 4) or  STRING (40) but you have to write  TEXT (40, 10).
+
+
+@cindex FIXED 
+@cindex FRACTION
+@section Numbers
+@subsection The Types FIXED and FRACTION
+A FIXED is used to insert numbers, integers, fixed point numbers. Fraction numbers are entered with the fieldtype FRACTION. The maximal width has to be determined for all them. In case of a fixed point number, the maximal scale i.e the number of characters standing after the comma has also to be defined. Also the comma has to be counted as a character. Only the width is to be defined in a FRACTION.
+
+@b{Syntax:}
+@example 
+@rh{FixedLiteral}
+@end example 
+  @i{As described above}
+
+@b{Syntax:}
+@example 
+@rh{FixedType}
+  FIXED (@rc{IntegerLiteral})@i{[}MINVAL @rc{FixedLiteral}@i{]}@i{[}MAXVAL @rc{FixedLiteral}@i{]}   
+  FRACTION (@rc{IntegerLiteral})@i{[}MINVAL @rc{FixedLiteral}@i{]}@i{[}MAXVAL @rc{FixedLiteral}@i{]}   
+@end example 
+
+@b{Example}
+@example
+FIXED(4,2) for 1,25
+FRACTION(7) for 1 35/64 
+@end example
+@cindex FRACTION
+
+@cindex LONG
+@subsection The Type LONG
+A LONG is used to insert integers. Only the text width is to be defined. As for the type FIXED, two options are available in the type LONG:
+
+@b{Syntax:}
+@example 
+@rh{IntegerType}
+  LONG (@rc{IntegerLiteral})@i{[}MINVAL @rc{IntegerLiteral}@i{]}@i{[}MAXVAL @rc{IntegerLiteral}@i{]}   
+@end example 
+
+@b{Example}
+@example
+LONG(6) 
+@end example
+
+
+@cindex MINVAL
+@cindex MAXVAL
+
+@subsection Constraints
+@subsubsection MINVAL
+MINVAL is to define the minimal value of the figure to be entered.
+
+@subsubsection MAXVAL
+MAXVAL is to define the maximal value it can have.
+
+
+@b{Example}
+@example
+FIXED (4,2) MINVAL 0.1 MAXVAL 500 
+FRACTION (7) MINVAL 1 MAXVAL 100 
+LONG (6) MINVAL 1 MAXVAL 180000 
+@end example
+
+
+@cindex  ENUM
+@section The Type  ENUM
+An ENUM means enumeration or listing. An enum definition is made up of one or several strings and only the strings you have listed can be entered in the field.
+ 
+@b{Syntax:}
+@example 
+@rh{EnumType}
+  ENUM (@rc{EnumList})
+
+@rh{EnumList}
+  @rc{StringLiteral}@i{[, @rc{EnumList}]}
+@end example 
+
+
+@b{Example}
+@example 
+ENUM ("X-Small","Small","Medium", "Large", "X-Large" )
+@end example
+   
+@cindex CODE
+@section CODE Types
+There are three different sorts of CODE:
+@itemize
+@item The CODE BOOL
+@item The CODE LONG
+@item The CODE FIXED
+@end itemize
+@b{Syntax:}
+@example 
+@rh{CodeTypes}
+  @rc{CodeBooleanType}
+  @rc{CodeIntegerType}
+  @rc{CodeFixedType}
+@end example 
+
+These codes enable you tpare place in your database. Actually, only the values you have assigned to each item you have entered will be saved in the database.
+
+@cindex CODE BOOL
+@subsection The Type CODE BOOL
+In a  CODE BOOL or BOOLEAN you have to assign a Boolean value to the item  you have entered. Boolean values are such  unvariable values like "True" or "False" and "Yes" or "No".
+
+@b{Syntax:}
+@example 
+@rh{CodeBooleanType}
+  CODE BOOL IS @rc{CodeBooleanList} END CODE
+
+@rh{CodeBooleanList}
+  @rc{CodeBoolean} @rcopt{CodeBooleanList}
+
+@rh{CodeBoolean}  
+  @rc{StringLiteral} = @rc{BooleanLiteral}
+@end example 
+
+@b{Example}
+@example 
+CODE BOOL IS
+  "married" = true
+  "single" = false
+END CODE
+@end example
+ 
+@cindex  CODE LONG
+@subsection The Type CODE LONG
+In a CODE LONG, you assign to each item you have entered a LONG value.
+
+@b{Syntax:}
+@example 
+@rh{CodeIntegerType}
+  CODE LONG IS @rc{CodeIntegerList} END CODE
+
+@rh{CodeIntegerList}
+  @rc{CodeInteger} @rcopt{CodeIntegerList}
+
+@rh{CodeInteger}
+  @rc{StringLiteral} = @rc{IntegerLiteral}
+@end example 
+
+@b{Example}
+@example
+CODE LONG IS
+    "Monday" = 1
+    "Tuesday" = 2
+    "Wednesday" = 3
+    "Thursday" = 4
+    "Friday" = 5
+    "Saturday" = 6
+    "Sunday" = 7
+END CODE
+@end example
+
+@cindex CODE FIXED
+@subsection The Type CODE FIXED
+In a CODE FIXED, each item you have entered will get a FIXED value, i.e integers, fixed point numbers and fraction numbers. 
+
+@b{Syntax:}
+@example 
+@rh{CodeFixedType}
+  CODE FIXED IS @rcopt{CodeFixedList} END CODE
+
+@rh{CodeFixedList}
+  @rc{CodeFixed} @rcopt{CodeFixedList}
+  
+@rh{CodeFixed}
+  @rc{StringLiteral} = @rc{FixedLiteral}
+@end example 
+
+@b{Example}
+@example
+CODE FIXED IS
+  "piece" = 1.00
+  "per cent" = 0.01
+END CODE
+@end example
+
+@cindex DATE
+@section The Type DATE
+This type is used to insert a date. 
+
+@cindex  BOOL
+@section  The Type BOOL
+This type is used to insert a true or false value.
+
+@cindex COLOR
+@section  The Type COLOR
+This type is used to determine the field color.
+
+@cindex MONTH
+@section The Type  MONTH
+This type is used to insert months.
+
+@cindex TIME
+@section  The Type TIME
+This type is used as timestamp.
+
+@cindex WEEK
+@section  The Type WEEK
+This type is used to insert the different weeks of the year.
+
+
+
+@cindex LIST
+@node CHAPTER 3, CHAPTER 4, CHAPTER 2, (Top)
+@chapter List
+
+@b{Syntax:}
+@example 
+@rh{List}
+  LIST @rc{TableReference} IS @rc{ListColumns} @rcopt{ListReference} END LIST
+
+@rh{ListReference}
+  NEW @rc{QualifiedName}
+  ACCESS @rc{QualifiedName}
+
+@rh{ListColumn}
+  @rc{StringLiteral} = @rc{SimpleName} : @rc{StandardFieldType}  
+
+@rh{ListColumns}
+  @rc{ListColumn} @rcopt{ListColumns}
+@end example 
+
+Once you have defined the fieldtype, you can make use of  the LIST  command in order to refer the user to a list or a table in the database which will help him when filling in the form in question. If you refer a fieldtype to a certain table, the field will get an icon on which you can click in order to retrieve this table. 
+ As this command connects the user with a certain table, you have to enumerate all columns of the table which information could be helpful for the user. In so doing, you will then have to enter at least one column. The information contained in the first element of the list  must have the same standard type as the defined type as it is the one which will be entered in the field in question.
+
+@sp1
+Let's take a block named "degree" as example. This block will contain the different types of degrees a student can get at the university. For this, the user will need to know the name of the different lessons, the degrees as well as information about the lecturers and so on. As a lecturer may give more than one lesson, it will make no sense to set up a big table gathering all these information. You would rather set up different tables which you will connect to each other. So, you can define a fieldtype and refer it to a more detailed list. 
+ 
+@b{Example}
+@example
+TYPE Lecturer IS
+  STRING (8)
+  CONVERT UPPER
+
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
+  END LIST
+...
+END TYPE
+@end example
+
+Notice that "Lecturer" and "Symbol" have the same fieldtype.
+When filling in a field which is referred to a list or a table, the user will have to choose a row within this list or this table and the computer will automatically enter the information contained under the first column i.e Symbol.
+
+Now, in order to connect automatically two tables, you can create a hidden field which is to join two columns together. Supposing that you have classified "Lecturers"(L) under the field "Responsible"(R) in the block "Degree" (D), you will have:
+
+@b{Example}
+@example
+TYPE Lecturer IS
+  STRING(8)
+    CONVERT UPPER
+
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
+  END LIST
+END TYPE
+  ...
+HIDDEN
+  LONG (11)
+  COLUMNS (D.Responsible, L.ID)
+END FIELD
+@end example
+In this case, "Responsible" has been connected to  "Lecturer's ID". "Responsible" is the table you are working on while "Lecturer" is the lookup table.
+
+In the last step of your definition, you will have:
+
+@b{Example}
+@example
+MUSTFILL Responsible AT <3,1>
+  LABEL
+  HELP The lecturer releasing a certain degree
+  TYPE Lecturer
+  COLUMNS (L.Symbol)
+  PRIORITY 2
+END FIELD
+@end example
+
+@section SELECT
+As you had the possibility to call up a list or a table from the database with the option LIST, you now can make Kopi sort out information from a whole list or a table which the option SELECT and this, according to criteria you have to define.
+Let's say you want to view the degrees which can be achieved in a certain year. For this, you have to use the SELECT command as you see  in the following lines:
+
+@b{Example}
+@example
+TYPE CurrentDegree (Integer year) IS
+     STRING (8)
+       CONVERT UPPER
+  LIST@{(
+        SELECT Symbol, Description
+        FROM   Degree
+        WHERE Year = : (year)
+        ) D (Symbol, Description)@} IS
+
+        "Symbol" = Symbol : STRING (8)
+        "Description" = Description : STRING (40)
+  END LIST
+END TYPE
+@end example
+"Degree" is the database table to which we have to access in order to select the information. The command SELECT is used in order to enter the columns in which Kopi has to make its research. After FROM, you have to enter the table from which these columns are to be selected and after WHERE, you have to enter the conditions according to which this selection has to be carried out. 
+@itemize
+@item The sign "=" means the value of the data delivered after the selection must correspond to the conditions you have entered. 
+@item The sign ":" inserts one Java expression. After this Java expression, you can insert a SQL expression again. (See JLS 15.27)
+@item "D" represents the end table which will be set up by the SELECT option. It will be made up of two columns: Symbol and Description. 
+@item Finally, you have to define for each of them the fieldtype.
+@end itemize
+As a result of your selection, you will then have a table with two columns which will contain the different sorts of degrees achievable in the year you have entered. 
+
+
+
+@node CHAPTER 4, CHAPTER 5, CHAPTER 3, (Top)
+@chapter The Self-Defined Fieldtypes
+
+When creating a form, the user can define himself the fieldtypes. If you define yourself a fieldtype, you can give to its content any name you want. In so doing, you will only need to enter this name in order to retrieve all information contained in the field definition so that you  will spare time and avoid mistakes.
+
+@cindex TYPE
+@sp1
+You can define a fieldtype in this way:
+
+@b{Syntax:}
+@example 
+@rh{TypeDefinition}
+  TYPE @rc{SimpleName} @i{[}(@rc{ExpressionList})@i{]} IS @rc{StandardFieldType} END TYPE
+@end example
+
+@b{Example}
+@example
+TYPE Days IS
+@itemize
+@item CODE LONG IS
+@item   "Monday"= 1
+@item   "Tuesday"= 2
+@item   "Wednesday"= 3
+@item   "Thursday"= 4
+@item   "Friday"= 5
+@item   "Saturday"= 6
+@item   "Sunday"= 7
+@item END CODE
+@end itemize
+END TYPE
+@end example
+or
+@example
+TYPE Name IS
+  LONG (15)
+END TYPE
+@end example
+
+
+@node CHAPTER 5, CHAPTER 6, CHAPTER 4, (Top)
+@chapter Creating a Field
+
+@b{Syntax:}
+@example 
+@rh{FieldDeclaration}
+  @rc{AccessModifier} @rc{FieldHeader} @rcopt{HelpText} @rc{FieldType} @rc{FieldFooter} END FIELD 
+@rh{FieldHeader}
+  @rcopt{MultiField} @rcopt{SimpleName} @rcopt{FieldPosition} @rcopt{FieldLabel}
+@rh{FieldFooter}
+  @rc{FieldReference}
+  @rc{FieldBody}
+
+@rh{FieldReference}
+  IS @rc{QualifiedName} @rcopt{FieldColumns}
+
+@rh{FieldBody}
+  @rcopt{FieldAlignment} @rcopt{FieldOptions} @rcopt{FieldColumns} @rcopt{ModeAndCommands} @rcopt{FieldTrigger} 
+@end example 
+
+A field definition begins with an access modifier and ends with the command "END FIELD". The Access Modifier is followed by a SimpleName through which the user can give information about the field content. Concretely, you have to define a field according to the following order:
+
+@cindex ACCESS MODIFIERS
+@section Access Modifiers
+An @i{access modifier} determines the way the application user will have to handle with each field in a form as well as the field accessibility at all. In so doing, this command is compulsory. There are 4 sorts of access modifier:
+
+@b{Syntax:}
+@example 
+@rh{AccessModifier}
+  MUSTFILL
+  VISIT
+  SKIPPED
+  HIDDEN
+@end example 
+@cindex MUSTFILL
+@subsection MUSTFILL
+As indicated, a MUSTFILL-field has to be filled by the user. This field will be colored in blue.
+
+@cindex VISIT
+@subsection VISIT
+A VISIT-field is a field which the user can fill if he wants to. In Visual Kopi, this field will be colored in green.
+
+@cindex SKIPPED
+@subsection SKIPPED
+A SKIPPED-field is a field which is displayed on the form but which he can not overwrite. A field is skipped if the user needs to know the information written in it. This field is always colored in black.
+
+@b{Example}
+@example
+if other users need to know when a certain form has been filled 
+and by which user, this can be shown in a field named for instance 
+"signum". In this field, the identity of the person who has filled 
+the form, the date and time on which he did it will be displayed on 
+a field and these information can not be modified.
+@end example
+
+@cindex HIDDEN
+@subsection HIDDEN
+A HIDDEN-field is an existing field which, however, is not displayed on the form as the information it provides is of no importance for the user. Moreover, this information is automatically filled by the computer in order to classify the data in its database. 
+
+@b{Example}
+@example
+a computer could classify its data by attributing each of them 
+an identity number. In this case, these numbers will not make any
+ sense for the user.
+@end example
+ 
+@b{Note}:
+
+As the user moves from a field to another when filling the form, the current field is always colored in red.
+
+@b{Example}
+@example
+MUSTFILL Year
+...
+END FIELD
+   
+HIDDEN ID
+...
+END FIELD
+@end example
+
+@cindex LABEL
+@section Label
+
+@b{Syntax:}
+@example 
+@rh{FieldLabel}
+  NO LABEL
+  LABEL @rc{StringList}
+@rh{StringList}
+  @rc{StringLiteral} @i{[}, @rc{StringList}@i{]}
+@end example 
+
+A LABEL is an option which is used to specify the field content. In so doing, it can be followed by a text. If the text is missing, the computer will automatically adopt the single name you have entered after the access modifier. Thus, you can have:
+
+@b{Example}
+@example
+MUSTFILL Lesson
+  LABEL "Foreign language lesson"
+  ...
+END FIELD
+or
+MUSTFILL Lesson
+  LABEL
+  ...
+END FIELD
+@end example
+
+@cindex NO LABEL
+@b{Note}:
+In order to precise the field would not have any label, type the option NO LABEL
+
+@b{Example}
+@example
+MUSTFILL Lesson
+  NO LABEL
+  ...
+END FIELD
+@end example
+
+@cindex HELP
+@section Help
+HELP is used to insert an explanation text for the application user in order to help him filling in the form. This HELP-text will then be displayed when the user places the mouse on the field. 
+
+@b{Syntax:}
+@example 
+@rh{HelpText}
+  @rc{StringLiteral}
+@end example 
+
+
+@b{Example}
+@example
+MUSTFILL Lesson
+  LABEL
+  HELP "The lesson you would like to attend"
+  ...
+END FIELD
+@end example
+
+@section Field Position
+There are two possibilities to define the field position.
+
+@b{Syntax:}
+@example 
+@rh{FieldPosition}
+  AT <@rc{IntegerLiteral}@i{[}, @rc{IntegerLiteral}@i{[}- @rc{IntegerLiteral}@i{]}@i{]}>
+  FOLLOW @rc{SimpleName}
+@end example 
+@subsection Absolute Position With AT
+You can define it according to one integer or more:
+@itemize
+@item AT <Integer>
+@item AT <Integer, Integer>
+@item AT <Integer, Integer-Integer>
+@end itemize
+
+@b{Example}
+@example
+AT <1, 1-2>
+@end example
+
+The first integer indicates the row number while the second defines the column. In fact, Kopi automatically divides up the window in rows and columns when setting up a form.
+When defining the width of a column, thus, it always adopts the width of the longest field. Since the form wide is not unlimited, you can put a long field in two or more columns in order to spare place as it is the case in the example above. 
+
+@subsection Relative Position With FOLLOW
+You can also make use of the following structure:
+
+FOLLOW SimpleName
+
+@b{Example}
+@example
+VISIT Email
+  FOLLOW Name
+  ...
+END FIELD
+@end example
+If you enter a new field with this option (in this case it would be the field "Email"), it means that this field will be placed directly next to the first field defined by the FOLLOW command (field "Name") on the same line. The two fields will then form one single column.
+
+@section Fieldtypes
+
+You have two possibilities of proceeding when defining the fieldtype:
+
+@b{Syntax:}
+@example 
+@rh{FieldType}
+  @rc{StandardFieldType}
+  TYPE @rc{QualifiedName} @i{[}(@rc{ParameterList})@i{]}
+@end example 
+
+@subsection Using Standard Fieldtypes
+You can insert a standard fieldtype. @xref{CHAPTER 2, The Standard Fieldtypes, The Standard Fieldtypes}.
+
+@b{Example}
+@example
+MUSTFILL
+  LABEL
+  LONG (10)
+END FIELD
+
+or
+
+VISIT
+  STRING (20)
+END FIELD
+@end example
+
+@subsection Using Self-Defined Fieldtypes
+If you want to make use of a fieldtype you have defined yourself, you just have to enter the name you gave to the type as you defined it.
+
+@b{Example}
+@example
+MUSTFILL Day
+  LABEL
+  TYPE Day
+END FIELD
+@end example
+In this example, note that we have retrieved a pre-defined TYPE (TYPE Day). @xref{CHAPTER 4, The Self-Defined Fieldtypes, The Self-Defined Fieldtypes}.
+
+@section The Field Alignment
+This option is used to define the localization of the field on the form. There are three sorts of "alignment"-command:
+
+@b{Syntax:}
+@example 
+@rh{FieldAlignment}
+  ALIGN LEFT
+  ALIGN RIGHT
+  ALIGN CENTER
+@end example 
+
+@cindex ALIGN
+@itemize @minus
+@item ALIGN RIGHT in order to shift the field into the right side of the form,
+@item ALIGN LEFT to move it to the left side,
+@item ALIGN CENTER to place it in the middle.
+@end itemize
+
+@section The Field Options
+You have 5 kinds of field options at your disposal:
+
+@b{Syntax:}
+@example 
+@rh{FieldOption}
+  NOECHO
+  NOEDIT
+  TRANSIENT
+  NO DELETE ON UPDATE
+  QUERY UPPER
+  QUERY LOWER
+@end example 
+
+@itemize @minus
+
+@cindex NOECHO
+@item NOECHO is an option which orders the machine not to display the character typed in the field.
+This option is usually used in case of a password field where a star (*) character is displayed in state of the entered character,
+
+@cindex NOEDIT
+@item NOEDIT is an option which makes it impossible to the user to overwrite the field or to change any data in it. Again, you can make use of it in the example of a signum field we mentionned under the section "Access modifier - SKIPPED",
+
+@cindex TRANSIENT
+@item TRANSIENT - undocumented option,
+
+@cindex NO DELETE  ON  UPDATE 
+@item NO DELETE  ON  UPDATE - undocumented option,
+
+@cindex QUERY UPPER 
+@cindex QUERY LOWER
+@item QUERY UPPER / QUERY LOWER - The first is used if you want the machine to change the a field value in capital characters whereas the second is to change a field value into normal characters. 
+
+@end itemize
+
+@b{Note}:
+These options are used separately but can also be combined together.
+
+@cindex COLUMNS
+@section Columns
+The information tipped in each field being registered in the database and the database consisting in many tables, the COLUMN-option is used to establish a connection between a certain  field and the database. The programmer can enter this option in order to determine which table and which column the field belongs to. In so doing, you can precise both the table and the column names in parentheses. You can also place a KEY (undocumented option).
+
+@b{Syntax:}
+@example 
+@rh{FieldColumns}
+  COLUMNS (@rc{ColumnList}) @rcopt{ColumnIndex} @rcopt{ColumnPriority}
+@rh{ColumnList}
+  @rc{Column} @i{[}, @rc{Column}@i{]}
+@rh{Column}  
+  @i{[}KEY@i{]} @rc{SimpleName} . @rc{SimpleName}
+@end example
+
+
+@b{Example}
+@example
+COLUMN (A.x)
+whereby A is the Table and x the Column.
+@end example
+
+Note that a field can be connected to more than one table and column. In this case, the formula you will type will be:
+
+@b{Example}
+@example
+COLUMN (KEY A.x, B.y)
+@end example
+
+Table A and Table B have been connected to each other through columns x and y.
+
+@cindex INDEX
+@subsection Indexes
+This option is used to define a value in the database which is to remain unique so that it can not appear anymore in another field of the same column. An INDEX is always to be followed by one or more integers. This integer can take a value between 0 and 31, whereby both minimal and maximal values are also included.
+
+Let's sum up with following formula:
+
+@b{Syntax:}
+@example 
+@rh{ColumnIndex}
+  INDEX @rc{Integers}
+@rh{Integers}
+  @rc{IntegerLiteral} @rcopt{Integers}
+@end example 
+@itemize
+@item INDEX Integer ...  
+@item and 0<=Integer<32
+@end itemize
+ 
+If two or more fields are given the same index value, it means that two similar combinations of these field values will not be accepted. 
+
+@itemize
+@item For example, two different lessons cannot be given in the same room. In this case, the three fields, namely the fields "professor", "time" and "lesson" are to be attributed the same index. Thus, at least one of the three values needs to be changed so that the combination can be accepted by the machine.
+@end itemize
+ 
+@b{Example}
+@example 
+MUSTFILL "Lesson"
+  LABEL 
+  HELP "The lesson you have to attend to"
+  LONG (11)
+  COLUMN (LEC.Lesson)  
+  INDEX 0
+END FIELD
+
+@sp1
+VISIT "Lecturer"
+  LABEL
+  LONG(11)
+  COLUMN (LES.Lecturer)
+  INDEX 0
+END FIELD
+
+@sp1
+MUSTFILL "Time"
+  STRING(11)
+  COLUMN (LES.Time)
+  INDEX 0
+END FIELD
+@end example
+
+@itemize
+@item However, this example would implicate a professor can give two different lessons at the same time. In order to avoid such errors, you can attribute one field two or more indexes. So you can associate the two fields "professor" and "time" together. Thus, you will have: 
+@end itemize
+
+@b{Example}
+@example
+MUSTFILL "Lesson"
+  LABEL 
+  HELP "The lesson you have to attend to"
+  LONG (11)
+  COLUMN (LEC.Lesson)
+INDEX 0
+END FIELD
+@sp1
+VISIT "Lecturer"
+  LABEL
+  LONG
+  COLUMN (T.Lecturer)
+  INDEX 0 1
+END FIELD
+@sp1
+MUSTFILL "Time"
+  STRING
+  COLUMN (LEC.Time)
+  INDEX 1
+END FIELD
+In this case, notice that the "Lecturer"-field has been associated 
+with two indexes: 0 and 1.
+@end example
+
+@sp1
+@b{Note}:
+The index value is ascendant. When attributing an index value to a field combination, you shall always take the value nexting that you have taken the last.
+
+@cindex PRIORITY
+@subsection Priority
+
+@b{Syntax:}
+@example 
+@rh{ColumnPriority}
+  PRIORITY @i{[}-@i{]} @rc{IntegerLiteral}
+@end example 
+This option is used in order to define the column order within a list  when this list is displayed. A PRIORITY is always followed by an integer according to the structure given above. The column with the biggest priority value will appear on the extreme left side of the table and the one with the least value will be on the extreme right side. 
+
+@sp1
+We shall notice that negative values are also permitted in this option. However, the minus sign ("-") standing before the number does not have any influence over its value but simply indicates the way all the information will be sorted out within a column. Actually, the different fields are always sorted in the ascending way, i.e from A to Z in case of an alphabetical text and from 1 to x+1 for numbers.
+Now, if the integer is preceded by a minus, the column content will be sorted in the other way round.
+
+
+@b{Example}
+@example
+If columns "Surname", "Name" and "Date of Birth" are 
+respectively given the priorities 3,4 and 1, "Name" will come
+first and will be followed by "Surname" and "Date of Birth".
+The same order applies with the values 3, -4 and 1, with the only
+difference that the names will be sorted out from Z to A.
+@end example
+
+Moreover, two columns with the same priority will be displayed according to the same order in which the user has listed them.
+
+@section Modes and Field Commands
+Once you have defined the columns, you can define the field commands. There are three ways in entering the command: first, you can enter it without defining the mode, second, you can define it after having determined one mode or more and finally,  you can also define it with one access modifier or more:
+
+@b{Syntax:}
+@example 
+@rh{ModeAndCommands}
+  @rc{ModeList} @rc{AccessModifier}
+  @rcopt{ModeList} @rc{Command}
+@rh{Command}
+  COMMAND @rc{QualifiedName}
+  COMMAND @rc{CommandBody} END COMMAND
+
+@rh{CommandBody}
+  ITEM @rc{SimpleName} @rc{CommandAction}
+@rh{CommandAction}
+  ACTION @i{[}(Parameter)@i{]} @{ @rc{KopiJavaCode} @}
+  EXTERN @rc{QualifiedName}
+  CALL @rc{SimpleName}
+
+@rh{ModeList}
+  ON @rc{Modes}
+
+@rh{Modes}
+  @rc{Mode} @i{[}, @rc{Modes}@i{]}
+
+@rh{Mode}
+  QUERY  
+  INSERT
+  UPDATE
+@end example
+
+@subsection Calling A Standard Field Command
+There are five ways in calling a standard command:
+@itemize
+@item COMMAND QualifiedName  
+
+@item COMMAND ITEM SimpleName CALL SimpleName END COMMAND 
+
+@b{Example}
+@example
+COMMAND
+  ITEM Autofill
+  CALL Toto
+END COMMAND
+@end example
+@item COMMAND ITEM SimpleName  EXTERN QualifiedName  END COMMAND
+
+@b{Example}
+@example
+COMMAND 
+  ITEM Autofill
+  EXTERN Toto
+END COMMAND
+@end example
+@item COMMAND ITEM SimpleName ACTION (VField SimpleName) @{Kopi-Java Code@}  END COMMAND
+
+@b{Example}
+@example
+COMMAND
+  ITEM Clear
+   ACTION (VField f) @{
+     f.setDefault ();
+  @}
+END COMMAND
+@end example
+@item COMMAND ITEM SimpleName ACTION @{Kopi-Java Code@} END COMMAND
+@end itemize
+
+@b{Note}:
+At the beginning of a form definition, you can make menu entries in the following way:
+
+@b{Example}
+@example
+MENU "Actions"
+  ITEM Invoice
+    NAME "Invoice"
+    KEY "F5"
+    ICON "suggest"
+    HELP "You can view all invoices sent to the customer with this key"
+END MENU
+@end example
+If now you have entered this ITEM Invoice in the COMMAND, it refers to the menu entry "Invoice" you have made at the beginning of your form definition. It means the commando is represented by the Icon "suggest" and the Help-text you have typed, is called "Invoice" and can also be invoked by the Key F5.
+
+Whereas the option ACTION is to introduce a Kopi-Java Code, CALL and EXTERN are to be followed by a Java method name. Therefore, the SimpleName after CALL is to invoke a Java method  defined within the same form and the QualifiedName coming after EXTERN to enter a Java method imported from another form.
+
+@subsection Calling A Field Command With The Modes
+All these 5 commands  can be preceded by one mode ore more. There are three sorts of mode which are to be sorted according to the following hierarchy:
+@itemize 
+@item QUERY to start an inquiry within the database
+@item INSERT to create a new row in the database
+@item UPDATE to enter new information within a row
+@end itemize
+
+So you will have:
+ON Mode COMMAND...
+
+@b{Example}
+@example
+ON QUERY, UPDATE COMMAND InsertMode
+@end example
+If you have entered a mode before the COMMAND, it means this COMMAND can only be invoked if the block is in the mode you have determined.
+
+
+@subsection Calling A Standard Field Command With The Modes And An Access Modifier
+If you define the commands according this way, the access modifier will take the place of the command so that you will have the following structure:
+ON Mode(s) Access Modifier
+
+@b{Example}
+@example
+ON QUERY HIDDEN
+In this example, we have determined that the field will be invisible
+if the block is in the QUERY mode.
+@end example
+
+@section Field Triggers
+A trigger enables an action to be released if a certain event occurs. There are three sorts of trigger: the block triggers, the form triggers and the field triggers. This section is reported to the field triggers.
+
+@sp1
+The last step in defining a field is the setting-up of a trigger. A trigger can be structured according to the following possibilities:
+
+@b{Syntax:}
+@example 
+@rh{FieldTrigger}
+  @rc{FieldEventList} @rc{TriggerAction}
+
+@rh{FieldEventList}
+  @rc{FieldEvent} @i{[}, @rc{FieldEventList} @i{]}
+
+@rh{FieldEvent}
+  POSTCHG 
+  PREFLD 
+  POSTFLD 
+  PREVAL 
+  VALFLD 
+  VALIDATE 
+  DEFAULT 
+  FORMAT 
+  ACCESS 
+  VALUE
+
+@rh{TriggerAction}
+  @rc{SimpleName}
+  @i{[}(@rc{Parameter})@i{]} @{ @rc{KopiJavaCode} @}
+
+@end example 
+
+
+@itemize
+@item EventList SimpleName
+@item EventList EXTERN QualifiedName
+@item EventList @{Kopi-JavaCode@}
+@item EventList (VField SimpleName) @{Kopi-JavaCode@}
+@end itemize 
+whereby EventList is to indicate a series of events.
+
+
+The two last triggers do not contain any name as they are to be used only within a certain field. It means they cannot be retrieved from another field as it is the case of the two first field triggers. The last two consist of the EventList and the methods according to which the trigger has to work.
+
+@sp1
+There are different sorts of events:
+@itemize @minus
+@cindex POSTCHG
+@item POSTCHG is executed upon exit of field if the field content has been changed.
+
+@cindex PREFLD
+@sp1
+@item PREFLD is executed upon entry of field.
+
+@cindex POSTFLD
+@sp1
+@item POSTFLD is executed upon exit of field.
+
+@cindex PREVAL
+@sp1
+@item PREVAL  or prevalidate, is to be triggered before validating any new entry.
+
+@cindex VALFLD
+@sp1
+@item VALFLD is executed upon exit of field if the field content has been changed and the value of the  field is not null.
+
+@b{Example}
+@example
+VISIT ArticleNumber
+ LABEL "A.Nr"
+ STRING (10)
+ COLUMNS (I.Number)
+ VALFLD @{if ((@@!W.ArticleNumber).Length () !=10
+        @{throw new VExecFailed  Exception ("...exactly 10 long...")@}
+         @}
+END FIELD
+@end example
+
+The "if" in this example inserts a condition. It is to say if a certain condition has not been fulfilled (in this case if the Article Number does not contain exactly 10 characters), an error or exception report which will say the validation process has failed will be thrown in the system. Kopi will then catch this exception report and will translate it that way: "exactly 10 long" so that the user can correct the value he has entered.
+
+@cindex VALIDATE
+@sp1
+@item VALIDATE is the same trigger as the VALFLD.
+
+@cindex DEFAULT
+@sp1
+@item DEFAULT used so that the computer automatically enters a default value.
+
+@b{Example}
+@example
+VISIT EMail AT <4,1>
+  LABEL "EMail"
+  HELP "The electronic address of the lecturer"
+  STRING 40
+  COLUMNS (B.Mail)
+  DEFAULT @{
+    @@N.EMail = "@@";
+    @}
+END FIELD
+The "N" means Block, the "EMail" that follows means that it is a
+field in the block and "@@" means the data entered in this field 
+will be provided with the "@@" sign.
+@end example
+
+@sp1
+@item FORMAT to define the field format.
+
+
+@cindex ACCESS
+@sp1
+@item ACCESS is a special trigger that defines how a field can be accessed. This trigger must return ACS_SKIPPED, ACS_HIDDEN, ACS_VISIT or ACS_MUSTFILL.
+
+@b{Example}
+@example
+MUSTFILL Lecturer
+  LABEL
+  FIXED (5,2)
+   MINVAL 0
+  COLUMNS (T.Lecturer)
+   PRIORITY 1
+  ACCESS @{
+    return (T.Art.getInt()==0? ACS_HIDDEN; ACS_MUSTFILL);
+  @}
+END FIELD 
+@end example
+
+@sp1
+@cindex VALUE
+@item VALUE  is to equate the value of two fields.
+
+@b{Example}
+@example
+VALUE @{
+     return @@0.ID;
+@}
+@end example
+@end itemize
+
+@b{Note}:
+You can also combine two or more triggers within a field. 
+
+@subsection The Evaluation Order Of Triggers
+Each time you have entered a new data, KOPI will execute the triggers according to the following order: VALFLD, POSTFLD, POSTCHG.
+
+
+@section Another Way To Create A Field
+You can also create a field without declaring any field alignment, field option,  mode, command or  field trigger. However, the column, index and priority definitions are permitted. 
+
+@b{Example}
+@example
+HIDDEN Firm
+  LONG (11)
+  IS F.ID
+  COLUMNS (C.Firm)
+    INDEX 0
+END FIELD
+@end example
+IS is used to equate a field with another one. In this example, the field "Firm" is equated with the field "F.ID". It means that all value contained in "Firma" will be contained in "F.ID" as well.
+In this example, "C" stands for Firm's costumers.
+
+@cindex MULTIFIELD
+@section Multifield
+@b{Syntax:}
+@example 
+@rh{MultiField}
+  (@rc{IntegerLiteral})
+@end example
+Every fields we have been working on up to now were single fields. However, you also have the possibility to define a multifield. Multifields are those  displayed many times within a form.
+
+@b{Example}
+@example
+VISIT (4) EMail
+...
+END FIELD
+@end example
+The 4 behind the access modifier means that the one and the same field has to be displayed four times on the form.
+ 
+
+
+@node CHAPTER 6, CHAPTER 7, CHAPTER 5, (Top)
+@cindex BLOCKS
+@chapter Creating a Block
+
+A block is a set of data which are stocked in the database and shown on a form.
+A block is created in order to either view the content of a database, to insert a new data in the database or to update data contained in the database. When defining a block, you have to proceed according to the following structure: 
+
+@b{Syntax:}
+@example 
+@rh{BlockDeclaration}
+  BLOCK (@rc{IntegerLiteral}, @rc{IntegerLiteral}) @rc{BlockName} @rc{ImplementsClause} @rc{BlockBody} 
+END BLOCK
+@rh{BlockBody}
+  @rcopt{BlockBorder} @rcopt{BlockAlignment} @rcopt{HelpText} @rcopt{BlockOptions} @rcopt{BlockTables} 
+@rcopt{BlockIndices} @rcopt{ModeAndCommands} @rcopt{BlockTrigger} 
+@rcopt{Fields} @rcopt{ContextFooter}
+@end example
+
+
+Let us take apart the functions listed above and go through each of them. However, let us notice that only some of them are compulsory.
+
+@section Block Types
+A block definition always begins with the word BLOCK and ends with END BLOCK. First of all, you have to make the difference between a single block and a multiple block. 
+
+
+@subsection Single Blocks
+A single block is a block in which only one single row  of a database table is displayed on the form. Each time, the computer will memorize only one entire row and a certain quantity of ID numbers through which it will retrieve another rows from the database if you want to view them.
+
+@b{Example}
+@example
+BLOCK (1,5)
+...
+END BLOCK
+@end example
+
+The first integer indicates the block type. In case of a single block, the first integer will always be 1. The second integer indicates the maximal number of the automatically memorized IDs.
+
+@subsection Multiple Blocks
+A multiple block is a block in which more than one row are displayed on the form. These rows are retrieved all at once from the database and are memorized by the computer. Actually, you can define the number of the displayed rows which can be less than this of the memorized rows. In this case, there will be no need anymore to retrieve the hidden rows from the database when you want to view them.
+
+@b{Example}
+@example
+BLOCK (10,5)
+...
+END BLOCK
+@end example
+
+The first integer indicates the number of rows to be automatically memorized while the second defines the number of displayed rows. Notice the first integer value must always be greater than 1.
+
+@section Block Names
+@b{Syntax:}
+@example 
+@rh{BlockName}
+  @rc{SimpleName}@i{[}.@rc{SimpleName}@i{]} @rc{StringLiteral} 
+@end example
+A block is to be defined by a SimpleName. Optionally, this SimpleName can be followed by another SimpleName. Finally, you also have  to enter a block title. Thus, you will have:
+
+@b{Example}
+@example
+BLOCK (10,5) Degree.D "Degree"
+...
+END BLOCK
+@end example
+
+@b{Note}:
+The block name and the block title are not necessarily to be the same.
+
+@section Interfaces
+
+@b{Syntax:}
+@example 
+@rh{ImplementsClause}
+  IMPLEMENTS @rc{QualifiedNameList}
+@end example
+
+In this stage, you enter the @i{interfaces} the block will implement by using the option IMPLEMENTS.
+
+@b{Example}
+@example
+BLOCK (1, 50) Person.P "Members" IMPLEMENTS java.lang.Comparable
+@end example
+
+
+@cindex BORDERS 
+@cindex BORDER LINE
+@cindex BORDER RAISED
+@cindex BORDER LOWERED
+@cindex BORDER ETCHED
+@section Borders
+This optional function is used to define how a block is to be framed. There are 4 sorts of borders. You can make use of:
+
+@b{Syntax:}
+@example 
+@rh{BlockBorder}
+  BORDER LINE
+  BORDER RAISED
+  BORDER LOWERED
+  BORDER ETCHED
+@end example
+
+@itemize @minus
+@item BORDER LINE to frame the block with lines.
+@item BORDER RAISED to enhance a block by setting it on the foreground.
+@item BORDER LOWERED to put it at the background.
+@item BORDER ETCHED to carve a frame in the form.
+@end itemize
+
+@b{Note}:
+The blocktitle, if defined, will appear only if a border type has been specified.
+
+@section Block Alignment
+You can specify the block alignment by typing ALIGN. This command is to be followed by a SimpleName in order to refer to a certain block. Moreover, you have to enter at least two integers after it in order to indicate the column numbers. The first two of them are to be separated by a minus and two groups of 2 integers are separated by a comma.
+This command is used for example in blocks containing figures which sums have to be calculated. You will then have the possibility to align the "Figure"-block with the "Sum"-block. In the following example, the Block "Prices" represents the "Figure"-block and the Block "Total Prices" the "Sum"-Block.
+Thus, you will have:
+
+@b{Syntax:}
+@example 
+@rh{BlockAlignment}
+  ALIGN @rc{SimpleName} <@rc{BlockPositions}>
+
+@rh{BlockPositions}
+  @rc{IntegerLiteral}-@rc{IntegerLiteral} @i{[}, @rc{BlockPositions} @i{]} 
+@end example
+
+@b{Example}
+@example
+BLOCK Prices.P
+  BORDER LINE
+END BLOCK
+BLOCK (1,2) TotalPrices. TP"TotalPrice"
+  BORDER LINE
+  ALIGN Prices <1-3>
+  ...
+END BLOCK
+@end example
+
+@section Help
+This optional command is used to define the help-text for each field of the block. The different texts are to be entered after the word HELP.
+
+@b{Example}
+@example
+BLOCK (10,5) Degree.D "Degree"
+  BORDER LINE
+  ALIGN Degree <1-3>
+  HELP "The degree the student will target at the end of a year"
+  ...
+END BLOCK
+@end example
+
+@section Options
+This optional command has a restrictional function towards the users. There are 5 option types:
+
+@b{Syntax:}
+@example 
+@rh{BlockOptions}
+  @rc{BlockOption} @rcopt{BlockOptions} 
+
+@rh{BlockOption}
+  NO DELETE
+  NO INSERT
+  NO MOVE
+  UPDATE INDEX
+  ACCESS ON SKIPPED
+@end example
+
+
+@cindex NO DELETE
+@cindex NO INSERT
+@cindex NO MOVE 
+@cindex UPDATE INDEX
+@cindex ACCESS ON SKIPPED
+@itemize @minus
+@item NO DELETE so that a field content can not be removed
+@item NO INSERT to prevent from a new data insertion 
+@item NO MOVE To be completed
+@item UPDATE INDEX
+This option is used in order to save a multiblock for which an index has been defined.
+@end itemize
+@example
+Example:
+Let's take a block with an index for the  names which contains the following fields:
+ID, TS, Name and Description. If, at the beginning, we have the following block content:
+@itemize
+@item ID   TS    Name   Description
+@item  1    0    TEST   Test entry
+@item  2    0    LEMI   Any entry
+@end itemize
+And if the user changes it into:
+@itemize
+@item ID   TS    Name   Description
+@item  1    0    LEMI   Test entry
+@item  2    0    TEST   Any entry
+@end itemize
+@end example
+He will not be able to save the block because of the INDEX he fixes for the names.
+Actually, he will try to save the row with ID1 and with the name LEMI but this will be impossible because this name already exists in another row (row with ID2) at this time. 
+In order to solve this problem, you have to make use of the UPDATE INDEX. If you have entered this command when programming your application, the system will  automatically delete all rows each time you modify the block content and will insert them again one by one.
+
+@itemize @minus
+@item ACCESS ON SKIPPED is used when the user can access to a block although he can not overwrite its content anymore. You can make use of it for example if you want to return a filled form to a customer. In this case, if you sent it to him for information, you have to define this option in order to prevent him to modify its content.
+@end itemize
+
+@cindex TABLE
+@section Tables
+@b{Syntax:}
+@example 
+@rh{BlockTables}
+  TABLE <@rc{SimpleName} . @rc{SimpleName}> @rcopt{BlockTables}
+@end example
+When making use of this option, you have to type the command TABLE and enter the table name followed by a comma and by the synomym of this table name. This synonym will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called "look-up tables", i.e tables that are associated with the first one.
+
+@b{Example}
+@example
+TABLE <Lessons,L>
+TABLE <Lecturers, P>
+TABLE <Rooms, R>
+The user will make use of these look-up tables as references
+when bringing in changes in the principal table.
+@end example
+
+@b{Note}:
+@itemize
+@item If a block does not contain any table, it means that its content is not referred to any data in the database. For example, this can be the case of a login mask. 
+@item When using the COLUMN-command, type this shortcut and not the table name in order to refer to a table.
+@end itemize
+
+@section Indexes
+@b{Syntax:}
+@example 
+@rh{BlockIndices}
+  INDEX @rc{StringLiteral} @rcopt{BlockIndices}
+@end example
+
+If you plan to enter one index or more when defining your fields, you also have to define one index text or more which will appear if you make a mistake by entering an indexed data or a data combination twice. This command can be followed by  an error message contained in a string.
+
+@b{Example}
+@example
+BLOCK (10,5) Degree.D "Degree"
+ BORDER LINE
+ ALIGN Year <1-3>
+ INDEX "This data already exists"
+ ...
+END BLOCK
+@end example
+
+@section Block Commands
+As for the field commands, you also have three possibilities to call the block commands:
+
+@subsection Calling A Standard Command
+There are 5 possible structures:
+@itemize
+@item COMMAND QualifiedName
+
+@b{Example}
+@example
+COMMAND ResetBlock
+@end example
+@item COMMAND ITEM SimpleName CALL SimpleName END COMMAND
+
+@b{Example}
+@example
+COMMAND
+  ITEM Save
+  CALL Save
+END COMMAND
+@end example
+@item COMMAND ITEM SimpleName  EXTERN Qualified Name END COMMAND 
+
+@b{Example}
+@example
+COMMAND
+  ITEM SharesOfExpenses
+  EXTERN Costing
+END COMMAND
+@end example
+@item COMMAND ITEM SimpleName ACTION (VBlock SimpleName) @{Kopi-Java Code@} END COMMAND 
+
+@b{Example}
+@example
+COMMAND
+  ITEM End
+  ACTION (VBlockb) @{
+   b.validate ();
+   close (CDE_VALIDATE)
+  @}
+END COMMAND
+@end example
+@item COMMAND ITEM SimpleName ACTION @{Kopi-Java Code@} END COMMAND 
+
+@b{Example}
+@example
+COMMAND
+  ITEM Validate
+  ACTION @{
+   validate ();
+  @}
+END COMMAND
+@end example
+@end itemize
+
+As for the field commands,  the option ACTION is to introduce a Kopi-Java Code and both CALL and EXTERN are also followed by a Java method. The SimpleName after CALL is to insert a Java method defined within the same form and the QualifiedName coming after EXTERN to enter a Java method imported from another form.
+
+@subsection Calling The Block Commands With The Modes
+Moreover, all these 5  command structures can be preceded by one mode ore more. 
+So you will have:
+ON Mode COMMAND
+
+@b{Example}
+@example
+ON QUERY, UPDATE COMMAND InsertMode
+@end example
+
+@subsection Calling The Block Commands With The Modes And An Access Modifier
+If you use this method, you have to replace the command with the access modifier so that you will have the following structure:
+ON Mode(s) AccessModifier. Considering the hierarchical classification of a block (MUSTFILL, VISIT, SKIPPED  and at last HIDDEN), you can define the highest level the fields in a block can have according to the mode in which the block would be.
+
+@b{Example}
+@example
+ON QUERY, UPDATE SKIPPED
+@end example
+In this example, all fields in the block will be either SKIPPED or HIDDEN in the query and update modes and can neither be MUSTFILL  nor VISIT.
+
+
+@section Block Triggers
+@b{Syntax:}
+@example 
+@rh{BlockTrigger}
+  @rc{BlockEventList} @rc{TriggerAction}
+
+@rh{BlockEventList}
+  @rc{BlockEvent} @rcopt{BlockEventList} 
+@rh{BlockEvent}
+  PREQRY 
+  POSTQRY 
+  PREDEL 
+  POSTDEL 
+  PREINS 
+  POSTINS 
+  PREUPD 
+  POSTUPD 
+  PRESAVE
+  PREREC
+  POSTREC
+  PREBLK
+  POSTBLK
+  VALBLK
+  VALREC
+  DEFAULT
+  INIT
+  RESET
+  CHANGED
+  ACCESS
+@end example 
+
+As for the field triggers, there are 4 ways to define a block trigger:
+@itemize
+@item Eventlist SimpleName
+@item Eventlist EXTERN QualifiedName
+@item Eventlist @{Kopi-Java Code@}
+@item Eventlist (VBlock SimpleName) @{Kopi-Java Code@}
+@end itemize
+
+@cindex PREDEL
+@cindex POSTDEL
+@cindex PREINS 
+@cindex POSTINS 
+@cindex PREUPD
+@cindex PRESAVE 
+@cindex PREREC 
+@cindex POSTREC 
+@cindex PREBLK 
+@cindex POSTBLK 
+@cindex VALBLK
+@cindex VALREC 
+@cindex DEFAULT
+@cindex INIT
+@cindex RESET
+@cindex CHANGED
+There are 20 sorts of possible events in a block:
+@itemize @minus
+@item PREDEL is executed before a row is deleted.
+@item POSTDEL is executed after a row has been deleted.
+@item PREINS is executed before insert of block.
+@item POSTINS is executed after insert of block.
+@item PREUPD is executed before updating a row.
+@item PRESAVE is executed before saving a row.
+@item PREREC is executed upon record entry.
+@item POSTREC is executed upon record exit.
+@item PREBLK is executed upon entry of block.
+@item POSTBLK is executed upon exit of block.
+@item VALBLK is executed upon validation of block.
+@item VALREC is executed upon validation of record.
+@item DEFAULT is executed when the block is in the InsertMode. This trigger becomes active when the user presses the key F4. It will then enable the system to load standard values which will be proposed to the user if he wishes to enter new data.
+@item INIT is executed upon the initialization of a block.
+@item RESET is executed upon Reset (FormReset).
+@item CHANGED is a special trigger which returns a true or false value. If you want to define if a certain block has been changed or not, you can make use of the method "Block.isChanged()" which returns a true or false value. However, you have the possibility to influence it. For instance, you can define if such report as : "Are you sure to quit?" should appear or not when the user is trying to quit or to reset  a form after having modified its content. You can make use of the CHANGED trigger as following:
+@example
+CHANGED @{
+  return false;
+  @}
+@end example
+so that the system will not take any change in the block in consideration.
+
+
+@item ACCESS is a special trigger that defines when a block can be accessed. It must return a true or false value.
+
+@b{Example}
+@example
+ACCESS @{
+  return Divisions.get Mode == MOD-QUERY;
+@}
+The == means the computer has to make a comparison and will then return a Boolean (Yes or No Value).
+The return value Yes means Access allowed
+The return value No means Access denied
+@end example
+
+@item PREQRY is executed before a query is carried out.
+@item POSTQRY is executed after a query has been carried out.
+@end itemize
+
+
+@section Fields
+As a field is a part of a block, all of them are also to be defined within this block.
+
+@b{Syntax:}
+@example 
+@rh{Fields}
+  @rc{FieldDeclaration} @rcopt{Fields}
+@end example
+
+@b{Example}
+@example
+BLOCK (10,5) Degree.D "Degree"
+  BORDER LINE
+  INDEX "This data already exists"
+  HIDDEN LONG (11)
+   COLUMN (D.ID)
+  END FIELD
+END BLOCK
+@end example
+
+@cindex MODE
+@section Modes
+A block has three different modes. It can be in:
+@itemize 
+@item QUERY when you start an inquiry within the database,
+@item INSERT when you create a new row in the database,
+@item UPDATE when you  enter new information within a row.
+@end itemize
+
+@section ContextFooter
+@b{Syntax:}
+@example 
+@rh{ContextFooter}
+  @{ @i{KopiMemberDeclarations} @}
+@end example
+
+ContextFooters consist of Member Declarations as described in  J.L.S 8.1.5 and of extensions which have been developed in Kopi like for example the cursor.
+
+@node CHAPTER 7, CHAPTER 8, CHAPTER 6, (Top)
+@chapter Creating a Form
+
+@b{Syntax:}
+@example 
+@rh{FormularDeclaration}
+  FORM @rc{StringLiteral} @rcopt{SuperForm} @rcopt{ImplementsClause} @rc{ContextHeader} 
+@rcopt{Definitions}@rc{FormularBody}
+@rh{Definitions}
+  @rc{Definition} @rcopt{Definitions}
+
+@rh{Definition}
+  @rc{MenuDefinition}
+  @rc{TypeDefinition}
+  @rc{CommandDefinition}
+  @rc{InsertDefinition}
+@end example 
+
+A form always begins with FORM and ends with END FORM. As you know, a form always includes a block or more and in its turn, a block consists of one field or more. When creating a form, you will then have to include the block and the field definitions. Moreover, you will also have to define the menu as well as the different commands. Finally, you can also determine some form triggers. Concretely, just follow the order detailed below:
+
+@section Form Title
+Your first step in defining a form consists of entering its title. So you will have:
+@itemize
+@item FORM STRING
+@end itemize
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+  ...
+  END FORM
+@end example
+
+@cindex SUPERCLASS
+@cindex INTERFACES
+@section Superclass  And  Interfaces
+@subsection Superclass
+@b{Syntax:}
+@example 
+@rh{SuperForm}
+  IS @rc{QualifiedName}
+@end example 
+
+When defining a form, you also have  to determine its properties. If you have specified a superclass, the form inherits all the properties of the defined superclass. If not,  Kopi will automatically take over the java.lang.Object. Though you can define your own properties, you also can take over another Java class in adopting the following structure:
+FORM STRING IS QualifiedName.
+
+@b{Example}
+@example
+FORM "Service Register" IS VReportSelectionForm
+@end example
+In another words, the class declaration you have just made specifies the direct superclass of the current class.
+
+@subsection Interfaces
+You can also specify interfaces which the form has to implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are  direct superinterfaces of the class being declared. Thus, you will have the following structure:
+
+FORM STRING IS QualifiedName IMPLEMENTS QualifiedName, QualifiedName ...
+
+@b{Example}
+@example
+FORM "Record registering" IS
+  at.dms.apps.common.de.VPrint SelectionForm
+  IMPLEMENTS Constants
+  ...
+END FORM
+@end example
+
+
+@cindex HEADER
+@cindex IMPORT
+@section Header
+@b{Syntax:}
+@example 
+@rh{ContextHeader}
+  @{ @rc{PackageDeclaration} @rc{ImportDeclarations} @}
+
+@rh{PackageDeclaration}
+  @i{<As defined in JLS 7.4>} 
+@rh{ImportDeclarations}
+  @i{<As defined in JLS 7.5>} 
+
+@end example 
+
+The package definition is contained in the header. It consists in defining where this form  belongs to i.e which application, which firm or which person it is related to. 
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+  @{
+  package at.dms.apps.timetable;
+  @}
+  ...
+END FORM
+@end example
+In this example, the form belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java  package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+  @{
+    package at.dms.apps.tb;
+
+    import java.util.Hashtable
+    import java.util.Vector
+  @}
+   ...
+END FORM
+@end example
+
+@section Type Definition
+After having defined your package, you can enter the different fieldtype definitions. 
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+  @{
+    package at.dms.apps.tb;
+  @}
+  TYPE Name IS
+    STRING (20)
+  END TYPE
+
+  TYPE Address IS
+    STRING (50)
+  END TYPE
+
+  TYPE Lesson IS
+    LONG (11)
+  END TYPE
+  ...
+END FORM
+@end example
+
+@section Menu Definition
+@b{Syntax:}
+@example 
+@rh{MenuDefinition}
+  MENU @rc{StringLiteral} @rc{MenuItems} END MENU
+  
+@rh{MenuItems}
+  @rc{MenuItem} @rc{MenuItems} 
+@rh{MenuItem}
+  ITEM @rc{SimpleName} @rc{MenuName} @rcopt{MenuKey} @rcopt{MenuIcon} @rcopt{HelpText} 
+@rh{MenuName}
+  NAME @rc{StringLiteral}
+@rh{MenuKey}
+  KEY @rc{StringLiteral}
+@rh{MenuIcon}
+  ICON @rc{StringLiteral}
+@end example
+
+The form menu is also to be defined in details. Each item has to be given a title, a name and a help-text. Moreover, you can also enter a key and an icon.
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+
+  @{
+    package at.dms.apps.tb;
+  @}
+
+  TYPE Name IS
+    LONG (11)
+  END TYPE
+
+  ...
+  
+  MENU "File"
+   ITEM  Quit
+     NAME  "To quit"
+     KEY  "Esc"
+     ICON "Quit"
+     HELP "To close the form"
+  END MENU
+...
+END FORM
+@end example
+If you have entered an icon, the command will also be on the icon-toolbar. If not, you can only find it in the menu.
+
+@section Command Definition
+@b{Syntax:}
+@example 
+@rh{CommandDefinition}
+  COMMAND @rc{SimpleName} @rc{CommandBody} END COMMAND
+@end example 
+Once the different fieldtypes and the menu have been cleared, you can define the different commands  according to the following structures:
+@sp1
+COMMAND SimpleName 
+   ITEM SimpleName
+   CALL SimpleName
+END COMMAND
+
+@b{Example}
+@example
+COMMAND Preview
+  ITEM  Preview
+  CALL  previewForm
+END COMMAND
+@end example
+
+@sp1
+COMMAND SimpleName
+   ITEM SimpleName
+   EXTERN QualifiedName
+END COMMAND
+
+@b{Example}
+@example
+COMMAND SaveBlock
+  ITEM Save
+  EXTERN at.dms.vlib.form.Commands.SaveBlock
+END COMMAND
+@end example
+
+@sp1
+COMMAND SimpleName
+  ITEM SimpleName
+  ACTION (VField SimpleName) @{Kopi-Java Code@}
+END COMMAND
+or
+@sp1
+COMMAND SimpleName
+  ITEM SimpleName
+  ACTION (VBlock SimpleName) @{Kopi-Java Code@}
+END COMMAND
+
+@b{Example}
+@example
+COMMAND PrintOk
+  ITEM  PrintOk
+  ACTION (VBlockb) @{
+  b.validate(),
+  b.getForm().close (VForm.CDE-Validate);
+   @}
+END COMMAND
+@end example
+or
+@sp1
+COMMAND SimpleName
+  ITEM SimpleName
+  ACTION (VForm SimpleName) @{Kopi-Java Code@}
+END COMMAND
+
+@sp1
+COMMAND SimpleName
+  ITEM SimpleName
+  ACTION @{Kopi-Java Code@}
+END COMMAND
+
+In order to call the commands we defined in these examples above, we just have to type respectively
+@example
+COMMAND Preview
+COMMAND SaveBlock
+COMMAND PrintOk
+@end example
+
+@section Insertion
+
+@b{Syntax:}
+@example 
+@rh{InsertDefinition}
+  INSERT @rc{StringLiteral}
+@end example 
+
+Instead of entering the fieldtypes, menu and commands one by one, you have also the possibility to simply insert a file which contains all three.
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+
+  @{
+  package at.dms.apps.tb;
+  @}
+
+  INSERT "Global.vf"
+...
+END FORM
+@end example
+
+Moreover, you can combine the two methods by entering types, menus and commands separately with files which contain all three. When creating your file, you can enter the three things without following any order.
+
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+
+  @{
+    package at.dms.apps.tb;
+  @}
+
+  INSERT "Global.vf"
+
+
+  TYPE Lesson IS
+    LONG (11)
+  END TYPE
+
+  MENU "File"
+   ITEM "Quit"
+     NAME "To quit"
+     KEY "Esc"
+     ICON "Quit"
+     HELP "To close the form"
+  END MENU
+
+  COMMAND
+...
+END FORM
+@end example
+
+@section  Form Declaration
+@b{Syntax:}
+@example 
+@rh{FormularBody}
+  BEGIN @rcopt{FormularOptions} @rcopt{FormularCommands} @rcopt{FormularTrigger} @rc{Blocks} @rcopt{ContextFooter} END FORM
+@end example
+Once you have entered all these title, types, menus and commands, you can move  on to declare the form. A form declaration starts with the command "BEGIN" and includes these four things:
+@itemize @minus
+@item Form Option
+@item Form Commands
+@item Form Triggers
+@item Blocks
+@end itemize
+
+@subsection Form Option
+@b{Syntax:}
+@example 
+@rh{FormularOptions}
+  NO BLOCK MOVE
+@end example
+There is only one form option in Visual Kopi, namely the following one:
+NO  BLOCK  MOVE
+
+@subsection Form Commands
+There are two possibilities in calling a form command:
+
+@b{Syntax:}
+@example 
+@rh{FormularCommands}
+  @rcopt{ModeList} @rc{Command}
+@end example
+
+
+@subsubsection Standard Form Commands
+When defining a form command, there are also five possible structures.
+
+@sp1
+@itemize
+@item COMMAND QualifiedName
+
+@b{Example}
+@example
+COMMAND QuitForm
+@end example
+@end itemize
+
+@sp1
+@itemize
+@item COMMAND ITEM SimpleName CALL SimpleName END COMMAND
+
+@b{Example}
+@example
+COMMAND 
+  ITEM  Print
+  CALL  printForm
+@end example
+@end itemize
+
+@sp1
+@itemize
+@item COMMAND ITEM SimpleName EXTERN QualifiedName END COMMAND
+
+@b{Example}
+@example
+COMMAND 
+  ITEM Break
+  EXTERN at.dms.vlib.form.Commands.resetblock
+END COMMAND
+@end example
+@end itemize
+
+@sp1
+@itemize
+@item COMMAND  ITEM SimpleName ACTION (VForm SimpleName) @{Kopi-Java Code@} END COMMAND
+
+@b{Example}
+@example
+COMMAND
+  ITEM TakingDelivery
+  ACTION (VForm f) @{
+    Text.validate ().
+    Text.setRecordChanged (false);
+    at.dms.vlib.form.Commands.quitForm (f, CDE_VALIDATE);
+  @}
+END COMMAND  
+@end example
+@end itemize
+
+@sp1
+@itemize
+@item COMMAND  ITEM  SimpleName ACTION @{Kopi-Java Code@} END COMMAND
+
+@b{Example}
+@example
+COMMAND
+  ITEM Validate
+  ACTION @{
+    Text.validate ();
+    Text.setRecordChanged (false)
+    at.dms.vlib.form.Commands.quitform(f, CDE_VALIDATE);
+  @}
+END COMMAND
+@end example
+@end itemize
+
+
+@subsubsection Form Commands With Modes
+If you wish to set up one mode or more by defining a form command, you will have the following structure:
+ON Mode COMMAND
+
+@subsection Form Triggers
+@b{Syntax:}
+@example 
+@rh{FormularTrigger}
+  @rc{FormularEventList} @rc{TriggerAction}
+
+@rh{FormularEventList}
+  @rc{FormularEvent} @rcopt{FormularEventList}
+
+@rh{FormularEvent}
+  PREFORM
+  POSTFORM
+  INIT
+  RESET
+  CHANGED
+@end example
+The form triggers work the same way as the field triggers i.e. you have to define the events by which a trigger will be switched on. There are 5 sorts of events:
+@cindex PREFORM
+@cindex POSTFORM
+@cindex INIT
+@cindex RESET
+@cindex CHANGED
+
+@itemize @minus
+@item PREFORM is executed upon entry of form, before the form is displayed,
+@item POSTFORM  is executed upon form close,
+@item INIT is executed upon the initialization of a form,
+@item RESET is executed upon Reset (FormReset),
+@item CHANGED is a special trigger which returns a true or false value. If you want to define if a certain form has been changed or not, you can make use of the method "Form.isChanged()" which returns a true or false value. However, you have the possibility to influence it. For instance, you can define if such report as : "Are you sure to quit?" should appear or not when the user is trying to quit or to reset  a form after having modified its content. You can make use of the CHANGED trigger as following:
+@end itemize
+@itemize
+@item CHANGED @{
+@item return false;
+@item @}. 
+@end itemize
+so that whatever the change you enter in the form, the system would not take it in consideration.
+
+
+@subsection Blocks
+@b{Syntax:}
+@example 
+@rh{Blocks}
+  @rc{Block} @rc{Blocks}
+
+@rh{Block}
+  @rcopt{NewPage} @rc{BlockDeclaration}
+  @rcopt{NewPage} @rc{BlockImport}
+@end example 
+The block definition follows the trigger definition. Notice you have the possibility to define several blocks within one single form.
+
+@b{Example}
+@example
+FORM "List of the Lecturers"
+ ...
+  BLOCK (10,5) Lecturer.L "Lecturers"
+   BORDER LINE
+   ALIGN Name<1-3>
+   TABLE <Lecturers, L>
+   TABLE <Lessons, C>
+   TABLE <Rooms, R>
+  END BLOCK
+  ...
+END FORM
+@end example
+
+@sp1
+@b{Note}:
+Here are two further commands you can make use of when creating your form:
+@cindex NEW PAGE
+@subsubsection NEW PAGE
+@b{Syntax:}
+@example 
+@rh{NewPage}
+  NEW PAGE @rc{StringLiteral} @i{[}CENTER@i{]}
+@end example
+
+The New-Page Command is  used  in order to insert a page:
+
+@example
+Example:
+NEWPAGE "Address" CENTER
+@end example
+
+
+@sp1
+@subsubsection Block Insertion
+@b{Syntax:}
+@example 
+@rh{BlockImport}
+  INSERT @rc{QualifiedName}
+@end example 
+
+The Block-Insertion Command to enter a pre-defined block
+
+@b{Example}
+@example
+INSERT Years
+@end example
+ 
+
+@node CHAPTER 8, Index, CHAPTER 7, (Top)
+@chapter Block Unit
+@cindex BLOCK UNIT
+
+@section Block  Unit Definition
+The third possibility in setting up a form is the use of a block unit which enables you to insert or to add blocks within this form. A block insertion begins with the command BLOCK INSERT and ends with END INSERT. When defining a block unit, you have to work according to the structure which follows:
+
+@b{Syntax:}
+@example 
+@rh{BlockUnit}
+  BLOCK INSERT @rc{ContextHeader} @rc{Definitions} @rc{BlockDeclaration} END BLOCK
+@end example
+
+@b{Example}
+@example
+BLOCK INSERT
+  @{
+   package at.dms.apps.tb;
+  @}
+
+  INSERT "Global.vf"
+  BLOCK (10, 5) Lecturer.L "Lecturers"
+    BORDER LINE
+    ALIGN Name<1-3>
+    TABLE <Lecturers, L>
+    TABLE <Lessons, C>
+    TABLE <Rooms, R>
+  END BLOCK
+END INSERT
+@end example
+
+
+@node  Index, , CHAPTER 8, (Top)
+@unnumbered  Index
+@printindex  cp
+
+
+
+
+
+
+
+@bye 
+
+ 

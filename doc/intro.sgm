@@ -1,0 +1,261 @@
+<BOOKINFO>
+  <TITLE>KOPI Reference manual</TITLE>
+  <SUBTITLE>The KOPI documentation</SUBTITLE>
+  <AUTHORGROUP>
+    <AUTHOR>
+      <SURNAME>DMS Decision Management Systems GmbH</SURNAME>
+    </AUTHOR>
+    <AUTHOR>
+      <FIRSTNAME>Vincent</FIRSTNAME>
+      <SURNAME>GAY-PARA</SURNAME>
+    </AUTHOR>
+  </AUTHORGROUP>
+  <EDITION>KOPI documentation version 0.6</EDITION>
+  <PUBDATE>8 Dec 1999</PUBDATE>
+  <REVHISTORY>
+     <REVISION>
+        <REVNUMBER>0.6</REVNUMBER>
+        <DATE>8 Dec 1999</DATE>
+        <REVREMARK>Second draft for review.</REVREMARK>
+     </REVISION>
+     <REVISION>
+        <REVNUMBER>0.5</REVNUMBER>
+        <DATE>25 Oct 1999</DATE>
+        <REVREMARK>First draft for review.</REVREMARK>
+     </REVISION>
+  </REVHISTORY>
+  <LEGALNOTICE>
+    <PARA>
+      Permission is granted to make and distribute verbatim copies of
+      this manual provided the copyright notice and this permission
+      notice are preserved on all copies.
+    </PARA>
+    <PARA>
+      Permission is granted to copy and distribute modified versions
+      of this manual under the conditions for verbatim copying,
+      provided also that the sections entitled "GNU General Public
+      License", and "GNU Lesser General Public License" are included
+      exactly as in the original, and provided that the entire
+      resulting derived work is distributed under the terms of a
+      permission notice identical to this one.
+    </PARA>
+    <PARA>
+      Permission is granted to copy and distribute translations of
+      this manual into another language, under the above conditions
+      for modified versions, except that the sections entitled "GNU General Public
+      License", and "GNU Lesser General Public License", and this
+      permission notice, may be included in translations approved by
+      the Free Software Foundation instead of in the original English.
+    </PARA>
+  </LEGALNOTICE>
+  <COPYRIGHT>
+      <YEAR>1999</YEAR>
+    <HOLDER>DMS Decision Management Systems GmbH. All rights reserved.</HOLDER>
+  </COPYRIGHT>
+</BOOKINFO>
+
+<PREFACE ID="PREFACE">
+  <TITLE>Preface</TITLE>
+  <PARA>
+    The KOPI Project is a Java software project from DMS which provides a
+    framework for developing database applications using Java, JDBC
+    and SWING.
+  </PARA>
+  <PARA>
+    KOPI contains a set of tools which allow you to edit and generate
+    classfiles: dis (Java disassembler), <ACRONYM>KSM</ACRONYM> (Java
+    assembler) and <ACRONYM>KJC</ACRONYM>. <ACRONYM>KJC</ACRONYM>
+    compiles Java source code to bytecode, with all the same
+    plus even more features as commercial compilers. <ACRONYM>KJC</ACRONYM>
+    is available for free under the terms of the GNU Public License.
+  </PARA>
+  <PARA>
+    The KOPI Project also includes <ACRONYM>XKJC</ACRONYM>, a compiler for embedded <ACRONYM>SQL</ACRONYM>
+    in Java. Built over JDBC, it allows the execution of Java-typed
+    <ACRONYM>SQL</ACRONYM> statements and the mixing of expressions from both <ACRONYM>SQL</ACRONYM> and
+    Java.
+  </PARA>
+  <PARA>
+    The last tool provided by DMS, not yet publicly available, is
+    Visual KOPI. Visual KOPI is an application framework using SWING
+    which lets you create database applications in a high level
+    specification language. It also provides the ability to write
+    triggers and commands in KOPI. Some screen shots are already
+    available on our web page: <ULINK
+    URL="http://www.dms.at/vlib">http://www.dms.at/vlib</ULINK>.
+  </PARA>
+
+  <SECT1>
+    <TITLE>Organization of This Document</TITLE>
+    <PARA>This documentation is divided into chapters independant of each other:</PARA>
+    <VARIABLELIST>
+      <VARLISTENTRY>
+	<TERM><XREF LINKEND="CH-CLASSFILE"></TERM>
+	<LISTITEM>
+	  <PARA>The KOPI Classfile: <ACRONYM>KOPI</ACRONYM> classfile is
+	  an extensible package written completely in Java that allows
+	  you to read, edit and write classfiles. It is used by
+	  <ACRONYM>KJC</ACRONYM> (Java compiler),
+	  <ACRONYM>KSM</ACRONYM> (Java assembler) and
+	  <ACRONYM>DIS</ACRONYM> (Java disassembler).
+	  </PARA>
+	</LISTITEM>
+      </VARLISTENTRY>
+      <VARLISTENTRY>
+	<TERM><XREF LINKEND="CH-KJC"></TERM>
+	<LISTITEM>
+	  <PARA>
+	    <ACRONYM>KJC</ACRONYM> - The <ACRONYM>KOPI</ACRONYM> Java
+	    Compiler: <ACRONYM>KJC</ACRONYM> is the first compiler
+	    written completly in Java, available under the terms of
+	    the GNU General Public License. It allows you to extend
+	    features at any level, from syntax to code generation.
+	  </PARA>
+	</LISTITEM>
+      </VARLISTENTRY>
+      <VARLISTENTRY>
+	<TERM><XREF LINKEND="CH-XKJC"></TERM>
+	<LISTITEM>
+	  <PARA>
+	    <ACRONYM>XKJC</ACRONYM> - The <ACRONYM>KOPI</ACRONYM>
+	    EXtended Java Compiler: <ACRONYM>XKJC</ACRONYM> is a
+	    compiler for embedded <ACRONYM>SQL</ACRONYM> in Java. This
+	    language is a super set of Java; i.e., it is compatible
+	    with Java source code. This allows the execution of
+	    Java-typed <ACRONYM>SQL</ACRONYM> statements and the
+	    mixing of expressions from both <ACRONYM>SQL</ACRONYM> and
+	    Java.
+	  </PARA>
+	</LISTITEM>
+      </VARLISTENTRY>
+      <VARLISTENTRY>
+	<TERM><XREF LINKEND="CH-VLIB"></TERM>
+	<LISTITEM>
+	  <PARA>
+	    <ACRONYM>VLIB</ACRONYM> - The Visual
+	    <ACRONYM>KOPI</ACRONYM>: <ACRONYM>VLIB</ACRONYM> is an
+	    application framework using SWING which lets you create
+	    database applications in a high level specification
+	    language.
+	  </PARA>
+	</LISTITEM>
+      </VARLISTENTRY>
+    </VARIABLELIST>
+  </SECT1>
+  <SECT1><TITLE>Contributors</TITLE>
+    <PARA>
+      The actual KOPI Team:
+      <ITEMIZEDLIST MARK="BULLET">
+ 	<LISTITEM>
+	  <PARA>Vincent GAY-PARA (Main developer)</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Thomas GRAF (Project manager)</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Andre-Guillaume LEMONNIER</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Erhard WAIS (Web administrator)</PARA>
+	</LISTITEM>
+      </ITEMIZEDLIST>
+    </PARA>
+    <PARA>
+      In addition of these persons, several people have written parts of KOPI:
+      <ITEMIZEDLIST MARK="BULLET">
+ 	<LISTITEM>
+	  <PARA>Corinne LABORDE (data dictionary)</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Emmanuel LANGUILLAT (kopi report, jdbc driver)</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Edouard G. PARMELAN (bug reports and extensions for kjc)</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Gerald PALMERO (jdbc driver, GUI draft)</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Olivier RAOUX (sql parser, GUI draft)</PARA>
+	</LISTITEM>
+      </ITEMIZEDLIST>
+    </PARA>
+    <PARA>
+      Others contributors (bug reports, suggestions) are:
+      <ITEMIZEDLIST MARK="BULLET">
+ 	<LISTITEM>
+	  <PARA>Kirk ABBOTT</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Archie COBBS</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Walter DIVOKY</PARA>
+	</LISTITEM>
+ 	<LISTITEM>
+	  <PARA>Peter MEHLITZ</PARA>
+	</LISTITEM>
+      </ITEMIZEDLIST>
+    </PARA>
+    <PARA>
+      A special thanks to Rebecca KELLEY for her assistance in the preparation of this document.
+    </PARA>
+  </SECT1>
+  <SECT1><TITLE>Credits</TITLE>
+    <ITEMIZEDLIST MARK="BULLET">
+      <LISTITEM>
+	<PARA>
+	  ANTLR 2.6.0
+	</PARA>
+	<PARA>
+	  All grammar of KJC tools are specified in ANTLR language.
+	  ANTLR, ANother Tool for Language Recognition, (formerly
+	  PCCTS) is a parser and translator generator tool, akin to
+	  the venerable lex/yacc duo, that lets you construct
+	  recognizers, compilers, and source-to-source translators
+	  from grammatical descriptions containing C++ or Java
+	  actions. You can build translators for database formats,
+	  graphical data files (e.g., PostScript, AutoCAD), text
+	  processing files (e.g., HTML, SGML), etc.... ANTLR is
+	  designed to handle all of your translation tasks. ANTLR is
+	  recommended by the co-inventor of LL(k) parsers and by the
+	  inventor of SLR(k) and LALR(k).
+	</PARA>
+	<PARA>
+	  Home page:<ULINK URL="http://www.antlr.org">http://www.antlr.org</ULINK>.	  
+	</PARA>
+      </LISTITEM>
+      <LISTITEM>
+	<PARA>
+	  GNU GetOpt
+	</PARA>
+	<PARA> 
+	  The GNU Java getopt classes support short and long
+	  argument parsing in a manner 100% compatible with the version
+	  of GNU getopt in glibc 2.0.6 with a mostly compatible
+	  programmer's interface as well. Note that this is a port, not
+	  a new implementation. I am currently unaware of any bugs in
+	  this software, but there certainly could be some lying
+	  about. I would appreciate bug reports as well as hearing about
+	  positive experiences.
+	</PARA>
+	<PARA>
+	  Home page:<ULINK URL="http://www.urbanophile.com/arenn/hacking/download.html">http://www.urbanophile.com/arenn/hacking/download.html</ULINK>.	  
+	</PARA>
+      </LISTITEM>
+      <LISTITEM>
+	<PARA>
+	  MAUVE
+	</PARA>
+	<PARA> Mauve is a project to create a free Java test
+	suite. This package will both serve as a library regression
+	test suite and test conformance to various Java specification
+	levels.
+	</PARA>
+	<PARA>
+	  Home page:<ULINK URL="http://sourceware.cygnus.com/mauve/">http://sourceware.cygnus.com/mauve/</ULINK>.	  
+	</PARA>
+      </LISTITEM>
+    </ITEMIZEDLIST>
+  </SECT1>
+</PREFACE>

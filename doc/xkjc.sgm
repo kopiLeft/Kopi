@@ -1,0 +1,273 @@
+<CHAPTER LABEL="3" ID="CH-XKJC">
+  <TITLE><ACRONYM>XKJC</ACRONYM> eXtended kopi Java compiler</TITLE>
+  <TITLEABBREV><ACRONYM>XKJC</ACRONYM></TITLEABBREV>
+  <NOTE><TITLE>License type</TITLE>
+    <PARA>
+      XKJC is distributed under the terms of the GNU General Public License.
+      <XREF LINKEND="APX-GPL">
+    </PARA>
+  </NOTE>
+  <PARA>
+    Java with embedded <ACRONYM>SQL</ACRONYM>
+  </PARA>
+  <PARA>
+    Our company developes database application written in our own
+    specificatin language (that may be after distributed with a GPL
+    licence). This language allows developer to define triggers and
+    actions in the <ACRONYM>XKJC</ACRONYM> language that is a superset of Java with
+    embedded <ACRONYM>SQL</ACRONYM>. <ACRONYM>XKJC</ACRONYM> allows the mixing of Java-typed expression
+    from both <ACRONYM>SQL</ACRONYM> and Java.
+  </PARA>
+  <PARA>    
+    Since <ACRONYM>SQL</ACRONYM> statements are parsed, it allows one to
+    write a very clear code as compared to JDBC (see <ACRONYM>XKJC</ACRONYM> vs JDBC
+    section).  It allows onr to make requests with embedded Java expressions
+    computed at runtime. It comes with a support for BLOB and Java
+    serialisation mechanism, allowing to store Java objects in any JDBC
+    database and to retreive them both nicely and efficiently.
+  </PARA>
+  <PARA>    
+    As in <ACRONYM>SQL</ACRONYM> all types have a NULL value, the distinction between
+    primitive types and Object types of the Java language are
+    problematic. To handle this, <ACRONYM>XKJC</ACRONYM> contains an operator overloading
+    capability that allows the mixing of primitive types with objects.
+  </PARA>
+  <PARA>        
+    The mechanism of overloading looks like the one provided by C++
+    compiler except that only expression operator are overidable (+,
+    -, *, /, %, ==, !=, &, |, << >>, >>>, ^, ~, ++, --) and the cast
+    operation. There is no implicit conversion, and that make it easy
+    to understand.
+  </PARA>
+  <PARA>        
+    There is an example of a typical <ACRONYM>XKJC</ACRONYM> programme:
+    <PROGRAMLISTING>
+      #cursor(int id) { 
+        SELECT Vector Obj 
+        FROM   BLOBS 
+        WHERE  ID = :id 
+      } typed; 
+      typed.open(6); 
+      if (typed.next()) 
+        for (int i = 0; i < typed.Obj.size(); i++) 
+          System.out.println("vect(" + i + "): " + typed.Obj.elementAt(i)); 
+      typed.close(); 
+    </PROGRAMLISTING>
+  </PARA>
+  
+  <SECT1><TITLE>Java language extensions</TITLE>
+    <SECT2><TITLE>Syntactic extensions</TITLE>
+      <PARA>
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM><PARA>Unnamed parameters</PARA>
+	    <PARA>
+	      <ACRONYM>KJC</ACRONYM> allow you to unspecify names of parameters in method definition
+	      if they are not used:
+	      <PROGRAMLISTING>
+  void foo(int);
+  // a non used paramter name would have generated a warning
+	      </PROGRAMLISTING>
+	    </PARA>
+	  </LISTITEM
+	    	  
+	  <LISTITEM><PARA>Assert/Fail mechanism</PARA>
+	    <PARA>
+	      A mechanism of assertion is very useful for debugging
+	      and testing a program but slighty inefficient for a
+	      final release. <ACRONYM>KJC</ACRONYM> provide a simple mechanisme of
+	      assertion that is removed when -O option is checked.
+	      
+	      <ITEMIZEDLIST MARK="BULLET">
+		
+		<LISTITEM><PARA>assert</PARA>
+		  <PARA>
+		    we introduce a new method #assert that check a condition is verified:
+		    <PROGRAMLISTING>
+  void foo(int i) {
+    #assert(i>0); // or #assert(i>0, ``a message'');
+  } 
+  can be translated in Java as:
+  void foo(int i) {
+    if (!i>0)
+      throw new new RuntimeException(); 
+  }
+		    </PROGRAMLISTING>
+		  </PARA>
+		</LISTITEM>
+		
+		<LISTITEM><PARA>fail</PARA>
+		  <PARA>
+		    we introduce a new method #fail that correspond to a check(false)
+		    expression:
+		    <PROGRAMLISTING>
+  void foo(int i) {
+    if (i > 0) 
+      A(); 
+    else
+      #fail(``Bad value''); // or #fail();
+  } 
+  can be translated in Java as:
+  void foo(int i) {
+    if (i > 0) 
+      A(); 
+    else 
+      throw new RuntimeException(``Bad value''); 
+  } 
+		    </PROGRAMLISTING>
+		  </PARA>
+		</LISTITEM>
+	      </ITEMIZEDLIST>
+	    </PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+    </SECT2>
+    
+    <SECT2><TITLE>Operator overloading</TITLE>
+      <PARA>
+	not yet documented, but you can take a look in the oper folder of <ACRONYM>XKJC</ACRONYM>
+	sources.
+      </PARA>
+    </SECT2>
+    
+    <SECT2><TITLE>Embedded <ACRONYM>SQL</ACRONYM></TITLE>
+      <PARA>
+	By providing an easy way to include <ACRONYM>SQL</ACRONYM> statement inside your
+	Java code (not between double quote), <ACRONYM>XKJC</ACRONYM> made it more easy
+	to read and maintain. With explicit typing the compiler check
+	that expression are correct and involve the overloading
+	mechanism to execute expression such as:
+      </PARA>
+      <SECT3><TITLE>Connections</TITLE>
+	<PARA>
+	  By providing explicit connection to <ACRONYM>SQL</ACRONYM> statement you are
+	  able to work on more than one database at the same time. But
+	  since common applications work with only one database, we
+	  provide a mechanism of implicit transaction that allows to
+	  save time by wrinting:
+	  
+	  <PROGRAMLISTING>
+  #execute{SELECT COUNT(*) FROM Cars INTO count};
+	  </PROGRAMLISTING>
+	  
+	  instead of:
+	  
+	  <PROGRAMLISTING>
+  #execute[Main.getDatabase().getFreeConnection()] {
+    SELECT COUNT(*) FROM Cars INTO count
+  };
+	  </PROGRAMLISTING>
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE>Cursors</TITLE>
+	<PARA>
+	  The cursor are the common way to get more than one row of data from
+	  the database. It's like ResultSet but it's typed:
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE><ACRONYM>SQL</ACRONYM> SELECT INTO Statement</TITLE>
+	<PARA>
+	  The only <ACRONYM>SQL</ACRONYM> statement in <ACRONYM>XKJC</ACRONYM> is the #execute that allow to fetch
+	  data from the database with a ``SELECT INTO''.
+	  
+	  examples:
+	  
+	  <PROGRAMLISTING>
+  1. #execute {
+       SELECT String name, Image image, BigDecimal speed 
+       FROM   Cars
+       WHERE  ID = 1 
+       INTO   theName, theImage, theSpeed
+     };
+	    
+ 2. #execute {
+      SELECT String name 
+      FROM   Cars 
+      WHERE  ID =:id 
+      INTO   names[id]
+    };
+   
+ 3. #execute[conn] {
+      SELECT COUNT(*) 
+      FROM Cars 
+      INTO count
+    };
+	  </PROGRAMLISTING>
+	  
+	  The last example use an explicit connection while the others
+	  use an implicit connection (ie, the context should inherit
+	  from DBContextHandler and its default connection will be
+	  used).
+	</PARA>
+      </SECT3>
+      
+      <SECT3><TITLE><ACRONYM>SQL</ACRONYM> Expressions</TITLE>
+	<PARA>
+	  <ACRONYM>SQL</ACRONYM> expression returns an int value that correspond to the
+	  number of row modified by the expression. An expression can
+	  use a cursor to identifie a row of the database (WHERE
+	  CURRENT OF) with fully implemented JDBC drivers.
+	  
+	  examples:
+	  
+	  <PROGRAMLISTING>
+  1. #update {
+       UPDATE Cars 
+       WHERE  ID =:id 
+       SET    name = :(javaName + '-' + id)
+     };
+    
+ 2. #update(cursor) {
+      UPDATE Cars 
+      SET    name = :(javaName + '-' + id)
+    };
+	    
+ 3. #update [conn] { 
+      DELETE FROM Cars 
+      WHERE :id > 10
+   };
+	  </PROGRAMLISTING>
+	  
+	  The last example use an explicit connection while the others
+	  use an implicit connection (ie, the context should inherit
+	  from DBContextHandler and its default connection will be
+	  used).
+	</PARA>
+      </SECT3>
+      
+      <SECT3><TITLE>Transactions</TITLE>
+	<PARA>
+	  Every <ACRONYM>SQL</ACRONYM> statements should be executed within
+	  transaction. This allows to reexcute statements interupted
+	  by deadlock (after asking the user if he wants to) or abort
+	  a whole transaction if something is wrong (like if a Java
+	  exception is thrown). The syntax is:
+	  
+	  <PROGRAMLISTING>
+  #protected([``an optional message'']){
+    ... 
+    ... // a list of Java and <ACRONYM>SQL</ACRONYM> statements
+    ...
+  };
+	  </PROGRAMLISTING>
+	  
+	  If an exception is thrown during execution of this block,
+	  the current transaction is aborted, else it commited. A way
+	  to handle deadlock is provided.
+	</PARA>
+      </SECT3>
+    </SECT2>
+    
+    <SECT2><TITLE>Future improvements</TITLE>
+      <PARA>
+	The main thing that is missing here is a program that checks
+	the definition of database types provided by the programmer
+	against the database.  This could be realized with the
+	metadata subsystem of JDBC, but this is for a future
+	version. There is also no way to create table or meta data in
+	the database, since <ACRONYM>XKJC</ACRONYM> is intended only
+	to DML <ACRONYM>SQL</ACRONYM> (Data Manipulation Language).
+      </PARA>
+    </SECT2>
+  </SECT1>
+</CHAPTER>

@@ -1,0 +1,33 @@
+----------------------------------------------------------------------
+TODO
+
+980429	graf
+	Check in compiler that record-level triggers are only called for
+	multi-record blocks
+
+980429	graf
+	Revisit setMode/setAccess methods in VBlock
+
+980506	graf
+	Command serialQuery: check problem with enum fields
+
+980701	graf
+	Set page tabs enabled/disabled depending on block accessibility
+
+980701  gaypara
+	correct "field null already defined" when multiple unnamed fields occure in a file
+ 
+MULTITHREADED LIST
+ADD a check (cond, mess) like in kjc
+FORBIDDEN ACCESS TO DB WITHOUT TRANSACTION
+
+ADD help in form
+----------------------------------------------------------------------
+DONE
+
+980701	graf
+980428	BLOCK(X, Y) ... END BLOCK
+	IF X > 1 THEN BUFFER SIZE = X, FETCH SIZE = X, DISPLAY SIZE = Y
+	IF X = 1 THEN BUFFER SIZE = 1, FETCH SIZE = Y, DISPLAY SIZE = 1
+	Check in compiler
+

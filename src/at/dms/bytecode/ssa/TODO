@@ -1,0 +1,37 @@
+**** To verify ******
+When I add a block (in split critical edge), if the next block 
+is protected by an exception, the block added must be also protected.
+Verify if it's done.
+
+
+**** To see   *******
+- Maybe, it can be useful to add an affectation of a protected variable
+  before the protected region to reduce the live of this variable
+
+- Instruction move can be improve (in Propagator for example) : an instruction
+  which can throw an exception can be move after (or before) an assignment, 
+  if the variable defined is not used in a phi-catch.
+
+- When I take the parameter number in InvokeinterfaceInstruction, I have
+  an error when generated 3-address instructions.
+
+**** To Do  ********
+- It is possible that a sub-routine in the code JVM is never called. So 
+  during the generation, I don't know that is a sub-routine. The first instruction
+  is a store and there is an error during the generation of 3-address code for
+  this basic block. This case must be detected (the basic block is not reachable).
+- When removing a basic block, remove it from all ExceptionHandler.
+- findSubRoutine of ControlFlowGraph must not be public
+- In some case, I concider that the operands of a phi function are
+  QSSAVar, but it could be a QConstant. Find this, and add a test
+
+**** To improve ****
+- hasOperand in QPhiCatch
+- toString of jumps, jsr, QDeclaredInitialized, QConstant.
+- Improve the order of the conditions in QuadrupleGenerator or put
+  two big switchs.
+
+
+
+
+

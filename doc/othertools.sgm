@@ -1,0 +1,294 @@
+<CHAPTER LABEL="5" ID="CH-OTHERTOOLS">
+  <TITLE>Other tools</TITLE>
+  <TITLEABBREV>other tools</TITLEABBREV>
+  <PARA>
+    Other tools developed for the KOPI project...
+  </PARA>
+  <SECT1 ID="COMPILER-TOOLS"><TITLE>Compiler tools</TITLE>
+
+    <SECT2 ID="SECT-OPTGEN"><TITLE>Option generator</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Optgen is distributed under the terms of the GNU General Public License.
+	  <XREF LINKEND="APX-GPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch Optgen from the command line, type 
+	<SCREEN>
+  java at.dms.optgen.Main
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.optgen.Main file.opt+
+    no options
+	</SCREEN>	
+
+	The goal of this tool is to generate a command line option controller (based on gnu.getopt) from a description file.
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-MSGGEN"><TITLE>Message generator</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Mesgen is distributed under the terms of the GNU General Public License.
+	  <XREF LINKEND="APX-GPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch Msggen from the command line, type 
+	<SCREEN>
+  java at.dms.msggen.Main
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.msggen.Main file.msg+
+    no options
+	</SCREEN>	
+
+	The goal of this tool is to generate a class with messages from a description files.
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-LEXGEN"><TITLE>Lexer generator</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Lexgen is distributed under the terms of the GNU General Public License.
+	  <XREF LINKEND="APX-GPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch Lexgen from the command line, type 
+	<SCREEN>
+  java at.dms.lexgen.Main
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.lexgen.Main file.t+
+    no options
+	</SCREEN>	
+
+	The goal of this tool is to generate a perfect hashtable function and corresponding tokens for a specified list of keywords.
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-MEMCNT"><TITLE>Memory counter</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Memcnt is distributed under the terms of the GNU Lesser General Public License.
+	  <XREF LINKEND="APX-LGPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch Memcnt from the command line, type 
+	<SCREEN>
+  java at.dms.memcnt.Main
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.mamcnt.Main classfile
+    --help, h: displays the help information
+    --verbose, v: Displays information while processing files [false]
+    --version, V: prints out the version information
+	</SCREEN>	
+
+	The goal of this tool is to instrument a classfile to count every new objects created during runtime.
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-MKJC"><TITLE>Macro KJC</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  MKJC is distributed under the terms of the GNU General Public License.
+	  <XREF LINKEND="APX-GPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch MKJC from the command line, type 
+	<SCREEN>
+  java at.dms.mkjc.Main
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.mkjc.Main file.macro
+    --beautify, -b: Beautifies the source code [false]
+    --classpath, -C[String]: Changes class path to classpath
+    --debug, -g: Produces debug information (does nothing yet) [false]
+    --deprecation, -D: Tests for deprecated members [false]
+    --destination, -d[String]: Writes files to destination
+    --filter, -f[String]: Warning filter [at.dms.kjc.DefaultFilter]
+    --help, h: displays the help information
+    --java, -j: Generates java source code instead of class [false]
+    --lang, -l[String]: Sets the source language (1.1, 1.2, kopi) [1.1]
+    --multi, -m: Compiles in multi threads mode [false]
+    --nowrite, -n: Only checks files, doesn't generate code [false]
+    --optimize, -O[int]: Optimizes X times [1]
+    --proc, -p[int]: Maximal number of threads to use [2]
+    --verbose, -v: Prints out information during compilation [false]
+    --version, V: prints out the version information
+    --warning, -w[int]: Maximal level of warnings to be displayed [0]
+
+	</SCREEN>	
+
+	The goal of this tool is to generate AST from a comprehensive java-like syntax.
+      </PARA>
+    </SECT2>
+
+  </SECT1>
+  <SECT1 ID="OTHER-TOOLS"><TITLE>Other tools</TITLE>
+
+    <SECT2 ID="SECT-LPR"><TITLE>Lpr</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Lpr is distributed under the terms of the GNU Lesser General Public License.
+	  <XREF LINKEND="APX-LGPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch lpr from the command line, type 
+	<SCREEN>
+  java at.dms.lpr.LpR
+  java at.dms.lpr.LpQ
+  java at.dms.lpr.LpRm
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.lpr.LpR file+
+    --bindSourcePort, -B: Binds the source port [false]
+    --copies, -#[int]: Sets the number of copies to print [1]
+    --dataFirst, -D: Sends data first (for old NT lpd servers) [false]
+    --filetype, -f[String]: Sets the file type
+    --help, h: displays the help information
+    --indent, -i[int]: Sets the indent size [-1]
+    --job, -J[String]: Sets the job identifier
+    --localHost, -L[String]: Sets the local host [localhost]
+    --mail, -m: Mails when job is done [false]
+    --noBurst, -H: Suppresses the burst page [false]
+    --printClass, -C[String]: Sets the print class
+    --printHost, -H[String]: Sets the print hosts [localhost]
+    --proxyHost, -X[String]: Sets the proxy host to use (UNIX)
+    --queue, -P[String]: Sets the queue to work on
+    --remotePort, -d[int]: Sets the remote port [-1]
+    --remove, -r: Removes the file when printing is done [false]
+    --sourcePort, -s[int]: Sets the source port [-1]
+    --timeout, -t[int]: Sets the timeout value in millisc [60000]
+    --title, -T[String]: Sets the title for the job
+    --tmpdir, -t[String]: Sets the tmp dir to use [/tmp/]
+    --user, -u[String]: Sets the user who invoked the command
+    --version, V: prints out the version information
+    --width, -w[int]: Sets the page width [-1]
+    --windows, -W: Uses a windows style protocol to communicate with the server [false]
+
+  java at.dms.lpr.LpRm file+
+    --bindSourcePort, -B: Binds the source port [false]
+    --help, h: displays the help information
+    --localHost, -L[String]: Sets the local host [localhost]
+    --longFormat, -l: Displays more informations about jobs [false]
+    --mine, -m: Shows only the jobs of the current user [false]
+    --printHost, -H[String]: Sets the print hosts [localhost]
+    --proxyHost, -X[String]: Sets the proxy host to use (UNIX)
+    --queue, -P[String]: Sets the queue to work on
+    --remotePort, -d[int]: Sets the remote port [-1]
+    --sourcePort, -s[int]: Sets the source port [-1]
+    --timeout, -t[int]: Sets the timeout value in millisc [60000]
+    --user, -u[String]: Sets the user who invoked the command
+    --version, V: prints out the version information
+
+  java at.dms.lpr.LpQ
+    --bindSourcePort, -B: Binds the source port [false]
+    --help, h: displays the help information
+    --localHost, -L[String]: Sets the local host [localhost]
+    --longFormat, -l: Displays more informations about jobs [false]
+    --mine, -m: Shows only the jobs of the current user [false]
+    --printHost, -H[String]: Sets the print hosts [localhost]
+    --proxyHost, -X[String]: Sets the proxy host to use (UNIX)
+    --queue, -P[String]: Sets the queue to work on
+    --remotePort, -d[int]: Sets the remote port [-1]
+    --sourcePort, -s[int]: Sets the source port [-1]
+    --timeout, -t[int]: Sets the timeout value in millisc [60000]
+    --user, -u[String]: Sets the user who invoked the command
+    --version, V: prints out the version information
+  	</SCREEN>	
+
+	The goal of this tool is to print on a lpd queue from java.
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-MAILER"><TITLE>Mailer</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Mailer is distributed under the terms of the GNU Lesser General Public License.
+	  <XREF LINKEND="APX-LGPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch mailer from the command line, type 
+	<SCREEN>
+  java at.dms.mailer.Mailer mailhost recipient subject text sender [aFileToAttach aName]
+	</SCREEN>
+
+	The goal of this tool is to send a mail with a possible attachement (uuencoded).
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-SQLC"><TITLE>Sqlc</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Sqlc is distributed under the terms of the GNU General Public License.
+	  <XREF LINKEND="APX-GPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch sqlc from the command line, type 
+	<SCREEN>
+  java at.dms.sqlc.Main sqlfile
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.sqlc.Main sqlfile
+    --help, h: displays the help information
+    --version, V: prints out the version information
+    --warning, w: Displays warning for misleading sql constructions [false]
+	</SCREEN>
+
+	The goal of this tool is to parse and verify sql statements.
+      </PARA>
+    </SECT2>
+
+    <SECT2 ID="SECT-DBI"><TITLE>Dbi</TITLE>
+      <NOTE><TITLE>License type</TITLE>
+	<PARA>
+	  Sqlc is distributed under the terms of the GNU General Public License.
+	  <XREF LINKEND="APX-GPL">
+	</PARA>
+      </NOTE>
+      <PARA>
+	To launch sqlc from the command line, type 
+	<SCREEN>
+  java at.dms.dbi.Main sqlfile
+	</SCREEN>
+	The command line parameters are: 
+	<SCREEN>
+  java at.dms.dbi.Main sqlfile
+    --beautify, -b: Prints the source code (beautifier) [false]
+    --commit, -c[String]: add a transDB to the data dict.
+    --destination, -d[String]: the location to generate the database interface
+    --driver, -D[String]: Sets the driver to use for DB access
+    --help, h: displays the help information
+    --interfaceGen, -i[String]: Sets the package name of Database.k
+    --login, -l[String]: Sets thename of the user for login
+    --passwd, -p[String]: Sets the passwd to login
+    --simulate, -t: Runs the script but abort it [false]
+    --stdin, -e: Reads from standard input [false]
+    --stdout, -s: Prints on standard output [false]
+    --syntax, -S[String]: Sets the syntax to use for output (jdbc | tbx) [jdbc]
+    --url, -u[String]: Sets the url of the database
+    --version, V: prints out the version information
+    --warning, w: Displays warning for misleading sql constructions [false]
+	</SCREEN>
+
+	The goal of this tool is to parse and verify sql statements and to generate a data dictionary. It also allows one to convert JDBC-SQL to other SQL syntax (transbase).
+      </PARA>
+    </SECT2>
+  </SECT1>
+</CHAPTER>

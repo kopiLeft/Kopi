@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.vkopi.comp.form
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="at/dms/vkopi/comp/form" />
+  <property name="package.name" value="at.dms.vkopi.comp.form" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="FormScanner.java VKParseFormContext.java	VKParseBlockContext.java VKParseFieldContext.java 
+                   FormTokenTypes.java 
+                   FormParser.java 
+                   FormKeywords.java
+                   VKBlock.java VKBlockAlign.java VKBlockTable.java 
+                   VKField.java VKFieldColumn.java VKFieldColumns.java 
+                   VKFieldTypeName.java VKForm.java VKFieldType.java 
+                   VKDescriptionPosition.java VKCoordinatePosition.java 
+                   VKPosition.java 
+                   VKDefinitionType.java VKAliasType.java VKBlockInsert.java 
+                   VKImportedBlock.java VKFormElement.java VKFormPrettyPrinter.java 
+                   VKMultiField.java VKMultiFieldPosition.java 
+                   FormMessages.java" />
+
+  <property name="messages"    value="FormMessages" />
+
+  <property name="grm1voc"     value="Form" />
+  <property name="grm1dep"     value="../base/Base" />
+  <property name="scanner1"    value="Form" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

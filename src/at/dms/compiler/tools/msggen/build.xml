@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.compiler.tools.msggen
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="at/dms/compiler/tools/msggen" />
+  <property name="package.name" value="at.dms.compiler.tools.msggen" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="DefinitionFile.java MsggenError.java Main.java 
+                   MessageDefinition.java MsggenMessages.java 
+                   MsggenOptions.java MsggenLexer.java MsggenParser.java 
+                   MsggenLexerTokenTypes.java MsggenTokenTypes.java" />
+
+  <property name="messages" value="MsggenMessages" />
+  <property name="buildmessages" value="yes" />
+
+  <property name="options"  value="MsggenOptions" />
+
+  <property name="grammar"  value="Msggen" />
+
+
+  <target name="buildtools">
+    <antcall target="grammar" />
+    <antcall target="options" />
+    <antcall target="classes" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.bytecode.ssa
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../.." />
+
+
+  <property name="package" value="at/dms/bytecode/ssa" />
+  <property name="package.name" value="at.dms.bytecode.ssa" />
+  <property name="src" value="." />
+  <property name="options" value="SSAOptions"/>
+  <property name="messages" value="SSAMessages"/>
+  <property name="javafiles" 
+            value="BasicBlock.java CFGEdge.java CodeGenerator.java
+                   CodeGeneratorBasicBlock.java CodeGeneratorMethod.java 
+                   ColorComputer.java ControlFlowGraph.java 
+                   CopyPropagation.java DominatorComputer.java 
+                   DominatorTreeNode.java Edge.java EdgeLabel.java 
+                   ExceptionHandler.java GenerateQVar.java Graph.java 
+                   InterferenceGraph.java LivenessComputer.java Main.java 
+                   MethodOptimizer.java Node.java NodeVisitor.java Propagator.java 
+                   QANewArray.java QAbstractJumpInst.java QArrayLength.java 
+                   QAssignment.java QBinaryOperation.java QCallReturn.java 
+                   QCallVoid.java QCheckCast.java QConditionalJump.java 
+                   QConstant.java QDeclareInitialised.java QExpression.java 
+                   QGetArray.java QGetField.java QInst.java 
+                   QInstArray.java QInstArrayAccessor.java QInstanceOf.java 
+                   QJsr.java QJump.java QMethodReturn.java QMonitor.java 
+                   QMultiArray.java QNew.java QNewArray.java QNewInitialized.java 
+                   QNop.java QOperand.java QOperandBox.java QPhi.java QPhiCatch.java 
+                   QPhiJoin.java QPhiNop.java QPhiReturn.java QPutArray.java 
+                   QPutField.java QRet.java QReturn.java QSSAVar.java 
+                   QSimpleExpression.java QSwitch.java QThrow.java 
+                   QUnaryOperation.java QVar.java QVoidMethodCall.java 
+                   QuadrupleGenerator.java SSAConstructor.java 
+                   SSAConstructorInfo.java SSADestructor.java 
+                   SSAMessages.java SSAOptions.java SSAVar.java 
+                   SubRoutine.java UnusedComputer.java Optimizer.java" />
+	
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

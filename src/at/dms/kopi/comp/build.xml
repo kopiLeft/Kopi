@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.kopi.comp
+    ==================================================================-->
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../.." />
+  <property name="node" value="yes"/>
+
+
+  <target name="node.build" description="-->  Runs subbuild files ">
+  	<ant dir="kjc" inheritAll="false" target="${target}" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

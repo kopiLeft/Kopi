@@ -1,0 +1,1277 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename assertion.texi
+@settitle Contracts in Java with Kopi
+@c @setchapternewpage odd
+@c %**end of header
+@syncodeindex fn cp
+
+@ifinfo
+This file documents contracts in Java
+
+Copyright 2001 Decision Management Systems G.m.b.H
+
+@end ifinfo
+
+@titlepage
+@title Contracts in Java with Kopi
+@subtitle Supporting full assertion capability in Java
+@subtitle Version 1.0
+@author Martin Lackner
+
+@c  The following two commands
+@c  start the copyright page.
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2001 Decision Management Systems G.m.b.H
+
+Published by Decision Management Systems G.m.b.H
+
+@c Permission is granted to ...
+@end titlepage
+
+@iftex
+@macro mymath {mathexpr}@c
+@tex\mathexpr\@end tex 
+@end macro
+@end iftex
+
+@ifinfo
+@macro mymath {mathexpr}
+@end macro
+@end ifinfo
+
+@ifhtml
+@macro mymath {mathexpr}
+@end macro
+@end ifhtml
+
+
+@c ----------------------------------------------------------------------------
+@c ----------------------------------------------------------------------------
+
+@contents
+
+@c ----------------------------------------------------------------------------
+@c ----------------------------------------------------------------------------
+
+@chapter Overview
+
+The Java  programming language @uref{#javaspec, [GJSB98], [GJSB98]} 
+ is a general-purpose concurrent 
+object-oriented language. It is strongly typed and includes automatic storage management. The 
+Java programming language is usually compiled to a binary format which is completely defined 
+by the Java Virtual Machine Specification (JVM) @uref{#jvmspec, [LY98], [LY98]}.
+
+Software assertions @uref{#Meyer:1992:ADC, [Mey92], [Mey92]} are boolean 
+expressions that define the correct state of a program at 
+arbitrary locations in the code. They check method calls for proper 
+invocation, method code for correct computation, class data states for consistency, and 
+individual statements for errors.
+
+In object-oriented design and component reuse, concepts such as contract programming
+use assertions to assure proper implementation of classes, component interface, 
+and internal data states. Bertrand Meyer introduced contract programming
+@uref{#eiffeloosc, [Mey98], [Mey98]} in Eiffel @uref{#eiffel,[Mey91],[Mey91]} as 
+@cindex Eiffel
+powerful technique for reliable software. Preconditions, postconditions and 
+invariants are the three key elements.
+
+Contracts should reduce test effort due to the separation of contract checks from 
+regular application logic, save debugging effort due to the improved monitoring where 
+failures occur close to the faults, and ensure up-to-date and unambiguous documentation of 
+interfaces.
+
+In an old version of the Java specification @uref{#oak, [Gos94], [Gos94]}, 
+the last one James Gosling wrote the entirety of, assertions were part of 
+it. Because of a deadline Gosling removed assertions from the specification. 
+In an interview he said that he regret doing that today.
+
+Most proposals which introduce contract programming in Java use preprocessing 
+techniques and translate the source code into an instrumented 
+source code. This approach violates abstraction and modularity. Source to 
+source translators make debugging of the 
+byte code very uncomfortable  and prevent separate compilation, since the 
+source code or the body of the methods of the inherited type must be 
+available to the compiler. 
+
+The extension of Java defined here allows a programmer to define constraints 
+very similar in the way as it is done in Eiffel because the extension adds 
+new keywords to the language. The pre- and postconditions are not placed in 
+comments because they can contain 
+side effects. Java comments should never influence the evaluation of the 
+programmed code. Thus the programmer must be able to define class and method 
+constraints as part of the code.   
+
+The syntax of this extension is up-ward compatible to the proposal of JCP 41 from Sun. 
+It uses the paradigms introduced in this draft to enable contract programming.
+
+It uses the architecture described in the master thesis "Extending Java" 
+@uref{#extjava,[Lac01], [Lac01]} to enable full support for contracts.
+
+This proposal needs no extensions to the classloader or other changes
+@cindex classloader
+to the JVM. The source code of the parent 
+class is not necessary, it is not a source to source translation.  
+Abstraction, modularity and separate compilation is fully supported. The code 
+can be translated to Java byte code in one step. This is very useful because 
+it makes the debugging of the code much easier than debugging of code 
+produced by a precompiler.
+
+@c ----------------------------------------------------------------------------
+@c ----------------------------------------------------------------------------
+
+@section Sun's simple assertion facility
+@cindex Sun  
+@cindex Java Specification Request 41
+
+Sun published a new draft of JSR 41 @uref{sun:draft:assertion, [BGHDL99], [BGHDL99]} which defines how Java 
+will support assertions in the 
+near future. This proposal doesn't support contract programming. It is a simple assertion 
+capability which allows to define constraints at arbitrary locations in the code.
+@findex assert
+
+@example
+assert expression;                 
+assert expression : expression;
+@end example
+
+The new keyword @code{assert} is introduced to allow the programmer to define 
+the boolean constraint. The first expression of the assert must be a boolean 
+expression. If this expression evaluates to false, an @code{java.lang.AssertionError} is
+@findex AssertionError 
+thrown. @code{AssertionError} is a subclass of @code{java.lang.Error}. The second 
+expression is evaluated if the first expression fails and is used as detailed 
+message for the @code{AssertionError}. It is an error and not an exception 
+because the intended use of an assertion is that an assertion should only fail 
+ in case of a failure in the code. An exception would allow to define a work 
+around instead of the correction the program failure. 
+The draft extends the classloader with new methods. These methods allow to 
+@cindex classloader
+en-/disable assertions for an unloaded class or for all unloaded classes of a 
+whole package tree.  
+Because assertions may be disabled, programs must not assume that the expressions 
+contained in assertions will be evaluated. Thus, the expressions in the assert-statement 
+should generally be free of side effects. Evaluating an expression without side 
+effects should not affect any state that is visible after the evaluation is 
+complete.
+If a class requires enabled assertions, the class can insert the following code:
+
+@example
+@group
+   static @{
+     boolean assertsEnabled = false;
+     assert assertsEnabled = true;
+     if (!assertsEnabled) 
+       throw new RuntimeException("Asserts must be enabled.");
+   @}
+@end group
+@end example
+
+The draft declares no method to ask for the status of assertions. 
+Beside other new features and enhancements assertions as currently defined in JSR 41 will be a part of 
+Merlin 
+@cindex Merlin 
+(JDK 1.4). Merlin is developed under the Java Specification 
+Request 59
+@cindex Java Specification Request 59
+ where more information about this release of the JDK can be found.  
+
+@c ----------------------------------------------------------------------------
+@c ----------------------------------------------------------------------------
+@chapter Contracts in Kopi
+
+Kopi provides full support for contracts and requires no changes of the JVM.
+
+@c ----------------------------------------------------------------------------
+@section Syntax and Semantics
+
+Four new keywords are added to the syntax of Java: @code{@@invariant}, @code{@@require},
+@code{@@ensure} and @code{@@assert}. Each of the keywords start with a @b{@@} 
+to prevent problems while using this mechanisms in legacy code. The grammar of 
+Java is modified to support the new constructs.
+
+@c ----------------------------------------------------------------------------
+@subsection Simple @code{assert} statement
+
+@cindex assert statement
+Like Sun's JSR 41 @uref{#sun:draft:assertion, [BGHDL99], [BGHDL99]} the rule @emph{StatementWithoutTrailingSubstatement} 
+is modified and a new production is inserted to enable assert-statements.
+@findex assert
+ As specified in this JSR 41 @mymath{$Expression_1$}
+@html 
+Expression<sub>1</sub> 
+@end html 
+must have a boolean type in both forms of the assert-statement. 
+If this expression evaluates to false the exception @code{at.dms.assertion.AssertionError}(@@assert) or 
+the exception @code{java.lang.AssertionError}(standard java assert) is thrown. 
+If @mymath{$Expression_2$}
+@html 
+Expression<sub>2</sub> 
+@end html 
+is present it is used as message for the Exception.
+@iftex
+@example
+@group
+ @i{StatementWithoutTrailingSubstatement:}
+    <All current possibilities, as per JLS, Section 14.5>
+    @i{AssertStatement
+
+ @w{@i{AssertStatement:}}
+      @w{@code{@@assert} @mymath{Expression$_1$} @code{;}}
+      @w{@code{@@assert} @mymath{Expression$_1$} @code{:} @mymath{$Expression_2$}@code{;}}
+
+ @w{@mymath{$AssertStatement^{1.4}$}:}
+      @w{@code{assert} @mymath{$Expression_1$}@code{;}}
+      @w{@code{assert} @mymath{$Expression_1$} @code{:} @mymath{$Expression_2$}@code{;}}
+      @w{@code{@@assert} @mymath{$Expression_1$}@code{;}}
+      @w{@code{@@assert} @mymath{$Expression_1$} @code{:} @mymath{$Expression_2$}@code{;}}
+ }
+@end group
+@end example
+@end iftex
+
+@html
+  <TABLE>
+    <tr>
+      <td class=example>
+        <pre> 
+<I>StatementWithoutTrailingSubstatement:</I>
+    &#60;All current possibilities, as per JLS, Section 14.5&#62;
+    <I>AssertStatement</I>
+
+ <I>AssertStatement:</I>
+      <CODE>@assert</CODE><I> Expression<sub>1</sub></I><CODE>;</CODE>
+      <CODE>@assert</CODE><I> Expression<sub>1</sub></I><CODE>:</CODE><I>Expression<sub>2</sub></I><CODE>;</CODE>
+
+ <I>AssertStatement<sup>1.4</sup>:</I>
+      <CODE>assert</CODE><I> Expression<sub>1</sub></I><CODE>;</CODE>
+      <CODE>assert</CODE><I> Expression<sub>1</sub></I><CODE>:</CODE><I>Expression<sub>2</sub></I><CODE>;</CODE>
+      <CODE>@assert</CODE><I> Expression<sub>1</sub></I><CODE>;</CODE>
+      <CODE>@assert</CODE><I> Expression<sub>1</sub></I><CODE>:</CODE><I>Expression<sub>2</sub></I><CODE>;</CODE></I>
+ 
+</pre></td></tr></table>
+@end html
+
+
+@c \caption{\label{ass:gram:assert}Changed Java grammar for {\tt assert}}    
+@c @b{@anchor{ass:gram:assert}  Figure} Changed Java grammar for @code{assert}
+
+@c ----------------------------------------------------------------------------
+@subsection @code{@@fail} statement
+
+@cindex fail statement
+The rule @emph{StatementWithoutTrailingSubstatement} 
+is modified and a new production is inserted to enable fail-statements.
+@findex fail
+The optional expression can have any type.
+
+@iftex
+@example
+@group
+ @i{StatementWithoutTrailingSubstatement:}
+    <All current possibilities, as per JLS, Section 14.5>
+    @i{FailStatement
+
+ @w{@i{FailStatement:}}
+      @w{@code{@@fail;}}
+      @w{@code{@@fail} @i{Expression} @code{;}}
+ }
+@end group
+@end example
+@end iftex
+
+@html
+  <TABLE>
+    <tr>
+      <td class=example>
+        <pre> 
+<I>StatementWithoutTrailingSubstatement:</I>
+    &#60;All current possibilities, as per JLS, Section 14.5&#62;
+    <I>FailStatement</I>
+
+ <I>AssertStatement:</I>
+      <CODE>@fail;</CODE>
+      <CODE>@fail</CODE><I>Expression</I><CODE>;</CODE>
+
+</pre></td></tr></table>
+@end html
+
+The fail statement is used instead of @code{@@assert false;} because 
+assert-statments can be disabled, thus the code after such an assert-statment is 
+always reachable.
+Fail statements are @b{never} disabled. The code after a fail-statement is 
+never reachable (like after a return-statement). 
+
+In the following example a fail-statement must be used. Would an 
+@code{@@assert false;} statement be used instead of the fail-statement, the 
+compiler would show an error-message. The variable msg is not set in 
+the default-branch of the switch, the line with the statement 
+@code{System.out.println(msg);} could be reached beause the assert could be disabled. Therefore 
+in most such cases the fail-statement works only.
+
+@example
+String msg;
+
+switch (type) {
+  case 0: msg = "..."; 
+    break;
+  ...
+  default:
+    @@fail;
+}
+System.out.println(msg);
+@end example
+
+@c ----------------------------------------------------------------------------
+@subsection Class and interface invariant
+
+@cindex class invariant
+@cindex interface invariant
+In each class or interface a @emph{class invariant} may be defined. The invariant starts with 
+the new keyword @code{@@invariant}.
+@findex invariant
+The invariant contains assertions declared by assert-statements. 
+The grammar of the @emph{class invariant}  and the modified productions 
+@emph{ClassBodyDeclaration} and @emph{InterfaceMemberDeclaration}
+is defined as followed.
+
+@example
+@group
+  @i{ClassBodyDeclaration:}
+     <All current possibilities, as per JLS, Section 8.1.5>
+     @i{ClassInvariant
+
+   InterfaceMemberDeclaration:}
+     <All current possibilities, as per JLS, Section 9.1.3>
+     @i{ClassInvariant
+
+   ClassInvariant:
+       @code{@@invariant} Block}
+@end group
+@end example
+@c \caption{\label{ass:gram:inv}New class and interface grammar}
+
+ The class invariant must not be the first 
+or the last member in the class or interface, but if there are more than one invariant 
+declaration, a compile-time error occurs.
+The class invariant is
+supposed to include all assertions that contain conditions that must hold for 
+the state of the whole object. The invariant must not hold if the constructor 
+throws an exception. The reason of the exception can make it impossible to 
+initialize the class to a state that complies with the invariant. The class meets 
+the invariant at the entry and at the normal or exceptional return of a non 
+private method. If an assertion in the invariant fails, the evaluation of the 
+invariant ends with this assertion and an @code{InvariantError} is thrown. 
+Invariants must not be enforced for private methods because they  were already
+enforced upon reception of the exported method that was preceding the private one. In 
+fact it is desirable to allow a 
+sequence of private methods to violate class invariants temporarily as long as the invariants 
+are established before the exit of the public method that triggered the chain of private 
+methods.
+
+In the following example the value of the field @emph{x} in an object of the 
+class @emph{Foo} must always be higher than the field @emph{y}.
+
+@example 
+@group
+class Foo @{
+  private int x,y;
+  ...
+  @@invariant @{
+    @@assert(x > y);
+    ...
+  @}
+  ...
+@}
+@end group
+@end example
+@c \caption{\label{ass:invariant} Definition of the invariant of a class}
+
+@c ----------------------------------------------------------------------------
+@subsection Pre- and Postconditions
+
+@cindex precondition
+The precondition is defined at the beginning of the method after 
+the closing parenthesis of the parameter list. The keyword @code{@@require} 
+@findex require
+starts the require-clause of the method which must be valid at the 
+entry of the method. It is the duty of the caller to satisfy the 
+precondition. Some preconditions in public methods should still be performed by checks 
+inside methods that result in exceptions like @code{IllegalArgumentException} 
+and @code{IllegalStateException} to ensure that necessary requirements 
+for the method are fulfilled although the assertions are disabled. 
+If an assertion in the require-clause fails, there is no further evaluation of the precondition. A 
+@code{PreconditionError} is thrown and the method terminates exceptional. 
+
+@example
+@group
+public int withdrawn(int withdrawal) 
+  @@require @{
+    ... // precondition
+  @}
+  @{
+    ... // method body
+  @}
+  @@ensure @{
+    ... // postcondition
+  @}
+@end group
+@end example
+@c \caption{\label{ass:require:ensure} Definition of the pre- and postcondition of a method}
+
+@cindex postcondition
+The postcondition is defined at the end of the method after the closing 
+brace of the method body and starts with the keyword 
+@code{@@ensure}
+@findex ensure
+. In the postcondition failed assertions throw a 
+@code{PostconditionError}. The developer of the method must ensure that 
+the output conditions are satisfied. The postcondition is not checked if
+the method body throws an exception, but it is evaluated if the invariant 
+throws an exception because it is checked before the invariant.
+
+The new productions @emph{RequireClause} and @emph{EnsureClause} and the modified grammar of
+  @emph{MethodDeclaration} (JLS §8.4), @emph{ConstructorDeclaration} (JLS §8.8) and  @emph{AbstractMethodDeclaration} (JLS §9.4) are defined as followed:
+
+@iftex
+@example
+@group
+  @i{ConstructorDeclaration:
+       @w{@mymath{$ConstructorModifers^{Opt}$} ConstructorDeclarator  @mymath{$Throws^{Opt}$}}
+       @w{@mymath{$RequireClause^{Opt}$} ConstructorBody  @mymath{$EnsureClause^{Opt}$}}
+
+  AbstractMethodDeclaration:
+       @w{@mymath{$AbstractMethodModifers^{Opt}$} ResultType MethodDeclarator} 
+       @w{@mymath{$Throws^{Opt}$} @mymath{$RequireClause^{Opt}$} @mymath{$EnsureClause^{Opt}$} @code{;}}
+
+  MethodDeclaration: 
+       @w{MethodHeader @mymath{$RequireClause^{Opt}$} MethodBody @mymath{$EnsureClause^{Opt}$}}
+
+  RequireClause:
+       @code{@@require} Block
+
+  EnsureClause:
+       @code{@@ensure} Block}
+@end group
+@end example
+@end iftex
+
+@html
+  <TABLE>
+    <tr>
+       <td class=example><pre>  
+ <I>ConstructorDeclaration:</I>
+       <I>ConstructorModifers<sup>Opt</sup> ConstructorDeclarator  Throws<sup>Opt</sup>
+       RequireClause<sup>Opt</sup> ConstructorBody  EnsureClause<sup>Opt</sup></I>
+
+ <I>AbstractMethodDeclaration:
+       AbstractMethodModifers<sup>Opt</sup> ResultType MethodDeclarator
+       Throws<sup>Opt</sup> RequireClause<sup>Opt</sup> EnsureClause<sup>Opt</sup> <CODE>;</CODE></I>
+
+ <I>MethodDeclaration: 
+       MethodHeader RequireClause<sup>Opt</sup> MethodBody EnsureClause<sup>Opt</sup></I>
+
+ <I>RequireClause:</I>
+       <CODE>@require</CODE><I> Block</I>
+
+ <I>EnsureClause:</I>
+       <CODE>@ensure</CODE><I> Block</I>
+</pre></td></tr></table>
+@end html
+@c   \caption{\label{ass:gram:method}Grammar of (abstract) method declaration}
+@c @b{Example: } @anchor{ass:gram:method}Grammar of (abstract) method declaration
+
+
+The usage of local variables defined in the method body in the pre- and postconditions is 
+not allowed. Thus the require-clause is syntactical before and the ensure-clause syntactical 
+after the method body. Expressions in the require- and the ensure-clause
+can refer to private fields of the class. This is very useful for properties 
+of JavaBeans, but this feature should be used with care for other members because 
+it may make it more difficult for the user to understand the conditions under 
+which the method can be invoked.
+
+If assertions are disabled, no expressions in the invariant-, require-
+or ensure-clause are evaluated. Therefore, none of the three exceptions can be thrown.
+
+If the evaluation of an expression in the invariant, pre- or postcondition 
+completes abruptly for some reason, the whole invariant-, require- 
+or ensure-clause completes abruptly for the same reason. 
+
+If the value of a public 
+field of an instance is changed, the invariant of that instance can fail. A correct 
+evaluation of the precondition is only guaranteed if the invariant is satisfied. Therefore, the  
+invariant is checked before the precondition. 
+
+The postcondition is evaluated before the invariant, but the invariant is 
+also evaluated in the case of an exceptional end of the method. 
+The @code{PostconditionError} is absorbed by this check if the invariant is not satisfied. 
+ 
+
+Generally, preconditions are enforced when methods are entered. Postconditions 
+are enforced when methods return. Invariants are enforced at the entry and 
+the normal return of the method. They also are checked at exceptional termination 
+of methods. Invariants are not checked in static methods, but pre- and postconditions can 
+be defined for static methods.
+The following table summarizes the rules for these checks.
+@need 2000
+@iftex
+@multitable @columnfractions .15 .15 .40 .15 .15
+@item
+@tab 
+@tab @code{public, package, protected}
+@tab @center{ @code{private} }
+@tab @center Contructor
+
+@item
+@tab entry
+@tab @center @mymath {$\surd$}
+@tab @center ---
+@tab @center ---
+@item invariant
+@tab exit
+@tab @center @mymath {$\surd$}
+@tab @center ---
+@tab @center @mymath {$\surd$}
+@item
+@tab exception
+@tab @center @mymath {$\surd$}
+@tab @center  ---
+@tab @center ---
+
+@item
+@tab entry
+@tab @center @mymath {$\surd$}
+@tab @center @mymath {$\surd$}
+@tab @center @mymath {$\surd$}
+@item precondition
+@tab exit
+@tab @center ---
+@tab @center ---
+@tab @center ---
+@item
+@tab exception
+@tab @center ---
+@tab @center ---
+@tab @center ---
+
+@item
+@tab entry
+@tab @center ---
+@tab @center ---
+@tab @center ---
+@item postcondition
+@tab exit
+@tab @center @mymath {$\surd$}
+@tab @center @mymath {$\surd$}
+@tab @center @mymath {$\surd$}
+@item
+@tab exception
+@tab @center ---
+@tab @center ---
+@tab @center ---
+
+@end multitable
+@end iftex
+
+@html
+<blockquote>
+<TABLE>
+<TR><TD></TD><TD>
+</TD><TD colspan="2" align="center">  Method
+</TD><TD align="center"> Contructor</Td>
+
+</TR>
+<TR><TD></TD>
+</TD><TD> 
+</TD><TD align="center"> <CODE>public, package, protected</CODE>
+</TD><TD align="center"> <CODE>private</CODE> 
+</TD><TD> 
+
+</TR>
+<TR><TD></TD>
+</TD><TD align="center"> entry
+</TD><TD align="center">  yes
+</TD><TD align="center">  no
+</TD><TD align="center">  no
+</TR>
+<TR><TD>invariant</TD>
+</TD><TD align="center"> exit
+</TD><TD align="center"> yes
+</TD><TD align="center"> no
+</TD><TD align="center"> yes
+</TR>
+<TR><TD></TD>
+</TD><TD align="center"> exception
+</TD><TD align="center"> yes
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+
+</TR>
+<TR><TD></TD>
+</TD><TD align="center"> entry
+</TD><TD align="center"> yes
+</TD><TD align="center"> yes
+</TD><TD align="center"> yes
+</TR>
+<TR><TD>precondition</TD>
+</TD><TD align="center"> exit
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+</TR>
+<TR><TD></TD>
+</TD><TD align="center"> exception
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+
+</TR>
+<TR><TD></TD>
+</TD><TD align="center"> entry
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+</TR>
+<TR><TD>postcondition</TD>
+</TD><TD align="center"> exit
+</TD><TD align="center"> yes
+</TD><TD align="center"> yes
+</TD><TD align="center"> yes
+</TR>
+<TR><TD></TD>
+</TD><TD align="center"> exception
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+</TD><TD align="center"> no
+
+</TR></TABLE>
+</blockquote>
+@end html
+@c \caption{\label{rule:condition}Rules for invariants, pre- and postconditions}
+
+
+In the @emph{Object Constraint Language} (OCL)
+@cindex Object Constraint Language
+ of UML operations like
+@code{forall}, @code{exists} and  @code{implies} are defined. In this extension new 
+operations to support some of these operations are not defined because they are
+not absolutely necessary. The following example
+shows a constraint definition on every element of a collection (forall). New 
+operations would make the language more complex and may confuse programmers. 
+
+@example
+@group
+  Map customer = new Hashtable();
+  ...
+
+  @@invariant @{
+    Enumeration e = customer.elements();
+    while (e.hasMoreElements()) @{
+      @@assert ((Customer)e.nextElement()).getAge() > 18 : "error msg";
+    @}
+    ...
+  @}
+@end group
+@end example
+@c \caption{\label{forall} Constraints on collections}
+
+@c @b{Example: }  Constraints on collections
+
+
+@c ----------------------------------------------------------------------------
+@section Differences between Java's @code{assert} and Kopi's @code{@@assert}
+
+Java's @code{assert} is first available in JDK 1.4 and throws @code{java.lang.AssertsionError} if 
+used in a method body. @code{@@assert} does not require JDK 1.4 but throws @code{at.dms.assertion.AssertionError} 
+because @code{java.lang.AssertsionError} is not available before JDK 1.4. In a require-, 
+ensure- or invariant-clause both keywords are equivalent.
+
+@c ----------------------------------------------------------------------------
+@section Contracts on hierarchies
+
+@cindex Eiffel
+In Eiffel a programmer who redefines a precondition or a postcondition of a 
+method must add the preconditions and postconditions of the overridden methods 
+to the new precondition and postcondition by using the keywords @code{require else} 
+instead of @code{require} and @code{ensure then} instead of @code{ensure}. The 
+semantic of that expressions is equivalent to an @emph{or else} between the new 
+precondition and the preconditions of the overridden methods and an @emph{and then}
+between the new postcondition and the postconditions of the overridden methods.
+A redeclaration may weaken the original precondition and may strengthen the postcondition.
+In a redeclaration the forms @code{require @dots{}} and @code{ensure @dots{}} are not permitted.
+The conditions of the overridden methods are only evaluated if necessary.
+ 
+It should be safe to replace every type with one of its subtypes. This is not 
+guaranteed if the subtype does not satisfy the constraints of the super type. 
+Therefore, this specification implicitly concatenates the preconditions with an 
+noncommutative version of the @emph{or} operation and the postcondition with an
+noncommutative version of the @emph{and} operation. In contrast to Eiffel the 
+programmer need not use the keywords @code{else} and @code{then} additional to 
+@code{@@require} and @code{@@ensure} if the method overrides a method in a super class. 
+
+As in Eiffel, the absence of a require or ensure-clause means that the redeclared 
+version retains the original version of the condition. This will be the most 
+frequent situation and in this case the programmer is not required to write 
+anything special.
+
+Invariants are conjuncted across type extensions because the subtypes must also 
+comply with all invariants of their supertypes. The invariant fails if the 
+invariant of the class, one of their base classes, or one of the implemented interfaces 
+fails. Methods of classes without assertions or disabled assertions have no 
+invariant checks. If these methods are not overridden in a subclass, then these 
+methods have no invariant checks in the subclass although the subclass uses assertions.   
+@cindex inner class
+Inner classes have to check the invariants of the enclosing classes because 
+inner classes are able to change the state of the enclosing classes. That means that
+the invariant of the inner class, of their base classes, of the interfaces, 
+and of the enclosing classes must be satisfied.
+
+@cindex postcondition
+Postconditions are conjuncted across type extensions because redefined methods 
+in subtypes must offer at least the same service to their clients as the 
+supertype method definition did. First, the conditions of the current method are 
+checked. Only if they hold, the conditions of the super method are evaluated. So 
+it is important that there are no side effects.
+
+@cindex precondition
+Preconditions are disjuncted across type extensions because redefined methods 
+in subtypes must accept at least the same input arguments from their clients as 
+the supertype method definition did. First, the conditions of the current method are 
+checked. Only if they fail the conditions of the super type are evaluated. If the method
+have no require-clause, it inherits the conditions of the super method. If there is no 
+super method, the require-clause is always fulfilled. The next example
+shows the different possibilities to inherit preconditions. In the first method the 
+precondition is always fulfilled and super preconditions are not evaluated. In the second method, 
+the precondition of the super method is evaluated if this method overrides a method, otherwise 
+the precondition is always fulfilled. The evaluation of the third method always checks  
+the precondition of the overridden method. But if no method is overridden, the evaluation of 
+require-clause results in a precondition exception. All three cases are different.
+
+@example
+@group
+   public void doSomething()
+   @@require @{@}
+   @{ ... @}
+
+   public void doSomething()
+   @{ ... @}     
+
+   public void doSomething()
+   @@require @{ @@assert false;@}
+   @{ ... @}
+@end group
+@end example
+@c \caption{\label{requireDefinitions} Different possibilities to inherit preconditions.}
+
+
+Static and private methods never override another method. Therefore, they can not 
+inherit constraints. 
+
+@c ----------------------------------------------------------------------------
+@section Supporting old expressions and result
+@cindex old expression
+
+
+Postcondition expressions can refer to the old state of the object using the 
+operator @code{ @@@@(@emph{expression})} 
+@cindex old operator
+(like @code{old} in Eiffel) and to the return value
+of the method using the operator @code{@@@@()}
+@cindex return operator
+. An operator like @code{old} (or @code{oldof} 
+in accordance with the @code{instanceof} operator of Java) would cause problems with
+legacy code in which @code{old} (or @code{oldof}) is used as an identifier of a method.
+
+@iftex
+@example
+@group
+  @i{PrimaryNoNewExpression:}
+       <All current possibilities, as per JLS, Section 15.8>
+       @w{@i{@code{@@@@(@mymath{$Expression^{Opt}$} )}}}
+@end group
+@end example
+@end iftex
+
+@html
+<TABLE>
+  <tr><td class=example>
+    <pre>  
+  <I>PrimaryNoNewExpression:</I>
+       &#60;All current possibilities, as per JLS, Section 15.8&#62;
+       <CODE>@@(</CODE><I>Expression<sup>Opt</sup></I><CODE>)</CODE></I>
+</pre></td></tr></table>
+@end html
+@c   \caption{\label{ass:gram:prim}Modified production PrimaryNoNewExpression}}
+The rule @emph{PrimaryNoNewExpression} of the Java grammar is modified to allow the new assert-statement.
+They are only allowed in the ensure-clause of methods. If they appear
+in the body of another part of the class a compile-time error occurs. 
+
+@example
+@group
+  @@ensure @{
+    @@assert @@@@(deposit) > deposit : "...";
+    ...
+  @}
+@end group
+@end example
+@c \caption{\label{ass:old}Using value of {\tt deposit} at method entry in postcondition}
+
+In the @code{@@@@} operation all expressions are allowed and not only field access 
+expressions. This makes old expression much more powerful. So it is not 
+necessary to make a copy of a whole collection if only the size of the collection 
+is used. In the next example the first assertion compares 
+only the old value of the reference vector with the actual value of the reference vector. In 
+the second assertion the method @code{equals} of old value 
+of the reference is called. If the reference is not changed, the  assert will never fail 
+although the state of the object is changed. To ensure that the state of a 
+field is not changed, the expression of the third expression should be used.  
+The last statement only requires that a value of the type @code{int} is saved 
+until it is compared with the actual size of the vector.
+ 
+@example
+@group
+  private Vector vector;
+  ...
+
+  @@assert @@@@(vector) == (vector);
+  @@assert @@@@(vector).equals(vector);
+  @@assert @@@@(vector.clone()).equals(vector);
+  @@assert @@@@(vector.size()) < vector.size();
+@end group
+@end example
+
+@c \caption{\label{ass:old.examples} Different examples for @@-expressions}
+
+
+The value of an old expression is evaluated at the beginning of the body of the method 
+after the evaluation of the invariant and the precondition and is stored in an inner 
+object until the value is used in the postcondition. So a side effect of an old expression 
+can change the effects of the method body, although the expression is part of the 
+postcondition.  
+
+Cascading of the old operator makes no sense and causes a compile-time error. 
+
+The old operator is usable in every expression in a postcondition. That is necessary to support the following example:
+ 
+@example
+@group
+  private int i;
+
+  private void foo() @{
+    ...
+  @} @@ensure @{
+    System.out.println("value: "+i+" old value: "+@@@@(i));
+  @}
+@end group
+@end example
+
+@c ----------------------------------------------------------------------------
+@section Contracts in constructors
+
+@cindex constructor
+Constructors can have pre- and postconditions as methods have. In contrast to 
+preconditions of methods it is not allowed to access fields in the precondition 
+and use the @code{@@@@()} and the @code{@@@@(@emph{expression})} operator in postconditions. 
+Although the superclass constructor invocation in a constructor must be the first statement 
+in the Java source, the precondition of the constructor is evaluated before 
+the constructor of the super class is called. That is different to the source 
+to source translators which must perform the check after that. Because the 
+precondition is evaluated before the body of the constructor is evaluated, no 
+field is initialized. Therefore, field access expressions in preconditions are forbidden. At 
+the entry of the constructor the instance is not initialized. Thus, the old 
+operator 
+@cindex old operator 
+in the ensure-clause is forbidden. Since a constructor has
+ never a return value, the return operator causes a compile-time error. 
+
+Constructors can not redefine other constructors. Thus, they never inherit 
+conditions. But a constructor always calls a constructor of the super class 
+even if no explicit super constructor is called in the source. 
+
+@example
+class Collection @{
+   public Collection(Collection c)
+   @@require @{ c != null @}
+   @{ ...  @}
+   @@ensure @{ size() = c.size() @}
+   ...
+@}
+@end example
+@c \caption{\label{ass:def:const} Constructor with pre- and postcondition}
+
+The invariant of the class is evaluated in the constructor even if they are 
+private. It makes no sense to test the invariant at the entry of the constructor 
+as it is done for methods because the instance can not satisfy the constraints.
+At the end of the constructor the invariant is only checked if no exception is 
+thrown. An exception signals that something exceptional happened which maybe 
+prevent the initialization of the object. The evaluation of the invariant would 
+absorb this exception with the useful information in it 
+if the evaluation of the invariant fails. Every constructor calls a super 
+constructor. The pre- and postcondition of the constructor are evaluated but 
+not the invariant. The invariant is tested once at the end of the evaluation 
+of all constructors.  
+
+
+
+
+
+
+
+@c ----------------------------------------------------------------------------
+
+@section Contract specifications in interfaces
+
+@cindex interface invariant
+Field declarations in the body of an interface are implicitly static and final. 
+Therefore, constraints in postconditions on the value of fields at the entry of 
+a method (old value) are not meaningful. Thus @code{ @@@@(@emph{ expression})} is not 
+allowed in postconditions. Access to the result of the method with @code{@@@@()} 
+is supported. 
+
+@example
+@group
+public interface Account @{
+  int MAX_OVERDRAWN = -30000; // public static final 
+
+  @@invariant@{
+    @@assert current() > MAX_OVERDRAWN;
+  @}
+
+  int current();
+
+  int deposit(int deposit);
+  @@require @{
+    @@assert deposit > 0;
+  @}
+
+  int withdraw(int withdrawal);
+  @@ensure @{
+    /* return value > MAX_OVERDRAWN */
+    @@assert @@@@() > MAX_OVERDRAWN;
+  @}
+
+  ...
+@}
+@end group
+@end example
+
+@c \caption{\label{ass:inter}Interface defines methods with preconditions}
+@c ----------------------------------------------------------------------------
+@section Assertions and parameterized types
+
+@cindex parameterized types
+There is only one problem with parameterized types in classes using contracts.
+In the following example, @code{doSomething} in @code{GenericB} overrides both methods in 
+@code{GenericA} and, therefore, it must fulfill the contracts of both super methods.
+
+@example
+@group
+public interface I @{  ... @}
+
+public interface J @{  ... @}
+
+public class IJImpl implements I, J @{  ... @}
+
+public class GenericA <T1 extends I, T2 extends J> @{
+  private int i = 11;
+  private float j = 12;
+
+  public void doSomething(T1 obj) @{ 
+    ... 
+  @} @@ensure @{
+    @@assert @@@@(i) > 0;
+  @}
+  public void doSomething(T2 obj) @{
+    ...
+  @} @@ensure @{
+    @@assert @@@@(j) > 0;
+  @}
+@}    
+
+public class GenericB extends GenericA <IJImpl, IJImpl> {
+  public void doSomething(IJImpl obj) 
+    ...
+}
+@end group
+@end example
+@c \caption{\label{ass:generic} Multiple overriding in parameterized class}
+
+@c ----------------------------------------------------------------------------
+@section Catching of @code{AssertionError}'s
+
+@findex AssertionError
+Precondition-, Postcondition- and InvariantErrors are thrown by the @code{assert}-statement.
+Thus, @code{try}-statements with a @code{catch}-clause can catch these errors before they 
+abruptly end the evaluation of a pre-, postcondition or invariant-clause. 
+
+@example
+@group
+  public void doSomething() 
+  @@require @{
+    try @{
+      // conditions
+      ...
+    @} catch (PreconditionError pe) @{
+      ...
+    @}
+  @}@{
+    ...
+  @}
+@end group
+@end example
+
+@c \caption{\label{prevent:pre:post}Catching of Pre- and Postconditions}
+
+@c ----------------------------------------------------------------------------
+@section Using synchronized in constrained methods
+
+A @code{synchronized} method 
+@cindex synchronized method
+ acquires a lock before it executes. That means for 
+methods with pre-, postconditions and invariants that the lock is acquired 
+before any condition is evaluated and is released after the last 
+condition is checked. In detail, the invariant, the 
+precondition, the body, the postcondition and the invariant again is evaluated 
+after the lock is acquired and before the lock is released.
+If the synchronized-statement is in the body of the method, only that part of 
+the code is synchronized. If a return-statement is enclosed by a synchronized-statement, 
+the postcondition is evaluated inside the synchronized code.    
+
+The two definitions of the method @code{doSomething} in the next example
+are equivalent in standard Java, but this specification defines a different behavior 
+in relation to multithreading.
+
+@example
+@group
+  public synchronized void doSomething() 
+  @@require @{ ...@}
+  @{ ... @}
+  @@ensure @{...@}
+
+  public void doSomething() 
+  @@require @{ ...@}
+  @{ 
+    synchronized(this) @{
+      ...
+    @} 
+  @}
+  @@ensure @{...@}
+@end group
+@end example
+
+@c \caption{\label{ass:synchronized}Using synchronized in constrained methods}
+
+@c ----------------------------------------------------------------------------
+@section New error classes
+
+An @code{assert} or @code{@@assert} in the invariant-clause of the class throws an @code{InvariantError}
+@findex InvariantError
+if it fails. In the require-clause of a method @code{assert} or @code{@@assert} throws a 
+@code{PreconditionError} and in the ensure-clause it throws a @code{PostconditionError}.
+@findex PreconditionError
+@findex PostconditionError
+All of these three classes extend the class @code{AssertionsError} introduced by JCP 41. 
+A precondition of a method fails if the precondition defined in the class, in 
+the base classes, and interfaces fail. It is useful that the 
+@code{PreconditionError} gives information about the reason of the failures of all 
+preconditions and not only the reason of the last one. Therefore, the 
+@code{PreconditionError} has a reference to the error thrown by the precondition 
+of the super class or the interface. 
+
+
+@c ----------------------------------------------------------------------------
+@c ----------------------------------------------------------------------------
+
+@chapter Translation
+
+@cindex translation
+Classes involving invariants and constrained methods are translated to JVM byte 
+code. In a nutshell, the translation proceeds by generating separate methods for 
+the class invariant and the require and ensure-clause 
+of the constrained method. Most subtleties of the translation are caused by 
+old expressions. To minimize the possibility of name clashes, the @code{$} 
+character is used in every identifier that is created by the compiler to translate the 
+contracts to JVM byte code. As defined in JLS §3.8 this character should be only used 
+in mechanically generated code. 
+The whole information about the translation can be found in @uref{extjava, [Lac01], [Lac01]}
+
+@c ----------------------------------------------------------------------------
+@c ----------------------------------------------------------------------------
+@chapter Summary
+
+Assertions provide benefits to a wide range of developers. The  implementation 
+in Kopi enable a programmer to use this benefits.
+
+All presented suggestions for assertions in Java are very different to the specification 
+developed for Kopi. 
+
+In other tools which provide constraints place them in comments although
+they can influence the evaluation of the code. Comments should never be able to 
+change the result of the code. Thus, another place must be found. 
+
+Eiffel provides special keywords to 
+support the definition of constraints. The syntax is very clear and easy to understand. 
+Adding new keywords to an existing and widely used language must be done with care. The 
+new keywords may be used as identifiers in legacy code. Nevertheless the author decided to add 
+three new keywords additional to them added by Sun, to the language.
+
+@sp 1
+
+@c @multitable @columnfractions .15 .17 .17 .17 .17 .17
+@multitable @columnfractions .33  .41 .26 
+@item 
+@c @tab  {@b{Jass}}
+@c @tab  {@b{iContract}}
+@c @tab  {@b{JMSAssert}}
+@tab  @center{@b{Eiffel}}
+@tab  @center{@b{Kopi}} 
+
+@item @b{invariant}
+@c @tab special comment @code{/** invariant ... **/}
+@c @tab tag @code{@@invariant} in document comment
+@c @tab tag @code{@@inv} in document comment
+@tab keyword @code{invariant}  
+@tab keyword @code{invariant}
+
+@item @b{postcondition}
+@c @tab special comment @code{/** require ... **/}
+@c @tab tag @code{@@pre} in document comment
+@c @tab tag @code{@@pre} in document comment
+@tab keyword @code{require} & @code{require else}
+@tab keyword @code{require}
+
+@item @b{postcondition}
+@c @tab special comment @code{/** ensure ... **/}
+@c @tab tag @code{@@post} in document comment
+@c @tab tag @code{@@post} in document comment
+@tab keyword @code{ensure} & @code{ensure else}
+@tab keyword @code{ensure}
+
+@item @b{entry values in postconditions}
+@c @tab special variable @code{Old}
+@c @tab <expr>@code{@@pre}
+@c @tab operator @code{$prev(...)}
+@tab operator @code{old}
+@tab operator @code{@@@@(@i{<expr>})}
+
+@item @b{return value in postconditions}
+@c @tab speical variable @code{Return}
+@c @tab pseudo variable @code{return}
+@c @tab keyword @code{$ret}
+@tab 
+@tab operator @code{@@@@()}
+
+@item @b{refinement}
+@c @tab optional
+@c @tab implicit
+@c @tab implicit
+@tab required
+@tab implicit
+@end multitable
+
+@c \caption{\label{eval:ass}Comparison of different proposals}
+
+@sp 1
+
+Expressions in postconditions which refer to the value of expressions at the 
+entry of the method  can be implemented in different ways. Cloning implicitly the whole 
+object, which is the result of expression, has two disadvantages. First, the @code{clone} method used 
+for the assertions could require a different implementation as the @code{clone} 
+method required for the normal operation of the program. The second disadvantage 
+is that it produces much unnecessary overhead. If only the entry value of the 
+size of a collection which is a member of the object is relevant, the clone 
+method must create many new useless objects because it creates a copy of the 
+whole collection. Source to source translators can not support private fields in old expressions because they copy 
+the contract code of the overridden methods into the overriding method which can not access private members of
+the super class. Kopi allocates an inner class for all old expressions in the 
+postcondition of a method. This is overhead, but it can support private members which is 
+very useful. Kopi does not clone any object implicitly in an old expression. It's 
+the duty of the programmer to create a copy of the object if necessary because 
+a compiler can not find the cases where a copy is needed. 
+
+ The invariant of the class must be 
+fulfilled although an exception is thrown. Thus, Kopi always checks the invariant. 
+Kopi is a compiler and not a source to source translator. 
+Therefore, it is able to check the precondition of a constructor before a super 
+constructor is invoked. 
+
+@unnumbered Bibliography
+
+@table @code
+
+@item [BGHDL99]
+@anchor{sun:draft:assertion}
+Joshua Bloch, Benedict Gomes, Damon Hart-Davis, and Doug Lea.
+ {Draft: A Simple} {Assertion Facility For the Java Programming
+  Language (Public Draft)}.
+ Technical report, Sun Microsystems, 1999.
+
+@item [GJSB98] 
+@anchor{javaspec}
+James Gosling, Bill Joy, Guy Steele, and Gilad Bracha.
+ @emph{The Java Language Specification}.
+Addison-Wesley, 1998.
+
+@item [Gos94] 
+@anchor{oak}
+James Gosling, editor.
+ @emph{Oak Language Specification}, 1994.
+
+@c @item [KHB98]
+@c @anchor{jContractor}
+@c Murat Karaorman, Urs H@"olzle, and John Bruno.
+@c  {jContractor}: {A Reflective Java Library to Support Design By
+@c   Contract}.
+@c  Technical report, Department of Computer Science, University of
+@c   California, December 1998.
+
+@c @item [K.R]
+@c @anchor{jmsAssert}
+@c K.Rangarajan.
+@c  {Design by Contract} for {Java} using {JMSAssert}.
+
+@c @item [Kra98]
+@c @anchor{iContract}
+@c Reto Kramer.
+@c  {iContract}---the {J}ava {D}esigns by {C}ontract tool.
+@c  In @emph{ Proc. Technology of Object-Oriented Languages and Systems,
+@c   TOOLS 26, Santa Barbara/CA, USA}. IEEE Press, Los Alamitos, 1998.
+
+@item [Lac01]
+@anchor{extjava}
+Martin Lackner.
+ @emph{Extending Java}, Master Thesis, Institut f@"ur Computersprachen, 
+Technische Universit@"at Wien, May 2001.
+
+@item [LY98]
+@anchor{jvmspec}
+Tim Lindholm and Frank Yellin.
+ @emph{ The Java Virtual Machine Specification}.
+ Addison-Wesley, 1998.
+
+@item [Mey91]
+@anchor{eiffel}
+Bertrand Meyer.
+ @emph{ Eiffel: The Language}.
+ Prentice-Hall, 1991.
+
+@item [Mey92]
+@anchor{Meyer:1992:ADC}
+Bertrand Meyer.
+ {Applying} {``Design by Contract''}.
+ @emph{Computer}, 25(10):40--51, October 1992.
+
+@item [Mey98]
+@anchor{eiffeloosc}
+Bertrand Meyer.
+ @emph{ Object Oriented Software Construction}.
+ Prentice-Hall, 1998.
+
+@end table
+
+@unnumbered Index
+
+@printindex cp
+
+@bye

@@ -1,0 +1,138 @@
+/*
+ * Copyright (C) 1990-2001 DMS Decision Management Systems Ges.m.b.H.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: MailPrinter.java,v 1.3 2004/12/17 18:10:58 lackner Exp $
+ */
+
+package at.dms.vkopi.lib.util;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import at.dms.util.mailer.Attachment;
+import at.dms.util.mailer.Mailer;
+
+
+/**
+ * Mail printer
+ */
+public class MailPrinter extends AbstractPrinter implements CachePrinter {
+
+  /**
+   * Constructs a mail printer
+   */
+  public MailPrinter(final String command,
+		     final String mailHost,
+		     final String recipient,
+		     final String ccRecipient,
+		     final String bccRecipient,
+		     final String subject,
+		     final String body,
+		     final String sender,
+		     final boolean sendPdf,
+		     final List attachments)
+  {
+    super("MailPrinter");
+    this.command = command;
+    this.mailHost = mailHost;
+    this.recipient = recipient;
+    this.ccRecipient = ccRecipient;
+    this.bccRecipient = bccRecipient;
+    this.subject = subject;
+    this.body = body;
+    this.sender = sender;
+    this.sendPdf = sendPdf;
+    this.attachments = attachments;
+  }
+
+  // ----------------------------------------------------------------------
+  // PRINTING WITH AN INPUTSTREAM
+  // ----------------------------------------------------------------------
+
+  /**
+   * Print a file and return the output of the command
+   */
+  public String print(PrintJob printdata) throws IOException, PrintException {
+    try {
+      PrintJob        gsJob = convertToGhostscript(printdata);
+      File            dest = gsJob.getDataFile();
+      
+      if (sendPdf) {
+        Process       process;
+        
+        dest = Utils.getTempFile("MAIL", "PDF");
+        process = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + dest + " -sDEVICE=pdfwrite " +
+                                            "-g" + (int)(gsJob.getWidth() * 10) + "x" + (int)(gsJob.getHeight() * 10) +
+                                            " -dNOPAUSE " + gsJob.getDataFile() + " -c quit ");
+        process.waitFor();
+      }
+
+      // ALLE ATTACHMENTS IN EINEM VEKTOR
+      List allattachments = new ArrayList();
+      Attachment attachment;
+      
+      allattachments.add(new Attachment(dest,
+                                        gsJob.getTitle() + (sendPdf ? ".pdf" : ".ps")));
+      
+      allattachments.addAll(attachments);
+
+      Mailer          mailer = new Mailer();
+      
+      mailer.setMailHost(mailHost);
+      mailer.sendMessage(sender,
+                         recipient,
+                         ccRecipient,
+                         bccRecipient,
+                         subject,
+                         (body == null) ? "" : body,
+                         allattachments);
+    } catch (Exception e) {
+      throw new PrintException(Message.getMessage("mail_cant_send"), e, PrintException.EXC_UNKNOWN);
+    }
+    return "NYI";
+  }
+
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  private final String		command;
+  private final String		mailHost;
+  private final String		recipient;
+  private final String		ccRecipient;
+  private final String		bccRecipient;
+  private final String		subject;
+  private final String		body;
+  private final String		sender;
+  private final boolean		sendPdf;
+
+  private List			attachments;
+}

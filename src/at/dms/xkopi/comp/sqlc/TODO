@@ -1,0 +1,5 @@
+graf 001224	SCompilationUnit: accept only 1 statement (and remove semicolon)
+graf 990905	Check if types TINYINT, SMALLINT, ... are used
+graf 990905	Remove bitwise operations
+graf 990905	Remove "subrange" operation
+graf 990912	Check FieldNameListTableReference.java

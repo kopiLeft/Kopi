@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 1990-2001 DMS Decision Management Systems Ges.m.b.H.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: XKjcOptions.opt,v 1.4 2003/09/30 08:13:45 vgp Exp $
+ */
+
+prefix XKjc
+
+parent at.dms.kopi.comp.kjc.KjcOptions
+
+usage		"usage: at.dms.xkopi.comp.xkjc.Main [option]* [--help] <java-files>"
+
+package at.dms.xkopi.comp.xkjc
+
+longname		"xkjcpath"
+	shortcut	"x"
+	type		String
+	default		"null"
+        requireArgument
+	help		"Change overloaded operator path to oo"
+
+longname		"nooo"
+	shortcut	"o"
+	type		boolean
+	default		"false"
+	help		"Don''t perform any operator overloading"
+
+longname		"database"
+	shortcut	"i"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Set the database definition class"
+
+longname		"allowGoto"
+	shortcut	"a"
+	type		boolean
+	default		"false"
+	help		"Allows goto in XKopi"
+
+longname		"ignoreUnreachableStatement"
+	shortcut	"Y"
+	type		boolean
+	default		"false"
+	help		"Allows blocks with unreachable statements in XKopi"

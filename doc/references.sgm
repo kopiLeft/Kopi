@@ -1,0 +1,1545 @@
+<REFERENCE ID="REF-ELEMENT" ROLE="folders"><TITLE>Warning Reference</TITLE>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>ENCLOSE_IF_ELSE_IN_BLOCK</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Else part of if-statement should be enclosed in block statement (JCC)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Motivation</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+if (aCond) {
+  aStatement();
+} else
+  aStatement();
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>ENCLOSE_IF_THEN_IN_BLOCK</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Then part of if-statement should be enclosed in block statement (JCC).
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+if (aCond)
+  aStatement();
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>ENCLOSE_LOOP_BODY_IN_BLOCK</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Loop body should be enclosed in block statement (JCC).
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+while (aCond)
+  aStatement();
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>FIELD_RENAME_SUPER</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): Field aField is already declared in a super class and is visible here (§kopi).
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  protected aField;
+}
+class B extends A {
+  protected aField;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>METHOD_UNCHECKED_EXCEPTION</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): Declared exception aQualifiedException is an unchecked exception (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+void aMethod() throws java.lang.RuntimeException {
+
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>METHOD_UNTHROWN_EXCEPTION</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): Declared exception aQualifiedException is never thrown (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+void aMethod() throws java.io.IOException {
+  // nothing
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>OLD_STYLE_ARRAY_BOUNDS</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Old_style array bound declaration (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+int	aField[];
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>REPLACE_PACKAGE_IMPORT</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	notice: Consider replacing package import aQualifiedPackageImport by import of class(es) aListOfClassesImport (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+import java.io.*;
+// but only java.io.File is used in this compilation unit
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>SELF_ASSIGNMENT</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): Assignment of an expression to itself (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+Constructor(int aParan) {
+  // The parameter is missspelled.
+  this.aParam = aParam;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>STRAY_COMMA</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Stray comma (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+new int[] {1, 2, }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>STRAY_SEMICOLON</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(3): Stray semicolon (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+void aMethod() {
+
+};
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNNECESSARY_CAST</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): The type aType does not need to be casted in aSupertype (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+Object o = (Object)Integer.valueOf("1");
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNNECESSARY_INSTANCEOF</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): The instanceof evaluation is not necessary (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+if (Integer.valueOf("1") instanceof Integer) {
+
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>INSTANCE_PREFIXES_STATIC_METHOD</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Avoid using an instance to access a class (static) method; use a class name instead (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  static int i() {return 1;};
+  static int aMethod(A a) {
+    return a.i();
+  }
+} 
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>INSTANCE_PREFIXES_STATIC_FIELD</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Avoid using an instance to access a class (static) field; use a class name instead (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  static i;
+  static aMethod(A a) {
+    a.i = 0;
+  }
+} 
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_CATCH_PARAMETER</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(3): The catch parameter aCatchParameter is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+try {
+// ...
+} catch (Exception e) {
+
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_CLASS_IMPORT</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning3: The imported class aClass is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+import java.io.File;
+// but not anymore used
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_LOCALVAR</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): The local variable aVariable is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+{
+  int count;
+  // not used anymore
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_PACKAGE_IMPORT</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): The imported package \"{0}\" is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+import java.lang.*;
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_PARAMETER</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(3): The parameter aParameter is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+void aMethod(int aParameter) {
+  // aParameter is not used anymore
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_PRIVATE_FIELD</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): The private field aField is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+private int notUsedAnymore;
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_PRIVATE_METHOD</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): The private method aMethod is not used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+private int notUsed() {}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>IMPORT_JAVA_LANG</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): On-Demand-Import of package java.lang is not necessary (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+import java.lang.Integer;
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>IMPORT_CURRENT_PACKAGE</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): On-Demand-Import of current package is not necessary (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+import currentpackage.AClass;
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNECESSARY_MODIFIERS</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): The modifier aModifier is implicit and therefore does not need to be specified (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+interface AnInterface {
+  public final int i = 0;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Not Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>CASE_FALL_THROUGH</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Fall through is dangerous and should not be used (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+switch (x) {
+case a:
+  aStatement();
+case b:
+  aSecondStatement()
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>SWITCH_NO_DEFAULT</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Every switch must have a default clause (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+switch (x) {
+case 1:
+  //
+case 2:
+  //
+}
+// default value usually means that there is an error. 
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>EMPTY_CATCH_BLOCK</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): Catch block is empty (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+try {
+  aStatement();
+} catch (AnException ex) {
+  // Should do something about it.
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>PACKAGE_PROTECTED_ATTRIBUTE</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(3): Field aField should be declared private or public (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class AClass {
+  int i;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>MODIFIER_ORDER</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): The order of the modifiers does not follow the convention [aModifier] (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+final public static int i;
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>PACKAGE_IS_MISSING</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	notice: There is no package declaration for this compilation unit (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+// no package XXX
+class AClass {
+
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>ATTRIBUTE_LIST</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(3): Attribute lists are hard to read and are preferably replaced by a list of attribute declaration (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class AClass {
+  int a, b, c;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Not Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>CONSTANT_VARIABLE_NOT_FINAL</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	notice: This local variable is constant and should be declared final (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+        That allows the compiler to perform better optimizations.
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+int aMethod() {
+  int i =0;
+  //
+  return i;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>ASSIGNMENT_IN_CONDITION</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Assignment operator may have been used in place of equality operator (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+if (b = true) {
+  aStatement();
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>SUPER_METHOD_DIFFERS</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): A method with the same name but different parameters exists in super class (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class AClass {
+  int aMethod() {
+
+  }
+}
+class ASecondClass extends AClass {
+  int aMethod(boolean b) {
+    // it does not override aMethod
+  }
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Not Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>STRING_COMPARISON</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(1): Comparison of strings with '==' operator is surely wrong (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+boolean aMethod() {
+  return "1" == Integer.toString(1);
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>COMPARING_BOOLEAN_CONSTANT</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Comparing boolean expression to constant values is not necessary (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+if (aCond() == true) {
+
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>ASSIGNS_LOOP_VARIABLE</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Assignment of loop variable aVariable inside loop body (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+for (int i = 0; i < 10; i++) {
+  for (int j - 0; j < 10; i++) {
+    // do something but i is incremented twice
+  }
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNINITIALIZED_FIELD</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	notice: Field aField may have not been explicitely initialized (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  private boolean aCondition;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>FIELD_COULD_BE_FINAL</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Field aField is constant and could be declared final (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  // never reassigned
+  private int aCondition = 1;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Not implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>FIELD_COULD_BE_STATIC</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): Field aField could be declared static (§kopi)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  // never reassigned in instance methods
+  private int aField = 1;
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Not implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>UNUSED_RETURN_VALUE_FROM_FUNCTION_CALL</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Message</TITLE>
+      <PARA>
+	warning(2): The method aMethod returns a value that is never used (§kopi) 
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	TBR.
+        If you really want to call a function as a procedure, use the /*unused*/ comment tag:
+	<PROGRAMLISTING>
+ class A {
+  boolean aMethod() {...}
+  void anOtherMethod() {
+    /*unused*/aMethod();
+    /*unused return parameter*/aMethod();
+  }
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Rationale</TITLE>
+      <PARA>
+	TBR.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Example</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+class A {
+  boolean aMethod() {...}
+  void anOtherMethod() {
+    aMethod();
+  }
+}
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Not implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+</REFERENCE>

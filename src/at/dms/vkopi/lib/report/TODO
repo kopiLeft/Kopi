@@ -1,0 +1,48 @@
+----------------------------------------------------------------------
+TODO
+
+980615	add new options in menubar
+
+	add a column property like FOLLOW XXX in form 
+	--> (Kunde) (Datum)    (Telefon)
+	    XXXX               Tel            <--- tel in "vis-a-vis" of Kunde
+                     15.5.98                  <--- tel is not reported
+
+----------------------------------------------------------------------
+DONE
+
+980615	languill
+980206	createTree when columnMoved
+
+980615	languill
+980511	hidden columns
+
+980615	languill
+980506	improve documentation
+
+980615	languill
+980506	report printing feature
+
+980206	vincent
+980506	link toolbar and menubar fonctions with VReport
+
+980206	vincent
+980506	implement grammar
+
+980507	languill
+980506	multi-cell selections
+
+980507	languill
+980506	DMultiLineCell correction
+
+980506	languill
+980506	add toolbar and menubar component
+
+980506	languill
+980409	put report formats into VReportRow structure
+
+980506	languill
+980409	subclass VReportFormat for each datatype
+
+980506	languill
+980409	create frame in DReport

@@ -1,0 +1,849 @@
+<REFERENCE ID="REF-OPTIMIZATIONS" ROLE="folders"><TITLE>Optimizations Reference</TITLE>
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Jump to next instruction</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a branch instruction jumps to the next instruction, it can be removed or replaced by a pop instruction.
+      </PARA>
+      <PARA>
+	These instructions will be replaced by a <EnVar>pop2</EnVar>
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+ 	    <PARA><ENVAR>if_icmpeq</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpne</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmplt</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpgt</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpge</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmple</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+	These instructions will be replaced by a <EnVar>pop</EnVar >
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA><ENVAR>ifeq</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>ifne</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>iflt</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>ifge</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>ifgt</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>ifle</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_acmpeq</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_acmpne</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>ifnull</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>ifnonnull</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+	These instructions will be replaced by a <EnVar>pop</EnVar >
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA><ENVAR>goto</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@goto		_L1
+        _L1:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@return		
+    }
+
+or
+
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+                @const		1
+        	@ifne		_L1
+        _L1:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+		@const		1
+		@pop
+        	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Jump to goto instruction</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a branch instruction jumps to a <ENVAR>goto</ENVAR>, the target can be set to the target of this <ENVAR>goto</ENVAR>.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@goto		_L1
+        _L1:	@goto		_L2
+	_L2:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@goto		_L2
+        _L1:	@goto		_L2
+	_L2:	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Goto to return instruction</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a <ENVAR>goto</ENVAR> jumps to a <ENVAR>return</ENVAR>, it can be replaced by a <ENVAR>return</ENVAR>.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@goto		_L1
+	_L1:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@return
+	_L1:	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME><ENVAR>nop</ENVAR></REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	<ENVAR>nop</ENVAR> can be removed in almost every case.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@nop
+		@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+		@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Comparison to 0</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a branch instruction follows a <ENVAR>push 0</ENVAR>, it can be removed or replaced by a simpler instruction.
+      </PARA>
+      <PARA>
+	These instructions will be replaced by a <EnVar>icmp</EnVar>:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpeq</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpne</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmplt</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpgt</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmpge</ENVAR></PARA>
+	  </LISTITEM>
+	  <LISTITEM>
+	    <PARA><ENVAR>if_icmple</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+	This instruction will be replaced by a <EnVar>goto</EnVar>:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA><ENVAR>ifeq</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+	This instruction will be removed:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+ 	    <PARA><ENVAR>ifne</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@push		1
+		@push		0
+		@if_icmp	_L1
+		@goto		_L1
+        _L1:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@push		1
+		@if_eq		_L1
+		@goto		_L1
+        _L1:	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Comparison to 1</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a branch instruction follows a <ENVAR>push 1</ENVAR>, it can be removed or replaced by a <ENVAR>goto</ENVAR>.
+      </PARA>
+      <PARA>
+	This instruction will be replaced by a <EnVar>goto</EnVar>:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA><ENVAR>ifeq</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+	This instruction will be removed:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+ 	    <PARA><ENVAR>ifne</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@push		1
+		@ifne		_L1
+		@goto		_L1
+        _L1:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@goto		_L1
+		@goto		_L1
+        _L1:	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Comparison to <ENVAR>null</ENVAR></REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a branch instruction follows a <ENVAR>push null</ENVAR> it can be removed or replaced by a <ENVAR>goto</ENVAR>.
+      </PARA>
+      <PARA>
+	This instruction will be replaced by a <EnVar>goto</EnVar>:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA><ENVAR>if_null</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+	This instruction will be removed:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+ 	    <PARA><ENVAR>if_nonnull</ENVAR></PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@push		null
+		@if_nonnull	_L1
+		@goto		_L1
+        _L1:	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+		@goto		_L1
+        _L1:	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME><ENVAR>Push</ENVAR> and <ENVAR>pop</ENVAR></REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	If a push is followed by a pop, both can be removed.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@push		null
+                @pop
+        	@return		
+    }
+===>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static void test() {
+        	@return		
+    }
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Replace boolean branch</REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	This special pattern is generated by naive compiler for boolean comparison.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static int test() {
+		@iload		2
+		@iload		1
+		@if_icmplt	_L1
+		@const		0
+		@goto		_L2
+	_L1:	@const		1
+	_L2:	@ifeq		_L3
+		@const		10
+		@goto		_L4
+	_L3:	@const		11
+	_L4:	@ireturn
+    }
+
+===>
+
+    /**
+     * test
+     *
+     * @stack   2
+     * @locals  3
+     */
+    public static int test() {
+                @iload          2
+                @iload          1
+                @if_icmpge      _L5
+                @const          10
+                @ireturn
+        _L5:    @const          11
+                @ireturn
+    }
+
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Jump over a <ENVAR>goto</ENVAR></REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	A jump over a <ENVAR>goto</ENVAR> can be replaced by its reverse code if targets are identical.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static int test() {
+		@iload		1
+		@ifeq		_L1
+        	@goto		_L2
+	_L1:	@const		1
+		@ireturn		
+	_L2:	@const		2
+		@ireturn
+    }
+
+===>
+
+    /**
+     * test
+     *
+     * @stack   1
+     * @locals  2
+     */
+    public static int test() {
+                @iload          1
+                @ifne           _L4
+                @const          1
+                @ireturn
+        _L4:    @const          2
+                @ireturn
+    }
+
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Branch following a <ENVAR>ixor -1</ENVAR></REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	A branch following a <ENVAR>ixor -1</ENVAR> can be replaced by its reverse code.
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static int test() {
+		@iload		1
+		@const		-1
+        	@ixor
+		@ifeq		_L1
+		@const		3
+		@ireturn
+	_L1:	@const		2
+		@ireturn
+    }
+
+===>
+
+    /**
+     * test
+     *
+     * @stack   1
+     * @locals  2
+     */
+    public static int test() {
+                @iload          1
+                @ifne           _L4
+                @const          3
+                @ireturn
+        _L4:    @const          2
+                @ireturn
+    }
+
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Duplicate identical <ENVAR>push</ENVAR> </REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	A duplicate <ENVAR>push</ENVAR> can be replaced by a <ENVAR>push</ENVAR> and a <ENVAR>dup</ENVAR>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static int test() {
+		@const		-1
+		@const		-1
+		@iadd
+		@ireturn
+    }
+
+===>
+
+    /**
+     * test
+     *
+     * @stack   2
+     * @locals  1
+     */
+    public static int test() {
+                @const          -1
+                @dup
+                @iadd
+                @ireturn
+    }
+
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>Duplicate identical <ENVAR>getfield</ENVAR> </REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	A duplicate <ENVAR>getfield</ENVAR> can be replaced by a <ENVAR>getfield</ENVAR> and a <ENVAR>dup</ENVAR>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+
+    static int i;
+
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static int test() {
+		@getstatic      int Test.i
+		@getstatic      int Test.i
+		@iadd
+		@ireturn
+    }
+
+===>
+
+    static int i;
+
+    /**
+     * test
+     *
+     * @stack   2
+     * @locals  1
+     */
+    public static int test() {
+                @getstatic      int Test.i
+                @dup
+                @iadd
+                @ireturn
+    }
+
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+
+  <REFENTRY>
+    <REFNAMEDIV>
+      <REFNAME>A <ENVAR>store</ENVAR> following <ENVAR>load</ENVAR></REFNAME>
+      <REFPURPOSE>TBR</REFPURPOSE>
+    </REFNAMEDIV>
+    <REFSECT1><TITLE>Description</TITLE>
+      <PARA>
+	A <ENVAR>store</ENVAR> following <ENVAR>load</ENVAR> can be replaced by a <ENVAR>dup</ENVAR>, <ENVAR>store</ENVAR> sequence.
+	This allows the compiler to further optimize once the load is removed (reduce liveness of the local variable)
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Program</TITLE>
+      <PARA>
+	<PROGRAMLISTING>
+
+    /**
+     * test
+     *
+     * @stack	0
+     * @locals	1
+     */
+    public static int test() {
+		@const		2
+		@istore		1
+		@iload		1
+		@ireturn
+    }
+
+===>
+
+    /**
+     * test
+     *
+     * @stack   2
+     * @locals  2
+     */
+    public static int test() {
+                @const          2
+                @dup
+                @istore         1
+                @ireturn
+    }
+
+
+	</PROGRAMLISTING>
+      </PARA>
+    </REFSECT1>
+    <REFSECT1><TITLE>Status</TITLE>
+      <PARA>
+	Implemented.
+      </PARA>
+    </REFSECT1>
+  </REFENTRY>
+</REFERENCE>

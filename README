@@ -1,0 +1,152 @@
+--------------------------------------------------------------------------------
+					README
+--------------------------------------------------------------------------------
+
+				       Kopi Suite
+
+				  http://www.dms.at/kopi
+
+--------------------------------------------------------------------------------
+
+VERSION :	2.2A
+RELEASED :	26 August 2004
+
+THIS FILE :	$Id: README,v 1.28 2004/09/28 15:26:56 graf Exp $
+
+--------------------------------------------------------------------------------
+
+THIS PACKAGE IS PART OF THE "KOPI SUITE", PLEASE SEE THE LICENSE PROVIDED WITH
+"KOPI" IF YOU WISH TO USE, MODIFY OR DUPLICATE THIS SOFTWARE.
+
+--------------------------------------------------------------------------------
+CONTENTS
+
+FILES
+    README		This file
+    COPYING		GPL: The license for compilers
+    COPYING.LIB		LGPL: the license for libraries 
+
+DIRECTORIES
+
+doc			To be documented
+
+src
+  at
+    dms
+      kopi
+	lib
+	   assertion	Runtime classes for contracts
+	comp
+	   kjc		The Java Compiler of the Kopi Suite
+
+      util
+	base		Utility classes shared by all DMS tools
+	lpr		An LPR-client implementation in Java
+	mailer		An SMTP-client implementation in Java
+	ipp		An IPP-client implementation in Java
+	
+
+      compiler		Tools and libraries used to build and run the compilers
+	base		Utility classes shared by all compilers
+	resource	Contains a skeleton for JFlex based scanners
+	tools		Tools to build and run the compilers
+	antlr		A modified (and simplified) version of ANTLR 2.7.1
+	    runtime	Run-time support classes for generated parsers
+	    compiler	Parser (and lexer) generator
+	    extra	Extra run-time classes developed by DMS
+			(will be integrated in runtime)
+	jperf		A perfect hashcode generator (obsolete)
+	optgen		An option class generator based on GNU Getopt
+	msggen		A message class generator
+	lexgen		A keyword preprocessor for ANTLR and JFlex
+	include		A preprocessor to include files
+
+
+      bytecode		Tools and libraries to manipulate JVM bytecode
+	classfile	A library to manipulate JVM classfiles
+	optimizer	A library to optimize JVM bytecode
+	ssa		SSA representation to optimize JVM bytecode (experimental)
+	ksm		An assembler for JVM classfiles
+	dis		A disassembler for JVM classfiles
+	memcnt		A package to instrument JVM classfiles (instance counting)
+
+
+      xkopi		Compilers and run-time libraries for Java/SQL integration
+	lib
+	   base		The run-time library for XKOPI
+	   type		A set of new primitive types for the XKOPI language
+	   oper		Definitions of operators for XKOPI primitive types
+
+	comp
+	   mkjc		A tool to generate KJC syntax trees from source-like
+			specifications
+
+	   sqlc		A simple SQL parser
+	   xkjc		A compiler for Java with embedded SQL and operator
+			overloading
+
+	   database	A library to verify SQL statements
+	   dbi		A translator between SQL dialects
+	   dict		Generates class with database information
+
+
+      vkopi		Compilers and run-time libraries for Visual Kopi, 4GL tool
+	lib		Run-time libraries for Visual Kopi
+	    util	Utility classes
+	    visual	Window handling classes
+	    form	The run-time library for Visual Kopi forms
+	    print	The run-time library for Visual Kopi printed reports
+	    report	The run-time library for Visual Kopi dynamic reports
+	    cross	Classes that use more than one module
+	    doc		A documentation generator for Visual Kopi programs
+	    resource	Predefined icons and skeletons
+
+	comp		Compilers for Visual Kopi
+	    trig	A sub-compiler for Java triggers embedded in forms
+			and reports
+	    base	Grammars and classes common to forms and reports
+	    form	The form generator
+	    report	The generator for dynamic reports
+	    print	The generator for printed reports
+	    main	The compiler driver for Visual Kopi
+
+      drivers
+	ikjc		A remote incremental compiler (client/server mode) for KJC
+	kopi		A jar-Main for all Kopi tools
+
+--------------------------------------------------------------------------------
+OTHER PACKAGES YOU WILL NEED
+
+    JDK 1.4 or higher
+
+    GNU GETOPT
+	The parsing of the arguments of the command line is made with gnu.getopt :
+	http://www.urbanophile.com/arenn/hacking/download.html
+
+    JFLEX
+	The lexical analysers are generated with JFlex :
+	http://www.jflex.de
+
+    IBM BIGDECIMAL CLASSES
+	An improved implementation of the java.math package (XKOPI only) :
+	http://www2.hursley.ibm.com/decimal
+
+--------------------------------------------------------------------------------
+BUILDING FROM SOURCE
+
+    You will need GNU make.
+
+    Define an environment variable CLASSROOT to an existing directory in your
+    file hierarchy : this is where the generated class files will be stored.
+    Don't forget to include this directory in your CLASSPATH.
+
+    You will need a working Java compiler to build Kopi from source. You may need
+    to edit the Makefile in this directory if the Java compiler available on your
+    system is not Jikes.
+
+    Then just type "make".
+
+--------------------------------------------------------------------------------
+REPORTING BUGS
+
+    Please, report all bugs to kopi@dms.at

@@ -1,0 +1,396 @@
+/*
+ * Copyright (C) 1990-2001 DMS Decision Management Systems Ges.m.b.H.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: VKForm.java,v 1.2 2004/08/17 13:51:03 lackner Exp $
+ */
+
+package at.dms.vkopi.comp.form;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+
+import at.dms.compiler.base.Compiler;
+import at.dms.compiler.base.PositionedError;
+import at.dms.compiler.base.TokenReference;
+import at.dms.kopi.comp.kjc.*;
+import at.dms.util.base.InconsistencyException;
+import at.dms.vkopi.comp.base.VKCommand;
+import at.dms.vkopi.comp.base.VKConstants;
+import at.dms.vkopi.comp.base.VKContext;
+import at.dms.vkopi.comp.base.VKDefinitionCollector;
+import at.dms.vkopi.comp.base.VKPrettyPrinter;
+import at.dms.vkopi.comp.base.VKStdType;
+import at.dms.vkopi.comp.base.VKTrigger;
+import at.dms.vkopi.comp.base.VKUtils;
+import at.dms.vkopi.comp.base.VKWindow;
+
+/**
+ * This class represents the definition of a form
+ */
+public class VKForm extends VKWindow implements at.dms.kopi.comp.kjc.Constants {
+
+  // ----------------------------------------------------------------------
+  // CONSTRUCTORS
+  // ----------------------------------------------------------------------
+
+  /**
+   * This class represents the definition of a form
+   *
+   * @param where		the token reference of this node
+   * @param name		the name of this form
+   * @param superName		the type of the form
+   */
+  public VKForm(TokenReference where,
+                KjcEnvironment environment,
+		CParseCompilationUnitContext cunit,
+		CParseClassContext classContext,
+		VKDefinitionCollector coll,
+		String name,
+		CReferenceType superForm,
+		CReferenceType[] interfaces,
+		int options,
+		VKCommand[] commands,
+		VKTrigger[] triggers,
+		VKFormElement[] blocks,
+		String[] pages)
+  {
+    super(where,
+	  cunit,
+	  classContext,
+	  coll,
+	  name,
+	  superForm == null ? CReferenceType.lookup(VKConstants.VKO_FORM) : superForm,
+	  interfaces,
+	  options,
+	  commands,
+	  triggers);
+
+    this.blocks = blocks;
+    this.pages = pages;
+    this.environment = environment;
+  }
+
+  // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
+
+  /**
+   * Get block
+   */
+  public VKFormElement getFormElement(String ident) {
+    for (int j = 0; j < blocks.length; j++) {
+      if (blocks[j].getIdent().equals(ident)) {
+	return blocks[j];
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Return true if this field is multipage
+   */
+  public boolean isMultiPage() {
+    return pages.length > 0;
+  }
+
+  // ----------------------------------------------------------------------
+  // SEMANTIC ANALYSIS
+  // ----------------------------------------------------------------------
+
+  /**
+   * Check expression and evaluate and alter context
+   * @param block	the actual context of analyse
+   * @exception	PositionedError	Error catched as soon as possible
+   */
+  public void checkCode(VKContext context) throws PositionedError {
+    super.checkCode(context);
+
+    for (int i = 0; i < blocks.length; i++) {
+      blocks[i].checkCode(context, this);
+    }
+
+    if ((getOptions() & at.dms.vkopi.lib.form.VConstants.FMO_NOBLOCKMOVE) > 0) {
+      throw new InconsistencyException("OLD AND NOT HANDLED");
+    }
+  }
+
+  // ----------------------------------------------------------------------
+  // CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   *
+   */
+  public JCompilationUnit genCode(Compiler compiler) {
+    CParseCompilationUnitContext	cunit = getCompilationUnitContext();
+    CParseClassContext			clazz = getClassContext();
+    TokenReference			ref = getTokenReference();
+    TypeFactory                         factory = environment.getTypeFactory();
+
+    // ADD INIT
+    clazz.addMethodDeclaration(buildInit());
+
+    // ADD FIELDS
+    clazz.addFieldDeclaration(buildTimestamp());
+
+    // ADD BLOCKS
+    for (int i = 0; i < blocks.length; i++) {
+      JClassDeclaration		decl = blocks[i].genCode(true,factory);
+
+      if (decl != null) {
+	clazz.addInnerDeclaration(decl);
+      }
+      clazz.addFieldDeclaration(VKUtils.buildFieldDeclaration(ref,
+							      ACC_PROTECTED,
+							      blocks[i].getType(),
+							      blocks[i].getIdent(),
+							      null));
+      clazz.addFieldDeclaration(VKUtils.buildFieldDeclaration(ref,
+							      ACC_PROTECTED,
+							      blocks[i].getType(),
+							      blocks[i].getShortcut(),
+							      null));
+    }
+
+    // BUILD CONSTRUCTOR
+    JConstructorDeclaration cstr = new JConstructorDeclaration(ref,
+							       ACC_PUBLIC,
+							       getIdent(),
+							       JFormalParameter.EMPTY,
+							       VKUtils.VECT_VException,
+							       new JConstructorBlock(ref,
+                                                                                 null,
+                                                                                 new JStatement[0]),
+							       null,
+							       null,
+                                                               factory);
+    clazz.addMethodDeclaration(cstr);
+
+    // ADD TRIGGERS
+    if (getCommandable().countTriggers(TRG_VOID) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(factory, ref, "executeVoidTrigger", TRG_VOID));
+    }
+    if (getCommandable().countTriggers(TRG_PRTCD) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(factory, ref, "executeProtectedVoidTrigger", TRG_PRTCD));
+    }
+    if (getCommandable().countTriggers(TRG_OBJECT) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(factory, ref, "executeObjectTrigger", TRG_OBJECT));
+    }
+    if (getCommandable().countTriggers(TRG_BOOLEAN) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(factory, ref, "executeBooleanTrigger", TRG_BOOLEAN));
+    }
+    if (getCommandable().countTriggers(TRG_INT) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(factory, ref, "executeIntegerTrigger", TRG_INT));
+    }
+
+    // BUILD THE CLASS
+    JClassDeclaration		self = new JClassDeclaration(ref,
+							     ACC_PUBLIC,
+							     getIdent(),
+                                                             CTypeVariable.EMPTY,
+							     getSuperWindow(),
+							     getInterfaces(),
+							     clazz.getFields(),
+							     clazz.getMethods(),
+							     clazz.getInnerClasses(),
+							     clazz.getBody(),
+							     null,
+							     null);
+
+    // BUILD THE COMPILATION UNIT
+    cunit.addTypeDeclaration(environment.getClassReader(), self);
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "java/lang", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/vkopi/lib/util", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/vkopi/lib/form", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/vkopi/lib/cross", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/vkopi/lib/print", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/vkopi/lib/report", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/vkopi/lib/visual", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/xkopi/lib/base", null));
+    cunit.addPackageImport(new JPackageImport(TokenReference.NO_REF, "at/dms/xkopi/lib/type", null));
+    cunit.addClassImport(new JClassImport(TokenReference.NO_REF, "java/sql/SQLException", null));
+
+    JCompilationUnit compilUnit = new JCompilationUnit(ref,
+                                                       environment,
+						       cunit.getPackageName(),
+						       cunit.getPackageImports(),
+						       cunit.getClassImports(),
+						       cunit.getTypeDeclarations());
+
+    return compilUnit;
+  }
+
+  private JFieldDeclaration buildTimestamp() {
+    TokenReference	ref = getTokenReference();
+    JExpression		expr;
+
+    expr = new JMethodCallExpression(ref,
+				     new JTypeNameExpression(ref, CReferenceType.lookup("java/lang/System")),
+				     "currentTimeMillis",
+				     JExpression.EMPTY);
+    return VKUtils.buildFieldDeclaration(ref,
+					 ACC_PUBLIC | ACC_FINAL | ACC_STATIC,
+					 CStdType.Long,
+					 "timestamp",
+					 expr);
+  }
+
+  /**
+   * get block number
+   *
+  public int getBlockNumber(VKFormElement b) {
+    for (int i = 0; i < blocks.size(); i++) {
+      // !!!!$$$$
+      if (((VKFormElement)blocks.elementAt(i)) == b) {
+	return i;
+      }
+    }
+    throw new InconsistencyException("FATAL ERROR: Undefined block" + b.getIdent());
+  }
+*/
+
+  // ----------------------------------------------------------------------
+  // CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Check expression and evaluate and alter context
+   * @exception	PositionedError	Error catched as soon as possible
+   */
+  public JMethodDeclaration buildInit() {
+    TokenReference	ref = getTokenReference();
+    Vector		body = new Vector(10 + blocks.length);
+
+    super.genInit(body);
+
+    // PAGES
+    JExpression[]	init1 = new JExpression[pages.length];
+    for (int i = 0; i < pages.length; i++) {
+      init1[i] = new JStringLiteral(ref, pages[i]);
+    }
+    body.addElement(VKUtils.assign(ref, "pages", VKUtils.createArray(ref, CStdType.String, init1)));
+
+    // blocks = new Block[0]
+    init1 = new JExpression[blocks.length];
+    for (int i = 0; i < blocks.length; i++) {
+      VKFormElement	block = blocks[i];
+      JExpression	left = JNameExpression.build(ref, block.getIdent());
+      JExpression	right = block.genConstructorCall();
+
+      init1[i] = new JAssignmentExpression(ref, left, right);
+      left = JNameExpression.build(ref, block.getShortcut());
+      init1[i] = new JAssignmentExpression(ref, left, init1[i]);
+    }
+    body.addElement(VKUtils.assign(ref, "blocks", VKUtils.createArray(ref, VKStdType.VBlock, init1)));
+
+    // TRIGGERS
+    body.addElement(VKUtils.assign(ref,
+				   CMP_BLOCK_ARRAY,
+				   new JNewArrayExpression(ref,
+							   CStdType.Integer,
+							   new JExpression[] {
+							     new JIntLiteral(ref, TRG_TYPES.length)
+							   },
+							   null)));
+    int[]	triggerArray = getCommandable().getTriggerArray();
+    for (int i = 0; i < TRG_TYPES.length; i++) {
+      if (triggerArray[i] != 0) {
+	JExpression	expr = new JIntLiteral(ref, triggerArray[i]);
+	JExpression	left = new JArrayAccessExpression(ref,
+							  new JNameExpression(ref, CMP_BLOCK_ARRAY),
+							  new JIntLiteral(ref, i));
+	JExpression	assign = new JAssignmentExpression(ref, left, expr);
+	body.addElement(new JExpressionStatement(ref, assign, null));
+      }
+    }
+
+    // Set Title
+    body.addElement(new JExpressionStatement(ref, VKUtils.call(ref, "setTitle", VKUtils.toExpression(ref, getName())), null));
+
+    for (int i = 0; i < blocks.length; i++) {
+      VKFormElement	block = blocks[i];
+
+      JExpression	left;
+      left = new JMethodCallExpression(ref,
+				       JNameExpression.build(ref, block.getIdent()),
+				       "setInfo",
+				       new JExpression[] {VKUtils.toExpression(ref, block.getPageNumber())});
+      body.addElement(new JExpressionStatement(ref, left, null));
+    }
+
+    return new JMethodDeclaration(ref,
+				  ACC_PROTECTED | ACC_FINAL,
+                                  CTypeVariable.EMPTY,
+				  CStdType.Void,
+				  "init",
+				  JFormalParameter.EMPTY,
+				  CReferenceType.EMPTY,
+				  new JBlock(ref,
+					     (JStatement[])at.dms.util.base.Utils.toArray(body, JStatement.class),
+					     null),
+				  null,
+				  null);
+  }
+
+  // ----------------------------------------------------------------------
+  // VK CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Generate the code in kopi form
+   * It is useful to debug and tune compilation process
+   * @param p		the printwriter into the code is generated
+   */
+  public void genVKCode(String destination, TypeFactory factory) {
+    final String                fileName;
+
+    if (destination == null || destination.equals("")) {
+      fileName = getTokenReference().getFile();
+    } else {
+      fileName = destination + File.separatorChar + getTokenReference().getFile();
+    }
+
+    try {
+    final VKPrettyPrinter       pp;
+
+    pp = new VKFormPrettyPrinter(fileName, factory);
+    genVKCode(pp);
+    pp.close();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      System.err.println("cannot write : " + fileName);
+    }
+  }
+
+  /**
+   * Generate the code in kopi form
+   * It is useful to debug and tune compilation process
+   * @param p		the printwriter into the code is generated
+   */
+  public void genVKCode(VKPrettyPrinter p) {
+  }
+
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  private VKFormElement[]		blocks;
+  private String[]			pages;
+  private final KjcEnvironment          environment;
+}

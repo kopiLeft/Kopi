@@ -1,0 +1,230 @@
+******************************************************************************
+******************************************************************************
+
+ERRORS SAPDB WITH KOPI (examples with the application miamy (admin/admin))
+
+******************************************************************************
+******************************************************************************
+
+
+
+******************************************************************************
+Error 1 : ORDER BY - GROUP BY
+******************************************************************************
+
+
+What I did:
+-----------
+
+In "Systems settings", "Users", click on the bottom "List".
+In this case, it's not really an error (because on the database the size of each string has be fixed at 256) but we have to remember this case (16 columns - 250 characters).
+ 
+
+Error produced :
+-----------------
+
+OPEN: SELECT T0.Kurzname, T0.Name, T0.Email, T0.Telefon,  T0.ID  FROM BENUTZER T0  ORDER BY 1, 2, 3, 4
+-- NATIVE SQL: 
+SELECT T0.Kurzname, T0.Name, T0.Email, T0.Telefon,  T0.ID  FROM BENUTZER T0  ORDER BY 1, 2, 3, 4;
+--
+at.dms.vkopi.lib.visual.VRuntimeException: SAP DBTech SQL: [-1013] (at 1028) Too many order columns
+        at at.dms.vkopi.lib.visual.VWindow.abortProtected(VWindow.java:572)
+        at at.dms.vkopi.lib.form.VForm.abortProtected(VForm.java:662)
+        at at.dms.vkopi.lib.form.VBlock.singleMenuQuery(VBlock.java:2114)
+        at at.dms.vkopi.lib.form.Commands.recursiveQuery(Commands.java:136)
+        at at.dms.apps.common.en.Benutzer$VKT_BLOCK_Benutzer.executeVoidTrigger(Benutzer.vf:237)
+        at at.dms.vkopi.lib.visual.SActor$1.run(SActor.java:59)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+ORIGINAL ERROR IS:
+at.dms.xkopi.lib.base.DBUnspecifiedException: SAP DBTech SQL: [-1013] (at 1028) Too many order columns
+at.dms.xkopi.lib.base.DBUnspecifiedException: SAP DBTech SQL: [-1013] (at 1028) Too many order columns
+        at at.dms.xkopi.lib.base.SapDbDriverInterface.convertException(SapDbDriverInterface.java:91)
+        at at.dms.xkopi.lib.base.Connection.convertException(Connection.java:158)
+        at at.dms.xkopi.lib.base.Query.open(Query.java:172)
+        at at.dms.vkopi.lib.form.VBlock.buildQueryDialog(VBlock.java:2218)
+        at at.dms.vkopi.lib.form.VBlock.singleMenuQuery(VBlock.java:2109)
+        at at.dms.vkopi.lib.form.Commands.recursiveQuery(Commands.java:136)
+        at at.dms.apps.common.en.Benutzer$VKT_BLOCK_Benutzer.executeVoidTrigger(Benutzer.vf:237)
+        at at.dms.vkopi.lib.visual.SActor$1.run(SActor.java:59)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+
+
+Explanation of the error from SAP messages :
+--------------------------------------------
+
+-1013: Too many order columns
+
+Explanation:
+
+The following causes of errors are possible:
+
+   1. More than 16 columns were specified as sort criteria or group columns.
+   2. The total length of the order or group columns exceeds 250 characters.
+   3. The length of the longest result data type of a DISTINCT FUNCTION, together with the lengths of the group columns, exceeds 254 characters. The result data type is the data type which is assigned to the result of an EXPRESSION.
+
+User Action:
+
+Correct the SQL statement in such a way that you can do without one or more columns specified in the ORDER CLAUSE or GROUP CLAUSE respectively.
+
+
+
+
+******************************************************************************
+Error 2 : SELECT ... (SELECT ...)
+******************************************************************************
+
+
+What I did:
+-----------
+
+In "Reference Data", "Components", insert a new component and choose a programmer (this the list, buttom on the right).
+ 
+
+Error produced :
+-----------------
+
+OPEN: SELECT LoginName, LastName, FirstName FROM (SELECT U.ID, U.LoginName, U.LastName, U.FirstName FROM Users  U, UsersGroups  UG, Groups  G WHERE U.ID = UG.Users AND G.Name =  'DMS PROG' AND UG.Groups = G.ID) (ID, LoginName, LastName, FirstName) ORDER BY 1
+-- NATIVE SQL: 
+SELECT LoginName, LastName, FirstName FROM (SELECT U.ID, U.LoginName, U.LastName, U.FirstName FROM Users  U, UsersGroups  UG, Groups  G WHERE U.ID = UG.Users AND G.Name =  'DMS PROG' AND UG.Groups = G.ID) (ID, LoginName, LastName, FirstName) ORDER BY 1;
+--
+at.dms.vkopi.lib.visual.VRuntimeException: SAP DBTech SQL: [-3014] (at 206) Invalid end of SQL statement
+        at at.dms.vkopi.lib.form.VField.displayQueryList(VField.java:1686)
+        at at.dms.vkopi.lib.form.VField.selectFromList(VField.java:1790)
+        at at.dms.vkopi.lib.form.VField.autofill(VField.java:313)
+        at at.dms.vkopi.lib.form.VField.autofillButton(VField.java:295)
+        at at.dms.vkopi.lib.form.DField$2.run(DField.java:82)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+ORIGINAL ERROR IS:
+at.dms.vkopi.lib.visual.VRuntimeException: SAP DBTech SQL: [-3014] (at 206) Invalid end of SQL statement
+at.dms.vkopi.lib.visual.VRuntimeException: SAP DBTech SQL: [-3014] (at 206) Invalid end of SQL statement
+        at at.dms.vkopi.lib.visual.VWindow.abortProtected(VWindow.java:572)
+        at at.dms.vkopi.lib.form.VForm.abortProtected(VForm.java:662)
+        at at.dms.vkopi.lib.form.VField.displayQueryList(VField.java:1682)
+        at at.dms.vkopi.lib.form.VField.selectFromList(VField.java:1790)
+        at at.dms.vkopi.lib.form.VField.autofill(VField.java:313)
+        at at.dms.vkopi.lib.form.VField.autofillButton(VField.java:295)
+        at at.dms.vkopi.lib.form.DField$2.run(DField.java:82)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+ORIGINAL ERROR IS:
+at.dms.xkopi.lib.base.DBUnspecifiedException: SAP DBTech SQL: [-3014] (at 206) Invalid end of SQL statement
+at.dms.xkopi.lib.base.DBUnspecifiedException: SAP DBTech SQL: [-3014] (at 206) Invalid end of SQL statement
+        at at.dms.xkopi.lib.base.SapDbDriverInterface.convertException(SapDbDriverInterface.java:91)
+        at at.dms.xkopi.lib.base.Connection.convertException(Connection.java:158)
+        at at.dms.xkopi.lib.base.Query.open(Query.java:172)
+        at at.dms.vkopi.lib.form.VField.displayQueryList(VField.java:1665)
+        at at.dms.vkopi.lib.form.VField.selectFromList(VField.java:1790)
+        at at.dms.vkopi.lib.form.VField.autofill(VField.java:313)
+        at at.dms.vkopi.lib.form.VField.autofillButton(VField.java:295)
+        at at.dms.vkopi.lib.form.DField$2.run(DField.java:82)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+
+
+Explanation of the error from SAP messages :
+--------------------------------------------
+
+-3014: Invalid end of SQL statement
+
+Explanation:
+
+According to the syntax, the specified SQL statement is not allowed in the SQLMODE which is currently valid.
+
+User Action:
+
+The error position shows the location where the specified SQL statement deviates from the permitted syntax.
+
+ 
+Correction :
+------------
+
+In the case, on the second SELECT, we have to re-name the columns using AS.
+
+SELECT LogName, LName, FName FROM (SELECT U.ID, U.LoginName AS logName, U.LastName AS LName, U.FirstName AS FName FROM Users  U, UsersGroups  UG, Groups  G WHERE U.ID = UG.Users AND G.Name =  'DMS PROG' AND UG.Groups = G.ID) ORDER BY 1;
+
+
+
+
+******************************************************************************
+Error 3 : FOR UPDATE
+******************************************************************************
+
+
+What I did:
+-----------
+
+In "Reference Data", "sytems References Data", "Platform", save or delete a platform.
+ 
+
+Error produced :
+-----------------
+
+OPEN: SELECT    tabelle, spalte, aktion FROM            REFERENZEN WHERE       referenz = 'Platform' ORDER BY   3 DESC
+-- NATIVE SQL: 
+SELECT  tabelle, spalte, aktion FROM            REFERENZEN WHERE               referenz = 'Platform' ORDER BY   3 DESC;
+--
+OPEN: SELECT TS FROM Platform WHERE ID = 3 FOR UPDATE
+-- NATIVE SQL: 
+SELECT TS FROM Platform WHERE ID = 3 FOR UPDATE;
+--
+at.dms.vkopi.lib.visual.VRuntimeException: SAP DBTech SQL: [-5015] (at 48) Missing keyword:OF
+        at at.dms.vkopi.lib.visual.VWindow.abortProtected(VWindow.java:572)
+        at at.dms.vkopi.lib.form.VForm.abortProtected(VForm.java:662)
+        at at.dms.vkopi.lib.form.Commands.deleteBlock(Commands.java:429)
+        at at.dms.apps.mialy.Platform$VKT_BLOCK_Platform.executeVoidTrigger(Platform.vf:285)
+        at at.dms.vkopi.lib.visual.SActor$1.run(SActor.java:59)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+ORIGINAL ERROR IS:
+at.dms.xkopi.lib.base.DBUnspecifiedException: SAP DBTech SQL: [-5015] (at 48) Missing keyword:OF
+at.dms.xkopi.lib.base.DBUnspecifiedException: SAP DBTech SQL: [-5015] (at 48) Missing keyword:OF
+        at at.dms.xkopi.lib.base.SapDbDriverInterface.convertException(SapDbDriverInterface.java:91)
+        at at.dms.xkopi.lib.base.Connection.convertException(Connection.java:158)
+        at at.dms.xkopi.lib.base.Query.open(Query.java:172)
+        at at.dms.vkopi.lib.form.VBlock.deleteRecord(VBlock.java:3225)
+        at at.dms.vkopi.lib.form.VBlock.delete(VBlock.java:1780)
+        at at.dms.vkopi.lib.form.Commands.deleteBlock(Commands.java:424)
+        at at.dms.apps.mialy.Platform$VKT_BLOCK_Platform.executeVoidTrigger(Platform.vf:285)
+        at at.dms.vkopi.lib.visual.SActor$1.run(SActor.java:59)
+        at at.dms.vkopi.lib.form.VForm.performActionImpl(VForm.java:525)
+        at at.dms.vkopi.lib.form.VForm.access$0(VForm.java)
+        at at.dms.vkopi.lib.form.VForm$2.run(VForm.java:484)
+        at java.lang.Thread.run(Thread.java)
+
+
+Explanation of the error from SAP messages :
+--------------------------------------------
+
+-5015: Missing keyword
+
+Explanation:
+
+The SQL statement contains a keyword that is incorrect or that is not known in the current SQLMODE; or a keyword is missing.
+
+User Action:
+
+Correct the SQL statement according to the syntax description and the current SQLMODE by using one of the specified keywords.
+
+
+Correction :
+------------
+
+In the case, We have to add add the end of the request FOR UPDATE ... OF + columns name (one or more columns name separated with a comma)
+
+SELECT TS FROM Platform WHERE ID = 3 FOR UPDATE OF TS;
+

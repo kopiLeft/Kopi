@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.xkopi.comp.dbi
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="at/dms/xkopi/comp/dbi" />
+  <property name="package.name" value="at.dms.xkopi.comp.dbi" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="DbiTokenTypes.java 
+                   DbiScanner.java 
+                   DbiParser.java 
+                   DbiKeywords.java
+                   DefaultDbiVisitor.java Main.java DBAccess.java DbiVisitor.java
+                   DbiPrettyPrinter.java Constants.java DbiChecker.java DbiPhylum.java
+                   AddTableConstraintStatement.java AddTableColumnsStatement.java
+                   AlterColumnStatement.java AlterSetDefaultColumnStatement.java
+                   AlterDropDefaultColumnStatement.java
+                   AlterNotNullColumnStatement.java
+                   BlobType.java BooleanType.java ByteType.java ClobType.java CodeBoolDesc.java
+                   CodeBoolType.java CodeDesc.java CodeFixedDesc.java
+                   CodeFixedType.java CodeLongDesc.java CodeLongType.java
+                   ColorType.java Column.java Console.java Constraint.java DateType.java
+                   DbCheck.java DbiStatement.java DbiType.java DelimSpec.java
+                   DropIndexStatement.java DropTableConstraintStatement.java
+                   DropTableStatement.java DropViewStatement.java EnumType.java
+                   FixedType.java GrantPrivilegeStatement.java
+                   GrantUserClassStatement.java ImageType.java
+                   IndexDefinition.java IndexElem.java IntType.java Key.java
+                   KopiDbiChecker.java MonthType.java NullDelimiterSpec.java
+                   NullSpec.java ReferencedTableAndColumns.java
+                   OracleDbiChecker.java
+                   PostgresDbiChecker.java
+                   ReferentialConstraintDefinition.java SapdbDbiChecker.java
+                   SCompilationUnit.java ScriptHeadStatement.java
+                   ShortType.java SpoolFileStatement.java
+                   SpoolTableStatement.java StringType.java TransbaseDbiChecker.java
+                   TableConstraint.java TableDefinition.java
+                   TablePrivilege.java TextType.java TimeType.java
+                   TimestampType.java UniqueConstraintDefinition.java
+                   ViewColumn.java ViewDefinition.java WeekType.java
+                   DbiMessages.java DbiOptions.java  
+                   ConsoleOptions.java" />
+ 
+  <property name="properties"  value="dbi.properties" />
+  
+  <property name="messages"    value="DbiMessages" />
+  <property name="options"     value="DbiOptions" />
+  <property name="options2"    value="ConsoleOptions" />
+
+  <property name="grm1voc"     value="Dbi" />
+  <property name="grm1dep"     value="${topdir}/xkopi/comp/sqlc/Sqlc" />
+  <property name="scanner1"    value="Dbi" />
+
+
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

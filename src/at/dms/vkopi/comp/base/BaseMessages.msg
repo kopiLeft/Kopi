@@ -1,0 +1,63 @@
+/*
+ * Copyright (C) 1990-2001 DMS Decision Management Systems Ges.m.b.H.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: BaseMessages.msg,v 1.5 2003/10/02 09:35:37 vgp Exp $
+ */
+
+package at.dms.vkopi.comp.base
+
+prefix Base
+
+error		UNDEFINED_TYPE
+		"the type \"{0}\" is not defined"
+		"VKJC"
+
+error		MENU_UNDEFINED_KEY
+		"the menu \"{0}\" is not defined"
+		"VKJC"
+
+error		UNDEFINED_ACTION
+		"the action item named \"{0}\" is not defined"
+		"VKJC"
+
+error		FILE_UNKNOWN
+		"the file \"{0}\" cannot be found"
+		"VKJC"
+
+error		FILE_CANT_READ
+		"Error while reading file \"{0}\""
+		"VKJC"
+
+error		TRIGGER_DIFFERENT_RETURN
+		"A trigger list cannot include triggers with different return type"
+		"VKJC"
+
+error		COMMAND_DEF_NOT_FOUND
+		"Command named \"{0}\" is not defined"
+		"VKJC"
+
+error		UNKNOWN_FILE_SUFFIX
+		"File \"{0}\" has unknown suffix; should be one of: vf, vp, vr"
+		"VKJC"
+
+error		CANT_LOAD_CLASSES
+		"Can not loas standard classes in VKStdType"
+		"VKJC"
+
+error		BAD_SQL_CASE_OPTION
+		"The only supported option for --sqlCase is \"upper\""
+		"VKJC"

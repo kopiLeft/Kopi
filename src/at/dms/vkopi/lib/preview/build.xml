@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.vkopi.lib.preview
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="at/dms/vkopi/lib/preview" />
+  <property name="package.name" value="at.dms.vkopi.lib.preview" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="DPreviewWindow.java VPreviewWindow.java StandAlone.java 
+                   PreviewListener.java" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

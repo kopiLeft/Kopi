@@ -1,0 +1,307 @@
+<CHAPTER ID="IMPLEMENTATION" ROLE="folders">
+    <TITLE>The implementation of <ACRONYM>KJC</ACRONYM></TITLE>
+    
+    <SECT1><TITLE>Tools used by the Compiler</TITLE>
+      <PARA>
+	The compiler uses several tools for automatic generation of
+	messages, tokens, lexer, parser and command-line processor. All
+	these tools are freely available under a GNU Public License or
+	less restrictive clone. All of these tools are included in the
+	distribution. There is first a set of tools necessary at build
+	time:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA>
+	      <ULINK URL="http://www.antlr.org">ANTLR 2.6.1</ULINK>
+	    </PARA>
+	    <PARA>
+	      ANTLR, ANother Tool for Language Recognition, (formerly
+	      PCCTS) is a language tool that provides a framework for
+	      constructing recognizers, compilers, and translators from
+	      grammatical descriptions containing C++ or Java actions
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      AT.DMS.JPERF, A perfect hashcode generator
+	    </PARA>
+	    <PARA>
+	      Jperf is a minimal perfect hash function generator utility
+	      written in Java and based on <ULINK
+		URL="http://www.cs.ucla.edu/~jkong/public/soft/GGPerf/README.html">
+		ggperf</ULINK>.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      AT.DMS.LEXGEN, Token generator for handwritten lexer
+	    </PARA>
+	    <PARA>
+	      The goal of this tool is to generate a perfect hashtable
+	      function and corresponding tokens for a specified list of
+	      keywords.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      AT.DMS.OPTGEN, Option generator
+	    </PARA>
+	    <PARA>
+	      The goal of this tool is to generate a command line option
+	      controller (based on gnu.getopt) from a description file.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      AT.DMS.MSGGEN, Message generator
+	    </PARA>
+	    <PARA>
+	      The goal of this tool is to generate a class with messages
+	      from a description file.
+	    </PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>      
+      </PARA>
+      
+      <PARA>
+	There is a second set of libraries used at runtime. All these
+	tools are freely available under a GNU Library Public License
+	or less restrictive clone. These libraries are very small and
+	included in the distribution in binary format. Source format
+	are available on the web or from the credit page on our web
+	server. There is two packages:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA>
+	      <ULINK URL="http://www.antlr.org">ANTLR 2.6.1</ULINK>
+	    </PARA>
+	    <PARA>
+	      Only a very small subsest of the runtime library is used by
+	      KJC. The whole AST part is removed from our runtime.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      <ULINK URL="http://http://www.urbanophile.com/arenn/hacking/download.html">GNU.GETOPT</ULINK>
+	    </PARA>
+	    <PARA>
+	      The GNU Java getopt classes support short and long
+	      argument parsing in a manner 100% compatible with the
+	      version of GNU getopt in glibc 2.0.6 with a mostly
+	      compatible programmer's interface as well.
+	    </PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+      
+      <PARA>
+	One other file was not originally developed by DMS, it is the
+	grammar of Java for ANTLR. This file is in the public domain
+	and actualy we are trying to keep our code as close as
+	possible to the original.
+      </PARA>
+    </SECT1>
+    
+    <SECT1><TITLE>Packages of the Compiler</TITLE>
+      <PARA>
+	The compiler is built on several packages as shown by the following graphic:
+	<graphic fileref="packages.eps" Align="center"></graphic>
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.classfile
+	    </PARA>
+	    <PARA>
+	      This package allows one to edit classfiles and to check
+	      and optimize instructions in an elegant way. This package
+	      is able to compute the stack's depth and the number of
+	      local variables used by each method.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.util
+	    </PARA>
+	    <PARA>
+	      This package contains utility classes used at
+	      runtime. This includes basic definition of messages and
+	      options, Vector and Array caches and convertion.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.compiler
+	    </PARA>
+	    <PARA>
+	      This package contains utility classes used specifically by
+	      the compiler at runtime. This includes a more refined
+	      version of the definition of messages, definition of
+	      error and warning classes, definition of basic parser and
+	      lexer and utility methods.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.optimize
+	    </PARA>
+	    <PARA>
+	      This tool allows one to optimize a method. It performs
+	      dead code elimination, some peephole optimizations and
+	      branch tensionning.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.backend [experimental]
+	    </PARA>
+	    <PARA>
+	      This tool allows one to optimize a method. It transforms
+	      the (stack-based) JVM bytecode to an intermediate
+	      representation based on quadruple and performs some
+	      powerful optimizations (CSE, dead code elimination, copy
+	      propagation, register allocation). And it regenerates java
+	      bytecode with a stack schleduling engine.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.kjc
+	    </PARA>
+	    <PARA>
+	      This package contains the Java compiler. The classes for
+	      the AST (Abstract Syntax Tree) are prefixed with a J, the
+	      classes for the definitions of members are prefixed with a
+	      C. This part is explained more deeply in the next section.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.ksm
+	    </PARA>
+	    <PARA>
+	      This tool allows one to generate java classfile from an
+	      assembler definition. It is very useful in conjunction
+	      with DIS to modify some classes.
+	    </PARA>
+	  </LISTITEM>
+	  
+	  <LISTITEM>
+	    <PARA>
+	      at.dms.dis
+	    </PARA>
+	    <PARA>
+	      This tool allows one to see the code actually generated by
+	      the compiler and may help one to optimize or understand a
+	      portion of the code. This tool may also help one modify
+	      some classes from their bytecode in conjunction with
+	      KSM(to regenerate them).
+	    </PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>      
+      </PARA>
+    </SECT1>
+    
+    <SECT1><TITLE>Passes of the Compiler</TITLE>
+      <PARA>
+	The main class of the compiler is in `Main.java'. This file is
+	responsible for initialization, decoding arguments, opening and
+	closing files, and sequencing the passes.
+      </PARA>
+      <PARA>
+	The different passes are:
+	<ITEMIZEDLIST MARK="BULLET">
+	  <LISTITEM>
+ 	    <PARA>
+	      Parsing
+	    </PARA>
+ 	    <PARA>
+	      The parsing pass is invoked only once, to parse the entire
+	      input. This pass reads the entire text of each compilation unit,
+	      constructing syntax trees.  The tree representation does follow
+	      Java syntax, except for TryCatchFinally statements that are
+	      splitted in two different statements.
+	    </PARA>
+	  </LISTITEM>
+
+	  <LISTITEM>
+	    <PARA>
+	      Interface checking
+	    </PARA>
+	    <PARA>
+	      The second pass checks the interface. All exported types
+	      are checked (a corresponding class definition should
+	      exist in either the source files or in the classpath). A
+	      CMember object is associated to every exported members,
+	      such object contains all the information required at
+	      check time (access flags, types, values).
+	    </PARA>
+	  </LISTITEM>
+
+	  <LISTITEM>
+	    <PARA>
+	      Initializers checking
+	    </PARA>
+	    <PARA>
+	      This is a very small pass to compute exported constants
+	      before they are used in body of methods.
+	    </PARA>
+	  </LISTITEM>
+
+	  <LISTITEM>
+	    <PARA>
+	      Code body checking
+	    </PARA>
+	    <PARA>
+	      The code of each method is checked. After a class is
+	      checked, the parsing tree is destroyed and only method
+	      bodies are retained.
+	    </PARA>
+	  </LISTITEM>
+
+	  <LISTITEM>
+	    <PARA>
+	      Code generating
+	    </PARA>
+	    <PARA>
+	      The code of each classes is generated and for each
+	      method two more passes of optimisations are available:
+	      <ITEMIZEDLIST>
+		<LISTITEM>
+		  <PARA>
+		    Optimizations with at.dms.optimize
+		  </PARA>
+		  <PARA>
+		    Peephole optimization and branch tensionning are performed.
+		  </PARA>
+		</LISTITEM>
+		<LISTITEM>
+		  <PARA>
+		    Optimizations with at.dms.backend
+		  </PARA>
+		  <PARA>
+		    More extensive optimizations are performed (dead
+		    code elimination, register allocation).
+		  </PARA>
+		</LISTITEM>
+	      </ITEMIZEDLIST>
+	      And then the code is dumped in files. Each time that a
+	      class code is generated and dumped into a file, this
+	      class is freed from memory.
+	    </PARA>
+	  </LISTITEM>
+	</ITEMIZEDLIST>
+      </PARA>
+    </SECT1>
+  </CHAPTER>
+

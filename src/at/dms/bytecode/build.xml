@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.compiler
+    ==================================================================-->
+<project default="build" basedir=".">
+
+  <property name="topdir" value=".." />
+  <property name="node" value="yes"/>
+
+
+  <target name="node.build" description="  Runs subbuild files ">
+  	<ant dir="classfile" inheritAll="false" target="${target}" />
+    <ant dir="optimize"  inheritAll="false" target="${target}" />
+    <ant dir="ssa"       inheritAll="false" target="${target}" />
+    <ant dir="ksm"       inheritAll="false" target="${target}" />
+    <ant dir="dis"       inheritAll="false" target="${target}" />
+    <ant dir="memcnt"    inheritAll="false" target="${target}" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

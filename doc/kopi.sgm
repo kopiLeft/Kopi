@@ -1,0 +1,26 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+<!ENTITY intro SYSTEM "intro.sgm">
+<!ENTITY classfile SYSTEM "classfile.sgm">
+<!ENTITY kjc SYSTEM "kjc.sgm">
+<!ENTITY xkjc SYSTEM "xkjc.sgm">
+<!ENTITY vlib SYSTEM "vlib.sgm">
+<!ENTITY othertools SYSTEM "othertools.sgm">
+<!ENTITY references SYSTEM "references.sgm">
+<!ENTITY optimizations SYSTEM "optimizations.sgm">
+<!ENTITY implementation SYSTEM "implementation.sgm">
+<!ENTITY ending SYSTEM "ending.sgm">
+]>
+<book lang="en"> 
+<title>KOPI</title>
+  &intro;
+  &classfile;
+  &kjc;
+  &xkjc;
+  &vlib;
+  &othertools;
+  &references;
+  &optimizations;
+  &implementation;
+  &ending;
+</book>
+  

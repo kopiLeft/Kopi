@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+	package:	at.dms.compiler.resource
+	==================================================================-->
+
+<project default="build" basedir=".">
+
+	<property name="non.standard.build" value="yes" />
+
+	<property name="topdir" value="../.." />
+    <import file="${topdir}/defs.xml" />
+
+	<property name="destcopy" value="${classroot}/at/dms/compiler" />
+	<property name="src" value="." />
+
+	<property name="files" value="skeleton.shared" />
+
+	<target name="non.standard.build" 
+  	  description="  Copying shared files to at/dms/compiler package ">
+		<copy todir="${destcopy}">
+			<fileset dir="${src}" includes="${files}" />
+		</copy>
+	</target>
+
+
+
+
+</project>

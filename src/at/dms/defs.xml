@@ -1,0 +1,426 @@
+<?xml version="1.0" ?>
+<!--=====================================================================
+    Global definitions
+	==================================================================-->
+
+<project default="init">
+
+
+	<!-- ================================= 
+         DEFINITIONS              
+        ================================= -->
+	<property name="release" value="&quot;Version 2.2A released 26 August 2004&quot;" />
+
+	<property environment="env" />
+	<property name="classroot" value="${env.CLASSROOT}" />
+
+	<property name="jflexskeleton" value="${classroot}/at/dms/compiler/skeleton.shared" />
+
+	<path id="classpath">
+		<pathelement path="${env.CLASSPATH}" />
+	</path>
+
+	<presetdef name="java.def">
+		<java classpath="classpath" fork="yes" />
+	</presetdef>
+
+	<presetdef name="javac.def">
+		<javac srcdir="${src}" destdir="${classroot}" classpathref="classpath" includes="${javafiles}" compiler="jikes" source="1.4" includeAntRuntime="no" />
+	</presetdef>
+
+	<presetdef name="tok.def">
+		<java.def classname="at.dms.compiler.tools.lexgen.Main" />
+	</presetdef>
+
+	<presetdef name="jflex.def">
+		<java.def classname="JFlex.Main">
+			<arg line="-skel ${jflexskeleton}" />
+		</java.def>
+	</presetdef>
+
+	<presetdef name="msg.def">
+		<java.def classname="at.dms.compiler.tools.msggen.Main" />
+	</presetdef>
+
+	<presetdef name="opt.def">
+		<java.def classname="at.dms.compiler.tools.optgen.Main">
+			<arg line="--release=${release}" />
+		</java.def>
+	</presetdef>
+
+	<presetdef name="lexinc.def">
+		<java.def classname="at.dms.compiler.tools.include.Main" />
+	</presetdef>
+
+	<presetdef name="jcc.def">
+		<java.def classname="at.dms.compiler.tools.antlr.compiler.Main">
+			<jvmarg value="-mx64m" />
+		</java.def>
+	</presetdef>
+
+	<target name="init" description="  Inisialize the building ">
+		<tstamp />
+	</target>
+
+	<!-- ================================= 
+          BUILD              
+         ================================= -->
+	<target name="build" depends="dir.build, leaf.build, other.build"  />
+	<target name="dir.build" if="node">
+		<antcall target="node.build">
+			<param name="target" value="build" />
+		</antcall>
+	</target>
+	<target name="leaf.build" unless="node" depends="init">
+		<antcall target="grammar" />
+		<antcall target="grm1voc" />
+		<antcall target="grm2voc" />
+		<antcall target="messages" />
+		<antcall target="options" />
+		<antcall target="classes" />
+		<antcall target="properties" />
+	</target>
+	<target name="other.build" if="non.standard.build" >
+		<antcall target="non.standard.build" />
+	</target>
+
+
+
+
+	<!-- ================================================== 
+          GRAMMAR HANDLING (GRAMMARS WITH ANTLR TOKENIZER)            
+         ================================================== -->
+	<target name="grammar" if="grammar">
+		<jcc.def>
+			<arg value="${grammar}.g" />
+		</jcc.def>
+	</target>
+
+
+	<!-- ===================================================== 
+	      GRAMMAR HANDLING (GRAMMARS WITH SEPARATE TOKENIZER)            
+	     ===================================================== -->
+
+	<target name="grm1voc" if="grm1voc">
+		<antcall target="scanner1" />
+		<antcall target="no-scanner1" />
+		<antcall target="grm1dep" />
+	</target>
+
+	<!-- JFlex based scanner -->
+	<target name="scanner1" if="scanner1">
+		<condition property="tok.def.args" value="${grm1voc}.t">
+			<not>
+				<or>
+					<isset property="grm1dep" />
+					<isset property="grm1dep1" />
+					<isset property="grm1dep2" />
+				</or>
+			</not>
+		</condition>
+		<condition property="tok.def.args" value="${grm1dep}.t ${grm1voc}.t">
+			<isset property="grm1dep" />
+		</condition>
+		<condition property="tok.def.args" value="${grm1dep1}.t ${grm1dep2}.t ${grm1voc}.t">
+			<and>
+				<isset property="grm1dep1" />
+				<isset property="grm1dep2" />
+			</and>
+		</condition>
+		<tok.def>
+			<arg line="-ditf ${tok.def.args}" />
+		</tok.def>
+		<lexinc.def>
+			<arg line="${scanner1}.flex.in -o ${scanner1}.flex" />
+		</lexinc.def>
+		<jflex.def>
+			<arg line="-skel ${jflexskeleton} ${scanner1}.flex" />
+		</jflex.def>
+	</target>
+
+	<target name="no-scanner1" unless="scanner1">
+		<condition property="tok.def.args" value="${grm1voc}.t">
+			<not>
+				<or>
+					<isset property="grm1dep" />
+					<isset property="grm1dep1" />
+					<isset property="grm1dep2" />
+				</or>
+			</not>
+		</condition>
+		<condition property="tok.def.args" value="${grm1dep}.t ${grm1voc}.t">
+			<isset property="grm1dep" />
+		</condition>
+		<condition property="tok.def.args" value="${grm1dep1}.t ${grm1dep2}.t ${grm1voc}.t">
+			<and>
+				<isset property="grm1dep1" />
+				<isset property="grm1dep2" />
+			</and>
+		</condition>
+		<tok.def>
+			<arg line="-dik ${tok.def.args}" />
+		</tok.def>
+	</target>
+
+	<!-- Parser -->
+	<target name="grm1dep">
+		<condition property="jcc.def.args" value="${grm1voc}.g">
+			<not>
+				<or>
+					<isset property="grm1dep" />
+					<isset property="grm1dep1" />
+					<isset property="grm1dep2" />
+				</or>
+			</not>
+		</condition>
+		<condition property="jcc.def.args" value="${grm1dep}.g ${grm1voc}.g">
+			<isset property="grm1dep" />
+		</condition>
+		<condition property="jcc.def.args" value="${grm1dep1}.g ${grm1dep2}.g ${grm1voc}.g">
+			<and>
+				<isset property="grm1dep1" />
+				<isset property="grm1dep2" />
+			</and>
+		</condition>
+		<jcc.def>
+			<arg line="${jcc.def.args}" />
+		</jcc.def>
+	</target>
+
+	<!-- ================================================ -->
+	<target name="grm2voc" if="grm2voc">
+		<antcall target="scanner2" />
+		<antcall target="no-scanner2" />
+		<antcall target="grm2dep" />
+	</target>
+
+	<!-- JFlex based scanner -->
+	<target name="scanner2" if="scanner2">
+		<condition property="tok.def.args2" value="${grm2voc}.t">
+			<not>
+				<or>
+					<isset property="grm2dep" />
+					<isset property="grm2dep1" />
+					<isset property="grm2dep2" />
+				</or>
+			</not>
+		</condition>
+		<condition property="tok.def.args2" value="${grm2dep}.t ${grm2voc}.t">
+			<isset property="grm2dep" />
+		</condition>
+		<condition property="tok.def.args2" value="${grm2dep1}.t ${grm2dep2}.t ${grm2voc}.t">
+			<and>
+				<isset property="grm2dep1" />
+				<isset property="grm2dep2" />
+			</and>
+		</condition>
+		<tok.def>
+			<arg line="-ditf ${tok.def.args2}" />
+		</tok.def>
+		<lexinc.def>
+			<arg line="${scanner2}.flex.in -o ${scanner2}.flex" />
+		</lexinc.def>
+		<jflex.def>
+			<arg line="-skel ${jflexskeleton} ${scanner2}.flex" />
+		</jflex.def>
+	</target>
+
+	<target name="no-scanner2" unless="scanner2">
+		<condition property="tok.def.args2" value="${grm2voc}.t">
+			<not>
+				<or>
+					<isset property="grm2dep" />
+					<isset property="grm2dep1" />
+					<isset property="grm2dep2" />
+				</or>
+			</not>
+		</condition>
+		<condition property="tok.def.args2" value="${grm2dep}.t ${grm2voc}.t">
+			<isset property="grm2dep" />
+		</condition>
+		<condition property="tok.def.args2" value="${grm2dep1}.t ${grm2dep2}.t ${grm2voc}.t">
+			<and>
+				<isset property="grm2dep1" />
+				<isset property="grm2dep2" />
+			</and>
+		</condition>
+		<tok.def>
+			<arg line="-dik ${tok.def.args2}" />
+		</tok.def>
+	</target>
+
+	<!-- Parser -->
+	<target name="grm2dep">
+		<condition property="jcc.def.args2" value="${grm2voc}.g">
+			<not>
+				<or>
+					<isset property="grm2dep" />
+					<isset property="grm2dep1" />
+					<isset property="grm2dep2" />
+				</or>
+			</not>
+		</condition>
+		<condition property="jcc.def.args2" value="${grm2dep}.g ${grm2voc}.g">
+			<isset property="grm2dep" />
+		</condition>
+		<condition property="jcc.def.args2" value="${grm2dep1}.g ${grm2dep2}.g ${grm2voc}.g">
+			<and>
+				<isset property="grm2dep1" />
+				<isset property="grm2dep2" />
+			</and>
+		</condition>
+		<jcc.def>
+			<arg line="${jcc.def.args2}" />
+		</jcc.def>
+
+	</target>
+
+
+
+	<!-- ================================= 
+          MESSAGES            
+         ================================= -->
+	<target name="messages" if="messages" unless="buildtools" description="  Converting messages files to java files">
+		<msg.def>
+			<arg value="${messages}.msg" />
+		</msg.def>
+		<antcall target="messages2" />
+	</target>
+	<target name="messages2" if="messages2">
+		<msg.def>
+			<arg value="${messages2}.msg" />
+		</msg.def>
+	</target>
+
+
+	<!-- ================================= 
+          OPTIONS        
+         ================================= -->
+	<target name="options" if="options" unless="buildtools" description="  Converting options files to java files">
+		<opt.def>
+			<arg value="${options}.opt" />
+		</opt.def>
+		<antcall target="options2" />
+		<antcall target="options3" />
+	</target>
+	<target name="options2" if="options2">
+		<opt.def>
+			<arg value="${options2}.opt" />
+		</opt.def>
+	</target>
+	<target name="options3" if="options3">
+		<opt.def>
+			<arg value="${options3}.opt" />
+		</opt.def>
+		<opt.def>
+			<arg value="${options4}.opt" />
+		</opt.def>
+	</target>
+
+	<!-- ================================= 
+          BUILD CLASSFILES
+         ================================= -->
+	<target name="classes">
+		<javac.def />
+	</target>
+
+	<!-- ================================= 
+          INSTALL PROPERTIES FILES
+         ================================= -->
+	<target name="properties">
+		<copy todir="${classroot}">
+			<fileset dir="${src}" includes="${properties}" />
+		</copy>
+	</target>
+
+
+	<!-- ================================= 
+          CLEAN SOURCE DIRECTORY
+         ================================= -->
+	<target name="clean">
+		<delete verbose="true">
+			<fileset dir="." includes="**/*~,**/TAGS" />
+		</delete>
+	</target>
+
+
+	<!-- ================================= 
+          CLEAN CLASSFILES
+         ================================= -->
+	<target name="clean-classes" depends="node-clean-classes, leaf-clean-classes" />
+	<target name="node-clean-classes" if="node">
+		<antcall target="node.build">
+			<param name="target" value="clean-classes" />
+		</antcall>
+	</target>
+	<target name="leaf-clean-classes" unless="node" if="package" >
+		<delete verbose="true">
+			<fileset dir="${classroot}/${package}" includes="*.class" />
+		</delete>
+	</target>
+
+
+	<!-- =================================== 
+          CLEAN AND REMOVE GENERATED FILES
+         =================================== -->
+	<target name="distclean" depends="clean,node-distclean-classes, leaf-distclean" />
+	<target name="node-distclean-classes" if="node">
+		<antcall target="node.build">
+			<param name="target" value="distclean" />
+		</antcall>
+	</target>
+	<target name="leaf-distclean" unless="node">
+		<delete verbose="true">
+			<fileset dir="${src}">
+				<include name="${grammar}Parser.java" if="grammar" />
+				<include name="${grammar}TokenTypes.java " if="grammar" />
+				<include name="${grammar}Lexer.java" if="grammar" />
+				<include name="${grammar}LexerTokenTypes.java" if="grammar" />
+				<include name="${grammar}TokenTypes.txt" if="grammar" />
+				<include name="${grammar}LexerTokenTypes.txt" if="grammar" />
+				<include name="${grm1voc}TokenTypes.java" if="grm1voc" />
+				<include name="${grm1voc}TokenTypes.txt" if="grm1voc" />
+				<include name="${grm1voc}FlexRules.txt" if="grm1voc" />
+				<include name="${scanner1}.flex" if="scanner1" />
+				<include name="${scanner1}Scanner.java" if="scanner1" />
+				<include name="${grm1voc}Parser.java" if="grm1voc" />
+				<include name="expanded${grm1voc}.g" if="grm1dep" />
+				<include name="${grm2voc}TokenTypes.java" if="grm2voc" />
+				<include name="${grm2voc}TokenTypes.txt" if="grm2voc" />
+				<include name="${grm2voc}FlexRules.txt" if="grm2voc" />
+				<include name="${scanner2}.flex" if="scanner2" />
+				<include name="${scanner2}Scanner.java" if="scanner2" />
+				<include name="${grm2voc}Parser.java" if="grm2voc" />
+				<include name="expanded${grm2voc}.g" if="grm2dep" />
+				<include name="${messages}.java" if="messages" unless="buildmessages" />
+				<include name="${messages2}.java" if="messages2" unless="buildmessages" />
+				<include name="${options}.java" if="options" unless="buildoptions" />
+				<include name="${options2}.java" if="options2" unless="buildoptions" />
+				<include name="${options3}.java" if="options3" unless="buildoptions" />
+				<include name="${options4}.java" if="options3" unless="buildoptions" />
+				<include name="ikjc" />
+			</fileset>
+		</delete>
+	</target>
+
+
+	<!-- ================================= 
+          MAKE JAVADOC DIRECTORIES
+         ================================= -->
+	<target name="javadocsrcs" depends="node-javadocsrcs, leaf-javadocsrcs" />
+	<target name="node-javadocsrcs" if="node">
+		<antcall target="node.build">
+			<param name="target" value="javadocsrcs" />
+		</antcall>
+	</target>
+	<target name="leaf-javadocsrcs" unless="node" if="package">
+		<copy todir="${javadocroot}/source/${package}">
+			<fileset dir="${src}" includes="${javafiles}" />
+		</copy>
+		<touch>
+			<fileset dir="${javadocroot}/packages" includes="${package.name}" />
+		</touch>
+	</target>
+
+
+</project>

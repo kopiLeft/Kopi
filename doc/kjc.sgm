@@ -1,0 +1,358 @@
+<CHAPTER LABEL="2" ID="CH-KJC">
+  <TITLE>The <ACRONYM>KOPI</ACRONYM> Kopi Java Compiler</TITLE>
+  <TITLEABBREV><ACRONYM>KJC</ACRONYM></TITLEABBREV>
+  <NOTE><TITLE>License type</TITLE>
+    <PARA>
+      KJC is distributed under the terms of the GNU General Public License.
+      <XREF LINKEND="APX-GPL">
+    </PARA>
+  </NOTE>
+  <PARA>
+    <ACRONYM>KJC</ACRONYM> is the first compiler written entirely in
+    Java and available under the terms of the GNU Public License. It
+    allows you to extend features at any level from syntax to code
+    generation (By example by adding support for generic type). It is
+    very easy to add features and to maintain this compiler, and we
+    hope that a large comunity of Java developers will help us bring
+    it to a level of efficiency comparable to others commercial compilers.
+  </PARA>
+  <PARA>
+    One of the major advantage of a Java compiler written in Java is
+    that it can be called from an other Java program and that then the
+    output can be executed via dynamic loading. This compilation is
+    executed without overhead and is then quite fast. Thus, you can
+    use <ACRONYM>KJC</ACRONYM> to dynamically recompile portions of
+    your program to a fully optimized version for a target only known
+    at runtime. And this without breaking the "Write Once, Run
+    Anywhere" benefit of Java.
+  </PARA>
+  
+  <SECT1><TITLE><ACRONYM>KJC</ACRONYM>, another Java compiler</TITLE>
+    <PARA>
+      <ACRONYM>KJC</ACRONYM> is not the first freely available Java compiler but it
+      provides some new features not previously available. These
+      features are:
+      <ITEMIZEDLIST MARK="BULLET">
+	<LISTITEM>
+	  <PARA>a GNU compiler and thus can be integrated in GNU
+	  projects;
+	  </PARA>
+	</LISTITEM> 
+	<LISTITEM>
+	  <PARA>great extensibility;
+	  </PARA>
+	</LISTITEM>
+	<LISTITEM>
+	  <PARA>auditing that helps you to
+	    maintain your code;
+	  </PARA>
+	</LISTITEM>
+	<LISTITEM>
+	  <PARA>an optimizing compiler.
+	  </PARA>
+	</LISTITEM> 
+      </ITEMIZEDLIST>
+      Since <ACRONYM>KJC</ACRONYM> is a GNU a project, it
+      is easy to improve by sending us patches or
+      suggestions. Since it is maintained by a small team of
+      engineers, the development cycle of new releases is far
+      shorter than the JavaC one.
+    </PARA>
+    <SECT2><TITLE>Comparison with other compilers</TITLE>
+      <PARA>
+	There are mainly two other compilers for Java freely
+	available: Javac and jikes.  Javac is error-proof and has a role of
+	reference, and jikes is extremly fast. This table
+	shows the differences between these two compilers and <ACRONYM>KJC</ACRONYM>:
+	<TABLE	FRAME=ALL><TITLE>Comparison with other compilers</TITLE>
+	  <tgroup cols=4 align=left colsep=1 rowsep=1>
+	    <thead>
+	      <row>
+		<entry>Feature</entry>
+		<entry>Javac</entry>
+		<entry>Jikes</entry>
+		<entry><ACRONYM>KJC</ACRONYM></entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row>
+		<entry>License model</entry>
+		<entry>
+		  <ULINK URL="http://java.sun.com/communitysource">Community Source Code
+		  </ULINK>
+		</entry>
+		<entry>
+		  <ULINK URL="http://www10.software.ibm.com/developerworks/opensource/license10.html">Jikes Public license
+		  </ULINK>
+		</entry>
+		<entry>
+		  <ULINK URL="http://www.gnu.org/copyleft">GNU Public License
+		  </ULINK>
+		</entry>
+	      </row>
+	      <row>
+		<entry>Language</entry>
+		<entry>Java</entry>
+		<entry>C++</entry>
+		<entry>Java</entry>
+	      </row>
+	      <row>
+		<entry>Supported platform</entry>
+		<entry>All platforms with a Java VM</entry>
+		<entry>Almost all</entry>
+		<entry>All platforms with a Java VM</entry>
+	      </row>
+	      <row>
+		<entry>Speed</entry>
+		<entry>Slow</entry>
+		<entry>Very fast</entry>
+		<entry>-</entry>
+	      </row>
+	      <row>
+		<entry>Extendability</entry>
+		<entry>Poor</entry>
+		<entry>Poor</entry>
+		<entry>Good</entry>
+	      </row>
+	      <row>
+		<entry>Generated code</entry>
+		<entry>Good with -O</entry>
+		<entry>No optimizations</entry>
+		<entry>-</entry>
+	      </row>
+	      <row>
+		<entry>Auditing</entry>
+		<entry>No</entry>
+		<entry>Poor with -warning</entry>
+		<entry>Still at an early level</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+      </PARA>
+    </SECT2>
+    <SECT2><TITLE><ACRONYM>KJC</ACRONYM> advantages</TITLE>
+      <SECT3><TITLE>Free software</TITLE>
+	<PARA>
+	  <ACRONYM>KJC</ACRONYM> is distributed under the term of a GNU public license
+	  and thus can be integrated freely in any other GNU project.
+	  The source code is part of the standard distribution and
+	  will help you understand the behavior of the program.
+	  It will also allow you to extend it.
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE>Extensible</TITLE>
+	<PARA>
+	  This Java compiler written in Java is easily extensible. We
+	  have developed a lot of tools over <ACRONYM>KJC</ACRONYM>
+	  like <ACRONYM>XKJC</ACRONYM> and
+	  <ACRONYM>VKJC</ACRONYM>. These tools generates classfiles
+	  without any knowledge of the underlying Java bytecode
+	  convention (Stack size, verifier convention, ...).
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE>Auditing features</TITLE>
+	<PARA>
+	  An auditing tool helps you follow the Java code convention
+	  and avoid common errors that can be easily detected by a
+	  compiler. We have started to extend <ACRONYM>KJC</ACRONYM> with warnings to
+	  enforce the respect of this convention. This part of <ACRONYM>KJC</ACRONYM> is
+	  still in an early development stage, but will be our main
+	  focus for the next release (1.4).
+	  See:       <XREF LINKEND="REF-ELEMENT">
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE>Beautifier</TITLE>
+	<PARA>
+	  <ACRONYM>KJC</ACRONYM> can read a .Java file and rewrite it following the
+	  Java Code Conventions. This can be useful when you get some
+	  source files from someone else and want to convert them
+	  into something readable. It is also useful for tools extending
+	  <ACRONYM>KJC</ACRONYM> to generate 100% pure Java code.
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE>Optimizer</TITLE>
+	<PARA>
+	  The code generation is based on at.dms.classfile and
+	  at.dms.optimizer. This last package is focused on bytecode
+	  optimization and will be improved in the next release. It
+	  already supports multi-pass optimizations, dead code
+	  removal and peephole optimization.
+	</PARA>
+      </SECT3>
+    </SECT2>
+  </SECT1>
+  
+  <SECT1><TITLE>Usage</TITLE>
+    <PARA>Once you have added kjc.zip in your <COMMAND>CLASSPATH</COMMAND> you can launch <ACRONYM>KJC</ACRONYM> by typing the following command at the prompt:
+      <SCREEN><SYSTEMITEM CLASS="PROMPT">%</SYSTEMITEM><USERINPUT>java at.dms.kjc.Main</USERINPUT>
+      </SCREEN>
+    </PARA>
+    
+    <SECT2><TITLE>Command line options</TITLE>
+      <PARA>The command line options currently supported by <ACRONYM>KJC</ACRONYM> are (<ACRONYM>KJC</ACRONYM> --help):</PARA>
+      <PROGRAMLISTING>
+  --beautify, -b: Beautifies the source code [false]
+  --classpath, -C[String]: Changes class path to classpath
+  --debug, -g: Produces debug information (does nothing yet) [false]
+  --deprecation, -D: Tests for deprecated members [false]
+  --destination, -d[String]: Writes files to destination
+  --filter, -f[String]: Warning filter [at.dms.kjc.DefaultFilter]
+  --help, h: Displays the help information
+  --java, -j: Generates java source code instead of class [false]
+  --lang, -l[String]: Sets the source language (1.1, 1.2, kopi) [1.1]
+  --multi, -m: Compiles in multi threads mode [false]
+  --nowrite, -n: Only checks files, doesn't generate code [false]
+  --optimize, -O[int]: Optimizes X times [1]
+  --proc, -p[int]: Maximal number of threads to use [2]
+  --verbose, -v: Prints out information during compilation [false]
+  --version, V: Prints out the version information
+  --warning, -w[int]: Maximal level of warnings to be displayed [0]
+      </PROGRAMLISTING>
+    </SECT2>
+  </SECT1>  
+  <SECT1><TITLE><ACRONYM>KJC</ACRONYM> Diagnostic Messages</TITLE>
+    <PARA>
+      This new feature of <ACRONYM>KJC</ACRONYM> helps to enforce Java
+      coding standard and to avoid most common bugs by providing
+      useful warnings about your code. This warnings are referenced at
+      the end of this documentation and are fully configurable.
+    </PARA>
+    <PARA>
+      This is our first step in this direction and we are looking
+      forward to add new checks as they come from contributors. So
+      feel free to send us remarks and suggestions about this new
+      feature in order to help us to build a powerful tool.
+    </PARA>
+    <SECT2><TITLE>Coding standard</TITLE>
+      <PARA>
+	The rules come from the JLS, Sun's "Java Coding Convention",
+	and several other sources and are based on our experience.
+      </PARA>
+    </SECT2>
+    <SECT2><TITLE>Configuration</TITLE>
+      <PARA>
+	May be the best way to use the diagnostic messages of KJC is
+	to turn  ON all warnings and maintain the source code free of
+	them. But you may not agree with our coding convention and you
+	have then the possibility to define a warning filter for your
+	own needs. If you want to use KJC on an existing program that
+	doesn't follow our coding convention (or worse the one from
+	Sun) you will receive tons of warnings and it won't be
+	helpful at all. In this case you can set the minimal warning
+	level with the -w switch to only check your code against worst
+	common failures.
+      </PARA>
+      <PARA>
+	In the next release we may add a -Wxxx option to select a
+	warning subset.
+      </PARA>
+      <SECT3><TITLE>Warning level</TITLE>
+	<PARA>
+	  There are five levels of warning:
+	  <ITEMIZEDLIST>
+	    <LISTITEM>
+	      <PARA>Caution</PARA>
+	      <PARA>This portion of code is surely wrong but accepted by the language.</PARA>
+	      <PARA>It may be something like: ((String)null).toString();</PARA>
+	    </LISTITEM> 
+	    <LISTITEM>
+	      <PARA>Warning 1</PARA>
+	      <PARA>This portion of code is correct but can lead to a more global failure.</PARA>
+	      <PARA>For instance because a variable is declared but never used or a variable is assigned to itself.</PARA>
+	    </LISTITEM> 
+	    <LISTITEM>
+	      <PARA>Warning 2</PARA>
+	      <PARA>This portion of code is syntaxically dirty or potentially dangerous.</PARA>
+	      <PARA>Like a then statement without brace or missing default label in switches.</PARA>
+	    </LISTITEM> 
+	    <LISTITEM>
+	      <PARA>Warning 3</PARA>
+	      <PARA>All other warnings.</PARA>
+	      <PARA>Everything that enforce our coding standard.</PARA>
+	    </LISTITEM> 
+	    <LISTITEM>
+	      <PARA>Notice</PARA>
+	      <PARA>Other information about the code that are not specifically focused on error search but rather on code beauty.</PARA>
+	      <PARA>Like unordered modifiers, usage of package/protected fields or usage of package import instead of class import.</PARA>
+	    </LISTITEM> 
+	  </ITEMIZEDLIST>
+	  One can select the level of warning to be displayed with the
+	  -w switch. The default value is 0 and --warning
+	  without parameter sets it to 3.
+	</PARA>
+      </SECT3>
+      <SECT3><TITLE>Warning filter</TITLE>
+	<PARA>
+	  One can write his personal warning filter by calling kjc
+	  with the switch --filter XXX where XXX is the name of a
+	  class which extends at.dms.compiler.WarningFilter and is
+	  accessible on the CLASSPATH. An example of such a filter is
+	  the default filter for KJC:
+	  <PROGRAMLISTING>
+public class DefaultFilter implements at.dms.compiler.WarningFilter {
+
+  // ----------------------------------------------------------------------
+  // FILTER
+  // ----------------------------------------------------------------------
+
+  /**
+   * Filters a warning
+   * @param	warning		a warning to be filtred
+   * @return	FLT_REJECT, FLT_FORCE, FLT_ACCEPT
+   */
+  public int filter(CWarning warning) {
+    if (warning.getDescription().equals(KjcMessages.UNUSED_PARAMETER)
+	|| warning.getDescription().equals(KjcMessages.CONSTANT_VARIABLE_NOT_FINAL)
+	|| warning.getDescription().equals(KjcMessages.UNUSED_CATCH_PARAMETER)) {
+      return FLT_REJECT;
+    } else {
+      return FLT_ACCEPT;
+    }
+  }
+}
+
+	  </PROGRAMLISTING>
+	  For each warning, this method select whether it should be:
+	  <ITEMIZEDLIST>
+	    <LISTITEM>
+	      <PARA>FLT_FORCE</PARA>
+	      <PARA>Displayed in every case.</PARA>
+	    </LISTITEM> 
+	    <LISTITEM>
+	      <PARA>FLT_REJECT</PARA>
+	      <PARA>Hidden in every case.</PARA>
+	    </LISTITEM> 
+	    <LISTITEM>
+	      <PARA>FLT_ACCEPT</PARA>
+	      <PARA>Displayed if the level is lower than the minimal warning limit and not filtered by the default filter of KJC.</PARA>
+	    </LISTITEM> 
+	  </ITEMIZEDLIST>
+
+	  The list of warnings is available at the end of this documentation in the reference section<XREF LINKEND="REF-ELEMENT">.
+	</PARA>
+      </SECT3>
+    </SECT2>
+  </SECT1>
+  <SECT1><TITLE>Road map</TITLE>
+    <PARA>
+      The next release (1.5) will have the following features:
+
+      <ITEMIZEDLIST MARK="BULLET">
+	<LISTITEM>
+	  <PARA>
+	    Optimizations: All the old optimizations developed at DMS
+	    will be included in the next release as well as the ones
+	    that were provided to us via patches or
+	    suggestion from our early <ACRONYM>KJC</ACRONYM> users.
+	  </PARA>
+	</LISTITEM>
+	<LISTITEM>
+	  <PARA>
+	    Full support of the new features of JDK1.2.
+	  </PARA>
+	</LISTITEM>
+      </ITEMIZEDLIST>      
+    </PARA>
+  </SECT1>
+</CHAPTER>

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.vkopi.lib.ui.base
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../../.." />
+
+
+  <property name="package" value="at/dms/vkopi/lib/ui/base" />
+  <property name="package.name" value="at.dms.vkopi.lib.ui.base" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="JFieldLabel.java FieldStates.java JMenuButton.java TextSeletor.java
+                   KopiTitledBorder.java JButtonPanel.java ListDialogCellRenderer.java 
+                   JFieldButton.java JBookmarkPanel.java JDisablePanel.java Stateful.java" />
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

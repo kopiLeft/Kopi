@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: at.dms.xkopi
+    ==================================================================-->
+<project default="build" basedir=".">
+
+  <property name="topdir" value=".." />
+  <property name="node" value="yes"/>
+
+
+  <target name="node.build"       description="-->  Runs subbuild files ">
+  	<ant dir="lib/type"      inheritAll="false" target="${target}" />
+    <ant dir="lib/base"      inheritAll="false" target="${target}" />
+    <ant dir="comp/sqlc"     inheritAll="false" target="${target}" />
+    <ant dir="comp/xkjc"     inheritAll="false" target="${target}" />
+    <ant dir="lib/oper"      inheritAll="false" target="${target}" />
+    <ant dir="comp/database" inheritAll="false" target="${target}" />
+    <ant dir="comp/dbi"      inheritAll="false" target="${target}" />
+    <ant dir="comp/dict"     inheritAll="false" target="${target}" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>
