@@ -133,8 +133,15 @@ vkStringFieldType []
 }
 :
   "STRING" LPAREN w = vkInteger[] ( COMMA h = vkInteger[] ( COMMA vh = vkInteger[] )?)? RPAREN
-  (
-    (
+   (
+      "FIXED"
+      (
+        "ON"    { c = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
+      |
+        "OFF"   { c = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
+      )  
+   )?
+   (
       "CONVERT"
       (
         "UPPER" { c = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_UPPER; }
@@ -143,15 +150,7 @@ vkStringFieldType []
       |
         "NAME"  { c = at.dms.vkopi.lib.form.VConstants.FDO_CONVERT_NAME; }
       )
-    |
-      "FIXED"
-      (
-        "ON"    { c = at.dms.vkopi.lib.form.VConstants.FDO_FIX_NL; }
-      |
-        "OFF"   { c = at.dms.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
-      )  
-    )
-  )?
+   )?
     { self = new VKStringType(sourceRef, w, h, vh, c); }
 ;
 
