@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VFieldUI.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.form;
@@ -365,8 +365,10 @@ public class VFieldUI implements VConstants, ActionHandler {
         if (!getBlock().noDetail() && !model.noDetail()) {
           // create the second label for the detail view
           dlDetail = new DLabel(model.getLabel(), model.getToolTip());
-          ((DMultiBlock) getBlock().getDisplay()).addToDetail(dlDetail,
-                                                              new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
+          if (columnEnd >= 0) {
+            ((DMultiBlock) getBlock().getDisplay()).addToDetail(dlDetail,
+                                                                new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
+          }
           // field for the value in the detail view
           detailDisplay = createDisplay(dlDetail, model);
           ((DMultiBlock) getBlock().getDisplay()).addToDetail(detailDisplay,
