@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DatabaseTimestampColumn.java,v 1.1 2004/07/28 18:43:29 imad Exp $
+ * $Id$
  */
 package at.dms.xkopi.comp.database;
 
@@ -28,12 +28,12 @@ import at.dms.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import at.dms.xkopi.comp.xkjc.XStdType;
 
 /**
- * The type of a field which represents a date-column in Database.k. 
+ * The type of a field which represents a date-column in Database.k.
  */
 public class DatabaseTimestampColumn extends DatabaseColumn{
 
   /**
-   * Creates a representation of a column with type Date. The values in 
+   * Creates a representation of a column with type Date. The values in
    * the column are NOT restricted.
    */
   public DatabaseTimestampColumn(boolean isNullable) {
@@ -46,24 +46,25 @@ public class DatabaseTimestampColumn extends DatabaseColumn{
    * @return the type
    */
   protected CType getStandardType(boolean isNullable) {
-    return CReferenceType.lookup("java/sql/Timestamp");
-  } 
+    return isNullable ? XStdType.Timestamp : XStdType.PTimestamp;
+  }
 
   /**
-   * Creates a new-Expression which contructs this object.  
+   * Creates a new-Expression which contructs this object.
    *
    * @return the expression
    */
   public JExpression getCreationExpression() {
     return new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
-                            new CClassNameType(TokenReference.NO_REF, DatabaseTimestampColumn.class.getName().replace('.','/')),
+                            new CClassNameType(TokenReference.NO_REF,
+                              DatabaseTimestampColumn.class.getName().replace('.','/')),
                             new JExpression[]{
-                                new JBooleanLiteral(TokenReference.NO_REF, isNullable())}  
+                                new JBooleanLiteral(TokenReference.NO_REF, isNullable())}
                             );
   }
 
   /**
-   * Returns true if dc is equivalent with the current column. 
+   * Returns true if dc is equivalent with the current column.
    *
    * @param other other column
    * @param check spezifies the check
@@ -75,5 +76,5 @@ public class DatabaseTimestampColumn extends DatabaseColumn{
       return false;
     }
   }
-  
+
 }

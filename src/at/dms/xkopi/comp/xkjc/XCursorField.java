@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: XCursorField.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.xkopi.comp.xkjc;
@@ -145,6 +145,8 @@ public class XCursorField extends CSourceField {
 	name = "Month";
       } else if (type.equals(factory.createReferenceType(XTypeFactory.RFT_TIME))) {
 	name = "Time";
+      } else if (type.equals(factory.createReferenceType(XTypeFactory.RFT_TIMESTAMP))) {
+	name = "Timestamp";
       } else if (type.equals(factory.createReferenceType(XTypeFactory.RFT_WEEK))) {
 	name = "Week";
       } else if (type.equals(factory.createReferenceType(XTypeFactory.RFT_FIXED))) {
