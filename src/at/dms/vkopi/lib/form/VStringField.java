@@ -121,7 +121,7 @@ public class VStringField extends VField {
     if (s == null || s.equals("")) {
       setNull(block.getActiveRecord());
     } else {
-      switch (convert) {
+      switch (convert & FDO_CONVERT_MASK) {
       case FDO_CONVERT_NONE:
 	break;
 
@@ -137,13 +137,7 @@ public class VStringField extends VField {
 	s = s.toLowerCase();	// !!! add function
 	break;
 
-      case FDO_FIX_NL:
-      case FDO_DYNAMIC_NL:
-        // nothing to do with s
-	break;
-
       default:
-        System.out.println("fail convert "+getName()+"   "+convert+"   "+FDO_DYNAMIC_NL+"  "+FDO_FIX_NL);
 	throw new InconsistencyException();
       }
 
