@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: Kjc.g,v 1.77 2003/10/26 14:04:34 graf Exp $
+ * $Id$
  */
 
 /*
@@ -603,7 +603,7 @@ jEnumConstantDeclaration [CParseEnumContext context, int count]
 	    decl = new JClassDeclaration(sourceRef,
 					 Constants.ACC_FINAL, // JLS 15.9.5
 					 "", 
-                     CTypeVariable.EMPTY,
+                                         CTypeVariable.EMPTY,
 					 null,
 					 CReferenceType.EMPTY,
 					 subContext.getFields(),
