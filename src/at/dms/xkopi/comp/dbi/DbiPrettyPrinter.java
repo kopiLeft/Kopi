@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DbiPrettyPrinter.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.xkopi.comp.dbi;
@@ -59,6 +59,22 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
   // ----------------------------------------------------------------------
   // STATEMENT
   // ----------------------------------------------------------------------
+
+  /**
+   * Visits SequenceDefinition
+   */
+  public void visitSequenceDefinition(SequenceDefinition self,
+                                      Expression sequenceName,
+                                      Integer startValue)
+    throws PositionedError
+  {
+    print("CREATE SEQUENCE ");
+    sequenceName.accept(this);
+    if (startValue != null) {
+      print(" START WITH ");
+      print(startValue);
+    }
+  }
 
   /**
    * prints a table definition
@@ -198,6 +214,16 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
   {
     print("DROP VIEW ");
     viewName.accept(this);
+  }
+
+  /**
+   * Visits DropSequenceStatement
+   */
+  public void visitDropSequenceStatement(DropSequenceStatement self, Expression sequenceName)
+    throws PositionedError
+  {
+    print("DROP SEQUENCE ");
+    sequenceName.accept(this);
   }
 
  /**
