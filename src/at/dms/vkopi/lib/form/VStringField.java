@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VStringField.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.form;
@@ -73,6 +73,13 @@ public class VStringField extends VField {
   }
 
   /**
+   * return the name of this field
+   */
+  public int getTypeOptions() {
+    return convert;
+  }
+
+  /**
    * Return the visible height
    */
   public int getVisibleHeight() {
@@ -96,7 +103,7 @@ public class VStringField extends VField {
   public boolean checkText(String s) {
     int		end   = 0;
 
-    end = s.length();
+    end = textToModel(s).length();
     if (end > width * height) {
       return false;
     }
@@ -130,7 +137,13 @@ public class VStringField extends VField {
 	s = s.toLowerCase();	// !!! add function
 	break;
 
+      case FDO_FIX_NL:
+      case FDO_DYNAMIC_NL:
+        // nothing to do with s
+	break;
+
       default:
+        System.out.println("fail convert "+getName()+"   "+convert+"   "+FDO_DYNAMIC_NL+"  "+FDO_FIX_NL);
 	throw new InconsistencyException();
       }
 

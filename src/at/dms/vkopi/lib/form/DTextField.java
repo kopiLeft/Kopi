@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DTextField.java,v 1.9 2004/12/29 15:15:48 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.form;
@@ -51,7 +51,7 @@ import at.dms.vkopi.lib.visual.VException;
  * DTextField is a panel composed in a text field and an information panel
  * The text field appear as a JLabel until it is edited
  */
-public class DTextField extends DField {
+public class DTextField extends DField implements VConstants {
   public DTextField(VFieldUI model,
                     DLabel label,
                     int align,
@@ -61,8 +61,8 @@ public class DTextField extends DField {
     noEdit = (options & VConstants.FDO_NOEDIT) != 0;
     scanner = (options & VConstants.FDO_NOECHO) != 0 && getModel().getHeight() > 1;
 
-    if (getModel().getHeight() == 1) {
-      transformer = new DefaultTransformer();
+    if (getModel().getHeight() == 1 || (!scanner && ((getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0))) {
+      transformer = new DefaultTransformer(getModel().getWidth(), getModel().getHeight());
     } else if (!scanner) {
       transformer = new NewlineTransformer(getModel().getWidth(), getModel().getHeight());
     } else {
@@ -500,15 +500,23 @@ public class DTextField extends DField {
   }
 
   static class DefaultTransformer implements ModelTransformer {
+    public DefaultTransformer(int col, int row) {
+      this.col = col;
+      this.row = row;
+    }
+
     public String toGui(String modelTxt) {
       return modelTxt;
     }
     public String toModel(String guiTxt) {
       return guiTxt;
     }
-    public boolean checkFormat(String guiTxt) {
-      return true;
+    public boolean checkFormat(String source) {
+      return (row == 1) ? true : (convertToSingleLine(source, col, row).length() <= row * col);
     }
+
+    int         col;
+    int         row;
   }
   static class ScannerTransformer implements ModelTransformer {
     public ScannerTransformer(DTextField field) {
@@ -529,7 +537,7 @@ public class DTextField extends DField {
       return guiTxt;
     }
 
-    public boolean checkFormat(String guiTxt) {
+    public boolean checkFormat(String software) {
       return true;
     }
 
@@ -543,58 +551,7 @@ public class DTextField extends DField {
     }
 
     public String toModel(String source) {
-      StringBuffer      target = new StringBuffer();
-      int               length = source.length();
-      int               start = 0;
-      int               lines = 0;
-
-      while (start < length) {
-        int             index = source.indexOf('\n', start);
-
-        if (index-start < col && index != -1) {
-          target.append(source.substring(start, index));
-          for (int j = index - start; j < col; j++) {
-            target.append(' ');
-          }
-          start = index+1;
-          if (start == length) {
-            // last line ends with a "new line" -> add an empty line
-            for (int j = 0; j < col; j++) {
-              target.append(' ');
-            }
-          }
-        } else {
-          if (start+col >= length) {
-            target.append(source.substring(start, length));
-            for (int j = length; j < start+col; j++) {
-              target.append(' ');
-            }
-            start = length;          
-          } else {
-            // find white space to break line
-            int   i;
-            
-            for (i = start+col; i > start; i--) {
-              if (Character.isWhitespace(source.charAt(i))) {
-                break;
-              }
-            }
-            if (i == start) {
-              index = start+col;
-            } else {
-              index = i;
-            }
-
-            target.append(source.substring(start, index));
-            for (int j = index - start; j < col; j++) {
-              target.append(' ');
-            }
-            start = index + 1;
-          }
-        }
-        lines++;
-      }
-      return target.toString();
+      return convertToSingleLine(source, col, row);
     }
 
     public String toGui(String source) {
@@ -672,4 +629,59 @@ public class DTextField extends DField {
     JPopupMenu      menu;
   }
 
+
+  static String convertToSingleLine(String source, int col, int row) {
+      StringBuffer      target = new StringBuffer();
+      int               length = source.length();
+      int               start = 0;
+      int               lines = 0;
+
+      while (start < length) {
+        int             index = source.indexOf('\n', start);
+
+        if (index-start < col && index != -1) {
+          target.append(source.substring(start, index));
+          for (int j = index - start; j < col; j++) {
+            target.append(' ');
+          }
+          start = index+1;
+          if (start == length) {
+            // last line ends with a "new line" -> add an empty line
+            for (int j = 0; j < col; j++) {
+              target.append(' ');
+            }
+          }
+        } else {
+          if (start+col >= length) {
+            target.append(source.substring(start, length));
+            for (int j = length; j < start+col; j++) {
+              target.append(' ');
+            }
+            start = length;          
+          } else {
+            // find white space to break line
+            int   i;
+            
+            for (i = start+col; i > start; i--) {
+              if (Character.isWhitespace(source.charAt(i))) {
+                break;
+              }
+            }
+            if (i == start) {
+              index = start+col;
+            } else {
+              index = i;
+            }
+
+            target.append(source.substring(start, index));
+            for (int j = index - start; j < col; j++) {
+              target.append(' ');
+            }
+            start = index + 1;
+          }
+        }
+        lines++;
+      }
+      return target.toString();
+}
 }

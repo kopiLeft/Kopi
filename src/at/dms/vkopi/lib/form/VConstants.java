@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VConstants.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.form;
@@ -128,9 +128,12 @@ public interface VConstants extends at.dms.vkopi.lib.visual.Constants {
   int FDO_CONVERT_LOWER			= 0x0200;
   int FDO_CONVERT_NAME			= 0x0400;
 
-  int FDO_NODETAIL			=  4096;
-  int FDO_NOCHART			=  8192;
-  int FDO_SORT                          = 16384;
+  int FDO_NODETAIL			= 0x1000;
+  int FDO_NOCHART			= 0x2000;
+  int FDO_SORT                          = 0x4000;
+
+  int FDO_DYNAMIC_NL                    = 0x10000;
+  int FDO_FIX_NL                        = 0x20000;
 
   // ---------------------------------------------------------------------
   // SEARCH OPERATORS
