@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DPreviewWindow.java,v 1.1 2004/07/28 18:43:29 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.preview;
@@ -23,6 +23,8 @@ package at.dms.vkopi.lib.preview;
 import at.dms.vkopi.lib.visual.*;
 import at.dms.vkopi.lib.util.Message;
 
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -104,9 +106,37 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     bounds = Utils.calculateBounds(frame, null, null);
     frame.setBounds(bounds);
 
-    getFrame().show();
     label.requestFocusInWindow();
+    frame.show();
+
     setPagePosition(model.getCurrentPage(), model.getNumberOfPages());
+
+    WindowStateListener listener = new WindowAdapter() {
+        public void windowStateChanged(WindowEvent evt) {
+          int   oldState = evt.getOldState();
+          int   newState = evt.getNewState();
+          
+          if ((oldState & Frame.MAXIMIZED_BOTH) == 0
+              && (newState & Frame.MAXIMIZED_BOTH) != 0) {
+            getFrame().invalidate();
+            getFrame().validate();
+            
+            Dimension         dim = bodypane.getSize(); // size of view
+            int               height = model.getHeight();
+            int               width = model.getWidth();
+            float             ratio = Math.min((float)dim.height/model.getHeight(), 
+                                               (float)dim.width/model.getWidth());
+            
+            // round the ratio with 0.99f, so that there are definitly no 
+            // scrollbars
+            if (ratio > 1) {
+              model.zoom(ratio*1.04f);
+            }
+          } 
+        }
+      };
+    
+    frame.addWindowStateListener(listener);
   }
 
 
@@ -124,12 +154,28 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
 
   private void setIcon(int current) {
     ImageIcon   img = (ImageIcon)label.getIcon();
+
     if (img != null) {
       img.getImage().flush();
     }
+
     ImageIcon   imgNew = new ImageIcon(model.getPreviewFileName(current));
 
-    label.setIcon(imgNew);    
+    label.setIcon(imgNew);
+
+    if (img != null) {
+      bodypane.invalidate();
+      bodypane.validate();
+
+      centerScrollbar(bodypane.getHorizontalScrollBar());
+      centerScrollbar(bodypane.getVerticalScrollBar());
+    }
+  }
+
+  private void centerScrollbar(JScrollBar bar) {
+    BoundedRangeModel   model = bar.getModel();
+
+    model.setValue(Math.max((model.getMaximum()-model.getExtent())/2, 0));
   }
 
   public  void pageChanged(final int current) {

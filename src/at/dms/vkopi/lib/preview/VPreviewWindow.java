@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VPreviewWindow.java,v 1.1 2004/07/28 18:43:29 imad Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.preview;
@@ -94,19 +94,19 @@ public class VPreviewWindow extends VWindow {
         new SActor(Message.getMessage("menu-action"),
 		   Message.getMessage("item-preview-fit"),
 		   "searchop",
-		   0,
+		   KeyEvent.VK_F5,
 		   0,
 		   null),
         new SActor(Message.getMessage("menu-action"),
 		   Message.getMessage("item-preview-plus"),
 		   "detail",
-		   0,
+		   KeyEvent.VK_F6,
 		   0,
 		   null),
         new SActor(Message.getMessage("menu-action"),
 		   Message.getMessage("item-preview-minus"),
 		   "zoomminus",
-		   0,
+		   KeyEvent.VK_F7,
 		   0,
 		   null)
 	});
