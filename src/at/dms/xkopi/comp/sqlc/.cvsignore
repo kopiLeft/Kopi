@@ -1,5 +1,9 @@
-SqlcFlexRules.txt Sqlc.flex SqlcScanner.java
-SqlcParser.java SqlcTokenTypes.java SqlcTokenTypes.txt
+SqlcFlexRules.txt
+Sqlc.flex
+SqlcScanner.java
+SqlcParser.java
+SqlcTokenTypes.java
+SqlcTokenTypes.txt
 SqlcMessages.java
 SqlcOptions.java
 classes.stamp

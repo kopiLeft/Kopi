@@ -1,5 +1,9 @@
-KjcFlexRules.txt Kjc.flex KjcScanner.java
-KjcParser.java KjcTokenTypes.java KjcTokenTypes.txt
+KjcFlexRules.txt
+Kjc.flex
+KjcScanner.java
+KjcParser.java
+KjcTokenTypes.java
+KjcTokenTypes.txt
 KjcMessages.java
 KjcOptions.java
 classes.stamp

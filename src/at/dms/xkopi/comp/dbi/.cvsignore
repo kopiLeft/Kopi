@@ -1,5 +1,9 @@
-DbiFlexRules.txt Dbi.flex DbiScanner.java
-DbiParser.java DbiTokenTypes.java DbiTokenTypes.txt
+DbiFlexRules.txt
+Dbi.flex
+DbiScanner.java
+DbiParser.java
+DbiTokenTypes.java
+DbiTokenTypes.txt
 expandedDbi.g
 DbiMessages.java
 DbiOptions.java

@@ -1,6 +1,7 @@
 MsggenOptions.java
 classes.stamp
-MsggenLexer.java MsggenParser.java
+MsggenLexer.java
+MsggenParser.java
 TokenTypes.java
 MsggenTokenTypes.txt
 MsggenLexerTokenTypes.java

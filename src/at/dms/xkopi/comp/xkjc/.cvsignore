@@ -1,10 +1,18 @@
 XFactory.java
 macro.stamp
-XKjcFlexRules.txt XKjc.flex XKjcScanner.java
-XKjcParser.java XKjcTokenTypes.java XKjcTokenTypes.txt
+XKjcFlexRules.txt
+XKjc.flex
+XKjcScanner.java
+XKjcParser.java
+XKjcTokenTypes.java
+XKjcTokenTypes.txt
 expandedXKjc.g
-XSqlcFlexRules.txt XSqlc.flex XSqlcScanner.java
-XSqlcParser.java XSqlcTokenTypes.java XSqlcTokenTypes.txt
+XSqlcFlexRules.txt
+XSqlc.flex
+XSqlcScanner.java
+XSqlcParser.java
+XSqlcTokenTypes.java
+XSqlcTokenTypes.txt
 expandedXSqlc.g
 XSqlcMessages.java
 XKjcMessages.java

@@ -1,5 +1,9 @@
-PrintFlexRules.txt Print.flex PrintScanner.java
-PrintParser.java PrintTokenTypes.java PrintTokenTypes.txt
+PrintFlexRules.txt
+Print.flex
+PrintScanner.java
+PrintParser.java
+PrintTokenTypes.java
+PrintTokenTypes.txt
 expandedPrint.g
 PrintMessages.java
 classes.stamp
