@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: JFieldDeclaration.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -165,12 +165,11 @@ public class JFieldDeclaration extends JMemberDeclaration {
     }
     variable.checkInterface(context);
     setInterface(new CSourceField(context.getCClass(),
-				  modifiers,
-				  variable.getIdent(),
-				  variable.getType(),
-				  isDeprecated(),
+                                  modifiers,
+                                  variable.getIdent(),
+                                  variable.getType(),
+                                  isDeprecated(),
                                   synthetic)); // not synthetic
-
     return (CSourceField)getField();
   }
 
@@ -210,7 +209,7 @@ public class JFieldDeclaration extends JMemberDeclaration {
       JExpression	value = variable.getValue();
 
       if (value.isConstant()) {
-	getField().setValue(value.getLiteral());
+        getField().setValue(value.getLiteral());
 
 	if (! getField().isStatic()) {
 	  context.reportTrouble(new CWarning(getTokenReference(),
@@ -228,6 +227,16 @@ public class JFieldDeclaration extends JMemberDeclaration {
       context.reportTrouble(new CWarning(getTokenReference(),
 					 KjcMessages.PACKAGE_PROTECTED_ATTRIBUTE,
 					 getField().getIdent()));
+    }
+
+    // JVM Spec 4.7.5: The InnerClasses Attribute must contain inner refs
+    // This add needs to be done in the analyse step not in the check interface
+    if (variable.getType().isClassType()
+        && variable.getType().getCClass().isNested()
+        && !variable.getType().getCClass().getOwner().getQualifiedName().equals(context.getClassContext().getCClass().getQualifiedName()))  {
+      
+      // Check for previously added reference is done in the addInnerReference() method
+      ((CSourceClass) context.getClassContext().getCClass()).addInnerReference(variable.getType().getCClass().getAbstractType());
     }
   }
 

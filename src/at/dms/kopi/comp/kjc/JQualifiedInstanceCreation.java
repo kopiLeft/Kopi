@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: JQualifiedInstanceCreation.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -91,6 +91,11 @@ public class JQualifiedInstanceCreation extends JExpression {
     context = new CExpressionContext(context, context.getEnvironment());
 
     prefix = prefix.analyse(context);
+
+    check(context,
+	  prefix.isExpression(),
+	  KjcMessages.VAR_UNKNOWN, prefix.getType(factory));
+
     check(context,
 	  prefix.getType(factory).isClassType(),
 	  KjcMessages.FIELD_BADACCESS, prefix.getType(factory));

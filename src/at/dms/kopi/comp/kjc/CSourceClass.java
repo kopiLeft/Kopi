@@ -15,13 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CSourceClass.java,v 1.2 2004/09/28 10:34:01 graf Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -46,6 +47,12 @@ import at.dms.util.base.Utils;
  * It is build from a parsed files so values are accessibles differently after build and
  * after interface checked
  */
+/**
+ * @author taoufik
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
 public class CSourceClass extends CClass {
 
   // ----------------------------------------------------------------------
@@ -56,12 +63,12 @@ public class CSourceClass extends CClass {
    * Constructs a class export from source
    */
   public CSourceClass(CClass owner,
-		      TokenReference where,
-		      int modifiers,
-		      String ident,
-		      String qualifiedName,
+                      TokenReference where,
+                      int modifiers,
+                      String ident,
+                      String qualifiedName,
                       CTypeVariable[] typeVariables,
-		      boolean deprecated,
+                      boolean deprecated,
                       boolean synthetic,
                       JTypeDeclaration decl)
   {
@@ -125,17 +132,17 @@ public class CSourceClass extends CClass {
       pos = 0;
 
       if (hasOuterThis) {
-	result[pos++] = getOwnerType();
+        result[pos++] = getOwnerType();
       }
 
       for (int i = 0; i < params.length; pos++, i++) {
-	result[pos] = params[i];
+        result[pos] = params[i];
       }
 
       if (outers != null) {
-	for (Enumeration elems = outers.keys(); elems.hasMoreElements(); ) {
-	  result[pos++] = ((JLocalVariable)elems.nextElement()).getType();
-	}
+        for (Enumeration elems = outers.keys(); elems.hasMoreElements(); ) {
+          result[pos++] = ((JLocalVariable)elems.nextElement()).getType();
+        }
       }
       
       return result;
@@ -160,7 +167,7 @@ public class CSourceClass extends CClass {
         && (superClass = superClassType.getCClass()) instanceof CSourceClass 
         && (superOuters = ((CSourceClass) superClass).outers) != null) {
       for (Enumeration elems = superOuters.keys(); elems.hasMoreElements(); ) {
-	JLocalVariable	var = (JLocalVariable)elems.nextElement();
+        JLocalVariable	var = (JLocalVariable)elems.nextElement();
         OuterVarField   varField = ((OuterVarField) superOuters.get(var));
 
         if (outers == null || outers.get(var) == null) {
@@ -181,7 +188,7 @@ public class CSourceClass extends CClass {
       }
 
       for (Enumeration elems = sourceClass.outers.keys(); elems.hasMoreElements(); ) {
-	JLocalVariable	var = (JLocalVariable)elems.nextElement();
+        JLocalVariable	var = (JLocalVariable)elems.nextElement();
         OuterVarField   varField = ((OuterVarField)(sourceClass.outers.get(var)));
 
         if ((outers == null || outers.get(var) == null)
@@ -232,7 +239,7 @@ public class CSourceClass extends CClass {
   public void genOuterSyntheticParams(GenerationContext context, int length) {
     if (outers != null) {
       for (Enumeration elems = outers.keys(); elems.hasMoreElements(); ) {
-	JLocalVariable	var = (JLocalVariable)elems.nextElement();
+        JLocalVariable	var = (JLocalVariable)elems.nextElement();
         CSourceClass    owner = (CSourceClass)getOwner();
         Hashtable       ownerOuters = owner.outers;
         OuterVarField   varField;
@@ -394,6 +401,24 @@ public class CSourceClass extends CClass {
       tmp.analyseConditions();
     }
   }
+  
+  public void addInnerReference(CReferenceType ref) {
+    if (innerRefs == null) {
+      innerRefs = new ArrayList();
+    } else 
+      if (innerRefs.contains(ref)) {
+        return;
+    	}	
+    innerRefs.add(ref);
+  }
+  
+  private CReferenceType[] getInnerReferences() {
+    if (innerRefs == null) {
+      	return new CReferenceType[0];
+    } else {
+      return (CReferenceType[]) innerRefs.toArray(new CReferenceType[innerRefs.size()]);
+    }
+  }
 
   // ----------------------------------------------------------------------
   // CODE GENERATION
@@ -409,6 +434,7 @@ public class CSourceClass extends CClass {
     throws IOException, ClassFileFormatException, PositionedError
   {
     decl = null; // garbage
+
     String[]	classPath = Utils.splitQualifiedName(getSourceFile(), File.separatorChar);
 
     try {
@@ -455,9 +481,10 @@ public class CSourceClass extends CClass {
    */
   private InnerClassInfo[] genInnerClasses() {
     CReferenceType[]	source = getInnerClasses();
+    CReferenceType[]	refs   = getInnerReferences();
     int			count;
 
-    count = source.length;
+    count = source.length + refs.length;
     if (isNested()) {
       count += 1;
     }
@@ -469,19 +496,29 @@ public class CSourceClass extends CClass {
 
       result = new InnerClassInfo[count];
       for (int i = 0; i < source.length; i++) {
-	CClass	clazz = source[i].getCClass();
+        // add inners infos
+        CClass	clazz = source[i].getCClass();
 
-	result[i] = new InnerClassInfo(clazz.getQualifiedName(),
-				       getQualifiedName(),
-				       clazz.getIdent(),
-				       (short)clazz.getModifiers());
+        result[i] = new InnerClassInfo(clazz.getQualifiedName(),
+                                       getQualifiedName(),
+                                       clazz.getIdent(),
+                                       (short)clazz.getModifiers());
       }
+      for (int i = 0; i < refs.length; i++) {
+        // add inner refs infos
+        CClass	clazz = refs[i].getCClass();
+
+        result[i+source.length] = new InnerClassInfo(clazz.getQualifiedName(),
+                                                     clazz.getOwner().getQualifiedName(),
+                                                     clazz.getIdent(),
+                                                     (short)clazz.getModifiers());
+      }      
       if (isNested()) {
-	// add outer class info
-	result[result.length - 1] = new InnerClassInfo(getQualifiedName(),
-						       getOwner().getQualifiedName(),
-						       getIdent(),
-						       (short)getModifiers());
+        // add outer class info
+        result[result.length - 1] = new InnerClassInfo(getQualifiedName(),
+                                                       getOwner().getQualifiedName(),
+                                                       getIdent(),
+                                                       (short)getModifiers());
       }
       return result;
     }
@@ -494,7 +531,7 @@ public class CSourceClass extends CClass {
    */
   private MethodInfo[] genMethods(BytecodeOptimizer optimizer, TypeFactory factory)
     throws ClassFileFormatException
-  {
+    {
     CMethod[]		source = getMethods();
     MethodInfo[]	result;
 
@@ -533,10 +570,11 @@ public class CSourceClass extends CClass {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private boolean               derived = false; // inherit outer local vars?
-  private boolean		assertionClass;
-  private Hashtable		outers;
-  private int			syntheticFieldCount;
-  private CMethod               invariantMethod;
-  private JTypeDeclaration      decl;
+  private boolean           derived = false; // inherit outer local vars?
+  private boolean           assertionClass;
+  private Hashtable         outers;
+  private ArrayList         innerRefs; // used to store inner refs
+  private int               syntheticFieldCount;
+  private CMethod           invariantMethod;
+  private JTypeDeclaration  decl;
 }

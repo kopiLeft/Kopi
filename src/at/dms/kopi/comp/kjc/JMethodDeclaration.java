@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: JMethodDeclaration.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -52,15 +52,15 @@ public class JMethodDeclaration extends JMemberDeclaration {
    * @param	comment		other comments in the source code
    */
   public JMethodDeclaration(TokenReference where,
-			    int modifiers,
+                            int modifiers,
                             CTypeVariable[] typeVariables,
-			    CType returnType,
-			    String ident,
-			    JFormalParameter[] parameters,
-			    CReferenceType[] exceptions,
-			    JBlock body,
-			    JavadocComment javadoc,
-			    JavaStyleComment[] comments)
+                            CType returnType,
+                            String ident,
+                            JFormalParameter[] parameters,
+                            CReferenceType[] exceptions,
+                            JBlock body,
+                            JavadocComment javadoc,
+                            JavaStyleComment[] comments)
   {
     super(where, javadoc, comments);
 
@@ -98,6 +98,15 @@ public class JMethodDeclaration extends JMemberDeclaration {
       modifiers |= ACC_PUBLIC | ACC_ABSTRACT;
     }
 
+    // Enum case JSR 201 [book chapter 8.9 page:255]
+    // if this method is abstract and owner is Enum class and its Enum constants has anon classes
+    // then set owner class as abstract
+    if (CModifier.contains(modifiers, ACC_ABSTRACT) 
+        && context.getCClass().getSuperType().getQualifiedName() == JAV_ENUM
+        && !context.getCClass().isFinal()) {
+      context.getCClass().setModifiers( context.getCClass().getModifiers() | ACC_ABSTRACT);
+    }
+    
     // 8.4.3 Method Modifiers
     check(context,
 	  CModifier.isSubsetOf(modifiers,
@@ -146,23 +155,23 @@ public class JMethodDeclaration extends JMemberDeclaration {
 
       returnType = returnType.checkType(typeContext);
       for (int i = 0; i < parameterTypes.length; i++) {
-	parameterTypes[i] = parameters[i].checkInterface(typeContext);
+        parameterTypes[i] = parameters[i].checkInterface(typeContext);
       }
 
       for (int i = 0; i < exceptions.length; i++) {
-	exceptions[i] = (CReferenceType)exceptions[i].checkType(typeContext);
+        exceptions[i] = (CReferenceType)exceptions[i].checkType(typeContext);
       }
 
       setInterface(new CSourceMethod(context.getCClass(),
-				     modifiers,
-				     ident,
-				     returnType,
-				     parameterTypes,
-				     exceptions,
+                                     modifiers,
+                                     ident,
+                                     returnType,
+                                     parameterTypes,
+                                     exceptions,
                                      typeVariables,
-				     isDeprecated(),
+                                     isDeprecated(),
                                      false, // not synthetic
-				     body));
+                                     body));
 
       return (CSourceMethod)getMethod();
     } catch (UnpositionedError cue) {
@@ -182,51 +191,70 @@ public class JMethodDeclaration extends JMemberDeclaration {
    */
   public void checkBody1(CClassContext context) throws PositionedError {
     check(context,
-	  context.getCClass().isAbstract() || !getMethod().isAbstract(),
-	  KjcMessages.METHOD_ABSTRACT_CLASSNOT, ident);
-
+          context.getCClass().isAbstract() || !getMethod().isAbstract(),
+          KjcMessages.METHOD_ABSTRACT_CLASSNOT, ident);
+    
     checkOverriding(context);
-
+    
     check(context,
           getMethod().getHeapForParameter() <= 255,
           KjcMessages.MANY_METHOD_PARAMETER, ident);
-
+    
     if (body == null) {
       check(context,
-	    getMethod().isAbstract()
-	    || getMethod().isNative()
-	    || context.getClassContext().getCClass().isInterface(),
-	    KjcMessages.METHOD_NOBODY_NOABSTRACT, ident);
+            getMethod().isAbstract()
+            || getMethod().isNative()
+            || context.getClassContext().getCClass().isInterface(),
+            KjcMessages.METHOD_NOBODY_NOABSTRACT, ident);
     } else {
       check(context,
-	    !context.getCClass().isInterface(),
-	    KjcMessages.METHOD_BODY_IN_INTERFACE, ident);
-
+            !context.getCClass().isInterface(),
+            KjcMessages.METHOD_BODY_IN_INTERFACE, ident);
+      
       check(context,
-	    !getMethod().isNative() && !getMethod().isAbstract(),
-	    KjcMessages.METHOD_BODY_NATIVE_ABSTRACT, ident);
-
+            !getMethod().isNative() && !getMethod().isAbstract(),
+            KjcMessages.METHOD_BODY_NATIVE_ABSTRACT, ident);
+      
       CMethodContext	self = new CMethodContext(context, context.getEnvironment(), getMethod(), parameters);
       CBlockContext	block = new CBlockContext(self, context.getEnvironment(), parameters.length);
-
+      
       if (!getMethod().isStatic()) {
-	// add this local var
-	block.addThisVariable();
+        // add this local var
+        block.addThisVariable();
       }
-
+      
       for (int i = 0; i < parameters.length; i++) {
-	parameters[i].analyse(block);
+        parameters[i].analyse(block);
       }
-
+      
       body.analyse(block);
-
+      
       block.close(getTokenReference());
       self.close(getTokenReference());
-
+      
       if (block.isReachable() && getMethod().getReturnType().getTypeID() != TID_VOID) {
-	context.reportTrouble(new CLineError(getTokenReference(),
-					     KjcMessages.METHOD_NEED_RETURN,
-					     getMethod().getIdent()));
+        context.reportTrouble(new CLineError(getTokenReference(),
+                                             KjcMessages.METHOD_NEED_RETURN,
+                                             getMethod().getIdent()));
+      }
+    }
+
+    // JVM Spec 4.7.5: The InnerClasses Attribute must contain inner refs
+    // This add needs to be done in the analyse step not in the check interface
+    if (returnType.isClassType()
+        && returnType.getCClass().isNested()
+        && !returnType.getCClass().getOwner().getQualifiedName().equals(context.getCClass().getQualifiedName()))  {
+      
+      // Check for previously added reference is done in the addInnerReference() method
+      ((CSourceClass) context.getCClass()).addInnerReference(returnType.getCClass().getAbstractType());
+    }
+    for (int i = 0; i < parameters.length; i++) {
+      if (parameters[i].getType().isClassType()
+          && parameters[i].getType().getCClass().isNested()
+          && !parameters[i].getType().getCClass().getOwner().getQualifiedName().equals(context.getCClass().getQualifiedName()))  {
+        
+        // Check for previously added reference is done in the addInnerReference() method
+        ((CSourceClass) context.getCClass()).addInnerReference(parameters[i].getType().getCClass().getAbstractType());
       }
     }
   }
@@ -391,13 +419,14 @@ public class JMethodDeclaration extends JMemberDeclaration {
   // ----------------------------------------------------------------------
 
   // $$$ MOVE TO BE PRIVATE
-  protected int				modifiers;
-  protected CType			returnType;
-  protected String			ident;
-  protected JFormalParameter[]		parameters;
-  protected CReferenceType[]		exceptions;
-  protected JBlock			body;
-  protected CTypeVariable[]             typeVariables;
-  private   ArrayList                   bridgesToPrint;
+  protected int                 modifiers;
+  protected CType               returnType;
+  protected String              ident;
+  protected JFormalParameter[]  parameters;
+  protected CReferenceType[]    exceptions;
+  protected JBlock              body;
+  protected CTypeVariable[]     typeVariables;
+  private   ArrayList           bridgesToPrint;
+
   public static final JMethodDeclaration[]       EMPTY = new JMethodDeclaration[0];
 }
