@@ -19,6 +19,7 @@
 @literal	HORIZONTAL
 @literal	IDENT
 @literal	IF
+@literal	IMPLEMENTS
 @literal	INDENT
 @literal	ITALIC
 @literal	JUSTIFIED

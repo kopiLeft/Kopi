@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: PRPage.java,v 1.2 2004/09/28 10:34:01 graf Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.comp.print;
@@ -57,6 +57,7 @@ public class PRPage
 		CParseClassContext context,
 		PRDefinitionCollector coll,
 		CReferenceType type,
+                CReferenceType[] interfaces,
 		PRBlock[] blocks)
   {
     super(where);
@@ -65,6 +66,7 @@ public class PRPage
     this.clazz = context;
     this.coll = coll;
     this.type = type;
+    this.interfaces = interfaces;
     this.blocks = blocks;
   }
 
@@ -268,7 +270,7 @@ public class PRPage
 							     getIdent(),
                                                              CTypeVariable.EMPTY,
 							     type == null ? TYPE : type,
-							     CReferenceType.EMPTY,
+							     interfaces,
 							     clazz.getFields(),
 							     clazz.getMethods(),
 							     clazz.getInnerClasses(),
@@ -445,19 +447,20 @@ public class PRPage
   public static CReferenceType	BLOCK_TYPE	= CReferenceType.lookup(at.dms.vkopi.lib.print.PBlock.class.getName().replace('.','/'));
   public static CReferenceType	STYLE_TYPE	= CReferenceType.lookup(at.dms.vkopi.lib.print.PBlock.class.getName().replace('.','/')); // !!! TO REMOVE
 
-  protected	String		name;
-  private	VKDefinitionCollector coll;
-  private	CParseClassContext    clazz;
+  protected	String                  name;
+  private	VKDefinitionCollector   coll;
+  private	CParseClassContext      clazz;
   private	CParseCompilationUnitContext cunit;
-  private	CReferenceType	type;
-  private	Hashtable	blocks_H = new Hashtable();
-  private	PRBlock[]	blocks;
-  private	Hashtable	usedStyles = new Hashtable();
-  private	Vector		initLoadDefinition = new Vector();
-  private	Vector		showIf = new Vector();
-  private	Vector		allBlocks = new Vector(); // !!!
-  private	PRProlog	prolog;
-  private	int		countAnonymousBlock;
-  private       VKContext	context;
-  private final KjcEnvironment  environment;
+  private	CReferenceType          type;
+  private	CReferenceType[]        interfaces;
+  private	Hashtable               blocks_H = new Hashtable();
+  private	PRBlock[]               blocks;
+  private	Hashtable               usedStyles = new Hashtable();
+  private	Vector                  initLoadDefinition = new Vector();
+  private	Vector                  showIf = new Vector();
+  private	Vector                  allBlocks = new Vector(); // !!!
+  private	PRProlog                prolog;
+  private	int                     countAnonymousBlock;
+  private       VKContext               context;
+  private final KjcEnvironment          environment;
 }

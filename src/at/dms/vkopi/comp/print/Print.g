@@ -97,11 +97,13 @@ prPage []
   returns [PRPage self = null]
 {
   String		name;
+  String		inter;
   PRProlog		prolog;
   PRBlock		block;
   ArrayList		blocks = new ArrayList();
   String		ident;
-  CReferenceType		superClass = null;
+  CReferenceType	superClass = null;
+  ArrayList		interfaces = new ArrayList();
   CParseCompilationUnitContext	cunit = new CParseCompilationUnitContext(); // not flushed !!!
   CParseClassContext	context = new CParseClassContext(); // not flushed !!!
   PRDefinitionCollector coll = new PRDefinitionCollector(environment.getInsertDirectories());
@@ -112,6 +114,15 @@ prPage []
   (
     "IS" ident = vkQualifiedIdent[]
       { superClass = environment.getTypeFactory().createType(ident.replace('.', '/'), false); }
+  )?
+  (
+    "IMPLEMENTS"
+    inter = vkQualifiedIdent[]
+      { interfaces.add(environment.getTypeFactory().createType(inter.replace('.', '/'), false)); }
+    (
+      COMMA inter = vkQualifiedIdent[]
+        { interfaces.add(environment.getTypeFactory().createType(inter.replace('.', '/'), false)); }
+    )*
   )?
   vkContextHeader[cunit]
   prDefinition[coll]
@@ -127,8 +138,9 @@ prPage []
 	                context,
 			coll,
 	                superClass,
+                        (CReferenceType[])interfaces.toArray(new CReferenceType[interfaces.size()]),
 			(PRBlock[])blocks.toArray(new PRBlock[blocks.size()]));
-    self.setProlog(prolog);
+      self.setProlog(prolog);
     }
 ;
 
