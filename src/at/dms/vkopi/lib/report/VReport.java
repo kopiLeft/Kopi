@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VReport.java,v 1.5 2004/12/17 18:44:15 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.report;
@@ -219,6 +219,7 @@ public abstract class VReport extends VWindow
     PrintJob    printJob = pgenps.printInto();
 
     printJob.setDocumentType(getDocumentType());
+    printJob.setTitle(pageTitle);
     return printJob;
   }
 

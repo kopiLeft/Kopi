@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: PrintJob.java,v 1.3 2004/12/17 18:10:58 lackner Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.lib.util;
@@ -135,6 +135,10 @@ public class PrintJob {
   
   public void writeDataToFile(File file) throws IOException {
     writeToFile(getInputStream(), file);
+  }
+
+  public void setTitle(String title) {
+    this.title = title; 
   }
 
   public void setPrintInformation(String title,
