@@ -41,6 +41,8 @@
 @literal	TYPE
 @literal	UPPER
 @literal	WEEK
+@literal        ON
+@literal        OFF
 
 @operator	ASSIGN	"="
 @operator	COLON	":"

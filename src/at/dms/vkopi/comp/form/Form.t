@@ -31,7 +31,6 @@
 @literal	NO
 @literal	NOECHO
 @literal	NOEDIT
-@literal	ON
 @literal	PAGE
 @literal	POSTBLK
 @literal	POSTCHG
