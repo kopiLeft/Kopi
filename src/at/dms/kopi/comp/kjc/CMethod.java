@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CMethod.java,v 1.2 2004/09/28 10:34:01 graf Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -48,13 +48,13 @@ public abstract class CMethod extends CMember {
    * @param	deprecated	is this method deprecated
    */
   public CMethod(CClass owner,
-		 int modifiers,
-		 String ident,
-		 CType returnType,
-		 CType[] parameters,
-		 CReferenceType[] exceptions,
+                 int modifiers,
+                 String ident,
+                 CType returnType,
+                 CType[] parameters,
+                 CReferenceType[] exceptions,
                  CTypeVariable[] typeVariables,
-		 boolean deprecated,
+                 boolean deprecated,
                  boolean synthetic)
   {
     super(owner, modifiers, ident, deprecated, synthetic);
@@ -628,7 +628,7 @@ public abstract class CMethod extends CMember {
   // ----------------------------------------------------------------------
 
   protected CType               returnType;
-  private CType[]		parameters;
+  private CType[]               parameters;
   private CReferenceType[]      exceptions;
   private CTypeVariable[]       typeVariables;
   private Hashtable             accessors;

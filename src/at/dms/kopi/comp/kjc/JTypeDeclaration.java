@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: JTypeDeclaration.java,v 1.1 2004/07/28 18:43:28 imad Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -485,32 +485,31 @@ public abstract class JTypeDeclaration extends JMemberDeclaration {
     return getCClass().getOwner();
   }
 
-
   // ----------------------------------------------------------------------
   // PRIVATE DATA MEMBER
   // ----------------------------------------------------------------------
 
-  protected	int			modifiers;
-  protected	String			ident;
+  protected	int     modifiers;
+  protected	String  ident;
 
-  protected	JPhylum[]		body;
-  protected	JFieldDeclaration[]	fields;
-  protected	JMethodDeclaration[]	methods;
-  protected	JTypeDeclaration[]	inners;
-  private       ArrayList               anoInners;
-  protected	CReferenceType[]        interfaces;
+  protected	JPhylum[]             body;
+  protected	JFieldDeclaration[]   fields;
+  protected	JMethodDeclaration[]  methods;
+  protected	JTypeDeclaration[]    inners;
+  private   ArrayList             anoInners;
+  protected	CReferenceType[]      interfaces;
 
-  private	JFieldDeclaration	outerThis;
-  private	JConstructorDeclaration defaultConstructor;
-  protected	JInitializerDeclaration	statInit;
-  protected	JInitializerDeclaration	instanceInit;
+  private   JFieldDeclaration	       outerThis;
+  private   JConstructorDeclaration  defaultConstructor;
+  protected JInitializerDeclaration	 statInit;
+  protected JInitializerDeclaration	 instanceInit;
 
   // Definitive data
-  protected	CSourceClass		sourceClass;
-  private	boolean			uniqueSourceClass = true;
-  protected     CClassContext           self;
-  protected     CTypeVariable[]         typeVariables;
+  protected	CSourceClass            sourceClass;
+  private	  boolean                 uniqueSourceClass = true;
+  protected CClassContext           self;
+  protected CTypeVariable[]         typeVariables;
 
-  public static final JTypeDeclaration[]        EMPTY = new JTypeDeclaration[0];
-  private static final String                   ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_./$";
+  public  static final JTypeDeclaration[]  EMPTY = new JTypeDeclaration[0];
+  private static final String              ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_./$";
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CClass.java,v 1.3 2004/10/04 13:36:25 lackner Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -49,12 +49,12 @@ public abstract class CClass extends CMember {
    * Constructs a class export from file
    */
   public CClass(CClass owner,
-		String sourceFile,
-		int modifiers,
-		String ident,
-		String qualifiedName,
-		CReferenceType superClass,
-		boolean deprecated,
+                String sourceFile,
+                int modifiers,
+                String ident,
+                String qualifiedName,
+                CReferenceType superClass,
+                boolean deprecated,
                 boolean synthetic)
   {
     super(owner, modifiers, ident, deprecated, synthetic);
@@ -712,6 +712,7 @@ public abstract class CClass extends CMember {
     CMethod[]	candidates = new CMethod[applicable.length];
     int		length = 0;
 
+
     // find the maximally specific methods
   _all_methods_:
     for (int i = 0; i < applicable.length; i++) {
@@ -1177,7 +1178,7 @@ public abstract class CClass extends CMember {
     // look in current class
     for (int i = 0; i < methods.length; i++) {
       if (methods[i].isApplicableTo(context, ident, actuals, substitution)) {
-	container.add(methods[i]);
+        container.add(methods[i]);
       }
     }
 

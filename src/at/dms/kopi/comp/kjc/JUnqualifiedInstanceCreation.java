@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: JUnqualifiedInstanceCreation.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -105,7 +105,7 @@ public class JUnqualifiedInstanceCreation extends JExpression {
     check(context, !type.getCClass().isInterface(), KjcMessages.NEW_INTERFACE, type);
     check(context, 
           type.getCClass().isAccessible(local),
-	  KjcMessages.CLASS_NOACCESS, 
+          KjcMessages.CLASS_NOACCESS, 
           type.getCClass());
 
     /////////////////////////////////////////////////////////////////////////
@@ -120,13 +120,13 @@ public class JUnqualifiedInstanceCreation extends JExpression {
 
     //!!! review and create test cases
     context = new CExpressionContext(context, context.getEnvironment());
-
+    
     try {
       constructor = type.getCClass().lookupMethod(context, local, null, JAV_CONSTRUCTOR, argsType, type.getArguments());
     } catch (UnpositionedError e) {
       throw e.addPosition(getTokenReference());
     }
-
+    
     if (constructor == null || constructor.getOwner() != type.getCClass()) {
       // do not want a super constructor !
       throw new CMethodNotFoundError(getTokenReference(), null, type.toString(), argsType);

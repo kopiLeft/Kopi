@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CBinaryMethod.java,v 1.1 2004/07/28 18:43:27 imad Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -41,11 +41,12 @@ public class CBinaryMethod extends CMethod {
   public static CBinaryMethod create(SignatureParser sigParser,
                                      TypeFactory factory, 
                                      CClass owner, 
-                                     MethodInfo methodInfo){
-    SignatureParser.MethodSignature     methodSignature =
-      sigParser.parseMethodSignature(factory, methodInfo.getSignature());
-    CType[]         paramTypes =  methodSignature.parameterTypes;
-
+                                     MethodInfo methodInfo) {
+    
+    SignatureParser.MethodSignature methodSignature = sigParser.parseMethodSignature(factory, methodInfo.getSignature());
+    
+    CType[] paramTypes =  methodSignature.parameterTypes;
+    
     if (methodInfo.getName().intern() == JAV_CONSTRUCTOR
         && owner.isNested() 
         && owner.hasOuterThis()) {

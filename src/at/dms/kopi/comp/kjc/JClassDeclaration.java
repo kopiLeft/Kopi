@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: JClassDeclaration.java,v 1.2 2004/09/29 16:22:07 taoufik Exp $
+ * $Id$
  */
 
 package at.dms.kopi.comp.kjc;
@@ -447,7 +447,9 @@ public class JClassDeclaration extends JTypeDeclaration {
     // JSR 41 2.2
     // A parameterized type may not inherit directly or indirectly form 
     // java.lang.Throwable
-    check(self,!getCClass().isGenericClass() || !getCClass().descendsFrom(context.getTypeFactory().createReferenceType(TypeFactory.RFT_THROWABLE).getCClass()), KjcMessages.GENERIC_THROWABLE); 
+    check(self, 
+          !getCClass().isGenericClass() || !getCClass().descendsFrom(context.getTypeFactory().createReferenceType(TypeFactory.RFT_THROWABLE).getCClass()),
+          KjcMessages.GENERIC_THROWABLE); 
             
     if (getCClass().isNested() && getOwner().getCClass().isClass() 
         && !getCClass().isStatic() && !context.isStaticContext()) {
