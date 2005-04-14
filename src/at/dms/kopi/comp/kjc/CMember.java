@@ -201,7 +201,15 @@ public abstract class CMember extends at.dms.util.base.Utils implements Constant
    * @return	true iff this member is accessible
    */
   public boolean isAccessible(CClass from) {
-    if (isPublic() || from.isDefinedInside(owner) || owner.isDefinedInside(from)) {
+    // The second condition is added because the implicite add of the public 
+    // modifier in an inner class or interface inside a public interface is 
+    // not done at an earlier step which makes the compiler think the inner 
+    // class or interface is not accessible when the current class & the caller 
+    // one are compiled together.
+    if (isPublic()
+        || (this instanceof CClass && owner.isInterface() && owner.isPublic())
+        || from.isDefinedInside(owner) 
+        || owner.isDefinedInside(from)) {
       return true;
     } else if (from.isNested() && isAccessible(from.getOwner())) {
       return true;
