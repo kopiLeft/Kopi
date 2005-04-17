@@ -28,7 +28,6 @@ import at.dms.vkopi.comp.base.VKStdType;
 import at.dms.kopi.comp.kjc.JExpression;
 import at.dms.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import at.dms.compiler.base.CWarning;
-import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 
 /**

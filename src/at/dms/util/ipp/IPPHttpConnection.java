@@ -22,7 +22,6 @@ package at.dms.util.ipp;
 
 import java.net.URL;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.BufferedOutputStream;

@@ -25,7 +25,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.SQLException;
 
 /**

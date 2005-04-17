@@ -21,11 +21,6 @@
 package at.dms.kopi.comp.kjc;
 
 import java.util.ArrayList;
-import java.util.Stack;
-
-import at.dms.compiler.base.PositionedError;
-import at.dms.compiler.base.TokenReference;
-import at.dms.util.base.Utils;
 
 public class CParseClassContext {
 	

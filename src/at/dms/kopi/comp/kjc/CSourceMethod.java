@@ -27,10 +27,7 @@ import at.dms.bytecode.classfile.MethodDescription;
 import at.dms.bytecode.classfile.MethodInfo;
 import at.dms.bytecode.classfile.CodeInfo;
 import at.dms.bytecode.classfile.CodeEnv;
-import at.dms.compiler.base.PositionedError;
-import at.dms.util.base.InconsistencyException;
 import at.dms.util.base.SimpleStringBuffer;
-import at.dms.util.base.Utils;
 
 /**
  * This class represents an exported member of a class (fields)

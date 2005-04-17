@@ -22,10 +22,8 @@ package at.dms.vkopi.lib.ui.base;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.JToolTip;
 import javax.swing.UIManager;
-import javax.swing.AbstractAction;
-import javax.swing.border.*;
+import javax.swing.border.LineBorder;
 import java.awt.Insets;
 import java.awt.Color;
 import java.awt.Dimension;

@@ -20,7 +20,6 @@
 
 package at.dms.vkopi.lib.util;
 
-import java.awt.event.KeyEvent;
 import java.awt.MediaTracker;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;

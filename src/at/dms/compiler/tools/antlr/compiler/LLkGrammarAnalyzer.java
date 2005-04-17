@@ -20,10 +20,7 @@
 
 package at.dms.compiler.tools.antlr.compiler;
 
-import at.dms.compiler.tools.antlr.runtime.*;
-
 public interface LLkGrammarAnalyzer extends GrammarAnalyzer {
-
 
   boolean deterministic(AlternativeBlock blk);
   boolean deterministic(OneOrMoreBlock blk);

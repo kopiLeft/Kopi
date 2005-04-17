@@ -25,7 +25,6 @@ import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**

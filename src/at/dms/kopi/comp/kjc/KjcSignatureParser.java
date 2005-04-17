@@ -23,7 +23,6 @@ package at.dms.kopi.comp.kjc;
 import java.util.ArrayList;
 
 import at.dms.util.base.InconsistencyException;
-import at.dms.util.base.Utils;
 
 public class KjcSignatureParser implements SignatureParser {
 

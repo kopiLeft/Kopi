@@ -20,10 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 import at.dms.bytecode.classfile.SwitchInstruction;
@@ -31,7 +27,6 @@ import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.JavaStyleComment;
-import at.dms.compiler.base.UnpositionedError;
 import at.dms.util.base.InconsistencyException;
 
 /**

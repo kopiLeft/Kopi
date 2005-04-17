@@ -27,8 +27,6 @@ import java.util.Iterator;
 
 import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.PositionedError;
-import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.type.Date;
 import at.dms.xkopi.lib.type.Fixed;

@@ -22,10 +22,6 @@ header {
 package at.dms.compiler.tools.antlr.compiler;
 }
 
-{
-import java.util.Hashtable;
-}
-
 class Preprocessor extends Parser;
 options {
 	k=1;

@@ -20,9 +20,6 @@
 
 package at.dms.kopi.lib.assertion;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-
 public class PreconditionError extends AssertionError {
 
   public PreconditionError(Class clazz) {

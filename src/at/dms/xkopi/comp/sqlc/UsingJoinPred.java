@@ -22,7 +22,6 @@ package at.dms.xkopi.comp.sqlc;
 
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 public class UsingJoinPred extends JoinPred {
 

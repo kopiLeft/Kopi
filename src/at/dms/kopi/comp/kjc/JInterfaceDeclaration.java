@@ -27,7 +27,6 @@ import at.dms.compiler.base.JavadocComment;
 import at.dms.compiler.base.UnpositionedError;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.util.base.Utils;
 
 /**
  * This class represents a Java interface declaration in the syntax tree.

@@ -51,7 +51,6 @@ public class PrintJob {
     //    this.numberCopy = 1;
     this.datafile = datafile;
     this.delete = delete;
-    this.title = title;
     this.landscape = false;
     this.width = 595;
     this.height = 842;

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import at.dms.bytecode.classfile.*;
 import at.dms.util.base.InconsistencyException;
-import at.dms.util.base.Utils;
 
 public final class CodeSequence extends at.dms.util.base.Utils implements Constants {
 

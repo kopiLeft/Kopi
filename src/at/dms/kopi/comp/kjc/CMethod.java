@@ -24,7 +24,6 @@ import java.util.Hashtable;
 import java.util.Enumeration;
 
 import at.dms.bytecode.classfile.InvokeinterfaceInstruction;
-import at.dms.bytecode.classfile.MethodInfo;
 import at.dms.compiler.base.UnpositionedError;
 import at.dms.util.base.InconsistencyException;
 

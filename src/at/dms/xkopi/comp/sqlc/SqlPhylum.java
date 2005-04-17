@@ -20,14 +20,11 @@
 
 package at.dms.xkopi.comp.sqlc;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.JavaStyleComment;
-import at.dms.util.base.InconsistencyException;
-import at.dms.util.base.Utils;
 
 /**
  * This class represents an SqlPhylumession

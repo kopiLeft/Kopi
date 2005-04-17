@@ -22,9 +22,7 @@ package at.dms.vkopi.lib.ui.base;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.table.*;
-import javax.swing.border.*;
 
 public class ListDialogCellRenderer implements TableCellRenderer {
 

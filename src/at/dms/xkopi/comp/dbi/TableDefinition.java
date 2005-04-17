@@ -25,7 +25,6 @@ import java.sql.SQLException;
 
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 import at.dms.kopi.comp.kjc.CTypeContext;
 import at.dms.xkopi.comp.sqlc.Expression;
 import at.dms.xkopi.comp.sqlc.ExpressionList;

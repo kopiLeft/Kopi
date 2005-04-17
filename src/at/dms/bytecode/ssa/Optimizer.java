@@ -20,9 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import java.io.*;
-
-import at.dms.bytecode.classfile.ClassFileFormatException;
 import at.dms.bytecode.classfile.ClassInfo;
 import at.dms.bytecode.classfile.CodeInfo;
 import at.dms.bytecode.classfile.MethodInfo;

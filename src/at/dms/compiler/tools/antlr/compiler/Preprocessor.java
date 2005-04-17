@@ -4,8 +4,6 @@ package at.dms.compiler.tools.antlr.compiler;
 
 import at.dms.compiler.tools.antlr.runtime.*;
 
-import java.util.Hashtable;
-
 public class Preprocessor extends at.dms.compiler.tools.antlr.runtime.LLkParser
        implements PreprocessorTokenTypes
  {

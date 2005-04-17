@@ -23,7 +23,6 @@ package at.dms.kopi.comp.kjc;
 import java.util.ArrayList;
 
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * This class represents a local context during checkBody

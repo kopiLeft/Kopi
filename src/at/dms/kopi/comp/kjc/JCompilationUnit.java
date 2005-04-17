@@ -22,13 +22,11 @@ package at.dms.kopi.comp.kjc;
 
 import java.util.Hashtable;
 import java.util.Vector;
-import java.io.File;
 
 import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * This class represents a virtual file and is the main entry point in java grammar

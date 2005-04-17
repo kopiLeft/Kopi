@@ -21,10 +21,7 @@
 package at.dms.kopi.comp.kjc;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
-import at.dms.compiler.base.Compiler;
-import at.dms.util.base.Utils;
 
 public class CParseCompilationUnitContext {
 

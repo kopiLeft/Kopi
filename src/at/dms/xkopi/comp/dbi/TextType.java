@@ -21,10 +21,8 @@
 package at.dms.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import  at.dms.xkopi.comp.database.DatabaseColumn;
-import  at.dms.xkopi.comp.database.DatabaseTextColumn;
-import  at.dms.kopi.comp.kjc.CStdType;
-import  at.dms.kopi.comp.kjc.CType;
+import at.dms.xkopi.comp.database.DatabaseColumn;
+import at.dms.xkopi.comp.database.DatabaseTextColumn;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.xkopi.comp.sqlc.BlobType;

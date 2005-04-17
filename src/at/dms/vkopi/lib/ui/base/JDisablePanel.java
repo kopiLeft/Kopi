@@ -21,8 +21,7 @@
 package at.dms.vkopi.lib.ui.base;
 
 import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
+import javax.swing.JPanel;
 
 public class JDisablePanel extends JPanel  {
   public JDisablePanel() {

@@ -20,8 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import java.util.Vector;
-
 /**
  * Defines all constants shared by compiler
  */

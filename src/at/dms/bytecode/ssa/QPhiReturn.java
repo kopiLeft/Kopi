@@ -20,8 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import java.util.Collection;
-import java.util.Iterator;
 /**
  * PhiReturn
  */

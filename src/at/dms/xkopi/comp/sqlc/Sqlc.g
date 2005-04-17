@@ -29,7 +29,6 @@ header { package at.dms.xkopi.comp.sqlc; }
   import at.dms.compiler.base.PositionedError;
   import at.dms.compiler.base.TokenReference;
   import at.dms.util.base.Utils;
-  import at.dms.xkopi.lib.type.Fixed;
   import at.dms.xkopi.lib.type.NotNullFixed;
 }
 

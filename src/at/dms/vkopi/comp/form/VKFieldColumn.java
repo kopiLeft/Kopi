@@ -28,7 +28,6 @@ import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.UnpositionedError;
 import at.dms.vkopi.comp.base.*;
-import at.dms.vkopi.comp.trig.GVKAccess;
 import at.dms.xkopi.comp.xkjc.XUtils;
 import at.dms.xkopi.comp.xkjc.XDatabaseColumn;
 

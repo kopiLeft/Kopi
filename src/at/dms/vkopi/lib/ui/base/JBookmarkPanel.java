@@ -20,12 +20,10 @@
 
 package at.dms.vkopi.lib.ui.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
 
 public class JBookmarkPanel extends JFrame  {
   public JBookmarkPanel(String title) {

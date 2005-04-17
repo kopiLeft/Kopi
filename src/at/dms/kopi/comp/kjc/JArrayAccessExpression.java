@@ -165,8 +165,6 @@ public class JArrayAccessExpression extends JExpression {
    * @param	code		the code list
    */
   public void genStartStoreCode(GenerationContext context) {
-    CodeSequence code = context.getCodeSequence();
-
     prefix.genCode(context, false);
     accessor.genCode(context, false);
   }

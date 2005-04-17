@@ -23,13 +23,11 @@ package at.dms.xkopi.comp.sqlc;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.List;
 import java.util.Stack;
 
-import at.dms.compiler.base.JavaStyleComment;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TabbedPrintWriter;
 import at.dms.util.base.InconsistencyException;

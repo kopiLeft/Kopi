@@ -40,8 +40,6 @@ import at.dms.kopi.comp.kjc.CBinaryTypeContext;
 import at.dms.kopi.comp.kjc.JCompilationUnit;
 import at.dms.kopi.comp.kjc.KjcClassReader;
 import at.dms.kopi.comp.kjc.KjcMessages;
-import at.dms.kopi.comp.kjc.KjcTypeFactory;
-import at.dms.kopi.comp.kjc.KjcOptions;
 import at.dms.xkopi.comp.xkjc.XKjcSignatureParser;
 import at.dms.vkopi.comp.base.*;
 import at.dms.vkopi.comp.form.FormParser;

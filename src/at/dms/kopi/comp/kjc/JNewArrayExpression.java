@@ -21,8 +21,6 @@
 package at.dms.kopi.comp.kjc;
 
 import at.dms.bytecode.classfile.MultiarrayInstruction;
-import at.dms.bytecode.classfile.ClassRefInstruction;
-import at.dms.bytecode.classfile.NewarrayInstruction;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.UnpositionedError;

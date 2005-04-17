@@ -21,11 +21,8 @@
 package at.dms.xkopi.lib.base;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import at.dms.xkopi.lib.base.DBContext;
 
 /**
  * This class encapsulates specific JDBC driver properties.

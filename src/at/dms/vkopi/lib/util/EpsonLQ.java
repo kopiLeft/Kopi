@@ -20,8 +20,6 @@
 
 package at.dms.vkopi.lib.util;
 
-import java.io.IOException;
-
 /**
  *
  */

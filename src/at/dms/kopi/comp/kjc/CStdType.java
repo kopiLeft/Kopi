@@ -21,7 +21,6 @@
 package at.dms.kopi.comp.kjc;
 
 import at.dms.compiler.base.Compiler;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * Root for type hierarchy

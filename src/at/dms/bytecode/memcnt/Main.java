@@ -25,7 +25,6 @@ import java.io.*;
 import at.dms.bytecode.classfile.ClassFileFormatException;
 import at.dms.bytecode.classfile.ClassInfo;
 import at.dms.compiler.base.UnpositionedError;
-import at.dms.compiler.base.CompilerMessages;
 
 /**
  * This class is the entry point for the KOPI disassembler.

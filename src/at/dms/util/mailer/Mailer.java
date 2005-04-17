@@ -20,16 +20,13 @@
 
 package at.dms.util.mailer;
 
-import java.io.*;
-import java.net.Socket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 

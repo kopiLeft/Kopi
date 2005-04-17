@@ -20,10 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.UnpositionedError;
-import at.dms.util.base.SimpleStringBuffer;
-import at.dms.util.base.InconsistencyException;
-
 /**
  * This class represents class type load from a binary class file 
  * The class of this type is only loaded if necessary. This type need no check

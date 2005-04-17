@@ -20,8 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import java.util.Hashtable;
-
 import at.dms.bytecode.classfile.CodeInfo;
 import at.dms.bytecode.classfile.MethodInfo;
 

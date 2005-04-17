@@ -20,9 +20,6 @@
 
 package at.dms.vkopi.lib.util;
 
-import java.io.File;
-import java.io.IOException;
-
 /**
  * NOT USED ANYMORE (now already in Printer)
  * REMOVE EVERWERE

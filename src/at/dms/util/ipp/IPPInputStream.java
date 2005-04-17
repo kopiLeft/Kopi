@@ -23,8 +23,6 @@ package at.dms.util.ipp;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 
 import at.dms.util.base.InconsistencyException;
 

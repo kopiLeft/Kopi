@@ -21,11 +21,10 @@
 package at.dms.vkopi.lib.ui.base;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Collections;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import javax.swing.UIManager;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 public class KopiTitledBorder extends TitledBorder {
 

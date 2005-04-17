@@ -22,7 +22,6 @@ package at.dms.xkopi.comp.dbi;
 
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.PositionedError;
-import at.dms.compiler.base.UnpositionedError;
 import at.dms.xkopi.comp.sqlc.Type;
 
 /**

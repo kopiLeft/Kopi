@@ -22,9 +22,6 @@ package at.dms.kopi.comp.kjc;
 
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.JavaStyleComment;
-import at.dms.compiler.base.UnpositionedError;
-import at.dms.compiler.base.CWarning;
 
 public class KopiMethodCallExpression extends JMethodCallExpression {
   /**

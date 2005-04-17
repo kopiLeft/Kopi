@@ -28,7 +28,6 @@ import at.dms.bytecode.classfile.FieldInfo;
 import at.dms.bytecode.classfile.InnerClassInfo;
 import at.dms.bytecode.classfile.MethodInfo;
 
-import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.UnpositionedError;
 
 /**

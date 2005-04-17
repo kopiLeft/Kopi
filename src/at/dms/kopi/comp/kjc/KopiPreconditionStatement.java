@@ -21,13 +21,9 @@
 package at.dms.kopi.comp.kjc;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import at.dms.compiler.base.PositionedError;
-import at.dms.compiler.base.JavaStyleComment;
-import at.dms.compiler.base.JavadocComment;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 public class KopiPreconditionStatement extends JStatement {
   // ----------------------------------------------------------------------
@@ -69,7 +65,6 @@ public class KopiPreconditionStatement extends JStatement {
     }
     TokenReference      ref = getTokenReference();
     CMethod             method = conditionContext.getMethodContext().getCMethod();
-    boolean             hasReturnType = (returnType.getTypeID() != TID_VOID);
     ArrayList           methods = new ArrayList();
 
     if (stmt != null) {

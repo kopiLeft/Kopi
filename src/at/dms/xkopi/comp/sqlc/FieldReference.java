@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 import at.dms.compiler.base.CWarning;
-import at.dms.kopi.comp.kjc.*;
 
 public class FieldReference extends Expression {
 

@@ -20,7 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Iterator;
 

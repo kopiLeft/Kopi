@@ -20,7 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import at.dms.bytecode.classfile.SwitchInstruction;
 import at.dms.bytecode.classfile.JumpInstruction;
 import at.dms.bytecode.classfile.Constants;
 

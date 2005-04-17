@@ -24,7 +24,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * This class represents a local context during checkBody

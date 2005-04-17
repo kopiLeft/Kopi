@@ -21,7 +21,6 @@
 package at.dms.vkopi.comp.form;
 
 import at.dms.vkopi.comp.base.*;
-import at.dms.kopi.comp.kjc.JNewArrayExpression;
 import at.dms.kopi.comp.kjc.JExpression;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;

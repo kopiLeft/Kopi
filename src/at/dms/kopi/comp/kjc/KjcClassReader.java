@@ -22,10 +22,8 @@ package at.dms.kopi.comp.kjc;
 
 import java.util.Hashtable;
 import java.util.HashSet;
-import java.util.Enumeration;
 import at.dms.bytecode.classfile.ClassInfo;
 import at.dms.bytecode.classfile.ClassPath;
-import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.UnpositionedError;
 import at.dms.util.base.InconsistencyException;
 

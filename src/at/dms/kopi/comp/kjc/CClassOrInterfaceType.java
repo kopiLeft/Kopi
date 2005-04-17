@@ -20,12 +20,9 @@
 
 package at.dms.kopi.comp.kjc;
 
-import java.util.Hashtable;
 import at.dms.compiler.base.CWarning;
-import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.UnpositionedError;
-import at.dms.util.base.InconsistencyException;
 import at.dms.util.base.SimpleStringBuffer;
 
 /**

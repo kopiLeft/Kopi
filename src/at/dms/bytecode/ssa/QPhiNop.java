@@ -20,8 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import at.dms.bytecode.classfile.SwitchInstruction;
-
 /**
  * A class to represent nop instruction (can be used as a phi function)
  */

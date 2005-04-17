@@ -20,9 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 

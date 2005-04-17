@@ -20,12 +20,6 @@
 
 package at.dms.vkopi.lib.ui.base;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-
 public interface FieldStates {
   /* bit 0-2: availability */
   int   UNKOWN      = 0;

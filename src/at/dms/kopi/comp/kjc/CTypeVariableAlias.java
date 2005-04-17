@@ -20,10 +20,7 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.UnpositionedError;
-import at.dms.util.base.InconsistencyException;
-import at.dms.util.base.SimpleStringBuffer;
 
 public class CTypeVariableAlias extends CTypeVariable {
 

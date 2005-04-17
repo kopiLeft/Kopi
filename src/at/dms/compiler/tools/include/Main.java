@@ -29,8 +29,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import at.dms.compiler.base.CompilerMessages;
-
 /**
  * This class is the entry point for the KOPI assembler.
  */

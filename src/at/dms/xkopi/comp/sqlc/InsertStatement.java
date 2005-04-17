@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import at.dms.kopi.comp.kjc.CTypeContext;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * This class represents an insert statement

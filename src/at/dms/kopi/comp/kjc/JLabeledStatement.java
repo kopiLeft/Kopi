@@ -20,7 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.JavaStyleComment;

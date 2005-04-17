@@ -24,7 +24,6 @@ import at.dms.bytecode.classfile.ClassConstant;
 import at.dms.bytecode.classfile.ClassRefInstruction;
 import at.dms.bytecode.classfile.Constants;
 import at.dms.bytecode.classfile.ReferenceConstant;
-import at.dms.bytecode.classfile.InterfaceConstant;
 import at.dms.bytecode.classfile.MethodRefConstant;
 import at.dms.bytecode.classfile.NoArgInstruction;
 import at.dms.bytecode.classfile.MethodRefInstruction;

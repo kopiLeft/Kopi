@@ -41,6 +41,7 @@ build:		$(FILES:%=$(TARGETDIR)/%)
 
 
 $(TARGETDIR)/%:	%
+		mkdir -p $(TARGETDIR)
 		cp $< $(TARGETDIR)
 
 ## ----------------------------------------------------------------------

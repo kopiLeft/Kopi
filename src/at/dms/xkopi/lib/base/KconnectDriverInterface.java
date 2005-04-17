@@ -21,7 +21,6 @@
 package at.dms.xkopi.lib.base;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.SQLException;
 
 /**

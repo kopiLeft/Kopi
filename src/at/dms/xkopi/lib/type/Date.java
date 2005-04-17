@@ -28,8 +28,6 @@ import java.util.regex.Pattern;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import at.dms.util.base.InconsistencyException;
-
 /**
  * This class represents kopi date types
  */

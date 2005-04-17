@@ -20,7 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import java.util.List;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;

@@ -22,7 +22,6 @@
 package at.dms.kopi.comp.kjc;
 
 import at.dms.compiler.base.UnpositionedError;
-import at.dms.util.base.InconsistencyException;
 
 /**
  * This class represents a local context during checkBody

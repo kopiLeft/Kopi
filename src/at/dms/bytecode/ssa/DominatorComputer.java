@@ -21,7 +21,6 @@
 package at.dms.bytecode.ssa;
 
 import java.util.Set;
-import java.util.BitSet;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -24,7 +24,6 @@ import java.util.Iterator;
 
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * This class represents a reference to a table

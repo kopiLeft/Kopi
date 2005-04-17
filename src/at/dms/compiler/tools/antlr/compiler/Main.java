@@ -31,7 +31,6 @@ import at.dms.compiler.tools.antlr.runtime.FileLineFormatter;
 import at.dms.compiler.tools.antlr.runtime.RecognitionException;
 import at.dms.compiler.tools.antlr.runtime.TokenBuffer;
 import at.dms.compiler.tools.antlr.runtime.TokenStreamException;
-import at.dms.compiler.tools.antlr.runtime.Vector;
 import at.dms.util.base.Message;
 import at.dms.util.base.MessageDescription;
 

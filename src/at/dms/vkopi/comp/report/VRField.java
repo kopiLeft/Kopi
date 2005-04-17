@@ -25,7 +25,6 @@ import java.util.Vector;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.kopi.comp.kjc.*;
-import at.dms.util.base.InconsistencyException;
 import at.dms.util.base.NotImplementedException;
 import at.dms.vkopi.comp.base.*;
 

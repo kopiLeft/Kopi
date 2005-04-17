@@ -20,14 +20,10 @@
 
 package at.dms.xkopi.comp.sqlc;
 
-import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.CompilerMessages;
-import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.tools.antlr.extra.CToken;
 import at.dms.compiler.tools.antlr.extra.InputBuffer;
-import at.dms.compiler.tools.antlr.extra.Scanner;
-import at.dms.compiler.tools.antlr.runtime.Token;
 
 %%
 

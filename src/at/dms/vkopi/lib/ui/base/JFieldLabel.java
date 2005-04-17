@@ -20,14 +20,9 @@
 
 package at.dms.vkopi.lib.ui.base;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
-import java.awt.Insets;
 import java.awt.Toolkit;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 

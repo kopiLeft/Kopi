@@ -20,7 +20,6 @@
 
 package at.dms.vkopi.comp.form;
 
-import java.util.StringTokenizer;
 import at.dms.vkopi.comp.base.*;
 import at.dms.kopi.comp.kjc.*;
 import at.dms.compiler.base.PositionedError;

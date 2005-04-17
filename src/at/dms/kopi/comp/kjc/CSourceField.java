@@ -20,9 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.PositionedError;
-import at.dms.util.base.InconsistencyException;
-
 /**
  * This class represents an exported member of a class (fields)
  */

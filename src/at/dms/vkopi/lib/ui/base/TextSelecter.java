@@ -20,8 +20,8 @@
 
 package at.dms.vkopi.lib.ui.base;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import javax.swing.text.JTextComponent;
 
 public class TextSelecter extends FocusAdapter {

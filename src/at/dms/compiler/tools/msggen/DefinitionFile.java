@@ -27,12 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.tools.antlr.runtime.ParserException;
-import at.dms.util.base.Utils;
 
 class DefinitionFile {
 

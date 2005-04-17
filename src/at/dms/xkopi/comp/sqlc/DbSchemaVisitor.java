@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import at.dms.compiler.base.JavaStyleComment;
 import at.dms.compiler.base.PositionedError;
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.type.Date;

@@ -21,9 +21,6 @@
 package at.dms.bytecode.ssa;
 
 import at.dms.bytecode.classfile.Instruction;
-import at.dms.bytecode.classfile.JumpInstruction;
-
-import java.util.Vector;
 
 /**
  * To generate classfile instructions

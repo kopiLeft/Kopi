@@ -22,12 +22,9 @@ package at.dms.vkopi.lib.ui.plaf;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.*;
-import java.text.*;
 import java.util.StringTokenizer;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.text.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;

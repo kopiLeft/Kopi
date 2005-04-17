@@ -33,7 +33,6 @@ import java.sql.Statement;
 import java.sql.Types;
 
 import at.dms.util.base.InconsistencyException;
-import at.dms.util.base.NotImplementedException;
 import at.dms.xkopi.lib.type.Date;
 import at.dms.xkopi.lib.type.Fixed;
 import at.dms.xkopi.lib.type.Month;

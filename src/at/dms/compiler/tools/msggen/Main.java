@@ -27,9 +27,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 
-import gnu.getopt.Getopt;
-import gnu.getopt.LongOpt;
-
 /**
  * This class is the entry point for the Message generator.
  */

@@ -20,11 +20,9 @@
 
 package at.dms.vkopi.lib.ui.plaf;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.metal.MetalLabelUI;
 
 public class KopiLabelUI extends MetalLabelUI {
   protected static KopiLabelUI kopiLabelUI = new KopiLabelUI();

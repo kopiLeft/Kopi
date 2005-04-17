@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import at.dms.compiler.base.JavaStyleComment;
 import at.dms.compiler.base.PositionedError;
-import at.dms.compiler.base.UnpositionedError;
 import at.dms.xkopi.comp.sqlc.*;
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.base.DriverInterface;

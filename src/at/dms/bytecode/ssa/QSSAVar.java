@@ -22,10 +22,6 @@ package at.dms.bytecode.ssa;
 
 import at.dms.util.base.InconsistencyException;
 
-import at.dms.bytecode.classfile.LocalVarInstruction;
-import at.dms.bytecode.classfile.Constants;
-
-
 /**
  * A class to represent SSA variable for quadruple instructions.
  *

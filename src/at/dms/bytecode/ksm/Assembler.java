@@ -24,7 +24,6 @@ import java.io.*;
 
 import at.dms.bytecode.classfile.ClassFileFormatException;
 import at.dms.bytecode.classfile.ClassInfo;
-import at.dms.compiler.base.CompilerMessages;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.tools.antlr.runtime.ParserException;
 

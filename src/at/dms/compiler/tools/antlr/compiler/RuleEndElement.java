@@ -20,8 +20,6 @@
 
 package at.dms.compiler.tools.antlr.compiler;
 
-import at.dms.compiler.tools.antlr.runtime.*;
-
 /**
  * Contains a list of all places that reference
  * this enclosing rule.  Useful for FOLLOW computations.

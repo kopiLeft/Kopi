@@ -24,7 +24,6 @@ import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.JavaStyleComment;
 import at.dms.compiler.base.JavadocComment;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 public class KopiPreconditionDeclaration extends JMethodDeclaration {
 

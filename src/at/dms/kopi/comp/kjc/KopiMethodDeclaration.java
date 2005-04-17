@@ -24,8 +24,6 @@ import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.JavaStyleComment;
 import at.dms.compiler.base.JavadocComment;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
-import at.dms.util.base.InconsistencyException;
 
 /**
  * This class represents a Java method declaration in the syntax tree.

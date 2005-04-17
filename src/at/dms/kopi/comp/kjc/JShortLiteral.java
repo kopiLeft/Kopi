@@ -21,7 +21,6 @@
 package at.dms.kopi.comp.kjc;
 
 import at.dms.bytecode.classfile.PushLiteralInstruction;
-import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.util.base.InconsistencyException;
 

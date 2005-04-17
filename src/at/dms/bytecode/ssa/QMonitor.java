@@ -21,7 +21,6 @@
 package at.dms.bytecode.ssa;
 
 import at.dms.bytecode.classfile.NoArgInstruction;
-import at.dms.bytecode.classfile.Constants;
 
 /**
  * A class to represent instruction monitor enter and monitor exit

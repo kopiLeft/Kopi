@@ -20,10 +20,7 @@
 
 package at.dms.compiler.tools.antlr.compiler;
 
-import at.dms.compiler.tools.antlr.runtime.*;
-
 class ZeroOrMoreBlock extends BlockWithImpliedExitPath {
-
 
   public ZeroOrMoreBlock(Grammar g) {
     super(g);
