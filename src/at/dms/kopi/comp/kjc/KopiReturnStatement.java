@@ -66,7 +66,7 @@ public class KopiReturnStatement extends JStatement {
         impl = new JBlock(getTokenReference(),
                              new JStatement[] {
                                constrainMethodPost(context.getTypeFactory(), getTokenReference(), stmtS, exprS),
-                               new JReturnStatement(getTokenReference(), null, getComments()),
+                               new JReturnStatement(getTokenReference(), null, getComments())
                              }, 
                           null);
       } else {
@@ -101,8 +101,6 @@ public class KopiReturnStatement extends JStatement {
                                                                        post, 
                                                                        params){
                                               public void genCode(GenerationContext context, boolean discardValue) {
-                                                CodeSequence code = context.getCodeSequence();
-                                                
                                                 //if there is no storage, remove first arguement
                                                 if (hasStore && post.getOldValueStore() == null) {
                                                   JExpression[]         tmp = new JExpression[args.length-1];
@@ -142,7 +140,7 @@ public class KopiReturnStatement extends JStatement {
                                // return $return;
                                new JReturnStatement(getTokenReference(),
                                                     new JNameExpression(getTokenReference(), IDENT_RETURN), 
-                                                    getComments()),
+                                                    getComments())
                              }, null);
       } else {
         // invariant (if it is a constructor)
@@ -153,7 +151,7 @@ public class KopiReturnStatement extends JStatement {
         impl = new JBlock(getTokenReference(),
                              new JStatement[] {
                                constrainMethodPost(context.getTypeFactory(), getTokenReference(), stmtS, exprS),
-                               new JReturnStatement(getTokenReference(), null, getComments()),
+                               new JReturnStatement(getTokenReference(), null, getComments())
                              }, 
                              null);
       }

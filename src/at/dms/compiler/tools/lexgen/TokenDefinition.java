@@ -105,7 +105,7 @@ class TokenDefinition {
       out.println("; }");
       break;
     case OTHER:
-      /* nothing */;
+      /* nothing */
     }
   }
 
@@ -161,7 +161,7 @@ class TokenDefinition {
       out.println(");");
       break;
     case OTHER:
-      /* nothing */;
+      /* nothing */
     }
   }
 
