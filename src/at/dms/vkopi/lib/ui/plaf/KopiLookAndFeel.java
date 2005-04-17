@@ -45,8 +45,8 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
   }
 
   public String getDescription() {
-    return "Look and Feel giving a flat effect. Developed by DMS GmbH, 2002."
-           + " Published under the Lesser GNU Public Licence.";
+    return "Look and Feel giving a flat effect. Developed by DMS GmbH, 2002-2005."
+           + " Published under the GNU Lesser General Public Licence Version 2.";
   }
 
   public boolean isNativeLookAndFeel() {
