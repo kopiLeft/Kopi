@@ -21,7 +21,6 @@
 package at.dms.bytecode.ssa;
 
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.LinkedList;
 import java.util.ListIterator;
 

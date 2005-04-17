@@ -24,7 +24,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
 
 import at.dms.vkopi.lib.ui.base.*;
 

@@ -27,10 +27,9 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
 
-import at.dms.vkopi.lib.ui.base.*;
 public class KopiScrollBarUI extends MetalScrollBarUI {
 
-  public static ComponentUI createUI(JComponent c)    {
+  public static ComponentUI createUI(JComponent c) {
     return new KopiScrollBarUI();
   }
 
