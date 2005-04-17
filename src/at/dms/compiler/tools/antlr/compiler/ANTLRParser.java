@@ -4,12 +4,6 @@ package at.dms.compiler.tools.antlr.compiler;
 
 import at.dms.compiler.tools.antlr.runtime.*;
 
-import java.util.Enumeration;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 public class ANTLRParser extends at.dms.compiler.tools.antlr.runtime.LLkParser
        implements ANTLRTokenTypes
  {
@@ -1447,7 +1441,6 @@ public ANTLRParser(ParserSharedInputState state) {
 		
 		Token  a1 = null;
 		Token  a2 = null;
-		Token exType; Token exName;
 		
 		match(LITERAL_catch);
 		a1 = LT(1);
@@ -2062,7 +2055,7 @@ public ANTLRParser(ParserSharedInputState state) {
 			{
 				match(STAR);
 				if ( inputState.guessing==0 ) {
-					behavior.zeroOrMoreSubRule();;
+					behavior.zeroOrMoreSubRule();
 				}
 				break;
 			}

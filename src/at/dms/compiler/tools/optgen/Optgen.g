@@ -52,7 +52,6 @@ public aCompilationUnit [String sourceFile]
   String		packageName = null;
   String		version = null;
   String		usage = null;
-  String		help = null;
   OptionDefinition[]	definitions = null;
 }
 :

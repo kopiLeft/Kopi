@@ -20,10 +20,8 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
-import at.dms.compiler.base.UnpositionedError;
 
 /**
  * A Store Field Access Expression.
@@ -103,8 +101,6 @@ public class KopiStoreFieldAccessExpression extends JExpression {
    * @param	discardValue	discard the result of the evaluation ?
    */
   public void genCode(GenerationContext context, boolean discardValue) {
-    CodeSequence code = context.getCodeSequence();
-
     JExpression         expr = new JFieldAccessExpression(getTokenReference(), prefix, decl.getField());
     // with this constructor it must not be analysed
 

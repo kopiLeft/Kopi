@@ -122,12 +122,13 @@ public class JFieldDeclaration extends JMemberDeclaration {
    */
   public CSourceField checkInterface(CClassContext context) throws PositionedError {
     int		modifiers = variable.getModifiers();
-    TypeFactory factory = context.getTypeFactory();
 
     classContext = context;
 
-    /* JLS 8.3.1
-       A compile-time error occurs if a final variable is also declared volatile. */
+    /*
+     * JLS 8.3.1:
+     * A compile-time error occurs if a final variable is also declared volatile.
+     */
     check(context,
           CModifier.getSubsetSize(modifiers,
                                   Constants.ACC_VOLATILE
@@ -183,8 +184,6 @@ public class JFieldDeclaration extends JMemberDeclaration {
    * @exception	PositionedError	the analysis detected an error
    */
   public void analyse(CBodyContext context) throws PositionedError {
-    TypeFactory factory = context.getTypeFactory();
-
     variable.analyse(context);
     // JLS 8.1.2 : Inner classes may inherit static members that
     // are not compile-time constants even though they may not declare

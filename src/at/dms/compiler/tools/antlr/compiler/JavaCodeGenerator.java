@@ -470,7 +470,7 @@ public class JavaCodeGenerator {
       // Create a lexer to read an action and return the translated version
       ActionLexer lexer = new ActionLexer(actionStr, currentRule, this);
       lexer.setLineOffset(line);
-      lexer.setTool(tool);
+
       try {
 	lexer.mACTION(true);
 	actionStr = lexer.getTokenObject().getText();

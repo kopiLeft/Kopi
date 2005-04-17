@@ -70,8 +70,6 @@ public class LivenessComputer {
 
     InterferenceGraph interference = new InterferenceGraph(SSAVar.getSSAVariableNumber());
 
-    BitSet tmp = new BitSet();
-
     //iterates on all basic blocks
     for (int block = 0; block < nodesNumber; ++block) {
       BasicBlock bb = (BasicBlock) nodes[block];

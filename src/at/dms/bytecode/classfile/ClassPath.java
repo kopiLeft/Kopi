@@ -22,7 +22,6 @@ package at.dms.bytecode.classfile;
 
 import java.io.*;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -285,7 +284,6 @@ public class ClassPath {
         return true;
       }
     }
-
     return false;
   }
 
@@ -293,7 +291,6 @@ public class ClassPath {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private static ClassPath	self = null;
   private ClassDirectory[]	dirs;	// list of directories in class path
   private File                  workingDirectory = null;
 }

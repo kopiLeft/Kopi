@@ -503,8 +503,6 @@ public class KjcPrettyPrinter extends at.dms.util.base.Utils implements Constant
 				      String ident,
 				      JExpression expr)
   {
-    int          pos = p.getColumn();
-    
     print(CModifier.toString(modifiers));
     print(type);
     

@@ -20,9 +20,7 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.UnpositionedError;
-import at.dms.util.base.InconsistencyException;
 import at.dms.util.base.SimpleStringBuffer;
 
 public class CTypeVariable extends CReferenceType {
@@ -31,7 +29,6 @@ public class CTypeVariable extends CReferenceType {
     super();
     this.bounds = bounds;
     this.name = name;
-    owner = null;
   }
 
   private CTypeVariable(CTypeVariable tv) {
@@ -39,7 +36,6 @@ public class CTypeVariable extends CReferenceType {
     bounds = tv.bounds;
     name = tv.name;
     index = tv.index;
-    owner = null;
   }
   // ----------------------------------------------------------------------
   // BODY CHECKING
@@ -118,7 +114,9 @@ public class CTypeVariable extends CReferenceType {
               break;
             }
           }
-          if (!isAssignable) return false;
+          if (!isAssignable) {
+            return false;
+          }
         }
         return true;
       }
@@ -281,7 +279,6 @@ public class CTypeVariable extends CReferenceType {
   private CReferenceType[]      bounds;
   private int                   index;
   private String                name;
-  private CMember               owner;
   private boolean               checked;
   private boolean               methodTypeVariable;
 

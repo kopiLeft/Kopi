@@ -81,12 +81,9 @@ public class Main {
    */
   private void optimizeClass(String fileName) throws UnpositionedError {
     ClassInfo		info;
-    MethodInfo[]	methods;
 
     info = readClassFile(fileName);
-
     optimizeClass(info, options.optimize, options.verbose);
-
     writeClassFile(info, options.destination == null ? fileName : options.destination + File.separatorChar + at.dms.util.base.Utils.splitQualifiedName(info.getName())[1] + ".class");
   }
 
@@ -133,8 +130,6 @@ public class Main {
 
     code = method.getCodeInfo();
     if (code != null) {
-      long	length = code.getInstructions().length;
-
       code = Optimizer.optimize(code, level);
       method.setCodeInfo(code);
     }

@@ -48,7 +48,6 @@ options {
 	protected RuleBlock currentRule;
 	protected JavaCodeGenerator generator;
 	protected int lineOffset = 0;
-	private Main tool;	// main
 
  	public ActionLexer(String s, RuleBlock currentRule, JavaCodeGenerator generator) {
 	  this(new StringReader(s));
@@ -59,10 +58,6 @@ options {
 	public void setLineOffset(int lineOffset) {
 	  // this.lineOffset = lineOffset;
 	  setLine(lineOffset);
-	}
-
-	public void setTool(Main tool) {
-	  this.tool = tool;
 	}
 
 	// Override of error-reporting for syntax

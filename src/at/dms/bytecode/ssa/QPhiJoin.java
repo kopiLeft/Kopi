@@ -45,7 +45,6 @@ public class QPhiJoin extends QPhi {
   public QPhiJoin(QVar var, BasicBlock bb) {
     super(var);
     operands = new HashMap();
-    Iterator it = bb.getPredecessors();
     //operands are created when request are done by getOperand
     // so no unuse operand are created.
   }

@@ -309,7 +309,6 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
       Color oldColor = g.getColor();
-      int i;
       
       g.setColor(lineColor);
       g.drawRoundRect(x+1, y+1, width-2, height-2, 7, 7);
@@ -324,7 +323,6 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
       Color oldColor = g.getColor();
-      int i;
       
       g.setColor(lineColor);
       g.drawLine(x, y, x+width, y);

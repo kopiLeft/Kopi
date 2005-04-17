@@ -102,8 +102,6 @@ public class KopiOldValueStoreCreation extends JUnqualifiedInstanceCreation {
    * @param	discardValue	discard the result of the evaluation ?
    */
   public void genCode(GenerationContext context, boolean discardValue) {
-    CodeSequence code = context.getCodeSequence();
-
     type = postmethod.getOldValueStore();
     try {
       constructor = type.getCClass().lookupMethod(null, local, null, JAV_CONSTRUCTOR, new CType[0], CReferenceType.EMPTY);

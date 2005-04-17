@@ -22,9 +22,7 @@ package at.dms.kopi.comp.kjc;
 
 import java.util.Hashtable;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
-import at.dms.compiler.base.Compiler;
 import at.dms.compiler.base.CWarning;
 import at.dms.compiler.base.JavaStyleComment;
 import at.dms.compiler.base.JavadocComment;
@@ -234,14 +232,8 @@ public abstract class JTypeDeclaration extends JMemberDeclaration {
    * @exception	PositionedError	an error with reference to the source file
    */
   protected void checkInterface(CContext context, CReferenceType superClass) throws PositionedError {
-//     self = new CClassContext(context, 
-//                              context.getEnvironment(), 
-//                              sourceClass, 
-//                              this);
-
     Hashtable		hashField;
     CMethod[]		methodList;
-    Hashtable		hashMethod;
 
     // verify that no "special" character are in a class name
     verifyName(context, sourceClass.getQualifiedName());

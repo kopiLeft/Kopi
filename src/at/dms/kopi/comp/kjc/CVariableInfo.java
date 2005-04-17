@@ -150,8 +150,6 @@ public final class CVariableInfo {
    * @param     info            the definite assignment state of the other variable or field
    */
   public void mergeInto(int pos, int other) {
-    int         self;
-
     setInfo(pos, merge(getInfo(pos), other));
   }
 
@@ -165,8 +163,6 @@ public final class CVariableInfo {
    * @param     info            the definite assignment state of the other variable or field
    */
   public void completeInto(int pos, int other) {
-    int         self;
-
     setInfo(pos, complete(getInfo(pos), other));
   }
 

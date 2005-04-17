@@ -24,7 +24,6 @@ import at.dms.bytecode.classfile.Constants;
 
 import java.util.Iterator;
 import java.util.BitSet;
-import java.util.Set;
 import java.util.Collection;
 import java.util.LinkedList;
 /**
@@ -113,7 +112,6 @@ public class SSAConstructor {
    * Find the variables used in the method
    */
   protected void findUsedVar() {
-    final BitSet localVarUsed = varUsed;
     cfg.visitGraph(start, new NodeVisitor() {
         public boolean visit(Node n) {
           Iterator insts = ((BasicBlock) n).getInstructions();
@@ -177,9 +175,9 @@ public class SSAConstructor {
    * Place phi functions
    */
   protected void placePhiFunctions(SSAConstructorInfo varInfo) {
-    if (!nonLocals.get(varInfo.getVariableRegister()))
+    if (!nonLocals.get(varInfo.getVariableRegister())) {
       return;
-
+    }
     //add a phi catch in each catch block
     // if the variable is alive at the beginning of the basic block
     for (int i = 0; i < exceptionHandlers.length; ++i) {

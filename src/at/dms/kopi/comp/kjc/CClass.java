@@ -20,8 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import java.io.IOException;
-
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Hashtable;
@@ -32,7 +30,6 @@ import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.UnpositionedError;
 import at.dms.compiler.base.PositionedError;
 import at.dms.util.base.InconsistencyException;
-import at.dms.util.base.Utils;
 import at.dms.util.base.SimpleStringBuffer;
 
 /**
@@ -1335,7 +1332,6 @@ public abstract class CClass extends CMember {
     CReferenceType  substitution = getSubstitution(typeVariable, sub[sub.length-1]);
 
     if ((substitution == null) && (getOwner() != null)) {
-      CTypeVariable[]           ownerTypeVariable = getOwner().getTypeVariables();
       CReferenceType[][]        subThere;
 
       if (sub.length > 1) {
@@ -1346,9 +1342,6 @@ public abstract class CClass extends CMember {
         }
       } else {
         return typeVariable;
-//         subThere = new CReferenceType[1][];
-//         subThere[0] = new CReferenceType[ownerTypeVariable.length];
-//         System.arraycopy(ownerTypeVariable, 0, subThere[0], 0, ownerTypeVariable.length);
       }
       substitution = getOwner().getSubstitution(typeVariable, subThere);
     }
@@ -1446,9 +1439,10 @@ public abstract class CClass extends CMember {
     SimpleStringBuffer.release(buffer);
     return result;
   }
-  public void analyseConditions()  throws PositionedError {
+  public void analyseConditions() throws PositionedError {
     // do something in the sourceclass but not here
   }
+
   // ----------------------------------------------------------------------
   // INNER CLASS SUPPORT
   // ----------------------------------------------------------------------

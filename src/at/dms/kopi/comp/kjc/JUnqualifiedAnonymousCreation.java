@@ -104,14 +104,15 @@ public class JUnqualifiedAnonymousCreation extends JExpression {
       verify(argsType[i] != null);
     }
 
-    /* JLS 15.9.2: If the class instance creation expression occurs 
-       in a static context (§8.1.2), then i has no immediately enclosing 
-       instance. Otherwise, the immediately enclosing instance of i is this. */
+    /*
+     * JLS 15.9.2: 
+     * If the class instance creation expression occurs 
+     * in a static context (§8.1.2), then i has no immediately enclosing 
+     * instance. Otherwise, the immediately enclosing instance of i is this.
+     */
     decl.generateInterface(context.getClassReader(), 
                            owner,
 			   owner.getQualifiedName() + "$" + context.getClassContext().getNextSyntheticIndex());
-
-    CClass      superCClass = type.getCClass();
 
     if (type.getCClass().isInterface()) {
       superClass = context.getTypeFactory().createReferenceType(TypeFactory.RFT_OBJECT);

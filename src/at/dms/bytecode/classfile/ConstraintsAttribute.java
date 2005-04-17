@@ -40,16 +40,17 @@ public class ConstraintsAttribute extends Attribute {
   }
 
   public ConstraintsAttribute(DataInput in, ConstantPool cp) 
-    throws IOException, ClassFileFormatException {
-
+    throws IOException, ClassFileFormatException 
+  {
     if (in.readInt() != 4) {
       throw new ClassFileFormatException("bad attribute length");
     }
+
     int       idxPre = in.readUnsignedShort();
     int       idxPost = in.readUnsignedShort();
 
     precondition = (idxPre==0) ? null : (MethodRefConstant)cp.getEntryAt(idxPre);
-    postcondition = (idxPost==0) ? null : (MethodRefConstant)cp.getEntryAt(idxPost);;
+    postcondition = (idxPost==0) ? null : (MethodRefConstant)cp.getEntryAt(idxPost);
   }
 
 
@@ -107,10 +108,14 @@ public class ConstraintsAttribute extends Attribute {
    *
    * @param	cp		the constant pool for this class
    */
-   void resolveConstants(ConstantPool cp)  throws ClassFileFormatException {
+   void resolveConstants(ConstantPool cp) throws ClassFileFormatException {
     cp.addItem(attr);
-    if (precondition != null) cp.addItem(precondition);
-    if (postcondition != null) cp.addItem(postcondition);
+    if (precondition != null) {
+      cp.addItem(precondition);
+    }
+    if (postcondition != null) {
+      cp.addItem(postcondition);
+    }
   }
 
   /**

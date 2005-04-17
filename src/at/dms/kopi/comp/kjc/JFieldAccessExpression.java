@@ -769,7 +769,6 @@ public class JFieldAccessExpression extends JExpression {
   private boolean		constantPrefix;
   private boolean		analysed;
   private CType                 type;
-  private boolean               startCode;
 
   protected JExpression		prefix;		// !!! graf 991205 make private
   protected String		ident;

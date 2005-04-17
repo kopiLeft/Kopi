@@ -21,11 +21,8 @@
 package at.dms.vkopi.lib.ui.base;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Collections;
 import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import javax.swing.border.LineBorder;
 
 public class JButtonPanel extends JPanel  {
   public JButtonPanel() {
@@ -45,7 +42,6 @@ public class JButtonPanel extends JPanel  {
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
       Color oldColor = g.getColor();
-      int i;
       
       g.setColor(borderColor);
       g.drawLine(x, y, width, y);

@@ -21,11 +21,9 @@ import java.io.StringReader;
  */
 public class ActionLexer extends at.dms.compiler.tools.antlr.runtime.CharScanner implements ActionLexerTokenTypes, TokenStream
  {
-
 	protected RuleBlock currentRule;
 	protected JavaCodeGenerator generator;
 	protected int lineOffset = 0;
-	private Main tool;	// main
 
  	public ActionLexer(String s, RuleBlock currentRule, JavaCodeGenerator generator) {
 	  this(new StringReader(s));
@@ -36,10 +34,6 @@ public class ActionLexer extends at.dms.compiler.tools.antlr.runtime.CharScanner
 	public void setLineOffset(int lineOffset) {
 	  // this.lineOffset = lineOffset;
 	  setLine(lineOffset);
-	}
-
-	public void setTool(Main tool) {
-	  this.tool = tool;
 	}
 
 	// Override of error-reporting for syntax
@@ -64,7 +58,6 @@ setCaseSensitive(true);
 }
 
 public Token nextToken() throws TokenStreamException {
-	Token theRetToken=null;
 tryAgain:
 	for (;;) {
 		Token _token = null;
@@ -74,7 +67,6 @@ tryAgain:
 			try {   // for lexical error handling
 				if ((_tokenSet_0.member(LA(1)))) {
 					mACTION(true);
-					theRetToken=_returnToken;
 				}
 				else {
 					if (LA(1)==EOF_CHAR) {uponEOF(); _returnToken = makeToken(Token.EOF_TYPE);}

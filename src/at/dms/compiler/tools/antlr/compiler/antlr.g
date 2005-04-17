@@ -22,14 +22,6 @@ header {
 package at.dms.compiler.tools.antlr.compiler;
 }
 
-{
-import java.util.Enumeration;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-}
-
 class ANTLRParser extends Parser;
 options {
 	exportVocab=ANTLR;
@@ -408,7 +400,6 @@ exceptionSpecNoLabel
    ;
 
 exceptionHandler
-{ Token exType; Token exName; }
    :
    "catch"
    a1:ARG_ACTION
@@ -507,7 +498,7 @@ ebnf
 		RPAREN
 
 		(	(	QUESTION{behavior.optionalSubRule();}
-			|	STAR	{behavior.zeroOrMoreSubRule();;}
+			|	STAR	{behavior.zeroOrMoreSubRule();}
 			|	PLUS	{behavior.oneOrMoreSubRule();}
 			)?
 		|

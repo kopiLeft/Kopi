@@ -125,7 +125,7 @@ public class KopiMethodPostconditionDeclaration extends KopiPostconditionDeclara
   private void correctTheInterface() throws PositionedError {
     CReferenceType      oldValueStore;
 
-    oldValueStore = getMethod().getOldValueStore(); ;
+    oldValueStore = getMethod().getOldValueStore();
 
     if (oldValueStore == null) {
       // remove parameter IDENT_STORAGE
