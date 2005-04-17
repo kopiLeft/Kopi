@@ -869,7 +869,7 @@ xExplicitCursorBody [CParseClassContext context]
 :
   LCURLY
   (
-    type = jType[] field = jVariableDeclarator[XConstants.ACC_PUBLIC, type] SEMI
+    type = jTypeSpec[] field = jVariableDeclarator[XConstants.ACC_PUBLIC, type] SEMI
       { context.addFieldDeclaration(new XCursorFieldDeclaration(sourceRef, field, javadoc, comments)); }
   )+
   RCURLY

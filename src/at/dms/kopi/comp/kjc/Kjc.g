@@ -251,7 +251,6 @@ jTypeSpec []
 jClassTypeSpec []
   returns [CReferenceType self = null]
 {
-  String		name = null;
   int			bounds = 0;
 }
 :
@@ -285,6 +284,7 @@ jBuiltInTypeSpec []
     }
 ;
 
+/*!!! REMOVE graf 2005046
 jType []
   returns [CType type = null]
 :
@@ -292,6 +292,7 @@ jType []
 |
   type = jTypeName[]
 ;
+*/
 
 // !!!JLS The primitive types.
 jBuiltInType []
@@ -576,7 +577,6 @@ jEnumConstantDeclaration [CParseEnumContext context, int count]
  JExpression[]      args = JExpression.EMPTY;
  CParseClassContext subContext = null;
  JClassDeclaration  decl = null;
- JExpression        instance = null;
  TokenReference	    sourceRef = buildTokenReference();
  JavadocComment     javadoc = getJavadocComment();
 }
@@ -844,7 +844,6 @@ jExplicitConstructorInvocation []
   boolean		functorIsThis = false;
   JExpression[]		args = null;
   JExpression           expr = null;
-  JavaStyleComment[]	comments = getStatementComment();
   TokenReference	sourceRef = buildTokenReference();
 }
 :
