@@ -95,6 +95,7 @@ public abstract class Attribute {
       } else if (tag.equals(PreconditionAttribute.NAME)) {
 	return new PreconditionAttribute(in, cp);
       }
+      break;
 
     case 'S':
       if (tag.equals("SourceFile")) {
