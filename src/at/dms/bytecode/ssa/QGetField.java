@@ -75,9 +75,11 @@ public class QGetField extends QCallReturn {
    * A representation of the instruction
    */
   public String toString() {
-    if (ref == null || ref.getOperand() == null)
+    if (ref == null || ref.getOperand() == null) {
       return field.getName();
-    return ref + "." + field.getName();
+    } else {
+      return ref + "." + field.getName();
+    }
   }
 
   // -------------------------------------------------------------------

@@ -36,16 +36,15 @@ public abstract class QAbstractJumpInst extends QInst {
    * @param dest the edge of the jump destination.
    */
   protected void simplifyJump(Edge dest) {
-    BasicBlock source = (BasicBlock) dest.getSource();
-    Set sourceExceptionNextBlocks = source.getExceptionNextBlocks();
+    BasicBlock  source = (BasicBlock) dest.getSource();
+    Set         sourceExceptionNextBlocks = source.getExceptionNextBlocks();
+    BasicBlock  nextBB = (BasicBlock) dest.getTarget();
+    Set         blocks = new HashSet();
 
-    BasicBlock nextBB = (BasicBlock) dest.getTarget();
-    Set blocks = new HashSet();
-    BasicBlock oldTarget = nextBB;
     while (nextBB.isEmpty()) {
       //the destination block contain only a jump
-
       QJump jump = nextBB.getJump();
+
       if (jump != null) {
         Set removedBlockExceptionNextBlocks = nextBB.getExceptionNextBlocks();
         nextBB = (BasicBlock) jump.getEdge().getTarget();

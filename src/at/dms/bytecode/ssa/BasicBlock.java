@@ -20,7 +20,6 @@
 
 package at.dms.bytecode.ssa;
 
-import at.dms.bytecode.classfile.Constants;
 import at.dms.bytecode.classfile.Instruction;
 import at.dms.bytecode.classfile.JumpInstruction;
 import at.dms.bytecode.classfile.LocalVarInstruction;
@@ -257,8 +256,9 @@ public class BasicBlock extends Node {
           type != CFGEdge.CFG_EDGE && true &&
           type != CFGEdge.SUBROUTINE_EDGE) {
         BasicBlock bb = ((BasicBlock)edge.getTarget());
-        if (bb != null)
+        if (bb != null) {
           v.addElement(bb);
+        }
       }
     }
     BasicBlock[] basicBlocks = new BasicBlock[v.size()];
@@ -305,10 +305,12 @@ public class BasicBlock extends Node {
    * the basic bloc
    */
   public boolean isEmpty() {
-    if (insts.size() == 0)
+    if (insts.size() == 0) {
       return true;
-    return (insts.size() == 1 &&
-            insts.getInstructionAt(0) instanceof QJump);
+    } else {
+      return (insts.size() == 1
+              && insts.getInstructionAt(0) instanceof QJump);
+    }
   }
 
   /**
@@ -316,12 +318,17 @@ public class BasicBlock extends Node {
    * Return null if there is no QJump instruction.
    */
   public QJump getJump() {
-    if (insts.size() == 0)
+    if (insts.size() == 0) {
       return null;
-    QInst inst = insts.getLastInstruction();
-    if (inst instanceof QJump)
-      return (QJump) inst;
-    return null;
+    } else {
+      QInst inst = insts.getLastInstruction();
+
+      if (inst instanceof QJump) {
+        return (QJump)inst;
+      } else {
+        return null;
+      }
+    }
   }
 
   /**
@@ -505,8 +512,9 @@ public class BasicBlock extends Node {
    * @param newPrevious the node to insert.
    */
   public void insertBefore(BasicBlock newPrevious) {
-    if (previous == null)
+    if (previous == null) {
       setPrevious(newPrevious);
+    }
     previous.next = newPrevious;
     newPrevious.previous = previous;
     previous = newPrevious;
@@ -520,8 +528,9 @@ public class BasicBlock extends Node {
    * @param newPrevious the node to insert.
    */
   public void insertAfter(BasicBlock newNext) {
-    if (next == null)
+    if (next == null) {
       setNext(newNext);
+    }
     next.previous = newNext;
     newNext.next = next;
     next = newNext;
@@ -613,11 +622,11 @@ public class BasicBlock extends Node {
    * This must be done just before generation.
    */
   /*package*/ void simplifyJumps() {
-    if (insts.size() == 0)
-      return;
-    QInst last = insts.getLastInstruction();
-    if (last instanceof QAbstractJumpInst) {
-      ((QAbstractJumpInst)last).simplifyAllJumps();
+    if (insts.size() != 0) {
+      QInst last = insts.getLastInstruction();
+      if (last instanceof QAbstractJumpInst) {
+        ((QAbstractJumpInst)last).simplifyAllJumps();
+      }
     }
   }
 
@@ -689,8 +698,9 @@ public class BasicBlock extends Node {
         genQ.addInitSubroutine(this, insts[i++]);
       }
       for (; i < lastInst; ++i) {
-        if (genQ.generate(insts[i], insts[i+1], this))
+        if (genQ.generate(insts[i], insts[i+1], this)) {
           ++i;
+        }
       }
       if (i <= lastInst) {
         genQ.generate(insts[lastInst], null, this);

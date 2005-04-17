@@ -75,10 +75,12 @@ public class ExceptionHandler {
       int start = bb.getStartGen();
       int end = bb.getStartGen() + bb.getNbGen() - 1;
       if (end >= start) {
-        if (start < min)
+        if (start < min) {
           min = start;
-        if (end > max)
+        }
+        if (end > max) {
           max = end;
+        }
       }
     }
     firstInst = min;

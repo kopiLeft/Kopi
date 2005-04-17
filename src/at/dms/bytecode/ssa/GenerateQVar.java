@@ -330,8 +330,9 @@ public class GenerateQVar {
       QOperand tmp = (QOperand) stack.elementAt(i);
       if (tmp instanceof QVar) {
         QVar var = (QVar) tmp;
-        if (var.getRegister() == index)
+        if (var.getRegister() == index) {
           return var;
+        }
       }
     }
     return null;

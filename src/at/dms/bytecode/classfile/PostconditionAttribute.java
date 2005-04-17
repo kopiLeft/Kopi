@@ -86,9 +86,11 @@ public class PostconditionAttribute extends Attribute {
    *
    * @param	cp		the constant pool for this class
    */
-  /*package*/ void resolveConstants(ConstantPool cp) throws ClassFileFormatException  {
+  /*package*/ void resolveConstants(ConstantPool cp) throws ClassFileFormatException {
     cp.addItem(attr);
-    if (oldValueClass != null) cp.addItem(oldValueClass);
+    if (oldValueClass != null) {
+      cp.addItem(oldValueClass);
+    }
   }
 
   /**

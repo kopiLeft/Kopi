@@ -70,6 +70,7 @@ public class Registry {
 	e.printStackTrace();
 	throw e;
       } catch (IllegalAccessException e) {
+        /* ignore */
       }
     }
     System.err.println("*** FINISHED DUMPING MEMORY COUNT ****"); System.err.flush();

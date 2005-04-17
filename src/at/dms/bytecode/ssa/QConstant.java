@@ -112,9 +112,9 @@ public class QConstant extends QOperand {
    * A representation of the instruction
    */
   public String toString() {
-    if (nullConstant)
+    if (nullConstant) {
       return "null";
-    if (value instanceof Integer) {
+    } else if (value instanceof Integer) {
       return "" +  ((Integer) value).intValue();
     } else if (value instanceof Long) {
       return "" +  ((Long) value).longValue();

@@ -45,9 +45,11 @@ public class QReturn extends QInst {
    * @param opcode the opcode of the source instruction.
    */
   public QReturn(QOperand op, int opcode) {
-    if (op != null)
+    if (op != null) {
       this.op = new QOperandBox(op, this);
-    this.opcode = opcode;
+    } else {
+      this.opcode = opcode;
+    }
   }
 
   // -------------------------------------------------------------------
@@ -79,9 +81,11 @@ public class QReturn extends QInst {
    * Get the operands of the instruction
    */
   public QOperandBox[] getUses() {
-    if (op == null)
+    if (op == null) {
       return new QOperandBox[0];
-    return new QOperandBox[] {op};
+    } else {
+      return new QOperandBox[] {op};
+    }
   }
 
   /**
@@ -101,8 +105,9 @@ public class QReturn extends QInst {
    * @param codeGen the code generator
    */
   public void generateInstructions(CodeGenerator codeGen) {
-    if (op != null)
+    if (op != null) {
       op.getOperand().generateInstructions(codeGen);
+    }
     codeGen.addInstruction(new NoArgInstruction(opcode));
   }
 

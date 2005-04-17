@@ -151,8 +151,9 @@ public class QuadrupleGenerator {
 
         int nbParam = nbParam(inter);
         QOperand[] ops = new QOperand[nbParam];
-        for (int i = nbParam - 1 ; i >= 0; --i)
+        for (int i = nbParam - 1 ; i >= 0; --i) {
           ops[i] = generateVar.pop();
+        }
         bb.addInstruction(new QVoidMethodCall(inter.getInterfaceConstant(),
                                               ops, opcode, inter.getNbArgs()));
       } else if (inst instanceof MethodRefInstruction) {
@@ -402,8 +403,9 @@ public class QuadrupleGenerator {
 
         int nbParam = nbParam(inter);
         QOperand[] ops = new QOperand[nbParam];
-        for (int i = nbParam - 1 ; i >= 0; --i)
+        for (int i = nbParam - 1 ; i >= 0; --i) {
           ops[i] = generateVar.pop();
+        }
         expr = new QMethodReturn(inter.getInterfaceConstant(), ops,
                                  inter.getReturnType(), opcode,
                                  inter.getNbArgs());
@@ -411,8 +413,9 @@ public class QuadrupleGenerator {
         MethodRefInstruction meth = (MethodRefInstruction) inst;
         int nbParam = nbParam(meth);
         QOperand[] ops = new QOperand[nbParam];
-        for (int i = nbParam - 1 ; i >= 0; --i)
+        for (int i = nbParam - 1 ; i >= 0; --i) {
           ops[i] = generateVar.pop();
+        }
         expr = new QMethodReturn(meth.getMethodRefConstant(),
                                  ops, meth.getReturnType(), opcode);
       } else if (inst instanceof FieldRefInstruction) {

@@ -118,11 +118,12 @@ public class SSAConstructorInfo {
    * @param bb block
    */
   public void addPhiCatch(BasicBlock bb) {
-    if (phis[bb.getIndex()] != null) return;
-    //the type is not used, the rigth type of all operands,
-    // will be defined when passing operands to SSA form.
-    QVar variable = new QVar(var, Constants.TYP_REFERENCE);
-    phis[bb.getIndex()] = new QPhiCatch(variable);
+    if (phis[bb.getIndex()] == null) {
+      //the type is not used, the rigth type of all operands,
+      //   will be defined when passing operands to SSA form.
+      QVar variable = new QVar(var, Constants.TYP_REFERENCE);
+      phis[bb.getIndex()] = new QPhiCatch(variable);
+    }
   }
 
   /**
@@ -132,11 +133,12 @@ public class SSAConstructorInfo {
    * @param s the concerned sub-routine
    */
   public void addPhiReturn(BasicBlock bb, SubRoutine s) {
-    if (phis[bb.getIndex()] != null) return;
-    //the type is not used, the rigth type of all operands,
-    // will be defined when passing operands to SSA form.
-    QVar variable = new QVar(var, Constants.TYP_REFERENCE);
-    phis[bb.getIndex()] = new QPhiReturn(variable, s);
+    if (phis[bb.getIndex()] == null) {
+      // the type is not used, the rigth type of all operands,
+      // will be defined when passing operands to SSA form.
+      QVar variable = new QVar(var, Constants.TYP_REFERENCE);
+      phis[bb.getIndex()] = new QPhiReturn(variable, s);
+    }
   }
 
   /**
@@ -145,11 +147,12 @@ public class SSAConstructorInfo {
    * @param bb block
    */
   public void addPhiJoin(BasicBlock bb) {
-    if (phis[bb.getIndex()] != null) return;
-    //the type is not used, the rigth type of all operands,
-    // will be defined when passing operands to SSA form.
-    QVar variable = new QVar(var, Constants.TYP_REFERENCE);
-    phis[bb.getIndex()] = new QPhiJoin(variable, bb);
+    if (phis[bb.getIndex()] == null) {
+      //the type is not used, the rigth type of all operands,
+      //   will be defined when passing operands to SSA form.
+      QVar variable = new QVar(var, Constants.TYP_REFERENCE);
+      phis[bb.getIndex()] = new QPhiJoin(variable, bb);
+    }
   }
 
   /**

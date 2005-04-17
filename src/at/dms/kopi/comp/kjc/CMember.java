@@ -256,9 +256,9 @@ public abstract class CMember extends at.dms.util.base.Utils implements Constant
 
   public CSourceClass getAccessorOwner(CSourceClass from) {
     if (getOwner() == from) {
-      return (CSourceClass) from;
+      return from;
     } else if (isPrivate()) {
-      return (CSourceClass) getOwner();
+      return (CSourceClass)getOwner();
     } else {
       CClass    target = from;
 

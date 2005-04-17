@@ -39,9 +39,9 @@ public class QSimpleExpression extends QExpression {
    * @param expr the expression
    */
   public QSimpleExpression(QOperand expr) {
-    if (expr instanceof QExpression)
-      throw new InconsistencyException("Not a simple expression " +
-                                       expr);
+    if (expr instanceof QExpression) {
+      throw new InconsistencyException("Not a simple expression " + expr);
+    }
     this.expr = new QOperandBox(expr, this);
 
   }

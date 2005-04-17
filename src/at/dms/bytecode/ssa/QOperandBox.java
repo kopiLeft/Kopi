@@ -107,9 +107,11 @@ public class QOperandBox {
    * Return a string representation of the operand
    */
   public String toString() {
-    if (op == null)
+    if (op == null) {
       return "";
-    return op.toString();
+    } else {
+      return op.toString();
+    }
   }
 
   /**

@@ -106,11 +106,15 @@ public class QInstArray {
    * @return the instruction removed
    */
   public QInst removeLastInstruction() {
-    if (insts.size() == 0) return null;
-    QInst last = (QInst) insts.elementAt(insts.size() - 1);
-    last.setArray(null);
-    insts.setSize(insts.size() - 1);
-    return last;
+    if (insts.size() == 0) {
+      return null;
+    } else {
+      QInst last = (QInst) insts.elementAt(insts.size() - 1);
+
+      last.setArray(null);
+      insts.setSize(insts.size() - 1);
+      return last;
+    }
   }
 
   /**

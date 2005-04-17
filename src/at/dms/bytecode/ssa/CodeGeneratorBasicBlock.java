@@ -22,7 +22,6 @@ package at.dms.bytecode.ssa;
 
 import java.util.BitSet;
 import java.util.Stack;
-import java.util.Vector;
 
 import at.dms.bytecode.classfile.Constants;
 import at.dms.bytecode.classfile.IincInstruction;
@@ -112,9 +111,10 @@ public class CodeGeneratorBasicBlock extends CodeGenerator {
 
     // Because getPoppedFromStack is wrong for the jsr instruction
     // in kopi
-    if (inst.getOpcode() == Constants.opc_jsr)
+    if (inst.getOpcode() == Constants.opc_jsr) {
       nbPopped = 0;
     // End
+    }
 
     newInst.minStackHeight = newInst.stackHeight - nbPopped;
 
@@ -174,96 +174,100 @@ public class CodeGeneratorBasicBlock extends CodeGenerator {
    * Use the idea of Philip Koopman to generate dup instructions
    */
   public void stackSchedule() {
-    if (first == last)
-      return;
+    if (first != last) {
+      ListUseReuse list = new ListUseReuse();
+      // we search all load (skeep the first instruction)
+      for (Inst currentInst = first.getNext();
+           currentInst != last;
+           currentInst = currentInst.getNext()) {
+        if (currentInst.isLoad()) {
+          //we search an instruction which have on the top
+          // of the stack, the searched variable.
+          int var = currentInst.getIndex();
+          int dist = 1;
 
-    ListUseReuse list = new ListUseReuse();
-    //we search all load (skeep the first instruction)
-    for (Inst currentInst = first.getNext(); currentInst != last;
-         currentInst = currentInst.getNext()) {
-      if (currentInst.isLoad()) {
-        //we search an instruction which have on the top
-        // of the stack, the searched variable.
-        int var = currentInst.getIndex();
-        int dist = 1;
-        for (Inst use = currentInst.getPrev(); use != first;
-             use = use.getPrev(), ++dist) {
-          if (use.stackTop.sameVariable(var)) {
-            list.insertUseReuse(use, currentInst, dist);
-            break;
-          }
-        }
-      }
-    }
-
-    //process for each pair use/reuse
-    UseReuse currentUR = list.getFirst();
-    UseReuse lastUR = list.getLast();
-    for ( ; currentUR != lastUR; currentUR = currentUR.next) {
-      Inst use = currentUR.use;
-      Inst reuse = currentUR.reuse;//this must be a load
-      if (!reuse.isLoad())
-        continue;
-      int var = reuse.getIndex();
-      if (use.stackTop.sameVariable(var) &&
-          use.stackHeight == reuse.stackHeight + 1) {
-        Inst ins = use;
-
-        if (!(ins.minStackHeight < reuse.stackHeight ||
-              (ins.inst instanceof IincInstruction &&
-               ((IincInstruction) ins.inst).getVariable() == var))) {
-          ins = ins.getNext();
-          //the instruction between use and reuse must not
-          // modify the variable and the stack height must
-          // not be less than reuse.stackHeight.
-          //this instruction musn't be a dup with the stack
-          // height equal to reuse.stackHeight
-          for ( ; ins != reuse; ins = ins.getNext()) {
-            if (ins.minStackHeight < reuse.stackHeight ||
-                (ins.isStore() && ins.getIndex() == var) ||
-                (ins.inst instanceof IincInstruction &&
-                 ((IincInstruction) ins.inst).getVariable() == var) ||
-                (ins.minStackHeight == reuse.stackHeight  &&
-                 ins.isDup())) {
+          for (Inst use = currentInst.getPrev();
+               use != first;
+               use = use.getPrev(), ++dist) {
+            if (use.stackTop.sameVariable(var)) {
+              list.insertUseReuse(use, currentInst, dist);
               break;
             }
           }
         }
-        if (ins == reuse) {//stack scheduling
-          //we insert a dup before the use
+      }
+
+      //process for each pair use/reuse
+      UseReuse currentUR = list.getFirst();
+      UseReuse lastUR = list.getLast();
+      for ( ; currentUR != lastUR; currentUR = currentUR.next) {
+        Inst use = currentUR.use;
+        Inst reuse = currentUR.reuse;//this must be a load
+        if (!reuse.isLoad()) {
+          continue;
+        }
+        int var = reuse.getIndex();
+        if (use.stackTop.sameVariable(var)
+            && use.stackHeight == reuse.stackHeight + 1) {
+          Inst ins = use;
+
+          if (!(ins.minStackHeight < reuse.stackHeight
+                ||
+                (ins.inst instanceof IincInstruction
+                 && ((IincInstruction) ins.inst).getVariable() == var))) {
+            ins = ins.getNext();
+            //the instruction between use and reuse must not
+            // modify the variable and the stack height must
+            // not be less than reuse.stackHeight.
+            //this instruction musn't be a dup with the stack
+            // height equal to reuse.stackHeight
+            for ( ; ins != reuse; ins = ins.getNext()) {
+              if (ins.minStackHeight < reuse.stackHeight
+                  || (ins.isStore() && ins.getIndex() == var)
+                  || (ins.inst instanceof IincInstruction
+                      && ((IincInstruction) ins.inst).getVariable() == var)
+                  || (ins.minStackHeight == reuse.stackHeight
+                      && ins.isDup())) {
+                break;
+              }
+            }
+          }
+          if (ins == reuse) {//stack scheduling
+            //we insert a dup before the use
           // and the reuse become a nop instruction
-          Instruction dup;
-          int size = use.stackTop.getSize();
-          if (size == 1) {
-            dup = new NoArgInstruction(Constants.opc_dup);
-          } else {
-            dup = new NoArgInstruction(Constants.opc_dup2);
-          }
-          //in fact, I replace the use instruction by a dup,
-          // and I insert a new instruction ('use instruction')
-          // after. I do this because the use instruction can
-          // be in an other pair use/reuse with a higher distance.
-          Inst newInst = new Inst(use.inst, use.stackTop,
+            Instruction dup;
+            int size = use.stackTop.getSize();
+            if (size == 1) {
+              dup = new NoArgInstruction(Constants.opc_dup);
+            } else {
+              dup = new NoArgInstruction(Constants.opc_dup2);
+            }
+            //in fact, I replace the use instruction by a dup,
+            // and I insert a new instruction ('use instruction')
+            // after. I do this because the use instruction can
+            // be in an other pair use/reuse with a higher distance.
+            Inst newInst = new Inst(use.inst, use.stackTop,
                                   use.stackHeight + 1);
-          use.insertAfter(newInst);
-          use.inst = dup;
+            use.insertAfter(newInst);
+            use.inst = dup;
 
-          // reuse is now a nop instruction
-          reuse.inst = new NoArgInstruction(Constants.opc_nop);
+            // reuse is now a nop instruction
+            reuse.inst = new NoArgInstruction(Constants.opc_nop);
 
-          //modify the stack height between the two instructions
-          for (ins = newInst; ins != reuse; ins = ins.getNext()) {
-            ins.stackHeight++;
-            ins.minStackHeight++;
+            //modify the stack height between the two instructions
+            for (ins = newInst; ins != reuse; ins = ins.getNext()) {
+              ins.stackHeight++;
+              ins.minStackHeight++;
+            }
+            reuse.stackHeight++;
+            reuse.minStackHeight++;
+            reuse.stackTop = use.stackTop;
           }
-          reuse.stackHeight++;
-          reuse.minStackHeight++;
-          reuse.stackTop = use.stackTop;
         }
       }
+      
+      markDeadInstructions();
     }
-
-    markDeadInstructions();
   }
 
   /**
@@ -358,8 +362,9 @@ public class CodeGeneratorBasicBlock extends CodeGenerator {
      * Set the next instruction in the list
      */
     public void setNext(Inst next) {
-      if (next != null)
+      if (next != null) {
         next.prev = this;
+      }
       this.next = next;
     }
 

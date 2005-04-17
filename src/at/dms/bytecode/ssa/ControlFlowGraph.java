@@ -42,9 +42,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
-import java.util.HashSet;
 
 /**
  * The control flow graph of a method.
@@ -216,8 +214,9 @@ public class ControlFlowGraph {
     final Node end = this.end;
     graph.visitGraphFromNode(start, new NodeVisitor() {
         public boolean visit(Node n) {
-          if (n != end)
+          if (n != end) {
             ((BasicBlock) n).simplifyJumps();
+          }
           return true;
         }
       });
@@ -577,17 +576,19 @@ public class ControlFlowGraph {
    */
   private int numberBlock(short[] startblock, Instruction[] insts) {
     short blockNumber = 0;
-    if (startblock.length == 0)
-      return 0;
 
-    startblock[0] = blockNumber;
-    for(int j=1;j<insts.length;j++) {
-      if (startblock[j] == 1) {
-        ++blockNumber;
+    if (startblock.length == 0) {
+      return 0;
+    } else {
+      startblock[0] = blockNumber;
+      for(int j=1;j<insts.length;j++) {
+        if (startblock[j] == 1) {
+          ++blockNumber;
+        }
+        startblock[j] = blockNumber;
       }
-      startblock[j] = blockNumber;
+      return blockNumber + 1;
     }
-    return blockNumber + 1;
   }
 
 
@@ -867,36 +868,37 @@ public class ControlFlowGraph {
    */
   private boolean specialVisitNode(Node node, NodeVisitor nodeVisitor, final Instruction[] insts) {
     node.setMarked(true);
-    if (!nodeVisitor.visit(node)) return false;
-    Iterator it = node.getSuccessors();
+    if (!nodeVisitor.visit(node)) {
+      return false;
+    } else {
+      Iterator it = node.getSuccessors();
 
-    BasicBlock bb = (BasicBlock) node;
-    Instruction last = insts[bb.getEnd()];
-    // if the last instruction of the basic block is a jsr, the first edge
-    // is only used for the visit. (there is an edge between the block ending
-    // with a jsr and the next block).
-    if (last.getOpcode() == Constants.opc_jsr
-        || last.getOpcode() == Constants.opc_jsr_w)
-      {
+      BasicBlock bb = (BasicBlock) node;
+      Instruction last = insts[bb.getEnd()];
+      // if       the last instruction of the basic block is a jsr, the first edge
+      // is only used for the visit. (there is an edge between the block ending
+      // with a jsr and the next block).
+      if (last.getOpcode() == Constants.opc_jsr
+          || last.getOpcode() == Constants.opc_jsr_w) {
         if (it.hasNext()) {
           Node n = (Node) it.next();
           if (!n.getMarked()) {
             return specialVisitNode(n, nodeVisitor, insts);
           }
         }
-      }
-    else
-      {
+      } else {
         while (it.hasNext()) {
           Node n = (Node) it.next();
           if (!n.getMarked()) {
-            if (!specialVisitNode(n, nodeVisitor, insts)) return false;
+            if (!specialVisitNode(n, nodeVisitor, insts)) {
+              return false;
+            }
           }
         }
       }
-    return true;
+      return true;
+    }
   }
-
 
   /**
    * Add 3-adress instructions symbolising parameters initialization

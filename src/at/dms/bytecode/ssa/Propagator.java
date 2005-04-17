@@ -23,7 +23,6 @@ package at.dms.bytecode.ssa;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
 
 
 /**
@@ -166,8 +165,9 @@ public class Propagator {
     }
     if (inst.mayThrowException()) {
       for (int i = from + 1; i < to; ++i) {
-        if (!(insts.getInstructionAt(i) instanceof QNop))
+        if (!(insts.getInstructionAt(i) instanceof QNop)) {
           return false;
+        }
       }
       return true;
     } else {

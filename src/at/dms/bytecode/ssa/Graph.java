@@ -138,15 +138,20 @@ public class Graph {
    */
   private boolean visitNode(Node node, NodeVisitor nodeVisitor) {
     node.setMarked(true);
-    if (!nodeVisitor.visit(node)) return false;
-    Iterator it = node.getSuccessors();
-    while (it.hasNext()) {
-      Node n = (Node) it.next();
-      if (!n.getMarked()) {
-        if (!visitNode(n, nodeVisitor)) return false;
+    if (!nodeVisitor.visit(node)) {
+      return false;
+    } else {
+      Iterator it = node.getSuccessors();
+      while (it.hasNext()) {
+        Node n = (Node) it.next();
+        if (!n.getMarked()) {
+          if (!visitNode(n, nodeVisitor)) {
+            return false;
+          }
+        }
       }
+      return true;
     }
-    return true;
   }
 
   /**

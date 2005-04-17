@@ -20,8 +20,6 @@
 
 package at.dms.kopi.comp.kjc;
 
-import at.dms.compiler.base.JavaStyleComment;
-import at.dms.compiler.base.JavadocComment;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 
@@ -140,7 +138,9 @@ public class KopiConstructorBlock extends JConstructorBlock {
    * @param	p		the visitor
    */
   public void accept(KjcVisitor p) {
-    if (precondition != null) precondition.accept(p);
+    if (precondition != null) {
+      precondition.accept(p);
+    }
     super.accept(p);
   }
 
