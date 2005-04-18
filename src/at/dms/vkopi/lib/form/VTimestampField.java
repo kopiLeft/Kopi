@@ -176,14 +176,14 @@ public class VTimestampField extends VField {
    * Returns the field value of given record as a timestamp value.
    */
   public Timestamp getTimestamp(int r) {
-    return value[r];
+    return (Timestamp) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getTimestamp(r);
+    return value[r];
   }
 
   /**

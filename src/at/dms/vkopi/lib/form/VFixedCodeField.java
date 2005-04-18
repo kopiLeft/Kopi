@@ -165,14 +165,14 @@ public class VFixedCodeField extends VCodeField {
    * Returns the field value of given record as a int value.
    */
   public Fixed getFixed(int r) {
-    return value[r] == -1 ? null : codes[value[r]];
+    return (Fixed) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getFixed(r);
+    return value[r] == -1 ? null : codes[value[r]];
   }
 
   /**

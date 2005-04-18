@@ -209,14 +209,14 @@ public class VStringField extends VField {
    * Returns the field value of given record as a string value.
    */
   public String getString(int r) {
-    return value[r];
+    return (String) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getString(r);
+    return value[r];
   }
 
   /**

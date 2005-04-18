@@ -51,6 +51,7 @@ public class VFieldUI implements VConstants, ActionHandler {
     activeCommands = new Vector();
     fieldHandler = new FieldHandler();
     model.addFieldListener(fieldHandler);
+    model.addFieldChangeListener(fieldHandler);
 
     VPosition   pos = model.getPosition();
 
@@ -611,7 +612,7 @@ public class VFieldUI implements VConstants, ActionHandler {
   // FieldListener messages called in any thread
   // ----------------------------------------------------------------------
 
-  class FieldHandler implements FieldListener {
+  class FieldHandler implements FieldListener, FieldChangeListener {
   /**
    * Gets the displayed value.
    *

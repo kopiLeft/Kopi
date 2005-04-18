@@ -215,14 +215,14 @@ public class VIntegerField extends VField {
    * Returns the field value of given record as a int value.
    */
   public Integer getInt(int r) {
-    return value[r];
+    return (Integer) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getInt(r);
+    return  value[r];
   }
 
   /**

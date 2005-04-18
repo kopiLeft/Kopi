@@ -235,14 +235,14 @@ public class VDateField extends VField {
    * Returns the field value of given record as a date value.
    */
   public Date getDate(int r) {
-    return value[r];
+    return (Date) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getDate(r);
+    return value[r];
   }
 
   /**

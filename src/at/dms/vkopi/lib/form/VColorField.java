@@ -193,15 +193,14 @@ public class VColorField extends VField {
    * Returns the field value of given record as a date value.
    */
   public Color getColor(int r) {
-    return value[r];
+    return (Color) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    Color	c = getColor(r);
-    return new byte[] {(byte)c.getRed(), (byte)c.getGreen(), (byte)c.getBlue()};
+    return value[r];
   }
 
   /**

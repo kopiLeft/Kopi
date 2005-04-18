@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id$
+ * $Id: FieldListener.java 22806 2005-04-05 16:49:10Z taoufik $
  */
 
 package at.dms.vkopi.lib.form;
@@ -25,18 +25,11 @@ import java.util.EventListener;
 
 import at.dms.vkopi.lib.visual.VException;
 
-public interface FieldListener extends EventListener {
+public interface FieldChangeListener extends EventListener {
 
-  void updateModel() throws VException;
-  Object getDisplayedValue(boolean trim) throws VException;
-  Component getCurrentDisplay(); // please do not use!
+  void labelChanged();
+  void searchOperatorChanged();
+  void valueChanged(int r);
+  void accessChanged(int r);
 
-  void fieldError(String message);
-
-  boolean requestFocus() throws VException;
-  boolean loadItem(int i) throws VException;
-  boolean predefinedFill() throws VException;
-
-  void enter();
-  void leave();
 }

@@ -118,6 +118,16 @@ public abstract class VField implements VConstants {
     this.pos = pos;
     this.cmd = commands;
     this.alias = alias;
+    if (alias != null) {
+    alias.addFieldChangeListener(new FieldChangeListener() {
+        public void labelChanged() {}
+        public void searchOperatorChanged() {}
+        public void valueChanged(int r) {
+          fireValueChanged(r);
+        }
+        public void accessChanged(int r) {}
+      });
+    }
   }
 
   // ----------------------------------------------------------------------
@@ -2229,14 +2239,31 @@ public abstract class VField implements VConstants {
       hasListener = false;
     }
   }
+  public void addFieldChangeListener(FieldChangeListener fl) {
+    if (!hasListener) {
+      hasListener = true;
+      if (fieldListener == null) {
+        fieldListener = new EventListenerList();
+      }
+    }
+
+    fieldListener.add(FieldChangeListener.class, fl);
+  }
+  public void removeFieldChangeListener(FieldChangeListener fl) {
+    fieldListener.remove(FieldChangeListener.class, fl);
+
+    if (fieldListener.getListenerCount() == 0) {
+      hasListener = false;
+    }
+  }
 
   public void fireValueChanged(int r) {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
 
       for (int i = listeners.length-2; i>=0; i-=2) {
-        if (listeners[i]==FieldListener.class) {
-          ((FieldListener)listeners[i+1]).valueChanged(r);
+        if (listeners[i]==FieldChangeListener.class) {
+          ((FieldChangeListener)listeners[i+1]).valueChanged(r);
         }
       }
     }
@@ -2246,8 +2273,8 @@ public abstract class VField implements VConstants {
       Object[]          listeners = fieldListener.getListenerList();
 
       for (int i = listeners.length-2; i>=0; i-=2) {
-        if (listeners[i]==FieldListener.class) {
-          ((FieldListener)listeners[i+1]).searchOperatorChanged();
+        if (listeners[i]==FieldChangeListener.class) {
+          ((FieldChangeListener)listeners[i+1]).searchOperatorChanged();
         }
       }
     }
@@ -2257,8 +2284,8 @@ public abstract class VField implements VConstants {
       Object[]          listeners = fieldListener.getListenerList();
 
       for (int i = listeners.length-2; i>=0; i-=2) {
-        if (listeners[i]==FieldListener.class) {
-          ((FieldListener)listeners[i+1]).labelChanged();
+        if (listeners[i]==FieldChangeListener.class) {
+          ((FieldChangeListener)listeners[i+1]).labelChanged();
         }
       }
     }
@@ -2268,8 +2295,8 @@ public abstract class VField implements VConstants {
       Object[]          listeners = fieldListener.getListenerList();
 
       for (int i = listeners.length-2; i>=0; i-=2) {
-        if (listeners[i]==FieldListener.class) {
-          ((FieldListener)listeners[i+1]).accessChanged(r);
+        if (listeners[i]==FieldChangeListener.class) {
+          ((FieldChangeListener)listeners[i+1]).accessChanged(r);
         }
       }
     }

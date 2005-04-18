@@ -281,14 +281,14 @@ public class VWeekField extends VField {
    * Returns the field value of given record as a week value.
    */
   public Week getWeek(int r) {
-    return value[r];
+    return (Week) getObject();
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getWeek(r);
+    return value[r];
   }
 
   /**

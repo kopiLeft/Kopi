@@ -246,14 +246,14 @@ public class VMonthField extends VField {
    * Returns the field value of given record as a date value.
    */
   public Month getMonth(int r) {
-    return value[r];
+    return (Month) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getMonth(r);
+    return value[r];
   }
 
   /**

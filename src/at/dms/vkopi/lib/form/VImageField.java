@@ -213,7 +213,7 @@ public class VImageField extends VField {
    * Returns the field value of given record as a date value.
    */
   public byte[] getImage(int r) {
-    return value[r];
+    return (byte[]) getObject(r);
   }
 
 
@@ -221,7 +221,7 @@ public class VImageField extends VField {
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getImage(r);
+    return value[r];
   }
 
   /**

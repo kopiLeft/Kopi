@@ -267,14 +267,14 @@ public class VTimeField extends VField {
    * Returns the field value of given record as a time value.
    */
   public Time getTime(int r) {
-    return value[r];
+    return (Time) getObject(r);
   }
 
   /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getTime(r);
+    return value[r];
   }
 
   /**
