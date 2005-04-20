@@ -55,7 +55,7 @@ public class UnidiffTableReference extends TableReference {
 
 // a une colonne qui correspond a ce nom
   public boolean hasColumn(String ident) {
-    return (left.hasColumn(ident) ^ right.hasColumn(ident));
+    return (left.hasColumn(ident) && right.hasColumn(ident));
   }
 
   public String getTableForColumn(String column) {
