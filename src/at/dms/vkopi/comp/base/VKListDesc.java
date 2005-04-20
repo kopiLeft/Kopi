@@ -87,7 +87,7 @@ public class VKListDesc extends VKPhylum {
       XUtils.checkDatabaseType(type.getColumnInfo(),
                                tableName,
                                column,
-                               XDatabaseColumn.TYPE_CHECK_NARROWING | XDatabaseColumn.NULL_CHECK_NONE);    
+                               XDatabaseColumn.NULL_CHECK_NONE | XDatabaseColumn.TYPE_CHECK_NARROWING | XDatabaseColumn.CONSTRAINT_CHECK_NONE);    
     } catch (UnpositionedError e) {
       context.reportTrouble(new CWarning(getTokenReference(), e.getFormattedMessage()));
     }
