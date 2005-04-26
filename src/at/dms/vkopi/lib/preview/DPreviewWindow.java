@@ -20,6 +20,7 @@
 
 package at.dms.vkopi.lib.preview;
 
+import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.visual.*;
 import at.dms.vkopi.lib.util.Message;
 
@@ -187,16 +188,32 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     setIcon(model.getCurrentPage());
   }
  
-  public void zoomFit() {
+  public void zoomFit(int type) {
     Dimension         dim = bodypane.getSize(); // size of view
     int               height = model.getHeight();
     int               width = model.getWidth();
-    float             ratio = Math.min((float)dim.height/model.getHeight(), 
-                                       (float) dim.width/model.getWidth());
+    float             ratio;
 
-    // round the ratio with 0.99f, so that there are definitly no 
-    // scrollbars
-    model.zoom(ratio*0.99f);
+    switch (type) {
+      case FIT_BOTH:
+        // round the ratio with 0.99f, so that there are definitly no 
+        // scrollbars
+        ratio = Math.min((float) dim.height / model.getHeight(), 
+                         (float) dim.width / model.getWidth()) * 0.99f;
+        break;
+      case FIT_HEIGHT:
+        // 1.03 : do not show the white border
+        ratio = dim.height * 1.03f / model.getHeight();
+        break;
+      case FIT_WIDTH:
+        // 1.05 : do not show the white border
+        ratio = dim.width * 1.05f / model.getWidth();
+        break;
+    default:
+      throw new InconsistencyException("Unkown type of zoom");
+    }
+
+    model.zoom(ratio);
   }
 
   // ----------------------------------------------------------------------

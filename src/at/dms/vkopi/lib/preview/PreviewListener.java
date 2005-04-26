@@ -25,5 +25,9 @@ import java.util.EventListener;
 public interface PreviewListener extends EventListener {
   void pageChanged(int current);
   void zoomChanged();
-  void zoomFit();
+  void zoomFit(int type);
+
+  int FIT_BOTH          = 1;
+  int FIT_HEIGHT        = 2;
+  int FIT_WIDTH         = 3;
 }

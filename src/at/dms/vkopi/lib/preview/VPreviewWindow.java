@@ -98,6 +98,18 @@ public class VPreviewWindow extends VWindow {
 		   0,
 		   null),
         new SActor(Message.getMessage("menu-action"),
+		   Message.getMessage("item-preview-fit-width"),
+		   "zoomwidth",
+		   KeyEvent.VK_F8,
+		   0,
+		   null),
+        new SActor(Message.getMessage("menu-action"),
+		   Message.getMessage("item-preview-fit-height"),
+		   "zoomheight",
+		   KeyEvent.VK_F9,
+		   0,
+		   null),
+        new SActor(Message.getMessage("menu-action"),
 		   Message.getMessage("item-preview-plus"),
 		   "detail",
 		   KeyEvent.VK_F6,
@@ -114,6 +126,8 @@ public class VPreviewWindow extends VWindow {
     getActor(CMD_LEFT).setNumber(CMD_LEFT);
     getActor(CMD_RIGHT).setNumber(CMD_RIGHT);
     getActor(CMD_ZOOM_FIT).setNumber(CMD_ZOOM_FIT);
+    getActor(CMD_ZOOM_FIT_W).setNumber(CMD_ZOOM_FIT_W);
+    getActor(CMD_ZOOM_FIT_H).setNumber(CMD_ZOOM_FIT_H);
     getActor(CMD_ZOOM_PLUS).setNumber(CMD_ZOOM_PLUS);
     getActor(CMD_ZOOM_MINUS).setNumber(CMD_ZOOM_MINUS);
     previewListener = new EventListenerList();
@@ -145,6 +159,8 @@ public class VPreviewWindow extends VWindow {
     setActorEnabled(CMD_LEFT, currentPage > 1);
     setActorEnabled(CMD_RIGHT, currentPage < numberOfPages);
     setActorEnabled(CMD_ZOOM_FIT, true);
+    setActorEnabled(CMD_ZOOM_FIT_H, true);
+    setActorEnabled(CMD_ZOOM_FIT_W, true);
     setActorEnabled(CMD_ZOOM_PLUS, true);
     setActorEnabled(CMD_ZOOM_MINUS, true);
 
@@ -235,7 +251,21 @@ public class VPreviewWindow extends VWindow {
       // ask gui to calculate zoom
       // gui calls method zoom with the good value
       setWaitInfo(Message.getMessage("WAIT"));
-      fireZoomFit();
+      fireZoomFit(PreviewListener.FIT_BOTH);
+      unsetWaitInfo();
+      break;
+    case CMD_ZOOM_FIT_H:
+      // ask gui to calculate zoom
+      // gui calls method zoom with the good value
+      setWaitInfo(Message.getMessage("WAIT"));
+      fireZoomFit(PreviewListener.FIT_HEIGHT);
+      unsetWaitInfo();
+      break;
+    case CMD_ZOOM_FIT_W:
+      // ask gui to calculate zoom
+      // gui calls method zoom with the good value
+      setWaitInfo(Message.getMessage("WAIT"));
+      fireZoomFit(PreviewListener.FIT_WIDTH);
       unsetWaitInfo();
       break;
      }
@@ -271,12 +301,12 @@ public class VPreviewWindow extends VWindow {
       }
     }
   }
-  protected void fireZoomFit() {
+  protected void fireZoomFit(int type) {
     Object[]            listeners = previewListener.getListenerList();
 
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]== PreviewListener.class) {
-        ((PreviewListener)listeners[i+1]).zoomFit();
+        ((PreviewListener)listeners[i+1]).zoomFit(type);
       }
     }
   }
@@ -334,6 +364,8 @@ public class VPreviewWindow extends VWindow {
   protected static final int	CMD_LEFT	= 1;
   protected static final int	CMD_RIGHT	= 2;
   protected static final int	CMD_ZOOM_FIT	= 3;
-  protected static final int	CMD_ZOOM_PLUS	= 4;
-  protected static final int	CMD_ZOOM_MINUS	= 5;
+  protected static final int	CMD_ZOOM_FIT_W	= 4;
+  protected static final int	CMD_ZOOM_FIT_H	= 5;
+  protected static final int	CMD_ZOOM_PLUS	= 6;
+  protected static final int	CMD_ZOOM_MINUS	= 7;
 }
