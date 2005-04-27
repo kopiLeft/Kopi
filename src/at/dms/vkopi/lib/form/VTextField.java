@@ -141,10 +141,19 @@ public class VTextField extends VStringField {
   }
 
   /**
+   * Returns the field value of given record as a string value.
+   */
+  public String getString(int r) {
+    // lackner 2005.04027
+    // !!! this does not work for alias fields
+    return (String) super.getObjectImpl(r);
+  }
+
+  /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    String	c = getString(r);
+    String	c = (String) super.getObjectImpl(r);
 
     return c == null ? null : c.getBytes();
   }
