@@ -142,6 +142,7 @@ public class DBInterface implements at.dms.kopi.comp.kjc.Constants {
       Vector	classes = new Vector();
       compilUnit.join(compiler);
       compilUnit.checkInterface(compiler);
+      compilUnit.prepareInitializers(compiler, classes);
       compilUnit.checkInitializers(compiler, classes);
       compilUnit.checkBody(compiler, classes);
       ((at.dms.kopi.comp.kjc.CSourceClass)classes.elementAt(0)).genCode(new BytecodeOptimizer(0),

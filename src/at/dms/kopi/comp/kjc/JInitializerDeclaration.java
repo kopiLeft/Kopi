@@ -102,101 +102,95 @@ public class JInitializerDeclaration extends JMethodDeclaration {
   }
 
   /**
-   * FIXME: document
+   * Prepare the inisialisation step, sets contexts of fields
+   * Here we set the fields contexts, create the insializer blocks 
+   * and synthetic assert stuff
+   * 
    * @param	context		the actual context of analyse
-   * @exception	PositionedError		Error catched as soon as possible
+   * @exception	PositionedError	Error catched as soon as possible
+   * @see	#checkInitializer(CClassContext context)
    */
-  public void checkInitializer(CClassContext context) throws PositionedError {
+  public void prepareInitializer(CClassContext context) throws PositionedError {
     if (getMethod().isStatic()) {
-      TokenReference    ref = TokenReference.NO_REF;
-      JBlock            classBlock = null;
+      TokenReference  ref = TokenReference.NO_REF;
+      JBlock          classBlock = null;
       CClass          clazz = context.getCClass();
-
+      
       if (!clazz.isInterface()) {
         if (context.getEnvironment().getSourceVersion() >= KjcEnvironment.SOURCE_1_4) {
-          JExpression     loadClass;
           CClass          topLevelClass;
           String          clazzName;
           CClassContext   evalContext = context;      
-
+          JExpression     methodCall, tmpExpr1, tmpExpr2, tmpExpr3;
+          JStatement      tmpStat1, tmpStat2;
+          
           while (clazz.getOwner() != null) {
             clazz = clazz.getOwner();
             evalContext = evalContext.getParentContext().getClassContext();
           }
- 
+          
           topLevelClass = clazz;
-
+          
           if (clazz.isInterface()) {
             clazz = clazz.getAssertionStatusClass(evalContext);
           }
-
+          
           clazzName = clazz.getIdent();
           if (clazzName.lastIndexOf('/') > 0) {
             clazzName = clazzName.substring(clazzName.lastIndexOf('/')+1);
           }
           clazzName = JAV_IDENT_CLASS + clazzName;
-
-          loadClass = new JMethodCallExpression(ref,
-                                                new JTypeNameExpression(ref,
-                                                                        clazz.getAbstractType()),
+          
+          // method call: class$("<class_name>") 
+          methodCall = new JMethodCallExpression(ref,
+                                                new JTypeNameExpression(ref, clazz.getAbstractType()),
                                                 JAV_IDENT_CLASS,
                                                 new JExpression[] {
-                                                  new JStringLiteral(ref,
-                                                                     topLevelClass.getQualifiedName().replace('/','.'))
+                                                  new JStringLiteral(ref, topLevelClass.getQualifiedName().replace('/','.')) 
                                                 });
+          
+          // field access: class$<class_name>
+          tmpExpr1 = new JFieldAccessExpression(ref,
+                                               new JTypeNameExpression(ref, clazz.getAbstractType()),
+                                               clazzName);
 
-          classBlock =   new JBlock(ref, 
-                                    new JStatement[] {
-                                      new JIfStatement(ref, 
-                                                       new JEqualityExpression(ref,
-                                                                               true,
-                                                                               new JFieldAccessExpression(ref,
-                                                                                                   new JTypeNameExpression(ref,
-                                                                                                                           clazz.getAbstractType()),
-                                                                                                   clazzName),
-                                                                               new JNullLiteral(ref)), 
-                                                       new JExpressionStatement(ref,
-                                                                                new JAssignmentExpression(ref,
-                                                                                                          new JFieldAccessExpression(ref,
-                                                                                                                              new JTypeNameExpression(ref,
-                                                                                                                                                      clazz.getAbstractType()),
-                                                                                                                              clazzName),
-                                                                                                          loadClass),
-                                                                                null),
-                                                       null,
-                                                       null),
-                                      new JIfStatement(ref, 
-                                                       new JMethodCallExpression(ref,
-                                                                                 new JFieldAccessExpression(ref, 
-                                                                                                     new JTypeNameExpression(ref, 
-                                                                                                                             clazz.getAbstractType()),
-                                                                                                     clazzName), 
-                                                                                 "desiredAssertionStatus",
-                                                                                 JExpression.EMPTY),
-                                                       new JExpressionStatement(ref,
-                                                                                new JAssignmentExpression(ref,
-                                                                                                          new JFieldAccessExpression(ref, IDENT_ASSERT),
-                                                                                                          new JBooleanLiteral(ref, false)),
-                                                                                null),
-                                                       new JExpressionStatement(ref,
-                                                                                new JAssignmentExpression(ref,
-                                                                                                          new JFieldAccessExpression(ref, IDENT_ASSERT),
-                                                                                                          new JBooleanLiteral(ref, true)),
-                                                                                null),
-                                                       null)},
-                                    null);
+          // equality expr: class$<class_name> == null
+          tmpExpr2 = new JEqualityExpression(ref, true, tmpExpr1, new JNullLiteral(ref));
+          
+          // assignment: class$<class_name> = class$("<class_name>");
+          tmpExpr3 = new JAssignmentExpression(ref, tmpExpr1, methodCall);
+          tmpStat2 = new JExpressionStatement(ref, tmpExpr3, null);
+          
+          // if statement: if (class$<class_name> == null) class$test = class$("<class_name>");
+          tmpStat1 = new JIfStatement(ref, tmpExpr2, tmpStat2, null, null);
+
+          // method call: class$<class_name>.desiredAssertionStatus()
+          methodCall = new JMethodCallExpression(ref, tmpExpr1, "desiredAssertionStatus", JExpression.EMPTY);
+          
+          // assignment: $assertionsDisabled = !class$<class_name>.desiredAssertionStatus();
+          tmpExpr1 = new JAssignmentExpression(ref,
+                                               new JFieldAccessExpression(ref, IDENT_ASSERT),
+                                               new JLogicalComplementExpression(ref, methodCall)); 
+          
+          tmpStat2 = new JExpressionStatement(ref, tmpExpr1, null);
+
+          // static block initialyzer: static { ... }
+          classBlock =   new JBlock(ref, new JStatement[] { tmpStat1, tmpStat2 }, null);
+          
         } else {       
           if (context.getEnvironment().getAssertExtension() == KjcEnvironment.AS_ALL 
               || context.getEnvironment().getAssertExtension() == KjcEnvironment.AS_SIMPLE) {
-            classBlock = new JBlock(ref, 
-                                    new JStatement[] {
-                                      new JExpressionStatement(ref,
-                                                               new JAssignmentExpression(ref,
-                                                                                         new JFieldAccessExpression(ref, IDENT_ASSERT),
-                                                                                         new JBooleanLiteral(ref, false)),
-                                                               null)
-                                    },
-                                    null);
+            JStatement  tmpStat;
+            JExpression tmpExpr;
+            
+            // assignment: $assertionsDisabled = false;
+            tmpExpr = new JAssignmentExpression(ref,
+                                                new JFieldAccessExpression(ref, IDENT_ASSERT),
+                                                new JBooleanLiteral(ref, false));
+            tmpStat = new JExpressionStatement(ref, tmpExpr, null);
+            
+            // static block initialyzer: static { ... }
+            classBlock = new JBlock(ref, new JStatement[] { tmpStat }, null);
           }
         }
         if (classBlock != null) {
@@ -211,20 +205,47 @@ public class JInitializerDeclaration extends JMethodDeclaration {
     if (!getMethod().isStatic() && !isDummy()) {
       context.addInitializer();
     }
+    
     // we want to do that at check intitializers time
-    CMethodContext	self = new CInitializerContext(context, context.getEnvironment(), getMethod(), parameters);
-    CBlockContext	block = new CBlockContext(self, context.getEnvironment(), parameters.length);
-
+    self = new CInitializerContext(context, context.getEnvironment(), getMethod(), parameters);
+    block = new CBlockContext(self, context.getEnvironment(), parameters.length);
+    
     if (!getMethod().isStatic()) {
       // add this local var
       block.addThisVariable();
     } 
 
+    for (int i=0; i<body.getBody().length; i++) { 
+      if (body.getBody()[i] instanceof JBlock) {
+        JBlock innerBody = (JBlock) body.getBody()[i];
+        for (int j=0; j<innerBody.getBody().length; j++) {
+          if (innerBody.getBody()[j] instanceof JClassFieldDeclarator) {
+            ((JClassFieldDeclarator) innerBody.getBody()[j]).analyse(block);
+          }
+        }
+      } else {
+        if (body.getBody()[i] instanceof JClassFieldDeclarator) {
+        ((JClassFieldDeclarator) body.getBody()[i]).analyse(block);
+        }
+      }
+    }
+    
+  }
+  
+  /**
+   * In this step we analyse the field and check if there ate initialazed
+   * 
+   * @param	context		the actual context of analyse
+   * @exception	PositionedError	Error catched as soon as possible
+   */
+  public void checkInitializer(CClassContext context) throws PositionedError {
+
     body.analyse(block);
+      
     if (! block.isReachable()) {
       throw new CLineError(getTokenReference(), KjcMessages.STATEMENT_UNREACHABLE);
     }
-
+    
     if (getMethod().isStatic()) {
       CField[]	classFields = context.getCClass().getFields();
       for (int i = 0; i < classFields.length; i++) {
@@ -237,7 +258,6 @@ public class JInitializerDeclaration extends JMethodDeclaration {
                 !classFields[i].isFinal() || classFields[i].isSynthetic() || classFields[i].getIdent() == JAV_OUTER_THIS,
                 KjcMessages.UNINITIALIZED_FINAL_FIELD,
                 classFields[i].getIdent());
-          
         }
       }
     }
@@ -260,6 +280,7 @@ public class JInitializerDeclaration extends JMethodDeclaration {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
-  private final boolean		isDummy;
+  private CBlockContext   block;
+  private CMethodContext  self;
+  private final boolean   isDummy;
 }

@@ -167,6 +167,7 @@ public class Main extends Compiler {
       for (int count = 0; count < tree.length; count++) {
 	checkInterface(tree[count]);
       }
+
       if (verboseMode()) {
 	inform(CompilerMessages.INTERFACES_CHECKED, new Long(System.currentTimeMillis() - lastTime));
       }
@@ -176,11 +177,19 @@ public class Main extends Compiler {
       }
 
       for (int count = 0; count < tree.length; count++) {
-	checkInitializers(tree[count]);
+        prepareInitializers(tree[count]);
+      }
+      
+      if (errorFound) {
+        return false;
+      }
+
+      for (int count = 0; count < tree.length; count++) {
+        checkInitializers(tree[count]);
       }
 
       if (errorFound) {
-	return false;
+        return false;
       }
 
       for (int count = 0; count < tree.length; count++) {
@@ -389,6 +398,20 @@ public class Main extends Compiler {
   protected void checkInterface(JCompilationUnit cunit) {
     try {
       cunit.checkInterface(this);
+    } catch (PositionedError e) {
+      reportTrouble(e);
+    }
+  }
+
+  /**
+   * prepare the check step
+   * 
+   * @param	cunit		the compilation unit
+   * @see	#checkInitializers(JCompilationUnit cunit)
+   */
+  protected void prepareInitializers(JCompilationUnit cunit) {
+    try {
+      cunit.prepareInitializers(this, classes);
     } catch (PositionedError e) {
       reportTrouble(e);
     }

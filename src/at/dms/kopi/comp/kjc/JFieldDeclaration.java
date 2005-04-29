@@ -197,7 +197,7 @@ public class JFieldDeclaration extends JMemberDeclaration {
 	    KjcMessages.INNER_DECL_STATIC,
             getField().getIdent());
     }
-    //JSR 41 Tht type of a static field can't be a type variable
+    //JSR 41 The type of a static field can't be a type variable
     check(context,
           !variable.isStatic() || !variable.getType().isTypeVariable(),
           KjcMessages.TV_STATIC_FIELD,

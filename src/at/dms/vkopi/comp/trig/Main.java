@@ -127,6 +127,7 @@ public class Main extends at.dms.xkopi.comp.xkjc.Main {
 
     return !errorFound;
   }
+
   /**
    * check interface of forms and java files
    * @return parsing error occur
@@ -154,14 +155,29 @@ public class Main extends at.dms.xkopi.comp.xkjc.Main {
   }
 
   /**
+   * prepare initializers of forms and java files
+   * 
+   * @return	parsing error occur
+   * @see	#checkInitializers()
+   */
+  public boolean prepareInitializers() {
+    for (int count = 0; count < tree.length; count++) {
+      prepareInitializers(tree[count]);
+    }
+    
+    return !errorFound;
+  }
+
+  /**
    * check initializers of forms and java files
-   * @return parsing error occur
+   * 
+   * @return	parsing error occur
    */
   public boolean checkInitializers() {
     for (int count = 0; count < tree.length; count++) {
       checkInitializers(tree[count]);
     }
-
+    
     return !errorFound;
   }
 

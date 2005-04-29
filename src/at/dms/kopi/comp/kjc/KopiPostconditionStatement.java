@@ -204,6 +204,7 @@ public class KopiPostconditionStatement extends JStatement {
       
       storeClass.join(conditionContext.getCompilationUnitContext());
       storeClass.checkInterface(conditionContext.getCompilationUnitContext());
+      storeClass.prepareInitializers(conditionContext);
       storeClass.checkInitializers(conditionContext);
       storeClass.checkTypeBody(conditionContext);
       try {

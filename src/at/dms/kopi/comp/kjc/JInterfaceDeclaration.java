@@ -154,12 +154,34 @@ public class JInterfaceDeclaration extends JTypeDeclaration {
   }
 
   /**
+   * Prepare the check step
+   * 
+   * @param     context         the analysis context
+   * @exception PositionedError	an error with reference to the source file
+   * @see       #checkInitializers(CContext context)
+   */
+  public void prepareInitializers(CContext context) throws PositionedError {
+    //    CInterfaceContext self = new CInterfaceContext(context, context.getEnvironment(), sourceClass, this);
+    self = new CInterfaceContext(context, context.getEnvironment(), sourceClass, this);
+    if (statInit != null) {
+      statInit.prepareInitializer(self);
+    }
+
+    // Check inners
+    for (int i = inners.length - 1; i >= 0 ; i--) {
+      inners[i].prepareInitializers(self);
+    }
+    super.prepareInitializers(context);
+  }
+
+  /**
    * Check that initializers are correct
+   * 
+   * @param     context         the analysis context
    * @exception	PositionedError	an error with reference to the source file
    */
   public void checkInitializers(CContext context) throws PositionedError {
-    //    CInterfaceContext self = new CInterfaceContext(context, context.getEnvironment(), sourceClass, this);
-    self = new CInterfaceContext(context, context.getEnvironment(), sourceClass, this);
+
     if (statInit != null) {
       statInit.checkInitializer(self);
     }
@@ -168,7 +190,6 @@ public class JInterfaceDeclaration extends JTypeDeclaration {
     for (int i = inners.length - 1; i >= 0 ; i--) {
       inners[i].checkInitializers(self);
     }
-
     super.checkInitializers(context);
   }
 

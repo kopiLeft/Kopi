@@ -184,6 +184,9 @@ public class Main extends Compiler implements VKInsertParser {
       if (!gkopic.checkInterface(cunits)) {
 	return false;
       }
+      if (!gkopic.prepareInitializers()) {
+	return false;
+      }
       if (!gkopic.checkInitializers()) {
 	return false;
       }

@@ -152,6 +152,7 @@ public abstract class CClass extends CMember {
       decl.generateInterface(context.getEnvironment().getClassReader(), null, "");
       decl.join(context.getCompilationUnitContext());
       decl.checkInterface(context.getCompilationUnitContext());
+      decl.prepareInitializers(context);
       decl.checkInitializers(context);
       decl.checkTypeBody(context);
 

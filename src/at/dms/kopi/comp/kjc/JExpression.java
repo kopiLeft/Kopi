@@ -62,6 +62,16 @@ public abstract class JExpression extends JPhylum {
   }
 
   /**
+   * Tests whether this expression depends on the given field.
+   *
+   * @param	field	the filed to check dependency on it
+   * @return		true if the local field dependes on the given one
+   */
+  public boolean dependsOn(CField field) {
+    return false;
+  }
+  
+  /**
    * Returns true iff this expression can be used as a statement (JLS 14.8)
    */
   public boolean isStatementExpression() {

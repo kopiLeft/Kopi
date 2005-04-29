@@ -79,6 +79,15 @@ public class CSourceField extends CField {
       // this does not what is should
       // the declaration is always already analysed
       //classFieldDecl.analyseDeclaration();
+      
+      // taoufik 28-05-2005
+      // if a field is accessed before its analyse
+      // we force the analyse
+      try {
+        classFieldDecl.analyse();
+      } catch (PositionedError e) {
+        // nothing
+      }
     }
     return super.getValue();
   }

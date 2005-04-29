@@ -346,11 +346,22 @@ public abstract class JTypeDeclaration extends JMemberDeclaration {
   }
 
   /**
+   * prepare the check step
+   * 
+   * @exception	PositionedError	Error catched as soon as possible
+   * @see	#checkInitializers(CContext context)
+   */
+  public void prepareInitializers(CContext context) throws PositionedError {
+    // nothing
+  }
+
+  /**
    * Checks that same interface is not specified more than once
    *
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkInitializers(CContext context) throws PositionedError {
+    
     if (getCClass().getSuperClass() != null) {
       check(context,
             !getCClass().getSuperClass().dependsOn(getCClass()),

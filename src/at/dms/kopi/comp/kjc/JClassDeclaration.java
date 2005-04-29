@@ -388,17 +388,38 @@ public class JClassDeclaration extends JTypeDeclaration {
   }
 
   /**
+   * Prepare the initializers
+   * 
+   * @param     context         the analysis context
+   * @exception	PositionedError	an error with reference to the source file
+   * @see       #checkInitializers(CContext context)
+   */
+  public void prepareInitializers(CContext context) throws PositionedError {
+    
+      self = new CClassContext(context, context.getEnvironment(), sourceClass, this);
+      if(assertMethod != null) {
+        getCClass().addMethod(assertMethod.checkInterface(self));
+        assertMethod.checkBody1(self);
+      }
+
+      prepareStaticInitializer(self);
+
+    // Check inners
+    for (int i = inners.length - 1; i >= 0 ; i--) {
+      inners[i].prepareInitializers(self);
+    }
+
+    super.prepareInitializers(context);
+  }
+ 
+  /**
    * Check that initializers are correct
+   * 
+   * @param     context         the analysis context
    * @exception	PositionedError	an error with reference to the source file
    */
   public void checkInitializers(CContext context) throws PositionedError {
-    self = new CClassContext(context, context.getEnvironment(), sourceClass, this);
-
-    if (assertMethod != null) {
-      getCClass().addMethod(assertMethod.checkInterface(self));
-      assertMethod.checkBody1(self);
-    }
-
+    
     compileStaticInitializer(self);
 
     // Check inners
@@ -409,28 +430,34 @@ public class JClassDeclaration extends JTypeDeclaration {
     super.checkInitializers(context);
   }
 
-  public void compileStaticInitializer(CClassContext context)
-    throws PositionedError
-  {
+  public void prepareStaticInitializer(CClassContext context) throws PositionedError {//taw
+    if (statInit != null) {
+      statInit.prepareInitializer(context);
+    }
+  }
+  
+  public void compileStaticInitializer(CClassContext context) throws PositionedError {//taw
     if (statInit != null) {
       statInit.checkInitializer(context);
-
+      
+      // taoufik 28-04-05: Done in check initializer step 
+      //
       // check that all final class fields are initialized
-      CField[]	classFields = context.getCClass().getFields();
-
-      for (int i = 0; i < classFields.length; i++) {
-	if (classFields[i].isStatic() && !CVariableInfo.isInitialized(context.getFieldInfo(i))) {
-	  check(context,
-		!classFields[i].isFinal() || classFields[i].isSynthetic(),
-		KjcMessages.UNINITIALIZED_FINAL_FIELD,
-		classFields[i].getIdent());
-
-	  context.reportTrouble(new CWarning(getTokenReference(),
-					     KjcMessages.UNINITIALIZED_FIELD,
-					     classFields[i].getIdent()));
-	}
-      }
-
+      // CField[]	classFields = context.getCClass().getFields();
+      //
+      // for (int i = 0; i < classFields.length; i++) {
+      //   if (classFields[i].isStatic() && !CVariableInfo.isInitialized(context.getFieldInfo(i))) {
+      //     check(context,
+      //           !classFields[i].isFinal() || classFields[i].isSynthetic(),
+      //           KjcMessages.UNINITIALIZED_FINAL_FIELD,
+      //           classFields[i].getIdent());
+      //
+      //     context.reportTrouble(new CWarning(getTokenReference(),
+      //                           KjcMessages.UNINITIALIZED_FIELD,
+      //                           classFields[i].getIdent()));
+      //   }
+      // }
+      
       // mark all static fields initialized
       self.markAllFieldToInitialized(true);
     }
@@ -460,7 +487,8 @@ public class JClassDeclaration extends JTypeDeclaration {
       CVariableInfo[]	constructorsInfo;
 
       if (instanceInit != null) {
-	instanceInit.checkInitializer(self);
+        instanceInit.prepareInitializer(self);
+        instanceInit.checkInitializer(self);
       }
 
       for (int i = fields.length - 1; i >= 0 ; i--) {

@@ -232,6 +232,7 @@ public class JQualifiedAnonymousCreation extends JExpression {
     } else {
       decl.addOuterThis();
     }
+    decl.prepareInitializers(context);
     decl.checkInitializers(context);
     decl.checkTypeBody(context);
     context.getClassContext().getTypeDeclaration().addLocalTypeDeclaration(decl);

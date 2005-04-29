@@ -77,18 +77,29 @@ public class JBlock extends JStatement {
    * @exception	PositionedError	the analysis detected an error
    */
   public void analyse(CBodyContext context) throws PositionedError {
+     
     // if change: don't forget KopiImplicitReturnBlock
     CBlockContext	self = new CBlockContext(context, context.getEnvironment());
 
     for (int i = 0; i < body.length; i++) {
       if (!self.isReachable() && 
           !context.getEnvironment().ignoreUnreachableStatement()) {
-	throw new CLineError(body[i].getTokenReference(), KjcMessages.STATEMENT_UNREACHABLE);
+        throw new CLineError(body[i].getTokenReference(), KjcMessages.STATEMENT_UNREACHABLE);
       }
       try {
-	body[i].analyse(self);
+        if (body[i] instanceof JClassFieldDeclarator) {
+          // here, if elements of the body are fiel declaration
+          // the context is already set in an earlier step,
+          // if not we set it.
+          if (!((JClassFieldDeclarator) body[i]).hasBodyContext()) {
+            ((JClassFieldDeclarator) body[i]).analyse(self);
+          }
+          ((JClassFieldDeclarator) body[i]).analyse();
+        } else {
+          body[i].analyse(self);
+        }
       } catch (CLineError e) {
-	self.reportTrouble(e);
+         self.reportTrouble(e);
       }
     }
 

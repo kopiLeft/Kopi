@@ -45,25 +45,48 @@ public class JClassFieldDeclarator extends JStatement {
   }
 
   // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
+  /**
+   * check if the context is set
+   * 
+   * @return	true if the context is set
+   */
+  public boolean hasBodyContext() {
+    return bodyContext != null;
+  }
+
+  // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
   // ----------------------------------------------------------------------
 
   /**
-   * Analyses the statement (semantically).
+   * In this step we set only the context.
+   * 
    * @param	context		the analysis context
+   */
+  public void analyse(CBodyContext context) { 
+    bodyContext = context;
+    ((CSourceField)decl.getField()).setDeclarationOwner(this);
+  }
+
+  /**
+   * Analyses the statement (semantically).
+   * 
    * @exception	PositionedError	the analysis detected an error
    */
-  public void analyse(CBodyContext context) throws PositionedError {
-    decl.analyse(context);
+  public void analyse() throws PositionedError {
+    if (! decl.getField().isAnalysed()) {
+      decl.analyse(bodyContext);
+      
+      decl.getField().setAnalysed(true); // mark as analysed
+      if (decl.hasInitializer()) {
+        ((CSourceField)decl.getField()).setValue(decl.getVariable().getValue());
 
-    decl.getField().setAnalysed(true); // mark as analysed
-
-    if (decl.hasInitializer()) {
-      ((CSourceField)decl.getField()).setValue(decl.getVariable().getValue());
-
-      if  (((CSourceField)decl.getField()).isFinal() && !decl.getVariable().getValue().isConstant()) {
-        simpleContext = new CSimpleBodyContext(context, context.getEnvironment(), context);
-        ((CSourceField)decl.getField()).setDeclarationOwner(this);
+        if  (((CSourceField)decl.getField()).isFinal() && !decl.getVariable().getValue().isConstant()) {
+          simpleContext = new CSimpleBodyContext(bodyContext, bodyContext.getEnvironment(), bodyContext);
+          ((CSourceField)decl.getField()).setDeclarationOwner(this);
+        }
       }
     }
   }
@@ -111,6 +134,7 @@ public class JClassFieldDeclarator extends JStatement {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private JFieldDeclaration	decl;
-  private CBodyContext          simpleContext;
+  private JFieldDeclaration  decl;
+  private CBodyContext       simpleContext;
+  private CBodyContext       bodyContext;
 }

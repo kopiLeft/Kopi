@@ -209,20 +209,33 @@ public class JCompilationUnit extends JPhylum {
     }
 
   /**
-   * Second pass (quick), check interface looks good
-   * Exceptions are not allowed here, this pass is just a tuning
-   * pass in order to create informations about exported elements
-   * such as Classes, Interfaces, Methods, Constructors and Fields
-   * @return	true iff sub tree is correct enought to check code
-   * @exception	PositionedError	an error with reference to the source file
+   * Prepare the second pass
+   * 
+   * @exception  PositionedError  an error with reference to the source file
+   * @see        #checkInitializers(Compiler compiler, Vector classes)
    */
-  public void checkInitializers(Compiler compiler, Vector classes) throws PositionedError {
-    CCompilationUnitContext	context = new CCompilationUnitContext(compiler, environment, export, classes);
+    public void prepareInitializers(Compiler compiler, Vector classes) throws PositionedError {
+      cunitContext = new CCompilationUnitContext(compiler, environment, export, classes);
 
-    for (int i = 0; i < typeDeclarations.length ; i++) {
-      typeDeclarations[i].checkInitializers(context);
+      for (int i = 0; i < typeDeclarations.length ; i++) {
+        typeDeclarations[i].prepareInitializers(cunitContext);
+      }
     }
-  }
+
+    /**
+     * Second pass (quick), check interface looks good
+     * Exceptions are not allowed here, this pass is just a tuning
+     * pass in order to create informations about exported elements
+     * such as Classes, Interfaces, Methods, Constructors and Fields
+     * 
+     * @exception  PositionedError	an error with reference to the source file
+     */
+    public void checkInitializers(Compiler compiler, Vector classes) throws PositionedError {
+
+      for (int i = 0; i < typeDeclarations.length ; i++) {
+        typeDeclarations[i].checkInitializers(cunitContext);
+      }
+    }
 
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
@@ -295,13 +308,14 @@ public class JCompilationUnit extends JPhylum {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private JPackageName			packageName;
-  private JClassImport[]		importedClasses;
-  private CClass[]		        loadedClasses;
-  private JPackageImport[]		importedPackages;
-  private JTypeDeclaration[]		typeDeclarations;
+  private JPackageName                  packageName;
+  private JClassImport[]                importedClasses;
+  private CClass[]                      loadedClasses;
+  private JPackageImport[]              importedPackages;
+  private JTypeDeclaration[]            typeDeclarations;
 
-  private Hashtable			allLoadedClasses = new Hashtable(); // $$$ DEFAULT VALUE IS OKAY ???
-  private CCompilationUnit		export;
+  private Hashtable                     allLoadedClasses = new Hashtable(); // $$$ DEFAULT VALUE IS OKAY ???
+  private CCompilationUnit              export;
   private KjcEnvironment                environment;
+  private CCompilationUnitContext       cunitContext;
 }

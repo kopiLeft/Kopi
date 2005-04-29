@@ -187,6 +187,7 @@ public class JUnqualifiedAnonymousCreation extends JExpression {
       decl.addOuterThis();
     }
 
+    decl.prepareInitializers(context);
     decl.checkInitializers(context);
     decl.checkTypeBody(context);
 

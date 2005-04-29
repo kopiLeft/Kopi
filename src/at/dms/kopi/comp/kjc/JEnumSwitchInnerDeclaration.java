@@ -111,6 +111,7 @@ public class JEnumSwitchInnerDeclaration extends JClassDeclaration {
       this.sourceClass.addMethod(this.statInit.checkInterface(self));
     }
    
+    this.prepareInitializers(context);
     this.checkInitializers(context);
     this.checkTypeBody(context);
   }

@@ -119,13 +119,26 @@ public class JFieldAccessExpression extends JExpression {
     //   are constant expressions
     // - Qualified names of the form TypeName . Identifier that refer to
     //   final variables whose initializers are constant expressions
-
+    
     return constantPrefix
       && field.isFinal()
       && field.getValue() != null
+      && !field.getValue().dependsOn(field) // Added to check if this field depends on itself
       && field.getValue().isConstant();
   }
 
+  /**
+   * Tests whether this expression depends on the given field.
+   *
+   * @param 	field	the filed to check dependency on it
+   * @return		true if the local field dependes on the given one
+   */
+  public boolean dependsOn(CField field) {
+    return this.field == field
+      || (this.field.getValue() != null
+          && this.field.getValue().dependsOn(field));
+  }
+  
   /**
    * Returns true if this field accepts assignments.
    */
