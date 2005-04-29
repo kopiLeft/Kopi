@@ -20,6 +20,8 @@
 
 package at.dms.kopi.comp.kjc;
 
+import at.dms.compiler.base.PositionedError;
+
 /**
  * This class represents an exported member of a class (fields)
  */
