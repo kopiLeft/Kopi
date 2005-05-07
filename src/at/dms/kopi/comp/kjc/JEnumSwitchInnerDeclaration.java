@@ -58,27 +58,31 @@ public class JEnumSwitchInnerDeclaration extends JClassDeclaration {
   
   private static JFieldDeclaration createMapField(TokenReference where, 
 						  String enumId, 
-						  CClassContext context) {
-    
-    JExpression enum, method, length, init;
+						  CClassContext context)
+  {
+    JExpression         length;
+    JExpression         init;
     JVariableDefinition var;
-    JFieldDeclaration field;
+    JFieldDeclaration   field;
     
-    CPrimitiveType primitiveInt = context.getTypeFactory().getPrimitiveType(TypeFactory.PRM_INT);
-    
-    // Code to create: new int[<Enum Ident>.values().length];"
-    enum = new JNameExpression(where, enumId);
-    method = new JMethodCallExpression(where, enum, "values", JExpression.EMPTY);
-    length = new JArrayLengthExpression(where, method);
-    init = new JNewArrayExpression(where, primitiveInt, new JExpression[] { length }, null);
+    // Code to create: new int[<Enum Ident>.values().length];
+    length = new JArrayLengthExpression(where,
+                                        new JMethodCallExpression(where,
+                                                                  new JNameExpression(where, enumId),
+                                                                  "values",
+                                                                  JExpression.EMPTY));
+    init = new JNewArrayExpression(where,
+                                   context.getTypeFactory().getPrimitiveType(TypeFactory.PRM_INT),
+                                   new JExpression[] { length },
+                                   null);
 
     // Code to create: "static final int $SwitchMap$<Enum Ident>[]"
     var = new JVariableDefinition(where,
                                   ACC_STATIC | ACC_FINAL,
-                                  new CArrayType(primitiveInt , 1),
+                                  new CArrayType(context.getTypeFactory().getPrimitiveType(TypeFactory.PRM_INT), 1),
                                   "$SwitchMap$" + enumId,
                                   init);
-    
+
     return new JFieldDeclaration(where, var, null, JavaStyleComment.EMPTY);
   }
 
