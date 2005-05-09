@@ -283,6 +283,13 @@ public class ApplicationConfiguration {
   public File getDefaultDirectory() {
     return new File(System.getProperty("user.home"));
   }
+  // ----------------------------------------------------------------------
+  // User configuration
+  // ----------------------------------------------------------------------
+
+  public UserConfiguration getUserConfiguration() {
+    return null;
+  }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
