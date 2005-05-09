@@ -58,6 +58,9 @@ public class VBooleanCodeColumn extends VCodeColumn {
     return ((Boolean)object).booleanValue() == codes[0] ? 0 : 1;
   }
 
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatBooleanColumn(this, index);
+  }
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

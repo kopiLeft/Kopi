@@ -209,6 +209,10 @@ public abstract class VReportColumn {
     this.styles = styles;
   }
 
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatStringColumn(this, index);
+  }
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

@@ -72,6 +72,9 @@ public class VBooleanColumn extends VReportColumn {
     }
   }
 
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatBooleanColumn(this, index);
+  }
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

@@ -63,4 +63,8 @@ public class VStringColumn extends VReportColumn {
   public int compareTo(Object o1, Object o2) {
     return ((String)o1).compareTo((String)o2);
   }
+
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatStringColumn(this, index);
+  }
 }

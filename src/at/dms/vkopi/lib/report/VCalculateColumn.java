@@ -38,4 +38,5 @@ public abstract class VCalculateColumn {
    * Add calculated data into the report row
    */
   public abstract void calculate(VGroupRow tree, int column);
+
 }

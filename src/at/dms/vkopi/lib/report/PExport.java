@@ -212,17 +212,15 @@ public abstract class PExport {
   protected abstract void exportHeader(String[] data);
   protected abstract void export(OutputStream stream);
 
-  protected void formatStringColumn(VReportColumn column, int index) {
-  }
-
-  protected void formatDateColumn(VReportColumn column, int index) {
-  }
-
-  protected void formatMonthColumn(VReportColumn column, int index) {
-  }
-
-  protected void formatFixedColumn(VReportColumn column, int index) {
-  }
+  protected void formatStringColumn(VReportColumn column, int index) {}
+  protected void formatDateColumn(VReportColumn column, int index) {}
+  protected void formatMonthColumn(VReportColumn column, int index) {}
+  protected void formatWeekColumn(VReportColumn column, int index) {}
+  protected void formatFixedColumn(VReportColumn column, int index) {}
+  protected void formatIntegerColumn(VReportColumn column, int index) {}
+  protected void formatBooleanColumn(VReportColumn column, int index) {}
+  protected void formatTimeColumn(VReportColumn column, int index) {}
+  protected void formatTimestampColumn(VReportColumn column, int index) {}
 
   public int getColumnCount() {
     return columnCount;

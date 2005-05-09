@@ -31,19 +31,23 @@ import java.util.Calendar;
 
 import javax.swing.JTable;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFooter;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.type.Fixed;
 import at.dms.xkopi.lib.type.Date;
+import at.dms.xkopi.lib.type.Month;
+import at.dms.xkopi.lib.type.Week;
 
 import at.dms.xkopi.lib.type.NotNullDate;
 import at.dms.xkopi.lib.type.NotNullTime;
@@ -70,22 +74,15 @@ public class  PExport2XSL extends PExport implements Constants {
       
 
       wb = new HSSFWorkbook();
-      //      sheet = wb.createSheet("new sheet");
+
       palette = wb.getCustomPalette();
       format = wb.createDataFormat();
 
       formatColumns();
-
       exportData();
 
-      // Write the output to a file
-      // !!!!! file !!!!!
-      FileOutputStream fileOut = new FileOutputStream("/tmp/workbook.xls");
-
-      // select data to be displayed
-
-      wb.write(fileOut);
-      fileOut.close();
+      wb.write(out);
+      out.close();
     } catch (Exception e) {
       e.printStackTrace();
     } 
@@ -160,14 +157,15 @@ public class  PExport2XSL extends PExport implements Constants {
 
       if (strings[j] != null && orig[j] != null) {
         if (datatype[j] == HSSFCell.CELL_TYPE_STRING) {
-            System.out.print("s");
           cell.setCellValue(strings[j].replace('\n', ' '));
         } else {
           if (orig[j] instanceof Fixed) {
-            System.out.print("f");
             cell.setCellValue(((Fixed) orig[j]).doubleValue());
+          } else if (orig[j] instanceof Integer) {
+            cell.setCellValue(((Integer) orig[j]).doubleValue());
+          } else if (orig[j] instanceof Boolean) {
+            cell.setCellValue(((Boolean) orig[j]).booleanValue());
           } else if (orig[j] instanceof Date) {
-            System.out.print("d");
             Date                date = (Date) orig[j];
             GregorianCalendar   cal = new GregorianCalendar();
 
@@ -176,10 +174,26 @@ public class  PExport2XSL extends PExport implements Constants {
             cal.set(Calendar.DAY_OF_MONTH, date.getDay());
 
             cell.setCellValue(cal);
+          } else if (orig[j] instanceof Month) {
+            Date                date = ((Month) orig[j]).getFirstDay();
+            GregorianCalendar   cal = new GregorianCalendar();
+
+            cal.set(Calendar.YEAR, date.getYear());
+            cal.set(Calendar.MONTH, date.getMonth() - 1);
+            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
+
+            cell.setCellValue(cal);
+          } else if (orig[j] instanceof Week) {
+            Date                date = ((Week) orig[j]).getFirstDay();
+            GregorianCalendar   cal = new GregorianCalendar();
+
+            cal.set(Calendar.YEAR, date.getYear());
+            cal.set(Calendar.MONTH, date.getMonth() - 1);
+            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
+
+            cell.setCellValue(cal);
           } else {
-            //cell.setCellValue(strings[j].replace('\n', ' '));
-            //cell.setCellValue(null);
-            System.out.print("e");
+            throw new InconsistencyException("Beinhaltet noch nicht unterstützten Typ:" + orig[j].getClass() +" von " + orig[j]);
           }
         }
         cell.setCellType(datatype[j]);
@@ -231,6 +245,12 @@ public class  PExport2XSL extends PExport implements Constants {
     widths[index] = (short) (256 * column.getWidth());
   }
 
+  protected void formatWeekColumn(VReportColumn column, int index) {
+    dataformats[index] = 0;
+    datatype[index] = HSSFCell.CELL_TYPE_STRING;
+    widths[index] = (short) (256 * column.getWidth());
+  }
+
   protected void formatDateColumn(VReportColumn column, int index) {
     dataformats[index] = format.getFormat("dd.mm.yyyy");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
@@ -249,6 +269,29 @@ public class  PExport2XSL extends PExport implements Constants {
     widths[index] = (short) (256 * column.getWidth());
   }
 
+  protected void formatIntegerColumn(VReportColumn column, int index) {
+    dataformats[index] = format.getFormat("0");;
+    datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
+    widths[index] = (short) (256 * column.getWidth());
+  }
+
+  protected void formatBooleanColumn(VReportColumn column, int index) {
+    dataformats[index] = 0; // General type
+    datatype[index] = HSSFCell.CELL_TYPE_BOOLEAN;
+    widths[index] = (short) (256 * column.getWidth());
+  }
+
+  protected void formatTimeColumn(VReportColumn column, int index) {
+    dataformats[index] = 0;
+    datatype[index] = HSSFCell.CELL_TYPE_STRING;
+    widths[index] = (short) (256 * column.getWidth());
+  }
+
+  protected void formatTimestampColumn(VReportColumn column, int index) {
+    dataformats[index] = 0;
+    datatype[index] = HSSFCell.CELL_TYPE_STRING;
+    widths[index] = (short) (256 * column.getWidth());
+  }
 
   private HSSFPalette           palette;
   private short                 colorindex;

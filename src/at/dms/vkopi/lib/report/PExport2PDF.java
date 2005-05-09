@@ -120,7 +120,7 @@ public class  PExport2PDF extends PExport implements Constants {
  
       document.close();
 
-      addFooter(tempFile, new FileOutputStream("/tmp/AddBigTable.pdf"));///file);
+      addFooter(tempFile, out);
 
     } catch (Exception e) {
       e.printStackTrace();

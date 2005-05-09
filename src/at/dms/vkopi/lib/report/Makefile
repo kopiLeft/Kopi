@@ -34,7 +34,8 @@ JAVAFILES +=	CellRenderer Constants DColumnStyle			\
 		VGroupRow VIntegerCodeColumn VIntegerColumn		\
 		VMonthColumn VReport VReportColumn VReportRow		\
 		VStringColumn VTimeColumn VTimestampColumn VWeekColumn	\
-		VNoRowException VSeparatorColumn RDataExtractor
+		VNoRowException VSeparatorColumn RDataExtractor		\
+		PExport PExport2XSL PExport2PDF PExport2CSV 
 
 ## ----------------------------------------------------------------------
 ## GOALS

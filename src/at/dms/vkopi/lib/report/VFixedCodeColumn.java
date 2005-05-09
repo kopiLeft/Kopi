@@ -68,6 +68,9 @@ public class VFixedCodeColumn extends VCodeColumn {
     return getWidth() * 0.7;
   }
 
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatFixedColumn(this, index);
+  }
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

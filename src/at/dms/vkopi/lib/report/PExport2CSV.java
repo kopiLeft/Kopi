@@ -39,10 +39,6 @@ public class  PExport2CSV extends PExport implements Constants {
 
 
     try {
-    // !!!!!!!!!!!!!!!!!!!
-    outStream = new java.io.FileOutputStream("/tmp/test.csv");
-    // !!!!!!!!!!!!!!!!!!!
-
       exportData();
       outStream.close();
     } catch (Exception e) {

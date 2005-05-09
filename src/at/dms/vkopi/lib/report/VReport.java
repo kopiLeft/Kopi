@@ -240,13 +240,12 @@ public abstract class VReport extends VWindow
    */
   public void export(File file) throws VException {
     setWaitInfo(Message.getMessage("export-message"));
-    //!!! graf 990826 -> vgp ???
-    PGenExcelFile pgen = new PGenExcelFile(((DReport)getDisplay()).getTable(),
+
+    PExport2CSV exporter = new PExport2CSV(((DReport)getDisplay()).getTable(),
                                            model,
                                            pconfig,
-                                           file,
-                                           pageTitle); // side effect on file
-    unsetWaitInfo();
+                                           pageTitle);
+    exporter.export(file);
   }
 
   /**

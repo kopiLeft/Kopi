@@ -71,4 +71,8 @@ public class VMonthColumn extends VReportColumn {
   public double getPrintedWidth() {
     return getWidth() * 0.7;
   }
+
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatMonthColumn(this, index);
+  }
 }

@@ -82,4 +82,8 @@ public class VFixedColumn extends VReportColumn {
     }
     int	scale;
   }
+
+  public void formatColumn(PExport exporter, int index) {
+    exporter.formatFixedColumn(this, index);
+  }
 }
