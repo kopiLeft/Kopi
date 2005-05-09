@@ -102,6 +102,8 @@ class VRReport
     context.addCommand(new VKCommandName(where, "Print", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "PrintOptions", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Export", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
+    context.addCommand(new VKCommandName(where, "ExportPDF", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
+    context.addCommand(new VKCommandName(where, "ExportXSL", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Fold", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Unfold", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Sort", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
