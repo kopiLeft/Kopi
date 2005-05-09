@@ -95,8 +95,8 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   }
 
   public void run() {
-    Rectangle   bounds;
     Frame       frame;
+    Rectangle   bounds;
 
     setTitle(model.getTitle());
     label.setIcon(new ImageIcon(model.getPreviewFileName(1)));    
@@ -107,8 +107,6 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     bounds = Utils.calculateBounds(frame, null, null);
     frame.setBounds(bounds);
 
-    label.requestFocusInWindow();
-    frame.show();
 
     setPagePosition(model.getCurrentPage(), model.getNumberOfPages());
 
@@ -122,22 +120,27 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
             getFrame().invalidate();
             getFrame().validate();
             
-            Dimension         dim = bodypane.getSize(); // size of view
-            int               height = model.getHeight();
-            int               width = model.getWidth();
-            float             ratio = Math.min((float)dim.height/model.getHeight(), 
-                                               (float)dim.width/model.getWidth());
-            
-            // round the ratio with 0.99f, so that there are definitly no 
-            // scrollbars
-            if (ratio > 1) {
-              model.zoom(ratio*1.04f);
-            }
+            UserConfiguration   userConfig = ApplicationConfiguration.getConfiguration().getUserConfiguration();
+
+            zoomFit(userConfig == null ? PreviewListener.FIT_BOTH : userConfig.getPreviewMode());
           } 
         }
       };
     
     frame.addWindowStateListener(listener);
+
+    frame.show();
+    label.requestFocusInWindow();
+
+    UserConfiguration   userConfig = ApplicationConfiguration.getConfiguration().getUserConfiguration();
+
+    if (userConfig != null && userConfig.getPreviewScreen() == UserConfiguration.PRS_FULLSCREEN) {
+      frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    } else {
+      if (userConfig != null && userConfig.getPreviewMode() != UserConfiguration.PRM_OPT) {
+        zoomFit(userConfig.getPreviewMode());
+      }
+    }
   }
 
 

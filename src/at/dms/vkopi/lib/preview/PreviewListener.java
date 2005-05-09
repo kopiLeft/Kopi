@@ -22,12 +22,14 @@ package at.dms.vkopi.lib.preview;
 
 import java.util.EventListener;
 
+import at.dms.vkopi.lib.visual.UserConfiguration;
+
 public interface PreviewListener extends EventListener {
   void pageChanged(int current);
   void zoomChanged();
   void zoomFit(int type);
 
-  int FIT_BOTH          = 1;
-  int FIT_HEIGHT        = 2;
-  int FIT_WIDTH         = 3;
+  int FIT_BOTH          = UserConfiguration.PRM_OPT;
+  int FIT_HEIGHT        = UserConfiguration.PRM_OPT_HEIGHT;
+  int FIT_WIDTH         = UserConfiguration.PRM_OPT_WIDHT;
 }
