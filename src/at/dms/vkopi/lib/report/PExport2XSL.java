@@ -35,12 +35,18 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFFooter;
+import org.apache.poi.hssf.usermodel.HSSFHeader;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.type.Fixed;
 import at.dms.xkopi.lib.type.Date;
+
+import at.dms.xkopi.lib.type.NotNullDate;
+import at.dms.xkopi.lib.type.NotNullTime;
 
 public class  PExport2XSL extends PExport implements Constants {
   /**
@@ -56,6 +62,7 @@ public class  PExport2XSL extends PExport implements Constants {
 
   public void export(OutputStream out ) {
     rowNumber = 0;
+    sheetIndex = 0;
 
     try {
       colorindex = 10;
@@ -85,17 +92,14 @@ public class  PExport2XSL extends PExport implements Constants {
   }
 
   protected void startGroup(String subTitle) {
-    // Sheet name cannot be blank, greater than 31 chars,
-    // or contain any of /\*?[]
-
-    System.out.println("----");
-    System.out.println("---!!!!!!!!!!!"+ "a[b]c*?d\f".replaceAll("/|\\\\|\\*|[?]|\\[|\\]", ""));
     if (subTitle == null) {
       subTitle = getTitle();
     }
 
-
+    // Sheet name cannot be blank, greater than 31 chars,
+    // or contain any of /\*?[]
     subTitle.replaceAll("/|\\\\|\\*|\\?|\\[|\\]", "");
+
     if (subTitle.length() > 31) {
       subTitle = subTitle.substring(0, 28) + "...";
     } else if (subTitle.length() == 0) {
@@ -106,6 +110,24 @@ public class  PExport2XSL extends PExport implements Constants {
     for (short i = 0; i < getColumnCount(); i++) {
       sheet.setColumnWidth(i, widths[i]);
     }
+    wb.setRepeatingRowsAndColumns(sheetIndex, 0, getColumnCount()-1, 0, 0);
+
+    HSSFFooter footer = sheet.getFooter();
+    HSSFHeader header = sheet.getHeader();
+
+    header.setLeft(getTitle());
+    
+    footer.setLeft(getTitle() + " - Seite " + HSSFFooter.page() + " / " + HSSFFooter.numPages() );
+    footer.setRight(NotNullDate.now().format("dd.MM.yyyy") + " "+ NotNullTime.now().format("HH:mm"));
+    sheetIndex += 1;
+
+    HSSFPrintSetup ps = sheet.getPrintSetup();
+    
+    sheet.setAutobreaks(true);
+    ps.setFitWidth((short)1);  
+    ps.setFitHeight((short)999);  
+    ps.setLandscape(getPrintConfig().paperlayout.equals("Landscape"));
+    ps.setPaperSize(HSSFPrintSetup.A4_PAPERSIZE); /// !!! no always A4
   }
 
   protected void exportHeader(String[] data) {
@@ -239,4 +261,5 @@ public class  PExport2XSL extends PExport implements Constants {
   private int[]                 datatype;
   private short[]               dataformats;
   private short[]               widths;
+  private int                   sheetIndex;
 }
