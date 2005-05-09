@@ -227,11 +227,34 @@ public abstract class VReport extends VWindow
    * Prints the report
    */
   public void export() throws VException {
+    export(TYP_CSV);
+  }
+
+  /**
+   * Prints the report
+   */
+  public void export(int type) throws VException {
+    String      ext;
+
+    switch (type) {
+    case TYP_CSV:
+      ext = ".csv";
+      break;
+    case TYP_PDF:
+      ext = ".pdf";
+      break;
+    case TYP_XSL:
+      ext = ".xsl";
+      break;
+    default:
+      throw new InconsistencyException("Export type unkown");
+    }
+
     File file = FileChooser.chooseFile(getDisplay().getFrame(),
                                        ApplicationConfiguration.getConfiguration().getDefaultDirectory(),
-                                       "report.csv");
+                                       "report"+ext);
     if (file != null) {
-      export(file);
+      export(file, type);
     }
   }
 
@@ -239,13 +262,38 @@ public abstract class VReport extends VWindow
    * Prints the report
    */
   public void export(File file) throws VException {
+    export(file, TYP_CSV);
+  }
+
+  public void export(File file, int type) throws VException {
     setWaitInfo(Message.getMessage("export-message"));
 
-    PExport2CSV exporter = new PExport2CSV(((DReport)getDisplay()).getTable(),
-                                           model,
-                                           pconfig,
-                                           pageTitle);
+    PExport     exporter;
+
+    switch (type) {
+    case TYP_CSV:
+      exporter = new PExport2CSV(((DReport)getDisplay()).getTable(),
+                                 model,
+                                 pconfig,
+                                 pageTitle);
+      break;
+    case TYP_PDF:
+      exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
+                                 model,
+                                 pconfig,
+                                 pageTitle);
+      break;
+    case TYP_XSL:
+      exporter = new PExport2XSL(((DReport)getDisplay()).getTable(),
+                                 model,
+                                 pconfig,
+                                 pageTitle);
+      break;
+    default:
+      throw new InconsistencyException("Export type unkown");
+    }
     exporter.export(file);
+    unsetWaitInfo();
   }
 
   /**
@@ -538,4 +586,8 @@ public abstract class VReport extends VWindow
   private boolean		inAction;
 
   private String                media;
+
+  public static final int       TYP_CSV = 1;
+  public static final int       TYP_PDF = 2;
+  public static final int       TYP_XSL = 3;
 }

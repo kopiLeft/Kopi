@@ -201,7 +201,7 @@ public abstract class PExport {
 
   public  void export(File file) {
     try {
-      export(new FileOutputStream("/tmp/ets.afd"));///!!!!!!file));
+      export(new FileOutputStream(file));
     } catch (Exception e) {
       e.printStackTrace();
     }
