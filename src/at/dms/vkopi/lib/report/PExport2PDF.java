@@ -307,23 +307,18 @@ public class  PExport2PDF extends PExport implements Constants {
   }
 
   protected void formatDateColumn(VReportColumn column, int index) {
-    // 3% haas too be added otherwise the column is too small
-    // maybe it is the padding
     widths[index] = new Chunk("00.00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
     widthSum += widths[index];
-    System.out.println("CAL "+index+"  "+widths[index]+"   "+widthSum);
   }
 
   protected void formatMonthColumn(VReportColumn column, int index) {
     widths[index] = 4 + new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
     widthSum += widths[index];
-    System.out.println("CAL "+index+"  "+widths[index]+"   "+widthSum);
   }
 
   protected void formatFixedColumn(VReportColumn column, int index) {
     widths[index] = new Chunk("0", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth();
     widthSum += widths[index];
-    System.out.println("CAL "+index+"  "+widths[index]+"   "+widthSum);
   }
 
 
