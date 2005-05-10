@@ -243,8 +243,8 @@ public abstract class VReport extends VWindow
     case TYP_PDF:
       ext = ".pdf";
       break;
-    case TYP_XSL:
-      ext = ".xsl";
+    case TYP_XLS:
+      ext = ".xls";
       break;
     default:
       throw new InconsistencyException("Export type unkown");
@@ -283,7 +283,7 @@ public abstract class VReport extends VWindow
                                  pconfig,
                                  pageTitle);
       break;
-    case TYP_XSL:
+    case TYP_XLS:
       exporter = new PExport2XSL(((DReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
@@ -589,5 +589,5 @@ public abstract class VReport extends VWindow
 
   public static final int       TYP_CSV = 1;
   public static final int       TYP_PDF = 2;
-  public static final int       TYP_XSL = 3;
+  public static final int       TYP_XLS = 3;
 }
