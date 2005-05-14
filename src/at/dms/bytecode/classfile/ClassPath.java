@@ -77,7 +77,7 @@ public class ClassPath {
       ClassDirectory[]  tmp;
 
       entries = new StringTokenizer(extdirs, File.pathSeparator);
-      while(entries.hasMoreTokens()) {
+      while (entries.hasMoreTokens()) {
         loadExtensionDirectory(container, entries.nextToken());
       }
 
@@ -126,9 +126,14 @@ public class ClassPath {
       File[]        extFiles = extDirectory.listFiles();
       
       for (int i = 0; i < extFiles.length; i++) {
+        // We consider only files in this directory
         if (extFiles[i].isFile()) {
-          // We consider only files in this directory
-          container.add(loadCompressedFile(extFiles[i]));
+          ClassDirectory        dir;
+
+          dir = loadCompressedFile(extFiles[i]);
+          if (dir != null) {
+            container.add(dir);
+          }
         }
       }
     } else {
