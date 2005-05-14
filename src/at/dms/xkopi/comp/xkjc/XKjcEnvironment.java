@@ -30,7 +30,7 @@ public class XKjcEnvironment extends KjcEnvironment {
                          TypeFactory typeFactory, 
                          KjcOptions options)
   {
-    super(classReader, typeFactory , options = options);
+    super(classReader, typeFactory, options);
     
     this.options = (XKjcOptions)options;
   }
