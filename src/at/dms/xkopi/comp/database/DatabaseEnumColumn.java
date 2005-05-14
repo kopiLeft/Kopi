@@ -21,10 +21,7 @@ package at.dms.xkopi.comp.database;
 
 import at.dms.compiler.base.TokenReference;
 import at.dms.kopi.comp.kjc.*;
-import at.dms.kopi.comp.kjc.CClassNameType;
-import at.dms.kopi.comp.kjc.CType;
-import at.dms.kopi.comp.kjc.JExpression;
-import at.dms.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+
 
 /**
  * The type of a field which represents a enum-column in Database.k. 
@@ -120,16 +117,20 @@ public class DatabaseEnumColumn extends DatabaseColumn {
       if (isRestricted() && ((check & CONSTRAINT_CHECK_NONE) == 0)) {
         DatabaseEnumColumn      otherEnum = (DatabaseEnumColumn)other;  
 
-        if (!other.isRestricted() ||  (list.length != otherEnum.list.length)) {
+        if (!other.isRestricted() || (list.length != otherEnum.list.length)) {
           return false;
         }
         for (int i=0; i < list.length; i++) {
           boolean               notfound = true;
 
-          for (int k=0; (k < otherEnum.list.length) && (notfound); k++) {
-            if (list[i].equals(otherEnum.list[k])) notfound = false;
+          for (int k=0; k < otherEnum.list.length && notfound; k++) {
+            if (list[i].equals(otherEnum.list[k])) {
+              notfound = false;
+            }
           }  
-          if (notfound) return false;
+          if (notfound) {
+            return false;
+          }
         } 
       }
       return verifyNullable(other, check);
