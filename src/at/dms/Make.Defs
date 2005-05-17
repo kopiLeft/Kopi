@@ -15,7 +15,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
-## $Id: Make.Defs,v 1.41 2003/10/13 09:25:07 lackner Exp $
+## $Id$
 ##
 
 ## ----------------------------------------------------------------------
@@ -39,7 +39,7 @@ classroot-bad:
 ## DEFINITIONS
 
 ifndef RELEASE
-RELEASE =	"Version 2.2B released 05 April 2005"
+RELEASE =	"Version 2.2C released 06 May 2005"
 endif
 
 ifndef JAVA

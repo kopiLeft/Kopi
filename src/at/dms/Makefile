@@ -15,7 +15,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
-## $Id: Makefile,v 1.105 2002/07/15 17:56:30 lackner Exp $
+## $Id$
 ##
 
 TOPDIR =	.
@@ -29,7 +29,7 @@ PACKAGEDIR =	at/dms
 
 TEMPDIR =	/tmp
 JARDIR =	/extra/kopi/jars
-VERSION =	2.2B
+VERSION =	2.2C
 ZIPDIR =	/extra/kopi/download
 
 # where javadoc files are stored
