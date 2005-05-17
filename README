@@ -144,7 +144,7 @@ BUILDING FROM SOURCE
     to edit the Makefile in this directory if the Java compiler available on your
     system is not Jikes.
 
-    Then just type "make".
+    Then just go to the "src/at/dms" directory and type "make".
 
 --------------------------------------------------------------------------------
 REPORTING BUGS
