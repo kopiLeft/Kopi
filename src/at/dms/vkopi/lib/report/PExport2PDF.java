@@ -303,9 +303,13 @@ public class  PExport2PDF extends PExport implements Constants {
   protected void formatStringColumn(VReportColumn column, int index) {
     widths[index] = new Chunk("X", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth();
     widthSum += widths[index];
-    System.out.println("CAL "+index+"  "+widths[index] +"   "+widthSum);
   }
 
+  protected void formatWeekColumn(VReportColumn column, int index) {
+    widths[index] = new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widthSum += widths[index];
+  }
+  
   protected void formatDateColumn(VReportColumn column, int index) {
     widths[index] = new Chunk("00.00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
     widthSum += widths[index];
@@ -321,6 +325,25 @@ public class  PExport2PDF extends PExport implements Constants {
     widthSum += widths[index];
   }
 
+  protected void formatIntegerColumn(VReportColumn column, int index) {
+    widths[index] = new Chunk("0", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth();
+    widthSum += widths[index];
+  }
+
+  protected void formatBooleanColumn(VReportColumn column, int index) {
+    widths[index] = new Chunk("false", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widthSum += widths[index];
+  }
+
+  protected void formatTimeColumn(VReportColumn column, int index) {
+    widths[index] = new Chunk("00:00", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widthSum += widths[index];
+  }
+
+  protected void formatTimestampColumn(VReportColumn column, int index) {
+    widths[index] = new Chunk("00.00.0000 00:00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widthSum += widths[index];
+  }
 
   private String                title;
   private PdfPTable             datatable;  

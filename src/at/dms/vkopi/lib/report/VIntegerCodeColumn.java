@@ -108,7 +108,7 @@ public class VIntegerCodeColumn extends VCodeColumn {
   }
 
   public void formatColumn(PExport exporter, int index) {
-    exporter.formatIntegerColumn(this, index);
+    exporter.formatStringColumn(this, index);
   }
   // --------------------------------------------------------------------
   // DATA MEMBERS
