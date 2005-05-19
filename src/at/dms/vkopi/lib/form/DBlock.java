@@ -408,15 +408,13 @@ public class DBlock extends JPanel implements BlockListener {
           }
           lastVisibleRec += 1;
 	}
-        //	int		from = getDisplayLine(model.getActiveRecord());
 
 	sortedToprec = recno;
-	if (inside) {//(model.getActiveRecord() >= recno) && (model.getActiveRecord() <= lastVisibleRec)) { // display stay in screen
+	if (inside) {
           if (model.getActiveField() != null) {
             model.getActiveField().updateText();
           }
 	  blockChanged();
-          //          model.getActiveField().getUI().moveDisplay(from, getDisplayLine(model.getActiveRecord()));
 	} else {
 	  int		nextRec;
 
@@ -429,21 +427,7 @@ public class DBlock extends JPanel implements BlockListener {
 	  if (model.noMove() || !model.isRecordAccessible(nextRec)) {
 	    throw new VExecFailedException();
 	  }
-
-	  final VField	fld = model.getActiveField();
-	  // try to leave:
-	  try {
-	    fld.leave(true);
-	  } catch (VException e) {
-	    // can't leave, post this action ahead
-            blockChanged();
-	    throw e;
-	  }
-	  // its okay
-	  model.setActiveRecord(nextRec);
-
-	  blockChanged();
-	  fld.enter();
+          model.changeActiveRecord(nextRec);
 	}
       } else {
 	if (model.noMove() || model.isRecordDeleted(model.getDataPosition(recno))) {
