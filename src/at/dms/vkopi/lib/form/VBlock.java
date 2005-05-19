@@ -646,7 +646,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return isRecordInsertAllowed(rec);
   }
 
-  private void changeActiveRecord(int record) throws VException  {
+  protected void changeActiveRecord(int record) throws VException  {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
 
     if (!isMulti()) {
@@ -1729,7 +1729,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     setRecordDeleted(getActiveRecord(), false);
 
     callProtectedTrigger(TRG_POSTQRY);
-
     setMode(MOD_UPDATE);
   }
 
