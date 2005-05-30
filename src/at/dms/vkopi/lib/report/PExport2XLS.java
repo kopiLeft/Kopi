@@ -52,11 +52,11 @@ import at.dms.xkopi.lib.type.Week;
 import at.dms.xkopi.lib.type.NotNullDate;
 import at.dms.xkopi.lib.type.NotNullTime;
 
-public class  PExport2XSL extends PExport implements Constants {
+public class  PExport2XLS extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2XSL(JTable table, MReport model, PConfig pconfig, String title) {
+  public PExport2XLS(JTable table, MReport model, PConfig pconfig, String title) {
     super(table, model, pconfig, title);
 
     datatype = new int[getColumnCount()];

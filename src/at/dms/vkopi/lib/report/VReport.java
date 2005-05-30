@@ -284,7 +284,7 @@ public abstract class VReport extends VWindow
                                  pageTitle);
       break;
     case TYP_XLS:
-      exporter = new PExport2XSL(((DReport)getDisplay()).getTable(),
+      exporter = new PExport2XLS(((DReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
                                  pageTitle);
