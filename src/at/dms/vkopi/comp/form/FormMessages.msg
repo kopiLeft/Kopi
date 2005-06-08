@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: FormMessages.msg,v 1.10 2004/02/05 13:51:37 graf Exp $
+ * $Id$
  */
 
 package at.dms.vkopi.comp.form
@@ -136,6 +136,9 @@ error		TRANSIENT_DATABASE_FIELD
 
 error		TRIGGER_USED_TWICE
 		"This trigger is defined twice."
+		"FORM"
+error		MISSING_PAGE
+		"Blocks but no page defined before this page."
 		"FORM"
 
 warning		BOTH_NOCHART

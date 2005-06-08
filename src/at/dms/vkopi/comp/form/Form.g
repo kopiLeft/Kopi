@@ -24,6 +24,7 @@ header { package at.dms.vkopi.comp.form; }
   import java.util.Vector;
   import java.util.ArrayList;
   import at.dms.compiler.base.Compiler;
+  import at.dms.compiler.base.PositionedError;
   import at.dms.compiler.tools.antlr.extra.InputBuffer;
   import at.dms.compiler.base.TokenReference;
   import at.dms.kopi.comp.kjc.*;
@@ -437,7 +438,16 @@ vkBlocks [VKParseFormContext context]
 }
 :
   (
-    ( p = vkNewpage[] { context.addPage(p); } )?
+    ( 
+      p = vkNewpage[] 
+                { 
+                  if (context.getElements().length > 0 && context.getPages().length == 0) {
+                      reportTrouble(new PositionedError(buildTokenReference(),
+                                                        FormMessages.MISSING_PAGE));
+                  } 
+                  context.addPage(p);
+                } 
+    )?
     ( b = vkBlock[] | b = vkImportedBlock[] ) { context.addFormElement(b); }
   )+
 ;
