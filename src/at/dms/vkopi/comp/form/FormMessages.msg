@@ -134,6 +134,10 @@ error		TRANSIENT_DATABASE_FIELD
 		"A transient field must not be connected to a database column."
 		"FORM"
 
+error		TRIGGER_USED_TWICE
+		"This trigger is defined twice."
+		"FORM"
+
 warning		BOTH_NOCHART
 		"Redundant option NO CHART since the block already declared it"
 		"FORM"

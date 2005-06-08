@@ -89,7 +89,7 @@ public class VKBlock
 
       this.context = context;
       this.interfaces = interfaces;
-      this.superBlock = superBlock == null ? 
+      this.superBlock = superBlock == null ?
         CReferenceType.lookup(VKConstants.VKO_BLOCK) : superBlock;
       this.visible = visible;
       this.title = title;
@@ -276,6 +276,16 @@ public class VKBlock
 
     check(isSingle() || visible <= buffer, FormMessages.MORE_VISIBLE_THAN_BUFFERED);
     check(getShortcut() != null, FormMessages.BLOCK_NO_SHORTCUT, getIdent());
+
+    //check that each trigger is used only once
+    int         usedTriggers = 0;
+
+    for (int i = 0; i < triggers.length; i++) {
+      if ((triggers[i].getEvents() & usedTriggers) > 0) {
+        throw new PositionedError(triggers[i].getTokenReference(), FormMessages.TRIGGER_USED_TWICE);
+      }
+      usedTriggers |= triggers[i].getEvents();
+    }
 
     if (isSingle()) {
       // for a single block : the {PRE|VAL|POST}REC triggers are not executed

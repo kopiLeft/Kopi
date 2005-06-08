@@ -271,7 +271,7 @@ public class VKField
         detailedPos = block.positionField(this);
       }
       if (!(hasOption(FDO_NODETAIL)
-            || block.hasOption(BKO_NODETAIL) 
+            || block.hasOption(BKO_NODETAIL)
             || hasOption(FDO_NOCHART)
             || block.hasOption(BKO_NOCHART))) {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! no cast!!!!!!!!
@@ -291,6 +291,17 @@ public class VKField
     // COLUMN
     if (columns != null) {
       columns.checkCode(context, this);
+    }
+
+    // TRIGGERS
+    //check that each trigger is used only once
+    int         usedTriggers = 0;
+
+    for (int i = 0; i < triggers.length; i++) {
+      if ((triggers[i].getEvents() & usedTriggers) > 0) {
+        throw new PositionedError(triggers[i].getTokenReference(), FormMessages.TRIGGER_USED_TWICE);
+      }
+      usedTriggers |= triggers[i].getEvents();
     }
   }
 
