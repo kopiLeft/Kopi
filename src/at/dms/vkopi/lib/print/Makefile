@@ -29,14 +29,14 @@ PACKAGE =	at/dms/vkopi/lib/print
 ## FILES
 
 JAVAFILES +=	PPage PBlock PPosition PSize PRectangleBlock		\
-		PPostscriptEffects PPostscriptStream			\
 		PStyle PBlockStyle PTextStyle PTabStop PTextBlock	\
 		PLayoutEngine Metrics PParagraphStyle PBodyStyle	\
 		PRecursiveBlock PPostscriptBlock PListBlock		\
 		PProtectedPage PHorizontalBlock				\
 		PreviewPrinter Printable PrintManager			\
 		DefaultPrintManager PLabelForm				\
-		LabelPrintable PSPrintException PostscriptPrintJob
+		LabelPrintable PSPrintException				\
+		PdfPrintJob
 
 ## ----------------------------------------------------------------------
 ## GOALS

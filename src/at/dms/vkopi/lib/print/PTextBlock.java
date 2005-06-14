@@ -22,7 +22,14 @@ package at.dms.vkopi.lib.print;
 
 import at.dms.vkopi.lib.form.VBooleanField;
 
+import java.util.ArrayList;
 import java.util.Vector;
+
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfPCell;
 
 /**
  * A block of data to print
@@ -45,8 +52,9 @@ public abstract class PTextBlock extends PBlock {
   }
 
   // ----------------------------------------------------------------------
-  // ACCESSORS
+  // ACCESSORS 
   // ----------------------------------------------------------------------
+
 
   /**
    * Try to fill the maximum of space
@@ -97,17 +105,15 @@ public abstract class PTextBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-    if (currentHeight > 0) {
-      printStyle(page, getBlockWidth(), currentHeight);
-    }
     if (!fixed) {
       for (int i = 0; i < engines.size(); i++) {
 	PLayoutEngine engine = (PLayoutEngine)engines.elementAt(i);
-	engine.getPostscript(this, page.getPostscriptStream());
+
+	engine.generate(page);
       }
       currentHeight = 0;
     } else if (isFullyPrinted) {
-      engine.getPostscript(this, page.getPostscriptStream());
+      engine.generate(page);
       currentHeight = 0;
     }
     pending = false;
@@ -152,7 +158,6 @@ public abstract class PTextBlock extends PBlock {
           engines.addElement(oldEngine);
           currentHeight += engine.getHeight();
           engine = new PLayoutEngine(engine.needDescend());
-          //          paragraphStyle.setStyle(this, engine, false);
           if (auto) {
             engine.setFont(oldEngine.getFont(), oldEngine.getStyle(), oldEngine.getFontSize());
           }
@@ -254,10 +259,12 @@ public abstract class PTextBlock extends PBlock {
    * Adds a text in current layout engine
    */
   public void addText(String s) throws PSPrintException {
+    
     if (newLine) {
       newLine = false;
-      float	pos = paragraphStyle.getIndentLeft(this);
-      int	align = paragraphStyle.getAlignment(this);
+      float	pos = paragraphStyle.getIndentLeft();
+      int	align = paragraphStyle.getAlignment();
+
       if (align == PParagraphStyle.ALN_RIGHT) {
 	pos = getBlockWidth() - pos;
       } else if (align == PParagraphStyle.ALN_CENTER) {
@@ -308,8 +315,8 @@ public abstract class PTextBlock extends PBlock {
   public void addImage(javax.swing.ImageIcon image) {
     if (newLine) {
       newLine = false;
-      float	pos = paragraphStyle.getIndentLeft(this);
-      int	align = paragraphStyle.getAlignment(this);
+      float	pos = paragraphStyle.getIndentLeft();
+      int	align = paragraphStyle.getAlignment();
       if (align == PParagraphStyle.ALN_RIGHT) {
 	pos = getBlockWidth() - pos;
       } else if (align == PParagraphStyle.ALN_CENTER) {
@@ -332,6 +339,8 @@ public abstract class PTextBlock extends PBlock {
    * Sets the tab position
    */
   public void setTab(String s) {
+    //engine.setTab(this, s);
+
     lastTab = s;
     paragraphStyle.setTab(this, s);
   }
@@ -352,6 +361,7 @@ public abstract class PTextBlock extends PBlock {
    */
   protected void setStyle(String style, boolean hasBang) {
     PBodyStyle	stl = (PBodyStyle)getPage().getStyle(style);
+
     stl.setStyle(this, engine, hasBang);
     if (stl instanceof PParagraphStyle) {
       paragraphStyle = (PParagraphStyle)stl;
@@ -372,11 +382,12 @@ public abstract class PTextBlock extends PBlock {
   /**
    * Init a block
    */
-  protected final void initTrigger() {
+  protected final void initTrigger() throws PSPrintException {
     paragraphStyle = DEFAULT_BLOCK_STYLE;
     newLine = true;
     engine.setFont(DEFAULT_FONT, DEFAULT_STYLE, DEFAULT_SIZE);
   }
+
 
   /**
    * Ends a block

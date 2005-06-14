@@ -23,6 +23,8 @@ package at.dms.vkopi.lib.print;
 import java.awt.Color;
 import java.util.Hashtable;
 
+import com.lowagie.text.pdf.PdfPTable;
+
 /**
  * A paragraph style is responsible of painting a line or a paragraphe style.
  */
@@ -75,44 +77,8 @@ public class PParagraphStyle extends PBodyStyle {
   /**
    * Needs descsends
    */
-  public boolean needDescend(PTextBlock list) {
-    return getBorder(list) > 0 || getColor(list) != null;
-  }
-
-  /**
-   * Paints the styles before body is dumped (border, background)
-   */
-  public void paintStyle(PTextBlock list, float x, float y, float width, float height) throws PSPrintException {
-    PPostscriptStream   ps = list.getPage().getPostscriptStream();
-    Color               color = getColor(list);
-
-    x += marginLeft;
-    width -= (marginLeft + marginRight);
-
-    if (color != null) {
-      PPostscriptEffects.setColor(ps, color);
-      PPostscriptEffects.fillRect(ps, 0, x, y, width, height);
-      PPostscriptEffects.setColor(ps, Color.black);
-    }
-    float border = getBorder(list);
-    if (border > 0) {
-      if (borderMode == BRD_ALL) {
-        PPostscriptEffects.drawRect(ps, border, x, y, width, height);
-      } else {
-        if ((borderMode & BRD_TOP) > 0) {
-          PPostscriptEffects.drawLine(ps, border, x, y, x + width, y);
-        }
-        if ((borderMode & BRD_BOTTOM) > 0) {
-          PPostscriptEffects.drawLine(ps, border, x, y - height, x + width, y - height);
-        }
-        if ((borderMode & BRD_LEFT) > 0) {
-          PPostscriptEffects.drawLine(ps, border, x, y, x, y - height);
-        }
-        if ((borderMode & BRD_RIGHT) > 0) {
-          PPostscriptEffects.drawLine(ps, border, x + width, y, x + width, y - height);
-        }
-      }
-    }
+  public boolean needDescend() {
+    return getBorder() > 0 || getColor() != null;
   }
 
   /**
@@ -122,7 +88,7 @@ public class PParagraphStyle extends PBodyStyle {
     PTabStop    stop = tabs == null ? null : (PTabStop)tabs.get(tab);
     if (stop == null) {
       if (hasParentStyle()) {
-        getParentStyle(list).setTab(list, tab);
+        getParentStyle().setTab(list, tab);
       } else {
         // This should have been checked by the compiler
         System.err.println("Undefined tab : " + tab);
@@ -137,7 +103,7 @@ public class PParagraphStyle extends PBodyStyle {
    */
   public String gotoNextTab(PTextBlock list, String tab) {
     if (tabs == null && hasParentStyle()) {
-      return getParentStyle(list).gotoNextTab(list, tab);
+      return getParentStyle().gotoNextTab(list, tab);
     }
     PTabStop    stop = tabs == null || tab == null ? null : (PTabStop)tabs.get(tab);
     if (stop == null) {
@@ -167,12 +133,12 @@ public class PParagraphStyle extends PBodyStyle {
   /**
    * Returns the default alignment
    */
-  public int getAlignment(PTextBlock list) {
+  public int getAlignment() {
    if (align != -1) {
       return align;
     }
     if (hasParentStyle()) {
-      return getParentStyle(list).getAlignment(list);
+      return getParentStyle().getAlignment();
     }
     return -1;
   }
@@ -180,12 +146,12 @@ public class PParagraphStyle extends PBodyStyle {
   /**
    * Returns left indent
    */
-  public int getIndentLeft(PTextBlock list) {
+  public int getIndentLeft() {
     if (indentLeft != -1) {
       return indentLeft;
     }
     if (hasParentStyle()) {
-      return getParentStyle(list).getIndentLeft(list);
+      return getParentStyle().getIndentLeft();
     }
     return 0;
   }
@@ -197,12 +163,12 @@ public class PParagraphStyle extends PBodyStyle {
   /**
    * Returns the color of the background
    */
-  private Color getColor(PTextBlock list) {
+  protected Color getColor() {
     if (color != null) {
       return color;
     }
     if (hasParentStyle()) {
-      return getParentStyle(list).getColor(list);
+      return getParentStyle().getColor();
     }
     return null;
   }
@@ -210,8 +176,14 @@ public class PParagraphStyle extends PBodyStyle {
   /**
    * Returns the border thickness
    */
-  private float getBorder(PTextBlock list) {
+  protected float getBorder() {
     return border;
+  }
+  /**
+   * Returns the border 
+   */
+  protected int getBorderMode() {
+    return borderMode;
   }
 
   /**
@@ -224,12 +196,14 @@ public class PParagraphStyle extends PBodyStyle {
   /**
    * Returns the parent style or null
    */
-  private PParagraphStyle getParentStyle(PTextBlock list) {
+  private PParagraphStyle getParentStyle() {
     if (superStyle == null) {
-      superStyle = (PParagraphStyle)list.getPage().getStyle(superStyleIdent);
+      superStyle = (PParagraphStyle) getOwner().getStyle(superStyleIdent);
     }
     return superStyle;
   }
+
+  
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS

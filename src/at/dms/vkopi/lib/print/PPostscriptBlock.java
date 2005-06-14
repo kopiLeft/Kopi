@@ -24,13 +24,25 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class PPostscriptBlock extends PBlock {
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.Image;
 
+public class PPostscriptBlock extends PBlock {
+  Image img;
   /**
    *
    */
   public PPostscriptBlock(String ident, PPosition pos, PSize size, String data) {
     super(ident, pos, size, null);
+
+//     try {
+//       System.out.println(data + "  "+at.dms.vkopi.lib.visual.Utils.getURLFromResource(data)+"  "+at.dms.vkopi.lib.visual.Utils.getURLFromResource(data, at.dms.vkopi.lib.visual.Utils.APPLICATION_DIR));
+
+//       img = Image.getInstance("/tmp/asd");//BriefpapierSW.EPS");//at.dms.vkopi.lib.visual.Utils.getURLFromResource(data, at.dms.vkopi.lib.visual.Utils.APPLICATION_DIR));
+//     } catch (Exception e) {
+//       e.printStackTrace();
+//     }
+
     InputStream	file = at.dms.vkopi.lib.visual.Utils.getFile(data);
     if (file != null) {
       BufferedReader i = new BufferedReader(new InputStreamReader(file));
@@ -48,11 +60,13 @@ public class PPostscriptBlock extends PBlock {
     }
   }
 
+
   /**
    * Try to fill the maximum of space
    * Returns 0 if this block can't place a part of data in the proposed space
    */
   public float fill(float size) {
+
     if (size >= getSize().getHeight()) {
       return getSize().getHeight();
     } else {
@@ -64,8 +78,15 @@ public class PPostscriptBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-    page.getPostscriptStream().checkCachedInfos();
-    page.getPostscriptStream().println(ps);
+//     try {
+//       img.setAbsolutePosition(getPosition().getX(), page.getDocument().getPageSize().height()-getPosition().getY());
+//       page.getDocument().add(img);
+//     } catch (Exception e) {
+//       e.printStackTrace();
+//     }
+    
+//     page.getPostscriptStream().checkCachedInfos();
+//     page.getPostscriptStream().println(ps);
   }
 
   /**

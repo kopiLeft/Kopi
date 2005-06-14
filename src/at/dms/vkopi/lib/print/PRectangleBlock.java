@@ -20,6 +20,13 @@
 
 package at.dms.vkopi.lib.print;
 
+import java.awt.Color;
+
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfContentByte;
+
+
+
 /**
  * A simple rectangle
  */
@@ -48,7 +55,32 @@ public class PRectangleBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-    printStyle(page, getSize().getWidth(), getSize().getHeight());
+    PdfContentByte cb = page.getWriter().getDirectContent();
+
+    if (getStyle() != null) {
+      PBlockStyle       style = page.getBlockStyle(getStyle());
+      Color             stylecolor = style.getColor();
+
+      cb.saveState();  // !!!!! merge with PLayoutEngine
+
+      if (stylecolor != null) {
+        cb.setColorStroke(Color.white);
+        cb.setRGBColorFill(stylecolor.getRed(), stylecolor.getGreen(), stylecolor.getBlue());
+        cb.rectangle(0, 0, getSize().getWidth(), getSize().getHeight());
+        cb.fillStroke(); 
+      }
+
+      if (style.getBorder() > 0) {
+        cb.setLineWidth(style.getBorder());
+        cb.setColorStroke(Color.black);
+        cb.rectangle(0, 0, getSize().getWidth(), getSize().getHeight());
+        cb.stroke();
+      }
+
+      cb.restoreState();
+    }
+    
+    //    printStyle(page, getSize().getWidth(), getSize().getHeight());
   }
 
   /**

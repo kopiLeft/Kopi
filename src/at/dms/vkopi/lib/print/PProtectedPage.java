@@ -104,41 +104,41 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
     return super.createPrintJob();
   }
 
-  /**
-   * Starts a print session with a printer
-   * @deprecated
-   */
-  public void continuePrinting(DBContext context,
-                               PostscriptPrintJob printJob,
-                               boolean restartPageFromOne)
-    throws PSPrintException
-  {
-    this.context = context;
-    super.continuePrinting(printJob, restartPageFromOne);
-  }
+//   /**
+//    * Starts a print session with a printer
+//    * @deprecated
+//    */
+//   public void continuePrinting(DBContext context,
+//                                PostscriptPrintJob printJob,
+//                                boolean restartPageFromOne)
+//     throws PSPrintException
+//   {
+//     this.context = context;
+//     super.continuePrinting(printJob, restartPageFromOne);
+//   }
 
-  /**
-   * Starts a print session with a printer
-   * @deprecated
-   */
-  public void continuePrinting(DBContextHandler handler,
-                               PostscriptPrintJob printJob,
-                               boolean restartPageFromOne)
-    throws PSPrintException
-  {
-    this.handler = handler;
-    super.continuePrinting(printJob, restartPageFromOne);
-  }
+//   /**
+//    * Starts a print session with a printer
+//    * @deprecated
+//    */
+//   public void continuePrinting(DBContextHandler handler,
+//                                PostscriptPrintJob printJob,
+//                                boolean restartPageFromOne)
+//     throws PSPrintException
+//   {
+//     this.handler = handler;
+//     super.continuePrinting(printJob, restartPageFromOne);
+//   }
 
   /**
    *
    */
-  protected void printBlocks() {
+  protected void printBlocks(PdfPrintJob printjob) {
     if (!inTransaction()) {
       try {
 	startProtected(message);
 	initPage();
-	super.printBlocks();
+	super.printBlocks(printjob);
 	closePage();
 	commitProtected();
       } catch (SQLException e) {
@@ -161,7 +161,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
     } else {
       try {
 	initPage();
-	super.printBlocks();
+	super.printBlocks(printjob);
 	closePage();
       } catch (Exception e) {
 	PPage.fatalError(this, "PProtectedPage.printBlocks():2", e);
@@ -201,11 +201,12 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
      * @param	printer	where to print
      */
     public PrintJob createPrintJob() throws PrintException, VException {
-      PostscriptPrintJob      printJob;
+      PdfPrintJob      printJob;
 
-      try {
+      //      try {
         // create print job with correct postscript header
-        printJob = reports[0].printProlog();
+        //        printJob = reports[0].printProlog();
+        printJob = (PdfPrintJob) createPrintJob();
         for (int i = 0; i < reports.length; i++) {
           // add report to print job
           reports[i].continuePrinting(printJob, restartPageNumer);
@@ -215,9 +216,9 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
 
         // print job
         return printJob;
-      } catch (IOException e) {
-        throw new PSPrintException("multi session print failed", e);
-      }
+//       } catch (IOException e) {
+//         throw new PSPrintException("multi session print failed", e);
+//       }
     }
 
     PProtectedPage[]    reports;

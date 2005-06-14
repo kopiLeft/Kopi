@@ -20,6 +20,9 @@
 
 package at.dms.vkopi.lib.print;
 
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfPTable;
+
 /**
  * A block of data to print
  */
@@ -39,10 +42,11 @@ public abstract class PListBlock extends PTextBlock {
     if (!last) {
       return super.addToCurrentPage(engine, last);
     } else {
-      return engine.getHeight() > 0 
-        && engine.getHeight() + currentHeight 
-           < getMaxHeight()-lastfooter.getHeight()+footer.getHeight(); 
-           // footer is not on the last page, so the height can be used     
+      return engine.getHeight() > 0
+        && engine.getHeight() + currentHeight
+           < getMaxHeight()- lastfooter.getHeight() + footer.getHeight();
+           // footer is not on the last page, so the height can be used
+           // footer is already removed from maxHeight
     }
   }
 
@@ -93,7 +97,7 @@ public abstract class PListBlock extends PTextBlock {
         wholebody = true;
       }
     }
-      
+
     if (isFullyPrinted) {
       engine = new PLayoutEngine(engine.needDescend());
       try {
@@ -121,24 +125,20 @@ public abstract class PListBlock extends PTextBlock {
     return currentHeight;
   }
 
-  /**
-   * Prints this block
-   */
   public void doPrint(PPage page) throws PSPrintException {
-    PPostscriptStream   ps = page.getPostscriptStream();
+    doPrint(page, 0, 0);
+  }
 
-    printStyle(page, 
-               getBlockWidth(), 
-               currentHeight); 
-    ps.translate(0, -listheader.getHeight()); 
+  public void doPrint(PPage page, float transX, float transY) throws PSPrintException {
+    page.getPdfContentByte().concatCTM(1,0,0,1,0, -listheader.getHeight());
 
     for (int i = 0; i < engines.size(); i++) {
       PLayoutEngine     engine = (PLayoutEngine)engines.elementAt(i);
 
-      engine.getPostscript(this, page.getPostscriptStream());
+      engine.generate(page);
     }
-    ps.translate(0, currentHeight);
-    listheader.getPostscript(this, page.getPostscriptStream());
+    page.getPdfContentByte().concatCTM(1,0,0,1,0, currentHeight);
+    listheader.generate(page);
     currentHeight = 0;
   }
 
@@ -155,7 +155,7 @@ public abstract class PListBlock extends PTextBlock {
   protected void LISTFOOTER() throws Exception { FOOTER(); } //replaces FOOTER
 
   /**
-   * because of name conventions, this is 
+   * because of name conventions, this is
    * @deprecated.
    */
   protected void FOOTER() throws Exception {} // deprecated

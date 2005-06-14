@@ -24,6 +24,8 @@ import java.util.Vector;
 
 import at.dms.util.base.InconsistencyException;
 
+import com.lowagie.text.pdf.PdfWriter;
+
 /**
  * A block of data to print
  */
@@ -42,7 +44,7 @@ public class PRecursiveBlock extends PBlock {
   // ACCESSORS (FROM PBLOCK)
   // ----------------------------------------------------------------------
 
-  /**
+  /*
    * Try to fill the maximum of space
    * Returns 0 if this block can't place a part of data in the proposed space
    */
@@ -89,17 +91,20 @@ public class PRecursiveBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-    printStyle(page, getSize().getWidth(), getSize().getHeight());
-    float X = page.getPostscriptStream().getX();
-    float currentPos = page.getPostscriptStream().getY();
-    float Y = currentPos;
+    float       currentPos = 0; 
     int		count = 0;
 
     for (int i = from; i <= to && i < blocks.length; i++) {
       if (((Float)sizes.elementAt(count)).floatValue() > 0 && blocks[i].isShownOnThisPage()) {
-	page.getPostscriptStream().translateAbsolute(X - blocks[i].getPosition().getX(), currentPos);
+	//page.getPostscriptStream().translateAbsolute(X - blocks[i].getPosition().getX(), currentPos);
+        page.getPdfContentByte().saveState();
+        page.getPdfContentByte().concatCTM(1,0,0,1, 
+                                           blocks[i].getPosition().getX(), 
+                                           blocks[i].getPosition().getY()+currentPos) ;
+
+        blocks[i].doPrint(page); 
 	currentPos -= ((Float)sizes.elementAt(count++)).floatValue();
-	blocks[i].doPrint(page);
+        page.getPdfContentByte().restoreState();
       } else {
 	count++;
       }

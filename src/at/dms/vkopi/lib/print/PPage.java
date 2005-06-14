@@ -20,8 +20,10 @@
 
 package at.dms.vkopi.lib.print;
 
+import java.awt.geom.AffineTransform;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -31,8 +33,17 @@ import at.dms.vkopi.lib.util.PrintException;
 import at.dms.vkopi.lib.util.PrintInformation;
 import at.dms.vkopi.lib.util.Printer;
 import at.dms.vkopi.lib.util.PrintJob;
+import at.dms.vkopi.lib.util.Utils;
 import at.dms.vkopi.lib.visual.Application;
 import at.dms.vkopi.lib.visual.VExecFailedException;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfReader;
 
 /**
  * Handle the generation of a document
@@ -110,12 +121,10 @@ public abstract class PPage {
    */
   public PrintJob createPrintJob() {
     try {
-      PostscriptPrintJob        printJob;
+      PdfPrintJob        printJob;
 
-      printJob = new PostscriptPrintJob();
-      ps = printJob.getPostscriptStream();
+      printJob = new PdfPrintJob(landscape);
       printJob.setDocumentType(getDocumentType());
-
       return startPrintIntern(printJob);
     } catch (IOException e) {
       throw new InconsistencyException(e);
@@ -129,36 +138,34 @@ public abstract class PPage {
   }
 
   /**
-   * Starts a multi print session with a printer
+   * Starts a print session with a printer
    */
-  public PostscriptPrintJob printProlog() throws IOException, PSPrintException {
-    PostscriptPrintJob  printJob = new PostscriptPrintJob();
+  public PdfPrintJob printProlog() {
+    try {
+      PdfPrintJob        printJob;
 
-    ps = printJob.getPostscriptStream();
-    ps.addHeader(prolog, landscape, width, height);
-    printJob.setPrintInformation(title,
-                                 landscape,
-                                 width,
-                                 height,
-                                 0); // will be set later
-    return printJob;
+      printJob = new PdfPrintJob(landscape);
+      printJob.setDocumentType(getDocumentType());
+      return printJob;
+    } catch (IOException e) {
+      throw new InconsistencyException(e);
+    }
   }
 
   /**
    * Starts a print session with a printer
    */
-  public void continuePrinting(PostscriptPrintJob printJob, 
-                               boolean restartPageFromOne)
-    throws PSPrintException 
+  public void  continuePrinting(PdfPrintJob printJob,
+                                boolean restartPageFromOne)
+    throws PSPrintException
   {
-    this.ps = printJob.getPostscriptStream();
-    currentPage = restartPageFromOne ? 0 : printJob.getNumberOfPages();
-    printBlocks();
-    if (restartPageFromOne) {
-      printJob.setNumberOfPages(printJob.getNumberOfPages()+currentPage);
-    } else {
-      printJob.setNumberOfPages(currentPage);
-    }
+      currentPage = restartPageFromOne ? 0 : printJob.getNumberOfPages();
+      printBlocks(printJob);
+      if (restartPageFromOne) {
+        printJob.setNumberOfPages(printJob.getNumberOfPages()+currentPage);
+      } else {
+        printJob.setNumberOfPages(currentPage);
+      }
   }
 
   // ----------------------------------------------------------------------
@@ -169,6 +176,7 @@ public abstract class PPage {
    * Adds a style definition
    */
   protected void addStyle(PStyle style) {
+    style.setOwner(this);
     styles.put(style.getIdent(), style);
   }
 
@@ -176,6 +184,7 @@ public abstract class PPage {
    * Adds a style definition
    */
   protected void addBlockStyle(PBlockStyle style) {
+    style.setOwner(this);
     blockStyles.put(style.getIdent(), style);
   }
 
@@ -207,7 +216,6 @@ public abstract class PPage {
   // ----------------------------------------------------------------------
   // ACCESSORS (POSTSCRIPT)
   // ----------------------------------------------------------------------
-
   /**
    *
    */
@@ -222,12 +230,12 @@ public abstract class PPage {
     return (PBlockStyle)blockStyles.get(style);
   }
 
-  /**
-   * Return the LayoutEngine
-   */
-  public PPostscriptStream getPostscriptStream() {
-    return ps;
-  }
+//   /**
+//    * Return the LayoutEngine
+//    */
+//   public PPostscriptStream getPostscriptStream() {
+//     return ps;
+//   }
 
   // ----------------------------------------------------------------------
   // PROTECTED ACCESSORS
@@ -263,96 +271,104 @@ public abstract class PPage {
   /**
    * Prepare a new page
    */
-  private void newPage() {
-    currentPage++;
-    write("%%Page: " + currentPage + " " + currentPage);
-    if (landscape) {
-      ps.print("toprinter\n {");
-      ps.print(height + " 0 translate\n");
-      ps.print("90 rotate\n");
-      ps.print("} if\n");
+  public void newPage() {
+    try {
+      document.newPage();
+    } catch (Exception e) {
+      throw new InconsistencyException(e);
     }
+
+    currentPage++;
   }
 
   /**
    *
    */
-  private void write(String s) {
-    ps.println(s);
-  }
-
-//   /**
-//    *
-//    */
-//   protected PrintTask startPrintIntern(PrintJob printJob) throws IOException, PrintException {
-//     ps.addHeader(prolog, landscape, width, height);
-//     printBlocks();
-//     ps.close(getCurrentPage());
-//     printJob.setPrintInformation(title,
-//                                  landscape,
-//                                  width,
-//                                  height,
-//                                  getCurrentPage());
-//     return printer.print(printJob);
-//   }
-  /**
-   *
-   */
-  protected PrintJob startPrintIntern(PrintJob printJob) throws IOException, PrintException {
-    ps.addHeader(prolog, landscape, width, height);
-    printBlocks();
-    ps.close(getCurrentPage());
+  protected PrintJob startPrintIntern(PdfPrintJob printJob) throws IOException, PrintException {
+    printBlocks(printJob);
+    printJob.close();
     printJob.setPrintInformation(title,
                                  landscape,
                                  width,
                                  height,
                                  getCurrentPage());
-    return printJob; 
+    return printJob;
   }
 
+  public void setWatermark(String watermarkResource) {
+    try {  
+      watermark = new PdfReader(Utils.getURLFromResource(watermarkResource, Utils.APPLICATION_DIR).toString());
+    } catch (Exception e) {
+      throw new InconsistencyException("Load " + watermarkResource, e);	
+    }
+  }
+
+  private void addWatermark(PdfPrintJob printJob) throws PSPrintException {
+    if (watermark != null) {  
+      PdfContentByte    cb =  printJob.getWriter().getDirectContent();
+
+      cb.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
+    }
+  }
   /**
    *
    */
-  protected void printBlocks() throws PSPrintException {
+  protected void printBlocks(PdfPrintJob printJob) throws PSPrintException {
     // Remove innerblocks from list
     Vector	blocks = new Vector(this.blocks.size());
+
     for (int i = 0; i < this.blocks.size(); i++) {
-      PBlock block = (PBlock)this.blocks.elementAt(i);
+      PBlock    block = (PBlock)this.blocks.elementAt(i);
       if (!innerBlocks.containsKey(block.getIdent())) {
 	blocks.addElement(block);
       }
     }
+
     boolean	fullyPrinted = false;
     Vector	sizes = new Vector(blocks.size());
+
+    document = printJob.getDocument();
+    writer = printJob.getWriter();
+
+    PdfContentByte      cb = writer.getDirectContent();
 
     while (!fullyPrinted) {
       sizes.setSize(0);
       fullyPrinted = true;
       newPage();
-      float		cummul = 0;
+      addWatermark(printJob);
+      float     cummul = 0;
 
       for (int i = 0; i < blocks.size(); i++) {
 	// fill all blocks
-	PBlock	block = (PBlock)blocks.elementAt(i);
+	PBlock  block = (PBlock)blocks.elementAt(i);
+
 	block.preparePrint(this);
-	float	size = block.getSize().getHeight();
+
+	float   size = block.getSize().getHeight();
 
 	sizes.addElement(new Float(block.fill(size)));
 	fullyPrinted &= block.isFullyPrinted();
       }
-      float		currentPos = height - border;
+      float     currentPos = height - border;
+
       isLastPage = fullyPrinted;
+
       for (int i = 0; i < blocks.size(); i++) {
-	PBlock	block = (PBlock)blocks.elementAt(i);
+	PBlock  block = (PBlock)blocks.elementAt(i);
+
 	if (((Float)sizes.elementAt(i)).floatValue() > 0 && block.isShownOnThisPage()) {
-	  float		y = block.getPosition().getY();
+ 	  float y = block.getPosition().getY();
+
           y = y < 0 ? currentPos : height - y;
-	  ps.translateAbsolute(-block.getPosition().getX(), y);
-	  currentPos = y - ((Float)sizes.elementAt(i)).floatValue();
-	  block.doPrint(this);
+
+          cb.saveState();
+          cb.concatCTM(1,0,0,1, block.getPosition().getX(), y) ;
+ 	  currentPos = y - ((Float)sizes.elementAt(i)).floatValue();
+          block.doPrint(this);
+          cb.restoreState();
 	}
       }
-      showPage();
     }
   }
 
@@ -388,24 +404,29 @@ public abstract class PPage {
   // IMPLEMENTATION OF PRINTING
   // ----------------------------------------------------------------------
 
-  /**
-   * Call special trigger
-   */
-  private void showPage() {
-    ps.showPage();
+  public PdfWriter getWriter() {
+    return writer;
+  }
+
+  public PdfContentByte getPdfContentByte() {
+    return writer.getDirectContent();
+  }
+
+  public Document getDocument() {
+    return document;
   }
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
+  private Document  document;
+  private PdfWriter writer;
 
   private Hashtable		styles;
   private Hashtable		blockStyles;
   private Hashtable		innerBlocks;
   private Vector		blocks;
   private Hashtable		blocksByName;
-  //  private Printer		printer;
-  private PPostscriptStream	ps;
   private String		title;
   private String		prolog;
   private boolean		landscape;
@@ -415,4 +436,6 @@ public abstract class PPage {
 
   private int			currentPage;
   private boolean		isLastPage;
+
+  private PdfReader             watermark;
 }

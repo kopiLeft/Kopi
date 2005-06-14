@@ -40,9 +40,18 @@ public abstract class PStyle {
     return ident;
   }
 
+  public void setOwner(PPage owner) {
+    this.owner = owner;
+  }
+
+  public PPage getOwner() {
+    return owner;
+  }
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private String		ident;
+  private String	ident;
+  private PPage		owner;
 }

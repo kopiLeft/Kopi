@@ -20,6 +20,8 @@
 
 package at.dms.vkopi.lib.print;
 
+import com.lowagie.text.pdf.PdfWriter;
+
 /**
  * A block of data to print
  */
@@ -108,6 +110,8 @@ public abstract class PBlock {
    */
   public abstract float fill(float size) throws PSPrintException;
 
+//   public abstract float fill(PdfWriter writer) throws PSPrintException;
+
   /**
    * Returns true if this block is fully printed
    */
@@ -117,15 +121,6 @@ public abstract class PBlock {
    * Prints this block
    */
   public abstract void doPrint(PPage page) throws PSPrintException;
-
-  /**
-   * Prints this block
-   */
-  public void printStyle(PPage page, float width, float height) throws PSPrintException {
-    if (style != null) {
-      page.getBlockStyle(style).paintStyle(page, 0f, 0f, width, height);
-    }
-  }
 
   public void preparePrint(PBlock block) {
     size.preparePrint(this);
