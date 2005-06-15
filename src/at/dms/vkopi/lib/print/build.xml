@@ -13,14 +13,13 @@
   <property name="src" value="." />
   <property name="javafiles" 
             value="PPage.java PBlock.java PPosition.java PSize.java PRectangleBlock.java 
-                   PPostscriptEffects.java PPostscriptStream.java 
                    PStyle.java PBlockStyle.java PTextStyle.java PTabStop.java PTextBlock.java 
                    PLayoutEngine.java Metrics.java PParagraphStyle.java PBodyStyle.java 
                    PRecursiveBlock.java PPostscriptBlock.java PListBlock.java 
                    PProtectedPage.java PHorizontalBlock.java 
                    PreviewPrinter.java Printable.java PrintManager.java 
                    DefaultPrintManager.java PLabelForm.java 
-                   LabelPrintable.java PSPrintException.java PostscriptPrintJob.java" />
+                   LabelPrintable.java PSPrintException.java PdfPrintJob.java" />
 
 
   <import file="${topdir}/defs.xml" />
