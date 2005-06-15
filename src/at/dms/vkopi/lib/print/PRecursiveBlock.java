@@ -96,7 +96,6 @@ public class PRecursiveBlock extends PBlock {
 
     for (int i = from; i <= to && i < blocks.length; i++) {
       if (((Float)sizes.elementAt(count)).floatValue() > 0 && blocks[i].isShownOnThisPage()) {
-	//page.getPostscriptStream().translateAbsolute(X - blocks[i].getPosition().getX(), currentPos);
         page.getPdfContentByte().saveState();
         page.getPdfContentByte().concatCTM(1,0,0,1, 
                                            blocks[i].getPosition().getX(), 

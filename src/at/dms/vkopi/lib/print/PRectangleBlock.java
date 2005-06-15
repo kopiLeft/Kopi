@@ -79,8 +79,6 @@ public class PRectangleBlock extends PBlock {
 
       cb.restoreState();
     }
-    
-    //    printStyle(page, getSize().getWidth(), getSize().getHeight());
   }
 
   /**

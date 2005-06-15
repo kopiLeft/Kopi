@@ -230,13 +230,6 @@ public abstract class PPage {
     return (PBlockStyle)blockStyles.get(style);
   }
 
-//   /**
-//    * Return the LayoutEngine
-//    */
-//   public PPostscriptStream getPostscriptStream() {
-//     return ps;
-//   }
-
   // ----------------------------------------------------------------------
   // PROTECTED ACCESSORS
   // ----------------------------------------------------------------------

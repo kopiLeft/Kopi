@@ -104,32 +104,6 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
     return super.createPrintJob();
   }
 
-//   /**
-//    * Starts a print session with a printer
-//    * @deprecated
-//    */
-//   public void continuePrinting(DBContext context,
-//                                PostscriptPrintJob printJob,
-//                                boolean restartPageFromOne)
-//     throws PSPrintException
-//   {
-//     this.context = context;
-//     super.continuePrinting(printJob, restartPageFromOne);
-//   }
-
-//   /**
-//    * Starts a print session with a printer
-//    * @deprecated
-//    */
-//   public void continuePrinting(DBContextHandler handler,
-//                                PostscriptPrintJob printJob,
-//                                boolean restartPageFromOne)
-//     throws PSPrintException
-//   {
-//     this.handler = handler;
-//     super.continuePrinting(printJob, restartPageFromOne);
-//   }
-
   /**
    *
    */

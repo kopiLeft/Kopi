@@ -168,11 +168,6 @@ public abstract class PListBlock extends PTextBlock {
       PLayoutEngine std = engine;
       PParagraphStyle	stl = paragraphStyle;
       switch (which) {
- //      case HEADER:
-// 	engine = header;
-// 	engine.reset(true);
-// 	PAGEHEADER();
-// 	break;
       case LISTHEADER:
 	engine = listheader;
 	engine.reset(true);
@@ -189,7 +184,6 @@ public abstract class PListBlock extends PTextBlock {
 	engine = lastfooter;
 	engine.reset(true);
 	LASTLISTFOOTER();
-        //        PAGEFOOTER();
 	break;
       }
       engine = std;

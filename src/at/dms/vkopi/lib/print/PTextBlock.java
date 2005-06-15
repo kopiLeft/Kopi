@@ -339,8 +339,6 @@ public abstract class PTextBlock extends PBlock {
    * Sets the tab position
    */
   public void setTab(String s) {
-    //engine.setTab(this, s);
-
     lastTab = s;
     paragraphStyle.setTab(this, s);
   }
