@@ -255,7 +255,7 @@ class PLayoutEngine {
           fontStyle = Font.ITALIC;
         }
 
-        currentFont = FontFactory.getFont(name, size, fontStyle);
+        currentFont = FontFactory.getFont(name, BaseFont.CP1252, size, fontStyle);
       }
     } catch (Exception e) {
       e.printStackTrace();
