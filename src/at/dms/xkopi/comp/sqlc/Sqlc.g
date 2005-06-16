@@ -1191,6 +1191,8 @@ sUnidiffOp []
   "DIFF"  { self = "DIFF"; }
 |
   "EXCEPT" { self = "EXCEPT"; }
+|
+  "MINUS" { self = "MINUS"; }
 ;
 
 sUnidiffSpec []

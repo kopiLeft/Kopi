@@ -57,6 +57,7 @@
 @literal	MATCHES
 @literal	MAX
 @literal	MIN
+@literal	MINUS
 @literal	NOT
 @literal	NULL
 @literal	NUMERIC
