@@ -122,9 +122,7 @@ public class DImageField extends DObjectField {
 
     setBlink(false);
     setBlink(true);
-    // NOT USED ANYMORE
-//     fireValueHasChanged();
-//     repaint();
+    repaint();
   }
 
   // ----------------------------------------------------------------------
@@ -139,28 +137,6 @@ public class DImageField extends DObjectField {
       c = icon;
     }
 
-    //    c.setBackground(DObject.CLR_FLD_BACK);
-
-//     switch (state) {
-//     case STE_SKIPPED:
-//       c.setBorder(DObject.BRD_SKIPD);
-//       break;
-//     case STE_FOCUSED:
-//       c.setBorder(DObject.BRD_SLCTD);
-//       break;
-//     case STE_ROLLOVER_MUSTFILL:
-//       c.setBorder(DObject.BRD_ROLLOVER);
-//       break;
-//     case STE_ROLLOVER_VISIT:
-//       c.setBorder(DObject.BRD_ROLLOVER);
-//       break;
-//     case STE_CHART:
-//       c.setBorder(DObject.BRD_MULTI);
-//       break;
-//     default:
-//       c.setBorder(DObject.BRD_FLD);
-//     }
-
     repaint();
   }
 
@@ -172,18 +148,6 @@ public class DImageField extends DObjectField {
    * This method is called after an action of the user, object should
    * be redisplayed accordingly to changes.
    */
-  public void update() {
-//     if (textChanged) {
-//       setObject(((VImageField)getModel()).getImage(model.getBlockView().getRecordFromDisplayLine(getPosition())));
-//     }
-//     if (accessChanged || focusChanged) {
-//       label.update(getModel());
-//     }
-//     if (focusChanged) {
-//       fireMouseHasChanged();
-//     }
-    super.update();
-  }
 
   public void updateAccess() {
     label.update(getModel(), getPosition());
@@ -206,14 +170,6 @@ public class DImageField extends DObjectField {
   public void setBlink(boolean start) {
   }
 
-
-  // NOT USED
- //  /*
-//    * !!! graf 990809 CHANGE !!! THIS IS ONLY A PLACEHOLDER !!!
-//    */
-//   public JTextComponent getTextComponent() {
-//     return null;
-//   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
