@@ -175,24 +175,19 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
      * @param	printer	where to print
      */
     public PrintJob createPrintJob() throws PrintException, VException {
-      PdfPrintJob      printJob;
+      PdfPrintJob        printJob;
 
-      //      try {
-        // create print job with correct postscript header
-        //        printJob = reports[0].printProlog();
-        printJob = (PdfPrintJob) createPrintJob();
-        for (int i = 0; i < reports.length; i++) {
-          // add report to print job
-          reports[i].continuePrinting(printJob, restartPageNumer);
-        }
-        // end postscript document
-        printJob.close();
+      printJob = reports[0].printProlog();
 
-        // print job
-        return printJob;
-//       } catch (IOException e) {
-//         throw new PSPrintException("multi session print failed", e);
-//       }
+      for (int i = 0; i < reports.length; i++) {
+         // add report to print job
+         reports[i].continuePrinting(printJob, restartPageNumer);
+      }
+      // end pdf document
+      printJob.close();
+
+      // print job
+      return printJob;
     }
 
     PProtectedPage[]    reports;
