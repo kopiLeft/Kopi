@@ -209,11 +209,6 @@ public class PParagraphStyle extends PBodyStyle {
   // DATA MEMBERS
  // ---------------------------------------------------------------------
 
-  public static final   int     ALN_LEFT        = 0;
-  public static final   int     ALN_RIGHT       = 1;
-  public static final   int     ALN_CENTER      = 2;
-  public static final   int     ALN_JUSTIFIED   = 3;
-
   public static final   int     BRD_TOP         = 1 << 0;
   public static final   int     BRD_BOTTOM      = 1 << 1;
   public static final   int     BRD_LEFT        = 1 << 2;

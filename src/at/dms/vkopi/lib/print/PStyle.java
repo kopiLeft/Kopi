@@ -54,4 +54,10 @@ public abstract class PStyle {
 
   private String	ident;
   private PPage		owner;
+
+  public static final	int	ALN_DEFAULT	= -1;
+  public static final	int	ALN_LEFT	= 0;
+  public static final	int	ALN_RIGHT	= 1;
+  public static final	int	ALN_CENTER	= 2;
+  public static final	int	ALN_JUSTIFIED	= 3;
 }
