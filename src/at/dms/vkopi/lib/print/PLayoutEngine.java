@@ -185,7 +185,7 @@ class PLayoutEngine {
       }
       new TranslateCommand(lineDescend).generate(cb);
     } catch (Exception e) {
-      throw new PSPrintException("PLayoutEngine.getPostscript(PTextBlock list, PPostscriptStream ps)", e);
+      throw new PSPrintException("PLayoutEngine.generate(PPage page)", e);
     }
   }
 
@@ -315,21 +315,18 @@ class PLayoutEngine {
     void generate(PdfContentByte cb) throws PSPrintException;
   }
 
-  static class TextCommand implements Command {
+  private static class TextCommand implements Command {
     TextCommand(Phrase chunk, float position, int alignment) {
       this.chunk = chunk;
       this.position = position;
       this.alignment = alignment;
     }
 
-    final Phrase chunk;
-    final float position;
-    final int alignment;
-
-     public void generate(PdfContentByte cb) throws PSPrintException {
+    public void generate(PdfContentByte cb) throws PSPrintException {
       int               align;
 
       switch (alignment) {
+      case PBlockStyle.ALN_DEFAULT:
       case PBlockStyle.ALN_LEFT:
         align = PdfContentByte.ALIGN_LEFT;
         break;
@@ -354,9 +351,12 @@ class PLayoutEngine {
                                  0);
     }
 
+    final Phrase chunk;
+    final float position;
+    final int alignment;
   }
 
-  private class ImageCommand implements Command {
+  private static class ImageCommand implements Command {
     ImageCommand(ImageIcon image, float x, float y) {
       this.image = image;
       this.y = y;
@@ -379,7 +379,7 @@ class PLayoutEngine {
     private float y;
   }
 
-  private class TranslateCommand implements Command {
+  private static class TranslateCommand implements Command {
     TranslateCommand() {
     }
     TranslateCommand(float y) {
@@ -399,7 +399,7 @@ class PLayoutEngine {
     private float y;
   }
 
-  private class BlockPainter implements Command {
+  private static class BlockPainter implements Command {
     BlockPainter(BlockPainter parent) {
       this.parent = parent;
       this.translate = -1;
@@ -496,7 +496,7 @@ class PLayoutEngine {
     private boolean		mergingAllowed = true;
   }
 
-  private class PageCountCommand implements Command {
+  private static class PageCountCommand implements Command {
     PageCountCommand() {
     }
     public void generate(PdfContentByte cb) throws PSPrintException {
