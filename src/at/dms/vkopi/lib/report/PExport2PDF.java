@@ -27,27 +27,29 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 import javax.swing.JTable;
 
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.PdfReader;
-
+import com.lowagie.text.ExceptionConverter;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.ExceptionConverter;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfPageEventHelper;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.PdfWriter;
+
 
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.type.NotNullDate;
@@ -188,8 +190,8 @@ public class  PExport2PDF extends PExport implements Constants {
       }
       datatable.setWidths(widths);
       firstPage = false;
-   } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new InconsistencyException(e);
     } 
   }
 
@@ -208,7 +210,7 @@ public class  PExport2PDF extends PExport implements Constants {
 
     for (int j = 0; j < strings.length; j++) {
       if (strings[j] != null) {
-        datatable.addCell(createCell(strings[j].replace('\n', ' '), scale, Color.black, getBackgroundForLevel(level), alignments[j], true));
+        datatable.addCell(createCell(strings[j], scale, Color.black, getBackgroundForLevel(level), alignments[j], true));
       } else {
         datatable.addCell(createCell(" ", scale,  Color.black, getBackgroundForLevel(level), alignments[j], true));
       }
@@ -217,14 +219,12 @@ public class  PExport2PDF extends PExport implements Constants {
   }
 
   private PdfPCell createCell(String text, double size, Color textColor, Color background, int alignment, boolean border) {
-    Paragraph   p;
-    Chunk       chunk;
     PdfPCell    cell;
     Font        font = FontFactory.getFont(FontFactory.HELVETICA, (float) size, 0 , textColor);
 
-    chunk = new Chunk(text, font);
-    p = new Paragraph(chunk);
-    cell = new PdfPCell(p);
+    cell = new PdfPCell(new Paragraph(new Chunk(text, font)));
+
+    cell.setVerticalAlignment(Element.ALIGN_TOP);
     switch (alignment) {
     case ALG_DEFAULT:
     case ALG_LEFT:
