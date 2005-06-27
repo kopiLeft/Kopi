@@ -91,17 +91,17 @@ public class PRecursiveBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-    float       currentPos = 0; 
+    float       currentPos = 0;
     int		count = 0;
 
     for (int i = from; i <= to && i < blocks.length; i++) {
       if (((Float)sizes.elementAt(count)).floatValue() > 0 && blocks[i].isShownOnThisPage()) {
         page.getPdfContentByte().saveState();
-        page.getPdfContentByte().concatCTM(1,0,0,1, 
-                                           blocks[i].getPosition().getX(), 
-                                           blocks[i].getPosition().getY()+currentPos) ;
+        page.getPdfContentByte().concatCTM(1,0,0,1,
+                                           blocks[i].getPosition().getX(),
+                                           currentPos);
 
-        blocks[i].doPrint(page); 
+        blocks[i].doPrint(page);
 	currentPos -= ((Float)sizes.elementAt(count++)).floatValue();
         page.getPdfContentByte().restoreState();
       } else {
