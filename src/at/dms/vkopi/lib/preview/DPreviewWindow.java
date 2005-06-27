@@ -23,9 +23,11 @@ package at.dms.vkopi.lib.preview;
 import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.visual.*;
 import at.dms.vkopi.lib.util.Message;
+import at.dms.vkopi.lib.util.PrintJob;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -39,9 +41,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.swing.*;
+import javax.imageio.ImageIO;
 
 /**
  * A window with an html pane
@@ -82,7 +86,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
           if (k.getKeyCode() == KeyEvent.VK_PAGE_DOWN
               && DPreviewWindow.this.model.getCurrentPage() < DPreviewWindow.this.model.getNumberOfPages())
             {
-             gotoNextPosition();
+              gotoNextPosition();
             }
       }
     });
@@ -99,7 +103,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     Rectangle   bounds;
 
     setTitle(model.getTitle());
-    label.setIcon(new ImageIcon(model.getPreviewFileName(1)));    
+    label.setIcon(createIcon(1));    
 
     frame = getFrame();
     frame.pack(); // layout frame; get preferred size
@@ -163,7 +167,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
       img.getImage().flush();
     }
 
-    ImageIcon   imgNew = new ImageIcon(model.getPreviewFileName(current));
+    ImageIcon   imgNew = createIcon(current);
 
     label.setIcon(imgNew);
 
@@ -243,6 +247,42 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
           getModel().executeVoidTrigger(VPreviewWindow.CMD_LEFT);
         }
       });
+  }
+
+  private ImageIcon createIcon(int idx) {
+    try {  
+      if (model.getPrintJob().getDataType() != PrintJob.DAT_PDF 
+        || !model.getPrintJob().isLandscape()) {  
+        return new ImageIcon(model.getPreviewFileName(idx));
+      } else {
+        return new ImageIcon(rotate(model.getPreviewFileName(idx)));
+      }
+    } catch (IOException e) {
+      throw new InconsistencyException(e);
+    }
+  }
+
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  public static BufferedImage rotate(String file) throws IOException {
+    BufferedImage	  image = ImageIO.read(new File(file));
+    GraphicsEnvironment   ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+    int	                  w = image.getWidth();
+    int	                  h = image.getHeight();
+    int	                  neww = h;
+    int	                  newh = w;
+    int	                  transparency = image.getColorModel().getTransparency();
+    BufferedImage         result = gc.createCompatibleImage(neww, newh, transparency);
+    Graphics2D            g = result.createGraphics();
+
+    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+    g.translate((neww-w)/2, (newh-h)/2);
+    g.rotate(Math.PI/2, w/2, h/2);
+    g.drawRenderedImage(image, null);
+    return result;
   }
 
   // ----------------------------------------------------------------------

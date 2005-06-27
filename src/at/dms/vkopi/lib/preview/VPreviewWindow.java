@@ -173,9 +173,16 @@ public class VPreviewWindow extends VWindow {
       Process   p;
 
       resolution = (int) ((72f * this.height)/printJob.getHeight());
-      p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeggray " +
-                                    "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
-                                    " -dNOPAUSE " + printFile + " -c quit ");
+      if (printJob.getDataType() != PrintJob.DAT_PDF 
+          || !printJob.isLandscape()) {  
+        p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
+                                      "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
+                                      " -dNOPAUSE " + printFile + " -c quit ");
+      } else {
+        p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
+                                      "-r" + resolution + "x" + resolution + " -g" + this.height + "x" + this.width +
+                                      " -dNOPAUSE " + printFile + " -c quit ");
+      }
       p.waitFor();
     } catch (Exception e) {
       fatalError(this, "VPreviewWindow.preview(File ...)", e);
@@ -339,6 +346,11 @@ public class VPreviewWindow extends VWindow {
   public int getNumberOfPages() {
     return numberOfPages;
   }
+
+  protected PrintJob getPrintJob() {
+      return printJob;  
+  }
+
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
