@@ -259,8 +259,8 @@ class PLayoutEngine {
       }
     } catch (Exception e) {
       e.printStackTrace();
+      throw new InconsistencyException(e);
     }
-    endChunk();
   }
 
   /**
