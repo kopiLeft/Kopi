@@ -668,7 +668,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       } catch (VException e) {
 	throw new InconsistencyException();
       }
-
       fetchNextRecord(record);
       try {
 	if (activeField != null) {
@@ -755,6 +754,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       // get position in data of next record in sorted order
       changeActiveRecord(getDataPosition(i));
     } else {
+      if (fetchPosition >= fetchCount - 1) {
+        throw new VExecFailedException(Message.getMessage("no_more_data"));
+      }
       changeActiveRecord(1);
     }
   }
