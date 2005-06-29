@@ -1387,7 +1387,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (!isMulti()) {
 	if (activeField != null) {
 	  try {
-	    activeField.leave(false);
+            activeField.setNull();
+            activeField.leave(false);
 	  } catch (VException e) {
 	    throw new InconsistencyException();
 	  }
