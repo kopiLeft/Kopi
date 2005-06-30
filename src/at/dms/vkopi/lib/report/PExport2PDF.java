@@ -83,7 +83,7 @@ public class  PExport2PDF extends PExport implements Constants {
                                    false,
 				   (int) page.width(),
 				   (int) page.height(),
-				   document.getPageNumber());
+				   pages);
       return printJob;
     } catch (Exception e) {
 	throw new InconsistencyException(e);
@@ -92,7 +92,6 @@ public class  PExport2PDF extends PExport implements Constants {
 
   public void export(OutputStream out ) {
     try {
-      PConfig           pconfig = getPrintConfig();
       PPaperType	paper = PPaperType.getPaperTypeFromCode(pconfig.papertype);
       Rectangle         paperSize;
 
@@ -158,9 +157,9 @@ public class  PExport2PDF extends PExport implements Constants {
     try {
       PdfReader           reader = new PdfReader(new FileInputStream(tempfile));
       PdfStamper          stamper = new PdfStamper(reader, out);
-      int                 pages = reader.getNumberOfPages();
       Rectangle           page = document.getPageSize();
 
+      pages = reader.getNumberOfPages();
       for (int i = 1; i <= pages; i++) {
         PdfPTable       foot = createFooter(i, pages);
         PdfContentByte  cb = stamper.getOverContent(i);

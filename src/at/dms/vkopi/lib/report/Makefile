@@ -26,15 +26,15 @@ PACKAGE =	at/dms/vkopi/lib/report
 ## FILES
 
 JAVAFILES +=	CellRenderer Constants DColumnStyle			\
-		DParameters DReport MReport PConfig PGenPS		\
-		PGenExcelFile Triggers VBaseRow VBooleanCodeColumn	\
+		DParameters DReport MReport PConfig			\
+	        Triggers VBaseRow VBooleanCodeColumn			\
 		VBooleanColumn	VCCDepthFirstCircuitN			\
 		VCalculateColumn VCellFormat VCodeColumn		\
 		VDateColumn VFixedCodeColumn VFixedColumn		\
 		VGroupRow VIntegerCodeColumn VIntegerColumn		\
 		VMonthColumn VReport VReportColumn VReportRow		\
 		VStringColumn VTimeColumn VTimestampColumn VWeekColumn	\
-		VNoRowException VSeparatorColumn RDataExtractor		\
+		VNoRowException VSeparatorColumn			\
 		PExport PExport2XLS PExport2PDF PExport2CSV 
 
 ## ----------------------------------------------------------------------
