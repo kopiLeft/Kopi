@@ -148,8 +148,8 @@ public class VPreviewWindow extends VWindow {
     this.imageFile = tempFile.getPath();
     this.imageFile = imageFile.substring(0, imageFile.lastIndexOf('.'));
 
-    this.height = printJob.isLandscape() ? DEF_WIDTH : DEF_HEIGHT;
-    this.width = printJob.isLandscape() ? DEF_HEIGHT : DEF_WIDTH;
+    this.height = printJob.getHeight();
+    this.width = printJob.getWidth();
 
     this.command = command;
 

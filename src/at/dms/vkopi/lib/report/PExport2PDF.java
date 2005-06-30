@@ -56,6 +56,7 @@ import at.dms.xkopi.lib.type.NotNullDate;
 import at.dms.xkopi.lib.type.NotNullTime;
 import at.dms.vkopi.lib.util.PPaperType;
 import at.dms.vkopi.lib.util.Utils;
+import at.dms.vkopi.lib.util.PrintJob;
 
 public class  PExport2PDF extends PExport implements Constants {
   /**
@@ -65,6 +66,28 @@ public class  PExport2PDF extends PExport implements Constants {
     super(table, model, pconfig, title);
 
     widths = new float[getColumnCount()];
+  }
+
+  public PrintJob export() {
+    try {  
+      PrintJob        printJob;
+      Rectangle       page;
+      File            file = Utils.getTempFile("kopi", "prt");
+
+      export(file);
+
+      page = document.getPageSize();
+      printJob = new PrintJob(file, true);
+      printJob.setDataType(PrintJob.DAT_PDF);
+      printJob.setPrintInformation(getTitle(),
+                                   false,
+				   (int) page.width(),
+				   (int) page.height(),
+				   document.getPageNumber());
+      return printJob;
+    } catch (Exception e) {
+	throw new InconsistencyException(e);
+    } 
   }
 
   public void export(OutputStream out ) {
@@ -88,7 +111,8 @@ public class  PExport2PDF extends PExport implements Constants {
                               pconfig.leftmargin, 
                               pconfig.rightmargin, 
                               pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin, 
-                              pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin);
+                              pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin+2); 
+                              // 2 to be sure to print the border
 
       scale = (float) getScale(3, 12, 0.1);
 
@@ -125,7 +149,7 @@ public class  PExport2PDF extends PExport implements Constants {
       addFooter(tempFile, out);
 
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new InconsistencyException(e);
     } 
   }
 
@@ -140,10 +164,9 @@ public class  PExport2PDF extends PExport implements Constants {
       for (int i = 1; i <= pages; i++) {
         PdfPTable       foot = createFooter(i, pages);
         PdfContentByte  cb = stamper.getOverContent(i);
-        Document        document = cb.getPdfDocument();
 
         foot.setTotalWidth(page.width() - document.leftMargin() - document.rightMargin());
-        foot.writeSelectedRows(0, -1, document.leftMargin(), getPrintConfig().bottommargin, cb);
+        foot.writeSelectedRows(0, -1, document.leftMargin(), getPrintConfig().bottommargin+foot.getTotalHeight(), cb);
       }
       stamper.close();
     } catch (Exception e) {
@@ -301,7 +324,9 @@ public class  PExport2PDF extends PExport implements Constants {
 
 
   protected void formatStringColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("X", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth();
+      // maximum of length of titel AND width of column 
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+			     new Chunk("m", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
     widthSum += widths[index];
   }
 

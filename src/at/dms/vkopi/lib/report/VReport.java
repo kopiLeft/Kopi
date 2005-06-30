@@ -215,12 +215,16 @@ public abstract class VReport extends VWindow
   }
 
   public PrintJob createPrintJob() throws PrintException, VException {
-    PGenPS      pgenps = new PGenPS(((DReport)getDisplay()).getTable(), model, pconfig, pageTitle);
-    PrintJob    printJob = pgenps.printInto();
+      PExport2PDF       exporter;
+      PrintJob          printJob;
 
-    printJob.setDocumentType(getDocumentType());
-    printJob.setTitle(pageTitle);
-    return printJob;
+      exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
+				 model,
+				 pconfig,
+                                 pageTitle);
+      printJob = exporter.export();
+      printJob.setDocumentType(getDocumentType());
+      return printJob;
   }
 
   /**
