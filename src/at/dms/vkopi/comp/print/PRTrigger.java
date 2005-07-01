@@ -61,6 +61,9 @@ public class PRTrigger extends VKPhylum implements at.dms.kopi.comp.kjc.Constant
   public String getIdent() {
     return ident;
   }
+  public void setIdent(String str) {
+    ident = str;
+  }
 
   // ----------------------------------------------------------------------
   // INTERFACE CHECKING

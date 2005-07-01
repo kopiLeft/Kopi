@@ -37,3 +37,8 @@ error		BAD_FORMAT
 error		UNDEFINED_BLOCK
 		"This block is not defined:\"{0}\""
 		"PRINT"
+
+error           WRONG_PAGE_TRIGGER_NAME
+		"This trigger is not supported \"{0}\""
+		"PRINT"
+

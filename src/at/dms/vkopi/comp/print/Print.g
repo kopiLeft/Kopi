@@ -26,6 +26,7 @@ header { package at.dms.vkopi.comp.print; }
   import java.util.ArrayList;
 
   import at.dms.compiler.base.Compiler;
+  import at.dms.compiler.base.PositionedError;
   import at.dms.compiler.tools.antlr.extra.InputBuffer;
   import at.dms.compiler.base.TokenReference;
   import at.dms.kopi.comp.kjc.*;
@@ -108,6 +109,8 @@ prPage []
   CParseClassContext	context = new CParseClassContext(); // not flushed !!!
   PRDefinitionCollector coll = new PRDefinitionCollector(environment.getInsertDirectories());
   TokenReference	sourceRef = buildTokenReference();
+  PRTrigger             headerFooter = null;
+  PRTrigger             footerHeader = null;
 }
 :
   "PAGE"
@@ -129,9 +132,44 @@ prPage []
   "BEGIN"
   prolog = prProlog[]
   ( block = prBlock[true] { blocks.add(block); } )+
+  ( headerFooter = prTrigger[] ( footerHeader = prTrigger[] )? )?
   ( vkContextFooter[context] )?
   "END" "PAGE"
     {
+     if (headerFooter != null) {
+       // special textblocks for page-header/footer	
+       if (!headerFooter.getIdent().equals("PAGEHEADER") 
+           && !headerFooter.getIdent().equals("PAGEFOOTER")) { 
+         reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME,  headerFooter.getIdent()));
+       }
+
+       PRTextBlock hf = new PRTextBlock(sourceRef,
+			                new CParseClassContext(),
+			                "_$_" + headerFooter.getIdent(),
+			                new PRPosition(sourceRef, 0, 0, 10000, 10000, null, null, null),
+			                null,
+			                false,
+			                new PRTrigger[]{headerFooter});
+       headerFooter.setIdent("SOURCE");
+       blocks.add(hf);
+       if (footerHeader != null) {
+         if (!footerHeader.getIdent().equals("PAGEHEADER") 
+             && !footerHeader.getIdent().equals("PAGEFOOTER")) { 
+           reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME, footerHeader.getIdent()));
+         }
+         PRTextBlock fh = new PRTextBlock(sourceRef,
+	                                  new CParseClassContext(),
+                                          "_$_" + footerHeader.getIdent(),
+			                  new PRPosition(sourceRef, 0, 0, 10000, 10000, null, null, null),
+                                          null,
+			                  false,
+			                  new PRTrigger[]{footerHeader});
+         footerHeader.setIdent("SOURCE");
+         blocks.add(fh);
+       }
+     }
+
+
       self = new PRPage(sourceRef,
                         environment,
 	                cunit,

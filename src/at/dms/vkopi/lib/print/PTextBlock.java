@@ -332,7 +332,15 @@ public abstract class PTextBlock extends PBlock {
    *
    */
   public void addPageCount() {
-    engine.addPageCount();
+    if (getPage().isPageCountAvailable()) {
+      engine.addPageCount(getPage().getPageCount());
+     } else {
+	// !! report error
+    }
+  }
+
+  public String getPageCount() {
+    return String.valueOf(getPage().getPageCount());
   }
 
   /**

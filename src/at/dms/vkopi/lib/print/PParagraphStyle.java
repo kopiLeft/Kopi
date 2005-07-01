@@ -68,7 +68,7 @@ public class PParagraphStyle extends PBodyStyle {
   // ----------------------------------------------------------------------
 
   /**
-   * Sets the style in postscript
+   * Sets the style 
    */
   public void setStyle(PTextBlock list, PLayoutEngine engine, boolean hasBang) {
     engine.setParagraphStyle(list, this, hasBang);

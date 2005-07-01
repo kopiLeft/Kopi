@@ -20,6 +20,7 @@
 
 package at.dms.vkopi.lib.print;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -54,6 +55,11 @@ public class PdfPrintJob extends PrintJob {
     closed = false;
   }
 
+  public PdfPrintJob(File file) throws IOException {
+    super(file, true);
+    closed = true;
+  }
+
   public PdfWriter getWriter() throws PSPrintException {
     if (closed) {
       throw new PSPrintException("Document is already closed");
@@ -73,7 +79,7 @@ public class PdfPrintJob extends PrintJob {
       closed = true;
       document.close();
     } else {
-      throw new PSPrintException("Postscript-stream is already closed");
+      throw new PSPrintException("PDF-document is already closed");
     }
   }
 

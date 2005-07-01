@@ -178,7 +178,7 @@ class PLayoutEngine {
   }
 
   public void generate(PPage page) throws PSPrintException {
-    PdfContentByte cb = page.getWriter().getDirectContent();
+    PdfContentByte cb = page.getPdfContentByte();
     try {
       for (int i = 0; i < commands.size(); i++) {
 	((Command)commands.elementAt(i)).generate(cb);
@@ -207,9 +207,8 @@ class PLayoutEngine {
   /**
    * Sets the current x position (from tabs)
    */
-  public void addPageCount() {
-    endChunk();
-    commands.addElement(new PageCountCommand());
+  public void addPageCount(int nummer) {
+      addText(String.valueOf(nummer));        
   }
 
   // ----------------------------------------------------------------------
@@ -494,14 +493,6 @@ class PLayoutEngine {
     private PParagraphStyle	style;
     private PTextBlock	        list;
     private boolean		mergingAllowed = true;
-  }
-
-  private static class PageCountCommand implements Command {
-    PageCountCommand() {
-    }
-    public void generate(PdfContentByte cb) throws PSPrintException {
-	//      ps.pageCount();
-    }
   }
 
   // ---------------------------------------------------------------------

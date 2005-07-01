@@ -23,7 +23,9 @@ package at.dms.vkopi.lib.print;
 import java.awt.geom.AffineTransform;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -39,11 +41,13 @@ import at.dms.vkopi.lib.visual.VExecFailedException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 /**
  * Handle the generation of a document
@@ -214,7 +218,7 @@ public abstract class PPage {
   protected abstract boolean showBlock(int index);
 
   // ----------------------------------------------------------------------
-  // ACCESSORS (POSTSCRIPT)
+  // ACCESSORS 
   // ----------------------------------------------------------------------
   /**
    *
@@ -280,6 +284,9 @@ public abstract class PPage {
   protected PrintJob startPrintIntern(PdfPrintJob printJob) throws IOException, PrintException {
     printBlocks(printJob);
     printJob.close();
+    if (header != null || footer != null) {
+      printJob = printHeaderFooter(printJob);
+    }
     printJob.setPrintInformation(title,
                                  landscape,
                                  width,
@@ -298,11 +305,59 @@ public abstract class PPage {
 
   private void addWatermark(PdfPrintJob printJob) throws PSPrintException {
     if (watermark != null) {  
-      PdfContentByte    cb =  printJob.getWriter().getDirectContent();
+      PdfContentByte    cbwater =  printJob.getWriter().getDirectContent();
 
-      cb.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
+      cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
     }
   }
+
+  public boolean isPageCountAvailable() {
+    return pageCountAvailable;
+  }
+  public int getPageCount() {
+    return pageCount;
+  }
+
+  protected PdfPrintJob printHeaderFooter(PdfPrintJob printJob) throws PSPrintException {
+    try {
+      File                file = Utils.getTempFile("kopi", "prt");
+      PdfReader           reader = new PdfReader(new FileInputStream(printJob.getDataFile()));
+      PdfStamper          stamper = new PdfStamper(reader, new FileOutputStream(file));
+      Rectangle           page = document.getPageSize();
+
+      pageCount = reader.getNumberOfPages();
+
+      pageCountAvailable = true;
+      for (int i = 1; i <= pageCount; i++) {
+        writer = stamper.getOverContent(i).getPdfWriter() ;
+  
+        cb = stamper.getOverContent(i);
+	if (header != null) {
+          cb.saveState();
+          cb.concatCTM(1,0,0,1, document.leftMargin(), page.height()-document.topMargin()) ;
+          header.preparePrint(this);
+          header.fill(5000);
+          header.doPrint(this);
+          cb.restoreState();
+	}
+        if (footer != null) { 
+          float     size;
+
+          cb.saveState();
+          footer.preparePrint(this);
+          size = footer.fill(5000);
+          cb.concatCTM(1,0,0,1, document.leftMargin(), size+document.bottomMargin()) ;
+          footer.doPrint(this);      
+          cb.restoreState();
+	}
+      }
+      stamper.close();
+      return new PdfPrintJob(file);
+    } catch (Exception e) {
+      throw new InconsistencyException(e);
+    }
+  }
+
   /**
    *
    */
@@ -312,8 +367,13 @@ public abstract class PPage {
 
     for (int i = 0; i < this.blocks.size(); i++) {
       PBlock    block = (PBlock)this.blocks.elementAt(i);
-      if (!innerBlocks.containsKey(block.getIdent())) {
-	blocks.addElement(block);
+
+      if (block.getIdent().equals("_$_PAGEHEADER")) {
+        header = block;
+      } else if (block.getIdent().equals("_$_PAGEFOOTER")) {
+        footer = block;
+      } else if (!innerBlocks.containsKey(block.getIdent())) {
+        blocks.addElement(block);
       }
     }
 
@@ -322,8 +382,8 @@ public abstract class PPage {
 
     document = printJob.getDocument();
     writer = printJob.getWriter();
-
-    PdfContentByte      cb = writer.getDirectContent();
+    cb = writer.getDirectContent();
+    pageCountAvailable = false;
 
     while (!fullyPrinted) {
       sizes.setSize(0);
@@ -402,7 +462,7 @@ public abstract class PPage {
   }
 
   public PdfContentByte getPdfContentByte() {
-    return writer.getDirectContent();
+    return cb;
   }
 
   public Document getDocument() {
@@ -415,6 +475,11 @@ public abstract class PPage {
   private Document  document;
   private PdfWriter writer;
 
+  private int                   pageCount;
+  private boolean               pageCountAvailable;
+  private PdfContentByte        cb;
+  private PBlock                header;
+  private PBlock                footer;
   private Hashtable		styles;
   private Hashtable		blockStyles;
   private Hashtable		innerBlocks;
