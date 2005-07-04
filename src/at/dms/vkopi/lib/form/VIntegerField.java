@@ -281,7 +281,17 @@ public class VIntegerField extends VField {
 
   /**
    * Returns the sum of every filled records in block
-   * @deprecated
+   */
+  public int getCoalesceSum(int coalesceValue) {
+    Integer     sum;
+
+    sum = computeSum();
+    return sum == null ? coalesceValue : sum.intValue();
+  }
+
+  /**
+   * Returns the sum of every filled records in block
+   * @deprecated        use int getCoalesceSum(int) instead
    */
   public int getSum() {
     Integer     sum;

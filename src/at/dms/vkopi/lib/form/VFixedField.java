@@ -218,9 +218,18 @@ public class VFixedField extends VField {
     return computeSum(false);
   }
 
+ /**
+   * Returns the sum of every filled records in block
+   */
+  public NotNullFixed getCoalesceSum(NotNullFixed coalesceValue) {
+    Fixed    sum;
+
+    sum = computeSum();
+    return sum == null ? coalesceValue : (NotNullFixed)sum;
+  }
   /**
    * Returns the sum of every filled records in block.
-   * @deprecated
+   * @deprecated use NotNullFixed getCoalesceSum(NotNullFixed coalesceValue) instead
    */
   public NotNullFixed getSum() {
     Fixed       sum;
