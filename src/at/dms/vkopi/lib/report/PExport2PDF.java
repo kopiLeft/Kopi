@@ -169,7 +169,7 @@ public class  PExport2PDF extends PExport implements Constants {
       }
       stamper.close();
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new InconsistencyException(e);
     } 
   }
 
@@ -199,15 +199,18 @@ public class  PExport2PDF extends PExport implements Constants {
       currentSubtitle = subTitle;
 
       datatable = new PdfPTable(getColumnCount());
-
       datatable.setWidthPercentage(100);
-      datatable.getDefaultCell().setBorderWidth(1);
-      datatable.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
+
+      PdfPCell  defaultCell = datatable.getDefaultCell();
+
+      defaultCell.setBorderWidth(BORDER_WIDTH);
+      defaultCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+
       if (!firstPage) {
         document.newPage();
       } else {
         for (int i = 0; i < widths.length; i++) {
-          widths[i] += datatable.getDefaultCell().getEffectivePaddingLeft()  + datatable.getDefaultCell().getEffectivePaddingRight() ;
+          widths[i] += datatable.getDefaultCell().getPaddingLeft()-BORDER_WIDTH  + datatable.getDefaultCell().getPaddingRight()-BORDER_WIDTH;
         }
       }
       datatable.setWidths(widths);
@@ -225,7 +228,7 @@ public class  PExport2PDF extends PExport implements Constants {
   }
 
   protected void exportRow(int level, String[] strings, Object[] orig, int[] alignments) {
-    datatable.getDefaultCell().setBorderWidth(1);
+    datatable.getDefaultCell().setBorderWidth(BORDER_WIDTH);
     datatable.getDefaultCell().setBackgroundColor(Color.white);
 
     int       cell = 0;
@@ -245,6 +248,10 @@ public class  PExport2PDF extends PExport implements Constants {
     Font        font = FontFactory.getFont(FontFactory.HELVETICA, (float) size, 0 , textColor);
 
     cell = new PdfPCell(new Paragraph(new Chunk(text, font)));
+    cell.setBorderWidth(1);
+    cell.setPaddingLeft(BORDER_PADDING);
+    cell.setPaddingRight(BORDER_PADDING);
+    cell.setNoWrap(true);
 
     cell.setVerticalAlignment(Element.ALIGN_TOP);
     switch (alignment) {
@@ -293,10 +300,10 @@ public class  PExport2PDF extends PExport implements Constants {
     widthSum = 0;
     scale = max;
     formatColumns();
-    widthSumMax = widthSum + getColumnCount()*2*2 + getColumnCount() *1;
+    widthSumMax = widthSum + getColumnCount()*2*BORDER_PADDING + getColumnCount()*1;
 
     if (widthSumMax
-        <= (width - document.leftMargin() - document.rightMargin() - 2 * pconfig.border)) {
+        <= (width - document.leftMargin() - document.rightMargin() - 2*pconfig.border)) {
       return max;
     }
     if (max - min <= precision) {
@@ -306,12 +313,12 @@ public class  PExport2PDF extends PExport implements Constants {
     widthSum = 0;
     scale = min;
     formatColumns();
-    widthSumMin = widthSum + getColumnCount()*2*3 + getColumnCount() *1;
+    widthSumMin = widthSum + getColumnCount()*2*BORDER_PADDING + getColumnCount() *1;
 
     widthSum = 0;
     scale =(float) (min+(max-min)/2);
     formatColumns();
-    widthSum = widthSum + getColumnCount()*2*3 + getColumnCount() *1;
+    widthSum = widthSum + getColumnCount()*2*BORDER_PADDING + getColumnCount() *1;
 
     if (widthSumMin <= (width - document.leftMargin() - document.rightMargin() - 2 * pconfig.border) 
         && widthSum  >= (width - document.leftMargin() - document.rightMargin() - 2 * pconfig.border)) {
@@ -325,7 +332,7 @@ public class  PExport2PDF extends PExport implements Constants {
   protected void formatStringColumn(VReportColumn column, int index) {
       // maximum of length of titel AND width of column 
     widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
-			     new Chunk("m", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
+			     new Chunk("X", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
     widthSum += widths[index];
   }
 
@@ -380,4 +387,7 @@ public class  PExport2PDF extends PExport implements Constants {
   private double                scale;
   private double                widthSum;
   private float                 widths[];
+
+  private final static int      BORDER_PADDING = 1;
+  private final static int      BORDER_WIDTH = 1;
 }
