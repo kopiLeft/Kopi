@@ -313,7 +313,7 @@ public class PRPage
     }
 
     for (int i = 0; i < blocks.length; i++) {
-      if (blocks[i] instanceof PRRectangleBlock || blocks[i] instanceof PRPostscriptBlock) {
+      if (blocks[i] instanceof PRRectangleBlock) {
 	initLoadDefinition.addElement(new JExpressionStatement(ref, blocks[i].genConstructorCall(), null));
       }
     }
@@ -346,7 +346,7 @@ public class PRPage
     for (int i = 0; i < blocks.length; i++) {
       JExpression	expr;
 
-      if (blocks[i] instanceof PRRectangleBlock || blocks[i] instanceof PRPostscriptBlock) {
+      if (blocks[i] instanceof PRRectangleBlock) {
 	expr = new JNameExpression(ref, blocks[i].getIdent());
       } else {
 	expr = blocks[i].genConstructorCall();

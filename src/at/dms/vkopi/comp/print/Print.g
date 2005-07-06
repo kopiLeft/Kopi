@@ -407,8 +407,6 @@ prBlock [boolean wantPos]
   |
     self = prListBlock[wantPos]
   |
-    self = prPostscriptBlock[wantPos]
-  |
     self = prRectangleBlock[wantPos]
 ;
 
@@ -443,31 +441,13 @@ prImportedBlock []
 :
   "INSERT"
   (
-    ("POSTSCRIPT" | "RECT" | "VERTICAL" "BLOCK" | "HORIZONTAL" "BLOCK")
+    ("RECT" | "VERTICAL" "BLOCK" | "HORIZONTAL" "BLOCK")
   |
     ("TEXT" | "LIST" ) { mode = true; }
   )
 
    name = vkQualifiedIdent[]
     { self = new PRImportedBlock(sourceRef, name, mode); }
-;
-
-prPostscriptBlock [boolean wantPos]
-  returns [PRBlock self]
-{
-  String		ident = null;
-  String		name;
-  String		style = null;
-  PRPosition		pos;
-  TokenReference	sourceRef = buildTokenReference();
-}
-:
-  "POSTSCRIPT" ( ident = vkSimpleIdent[] )?
-  pos = prBlockPos[wantPos]
-  ( "STYLE" style = vkSimpleIdent[] )?
-  "NAME" name = vkString[]
-  "END" "BLOCK"
-    { self = new PRPostscriptBlock(sourceRef, ident, pos, style, name); }
 ;
 
 prRectangleBlock [boolean wantPos]

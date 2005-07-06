@@ -31,7 +31,7 @@ PACKAGE =	at/dms/vkopi/lib/print
 JAVAFILES +=	PPage PBlock PPosition PSize PRectangleBlock		\
 		PStyle PBlockStyle PTextStyle PTabStop PTextBlock	\
 		PLayoutEngine Metrics PParagraphStyle PBodyStyle	\
-		PRecursiveBlock PPostscriptBlock PListBlock		\
+		PRecursiveBlock PListBlock				\
 		PProtectedPage PHorizontalBlock				\
 		PreviewPrinter Printable PrintManager			\
 		DefaultPrintManager PLabelForm				\

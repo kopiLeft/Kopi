@@ -17,7 +17,7 @@
                    PrintParser.java 
                    PrintKeywords.java 
                    PRParagraphStyle.java PRStyle.java PRPosition.java PRStyleRef.java 
-                   PRPostscriptBlock.java PRTabStop.java PRBlock.java PRText.java PRBlockStyle.java 
+                   PRTabStop.java PRBlock.java PRText.java PRBlockStyle.java 
                    PRTextBlock.java PRTextStyle.java 
                    PRJavaExpression.java PRProlog.java 
                    PRRectangleBlock.java PRPage.java PRSourceElement.java 

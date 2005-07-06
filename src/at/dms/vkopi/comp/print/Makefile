@@ -37,7 +37,7 @@ JAVAFILES +=	PrintScanner
 
 # Syntax tree classes
 JAVAFILES +=	PRParagraphStyle PRStyle PRPosition PRStyleRef		\
-		PRPostscriptBlock PRTabStop PRBlock PRText PRBlockStyle \
+		PRTabStop PRBlock PRText PRBlockStyle			\
 		PRTextBlock PRTextStyle					\
 		PRJavaExpression PRProlog				\
 		PRRectangleBlock PRPage PRSourceElement			\
