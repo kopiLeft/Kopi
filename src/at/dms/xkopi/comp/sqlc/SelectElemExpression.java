@@ -20,6 +20,8 @@
 
 package at.dms.xkopi.comp.sqlc;
 
+import java.util.ArrayList;
+
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 
@@ -69,7 +71,7 @@ public class SelectElemExpression extends SelectElem {
    *
    * @param	columnName      the name to test
    */
-  public boolean isColumn(String columnName) {
+  public boolean isColumn(String columnName, ArrayList tables) {
     return (columnName.equals(newColumnName) ||
             (columnExpr instanceof FieldReference &&
              columnName.equals(((FieldReference) columnExpr).getFieldName())));

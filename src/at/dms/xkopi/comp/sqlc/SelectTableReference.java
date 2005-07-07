@@ -66,7 +66,7 @@ public class SelectTableReference extends TableReference {
     while (columns.hasNext()) {
       SelectElem        elem = (SelectElem) columns.next();
 
-      if (elem.isColumn(ident)) {
+      if (elem.isColumn(ident, expr.getTables())) {
         return true;
       }
     }
