@@ -36,7 +36,6 @@
 @literal	PARAGRAPH
 @literal	PORTRAIT
 @literal	POS
-@literal	POSTSCRIPT
 @literal	PROLOG
 @literal	REC
 @literal	RECT

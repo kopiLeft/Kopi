@@ -15,7 +15,7 @@
             value="PPage.java PBlock.java PPosition.java PSize.java PRectangleBlock.java 
                    PStyle.java PBlockStyle.java PTextStyle.java PTabStop.java PTextBlock.java 
                    PLayoutEngine.java Metrics.java PParagraphStyle.java PBodyStyle.java 
-                   PRecursiveBlock.java PPostscriptBlock.java PListBlock.java 
+                   PRecursiveBlock.java PListBlock.java 
                    PProtectedPage.java PHorizontalBlock.java 
                    PreviewPrinter.java Printable.java PrintManager.java 
                    DefaultPrintManager.java PLabelForm.java 
