@@ -20,6 +20,9 @@
 
 package at.dms.xkopi.comp.sqlc;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 
@@ -69,7 +72,15 @@ public class SelectElemStar extends SelectElem {
    *
    * @param	columnName      the name to test
    */
-  public boolean isColumn(String columnName) {
+  public boolean isColumn(String columnName, ArrayList tables) {
+    Iterator alltables =  tables.iterator();
+
+    while(alltables.hasNext()) {
+      if (((TableReference) alltables.next()).hasColumn(columnName)) {
+        return true;
+      } 
+    }
+    
     return false;
   }
 
