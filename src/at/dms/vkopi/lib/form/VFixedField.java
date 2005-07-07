@@ -214,30 +214,34 @@ public class VFixedField extends VField {
   /**
    * Returns the sum of the field values of all records.
    *
+   * @param     exclude         exclude the current record
+   * @param     coalesceValue   the value to take if all fields are empty
+   * @return    the sum of the field values or coalesceValue if none is filled.
+   */
+  public NotNullFixed computeSum(boolean exclude, NotNullFixed coalesceValue) {
+    Fixed       sum;
+
+    sum = computeSum(exclude);
+    return sum == null ? coalesceValue : (NotNullFixed)sum;
+  }
+
+  /**
+   * Returns the sum of the field values of all records.
+   *
    * @return    the sum of the field values, null if none is filled.
    */
   public Fixed computeSum() {
     return computeSum(false);
   }
 
- /**
-   * Returns the sum of every filled records in block
-   */
-  public NotNullFixed getCoalesceSum(NotNullFixed coalesceValue) {
-    Fixed    sum;
-
-    sum = computeSum();
-    return sum == null ? coalesceValue : (NotNullFixed)sum;
-  }
   /**
-   * Returns the sum of every filled records in block.
-   * @deprecated use NotNullFixed getCoalesceSum(NotNullFixed coalesceValue) instead
+   * Returns the sum of every filled records in block
+   *
+   * @param     coalesceValue   the value to take if all fields are empty
+   * @return    the sum of the field values or coalesceValue if none is filled.
    */
-  public NotNullFixed getSum() {
-    Fixed       sum;
-
-    sum = computeSum();
-    return sum == null ? new NotNullFixed(0) : (NotNullFixed)sum;
+  public NotNullFixed computeSum(NotNullFixed coalesceValue) {
+    return computeSum(false, coalesceValue);
   }
 
   /*

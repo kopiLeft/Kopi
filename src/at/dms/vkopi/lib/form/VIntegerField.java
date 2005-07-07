@@ -275,6 +275,20 @@ public class VIntegerField extends VField {
   /**
    * Returns the sum of the field values of all records.
    *
+   * @param     exclude         exclude the current record
+   * @param     coalesceValue   the value to take if all fields are empty
+   * @return    the sum of the field values or coalesceValue if none is filled.
+   */
+  public int computeSum(boolean exclude, int coalesceValue) {
+    Integer     sum;
+
+    sum = computeSum(exclude);
+    return sum == null ? coalesceValue : sum.intValue();
+  }
+
+  /**
+   * Returns the sum of the field values of all records.
+   *
    * @return    the sum of the field values, null if none is filled.
    */
   public Integer computeSum() {
@@ -289,6 +303,16 @@ public class VIntegerField extends VField {
 
     sum = computeSum();
     return sum == null ? coalesceValue : sum.intValue();
+  }
+
+  /**
+   * Returns the sum of every filled records in block
+   *
+   * @param     coalesceValue   the value to take if all fields are empty
+   * @return    the sum of the field values or coalesceValue if none is filled.
+   */
+  public int computeSum(int coalesceValue) {
+    return computeSum(false, coalesceValue);
   }
 
   /**
