@@ -260,7 +260,9 @@ public class VIntegerField extends VField {
     Integer       sum = null;
 
     for (int i = 0; i < getBlock().getBufferSize(); i++) {
-      if (!isNullImpl(i) && (!exclude || i != getBlock().getActiveRecord())) {
+      if (!isNullImpl(i) 
+          && getBlock().isRecordFilled(i)
+          && (!exclude || i != getBlock().getActiveRecord())) {
         if (sum == null) {
           sum = new Integer(0);
         }
