@@ -43,11 +43,11 @@ RELEASE =	"Version 2.2C released 06 May 2005"
 endif
 
 ifndef JAVA
-JAVA =		java
+JAVA =		java -Djava.ext.dirs=$(EXTDIRS)
 endif
 
 ifndef JAVAC
-JAVAC =		jikes +E +P -source 1.4
+JAVAC =		jikes +E +P -source 1.4 -extdirs $(EXTDIRS)
 endif
 
 ifndef TOKDEF
