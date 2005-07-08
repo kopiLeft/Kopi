@@ -130,6 +130,9 @@ public abstract class PBlock {
     size.preparePrint(this);
   }
 
+  public void reinitialize() {
+  }
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------

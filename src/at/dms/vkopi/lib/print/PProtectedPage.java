@@ -20,9 +20,15 @@
 
 package at.dms.vkopi.lib.print;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Vector;
+
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.util.Message;
@@ -37,6 +43,7 @@ import at.dms.xkopi.lib.base.DBDeadLockException;
 import at.dms.xkopi.lib.base.DBInterruptionException;
 
 import at.dms.vkopi.lib.util.PrintJob;
+import at.dms.vkopi.lib.util.Utils;
 
 /**
  * Handle the generation of a document
@@ -186,8 +193,22 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
       // end pdf document
       printJob.close();
 
-      // print job
-      return printJob;
+      try {
+        File              file = Utils.getTempFile("kopi", "prt");
+        PdfReader         reader = new PdfReader(new FileInputStream(printJob.getDataFile()));
+        PdfStamper        stamper = new PdfStamper(reader, new FileOutputStream(file));
+        int               startpage = 1;
+
+        for (int i = 0; i < reports.length; i++) {
+          // add report to print job
+          startpage = reports[i].continuePrinting(stamper, restartPageNumer, startpage, printJob.getNumberOfPages());
+        }
+
+        stamper.close();
+        return new PdfPrintJob(file);
+      } catch (Exception e) {
+        throw new InconsistencyException(e);
+      }
     }
 
     PProtectedPage[]    reports;

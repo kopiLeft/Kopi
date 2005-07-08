@@ -464,6 +464,7 @@ public abstract class PTextBlock extends PBlock {
       // throw new PSPrintException("PTextBlock.fillBlock():2", e);
     }
     if (error != null) {
+      error.printStackTrace();
       throw new PSPrintException("PTextBlock.fillBlock():1", error);
     }
   }
@@ -482,6 +483,10 @@ public abstract class PTextBlock extends PBlock {
 
   protected float getMaxHeight() {
     return maxSize;
+  }
+
+  public void reinitialize() {
+    isFullyPrinted = false;
   }
 
   // ---------------------------------------------------------------------

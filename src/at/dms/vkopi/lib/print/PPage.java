@@ -163,13 +163,26 @@ public abstract class PPage {
                                 boolean restartPageFromOne)
     throws PSPrintException
   {
-      currentPage = restartPageFromOne ? 0 : printJob.getNumberOfPages();
-      printBlocks(printJob);
-      if (restartPageFromOne) {
-        printJob.setNumberOfPages(printJob.getNumberOfPages()+currentPage);
-      } else {
-        printJob.setNumberOfPages(currentPage);
-      }
+    if (printJob.getNumberOfPages() < 0) {
+      printJob.setNumberOfPages(0);
+    }
+    currentPage = restartPageFromOne ? 0 : printJob.getNumberOfPages();
+    printBlocks(printJob);
+    printJob.setNumberOfPages(printJob.getNumberOfPages() + reportPageCount); 
+  }
+
+  /**
+   * Starts a print session with a printer
+   */
+  public int continuePrinting(PdfStamper stamper,
+                              boolean restartPageFromOne,
+                              int startpage,
+                              int allpages)
+    throws PSPrintException
+  { 
+    pageCount = restartPageFromOne ? reportPageCount : allpages;
+    printHeaderFooter(stamper, startpage,  startpage + reportPageCount -1, pageCount);
+    return startpage + reportPageCount; // = last page used + 1
   }
 
   // ----------------------------------------------------------------------
@@ -276,6 +289,7 @@ public abstract class PPage {
     }
 
     currentPage++;
+    reportPageCount++;
   }
 
   /**
@@ -284,6 +298,7 @@ public abstract class PPage {
   protected PrintJob startPrintIntern(PdfPrintJob printJob) throws IOException, PrintException {
     printBlocks(printJob);
     printJob.close();
+
     if (header != null || footer != null) {
       printJob = printHeaderFooter(printJob);
     }
@@ -314,27 +329,46 @@ public abstract class PPage {
   public boolean isPageCountAvailable() {
     return pageCountAvailable;
   }
+
   public int getPageCount() {
     return pageCount;
   }
 
   protected PdfPrintJob printHeaderFooter(PdfPrintJob printJob) throws PSPrintException {
     try {
-      File                file = Utils.getTempFile("kopi", "prt");
-      PdfReader           reader = new PdfReader(new FileInputStream(printJob.getDataFile()));
-      PdfStamper          stamper = new PdfStamper(reader, new FileOutputStream(file));
+      File              file = Utils.getTempFile("kopi", "prt");
+      PdfReader         reader = new PdfReader(new FileInputStream(printJob.getDataFile()));
+      PdfStamper        stamper = new PdfStamper(reader, new FileOutputStream(file));
+
+      pageCount =  reader.getNumberOfPages();
+
+      printHeaderFooter(stamper, 1, pageCount, pageCount);
+
+      stamper.close();
+      return new PdfPrintJob(file);
+    } catch (Exception e) {
+      throw new InconsistencyException(e);
+    }
+  }
+
+  protected void  printHeaderFooter(PdfStamper stamper, int startpage, int endpage, int pageCount) throws PSPrintException {
+    try {
       Rectangle           page = document.getPageSize();
 
-      pageCount = reader.getNumberOfPages();
-
       pageCountAvailable = true;
-      for (int i = 1; i <= pageCount; i++) {
-        writer = stamper.getOverContent(i).getPdfWriter() ;
-  
+
+      for (int i = startpage; i <= endpage; i++) {
+        currentPage = i;
+
         cb = stamper.getOverContent(i);
+        if (cb == null) {
+          continue;
+        }
+
 	if (header != null) {
           cb.saveState();
           cb.concatCTM(1,0,0,1, document.leftMargin(), page.height()-document.topMargin()) ;
+          header.reinitialize();
           header.preparePrint(this);
           header.fill(5000);
           header.doPrint(this);
@@ -344,6 +378,7 @@ public abstract class PPage {
           float     size;
 
           cb.saveState();
+          footer.reinitialize();
           footer.preparePrint(this);
           size = footer.fill(5000);
           cb.concatCTM(1,0,0,1, document.leftMargin(), size+document.bottomMargin()) ;
@@ -351,9 +386,8 @@ public abstract class PPage {
           cb.restoreState();
 	}
       }
-      stamper.close();
-      return new PdfPrintJob(file);
     } catch (Exception e) {
+      e.printStackTrace();
       throw new InconsistencyException(e);
     }
   }
@@ -475,6 +509,7 @@ public abstract class PPage {
   private Document  document;
   private PdfWriter writer;
 
+  private int                   reportPageCount;
   private int                   pageCount;
   private boolean               pageCountAvailable;
   private PdfContentByte        cb;
