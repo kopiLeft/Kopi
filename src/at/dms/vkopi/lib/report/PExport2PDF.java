@@ -252,6 +252,7 @@ public class  PExport2PDF extends PExport implements Constants {
     cell.setPaddingLeft(BORDER_PADDING);
     cell.setPaddingRight(BORDER_PADDING);
     cell.setNoWrap(true);
+    cell.setUseDescender(true);
 
     cell.setVerticalAlignment(Element.ALIGN_TOP);
     switch (alignment) {
