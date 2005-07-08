@@ -20,6 +20,8 @@
 
 package at.dms.xkopi.comp.sqlc;
 
+import java.util.ArrayList;
+
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 
@@ -56,6 +58,6 @@ public abstract class SelectElem extends SqlPhylum {
    *
    * @param	columnName      the name to test
    */
-  public abstract boolean isColumn(String columnName);
+  public abstract boolean isColumn(String columnName, ArrayList tables);
 
 }
