@@ -20,6 +20,8 @@
 
 package at.dms.xkopi.comp.xkjc;
 
+import java.util.ArrayList;
+
 import at.dms.kopi.comp.kjc.CType;
 import at.dms.kopi.comp.kjc.TypeFactory;
 import at.dms.xkopi.comp.sqlc.Expression;
@@ -66,8 +68,8 @@ public class XTypedSqlExpr extends SelectElem {
    *
    * @param	columnName      the name to test
    */
-  public boolean isColumn(String columnName) {
-    return expr.isColumn(columnName);
+  public boolean isColumn(String columnName, ArrayList tables) {
+    return expr.isColumn(columnName, tables);
   }
 
   // --------------------------------------------------------------------

@@ -20,6 +20,8 @@
 
 package at.dms.xkopi.comp.xkjc;
 
+import java.util.ArrayList;
+
 import at.dms.kopi.comp.kjc.*;
 import at.dms.xkopi.comp.sqlc.*;
 import at.dms.compiler.base.PositionedError;
@@ -120,7 +122,7 @@ public class XTypedSelectElem extends SelectElem {
    *
    * @param	columnName      the name to test
    */
-  public boolean isColumn(String columnName) {
+  public boolean isColumn(String columnName, ArrayList tables) {
     return columnName.equals(ident);
   }
 
