@@ -40,9 +40,11 @@ import at.dms.vkopi.lib.util.Message;
 import at.dms.vkopi.lib.util.PrintInformation;
 import at.dms.vkopi.lib.util.PrintJob;
 import at.dms.vkopi.lib.util.Utils;
+import at.dms.vkopi.lib.visual.ApplicationConfiguration;
 import at.dms.vkopi.lib.visual.Constants;
 import at.dms.vkopi.lib.visual.DWindow;
 import at.dms.vkopi.lib.visual.KopiAction;
+import at.dms.vkopi.lib.visual.PropertyException;
 import at.dms.vkopi.lib.visual.SActor;
 import at.dms.vkopi.lib.visual.UIBuilder;
 import at.dms.vkopi.lib.visual.VException;
@@ -171,9 +173,18 @@ public class VPreviewWindow extends VWindow {
     try {
       int       resolution;
       Process   p;
+      boolean   useRotation;
+
+      try {
+        useRotation = ApplicationConfiguration.getConfiguration().getBooleanFor("print.preview.rotate");
+      } catch (PropertyException e) {
+        useRotation = false;
+      }
+
 
       resolution = (int) ((72f * this.height)/printJob.getHeight());
-      if (printJob.getDataType() != PrintJob.DAT_PDF 
+      if (!useRotation
+          || printJob.getDataType() != PrintJob.DAT_PDF 
           || !printJob.isLandscape()) {  
         p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
                                       "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
