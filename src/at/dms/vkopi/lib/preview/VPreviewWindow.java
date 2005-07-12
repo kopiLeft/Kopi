@@ -175,16 +175,8 @@ public class VPreviewWindow extends VWindow {
       Process   p;
       boolean   useRotation;
 
-      try {
-        useRotation = ApplicationConfiguration.getConfiguration().getBooleanFor("print.preview.rotate");
-      } catch (PropertyException e) {
-        useRotation = false;
-      }
-
-
       resolution = (int) ((72f * this.height)/printJob.getHeight());
-      if (!useRotation
-          || printJob.getDataType() != PrintJob.DAT_PDF 
+      if (printJob.getDataType() != PrintJob.DAT_PDF 
           || !printJob.isLandscape()) {  
         p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
                                       "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
