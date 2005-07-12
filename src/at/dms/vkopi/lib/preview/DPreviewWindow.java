@@ -90,6 +90,12 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
             }
       }
     });
+
+    try {
+      useRotation = ApplicationConfiguration.getConfiguration().getBooleanFor("print.preview.rotate");
+    } catch (PropertyException e) {
+      useRotation = false;
+    }
   }
 
   /**
@@ -181,9 +187,9 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   }
 
   private void centerScrollbar(JScrollBar bar) {
-    BoundedRangeModel   model = bar.getModel();
+    BoundedRangeModel   rangemodel = bar.getModel();
 
-    model.setValue(Math.max((model.getMaximum()-model.getExtent())/2, 0));
+    rangemodel.setValue(Math.max((rangemodel.getMaximum()-rangemodel.getExtent())/2, 0));
   }
 
   public  void pageChanged(final int current) {
@@ -251,8 +257,9 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
 
   private ImageIcon createIcon(int idx) {
     try {  
-      if (model.getPrintJob().getDataType() != PrintJob.DAT_PDF 
-        || !model.getPrintJob().isLandscape()) {  
+      if (!useRotation
+          || model.getPrintJob().getDataType() != PrintJob.DAT_PDF 
+          || !model.getPrintJob().isLandscape()) {  
         return new ImageIcon(model.getPreviewFileName(idx));
       } else {
         return new ImageIcon(rotate(model.getPreviewFileName(idx)));
@@ -289,6 +296,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private boolean               useRotation;
   private VPreviewWindow        model;
   private JLabel                label;
   private JScrollPane           bodypane;
