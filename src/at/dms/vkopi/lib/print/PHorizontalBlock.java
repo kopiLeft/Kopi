@@ -70,13 +70,8 @@ public class PHorizontalBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-//     printStyle(page, getSize().getWidth(), currentHeight);
-//     float x = page.getPostscriptStream().getX();
-//     float y = page.getPostscriptStream().getY();
     for (int i = 0; i < blocks.length; i++) {
       if (blocks[i].isShownOnThisPage()) {
-// 	page.getPostscriptStream().translateAbsolute(x - blocks[i].getPosition().getX(),
-// 						     y +  blocks[i].getPosition().getY());
 	blocks[i].doPrint(page);
       }
     }

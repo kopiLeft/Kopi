@@ -92,45 +92,6 @@ public class DColumnStyle implements Constants {
   }
 
   /**
-   * Gets the font style of this component.
-   */
-  public String getPostscript() {
-    String	font;
-    switch (fontName) {
-    case 0:
-      font = "/Helvetica";
-      break;
-    case 1:
-      font = "/Courier";
-      break;
-    case 2:
-      font = "/Helvetica";
-      break;
-    case 3:
-      font = "/Geneva";
-      break;
-    default:
-      throw new InconsistencyException();
-    }
-    switch (fontStyle) {
-    case 0:
-      break;
-    case 1:
-      font += "-Bold";
-      break;
-    case 2:
-      font += "-Italic";
-      break;
-    case 3:
-      font += "-BoldItalic";
-      break;
-    default:
-      throw new InconsistencyException();
-    }
-    return font + "-German";
-  }
-
-  /**
    * Sets the type of value
    *
    * @param state		in Constants.STA_*

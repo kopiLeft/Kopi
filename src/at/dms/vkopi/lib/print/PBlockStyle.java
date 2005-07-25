@@ -45,26 +45,6 @@ public class PBlockStyle extends PStyle {
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-//   /**
-//    * Paints the styles before body is dumped (border, background)
-//    */
-//   public void paintStyle(PPage page, float x, float y, float width, float height) throws PSPrintException {
-    
-
-//     PPostscriptStream	ps = page.getPostscriptStream();
-
-//     Color	color = getColor(page);
-//     if (color != null) {
-//       PPostscriptEffects.setColor(ps, color);
-//       PPostscriptEffects.fillRect(ps, 0, x, y, width, height);
-//       PPostscriptEffects.setColor(ps, Color.black);
-//     }
-//     float border = getBorder(page);
-//     if (border > 0) {
-//       PPostscriptEffects.drawRect(ps, border, x, y, width, height);
-//     }
-//   }
-
   // ---------------------------------------------------------------------
   // Inheritence handling
   // ---------------------------------------------------------------------
