@@ -109,13 +109,13 @@ public abstract class PPage {
   }
 
   /**
-   * Creates the print task and prints it immediately. DON NOT USE
+   * Creates the print task and prints it immediately. DO NOT USE
    * this method in a transaction.
    */
   public void printImmediately(Printer printer) {
     try {
       printer.print(createPrintJob());
-     } catch (Exception e) {
+    } catch (Exception e) {
       throw new InconsistencyException("PPage.printImmediately(Printer printer):2", e);
     }
   }
