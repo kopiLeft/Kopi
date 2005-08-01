@@ -213,6 +213,11 @@ public abstract class VReportColumn {
     exporter.formatStringColumn(this, index);
   }
 
+  public void helpOnColumn(VHelpGenerator help) {
+    help.helpOnColumn(label,
+                      this.help);
+  }
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

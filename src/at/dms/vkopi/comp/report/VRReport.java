@@ -111,6 +111,7 @@ class VRReport
     context.addCommand(new VKCommandName(where, "LoadConfiguration", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "RemoveConfiguration", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "ColumnInfo", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
+    context.addCommand(new VKCommandName(where, "Help", at.dms.vkopi.lib.form.VConstants.MOD_ANY));
   }
 
   // ----------------------------------------------------------------------

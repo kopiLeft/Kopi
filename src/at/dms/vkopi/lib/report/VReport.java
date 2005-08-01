@@ -566,6 +566,34 @@ public abstract class VReport extends VWindow
   }
 
   // ----------------------------------------------------------------------
+  // HELP
+  // ----------------------------------------------------------------------
+
+  public String genHelp() {
+    String              fileName;
+    String              help = "";
+    StringBuffer        surl = new StringBuffer();;
+    VField              field;
+
+    fileName = new VHelpGenerator().helpOnReport("Report",
+                                                 commands,
+                                                 model,
+                                                 help);
+
+    try {
+      surl.append(new File(fileName).toURL().toString());
+    } catch (java.net.MalformedURLException mue) {
+      throw new InconsistencyException(mue);
+    }
+
+    return surl.toString();
+  }
+
+  public void showHelp() throws VException {
+    new VHelpViewer().showHelp(genHelp());
+  }
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
