@@ -247,6 +247,16 @@ public abstract class PPage {
     return (PBlockStyle)blockStyles.get(style);
   }
 
+  public void setPageHeader(PBlock header) {
+    addBlock(header);
+    this.header = header;
+  }
+
+  public void setPageFooter(PBlock footer) {
+    addBlock(footer);
+    this.footer = footer;
+  }
+
   // ----------------------------------------------------------------------
   // PROTECTED ACCESSORS
   // ----------------------------------------------------------------------
@@ -376,12 +386,13 @@ public abstract class PPage {
 	}
         if (footer != null) { 
           float     size;
+          PPosition p = footer.getPosition();
 
           cb.saveState();
           footer.reinitialize();
           footer.preparePrint(this);
           size = footer.fill(5000);
-          cb.concatCTM(1,0,0,1, document.leftMargin(), size+document.bottomMargin()) ;
+          cb.concatCTM(1,0,0,1, document.leftMargin()+p.getX(), size+document.bottomMargin()+p.getY()) ;
           footer.doPrint(this);      
           cb.restoreState();
 	}
@@ -402,7 +413,9 @@ public abstract class PPage {
     for (int i = 0; i < this.blocks.size(); i++) {
       PBlock    block = (PBlock)this.blocks.elementAt(i);
 
-      if (block.getIdent().equals("_$_PAGEHEADER")) {
+      if (block == header || block == footer) {
+        // nothing
+      } else if (block.getIdent().equals("_$_PAGEHEADER")) {
         header = block;
       } else if (block.getIdent().equals("_$_PAGEFOOTER")) {
         footer = block;
