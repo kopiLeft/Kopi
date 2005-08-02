@@ -82,14 +82,16 @@ public vrCompilationUnit []
 vrReport []
   returns [VRReport self]
 {
-  String	name;
-  VRField	fld;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comment
+  String                name;
+  String                help = "";
+  VRField               fld;
+  TokenReference        sourceRef = buildTokenReference();	// !!! add comment
   VRParseReportContext	context = VRParseReportContext.getInstance(environment);
 }
 :
   "REPORT" name = vkString[]
   vkContextHeader[context.getCompilationUnitContext()]
+  help = vkHelp[] 
   vkDefinitions[context.getDefinitionCollector()]
   "BEGIN"
   ( vrReportCommands[context] )?
@@ -106,7 +108,8 @@ vrReport []
 			  name,
 			  context.getCommands(),
 			  context.getTriggers(),
-			  context.getFields());
+			  context.getFields(),
+                          help);
       context.release();
     }
 ;

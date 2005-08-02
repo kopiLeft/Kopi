@@ -569,9 +569,16 @@ public abstract class VReport extends VWindow
   // HELP
   // ----------------------------------------------------------------------
 
+  public String getHelp() {
+    return help;
+  }
+
+  public void setHelp(String help) {
+    this.help = help;
+  }
+
   public String genHelp() {
     String              fileName;
-    String              help = "";
     StringBuffer        surl = new StringBuffer();;
     VField              field;
 
@@ -609,6 +616,7 @@ public abstract class VReport extends VWindow
   protected MReport		model;
   private boolean		built;
   private String		pageTitle = "";
+  private String                help;
 
   protected int[][]		VKT_Triggers;	// trigger list
   protected VCommand[]		commands;	// commands

@@ -51,7 +51,8 @@ class VRReport
 		  String name,
 		  VKCommand[] commands,
 		  VKTrigger[] triggers,
-		  VRField[] fields) {
+		  VRField[] fields,
+                  String help) {
     super(where,
 	  cunit,
 	  classContext,
@@ -63,6 +64,7 @@ class VRReport
 	  commands,
 	  triggers);
 
+    this.help = help;
     this.fields = fields;
     this.environment = environment;
   }
@@ -70,6 +72,10 @@ class VRReport
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
+
+  public String getHelp() {
+    return help;
+  }
 
   public VRField getField(String name) {
     // USE HASHTABLE $$$
@@ -226,6 +232,14 @@ class VRReport
 									 VKUtils.toExpression(ref, getName())
 								       }),
 					     null));
+    body.addElement(new JExpressionStatement(ref,
+					     new JMethodCallExpression(ref,
+								       null,
+								       "setHelp",
+								       new JExpression[] {
+									 VKUtils.toExpression(ref, getHelp())
+								       }),
+					     null));
 
     for (int i = 0; i < fields.length; i++) {
       fields[i].getCommandable().genCode(ref, body, false, false);
@@ -371,7 +385,8 @@ class VRReport
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final VRField[]	fields;
-  private int			countSyntheticName;
-  private final KjcEnvironment          environment;
+  private final String          help;
+  private final VRField[]       fields;
+  private int                   countSyntheticName;
+  private final KjcEnvironment  environment;
 }
