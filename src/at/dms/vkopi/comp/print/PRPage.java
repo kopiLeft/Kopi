@@ -58,7 +58,9 @@ public class PRPage
 		PRDefinitionCollector coll,
 		CReferenceType type,
                 CReferenceType[] interfaces,
-		PRBlock[] blocks)
+		PRBlock[] blocks, 
+                PRBlock pageHeader, 
+                PRBlock pageFooter)
   {
     super(where);
     this.environment = environment;
@@ -68,6 +70,8 @@ public class PRPage
     this.type = type;
     this.interfaces = interfaces;
     this.blocks = blocks;
+    this.pageHeader = pageHeader;
+    this.pageFooter = pageFooter;
   }
 
   // ----------------------------------------------------------------------
@@ -342,21 +346,37 @@ public class PRPage
     TokenReference	ref = getTokenReference();
 
     // BLOCKS
-    JStatement[] elems = new JStatement[blocks.length];
+    JStatement[]        elems = new JStatement[blocks.length];
+
     for (int i = 0; i < blocks.length; i++) {
+      JExpression	blockExpr;
       JExpression	expr;
 
       if (blocks[i] instanceof PRRectangleBlock) {
-	expr = new JNameExpression(ref, blocks[i].getIdent());
+	blockExpr = new JNameExpression(ref, blocks[i].getIdent());
       } else {
-	expr = blocks[i].genConstructorCall();
+	blockExpr = blocks[i].genConstructorCall();
       }
-      expr = new JMethodCallExpression(ref,
-				       null,
-				       "addBlock",
-				       new JExpression[] {expr});
-
-      elems[i] = new JExpressionStatement(ref, expr, null);
+      if (blocks[i] == pageHeader) {
+        expr = new JMethodCallExpression(ref,
+                                         null,
+                                         "setPageHeader",
+                                         new JExpression[] {blockExpr});
+        elems[i] = new JExpressionStatement(ref, expr, null);
+      } else if (blocks[i] == pageFooter) {
+        expr = new JMethodCallExpression(ref,
+                                         null,
+                                         "setPageFooter",
+                                         new JExpression[] {blockExpr});
+        elems[i] = new JExpressionStatement(ref, expr, null);
+      } else {
+        expr = new JMethodCallExpression(ref,
+                                         null,
+                                         "addBlock",
+                                         new JExpression[] {blockExpr});
+        
+        elems[i] = new JExpressionStatement(ref, expr, null);
+      }
     }
     JBlock	block = new JBlock(ref, elems, null);
 
@@ -455,6 +475,8 @@ public class PRPage
   private	CReferenceType[]        interfaces;
   private	Hashtable               blocks_H = new Hashtable();
   private	PRBlock[]               blocks;
+  private	PRBlock                 pageHeader;
+  private	PRBlock                 pageFooter;
   private	Hashtable               usedStyles = new Hashtable();
   private	Vector                  initLoadDefinition = new Vector();
   private	Vector                  showIf = new Vector();

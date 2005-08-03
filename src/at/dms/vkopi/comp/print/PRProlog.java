@@ -44,13 +44,11 @@ public class PRProlog extends VKPhylum {
    * @param parent compilation unit where it is defined
    */
   public PRProlog(TokenReference where,
-		  String name,
 		  boolean portrait,
 		  String format) {
     super(where);
 
-    this.name = name;
-    this.format =  format == null ? "A4" : format;
+    this.format =  format == null ? "a4" : format;
     this.portrait = portrait;
   }
 
@@ -118,7 +116,6 @@ public class PRProlog extends VKPhylum {
 							      null,
 							      "setProlog",
 							      new JExpression[] {
-								new JStringLiteral(ref, name == null ? "NO PROLOG" : name),
 								PRUtils.toExpression(ref, width),
 								PRUtils.toExpression(ref, height),
 								PRUtils.toExpression(ref, border),
@@ -147,7 +144,6 @@ public class PRProlog extends VKPhylum {
   private int		width;
   private int		height;
   private int		border;
-  private String	name;
   private String	format;
   private boolean	portrait;
 }

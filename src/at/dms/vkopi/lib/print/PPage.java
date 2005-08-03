@@ -71,7 +71,7 @@ public abstract class PPage {
 
   protected void internalInitLoadDefinition() {
     // default: set to A4 Portrait
-    this.setProlog("German.ps", 595, 842, 25, false);
+    this.setProlog(595, 842, 25, false);
   }
 
   protected abstract void internalInitLoadBlock();
@@ -264,24 +264,20 @@ public abstract class PPage {
   /**
    *
    */
-  protected void setProlog(String fileName,
-                           int width,
+  protected void setProlog(int width,
                            int height,
                            int border,
                            boolean landscape)
   {
-    if (!fileName.equals("NO PROLOG")) {
-      this.prolog = fileName;
-      this.landscape = landscape;
-      if (!landscape) {
-	this.width = width;
-	this.height = height;
-      } else {
-	this.width = height;
-	this.height = width;
-      }
-      this.border = border;
+    this.landscape = landscape;
+    if (!landscape) {
+      this.width = width;
+      this.height = height;
+    } else {
+      this.width = height;
+      this.height = width;
     }
+    this.border = border;
   }
 
   // ----------------------------------------------------------------------
@@ -377,7 +373,7 @@ public abstract class PPage {
 
 	if (header != null) {
           cb.saveState();
-          cb.concatCTM(1,0,0,1, document.leftMargin(), page.height()-document.topMargin()) ;
+          cb.concatCTM(1,0,0,1, document.leftMargin()+border, page.height()-document.topMargin()-border) ;
           header.reinitialize();
           header.preparePrint(this);
           header.fill(5000);
@@ -392,7 +388,8 @@ public abstract class PPage {
           footer.reinitialize();
           footer.preparePrint(this);
           size = footer.fill(5000);
-          cb.concatCTM(1,0,0,1, document.leftMargin()+p.getX(), size+document.bottomMargin()+p.getY()) ;
+
+          cb.concatCTM(1,0,0,1, document.leftMargin()+p.getX()+border, size+document.bottomMargin()+p.getY()+border) ;
           footer.doPrint(this);      
           cb.restoreState();
 	}

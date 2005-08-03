@@ -98,9 +98,14 @@ prPage []
   returns [PRPage self = null]
 {
   String		name;
+  String		fhName;
+  String		headerFooterName;
+  String		footerName;
   String		inter;
   PRProlog		prolog;
   PRBlock		block;
+  PRBlock		pageHeader = null;
+  PRBlock		pageFooter = null;
   ArrayList		blocks = new ArrayList();
   String		ident;
   CReferenceType	superClass = null;
@@ -110,7 +115,7 @@ prPage []
   PRDefinitionCollector coll = new PRDefinitionCollector(environment.getInsertDirectories());
   TokenReference	sourceRef = buildTokenReference();
   PRTrigger             headerFooter = null;
-  PRTrigger             footerHeader = null;
+  PRTrigger             footer = null;
 }
 :
   "PAGE"
@@ -132,44 +137,82 @@ prPage []
   "BEGIN"
   prolog = prProlog[]
   ( block = prBlock[true] { blocks.add(block); } )+
-  ( headerFooter = prTrigger[] ( footerHeader = prTrigger[] )? )?
+  (  
+    fhName = vkSimpleIdent[]
+    ( 
+      headerFooter = prTriggerCode[fhName]
+      {
+        if (!headerFooter.getIdent().equals("PAGEHEADER") 
+          && !headerFooter.getIdent().equals("PAGEFOOTER")) { 
+             reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME,  headerFooter.getIdent()));
+        }
+
+        PRTextBlock hf = new PRTextBlock(sourceRef,
+	 		                 new CParseClassContext(),
+			                 "_$_" + headerFooter.getIdent(),
+			                 new PRPosition(sourceRef, 0, 0, 10000, 10000, null, null, null),
+			                 null,
+			                 false,
+			                 new PRTrigger[]{headerFooter});
+        headerFooter.setIdent("SOURCE");
+        if (headerFooter.equals("PAGEHEADER")) {
+          pageHeader = hf;
+        } else {
+          pageFooter = hf;
+        }
+
+      }
+    |
+       headerFooterName = vkQualifiedIdent[]
+      {
+        if (!fhName.equals("PAGEHEADER") 
+            && !fhName.equals("PAGEFOOTER")) { 
+            reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME, fhName));
+        }
+        if (fhName.equals("PAGEHEADER")) {
+          pageHeader = new PRImportedBlock(sourceRef, headerFooterName, true);
+        } else {
+          pageFooter = new PRImportedBlock(sourceRef, headerFooterName, true);
+        }
+      }
+    )
+    (
+      ( 
+        footer = prTrigger[] 
+        {
+          if (!footer.getIdent().equals("PAGEFOOTER") || pageFooter != null) { 
+            reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME, footer.getIdent()));
+          }
+          pageFooter = new PRTextBlock(sourceRef,
+                                       new CParseClassContext(),
+                                       "_$_" + footer.getIdent(),
+                                       new PRPosition(sourceRef, 0, 0, 10000, 10000, null, null, null),
+                                       null,
+                                       false,
+                                       new PRTrigger[]{footer});
+          footer.setIdent("SOURCE");
+        }
+      |
+        fhName = vkSimpleIdent[] footerName = vkQualifiedIdent[]
+        {
+          if (!fhName.equals("PAGEFOOTER") || pageFooter != null) { 
+            reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME, fhName));
+          }
+          pageFooter = new PRImportedBlock(sourceRef, footerName, true);
+        }
+       
+      )
+    )? 
+  )?
   ( vkContextFooter[context] )?
   "END" "PAGE"
     {
-     if (headerFooter != null) {
-       // special textblocks for page-header/footer	
-       if (!headerFooter.getIdent().equals("PAGEHEADER") 
-           && !headerFooter.getIdent().equals("PAGEFOOTER")) { 
-         reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME,  headerFooter.getIdent()));
-       }
-
-       PRTextBlock hf = new PRTextBlock(sourceRef,
-			                new CParseClassContext(),
-			                "_$_" + headerFooter.getIdent(),
-			                new PRPosition(sourceRef, 0, 0, 10000, 10000, null, null, null),
-			                null,
-			                false,
-			                new PRTrigger[]{headerFooter});
-       headerFooter.setIdent("SOURCE");
-       blocks.add(hf);
-       if (footerHeader != null) {
-         if (!footerHeader.getIdent().equals("PAGEHEADER") 
-             && !footerHeader.getIdent().equals("PAGEFOOTER")) { 
-           reportTrouble(new PositionedError(sourceRef, PrintMessages.WRONG_PAGE_TRIGGER_NAME, footerHeader.getIdent()));
-         }
-         PRTextBlock fh = new PRTextBlock(sourceRef,
-	                                  new CParseClassContext(),
-                                          "_$_" + footerHeader.getIdent(),
-			                  new PRPosition(sourceRef, 0, 0, 10000, 10000, null, null, null),
-                                          null,
-			                  false,
-			                  new PRTrigger[]{footerHeader});
-         footerHeader.setIdent("SOURCE");
-         blocks.add(fh);
-       }
-     }
-
-
+      if (pageHeader != null) {
+        blocks.add(pageHeader);
+      }
+      if (pageFooter != null) {
+        blocks.add(pageFooter);
+      }
       self = new PRPage(sourceRef,
                         environment,
 	                cunit,
@@ -177,7 +220,9 @@ prPage []
 			coll,
 	                superClass,
                         (CReferenceType[])interfaces.toArray(new CReferenceType[interfaces.size()]),
-			(PRBlock[])blocks.toArray(new PRBlock[blocks.size()]));
+			(PRBlock[])blocks.toArray(new PRBlock[blocks.size()]),
+                        pageHeader,
+                        pageFooter);
       self.setProlog(prolog);
     }
 ;
@@ -414,12 +459,10 @@ prProlog []
   returns [PRProlog self]
 {
   boolean		portrait = false;
-  String		name = null;
   String		format = null;
   TokenReference	sourceRef = buildTokenReference();
 }
 :
-  ( "PROLOG" name = vkString[] )?
   (
     (
       "LANDSCAPE" { portrait = false; }
@@ -428,7 +471,7 @@ prProlog []
     )
     ( format = vkString[] )?
   )?
-  { self = new PRProlog(sourceRef, name, portrait, format); }
+  { self = new PRProlog(sourceRef, portrait, format); }
 ;
 
 prImportedBlock []
@@ -611,6 +654,20 @@ prTrigger []
 }
 :
   ident = vkSimpleIdent[]
+  self = prTriggerCode[ident]
+;
+
+prTriggerCode [String ident]
+  returns [PRTrigger self]
+{
+  PRSourceElement[]		elems;
+  JFormalParameter[]	params = JFormalParameter.EMPTY;
+  boolean	        recurrent = false;
+  String		style;
+  String		blockStyle = null;
+  TokenReference	sourceRef = buildTokenReference();
+}
+:
   (
     LPAREN
     {
@@ -621,6 +678,7 @@ prTrigger []
   LCURLY elems = prSource[] RCURLY
     { self = new PRTrigger(sourceRef, ident, params, elems); }
 ;
+
 
 prSource []
   returns [PRSourceElement[] self]
