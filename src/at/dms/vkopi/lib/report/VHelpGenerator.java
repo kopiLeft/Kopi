@@ -87,7 +87,9 @@ public class VHelpGenerator extends at.dms.vkopi.lib.visual.VHelpGenerator {
       for (int i = 0; i < columnCount; i++) {
         VReportColumn  column = model.getModelColumn(i);
 
-        column.helpOnColumn(this);
+        if ((column.getOptions() & Constants.CLO_HIDDEN) == 0) {
+          column.helpOnColumn(this);
+        }
       }
       p.println("</DL>");
       p.println("</TD>");
