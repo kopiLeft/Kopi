@@ -22,6 +22,7 @@ package at.dms.vkopi.lib.visual;
 
 import java.io.File;
 import java.awt.Frame;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.JFileChooser;
 
 public class FileChooser {
@@ -58,8 +59,23 @@ public class FileChooser {
     return openFile(frame, dir, defaultName);
   }
 
+  public static File openFile(Frame frame, FileFilter filter) {
+    JFileChooser filechooser = new JFileChooser(new File(System.getProperty("user.home")));
+
+    filechooser.setFileFilter(filter);;
+
+    int returnVal = filechooser.showOpenDialog(frame);
+
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      return filechooser.getSelectedFile();
+    } else {
+      return null;
+    }
+    
+  }
   public static File openFile(Frame frame, File dir, String defaultName) {
     JFileChooser filechooser = new JFileChooser(dir);
+
     filechooser.setSelectedFile(new File(defaultName));
 
     int returnVal = filechooser.showOpenDialog(frame);
@@ -68,6 +84,15 @@ public class FileChooser {
       return filechooser.getSelectedFile();
     } else {
       return null;
+    }
+  }
+
+  public static class PdfFilter extends FileFilter {
+    public boolean accept(File f) {
+      return f != null && f.getName().toUpperCase().endsWith(".PDF"); 
+    }
+    public String getDescription() {
+      return "Alle Pdf-Dateien";
     }
   }
 }
