@@ -306,6 +306,8 @@ jAssignmentExpression []
 |
   self = xExecSqlExpression[] 
 |
+  self = xExecInsertExpression[]
+|
   self = xParseSqlExpression[]
 |
   self = gKopiInsertExpression[]
