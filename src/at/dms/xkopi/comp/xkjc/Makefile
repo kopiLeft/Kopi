@@ -74,7 +74,7 @@ JAVAFILES +=	SqlExprJava						\
                 XDatabaseColumn   XDatabaseMember XDatabaseTable	\
 		XKjcEnvironment XProtectedExceptionHandler XTypeFactory \
 		XKjcTypeFactory XNewArrayExpression XGotoStatement	\
-		XParseSqlExpression
+		XParseSqlExpression XExecInsertExpression
 
 # Generated class
 MESSAGES =	XKjcMessages XSqlcMessages

@@ -14,6 +14,7 @@
 @keyword	DELETE_SQL	"#delete"
 @keyword	EXECUTE_SQL	"#execute"
 @keyword	FAIL		"#fail"
+@keyword	INSERT_SQL	"#sqlinsert"
 @keyword	PROTECTED_SQL	"#protected"
 @keyword	SELECT_SQL	"#select"
 @keyword	PARSE_SQL	"#sql"

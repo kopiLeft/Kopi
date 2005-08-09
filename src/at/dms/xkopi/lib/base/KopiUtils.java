@@ -408,6 +408,65 @@ public class KopiUtils {
     return id;
   }
 
+
+  /**
+   * Creates the insert statement.
+   */
+  private static final String createInsertStatement(at.dms.xkopi.lib.base.Connection conn,
+                                                    String table,
+                                                    String[] columns,
+                                                    String[] values)
+  {
+    StringBuffer	buffer = new StringBuffer();
+
+    buffer.append("INSERT INTO " + table + "(");
+    for (int i = 0; i < columns.length; i++) {
+      if (i != 0) {
+        buffer.append(", ");
+      }
+      buffer.append(columns[i]);
+    }
+    buffer.append(") VALUES (");
+    for (int i = 0; i < columns.length; i++) {
+      if (i != 0) {
+        buffer.append(", ");
+      }
+      buffer.append(values[i]);
+    }
+    buffer.append(")");
+
+    return buffer.toString();
+  }
+
+  /**
+   * Inserts a new record into the database.
+   */
+  public static final int executeInsert(at.dms.xkopi.lib.base.Connection conn,
+                                        String table,
+                                        String[] columns,
+                                        String[] values,
+                                        Object[] blobs)
+    throws DBException
+  {
+    return executeUpdate(conn,
+                  createInsertStatement(conn, table, columns, values),
+                  blobs);
+  }
+
+  /**
+   * Inserts a new record into the database.
+   */
+  public static final int executeInsert(at.dms.xkopi.lib.base.Connection conn,
+                                        String table,
+                                        String[] columns,
+                                        String[] values)
+    throws DBException
+  {
+    return executeUpdate(conn,
+                         createInsertStatement(conn, table, columns, values));
+  }
+
+
   /*
    * Removes all white space characters from both ends of the specified
    * string and replaces multiple spaces between words by a single one.

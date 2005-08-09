@@ -110,6 +110,14 @@ error		SELECT_LIST_LENGTH
 		"The number of parameters in the INTO part should match those of the SELECT part"
 		"XKJC"
 
+error		EXEC_KOPI_INSERT_TABLE_BAD_TYPE
+		"The type of the table parameter in an #sqlinsert should be String"
+		"XKJC"
+
+warning		MISSING_NOTNULL_COLUMN
+		"Not-null column \"{0}\" missing in #sqlinsert expression"
+		"XKJC"
+
 caution		SHARP_ASSERT
 		"\"#assert\" is the old syntax of assert. Use \"@assert\" instead."
 		"KOPI"

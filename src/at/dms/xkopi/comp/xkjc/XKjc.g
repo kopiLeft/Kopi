@@ -851,6 +851,8 @@ jAssignmentExpression []
 |
   self = xExecSqlExpression[]
 |
+  self = xExecInsertExpression[]
+|
   self = xParseSqlExpression[]
 ;
 
@@ -917,6 +919,39 @@ xExecSqlExpression []
   //RCURLY
     { self = new XExecSqlExpression(sourceRef, conn, cursor, expr); }
 ;
+
+xExecInsertExpression []
+  returns [XExecInsertExpression self = null]
+{
+  TokenReference	sourceRef = buildTokenReference();
+  JExpression	conn = null;
+  JExpression	table = null;
+  ArrayList	columns = new ArrayList();
+  ArrayList	exprs = new ArrayList();
+  String	name;
+  JExpression	expr;
+}
+:
+  INSERT_SQL ( conn = xOptionalContext[] )?
+  LPAREN table = jExpression[] RPAREN
+  LCURLY
+    s:STRING_LITERAL ASSIGN expr = jExpression[]
+    { columns.add(s.getText()); exprs.add(expr); }
+    (
+      COMMA s2:STRING_LITERAL ASSIGN expr = jExpression[]
+      { columns.add(s2.getText()); exprs.add(expr); }
+    )*
+  RCURLY
+  {
+    self = new XExecInsertExpression(sourceRef,
+                                     conn,
+                                     table,
+                                     (String[])columns.toArray(new String[columns.size()]),
+                                     (JExpression[])exprs.toArray(new JExpression[exprs.size()]));
+  }
+;
+
+
 
 xParseSqlExpression []
   returns [XParseSqlExpression self = null]
