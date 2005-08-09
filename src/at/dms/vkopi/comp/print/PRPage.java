@@ -169,7 +169,9 @@ public class PRPage
     context.setClassContext(clazz);
     context.setFullName(cunit.getPackageName().getName() + "/" + getIdent());
 
-    prolog.checkCode(context);
+    if (prolog != null) {
+      prolog.checkCode(context);
+    }
 
     try {
       getDefinitionCollector().checkInsert(context.getTopLevel());

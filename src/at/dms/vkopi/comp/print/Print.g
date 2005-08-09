@@ -456,7 +456,7 @@ prBlock [boolean wantPos]
 ;
 
 prProlog []
-  returns [PRProlog self]
+  returns [PRProlog self = null]
 {
   boolean		portrait = false;
   String		format = null;
@@ -470,8 +470,8 @@ prProlog []
       "PORTRAIT"  { portrait = true; }
     )
     ( format = vkString[] )?
+    { self = new PRProlog(sourceRef, portrait, format); }
   )?
-  { self = new PRProlog(sourceRef, portrait, format); }
 ;
 
 prImportedBlock []
