@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.util.AWTToPS;
 import at.dms.vkopi.lib.util.Message;
+import at.dms.vkopi.lib.util.PrintJob;
 import at.dms.vkopi.lib.visual.Constants;
 import at.dms.vkopi.lib.visual.Application;
 import at.dms.vkopi.lib.visual.DObject;
@@ -990,6 +991,10 @@ public abstract class VForm extends VWindow implements VConstants {
     information.append("===========================================================\n");
 
     return information.toString();
+  }
+
+  public PrintJob printForm() throws VException {
+    return ((DForm) getDisplay()).printForm();
   }
 
   // ----------------------------------------------------------------------

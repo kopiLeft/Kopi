@@ -21,9 +21,12 @@
 package at.dms.vkopi.lib.form;
 
 import java.awt.BorderLayout;
-import java.awt.Component
-;
+import java.awt.Component;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -31,6 +34,9 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.Action;
 import javax.swing.DefaultSingleSelectionModel;
 import javax.swing.JMenu;
@@ -42,9 +48,26 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultEditorKit;
 
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfTemplate;
+import com.lowagie.text.pdf.PdfWriter;
+
 import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.util.Message;
+import at.dms.vkopi.lib.util.PrintJob;
 import at.dms.vkopi.lib.visual.*;
+import at.dms.xkopi.lib.type.NotNullDate;
+import at.dms.xkopi.lib.type.NotNullTime;
 
 /**
  * This is the display class of a form.
@@ -508,6 +531,82 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
       // use another listener:
       return null; 
     }
+  }
+  
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  public PrintJob printForm() throws VException {
+    com.lowagie.text.Rectangle  pageSize = PageSize.A4.rotate();
+    Document                    document = new Document(pageSize, 50, 50, 50, 50);
+    File                        file;
+    
+    try {      
+      file = Utils.getTempFile("kopi", "srn");
+
+      PdfWriter         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+            
+      document.open();
+
+      Frame             frame = Utils.getFrameAncestor(this);
+      Dimension         dim = frame.getSize(null);
+      PdfContentByte    cb = writer.getDirectContent();
+      PdfTemplate       tp = cb.createTemplate(dim.width, dim.height);
+      Graphics2D        g2 = tp.createGraphics(dim.width, dim.height);
+
+      frame.invalidate();
+      frame.validate();
+      frame.paint(g2);
+      g2.dispose();
+
+
+      PdfPTable       foot = new PdfPTable(2);
+                
+      foot.addCell(createCell(((VForm)getModel()).getName(), 7, Color.black, Color.white, Element.ALIGN_LEFT, false));
+      foot.addCell(createCell(NotNullDate.now().format("dd.MM.yyyy") + " "+ NotNullTime.now().format("HH:mm"), 
+                              7, Color.black, Color.white, Element.ALIGN_RIGHT, false));
+      foot.setTotalWidth(pageSize.width() - document.leftMargin() - document.rightMargin());
+      foot.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin()+foot.getTotalHeight(), cb);
+
+
+      float             scale = Math.min((pageSize.width()-100)/dim.width, (pageSize.height()-100)/dim.height);
+
+      cb.addTemplate(tp, scale, 0, 0, scale, 50, (pageSize.height()-(scale*dim.height))/2);
+    } catch(DocumentException de) {
+      throw new VExecFailedException(de);
+    } catch(IOException ioe) {
+      throw new VExecFailedException(ioe);      
+    }
+        
+    document.close();
+
+    PrintJob    printJob = new PrintJob(file, true);
+
+    printJob.setDataType(PrintJob.DAT_PDF);
+    printJob.setNumberOfPages(1);
+    return printJob;
+  }
+
+  private PdfPCell createCell(String text, double size, Color textColor, Color background, int alignment, boolean border) {
+    PdfPCell    cell;
+    Font        font = FontFactory.getFont(FontFactory.HELVETICA, (float) size, 0 , textColor);
+
+    cell = new PdfPCell(new Paragraph(new Chunk(text, font)));
+    cell.setBorderWidth(1);
+    cell.setPaddingLeft(0);
+    cell.setPaddingRight(0);
+    cell.setNoWrap(true);
+    cell.setUseDescender(true);
+
+    cell.setVerticalAlignment(Element.ALIGN_TOP);
+    cell.setHorizontalAlignment(alignment);
+
+    cell.setBackgroundColor(background);
+    if (!border) {
+      cell.setBorder(0);
+    }
+    return cell;
   }
 
   // ----------------------------------------------------------------------
