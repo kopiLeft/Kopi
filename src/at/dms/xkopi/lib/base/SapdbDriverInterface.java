@@ -20,6 +20,8 @@
 
 package at.dms.xkopi.lib.base;
 
+import java.io.PrintStream;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Hashtable;
@@ -117,8 +119,18 @@ public class SapdbDriverInterface extends DriverInterface {
   public String convertSql(String from) {
     try {
       SapdbParser	parser = new SapdbParser(from);
+      String            nativeSql = parser.getText().trim();
+      
+      // trace if system-property maxdb.tacer is set
+      if (tracer != null) {
+        try {
+          tracer.println(nativeSql);
+          tracer.flush();
+        } catch (Exception e) {
+        }
+      }
 
-      return parser.getText().trim();
+      return nativeSql;
     } catch (SQLException e) {
       throw new DBRuntimeException(from + "\r\n" + e.getMessage(), e);
     }
@@ -191,6 +203,24 @@ public class SapdbDriverInterface extends DriverInterface {
 
     return new DBForeignKeyException(from, mesg.substring(index1 + 1, index2));
   }
+
+  /**
+   * with java -Dmaxdb.trace=FILENAME it is possible to log every 
+   * sql-statement
+   */
+  static { 
+    if (System.getProperty("maxdb.trace") != null) {
+      try {
+        tracer = new PrintStream(new FileOutputStream(System.getProperty("maxdb.trace"), true), true);
+      } catch (Exception e) {
+        //tracer = null;
+      }
+    } else {
+      tracer = null;
+    }
+  }
+
+  private static PrintStream      tracer;
 }
 
 
@@ -510,5 +540,5 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("DATEDIFF/2", new Integer(30));
     functions.put("COALESCE/2", new Integer(31));
     functions.put("ROWNO/0", new Integer(32));
-  }
+  } 
 }
