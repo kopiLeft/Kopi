@@ -29,12 +29,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.ImageIcon;
+
+import at.dms.util.base.InconsistencyException;
 
 /**
  * loading of image
@@ -285,11 +288,28 @@ public class Utils extends at.dms.util.base.Utils {
     }
   }
 
+  public static byte[] convertUTF(String str) {
+    try {
+      return str.getBytes("UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new InconsistencyException(e);
+    }
+  }
+
+  public static String convertUTF(byte[] bytes) {
+    try {
+      return new String(bytes, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new InconsistencyException(e);
+    }
+  }
+
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------
 
   private static Hashtable	cache = new Hashtable();
+
   public static final String    APPLICATION_DIR = "resources";
   public static final ImageIcon UKN_IMAGE = new ImageIcon("unknown");
   public static final String	RESOURCE_DIR	= "at/dms/vkopi/lib/resource";

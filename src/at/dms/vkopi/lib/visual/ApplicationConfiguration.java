@@ -283,6 +283,15 @@ public class ApplicationConfiguration {
   public File getDefaultDirectory() {
     return new File(System.getProperty("user.home"));
   }
+
+  // --------------------------------------------------------------
+  // Database Encoding 
+  // --------------------------------------------------------------
+
+  public boolean isUnicodeDatabase() {
+    return false;
+  }
+
   // ----------------------------------------------------------------------
   // User configuration
   // ----------------------------------------------------------------------

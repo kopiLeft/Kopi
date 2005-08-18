@@ -28,8 +28,11 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.base.Query;
+import at.dms.vkopi.lib.visual.ApplicationConfiguration;
 import at.dms.vkopi.lib.visual.VRuntimeException;
+import at.dms.vkopi.lib.util.Utils;
 
 /**
  * This class is the Visual Kopi representation a CLOB SQL type.
@@ -100,7 +103,11 @@ public class VTextField extends VStringField {
    */
   public void setObject(int r, Object v) {
     if (v instanceof byte[]) {
-      setString(r, new String((byte[])v));
+      if (!ApplicationConfiguration.getConfiguration().isUnicodeDatabase()) {
+        setString(r, new String((byte[])v));
+      } else {
+        setString(r, Utils.convertUTF((byte[])v));
+      }
     } else {
       setString(r, (String)v);
     }
@@ -155,8 +162,12 @@ public class VTextField extends VStringField {
   public Object getObjectImpl(int r) {
     String	c = (String) super.getObjectImpl(r);
 
-    return c == null ? null : c.getBytes();
-  }
+    if (!ApplicationConfiguration.getConfiguration().isUnicodeDatabase()) {
+      return c == null ? null : c.getBytes();
+    } else {
+      return c == null ? null : Utils.convertUTF(c);
+    }
+  }  
 
   /**
    * Returns the SQL representation of field value of given record.
