@@ -231,9 +231,9 @@ public class Utils extends at.dms.util.base.Utils {
     if (directory == null) {
       return null;
     } else {
-      URL       url = ClassLoader.getSystemClassLoader().getResource(directory + "/" + name);
-
-      return url;
+      // taoufik 2005-07-20: Java Web Start needs to get the class loader based on
+      //                     the current class.
+      return Utils.class.getClassLoader().getResource(directory + "/" + name);
     }
   }
 
