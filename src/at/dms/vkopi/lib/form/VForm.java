@@ -993,7 +993,7 @@ public abstract class VForm extends VWindow implements VConstants {
     return information.toString();
   }
 
-  public PrintJob printForm() throws VException {
+  public PrintJob printFormScreen() throws VException {
     return ((DForm) getDisplay()).printForm();
   }
 
