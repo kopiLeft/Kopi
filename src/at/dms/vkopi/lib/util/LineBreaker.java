@@ -89,7 +89,7 @@ public class LineBreaker extends at.dms.util.base.Utils {
     }
   }
 
-  public String addBreakForWidth(String source, int width) {
+  public static String addBreakForWidth(String source, int width) {
     BreakIterator       boundary = BreakIterator.getLineInstance();
     boundary.setText(source);
 
