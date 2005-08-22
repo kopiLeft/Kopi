@@ -23,6 +23,7 @@ package at.dms.vkopi.lib.form;
 import java.sql.SQLException;
 
 import at.dms.util.base.InconsistencyException;
+import at.dms.vkopi.lib.util.LineBreaker;
 import at.dms.vkopi.lib.util.Message;
 import at.dms.vkopi.lib.visual.VException;
 import at.dms.vkopi.lib.visual.VExecFailedException;
@@ -278,27 +279,7 @@ public class VStringField extends VField {
    * @param	col	the width of the text
    */
   public static String textToModel(String source, int col, int lin) {
-    StringBuffer	target = new StringBuffer();
-    int		length = source.length();
-    int		start = 0;
-    int		lines = 0;
-
-    while (start < length && lines < lin) {
-      int	index = source.indexOf('\n', start);
-      if (index == -1) {
-	target.append(source.substring(start, length));
-	start = length;
-      } else {
-	target.append(source.substring(start, index));
-	for (int i = index - start; i < col; i++) {
-	  target.append(' ');
-	}
-	start = index + 1;
-	lines++;
-      }
-    }
-
-    return target.toString();
+    return LineBreaker.textToModel(source, col, lin);
   }
 
   /**
@@ -317,32 +298,7 @@ public class VStringField extends VField {
    * @param	col		the width of the text area
    */
   public static String modelToText(String source, int col) {
-    if (source != null) {
-      StringBuffer      target = new StringBuffer();
-      int               length = source.length();
-
-      for (int start = 0; start < length; start += col) {
-        String  line = source.substring(start, Math.min(start + col, length));
-        int     last = -1;
-
-        for (int i = line.length() - 1; last == -1 && i >= 0; --i) {
-          if (! Character.isWhitespace(line.charAt(i))) {
-            last = i;
-          }
-        }
-
-        if (start != 0) {
-          target.append('\n');
-        }
-        if (last != -1) {
-          target.append(line.substring(0, last + 1));
-        }
-      }
-
-      return target.toString();
-    } else {
-      return "";
-    }
+    return LineBreaker.modelToText(source, col);
   }
 
   // ----------------------------------------------------------------------

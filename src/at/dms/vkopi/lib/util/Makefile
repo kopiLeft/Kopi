@@ -39,7 +39,7 @@ JAVAFILES +=	AWTToPS AbstractPrinter CachePrinter Charset437		\
 		PreviewPrinter PrintException				\
 		PrintInformation PrintJob Printer			\
 		RPrinter Rexec To437 ToLatin1				\
-		Utils HylaFAXUtils
+		Utils HylaFAXUtils LineBreaker
 
 #		Label EPSLabel
 
