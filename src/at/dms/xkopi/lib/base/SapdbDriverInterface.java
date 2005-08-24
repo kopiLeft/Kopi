@@ -492,6 +492,9 @@ public class SapdbDriverInterface extends DriverInterface {
       case 32: // ROWNO/0
 	return "ROWNO";
 
+      case 33: // STRING2INT/1
+	return "(0 + NUM(" + arguments.elementAt(0) + "))";
+
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
 				   "/" + arguments.size());
@@ -540,5 +543,6 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("DATEDIFF/2", new Integer(30));
     functions.put("COALESCE/2", new Integer(31));
     functions.put("ROWNO/0", new Integer(32));
+    functions.put("STRING2INT/1", new Integer(33));
   } 
 }

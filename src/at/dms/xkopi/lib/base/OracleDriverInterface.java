@@ -384,6 +384,15 @@ class OracleParser extends JdbcParser {
       case 30: //DATEDIFF
 	return "TO_CHAR(" + arguments.elementAt(0) + "-" + arguments.elementAt(1) + ", 'DD')";
 
+      case 31: // COALESCE/2
+	return "NVL(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
+
+      case 32: // ROWNO/0
+	return "ROWNUM";
+
+      case 33: // STRING2INT/1
+	return "TO_NUMBER(" + arguments.elementAt(0) + ")";
+
       default:
         // use function as it.
         String  functionCall;
@@ -451,5 +460,8 @@ class OracleParser extends JdbcParser {
     functions.put("CURRENTTIMESTAMP/0", new Integer(28));
     functions.put("WEEK/2", new Integer(29));
     functions.put("DATEDIFF/2", new Integer(30));
+    functions.put("COALESCE/2", new Integer(31));
+    functions.put("ROWNO/0", new Integer(32));
+    functions.put("STRING2INT/1", new Integer(33));
   }
 }
