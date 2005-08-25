@@ -104,7 +104,7 @@ public class VStringField extends VField {
   public boolean checkText(String s) {
     int		end   = 0;
 
-    end = textToModel(s).length();
+    end = textToModel(s, getWidth(), Integer.MAX_VALUE).length();
     if (end > width * height) {
       return false;
     }

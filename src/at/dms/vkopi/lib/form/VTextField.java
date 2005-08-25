@@ -73,13 +73,6 @@ public class VTextField extends VStringField {
   }
 
   /**
-   * verify that text is valid (during typing)
-   */
-  public boolean checkText(String s) {
-    return true;
-  }
-
-  /**
    * verify that value is valid (on exit)
    * @exception	at.dms.vkopi.lib.visual.VException	an exception may be raised if text is bad
    */
@@ -112,6 +105,7 @@ public class VTextField extends VStringField {
       setString(r, (String)v);
     }
   }
+
 
   /**
    * Returns the specified tuple column as object of correct type for the field.
