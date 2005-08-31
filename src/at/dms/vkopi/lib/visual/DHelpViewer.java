@@ -70,6 +70,7 @@ import javax.swing.event.HyperlinkEvent;
    */
   public void run() {
     setVisible(true);
+    html.requestFocus();
   }
 
   /**
