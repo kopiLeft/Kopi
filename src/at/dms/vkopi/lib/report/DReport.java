@@ -193,7 +193,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     // set a minimum height for the window; there maybe only
     // one or two lines at the beginning but after opening a column
     // there are 50 lines
-    bounds.height = Math.max(bounds.height, 300); // 300 is aprox. 11 lines
+    bounds.height = Math.max(bounds.height, 500); // 500 is aprox. 15 lines
     frame.setBounds(bounds);
     frame.show();
 
@@ -327,14 +327,53 @@ public class DReport extends DWindow implements TableCellRenderer {
     table.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
 	int	row = table.rowAtPoint(e.getPoint());
+	int	mod = e.getModifiers();
+	int	column	= table.columnAtPoint(e.getPoint());
 
-	if ((e.getClickCount() == 2) && (currentModel.isRowLine(row))) {
-	  try {
-	    report.editLine();
-	  } catch (VException ef) {
-	    ef.printStackTrace();
-	  }
-	}
+        if ((mod & MouseEvent.BUTTON2_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) { 
+          if (e.getClickCount() == 2) {
+            if (currentModel.isRowLine(row)) {
+              try {
+                report.editLine();
+              } catch (VException ef) {
+                ef.printStackTrace();
+              }
+            } else {
+              if (row >= 0) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                int index = table.convertColumnIndexToModel(column);
+
+                if (currentModel.isRowFold(row, index)) {
+                  currentModel.unfoldingRow(row, index);
+                } else {
+                  currentModel.foldingRow(row, index);
+                }
+                setCursor(Cursor.getDefaultCursor());
+              }
+            }
+          }
+        } else if ((mod & MouseEvent.BUTTON1_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) { 
+          setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+          int index = table.convertColumnIndexToModel(column);
+          
+          if (currentModel.isColumnFold(index)) {
+            currentModel.unfoldingColumn(index);
+          } else {
+            currentModel.foldingColumn(index);
+          }  
+          setCursor(Cursor.getDefaultCursor());
+        } else if ((mod & MouseEvent.BUTTON1_MASK) == 0 && (mod & MouseEvent.BUTTON2_MASK) == 0) { 
+          if (row >= 0) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            int index = table.convertColumnIndexToModel(column);
+            if (currentModel.isRowFold(row, index)) {
+              currentModel.unfoldingRow(row, index);
+            } else {
+              currentModel.foldingRow(row, index);
+            }
+            setCursor(Cursor.getDefaultCursor());
+          }
+        }
       }
 
       public void mousePressed(MouseEvent e) {
@@ -344,7 +383,13 @@ public class DReport extends DWindow implements TableCellRenderer {
 
 	if ((mod & MouseEvent.BUTTON2_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) {
 	  // button 1 pressed
-	  if ((mod & MouseEvent.CTRL_MASK) != 0) {
+	  if ((mod & MouseEvent.CTRL_MASK) != 0 && (mod & MouseEvent.SHIFT_MASK) != 0) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            int index = table.convertColumnIndexToModel(column);
+            
+            currentModel.sortColumn(index);
+            setCursor(Cursor.getDefaultCursor());
+	  } else if ((mod & MouseEvent.CTRL_MASK) != 0) {
 	    // CTRL key pressed
 	    if (row >= 0) {
 	      setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -356,13 +401,24 @@ public class DReport extends DWindow implements TableCellRenderer {
 	      }
 	      setCursor(Cursor.getDefaultCursor());
 	    }
-	  }
+	  } else if ((mod & MouseEvent.SHIFT_MASK) != 0) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            int index = table.convertColumnIndexToModel(column);
+            
+            if (currentModel.isColumnFold(index)) {
+              currentModel.unfoldingColumn(index);
+            } else {
+              currentModel.foldingColumn(index);
+            }  
+            setCursor(Cursor.getDefaultCursor());
+          }
 	}
       }
     });
 
     table.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
       public void mousePressed(MouseEvent e) {
+        System.out.println("DReport - getTableHeader.mousePressed(MouseEvent e): " + e.getModifiers() +  "  "+table.columnAtPoint(e.getPoint()));
 	int	mod	= e.getModifiers();
 	int	column	= table.columnAtPoint(e.getPoint());
 
@@ -395,6 +451,7 @@ public class DReport extends DWindow implements TableCellRenderer {
       }
 
       public void mouseReleased(MouseEvent e) {
+        System.out.println("DReport - getTableHeader.mouseReleased(MouseEvent e): " + e.getModifiers() +  "  "+table.columnAtPoint(e.getPoint()));
 	boolean columnOrderChanged	= false;
 
 	if (columnMove) {
