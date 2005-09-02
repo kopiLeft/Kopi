@@ -30,7 +30,7 @@ public class PConfig {
     paperlayout	= "Landscape";
 
     topmargin	= 30;
-    bottommargin= 20;
+    bottommargin= 30;
     leftmargin	= 30;
     rightmargin	= 30;
     headermargin= 5;
