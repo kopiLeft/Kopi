@@ -33,6 +33,7 @@ import at.dms.compiler.base.CompilerMessages;
 import at.dms.compiler.base.PositionedError;
 import at.dms.compiler.base.TokenReference;
 import at.dms.compiler.base.UnpositionedError;
+import at.dms.compiler.base.WarningFilter;
 import at.dms.compiler.tools.antlr.extra.InputBuffer;
 import at.dms.compiler.tools.antlr.extra.Parser;
 import at.dms.compiler.tools.antlr.runtime.ParserException;
@@ -280,26 +281,23 @@ public class Main extends Compiler implements VKInsertParser {
     }
   }
   protected boolean filterWarning(CWarning warning) {
-    at.dms.compiler.base.WarningFilter	filter = getFilter();
-    int			value = filter.filter(warning);
-
-    switch (value) {
-    case at.dms.compiler.base.WarningFilter.FLT_REJECT:
+    switch (getFilter().filter(warning)) {
+    case WarningFilter.FLT_REJECT:
       return false;
-    case at.dms.compiler.base.WarningFilter.FLT_FORCE:
+    case WarningFilter.FLT_FORCE:
       return true;
-    case at.dms.compiler.base.WarningFilter.FLT_ACCEPT:
+    case WarningFilter.FLT_ACCEPT:
       return warning.getSeverityLevel() <= options.warning;
     default:
       throw new at.dms.util.base.InconsistencyException();
     }
   }
 
-  protected at.dms.compiler.base.WarningFilter getFilter() {
+  protected WarningFilter getFilter() {
     if (filter == null) {
       if (options.filter != null) {
         try {
-          filter = (at.dms.compiler.base.WarningFilter)Class.forName(options.filter).newInstance();
+          filter = (WarningFilter)Class.forName(options.filter).newInstance();
         } catch (Exception e) {
           inform(KjcMessages.FILTER_NOT_FOUND, options.filter);
         }
@@ -479,7 +477,7 @@ public class Main extends Compiler implements VKInsertParser {
 
   private static VKTopLevel		topLevel;
   // it must be initialized to null otherwise the filter option is not used
-  private at.dms.compiler.base.WarningFilter	filter = null;
+  private WarningFilter                 filter = null;
 
   protected VKOptions			options;
 
