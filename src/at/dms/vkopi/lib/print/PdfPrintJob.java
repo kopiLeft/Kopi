@@ -31,6 +31,7 @@ import at.dms.vkopi.lib.util.PrintJob;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
@@ -45,7 +46,7 @@ public class PdfPrintJob extends PrintJob {
   public PdfPrintJob(boolean landscape) throws IOException {
     super();
     try {
-      document =  new Document(landscape ?  PageSize.A4.rotate() : PageSize.A4, 0, 0, 0, 0);
+      document =  new Document(landscape ?  new Rectangle(PageSize.A4.rotate().width(), PageSize.A4.rotate().height()) : PageSize.A4, 0, 0, 0, 0);
       writer = PdfWriter.getInstance(document, new FileOutputStream(getDataFile()));
       document.open();
     } catch (Exception e) {

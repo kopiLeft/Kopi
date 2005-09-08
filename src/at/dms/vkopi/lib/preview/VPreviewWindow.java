@@ -176,16 +176,9 @@ public class VPreviewWindow extends VWindow {
       boolean   useRotation;
 
       resolution = (int) ((72f * this.height)/printJob.getHeight());
-      if (printJob.getDataType() != PrintJob.DAT_PDF 
-          || !printJob.isLandscape()) {  
-        p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
-                                      "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
-                                      " -dNOPAUSE " + printFile + " -c quit ");
-      } else {
-        p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
-                                      "-r" + resolution + "x" + resolution + " -g" + this.height + "x" + this.width +
-                                      " -dNOPAUSE " + printFile + " -c quit ");
-      }
+      p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
+                                    "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
+                                    " -dNOPAUSE " + printFile + " -c quit ");
       p.waitFor();
     } catch (Exception e) {
       fatalError(this, "VPreviewWindow.preview(File ...)", e);
@@ -197,24 +190,15 @@ public class VPreviewWindow extends VWindow {
   // ---------------------------------------------------------------------
 
   public void zoom(float ratio) {
-    width = (int)(width * ratio);
-    height = (int)(height * ratio);
-
-    // min (50)/max (3000) values of size
-
-    if (printJob.isLandscape()) {
-      if (height < 50) {
-        height = 50; width = (int) (50 * 1.4145);
-      } else if (width > 3000) {
-        height = (int) (3000f / 1.4145); width = 3000;
-      }
-    } else {
-      if (width < 50) {
-        height = (int) (50 * 1.4145); width = 50;
-      } else if (height > 3000) {
-        height = 3000; width = (int) (3000f / 1.4145);
-      }
+    if (Math.min(height, width) * ratio < 50) {
+      ratio = 50 / Math.min(height, width);
     }
+    if (Math.max(height, width) * ratio > 3000) {
+      ratio = 3000 / Math.max(height, width);
+    }
+
+    width = (int)(width * ratio);
+    height = (int)(height * ratio );
 
     createImagesFromPostscript();
     fireZoomChanged();

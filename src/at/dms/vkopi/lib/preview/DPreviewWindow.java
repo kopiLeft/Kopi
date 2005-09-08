@@ -256,17 +256,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   }
 
   private ImageIcon createIcon(int idx) {
-    try {  
-      if (!useRotation
-          || model.getPrintJob().getDataType() != PrintJob.DAT_PDF 
-          || !model.getPrintJob().isLandscape()) {  
-        return new ImageIcon(model.getPreviewFileName(idx));
-      } else {
-        return new ImageIcon(rotate(model.getPreviewFileName(idx)));
-      }
-    } catch (IOException e) {
-      throw new InconsistencyException(e);
-    }
+    return new ImageIcon(model.getPreviewFileName(idx));
   }
 
   // ----------------------------------------------------------------------
