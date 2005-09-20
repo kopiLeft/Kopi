@@ -192,8 +192,11 @@ public class  PExport2XLS extends PExport implements Constants {
             cal.set(Calendar.DAY_OF_MONTH, date.getDay());
 
             cell.setCellValue(cal);
+          } else if (orig[j] instanceof String && orig[j].equals("")) {
+            // myabe reportIdenticalValue Trigger used
+            // nothing
           } else {
-            throw new InconsistencyException("Beinhaltet noch nicht unterstützten Typ:" + orig[j].getClass() +" von " + orig[j]);
+            throw new InconsistencyException("Beinhaltet noch nicht unterstützten Typ: datatype=" + datatype[j] +"  "+ " j= "+j+" " +orig[j].getClass() +" von " + orig[j]);
           }
         }
         cell.setCellType(datatype[j]);
