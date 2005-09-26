@@ -26,6 +26,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.*;
@@ -35,12 +36,16 @@ import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.visual.Application;
 import at.dms.vkopi.lib.visual.DObject;
 import at.dms.vkopi.lib.visual.KopiAction;
+import at.dms.vkopi.lib.visual.PrinterManager;
 import at.dms.vkopi.lib.visual.Utils;
 import at.dms.vkopi.lib.visual.VException;
+import at.dms.vkopi.lib.visual.VExecFailedException;
 
 import at.dms.vkopi.lib.ui.base.Stateful;
 import at.dms.vkopi.lib.ui.base.FieldStates;
 import at.dms.vkopi.lib.util.Message;
+import at.dms.vkopi.lib.util.PrintJob;
+import at.dms.vkopi.lib.util.PrintException;
 
 public class KeyNavigator extends AbstractAction {
 
@@ -154,6 +159,22 @@ public class KeyNavigator extends AbstractAction {
         fieldView.getBlockView().getFormView().closeWindow();
         action = null;
 	break;
+      case KEY_PRINTFORM:
+	action = new KopiAction("keyKEY_ALTENTER") {
+	  public void execute() throws VException {
+            try {
+              PrintJob    job = fieldView.getBlockView().getFormView().printForm();
+
+              PrinterManager.getPrinterManager().getCurrentPrinter().print(job);
+              
+            } catch (PrintException e) {
+              throw new VExecFailedException(e.getMessage());
+            } catch (IOException e) {
+              throw new VExecFailedException(e.getMessage());
+            }
+	  }
+	};
+	break;
       default:
         action = processSpecificKeyCode(fieldView, field);
       }
@@ -218,6 +239,7 @@ public class KeyNavigator extends AbstractAction {
   public static final int	KEY_NEXT_VAL		=  9;
   public static final int	KEY_DIAMETER		= 10;
   public static final int	KEY_ESCAPE		= 11;
+  public static final int	KEY_PRINTFORM		= 12;
 
   public static final KeyNavigator[]    navigators;
 
@@ -235,6 +257,7 @@ public class KeyNavigator extends AbstractAction {
       new KeyNavigator(KEY_NEXT_VAL),
       new KeyNavigator(KEY_DIAMETER),
       new KeyNavigator(KEY_ESCAPE),
+      new KeyNavigator(KEY_PRINTFORM)
     };
   }
 }

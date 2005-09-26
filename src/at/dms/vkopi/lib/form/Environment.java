@@ -39,6 +39,7 @@ public class Environment {
     addKeyAction(comp, KeyNavigator.KEY_ESCAPE);
     addKeyAction(comp, KeyNavigator.KEY_PREV_VAL);
     addKeyAction(comp, KeyNavigator.KEY_NEXT_VAL);
+    addKeyAction(comp, KeyNavigator.KEY_PRINTFORM);
 
     addKey(comp, KeyNavigator.KEY_EMPTY_FIELD, KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK);
     addKey(comp, KeyNavigator.KEY_NEXT_BLOCK, KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK);
@@ -55,6 +56,7 @@ public class Environment {
     addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_RIGHT, KeyEvent.CTRL_DOWN_MASK);
     addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_TAB, 0);
     addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_PRINTFORM, KeyEvent.VK_PRINTSCREEN, KeyEvent.SHIFT_DOWN_MASK);
     // the magnet card reader sends a CNTR-J as last character
     addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
 
