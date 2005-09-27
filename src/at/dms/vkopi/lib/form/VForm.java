@@ -32,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
+import javax.swing.event.EventListenerList;
 
 import at.dms.util.base.InconsistencyException;
 import at.dms.vkopi.lib.util.AWTToPS;
@@ -645,10 +646,12 @@ public abstract class VForm extends VWindow implements VConstants {
   }
 
   public void fireCurrentBlockChanged(VBlock oldBlock, VBlock newBlock) {
-    Iterator    iterator = formListener.listIterator();
+    Object[]            listeners = formListener.getListenerList();
 
-    while (iterator.hasNext()) {
-      ((FormListener) iterator.next()).currentBlockChanged(oldBlock, newBlock);
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]== FormListener.class) {
+        ((FormListener)listeners[i+1]).currentBlockChanged(oldBlock, newBlock);
+      }
     }
   }
 
@@ -658,10 +661,12 @@ public abstract class VForm extends VWindow implements VConstants {
    * inform user about nb records fetched and current one
    */
   public void setFieldSearchOperator(int op) {
-    Iterator    iterator = formListener.listIterator();
+    Object[]            listeners = formListener.getListenerList();
 
-    while (iterator.hasNext()) {
-      ((FormListener) iterator.next()).setFieldSearchOperator(op);
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]== FormListener.class) {
+        ((FormListener)listeners[i+1]).setFieldSearchOperator(op);
+      }
     }
   }
 
@@ -718,10 +723,10 @@ public abstract class VForm extends VWindow implements VConstants {
   // ----------------------------------------------------------------------
 
   public void addFormListener(FormListener bl) {
-    formListener.add(bl);
+    formListener.add(FormListener.class, bl);
   }
   public void removeFormListener(FormListener bl) {
-    formListener.remove(bl);
+    formListener.remove(FormListener.class, bl);
   }
 
   // ----------------------------------------------------------------------
@@ -1014,7 +1019,7 @@ public abstract class VForm extends VWindow implements VConstants {
   //  private int			currentPage = -1;
   protected VCommand[]		commands;	// commands
 
-  private ArrayList             formListener = new ArrayList();
+  private EventListenerList     formListener = new EventListenerList();
 
   protected Environment         environment;
 

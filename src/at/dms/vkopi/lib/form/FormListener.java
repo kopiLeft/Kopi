@@ -21,14 +21,12 @@
 package at.dms.vkopi.lib.form;
 
 import java.awt.Component;
+import java.util.EventListener;
 
 import at.dms.vkopi.lib.visual.KopiAction;
 import at.dms.vkopi.lib.visual.VException;
 
-public interface FormListener {
+public interface FormListener extends EventListener {
   void currentBlockChanged(VBlock oldBlock, VBlock newBlock);
-
-  //  void setBlockRecords(int current, int count);
   void setFieldSearchOperator(int op);
-  //  void performAction(final KopiAction action, boolean block);
 }
