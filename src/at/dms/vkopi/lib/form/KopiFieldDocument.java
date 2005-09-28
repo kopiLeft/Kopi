@@ -45,7 +45,7 @@ import at.dms.vkopi.lib.ui.base.Stateful;
   /**
    * Returns the text currently showed by this document
    */
-  public String getModelText() {
+  public synchronized String getModelText() {
     try {
       String    text;
 
@@ -59,7 +59,7 @@ import at.dms.vkopi.lib.ui.base.Stateful;
   /**
    * Changes the text of this document without checking
    */
-  public void setModelText(String s) {
+  public synchronized void setModelText(String s) {
     try {
       super.remove(0, getLength());
       s =  transformer.toGui(s);

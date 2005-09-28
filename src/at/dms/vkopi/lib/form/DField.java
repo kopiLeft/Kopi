@@ -168,7 +168,6 @@ public abstract class DField extends JPanel {
   // ----------------------------------------------------------------------
 
   public void updateText() {
-    SwingThreadHandler.verifyRunsInEventThread("DField.updateText");
   }
 
   public void updateFocus() {

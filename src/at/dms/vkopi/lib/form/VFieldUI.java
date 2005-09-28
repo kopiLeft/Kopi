@@ -763,17 +763,13 @@ public class VFieldUI implements VConstants, ActionHandler {
     public void valueChanged(int r) {
       final int         dispRow = blockView.getDisplayLine(r);
 
-     if (dispRow != -1) {
-        SwingThreadHandler.startEnqueued(new Runnable() {
-            public void run() {
-              if (displays != null) {
-                displays[dispRow].updateText();
-              }
-              if (detailDisplay != null) {
-                detailDisplay.updateText();
-              }
-            }
-          });
+      if (dispRow != -1) {
+        if (displays != null) {
+          displays[dispRow].updateText();
+        }
+        if (detailDisplay != null) {
+          detailDisplay.updateText();
+        }
       }
     }
 
