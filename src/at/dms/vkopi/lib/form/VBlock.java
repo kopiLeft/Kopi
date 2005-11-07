@@ -3279,9 +3279,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
 
-    if (idfld == null) {
-      throw new InconsistencyException("no ID field for table " + tables[table]);
-    }
+    // lackner 7.11.2005 useless check, but prevents work with oracle (not ID) tables
+//     if (idfld == null) {
+//       throw new InconsistencyException("no ID field for table " + tables[table]);
+//     }
     if (tailbuff.equals("")) {
       throw new InconsistencyException("no conditions for table " + tables[table]);
     }
