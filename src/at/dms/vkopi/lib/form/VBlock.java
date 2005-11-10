@@ -470,13 +470,24 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
       }
     }
-
     // currently only used by the scrollbar.
     // make the size of the scrollbar only so big, that the top
     // most row is filled, when the srcollbar is on the bottom
     count = Math.min(count, lastFilled + getDisplaySize() - 1);
 
     return count; // $$$ May be optimised
+  }
+
+  public int getNumberOfFilledRecords() {
+    int count = 0;
+
+    for (int i = 0; i< getBufferSize(); i++) {
+      if (isRecordFilled(i) && !isRecordDeleted(i)) {
+        count += 1;
+      }
+    }
+
+    return count;
   }
 
   /**
