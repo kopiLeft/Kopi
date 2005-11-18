@@ -28,9 +28,14 @@ public class TextSelecter extends FocusAdapter {
 
   public void focusGained(FocusEvent e) {
     // Select all, but put caret at first position
-    ((JTextComponent) e.getComponent()).getCaret().setDot(((JTextComponent) e.getComponent()).getText().length());
-    ((JTextComponent) e.getComponent()).getCaret().moveDot(0);
+    selectText((JTextComponent) e.getComponent());
   }  
+
+  public void selectText(JTextComponent txt) {
+    // Select all, but put caret at first position
+    txt.getCaret().setDot(txt.getText().length());
+    txt.getCaret().moveDot(0);
+  }
 
   public static final  TextSelecter   TEXT_SELECTOR = new TextSelecter(); 
 }

@@ -262,6 +262,17 @@ public class DTextField extends DField implements VConstants {
     }
   
     super.updateText();
+    // LACKNER 2005.11.18
+    // If this field has the focus, and the value is set 
+    // with this method, then the value should be selected.
+    // RT #25754
+    // this is required because, the focus-gained event
+    // is handled before the updateText-event although
+    // the focus-gained event is in the queue after the
+    // updateText-event.
+    if (modelHasFocus()) {
+      TextSelecter.TEXT_SELECTOR.selectText(field);
+    }
   }
 
   public synchronized void updateFocus() {
