@@ -54,9 +54,10 @@ public class DColorField extends DObjectField {
   public DColorField(VFieldUI model,
 		     DLabel label,
 		     int align,
-		     int options)
+		     int options,
+                      boolean detail)
   {
-    super(model, label, align, options);
+    super(model, label, align, options, detail);
 
     SIZE = textHeight + 4; // border size
     add(inner, BorderLayout.CENTER);

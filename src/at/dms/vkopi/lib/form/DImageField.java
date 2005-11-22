@@ -54,9 +54,10 @@ public class DImageField extends DObjectField {
 		     int align,
 		     int options,
 		     int width,
-		     int height)
+		     int height,
+                      boolean detail)
   {
-    super(model, label, align, options);
+    super(model, label, align, options, detail);
     this.width = width;
     this.height = height;
 

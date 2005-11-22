@@ -55,8 +55,9 @@ public class DTextField extends DField implements VConstants {
   public DTextField(VFieldUI model,
                     DLabel label,
                     int align,
-                    int options) {
-    super(model, label, align, options);
+                    int options,
+                    boolean detail) {
+    super(model, label, align, options, detail);
 
     noEdit = (options & VConstants.FDO_NOEDIT) != 0;
     scanner = (options & VConstants.FDO_NOECHO) != 0 && getModel().getHeight() > 1;
@@ -100,8 +101,8 @@ public class DTextField extends DField implements VConstants {
                           scanner,
                           new DFieldMouseListener(),
                           align);
-    if (model.hasAutofill()  && getModel().getDefaultAccess() > VConstants.ACS_SKIPPED) {
-     document.setAutofill(true);
+    if (model.hasAutofill() && getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
+      document.setAutofill(true);
     }
     add(comp, BorderLayout.CENTER);
   }

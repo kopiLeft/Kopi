@@ -52,9 +52,10 @@ public abstract class DObjectField extends DField {
   public DObjectField(VFieldUI model,
 		      DLabel label,
 		      int align,
-		      int options)
+		      int options,
+                      boolean detail)
   {
-    super(model, label, align, options);
+    super(model, label, align, options, detail);
     addNavigationKey();
     setRequestFocusEnabled(true);
     setFocusCycleRoot(true);

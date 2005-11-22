@@ -47,9 +47,10 @@ public class DTextEditor extends DTextField {
 		     DLabel label,
 		     int align,
 		     int options,
-		     int height)
+		     int height,
+                      boolean detail)
   {
-    super(model, label, align, options);
+    super(model, label, align, options, detail);
   }
 
   // ----------------------------------------------------------------------
