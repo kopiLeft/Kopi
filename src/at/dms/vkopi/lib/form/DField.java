@@ -389,7 +389,7 @@ public abstract class DField extends JPanel {
           }
         }
 
-        if (model.getBlock().isDetailMode() && isInDetail()) {
+        if (model.getBlock().isDetailMode() == isInDetail()) {
           KopiAction	action = new KopiAction("mouse1") {
               public void execute() throws VException {
                 model.transferFocus(DField.this); // use here a mouse transferfocus
