@@ -57,11 +57,12 @@ public abstract class DField extends JPanel {
   public DField(VFieldUI model,
                 DLabel label,
                 int align,
-                int options) {
+                int options,
+                boolean detail) {
     setLayout(new BorderLayout());
     addMouseListener(new DFieldMouseListener());
 
-    this.inDetail = false;
+    this.inDetail = detail;
     this.model = model;
     this.options = options;
     this.label = label;
@@ -388,15 +389,17 @@ public abstract class DField extends JPanel {
           }
         }
 
-        KopiAction	action = new KopiAction("mouse1") {
-	    public void execute() throws VException {
-	      model.transferFocus(DField.this); // use here a mouse transferfocus
-	    }
-	  };
-        // execute it as model transforming thread
-        // it is not allowed to execute it not with
-        // the method performAsync/BasicAction.
-        model.performAsyncAction(action);
+        if (model.getBlock().isDetailMode() && isInDetail()) {
+          KopiAction	action = new KopiAction("mouse1") {
+              public void execute() throws VException {
+                model.transferFocus(DField.this); // use here a mouse transferfocus
+              }
+            };
+          // execute it as model transforming thread
+          // it is not allowed to execute it not with
+          // the method performAsync/BasicAction.
+          model.performAsyncAction(action);
+        }
       }
     }
   }

@@ -93,21 +93,21 @@ public class VFieldUI implements VConstants, ActionHandler {
   /**
    * Create a display widget for this field
    */
-  private DField createDisplay(DLabel label, VField model) {
+  private DField createDisplay(DLabel label, VField model, boolean detail) {
     DField      field = null;
 
     switch (model.getType()) {
     case VField.MDL_FLD_COLOR:
-      field = new DColorField(this, label, model.getAlign(), 0);
+      field = new DColorField(this, label, model.getAlign(), 0, detail);
       break;
     case VField.MDL_FLD_IMAGE:
-      field = new DImageField(this, label, model.getAlign(), 0, ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight());
+      field = new DImageField(this, label, model.getAlign(), 0, ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight(), detail);
       break;
     case VField.MDL_FLD_EDITOR:
-      field = new DTextEditor(this, label, model.getAlign(), 0, ((VTextField) model).getHeight());
+      field = new DTextEditor(this, label, model.getAlign(), 0, ((VTextField) model).getHeight(), detail);
       break;
     case VField.MDL_FLD_TEXT:
-      field = new DTextField(this, label, model.getAlign(), model.getOptions());
+      field = new DTextField(this, label, model.getAlign(), model.getOptions(), detail);
       break;
     default:
       throw new InconsistencyException("Type of model " + model.getType() + " not supported.");
@@ -355,7 +355,7 @@ public class VFieldUI implements VConstants, ActionHandler {
           // the fields for the values
           displays = new DField[getBlock().getDisplaySize()];
           for (int i = 0; i < getBlock().getDisplaySize(); i++) {
-            displays[i] = createDisplay(dl, model);
+            displays[i] = createDisplay(dl, model, false);
             blockView.add(displays[i], new KopiAlignment(chartPos + leftOffset, i + 1, 1, false));
             displays[i].setPosition(i);
           }
@@ -371,7 +371,7 @@ public class VFieldUI implements VConstants, ActionHandler {
                                                                 new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
           }
           // field for the value in the detail view
-          detailDisplay = createDisplay(dlDetail, model);
+          detailDisplay = createDisplay(dlDetail, model, true);
           ((DMultiBlock) getBlock().getDisplay()).addToDetail(detailDisplay,
                                                               new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, false));
           detailDisplay.setPosition(0);
@@ -391,7 +391,7 @@ public class VFieldUI implements VConstants, ActionHandler {
         // multifields (special fields)
         // take care that in this row is only this multifield
 	blockView.add(dl, new MultiFieldAlignment(columnEnd * 2 - 1, line - 1, 1, true));
-	displays = new DField[] {createDisplay(dl, model)};
+	displays = new DField[] {createDisplay(dl, model, false)};
 	blockView.add(displays[0], new MultiFieldAlignment(columnEnd * 2 - 1,
 									 line,
 									 1, false));
@@ -402,7 +402,7 @@ public class VFieldUI implements VConstants, ActionHandler {
 	  // not an info field => show label
 	  blockView.add(dl, new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
 	}
-	displays = new DField[] {createDisplay(dl, model)};
+	displays = new DField[] {createDisplay(dl, model, false)};
 	blockView.add(displays[0], new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, false));
 	displays[0].setPosition(0);
         displays[0].updateText();
