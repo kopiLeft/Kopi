@@ -24,18 +24,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
-// import java.sql.Clob;
 import java.sql.Blob;
 import java.sql.SQLException;
 
 import at.dms.util.base.InconsistencyException;
 import at.dms.xkopi.lib.base.Query;
+import at.dms.vkopi.lib.util.Utils;
 import at.dms.vkopi.lib.visual.ApplicationConfiguration;
 import at.dms.vkopi.lib.visual.VRuntimeException;
-import at.dms.vkopi.lib.util.Utils;
 
 /**
- * This class is the Visual Kopi representation a CLOB SQL type.
+ * This class implements multi-line text fields.
  */
 public class VTextField extends VStringField {
 
@@ -56,14 +55,6 @@ public class VTextField extends VStringField {
   // ----------------------------------------------------------------------
   // INTERFACE DISPLAY
   // ----------------------------------------------------------------------
-
-  // MOVED TO VFIELDUI
-//   /**
-//    * Create a display widget for this field
-//    */
-//   protected DField createDisplay(DLabel label) {
-//     return new DTextEditor(getUI(), label, getAlign(), 0, getHeight());
-//   }
 
   /**
    * @return a list column for list
@@ -106,7 +97,6 @@ public class VTextField extends VStringField {
     }
   }
 
-
   /**
    * Returns the specified tuple column as object of correct type for the field.
    * @param	query		the query holding the tuple
@@ -115,14 +105,9 @@ public class VTextField extends VStringField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    // !!! laurent 20020801 : consider clob like a blob. See
-    // SapdbDbiChecker.visitClobType, see also hasBinaryLargeObject
-
-//     Clob clob = query.getClob(column);
     Blob        blob = query.getBlob(column);
 
     if (blob != null) {
-//       InputStream               is = clob.getAsciiStream();
       InputStream               is = blob.getBinaryStream();
       ByteArrayOutputStream     out = new ByteArrayOutputStream();
       byte[]                    buf = new byte[2048];
@@ -184,10 +169,6 @@ public class VTextField extends VStringField {
    * @kopi	inaccessible
    */
   public boolean hasBinaryLargeObject(int r) {
-    // !!! laurent 20020801 : consider a clob like a blob :
-    // see SapdDbiChecker.visitClobType, see also retrieveQuery
-    //     return false;
-
     return true;
   }
 
