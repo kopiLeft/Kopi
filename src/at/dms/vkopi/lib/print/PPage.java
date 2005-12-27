@@ -328,7 +328,12 @@ public abstract class PPage {
     if (watermark != null) {  
       PdfContentByte    cbwater =  printJob.getWriter().getDirectContent();
 
-      cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
+      if (landscape) {
+        // rotate watermark clockwise by 90 degrees
+        cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 0, -1, 1, 0, 0, height);
+      } else {
+        cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
+      }
     }
   }
 
