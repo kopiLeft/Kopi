@@ -32,26 +32,22 @@ public class Attachment implements DataSource {
 
   /**
    * Creates an attachment object.
+   *
+   * @param     name            the file name given to the attachment.
+   * @param     type            the content type of the attachment.
+   * @param     input           the input stream delivering the content
+   */
+  public Attachment(String name, String type, InputStream input) {
+    this.name = name;
+    this.type = type == null ? DEFAULT_TYPE : type;
+    this.input = input;
+  }
+
+  /**
+   * Creates an attachment object.
    */
   public Attachment(File file) throws FileNotFoundException {
-    this(file, file.getName());
-  }
-
-  /**
-   * Creates an attachment object.
-   */
-  public Attachment(File file, String name)
-    throws FileNotFoundException
-  {
-    this(new FileInputStream(file), name);
-  }
-
-  /**
-   * Creates an attachment object.
-   */
-  public Attachment(InputStream input, String name) {
-    this.input = input;
-    this.name = name;
+    this(file.getName(), null, new FileInputStream(file));
   }
 
   // ----------------------------------------------------------------------
@@ -66,6 +62,15 @@ public class Attachment implements DataSource {
   // interface DataSource
   // ----------------------------------------------------------------------
 
+  public String getName() {
+    return this.name;
+  }
+
+  public String getContentType() {
+    // graf 20060108: javax.activation.FileDataSouce verwenden?
+    return this.type;
+  }
+
   /**
    * Return an InputStream for the data.
    * !!! Note - a new stream must be returned each time.
@@ -78,19 +83,12 @@ public class Attachment implements DataSource {
     throw new IOException("cannot do this");
   }
 
-  public String getContentType() {
-    // !!! verbessern oder javax.activation.FileDataSouce verwenden
-    return "application/octet-stream";
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
+  private static final String           DEFAULT_TYPE= "application/octet-stream";
 
   private final String                  name;
+  private final String                  type;
   private final InputStream             input;
 }

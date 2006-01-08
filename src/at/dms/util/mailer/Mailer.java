@@ -21,6 +21,7 @@
 package at.dms.util.mailer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
@@ -52,21 +53,6 @@ public class Mailer {
       System.exit(1);
     }
 
-    List      attachments = new ArrayList();
-
-    if (options.attachments != null && options.attachments.length() > 0) {
-      StringTokenizer   tok = new StringTokenizer(options.attachments, ",");
-
-      while (tok.hasMoreTokens()) {
-        String  filename = tok.nextToken();
-        try {
-          attachments.add(new Attachment(new File(filename)));
-        } catch (FileNotFoundException e) {
-          System.err.println(filename + ": no such file");
-        }
-      }
-    }
-
     sendMail(options.host,
              options.to,
              options.cc,
@@ -74,8 +60,56 @@ public class Mailer {
              options.subject,
              options.body,
              options.from,
-             attachments);
+             createAttachments());
   }
+
+  /**
+   * Parse the argument list
+   */
+  public boolean parseArguments(String[] args) {
+    options = new MailerOptions();
+    if (!options.parseCommandLine(args)) {
+      return false;
+    }
+    return options.to != null
+      && options.to.length() > 0
+      && options.from != null
+      && options.from.length() > 0;
+  }
+
+  private List createAttachments() {
+    List      attachments = new ArrayList();
+
+    if (options.attachments != null && options.attachments.length() > 0) {
+      StringTokenizer   tok = new StringTokenizer(options.attachments, ",");
+
+      while (tok.hasMoreTokens()) {
+        attachments.add(createAttachment(tok.nextToken()));
+      }
+    }
+    return attachments;
+  }
+
+  private Attachment createAttachment(String argument) {
+    String      name;
+    String      type;
+
+    if (argument.indexOf(":") == -1) {
+      name = argument;
+      type = null;
+    } else {
+      name = argument.substring(0, argument.indexOf(":"));
+      type = argument.substring(argument.indexOf(":") + 1);
+    }
+    try {
+      return new Attachment(name, type, new FileInputStream(new File(name)));
+    } catch (FileNotFoundException e) {
+      System.err.println("cannot find file " + name);
+      System.exit(1);
+      return null;      // for Jikes
+    }
+  }
+
 
   /**
    * Convenience method
@@ -150,20 +184,6 @@ public class Mailer {
    * Creates a new Mailer.
    */
   public Mailer() {
-  }
-
-  /**
-   * Parse the argument list
-   */
-  public boolean parseArguments(String[] args) {
-    options = new MailerOptions();
-    if (!options.parseCommandLine(args)) {
-      return false;
-    }
-    return options.to != null
-      && options.to.length() > 0
-      && options.from != null
-      && options.from.length() > 0;
   }
 
   /**
@@ -326,8 +346,9 @@ public class Mailer {
       }
     }
 
-    return (Address[]) addresses.toArray(new  Address[addresses.size()]);
+    return (Address[]) addresses.toArray(new Address[addresses.size()]);
   }
+
 
   // ----------------------------------------------------------------------
   // ACCESSORS
