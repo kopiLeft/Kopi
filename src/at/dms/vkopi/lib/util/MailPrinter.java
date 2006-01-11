@@ -21,6 +21,7 @@
 package at.dms.vkopi.lib.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,8 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
    */
   public String print(PrintJob printdata) throws IOException, PrintException {
     try {
-      PrintJob        gsJob;
-      File            dest;
+      PrintJob          gsJob;
+      File              dest;
 
       if (printdata.getDataType() == PrintJob.DAT_PS) {
         // convert if postcript
@@ -96,8 +97,9 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
       List allattachments = new ArrayList();
       Attachment attachment;
       
-      allattachments.add(new Attachment(dest,
-                                        gsJob.getTitle() + (sendPdf ? ".pdf" : ".ps")));
+      allattachments.add(new Attachment(gsJob.getTitle() + (sendPdf ? ".pdf" : ".ps"),
+                                        sendPdf ? "application/pdf" : "application/postscript",
+                                        new FileInputStream(dest)));
       
       allattachments.addAll(attachments);
 
