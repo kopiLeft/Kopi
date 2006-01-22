@@ -48,7 +48,6 @@ public class PrintJob {
   }
 
   public PrintJob(File datafile, boolean delete) {
-    //    this.numberCopy = 1;
     this.datafile = datafile;
     this.delete = delete;
     this.landscape = false;
@@ -145,7 +144,8 @@ public class PrintJob {
                                   boolean landscape,
                                   int width,
                                   int height,
-                                  int numberOfPages) {
+                                  int numberOfPages)
+  {
     this.title = title;
     this.landscape = landscape;
     this.width = width;

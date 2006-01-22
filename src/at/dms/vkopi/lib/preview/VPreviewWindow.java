@@ -150,9 +150,16 @@ public class VPreviewWindow extends VWindow {
     this.imageFile = tempFile.getPath();
     this.imageFile = imageFile.substring(0, imageFile.lastIndexOf('.'));
 
-    this.height = printJob.getHeight();
-    this.width = printJob.getWidth();
-
+//!!TEST
+    System.err.println("ls:" + printJob.isLandscape() + "|h:" + printJob.getHeight() + "|w:" + printJob.getWidth());
+//!!TEST
+    if (printJob.isLandscape()) {
+      this.height = printJob.getWidth();
+      this.width = printJob.getHeight();
+    } else {
+      this.height = printJob.getHeight();
+      this.width = printJob.getWidth();
+    }
     this.command = command;
 
     createImagesFromPostscript();
@@ -173,9 +180,8 @@ public class VPreviewWindow extends VWindow {
     try {
       int       resolution;
       Process   p;
-      boolean   useRotation;
 
-      resolution = (int) ((72f * this.height)/printJob.getHeight());
+      resolution = (int) ((72f * this.height)/(printJob.isLandscape() ? printJob.getWidth() : printJob.getHeight()));
       p = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + imageFile + "%d.JPG -sDEVICE=jpeg " +
                                     "-r" + resolution + "x" + resolution + " -g" + this.width + "x" + this.height +
                                     " -dNOPAUSE " + printFile + " -c quit ");
@@ -198,7 +204,7 @@ public class VPreviewWindow extends VWindow {
     }
 
     width = (int)(width * ratio);
-    height = (int)(height * ratio );
+    height = (int)(height * ratio);
 
     createImagesFromPostscript();
     fireZoomChanged();

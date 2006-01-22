@@ -45,8 +45,10 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PdfPrintJob extends PrintJob {
   public PdfPrintJob(boolean landscape) throws IOException {
     super();
+    setPrintInformation(null, landscape, (int)PageSize.A4.width(), (int)PageSize.A4.height(), 1);
+
     try {
-      document =  new Document(landscape ?  new Rectangle(PageSize.A4.rotate().width(), PageSize.A4.rotate().height()) : PageSize.A4, 0, 0, 0, 0);
+      document = new Document(landscape ? new Rectangle(PageSize.A4.rotate().width(), PageSize.A4.rotate().height()) : PageSize.A4, 0, 0, 0, 0);
       writer = PdfWriter.getInstance(document, new FileOutputStream(getDataFile()));
       document.open();
     } catch (Exception e) {
