@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.kopi.comp.kjc
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="xxpackage" value="com/kopiright/kopi/comp/kjc" />
+  <property name="package.name" value="com.kopiright.kopi.comp.kjc" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="KjcTokenTypes.java 
+                   KjcScanner.java 
+                   KjcParser.java
+                   KjcKeywords.java
+                   BytecodeOptimizer.java 
+                   CArrayType.java CBadClass.java 
+                   CBinaryClass.java CBinaryField.java CBinaryMethod.java CBlockContext.java 
+                   CBlockError.java CBodyContext.java CBooleanType.java 
+                   CByteType.java CCatchContext.java CCharType.java CClass.java 
+                   CClassContext.java CClassNameType.java CReferenceType.java 
+                   CCompilationUnit.java CCompilationUnitContext.java 
+                   CConstructorContext.java CContext.java CClassOrInterfaceType.java 
+                   CDoubleType.java CExpressionContext.java 
+                   CExpressionError.java CField.java 
+                   CFloatType.java CInitializerContext.java 
+                   CIntType.java CInterfaceContext.java CLabeledContext.java 
+                   CLineError.java CLongType.java CLoopContext.java CMember.java 
+                   CMethod.java CMethodContext.java 
+                   CMethodNotFoundError.java CModifier.java CNullType.java 
+                   CNumericType.java CParseClassContext.java CParseEnumContext.java 
+                   CParseCompilationUnitContext.java CPrimitiveType.java CShortType.java 
+                   CSimpleBodyContext.java CSourceClass.java CSourceField.java 
+                   CSourceMethod.java CStdType.java 
+                   CSwitchBodyContext.java CSwitchGroupContext.java 
+                   CThrowableInfo.java CTryContext.java 
+                   CTryFinallyContext.java CType.java CVariableInfo.java CVoidType.java 
+                   CodeLabel.java CodeSequence.java Constants.java 
+                   DefaultFilter.java JCheckedExpression.java KjcPrettyPrinter.java 
+                   KjcScanner.java KjcVisitor.java Main.java 
+                   KjcEnvironment.java TypeFactory.java KjcTypeFactory.java 
+                   ClassReader.java KjcClassReader.java CTypeContext.java 
+                   CBinaryTypeContext.java SignatureParser.java CTypeVariable.java 
+                   KjcSignatureParser.java CBinaryType.java CTypeVariableAlias.java 
+                   CErasedReferenceType.java GenerationContext.java
+                   JAddExpression.java JArrayAccessExpression.java 
+                   JArrayInitializer.java JArrayLengthExpression.java 
+                   JAssignmentExpression.java JBinaryArithmeticExpression.java 
+                   JBinaryExpression.java JBitwiseComplementExpression.java 
+                   JBitwiseExpression.java JBlock.java 
+                   JBooleanLiteral.java JBreakStatement.java JByteLiteral.java 
+                   JCastExpression.java JCatchClause.java JCharLiteral.java 
+                   JClassBlock.java JClassDeclaration.java JEnumDeclaration.java 
+                   JEnumSwitchInnerDeclaration.java JClassExpression.java 
+                   JClassFieldDeclarator.java 
+                   JClassImport.java JCompilationUnit.java 
+                   JCompoundAssignmentExpression.java JCompoundStatement.java 
+                   JConditionalAndExpression.java JConditionalExpression.java 
+                   JConditionalOrExpression.java JConstructorBlock.java 
+                   JConstructorCall.java 
+                   JConstructorDeclaration.java JContinueStatement.java 
+                   JDivideExpression.java JDoStatement.java 
+                   JDoubleLiteral.java JEmptyStatement.java 
+                   JEqualityExpression.java JEnhancedForStatement.java
+                   JExpression.java JExpressionListStatement.java 
+                   JExpressionStatement.java 
+                   JFieldAccessExpression.java JFieldDeclaration.java 
+                   JFloatLiteral.java JForStatement.java
+                   JEnhancedForStatement.java JFormalParameter.java 
+                   JGeneratedLocalVariable.java JIfStatement.java 
+                   JInitializerDeclaration.java JInstanceofExpression.java 
+                   JIntLiteral.java 
+                   JInterfaceDeclaration.java JLabeledStatement.java JLiteral.java 
+                   JLocalVariable.java JLocalVariableExpression.java 
+                   JLogicalComplementExpression.java 
+                   JLongLiteral.java JLoopStatement.java 
+                   JMemberDeclaration.java JMethodCallExpression.java 
+                   JMethodDeclaration.java JEnumMethodValues.java JEnumMethodValueOf.java 
+                   JMinusExpression.java JModuloExpression.java 
+                   JMultExpression.java JNameExpression.java 
+                   JNewArrayExpression.java 
+                   JNullLiteral.java JOuterLocalVariableExpression.java 
+                   JPackageImport.java JPackageName.java JParenthesedExpression.java 
+                   JPhylum.java JPostfixExpression.java JPrefixExpression.java 
+                   JQualifiedAnonymousCreation.java 
+                   JQualifiedInstanceCreation.java 
+                   JRelationalExpression.java 
+                   JReturnStatement.java JShiftExpression.java 
+                   JShortLiteral.java JStatement.java JOwnerExpression.java 
+                   JStringLiteral.java JSuperExpression.java JSwitchGroup.java 
+                   JSwitchLabel.java JSwitchStatement.java JSynchronizedStatement.java 
+                   JThisExpression.java JThrowStatement.java JTryCatchStatement.java 
+                   JTryFinallyStatement.java JTypeDeclaration.java 
+                   JTypeDeclarationStatement.java JTypeNameExpression.java 
+                   JUnaryExpression.java JUnaryMinusExpression.java 
+                   JUnaryPlusExpression.java JUnaryPromote.java 
+                   JUnqualifiedAnonymousCreation.java 
+                   JUnqualifiedInstanceCreation.java 
+                   JVariableDeclarationStatement.java JVariableDefinition.java 
+                   JWhileStatement.java JAccessorMethod.java 
+                   LanguageExtensions.java 
+                   KopiInvariantDeclaration.java KopiInvariantStatement.java 
+                   KopiConstraintStatement.java KopiPostconditionDeclaration.java 
+                   KopiPreconditionDeclaration.java KopiPreconditionStatement.java 
+                   KopiMethodCallExpression.java KopiMethodDeclaration.java 
+                   KopiMethodPreconditionDeclaration.java 
+                   KopiPostconditionStatement.java KopiReturnStatement.java 
+                   KopiMethodPostconditionDeclaration.java 
+                   KopiImplicitReturnBlock.java KopiAssertionClassDeclaration.java 
+                   KopiConstructorDeclaration.java KopiConstructorBlock.java 
+                   KopiReturnValueExpression.java KopiStoreClassDeclaration.java 
+                   KopiOldValueExpression.java KopiStoreFieldAccessExpression.java 
+                   KopiOldValueStoreCreation.java KopiAssertStatement.java 
+                   KopiFailStatement.java 
+                   KjcMessages.java KjcOptions.java" />
+
+  <property name="messages"    value="KjcMessages" />
+  <property name="options"     value="KjcOptions" />
+  <property name="grm1voc"     value="Kjc" />
+  <property name="scanner1"    value="Kjc" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

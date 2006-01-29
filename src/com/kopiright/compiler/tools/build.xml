@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.compiler.tools
+    ==================================================================-->
+  <project default="build" basedir=".">
+
+  <property name="topdir" value="../.." />
+  <property name="node" value="yes"/>
+
+  <!--==============================================================
+      Default target: builds messages, options and java sources 
+      ==============================================================-->
+  <target name="node.build" description="-->  Runs subbuild files ">
+    <ant dir="antlr"   inheritAll="false" target="${target}"/>
+  	<ant dir="jperf"   inheritAll="false" target="${target}"/>
+  	<ant dir="optgen"  inheritAll="false" target="${target}"/>
+    <ant dir="msggen"  inheritAll="false" target="${target}"/>
+    <ant dir="lexgen"  inheritAll="false" target="${target}"/>
+    <ant dir="include" inheritAll="false" target="${target}"/>
+  </target>
+
+  <!--==============================================================
+      buildtools target:  builds java sources only
+      ==============================================================-->
+  <target name="buildtools" description="-->  Runs subbuild files ">
+    <ant dir="antlr"   inheritAll="false" target="buildtools" />
+  	<ant dir="jperf"   inheritAll="false" />
+  	<ant dir="optgen"  inheritAll="false" target="buildtools" />
+    <ant dir="msggen"  inheritAll="false" target="buildtools" />
+    <ant dir="lexgen"  inheritAll="false" />
+    <ant dir="include" inheritAll="false" />
+  </target>
+
+    <import file="${topdir}/defs.xml" />
+
+</project>

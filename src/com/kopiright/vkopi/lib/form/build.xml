@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.form
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="com/kopiright/vkopi/lib/form" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.form" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="BlockAlignment.java Commands.java 
+                   DBlock.java DColorField.java DField.java
+                   DForm.java DImage.java DImageField.java DLabel.java DChartBlock.java
+                   DMultiBlock.java DObjectField.java DPage.java
+                   DTextEditor.java DTextField.java DateChooser.java
+                   ImageFileChooser.java KopiAlignment.java
+                   KopiFieldDocument.java KopiScanDocument.java 
+                   KopiMultiBlockLayout.java KopiSimpleBlockLayout.java
+                   LatexPrintWriter.java ListDialog.java MultiFieldAlignment.java
+                   Triggers.java VBlock.java
+                   VBooleanCodeColumn.java VBooleanCodeField.java VBooleanColumn.java
+                   VBooleanField.java VCodeColumn.java VCodeField.java
+                   VColorColumn.java VColorField.java VColumn.java VConstants.java
+                   VDateColumn.java VDateField.java VDictionaryForm.java
+                   VDocGenerator.java VEnumColumn.java VEnumField.java
+                   VField.java VFieldCommand.java VFieldException.java
+                   VFieldUI.java VFixedCodeColumn.java VFixedCodeField.java
+                   VFixedColumn.java VFixedField.java VForm.java
+                   VHelpGenerator.java VImageColumn.java VImageField.java
+                   VImportedBlock.java VIntegerCodeColumn.java VIntegerCodeField.java
+                   VIntegerColumn.java VIntegerField.java VList.java
+                   VListColumn.java VMonthColumn.java
+                   VMonthField.java VPosition.java BlockRecordListener.java 
+                   VQueryNoRowException.java VQueryOverflowException.java 
+                   VSkipRecordException.java VStringColumn.java 
+                   VStringField.java VTextColumn.java VTextField.java 
+                   VTimeColumn.java VTimeField.java VWeekColumn.java 
+                   VTimestampColumn.java VTimestampField.java 
+                   VWeekField.java KopiLayoutManager.java FieldListener.java 
+                   BlockListener.java ViewBlockAlignment.java FormListener.java 
+                   PredefinedValueHandler.java GUIPredefinedValueHandler.java 
+                   KeyNavigator.java Environment.java Accessor.java ModelTransformer.java" />
+
+  <!--  How to separte Model and Gui in 2 packages  -->
+  <!-- 
+  <property name="javafiles" 
+            value="
+                   BlockAlignment.java Commands.java 
+                   LatexPrintWriter.java ListDialog.java 
+                   Triggers.java VBlock.java 
+                   VBooleanCodeColumn.java VBooleanCodeField.java VBooleanColumn.java 
+                   VBooleanField.java VCodeColumn.java VCodeField.java 
+                   VColorColumn.java VColorField.java VColumn.java VConstants.java 
+                   VDateColumn.java VDateField.java VDictionaryForm.java 
+                   VDocGenerator.java VEnumColumn.java VEnumField.java 
+                   VField.java VFieldException.java 
+                   VFixedCodeColumn.java VFixedCodeField.java 
+                   VFixedColumn.java VFixedField.java VForm.java 
+                   VHelpGenerator.java VImageColumn.java VImageField.java 
+                   VImportedBlock.java VIntegerCodeColumn.java VIntegerCodeField.java 
+                   VIntegerColumn.java VIntegerField.java VList.java 
+                   VListColumn.java VMonthColumn.java 
+                   VMonthField.java VPosition.java 
+                   VQueryNoRowException.java VQueryOverflowException.java 
+                   VSkipRecordException.java VStringColumn.java 
+                   VStringField.java VTextColumn.java VTextField.java 
+                   VTimeColumn.java VTimeField.java VWeekColumn.java 
+                   VWeekField.java KopiLayoutManager.java FieldListener.java 
+                   BlockListener.java FormListener.java PredefinedValueHandler
+                   MultiFieldAlignment.java 
+                   DateChooser.java ImageFileChooser.java 
+                   KopiAlignment.java VFieldCommand.java 
+                   KopiFieldDocument.java ModelTransformer.java 
+                   KopiMultiBlockLayout.java KopiSimpleBlockLayout.java 
+                   KopiScanDocument.java KopiTextField.java 
+                   ViewBlockAlignment.java 
+                   VFieldUI.java GUIPredefinedValueHandler.java 
+                   DBlock.java DColorField.java DField.java 
+                   DForm.java DImage.java DImageField.java DLabel.java 
+                   DMultiBlock.java DObjectField.java DPage.java 
+                   DTextEditor.java DTextField.java" />
+  -->
+	
+	
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

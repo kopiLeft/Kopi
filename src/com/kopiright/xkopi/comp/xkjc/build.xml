@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.xkopi.comp.xkjc
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+  <import file="${topdir}/defs.xml" />
+
+
+  <property name="package" value="com/kopiright/xkopi/comp/xkjc" />
+  <property name="package.name" value="com.kopiright.xkopi.comp.xkjc" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="XKjcTokenTypes.java 
+                   XKjcScanner.java 
+                   XKjcParser.java 
+                   XKjcKeywords.java
+                   XSqlcTokenTypes.java 
+                   XSqlcScanner.java 
+                   XSqlcParser.java 
+                   XSqlcKeywords.java
+                   JavaSqlContext.java 
+                   Main.java XConstants.java XUtils.java XKjcPrettyPrinter.java 
+                   XProtectedContext.java XUnprotectedContext.java 
+                   XPrimitiveClassType.java XDateType.java XTimeType.java XMonthType.java 
+                   XFixedType.java XWeekType.java XTimestampType.java 
+                   XSqlChecker.java XSqlVisitor.java XSqlcPrettyPrinter.java 
+                   XKjcSignatureParser.java XKjcTypeFactory.java XTypeFactory.java 
+                   SqlExprJava.java 
+                   XAddExpression.java 
+                   XAssignmentExpression.java XBitwiseComplementExpression.java 
+                   XBitwiseExpression.java XCastExpression.java 
+                   XCompoundAssignmentExpression.java XCursor.java 
+                   XContextCursorDeclaration.java 
+                   XCursorDeclaration.java XCursorField.java 
+                   XCursorFieldDeclaration.java XCursorFieldExpression.java 
+                   XDivideExpression.java XEqualityExpression.java 
+                   XExecSqlExpression.java XExecSqlStatement.java 
+                   XExpression.java XFixedLiteral.java 
+                   XFormalParameter.java XIfCondition.java 
+                   XLocalCursorDeclaration.java 
+                   XLogicalComplementExpression.java XMethodCallExpression.java 
+                   XMinusExpression.java XModuloExpression.java 
+                   XMultExpression.java XMutableType.java 
+                   XNameExpression.java XOperatorDeclaration.java 
+                   XOverloadedMethodCallExpression.java 
+                   XPostfixExpression.java XPrefixExpression.java 
+                   XProtectedStatement.java XRelationalExpression.java 
+                   XReturnStatement.java XSelectStatement.java 
+                   XShiftExpression.java XSqlExpr.java XStatement.java XStdType.java 
+                   XTypedSelectElem.java XTypedSqlExpr.java 
+                   XUnaryMinusExpression.java XUnaryPlusExpression.java 
+                   XUnprotectedStatement.java XVariableDefinition.java 
+                   XDatabaseColumn.java XDatabaseMember.java XDatabaseTable.java 
+                   XKjcEnvironment.java XProtectedExceptionHandler.java XTypeFactory.java 
+                   XKjcTypeFactory.java XNewArrayExpression.java XGotoStatement.java 
+                   XParseSqlExpression.java 
+                   XKjcMessages.java XKjcOptions.java  
+                   XSqlcMessages.java" />
+
+  <property name="messages"    value="XKjcMessages" />
+  <property name="messages2"   value="XSqlcMessages" />
+  <property name="options"     value="XKjcOptions" />
+
+  <property name="grm1voc"     value="XKjc" />
+  <property name="grm1dep"     value="${topdir}/kopi/comp/kjc/Kjc" />
+  <property name="scanner1"    value="XKjc" />
+
+  <property name="grm2voc"     value="XSqlc" />
+  <property name="grm2dep"     value="${topdir}/xkopi/comp/sqlc/Sqlc" />
+  <property name="scanner2"    value="XSqlc" />
+
+
+
+
+</project>

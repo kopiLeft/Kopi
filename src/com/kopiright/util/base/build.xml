@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.util.base
+    ==================================================================-->
+<project default="build" basedir="." >
+
+  <property name="topdir" value="../.." />
+
+
+  <property name="package" value="com/kopiright/util/base" />
+  <property name="package.name" value="com.kopiright.util.base" />
+  <property name="src" value="." />
+
+  <property name="javafiles" 
+	        value="ArrayLocator.java Utils.java CharArrayCache.java 
+  	               FormattedException.java InconsistencyException.java 
+  	               Message.java MessageDescription.java 
+  	               NotImplementedException.java Options.java 
+  	               SimpleStringBuffer.java UnicodeReader.java" />
+
+  <import file="${topdir}/defs.xml" />
+  
+	
+</project>

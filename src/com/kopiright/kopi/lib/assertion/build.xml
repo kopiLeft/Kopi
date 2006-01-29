@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.kopi.lib.assertion
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+  <import file="${topdir}/defs.xml" />
+
+  <property name="package" value="com/kopiright/kopi/lib/assertion" />
+  <property name="package.name" value="com.kopiright.kopi.lib.assertion" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="AssertionError.java AssertionRuntime.java 
+                   InvariantError.java PostconditionError.java 
+                   PreconditionError.java" />
+
+
+
+
+
+</project>

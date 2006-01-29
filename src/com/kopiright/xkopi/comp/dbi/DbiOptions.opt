@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: DbiOptions.opt,v 1.5 2004/06/04 12:52:01 mike Exp $
+ */
+
+prefix Dbi
+
+parent com.kopiright.xkopi.comp.sqlc.SqlcOptions
+
+usage		"usage: com.kopiright.xkopi.comp.dbi.Main [option]* [--help] <sql-files>"
+
+package com.kopiright.xkopi.comp.dbi
+
+longname		"simulate"
+	shortcut	"t"
+	type		boolean
+	default		"false"
+	help		"Runs the script but abort it"
+
+longname		"stdout"
+	shortcut	"s"
+	type		boolean
+	default		"false"
+	help		"Prints on standard output"
+
+longname		"stdin"
+	shortcut	"e"
+	type		boolean
+	default		"false"
+	help		"Reads from standard input"
+
+longname		"syntax"
+	shortcut	"S"
+	type		String
+	default		"jdbc"
+	requireArgument
+	help		"Sets the syntax to use for output (jdbc | tbx | sap | pg)"
+
+longname		"beautify"
+	shortcut	"b"
+	type		boolean
+	default		"false"
+	help		"Prints the source code (beautifier)"
+
+longname		"driver"
+	shortcut	"D"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the driver to use for DB access"
+
+longname		"url"
+	shortcut	"u"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the url of the database"
+
+longname		"login"
+	shortcut	"l"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the name of the user for login"
+
+longname		"passwd"
+	shortcut	"p"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the passwd to login"
+
+longname		"interfaceGen"
+	shortcut	"i"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the package name of Database.k"
+
+longname                "iClassName"
+        shortcut        "n"
+        type            String
+        default         "Database"
+        requireArgument
+        help            "Set the interface class name (use with interfaceGen)"
+
+longname		"sqlCase"
+	shortcut	"C"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Change the case of SQL keywords. Only supported case: upper"
+
+longname		"destination"
+	shortcut	"d"
+	type		String
+	default		"null"
+	requireArgument
+	help		"the location to generate the database interface"
+
+longname		"commit"
+	shortcut	"c"
+	type		String
+	default		"null"
+	optionalDefault	"DICT"
+	help		"add a transDB to the data dict."

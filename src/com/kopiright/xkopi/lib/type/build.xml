@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.xkopi.lib.type
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="com/kopiright/xkopi/lib/type" />
+  <property name="package.name" value="com.kopiright.xkopi.lib.type" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="Date.java Fixed.java Month.java NotNullDate.java 
+                   NotNullFixed.java NotNullMonth.java NotNullTime.java 
+                   NotNullTimestamp.java NotNullWeek.java Time.java 
+                   Timestamp.java Type.java Week.java" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+  <target name="jar">
+  	<jar destfile="${classroot}/xlib.jar" basedir="${classroot}/${package}"/>
+  </target>
+
+
+</project>

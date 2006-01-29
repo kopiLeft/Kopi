@@ -1,0 +1,372 @@
+##
+## Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License version 2
+## as published by the Free Software Foundation.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+##
+
+## ----------------------------------------------------------------------
+## CHECK THAT CLASSROOT IS SET
+
+ifdef CLASSROOT
+CLASSROOT_CHECK =	classroot-good
+else
+CLASSROOT_CHECK =	classroot-bad
+endif
+
+check-classroot:	$(CLASSROOT_CHECK)
+
+classroot-good:
+
+classroot-bad:
+			@echo "*** Error: No CLASSROOT defined, exiting. ***"
+			@exit 1
+
+## ----------------------------------------------------------------------
+## DEFINITIONS
+
+ifndef RELEASE
+RELEASE =	"Version 2.2C released 06 May 2005"
+endif
+
+ifndef JAVA
+JAVA =		java -Djava.ext.dirs=$(EXTDIRS)
+endif
+
+ifndef JAVAC
+JAVAC =		jikes +E +P -source 1.4 -extdirs $(EXTDIRS)
+endif
+
+ifndef TOKDEF
+TOKDEF =	$(JAVA) com.kopiright.compiler.tools.lexgen.Main
+endif
+
+ifndef JFLEX
+JFLEXSKELETON =	$(CLASSROOT)/com/kopiright/compiler/skeleton.shared
+JFLEX =		$(JAVA) JFlex.Main -skel $(JFLEXSKELETON)
+endif
+
+ifndef MSGDEF
+MSGDEF =	$(JAVA) com.kopiright.compiler.tools.msggen.Main
+endif
+
+ifndef OPTDEF
+OPTDEF =	$(JAVA) com.kopiright.compiler.tools.optgen.Main
+ifdef RELEASE
+OPTDEF +=	--release=$(RELEASE)
+endif
+endif
+
+ifndef LEXINC
+LEXINC =	$(JAVA) com.kopiright.compiler.tools.include.Main
+endif
+
+ifndef JCC
+JCC =		$(JAVA) -mx64m com.kopiright.compiler.tools.antlr.compiler.Main
+endif
+
+## ----------------------------------------------------------------------
+## GRAMMAR HANDLING (GRAMMARS WITH ANTLR TOKENIZER)
+
+ifdef GRAMMAR
+JAVAFILES +=	$(GRAMMAR:%=%Parser) $(GRAMMAR:%=%TokenTypes)		\
+		$(GRAMMAR:%=%Lexer) $(GRAMMAR:%=%LexerTokenTypes)
+
+GENFILES +=	$(GRAMMAR:%=%Parser.java) $(GRAMMAR:%=%TokenTypes.java)	\
+		$(GRAMMAR:%=%Lexer.java) $(GRAMMAR:%=%LexerTokenTypes.java)	\
+		$(GRAMMAR:%=%TokenTypes.txt) $(GRAMMAR:%=%LexerTokenTypes.txt)
+
+
+$(GRAMMAR:%=%Parser.java) \
+$(GRAMMAR:%=%TokenTypes.java) \
+$(GRAMMAR:%=%Lexer.java) \
+$(GRAMMAR:%=%LexerTokenTypes.java): $(GRAMMAR:%=%.g)
+		$(JCC) $(GRAMMAR:%=%.g)
+endif
+
+## ----------------------------------------------------------------------
+## GRAMMAR HANDLING (GRAMMARS WITH SEPARATE TOKENIZER)
+
+ifdef GRM1VOC
+
+# Scanner, token types, ...
+JAVAFILES +=	$(GRM1VOC:%=%TokenTypes)
+GENFILES +=	$(GRM1VOC:%=%TokenTypes.java) $(GRM1VOC:%=%TokenTypes.txt)
+
+ifdef SCANNER1
+
+# JFlex based scanner
+
+GENFILES +=	$(GRM1VOC:%=%FlexRules.txt)
+
+$(GRM1VOC:%=%TokenTypes.java) \
+$(GRM1VOC:%=%TokenTypes.txt) \
+$(GRM1VOC:%=%FlexRules.txt): $(GRM1DEP:%=%.t) $(GRM1VOC:%=%.t)
+		$(TOKDEF) -ditf $(GRM1DEP:%=%.t) $(GRM1VOC:%=%.t)
+
+GENFILES +=	$(SCANNER1:%=%.flex)
+
+$(SCANNER1:%=%.flex): $(SCANNER1:%=%.flex.in) $(GRM1VOC:%=%FlexRules.txt)
+		$(LEXINC) $(SCANNER1:%=%.flex.in) -o $(SCANNER1:%=%.flex)
+
+JAVAFILES +=	$(SCANNER1:%=%Scanner)
+GENFILES +=	$(SCANNER1:%=%Scanner.java)
+
+$(SCANNER1:%=%Scanner.java):	$(SCANNER1:%=%.flex) $(JFLEXSKELETON)
+		$(JFLEX) $(SCANNER1:%=%.flex)
+
+else
+
+JAVAFILES +=	$(GRM1VOC:%=%Keywords)
+GENFILES +=	$(GRM1VOC:%=%)
+
+$(GRM1VOC:%=%TokenTypes.java) \
+$(GRM1VOC:%=%TokenTypes.txt) \
+$(GRM1VOC:%=%Keywords.java): $(GRM1DEP:%=%.t) $(GRM1VOC:%=%.t)
+		$(TOKDEF) -dik $(GRM1DEP:%=%.t) $(GRM1VOC:%=%.t)
+endif
+
+# Parser
+JAVAFILES +=	$(GRM1VOC:%=%Parser)
+GENFILES +=	$(GRM1VOC:%=%Parser.java)
+
+ifdef GRM1DEP
+GENFILES +=	expanded$(GRM1VOC).g
+endif
+
+$(GRM1VOC:%=%Parser.java): $(GRM1DEP:%=%.g) $(GRM1VOC:%=%.g) $(GRM1VOC:%=%TokenTypes.txt)
+ifdef GRM1DEP
+		$(JCC) $(GRM1DEP:%=%.g) $(GRM1VOC:%=%.g)
+else
+		$(JCC) $(GRM1VOC:%=%.g)
+endif
+
+endif
+
+## ----------------------------------------------------------------------
+
+ifdef GRM2VOC
+
+# Scanner, token types, ...
+JAVAFILES +=	$(GRM2VOC:%=%TokenTypes)
+GENFILES +=	$(GRM2VOC:%=%TokenTypes.java) $(GRM2VOC:%=%TokenTypes.txt)
+
+ifdef SCANNER2
+
+# JFlex based scanner
+
+GENFILES +=	$(GRM2VOC:%=%FlexRules.txt)
+
+$(GRM2VOC:%=%TokenTypes.java) \
+$(GRM2VOC:%=%TokenTypes.txt) \
+$(GRM2VOC:%=%FlexRules.txt): $(GRM2DEP:%=%.t) $(GRM2VOC:%=%.t)
+		$(TOKDEF) -ditf $(GRM2DEP:%=%.t) $(GRM2VOC:%=%.t)
+
+GENFILES +=	$(SCANNER2:%=%.flex)
+
+$(SCANNER2:%=%.flex): $(SCANNER2:%=%.flex.in) $(GRM2VOC:%=%FlexRules.txt)
+		$(LEXINC) $(SCANNER2:%=%.flex.in) -o $(SCANNER2:%=%.flex)
+
+JAVAFILES +=	$(SCANNER2:%=%Scanner)
+GENFILES +=	$(SCANNER2:%=%Scanner.java)
+
+$(SCANNER2:%=%Scanner.java):	$(SCANNER2:%=%.flex) $(JFLEXSKELETON)
+		$(JFLEX) $(SCANNER2:%=%.flex)
+
+else
+
+JAVAFILES +=	$(GRM2VOC:%=%Keywords)
+GENFILES +=	$(GRM2VOC:%=%Keywords.java)
+
+$(GRM2VOC:%=%TokenTypes.java) \
+$(GRM2VOC:%=%TokenTypes.txt) \
+$(GRM2VOC:%=%Keywords.java): $(GRM2DEP:%=%.t) $(GRM2VOC:%=%.t)
+		$(TOKDEF) -dik $(GRM2DEP:%=%.t) $(GRM2VOC:%=%.t)
+endif
+
+# Parser
+JAVAFILES +=	$(GRM2VOC:%=%Parser)
+GENFILES +=	$(GRM2VOC:%=%Parser.java)
+
+ifdef GRM2DEP
+GENFILES +=	expanded$(GRM2VOC).g
+endif
+
+$(GRM2VOC:%=%Parser.java): $(GRM2DEP:%=%.g) $(GRM2VOC:%=%.g) $(GRM2VOC:%=%TokenTypes.txt)
+ifdef GRM2DEP
+		$(JCC) $(GRM2DEP:%=%.g) $(GRM2VOC:%=%.g)
+else
+		$(JCC) $(GRM2VOC:%=%.g)
+endif
+
+endif
+
+## ----------------------------------------------------------------------
+## MESSAGES
+
+ifdef MESSAGES
+
+%.java:			%.msg
+			$(MSGDEF) $<
+#$(MESSAGES:%=%.java):	$(MESSAGES:%=%.msg)
+#			$(MSGDEF) $(MESSAGES:%=%.msg)
+
+JAVAFILES +=		$(MESSAGES)
+GENFILES +=		$(MESSAGES:%=%.java)
+
+endif
+
+## ----------------------------------------------------------------------
+## OPTIONS
+
+ifdef OPTIONS
+
+%.java:			%.opt
+			$(OPTDEF) $<
+#$(OPTIONS:%=%.java):	$(OPTIONS:%=%.opt)
+#			$(OPTDEF) $(OPTIONS:%=%.opt)
+
+JAVAFILES +=		$(OPTIONS)
+GENFILES +=		$(OPTIONS:%=%.java)
+
+endif
+
+## ----------------------------------------------------------------------
+## BUILD
+
+ifdef SUBDIRS
+
+build:
+		@for dir in $(SUBDIRS); do				\
+		    if [ -d $$dir ]; then				\
+			$(MAKE) -C $$dir JAVAC='$(JAVAC)' build || exit 1;	\
+		    fi;							\
+		done
+
+else
+
+ifndef NONSTANDARDBUILD
+
+build:		classes properties
+
+endif
+
+endif
+
+## ----------------------------------------------------------------------
+## BUILD CLASSFILES
+
+classes:	check-classroot classes.stamp
+
+ifndef NONSTANDARDCOMPILER
+
+classes.stamp:	$(JAVAFILES:%=%.java)
+		$(JAVAC) -d $(CLASSROOT) $?
+		touch classes.stamp
+
+endif
+
+## ----------------------------------------------------------------------
+## INSTALL PROPERTIES FILES
+
+properties:	check-classroot $(PROPERTIES:%=$(CLASSROOT)/%.properties)
+
+$(CLASSROOT)/%.properties:	%.properties
+		cp $< $@
+
+## ----------------------------------------------------------------------
+## CLEAN SOURCE DIRECTORY
+
+ifdef SUBDIRS
+
+clean:
+		rm -f *~
+		@for dir in $(SUBDIRS); do				\
+		    if [ -d $$dir ]; then				\
+			$(MAKE) -C $$dir clean;				\
+		    fi;							\
+		done
+
+else
+
+clean:
+		rm -f TAGS classes.stamp *~
+endif
+
+## ----------------------------------------------------------------------
+## CLEAN CLASSFILES
+
+ifdef SUBDIRS
+
+clean-classes:
+		@for dir in $(SUBDIRS); do				\
+		    if [ -d $$dir ]; then				\
+			$(MAKE) -C $$dir clean-classes;			\
+		    fi;							\
+		done
+
+else
+
+clean-classes:
+ifdef PACKAGE
+		rm -f $(CLASSROOT)/$(PACKAGE)/*.class
+		rm -f classes.stamp
+endif
+
+endif
+
+## ----------------------------------------------------------------------
+## CLEAN AND REMOVE GENERATED FILES
+
+ifdef SUBDIRS
+
+distclean:
+		@for dir in $(SUBDIRS); do				\
+		    if [ -d $$dir ]; then				\
+			$(MAKE) -C $$dir distclean;			\
+		    fi;							\
+		done
+
+else
+
+distclean:	clean
+		rm -f $(GENFILES)
+
+endif
+
+## ----------------------------------------------------------------------
+## MAKE JAVADOC DIRECTORIES
+
+ifdef SUBDIRS
+
+javadocsrcs:
+		@for dir in $(SUBDIRS); do				\
+		    if [ -d $$dir ]; then				\
+			$(MAKE) -C $$dir JAVADOCROOT='$(JAVADOCROOT)'	\
+				javadocsrcs;				\
+		    fi;							\
+		done
+
+else
+
+javadocsrcs:
+ifdef PACKAGE
+		mkdir -p $(JAVADOCROOT)/source/$(PACKAGE)
+		cp $(JAVAFILES:%=%.java) $(JAVADOCROOT)/source/$(PACKAGE)
+		touch $(JAVADOCROOT)/packages/`echo $(PACKAGE) | sed 's/\//./g'`
+endif
+endif
+
+## ----------------------------------------------------------------------

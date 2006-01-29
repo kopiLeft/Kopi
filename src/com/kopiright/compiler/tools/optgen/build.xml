@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.compiler.tools.optgen
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="com/kopiright/compiler/tools/optgen" />
+  <property name="package.name" value="com.kopiright.compiler.tools.optgen" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="DefinitionFile.java OptgenError.java Main.java 
+                   OptionDefinition.java OptgenMessages.java 
+                   OptgenOptions.java OptgenLexer.java OptgenParser.java 
+                   OptgenLexerTokenTypes.java OptgenTokenTypes.java" />
+
+  <property name="messages" value="OptgenMessages" />
+  <property name="buildmessages" value="yes" />
+  
+  <property name="options" value="OptgenOptions" />
+  <property name="buildoptions" value="yes" />
+
+  <property name="grammar" value="Optgen" />
+
+  <target name="buildtools" >
+    <antcall target="grammar" />
+    <antcall target="classes" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

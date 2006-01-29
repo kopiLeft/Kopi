@@ -1,5 +1,0 @@
-#!/bin/zsh -f
-
-TARGETDIR=/tmp/stage2
-CLASSPATH=/tmp/stage1:$CLASSPATH
-gmake CLASSROOT=${TARGETDIR} JAVAC="${JAVA_HOME}/bin/java -mx128m -ea -Djava.ext.dirs=${EXTDIRS} at.dms.kopi.comp.kjc.Main -source 1.4 -w3"

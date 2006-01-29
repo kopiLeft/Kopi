@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+	package: com.kopiright.vkopi.lib.resource
+	==================================================================-->
+
+
+<project default="build" basedir=".">
+
+	<property name="non.standard.build" value="yes" />
+
+	<property name="topdir" value="../../.." />
+	<import file="${topdir}/defs.xml" />
+
+	<property name="destcopy" value="${classroot}/com/kopiright/vkopi/lib/resource" />
+	<property name="src" value="." />
+
+
+  <property name="freegifs" value="" />
+
+  <property name="oldgifs" 
+            value="all.gif apply.gif arrowleft.gif arrowright.gif 
+                   article.gif ask.gif bkup.gif bkup3.gif block.gif block2.gif board.gif bomb.gif 
+                   bookmark.gif boxarrow.gif break.gif bw.gif calculate.gif cfolder.gif clip.gif 
+                   collapsed.gif collapsed_f.gif collapsed_s.gif collapsed_t.gif collapsedb.gif 
+                   combo.gif config.gif convert.gif copy.gif delete.gif deleteline.gif desk.gif 
+                   detail.gif done.gif duke.gif edit.gif error.gif expanded.gif expanded_f.gif 
+                   expanded_s.gif expanded_t.gif expandedb.gif export.gif fax.gif fold.gif 
+                   foldColumn.gif form.gif form_f.gif form_s.gif form_t.gif forms.gif forms_f.gif 
+                   forms_s.gif forms_t.gif fw.gif gifIcon.gif green.gif guide.gif help.gif home.gif 
+                   index.gif info.gif info2.gif insert.gif insertline.gif interrupt.gif jpgIcon.gif 
+                   launch.gif list.gif lock.gif login.gif mail.gif menuquery.gif money.gif 
+                   moneycheck.gif noIcon.gif note.gif nothing.gif notice.gif ofolder.gif open.gif 
+                   options.gif pageLeft.gif pageRight.gif phone.gif preview.gif print.gif 
+                   printoptions.gif project.gif quit.gif red.gif refresh.gif reload.gif 
+                   report.gif save.gif search.gif search2.gif searchop.gif sec.gif selected.gif 
+                   send.gif serialquery.gif serviceoff.gif serviceon.gif sort.gif split.gif 
+                   standard.gif stick.gif stop.gif store.gif suggest.gif todo.gif top.gif 
+                   unfold.gif unfoldColumn.gif unstick.gif users.gif utils.gif validate.gif 
+                   wait.gif warning.gif window.gif yellow.gif " />  
+
+  <property name="pngfiles" 
+            value="align_center.png align_justify.png align_left.png align_right.png 
+                   all.png apply.png article.png ask.png bkup.png bkup3.png block.png 
+                   block2.png board.png bold.png bomb.png bookmark.png border.png 
+                   boxarrow.png break.png bw.png calculate.png chart_view.png 
+                   checkbox.png clip.png config.png convert.png copy.png cut.png 
+                   delete.png deleteline.png desk.png detail.png detail_view.png 
+                   done.png duke.png edit.png error.png export.png fold.png 
+                   foldColumn.png forms.png fw.png gifIcon.png help.png home.png 
+                   ident.png insert.png insertline.png italic.png jpgIcon.png 
+                   launch.png list.png lock.png login.png mail.png menuquery.png 
+                   money.png note.png nothing.png notice.png open.png options.png 
+                   pageLeft.png pageRight.png password.png paste.png phone.png 
+                   preview.png print.png printoptions.png project.png quit.png 
+                   redo.png refresh.png reload.png report.png save.png search.png 
+                   search2.png searchop.png sec.png send.png serialquery.png 
+                   serviceoff.png serviceon.png sort.png split.png standard.png 
+                   stop.png store.png suggest.png todo.png top.png underline.png 
+                   undo.png unfold.png unfoldColumn.png unident.png users.png 
+                   utils.png validate.png wait.png warning.png zoomminus.png" />
+
+  <property name="giffiles" value="${freegifs} ${oldgifs}" />
+
+  <property name="psfiles" value="German.ps StoneGerman.ps german.ps report.ps" />
+
+  <property name="otherfiles" 
+            value="general.tex macros.tex splash.jpg titlepage.sty top.tex" />
+
+  <property name="files" value="${pngfiles} ${giffiles} ${psfiles} ${otherfiles}" />
+
+  <target name="non.standard.build"
+     description=" Copying files to com/kopiright/vkopi/lib/resource package ">
+    <copy todir="${destcopy}">
+      <fileset dir="${src}" includes="${files}" />
+    </copy>
+  </target>
+
+    <!-- ================================= 
+          SPECIAL TARGETS
+         ================================= -->
+  <target name="gallery.html" >
+	<exec executable="sh" output="gallery.html"> 
+	  <arg line="makegallery.sh ${giffiles}"/>
+    </exec>
+  </target>
+
+
+
+</project>

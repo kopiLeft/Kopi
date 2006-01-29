@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: IncludeOptions.opt,v 1.3 2001/05/24 19:28:03 graf Exp $
+ */
+
+prefix Include
+
+parent com.kopiright.util.base.Options
+
+usage		"usage: com.kopiright.compiler.tools.include.Main [option]* [--help] <input-file>"
+
+package com.kopiright.compiler.tools.include
+
+longname		"output"
+	shortcut	"o"
+	type		String
+	default		"null"
+	requireArgument
+	help		"The name of the output file"
+
+longname		"pattern"
+	shortcut	"p"
+	type		String
+	default		"%%include"
+	requireArgument
+	help		"The pattern preceding the file name to include"
+
+longname		"directory"
+	shortcut	"d"
+	type		String
+	default		"."
+	requireArgument
+	help		"The directory to search for include files"

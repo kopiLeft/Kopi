@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+	package: com.kopiright
+	==================================================================-->
+<project default="build" basedir=".">
+
+	<property name="topdir" value="." />
+	<property name="packagedir" value="com/kopiright" />
+	<property name="node" value="yes"/>
+
+
+	<!--==============================================================
+		Default target:	builds messages, options and java sources 
+		==============================================================-->
+	<target name="node.build" depends="init"
+		description="--> Runs subbuild files ">
+		<ant dir="util/base" inheritAll="false" target="${target}" />
+		<ant dir="compiler"  inheritAll="false" target="${target}" />
+		<ant dir="bytecode"  inheritAll="false" target="${target}" />
+		<ant dir="kopi"      inheritAll="false" target="${target}" />
+		<ant dir="xkopi"     inheritAll="false" target="${target}" />
+		<ant dir="util"      inheritAll="false" target="${target}" />
+		<ant dir="vkopi"     inheritAll="false" target="${target}" />
+		<ant dir="drivers"   inheritAll="false" target="${target}" />
+	</target>
+
+	<!--==============================================================
+		buildtools target: builds java sources only
+		==============================================================-->
+	<target name="buildtools" depends="init" 
+		description=" Runs subbuild files ">
+		<ant dir="util/base" inheritAll="false" />
+		<ant dir="compiler"  inheritAll="false" target="buildtools" />
+		<ant dir="bytecode"  inheritAll="false" />
+		<ant dir="kopi"      inheritAll="false" />
+		<ant dir="xkopi"     inheritAll="false" />
+		<ant dir="util"      inheritAll="false" />
+		<ant dir="vkopi"     inheritAll="false" />
+		<ant dir="drivers"   inheritAll="false" />
+	</target> 
+
+	<import file="${topdir}/defs.xml" />
+
+
+</project>

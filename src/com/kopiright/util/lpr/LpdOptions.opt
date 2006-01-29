@@ -1,0 +1,88 @@
+/*
+ * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: LpdOptions.opt,v 1.4 2001/05/24 19:48:34 graf Exp $
+ */
+
+prefix Lpd
+
+parent com.kopiright.util.base.Options
+
+usage		"usage: com.kopiright.lpd.Dummy"
+
+package com.kopiright.util.lpr
+
+longname		"localHost"
+	shortcut	"L"
+	type		String
+	default		"localhost"
+	requireArgument
+	help		"Sets the local host"
+
+longname		"printHost"
+	shortcut	"H"
+	type		String
+	default		"localhost"
+	requireArgument
+	help		"Sets the print hosts"
+
+longname		"proxyHost"
+	shortcut	"X"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the proxy host to use (UNIX)"
+
+longname		"remotePort"
+	shortcut	"d"
+	type		int
+	default		"-1"
+	requireArgument
+	help		"Sets the remote port"
+
+longname		"sourcePort"
+	shortcut	"s"
+	type		int
+	default		"-1"
+	requireArgument
+	help		"Sets the source port"
+
+longname		"timeout"
+	shortcut	"t"
+	type		int
+	default		"60000"
+	requireArgument
+	help		"Sets the timeout value in millisc"
+
+longname		"bindSourcePort"
+	shortcut	"B"
+	type		boolean
+	default		"false"
+	help		"Binds the source port"
+
+longname		"user"
+	shortcut	"u"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the user who invoked the command"
+
+longname		"queue"
+	shortcut	"P"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Sets the queue to work on"

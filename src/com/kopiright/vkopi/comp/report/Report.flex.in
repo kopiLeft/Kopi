@@ -1,0 +1,267 @@
+/*
+ * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: Report.flex.in,v 1.5 2002/08/11 20:01:02 lackner Exp $
+ */
+
+package com.kopiright.vkopi.comp.report;
+
+import com.kopiright.compiler.base.CWarning;
+import com.kopiright.compiler.base.Compiler;
+import com.kopiright.compiler.base.CompilerMessages;
+import com.kopiright.compiler.base.JavaStyleComment;
+import com.kopiright.compiler.base.JavadocComment;
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.tools.antlr.extra.CToken;
+import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
+import com.kopiright.compiler.tools.antlr.extra.Scanner;
+import com.kopiright.compiler.tools.antlr.runtime.Token;
+
+%%
+
+%public
+%class ReportScanner
+%extends com.kopiright.compiler.tools.antlr.extra.Scanner
+%implements ReportTokenTypes
+
+%function nextTokenImpl
+%type com.kopiright.compiler.tools.antlr.runtime.Token
+
+%unicode
+%pack
+
+%{
+  public ReportScanner(Compiler compiler, InputBuffer buffer) {
+    super(compiler, buffer);
+    this.buffer = buffer;
+  }
+
+  /**
+   * Creates a character literal token.
+   */
+  private CToken buildCharacterLiteral(char image) {
+    return new CToken(CHARACTER_LITERAL, String.valueOf(image));
+  }
+
+
+  private final StringBuffer	string = new StringBuffer();
+  private boolean		deprecated = false;
+  private boolean		depline = true;
+%}
+
+%init{
+  // dummy: we provide our own constructor
+  super(null, null);
+%init}
+
+%eofval{
+  return TOKEN_EOF;
+%eofval}
+
+/*
+ * macros
+ */
+// white space
+W =	[ \t\f]
+
+// line terminator
+T =	\r|\n|\r\n
+
+// decimal digit
+D =	[0-9]
+
+// hexadecimal digit
+H =	[0-9a-fA-F]
+
+// octal digit
+O =	[0-7]
+
+// exponent part
+E =	[eE] [+\-]? {D}+
+
+
+%state STRINGLITERAL, CHARLITERAL, TRADITIONALCOMMENT, ENDOFLINECOMMENT
+
+%%
+
+<YYINITIAL> {
+
+%%include ReportFlexRules.txt
+
+  /* string literal */
+  \"    			{ yybegin(STRINGLITERAL); string.setLength(0); }
+
+  /* character literal */
+  \'    			{ yybegin(CHARLITERAL); }
+
+  /* numeric literals */
+  (0 | [1-9]{D}*) [lL]?		{ return new CToken(INTEGER_LITERAL, yytext()); }
+  (0 [xX] {H}+) [lL]?		{ return new CToken(INTEGER_LITERAL, yytext()); }
+  (0 {O}+) [lL]?		{ return new CToken(INTEGER_LITERAL, yytext()); }
+
+  {D}+ \. {D}* {E}? [fFdD]?	{ return new CToken(REAL_LITERAL, yytext()); }
+  \. {D}+ {E}? [fFdD]?		{ return new CToken(REAL_LITERAL, yytext()); }
+  {D}+ {E} [fFdD]?		{ return new CToken(REAL_LITERAL, yytext()); }
+  {D}+ [fFdD]			{ return new CToken(REAL_LITERAL, yytext()); }
+
+  /* comments */
+  "/*"				{ yybegin(TRADITIONALCOMMENT); string.setLength(0); }
+  "//"				{ yybegin(ENDOFLINECOMMENT); string.setLength(0); }
+
+  /* whitespace */
+  {T}				{ incrementLine(); }
+  {W}				{ /* ignore */ }
+
+  /* identifiers */
+  [:jletter:][:jletterdigit:]*	{ return new CToken(IDENT, yytext().intern()); }
+}
+
+<STRINGLITERAL> {
+  \"    			{ yybegin(YYINITIAL); return new CToken(STRING_LITERAL, string.toString()); }
+
+  [^\r\n\"\\]+			{ string.append(yytext()); }
+
+  /* escape sequences */
+  "\\b" 			{ string.append('\b'); }
+  "\\t" 			{ string.append('\t'); }
+  "\\n" 			{ string.append('\n'); }
+  "\\f" 			{ string.append('\f'); }
+  "\\r" 			{ string.append('\r'); }
+  "\\\""			{ string.append('\"'); }
+  "\\'" 			{ string.append('\''); }
+  "\\\\"			{ string.append('\\'); }
+  \\[0-3]?{O}?{O}		{
+				  int		val;
+
+				  val = Integer.parseInt(yytext().substring(1), 8);
+				  string.append((char)val);
+				}
+
+  /* error cases */
+  \\.   			{ reportTrouble(CompilerMessages.BAD_ESCAPE_SEQUENCE, new Object[]{ yytext() }); }
+  {T}				{ reportTrouble(CompilerMessages.BAD_END_OF_LINE, new Object[]{ "string literal" }); }
+}
+
+<CHARLITERAL> {
+  [^\r\n\'\\]\'			{ yybegin(YYINITIAL); return buildCharacterLiteral(yytext().charAt(0)); }
+
+  /* escape sequences */
+  "\\b"\'       		{ yybegin(YYINITIAL); return buildCharacterLiteral('\b'); }
+  "\\t"\'       		{ yybegin(YYINITIAL); return buildCharacterLiteral('\t'); }
+  "\\n"\'       		{ yybegin(YYINITIAL); return buildCharacterLiteral('\n'); }
+  "\\f"\'       		{ yybegin(YYINITIAL); return buildCharacterLiteral('\f'); }
+  "\\r"\'       		{ yybegin(YYINITIAL); return buildCharacterLiteral('\r'); }
+  "\\\""\'      		{ yybegin(YYINITIAL); return buildCharacterLiteral('\"'); }
+  "\\'"\'       		{ yybegin(YYINITIAL); return buildCharacterLiteral('\''); }
+  "\\\\"\'      		{ yybegin(YYINITIAL); return buildCharacterLiteral('\\'); }
+  \\[0-3]?{O}?{O}\'		{
+				  yybegin(YYINITIAL);
+
+				  int		val;
+
+				  val = Integer.parseInt(yytext().substring(1, yylength()-1), 8);
+				  return buildCharacterLiteral((char)val);
+				}
+
+  /* error cases */
+  \\.   			{ reportTrouble(CompilerMessages.BAD_ESCAPE_SEQUENCE, new Object[]{ yytext() }); }
+  {T}				{ reportTrouble(CompilerMessages.BAD_END_OF_LINE, new Object[]{ "character literal" }); }
+}
+
+<TRADITIONALCOMMENT> {
+
+  // !!! handle /* in traditional comment
+
+  [ \t\f\u2002\u2029\*]* "@deprecated" [ \t\f\u2002\u2028\u001d\u000b\u2029\*]* \*+ "/"			{
+				  yybegin(YYINITIAL);
+				  string.append(yytext()); 
+				  if (string.length() > 0 && string.charAt(0) == '*') {
+				    //!!! graf 001222: first '*' should be removed
+				    addComment(new JavadocComment(string.toString(),(depline) ? true : false,  false, false));
+				  } else {
+				    addComment(new JavaStyleComment(string.toString(), false, false, false));
+				  }
+				  deprecated = false;	
+				  depline = true;			    
+				}
+
+  \*+ "/"			{
+				  yybegin(YYINITIAL);
+
+				  if (string.length() > 0 && string.charAt(0) == '*') {
+				    //!!! graf 001222: first '*' should be removed
+				    addComment(new JavadocComment(string.toString(),deprecated,  false, false));
+				  } else {
+				    addComment(new JavaStyleComment(string.toString(), false, false, false));
+				  }
+				  deprecated = false;	
+				  depline = true;			    
+				}
+
+  [ \t\f\u2002\u2029\*]* "@deprecated" [ \t\f\u2002\u2028\u001d\u000b\u2029] {
+                                // Javadoc Specification: a standalone tag must appear at the beginning 
+                                // of a line, ignoring leading asterisks, white space, and separator (/**)
+				  if (depline) {
+ 				    deprecated = true;
+                                  }
+				  string.append(yytext()); 
+                                }
+  [ \t\f\u2002\u2029\*]* "@deprecated" {T} {
+                                // Javadoc Specification: a standalone tag must appear at the beginning 
+                                // of a line, ignoring leading asterisks, white space, and separator (/**)
+				  if (depline) {
+ 				    deprecated = true;
+                                  }
+				  incrementLine();
+				  depline = true;			    
+				  string.append(yytext()); 
+                                }
+  [^\r\n*]+			{ string.append(yytext()); depline = false;}
+  \*+ [^*/\r\n]			{ string.append(yytext()); depline = false;}
+  \*+ {T}			{
+				  incrementLine();
+				  depline = true;			    
+				  string.append(yytext());
+				}
+  {T}				{
+				  incrementLine();
+				  depline = true;			    
+				  string.append(yytext());
+				}
+  <<EOF>>			{
+				  reportTrouble(CompilerMessages.EOF_IN_TRADITIONAL_COMMENT, null);
+				  return TOKEN_EOF;
+				}
+}
+
+
+<ENDOFLINECOMMENT> {
+
+  [^\r\n]+			{ string.append(yytext()); }
+  {T}				{
+				  yybegin(YYINITIAL);
+				  incrementLine();
+				  addComment(new JavaStyleComment(string.toString(), true, false, false));
+				}
+  <<EOF>>			{
+				  reportTrouble(new CWarning(getTokenReference(),
+							     CompilerMessages.EOF_IN_ENDOFLINE_COMMENT));
+				  return TOKEN_EOF;
+				}
+}
+
+/* error fallback */
+.|\n				{ reportTrouble(CompilerMessages.ILLEGAL_CHAR, new Object[]{ yytext() }); }

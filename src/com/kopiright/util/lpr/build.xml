@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.util.lpr
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../.." />
+
+
+  <property name="package" value="com/kopiright/util/lpr" />
+  <property name="package.name" value="com.kopiright.util.lpr" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="LpdClient.java LpQ.java LpR.java LpRm.java LpdException.java
+                   LpdOptions.java LpQOptions.java LpRmOptions.java LpROptions.java " />
+
+  <property name="options"  value="LpdOptions" />
+  <property name="options2" value="LpQOptions" />
+  <property name="options3" value="LpRmOptions" />
+  <property name="options4" value="LpROptions" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>
