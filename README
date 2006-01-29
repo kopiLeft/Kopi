@@ -4,7 +4,7 @@
 
 				       Kopi Suite
 
-				  http://www.dms.at/kopi
+				  http://www.kopiright.com/kopi
 
 --------------------------------------------------------------------------------
 
@@ -31,8 +31,8 @@ DIRECTORIES
 doc			To be documented
 
 src
-  at
-    dms
+  com
+    kopiright
       kopi
 	lib
 	   assertion	Runtime classes for contracts
@@ -40,7 +40,7 @@ src
 	   kjc		The Java Compiler of the Kopi Suite
 
       util
-	base		Utility classes shared by all DMS tools
+	base		Utility classes shared by all tools
 	lpr		An LPR-client implementation in Java
 	mailer		An SMTP-client implementation in Java
 	ipp		An IPP-client implementation in Java
@@ -53,7 +53,7 @@ src
 	antlr		A modified (and simplified) version of ANTLR 2.7.1
 	    runtime	Run-time support classes for generated parsers
 	    compiler	Parser (and lexer) generator
-	    extra	Extra run-time classes developed by DMS
+	    extra	Extra run-time classes developed by kopiRight
 			(will be integrated in runtime)
 	jperf		A perfect hashcode generator (obsolete)
 	optgen		An option class generator based on GNU Getopt
@@ -137,16 +137,16 @@ BUILDING FROM SOURCE
     You will need GNU make.
 
     Define an environment variable CLASSROOT to an existing directory in your
-    file hierarchy : this is where the generated class files will be stored.
+    file hierarchy  this is where the generated class files will be stored.
     Don't forget to include this directory in your CLASSPATH.
 
     You will need a working Java compiler to build Kopi from source. You may need
     to edit the Makefile in this directory if the Java compiler available on your
     system is not Jikes.
 
-    Then just go to the "src/at/dms" directory and type "make".
+    Then just go to the "src/com/kopiright" directory and type "make".
 
 --------------------------------------------------------------------------------
 REPORTING BUGS
 
-    Please, report all bugs to kopi@dms.at
+    Please, report all bugs to support@kopiright.com.
