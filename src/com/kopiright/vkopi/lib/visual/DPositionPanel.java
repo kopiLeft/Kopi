@@ -89,7 +89,7 @@ public class DPositionPanel extends JPanel {
    * inform user about nb records fetched and current one
    */
   public void setPosition(int current, int total) {
-    if (current == -1) {
+    if (current == -1 || total == 0) {
       if (recordVisible) {
         remove(record);
         recordVisible = false;
