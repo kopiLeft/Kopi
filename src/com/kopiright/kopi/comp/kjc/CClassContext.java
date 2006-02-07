@@ -107,7 +107,13 @@ public class CClassContext extends CContext {
     if (methods.length > 0) { 
       if (! self.isAbstract()) {
         // check all abstract methods are implemented
-        check(false, KjcMessages.CLASS_MUST_IMPLEMENT, self.getIdent(), methods[0]);
+        for (int i=0; i<methods.length; i++) {
+          // ignore abstract methods localy declared
+          if(!self.getCClass().equals(methods[i].getOwner())) {
+            check(false, KjcMessages.CLASS_MUST_IMPLEMENT, self.getIdent(), methods[i]);
+            break;
+          }
+        }
       }
     }
   }
@@ -443,7 +449,7 @@ public class CClassContext extends CContext {
 
   private Hashtable               enumMap = new Hashtable();
   private CVariableInfo           fieldInfo;
-  private final JTypeDeclaration	decl;
+  private final JTypeDeclaration  decl;
   private boolean                 hasInitializer;
   private int                     index = 0;
   private int                     anonymous = 0;
