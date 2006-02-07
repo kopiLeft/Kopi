@@ -42,12 +42,11 @@ import com.lowagie.text.pdf.PdfWriter;
  * A Printer prints PrintJob 
  */
 public class PdfPrintJob extends PrintJob {
-  public PdfPrintJob(boolean landscape) throws IOException {
-    super();
-    setPrintInformation(null, landscape, (int)PageSize.A4.width(), (int)PageSize.A4.height(), 1);
+  public PdfPrintJob(Rectangle format) throws IOException {
+    super(format);
 
     try {
-      document = new Document(landscape ? new Rectangle(PageSize.A4.rotate().width(), PageSize.A4.rotate().height()) : PageSize.A4, 0, 0, 0, 0);
+      document = new Document(format, 0, 0, 0, 0);
       writer = PdfWriter.getInstance(document, new FileOutputStream(getDataFile()));
       document.open();
     } catch (Exception e) {
@@ -57,8 +56,8 @@ public class PdfPrintJob extends PrintJob {
     closed = false;
   }
 
-  public PdfPrintJob(File file) throws IOException {
-    super(file, true);
+  public PdfPrintJob(File file, Rectangle format) throws IOException {
+    super(file, true, format);
     closed = true;
   }
 
@@ -92,7 +91,7 @@ public class PdfPrintJob extends PrintJob {
 
   public PdfPrintJob merge(String watermark) throws PSPrintException {
     try {
-      PdfPrintJob         result = new PdfPrintJob(isLandscape());
+      PdfPrintJob         result = new PdfPrintJob(getFormat());
 
       PdfReader         reader = new PdfReader(getInputStream());
       PdfReader         mergeDoc = new PdfReader(watermark);

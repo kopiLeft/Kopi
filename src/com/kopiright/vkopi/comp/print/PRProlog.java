@@ -26,6 +26,7 @@ import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKPhylum;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
+
 import java.util.StringTokenizer;
 
 /**
@@ -110,17 +111,22 @@ public class PRProlog extends VKPhylum {
   public JStatement genCode() {
     TokenReference ref = getTokenReference();
 
+    JUnqualifiedInstanceCreation rectangle = new JUnqualifiedInstanceCreation(ref,
+                                                                              new CClassNameType(ref, "com/lowagie/text/Rectangle", true),
+                                                                              new JExpression[] {
+                                                                                PRUtils.toExpression(ref, portrait? width : height),
+                                                                                PRUtils.toExpression(ref, portrait? height : width)
+                                                                              });
+
     return new JExpressionStatement(ref,
 				    new JMethodCallExpression(ref,
 							      null,
 							      "setProlog",
 							      new JExpression[] {
-								PRUtils.toExpression(ref, width),
-								PRUtils.toExpression(ref, height),
-								PRUtils.toExpression(ref, border),
-								PRUtils.toExpression(ref, !portrait)
-							      }),
-				    null);
+                                                                rectangle,
+                                                                PRUtils.toExpression(ref, border)
+                                                              }),
+                                    null);
   }
 
   // ----------------------------------------------------------------------

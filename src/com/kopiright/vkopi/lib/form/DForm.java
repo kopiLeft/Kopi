@@ -580,7 +580,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
         
     document.close();
 
-    PrintJob    printJob = new PrintJob(file, true);
+    PrintJob    printJob = new PrintJob(file, true, PrintJob.FORMAT_A4);
 
     printJob.setDataType(PrintJob.DAT_PDF);
     printJob.setNumberOfPages(1);

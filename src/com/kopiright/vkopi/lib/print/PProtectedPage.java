@@ -204,7 +204,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
         }
 
         stamper.close();
-        return new PdfPrintJob(file);
+        return new PdfPrintJob(file, printJob.getFormat());
       } catch (Exception e) {
         throw new InconsistencyException(e);
       }

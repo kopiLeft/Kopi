@@ -70,7 +70,7 @@ public abstract class PPage {
 
   protected void internalInitLoadDefinition() {
     // default: set to A4 Portrait
-    this.setProlog(595, 842, 25, false);
+    this.setProlog(PrintJob.FORMAT_A4, 25);
   }
 
   protected abstract void internalInitLoadBlock();
@@ -90,14 +90,14 @@ public abstract class PPage {
    * @return the height
    */
   protected final int getHeight() {
-    return height;
+    return (int)format.height();
   }
 
   /**
    * @return the width
    */
   protected final int getWidth() {
-    return width;
+    return (int)format.width();
   }
 
   /**
@@ -126,7 +126,7 @@ public abstract class PPage {
     try {
       PdfPrintJob        printJob;
 
-      printJob = new PdfPrintJob(landscape);
+      printJob = new PdfPrintJob(format);
       printJob.setDocumentType(getDocumentType());
       return startPrintIntern(printJob);
     } catch (IOException e) {
@@ -147,7 +147,7 @@ public abstract class PPage {
     try {
       PdfPrintJob        printJob;
 
-      printJob = new PdfPrintJob(landscape);
+      printJob = new PdfPrintJob(format);
       printJob.setDocumentType(getDocumentType());
       return printJob;
     } catch (IOException e) {
@@ -263,19 +263,8 @@ public abstract class PPage {
   /**
    *
    */
-  protected void setProlog(int width,
-                           int height,
-                           int border,
-                           boolean landscape)
-  {
-    this.landscape = landscape;
-    if (!landscape) {
-      this.width = width;
-      this.height = height;
-    } else {
-      this.width = height;
-      this.height = width;
-    }
+  protected void setProlog(Rectangle format, int border) {
+    this.format = format;
     this.border = border;
   }
 
@@ -307,11 +296,7 @@ public abstract class PPage {
     if (header != null || footer != null) {
       printJob = printHeaderFooter(printJob);
     }
-    printJob.setPrintInformation(title,
-                                 landscape,
-                                 width,
-                                 height,
-                                 getCurrentPage());
+    printJob.setPrintInformation(title, format, getCurrentPage());
     return printJob;
   }
 
@@ -326,13 +311,7 @@ public abstract class PPage {
   private void addWatermark(PdfPrintJob printJob) throws PSPrintException {
     if (watermark != null) {  
       PdfContentByte    cbwater =  printJob.getWriter().getDirectContent();
-
-      if (landscape) {
-        // rotate watermark clockwise by 90 degrees
-        cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 0, -1, 1, 0, 0, height);
-      } else {
-        cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
-      }
+      cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
     }
   }
 
@@ -355,7 +334,7 @@ public abstract class PPage {
       printHeaderFooter(stamper, 1, pageCount, pageCount);
 
       stamper.close();
-      return new PdfPrintJob(file);
+      return new PdfPrintJob(file, printJob.getFormat());
     } catch (Exception e) {
       throw new InconsistencyException(e);
     }
@@ -451,7 +430,7 @@ public abstract class PPage {
 	sizes.addElement(new Float(block.fill(size)));
 	fullyPrinted &= block.isFullyPrinted();
       }
-      float     currentPos = height - border;
+      float     currentPos = format.height() - border;
 
       isLastPage = fullyPrinted;
 
@@ -461,7 +440,7 @@ public abstract class PPage {
 	if (((Float)sizes.elementAt(i)).floatValue() > 0 && block.isShownOnThisPage()) {
  	  float y = block.getPosition().getY();
 
-          y = y < 0 ? currentPos : height - y;
+          y = y < 0 ? currentPos : format.height() - y;
 
           cb.saveState();
           cb.concatCTM(1,0,0,1, block.getPosition().getX(), y) ;
@@ -536,10 +515,10 @@ public abstract class PPage {
   private Hashtable		blocksByName;
   private String		title;
   private String		prolog;
-  private boolean		landscape;
   private int			border;
-  protected int			height;
-  protected int			width;
+//  protected int			height;
+//  protected int			width;
+  private Rectangle             format;
 
   private int			currentPage;
   private boolean		isLastPage;

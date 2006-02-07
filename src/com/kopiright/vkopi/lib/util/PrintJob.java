@@ -28,30 +28,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+
+
 /**
  * PPage/Report creates a PrintJob
  *
  * A Printer creates a PrintTask from a PrintJob 
  */
 public class PrintJob {
-  public PrintJob() throws IOException {
-    this(Utils.getTempFile("kopi", "prt"), true);
+
+  public PrintJob(Rectangle format) throws IOException {
+    this(Utils.getTempFile("kopi", "prt"), true, format);
   }
 
-  public PrintJob(byte[] data) throws IOException {
-    this(writeToFile(new ByteArrayInputStream(data)), true);
+  public PrintJob(byte[] data, Rectangle format) throws IOException {    
+    this(writeToFile(new ByteArrayInputStream(data)), true, format);
   }
 
-  public PrintJob(InputStream dataStream) throws IOException {
-    this(writeToFile(dataStream), true);
+  public PrintJob(InputStream dataStream, Rectangle format) throws IOException {
+    this(writeToFile(dataStream), true, format);
   }
 
-  public PrintJob(File datafile, boolean delete) {
+  public PrintJob(File datafile, boolean delete, Rectangle format) {
     this.datafile = datafile;
     this.delete = delete;
-    this.landscape = false;
-    this.width = 595;
-    this.height = 842;
+    this.format = format;
     this.numberCopy = 1;
     this.numberOfPages = -1;
     this.dataType = DAT_PS;
@@ -139,37 +142,32 @@ public class PrintJob {
     this.title = title; 
   }
 
-  public void setPrintInformation(String title,
-                                  boolean landscape,
-                                  int width,
-                                  int height,
-                                  int numberOfPages)
-  {
+  public void setPrintInformation(String title, Rectangle format, int numberOfPages) {
     this.title = title;
-    this.landscape = landscape;
-    this.width = width;
-    this.height = height;
+    this.format = format;
     this.numberOfPages = numberOfPages;
   }
 
-  public int getWidth() {
-    return width;
+  public Rectangle getFormat() {
+    return format;
   }
+
+  public int getWidth() {
+    return (int)format.width();
+  }
+
   public int getHeight() {
-    return height;
+    return (int)format.height();
   }
 
   public String getTitle() {
     return title;
   }
 
-  public boolean isLandscape() {
-    return landscape;
-  }
-
   public int getNumberOfCopies() {
     return numberCopy;
   }
+
   public void setNumberOfCopies(int numberCopy) {
     this.numberCopy = numberCopy;
   }
@@ -183,12 +181,7 @@ public class PrintJob {
   }
 
   public PrintJob createFromThis(File file, boolean delete) {
-    PrintJob filteredJob = new PrintJob(file, delete);
-      
-    //    filteredJob.setNumberOfCopies(numberCopy);
-    filteredJob.setPrintInformation(title, landscape, width, height, numberOfPages);
-
-    return filteredJob;
+    return new PrintJob(file, delete, this.format);
   }
 
   /**
@@ -242,15 +235,30 @@ public class PrintJob {
 
   // properties
   private String		title;
-  private boolean		landscape;
   private String                media;
   private int                   documentType;
   private int                   dataType;
   private int			numberCopy;
-  private int			width;
-  private int			height;
   private int			numberOfPages;
+  private Rectangle             format;
 
   public static int             DAT_PDF = 1;
   public static int             DAT_PS  = 2;
+
+  // A5, A4, A3, Letter and Legal page format (portrait)
+  public static Rectangle       FORMAT_A5     = PageSize.A5;
+  public static Rectangle       FORMAT_A4     = PageSize.A4;
+  public static Rectangle       FORMAT_A3     = PageSize.A3;
+  public static Rectangle       FORMAT_LETTER = PageSize.LETTER;
+  public static Rectangle       FORMAT_LEGAL  = PageSize.LEGAL;
+
+  // A5, A4, A3, Letter and Legal page format (landscape)
+  public static Rectangle       FORMAT_A5_R     = new Rectangle(PageSize.A5.rotate().width(), PageSize.A5.rotate().height());
+  public static Rectangle       FORMAT_A4_R     = new Rectangle(PageSize.A4.rotate().width(), PageSize.A4.rotate().height());
+  public static Rectangle       FORMAT_A3_R     = new Rectangle(PageSize.A3.rotate().width(), PageSize.A3.rotate().height());
+  public static Rectangle       FORMAT_LETTER_R = new Rectangle(PageSize.LETTER.rotate().width(), PageSize.LETTER.rotate().height());
+  public static Rectangle       FORMAT_LEGAL_R  = new Rectangle(PageSize.LEGAL.rotate().width(), PageSize.LEGAL.rotate().height());
+
+  // Row format (Used for label printers)
+  public static Rectangle       FORMAT_ROW = new Rectangle(-1, -1);
 }

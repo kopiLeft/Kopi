@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.util;
 
 import java.io.*;
+import com.lowagie.text.PageSize;
 
 /**
  * Remote execution client
@@ -89,7 +90,7 @@ public class RPrinter extends AbstractPrinter implements CachePrinter {
 
     rexec.setCommand(args[1], args[2], args[3]);
 
-    rexec.print(new PrintJob(new File(args[4]), false));
+    rexec.print(new PrintJob(new File(args[4]), false, PrintJob.FORMAT_A4));
   }
 
   // ----------------------------------------------------------------------

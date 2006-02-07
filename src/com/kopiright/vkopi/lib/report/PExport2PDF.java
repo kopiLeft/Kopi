@@ -76,13 +76,11 @@ public class  PExport2PDF extends PExport implements Constants {
       export(file);
 
       page = document.getPageSize();
-      printJob = new PrintJob(file, true);
+      printJob = new PrintJob(file, true, PrintJob.FORMAT_A4);
       printJob.setDataType(PrintJob.DAT_PDF);
-      printJob.setPrintInformation(getTitle(),
-                                   false,
-				   (int) page.width(),
-				   (int) page.height(),
-				   pages);
+      printJob.setTitle(getTitle());
+      printJob.setNumberOfPages(pages);
+
       return printJob;
     } catch (Exception e) {
 	throw new InconsistencyException(e);

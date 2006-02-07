@@ -41,6 +41,8 @@ import com.kopiright.vkopi.lib.visual.ApplicationDefaultsAdapter;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.DObject;
 
+import com.lowagie.text.Rectangle;
+
 /**
  * Starts PreviewWindow (for testing) without an Application
  */
@@ -86,13 +88,10 @@ public class StandAlone {
               System.exit(0);
             }
           };
-        PrintJob        job = new PrintJob(file, false);
 
-        job.setPrintInformation(title,
-                                landscape,
-                                width,
-                                height,
-                                numberOfPages);
+        PrintJob        job = new PrintJob(file, false, PrintJob.FORMAT_A4);
+
+        job.setPrintInformation(title, format, numberOfPages);
         preview.preview(job, command);
       } catch (VException e) {
         e.printStackTrace();
@@ -146,8 +145,6 @@ public class StandAlone {
   private String		command = "gs ";
   private String		title = "Editor";
 
-  private boolean		landscape = false;
-  private int			width = 595;
-  private int			height = 842;
+  private Rectangle             format = PrintJob.FORMAT_A4;
   private int			numberOfPages = -1;
 }
