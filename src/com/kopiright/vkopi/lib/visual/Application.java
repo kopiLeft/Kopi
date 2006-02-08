@@ -363,7 +363,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
     try {
       version = defaults.getVersion();
     } catch (PropertyException e) {
-      version = "version no defined";
+      version = "version not defined";
     }
     try {
       smtpServer = defaults.getSMTPServer();
