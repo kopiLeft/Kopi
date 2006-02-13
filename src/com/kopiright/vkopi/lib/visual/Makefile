@@ -28,7 +28,7 @@ PACKAGE =	com/kopiright/vkopi/lib/visual
 ## FILES
 
 JAVAFILES +=	ActionHandler Application ApplicationDefaults		\
-		ApplicationDefaultsAdapter				\
+		ApplicationDefaultsAdapter PropertyManager		\
 		ApplicationDefaultsProperties				\
 		Constants DFootPanel DInfoPanel				\
 		DMenuBar DMenuItem DObject DPreferences DStatePanel	\

@@ -23,8 +23,6 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
 
 import com.kopiright.vkopi.lib.util.Rexec;
 
@@ -39,11 +37,7 @@ public class ApplicationConfiguration {
   }
 
   public ApplicationConfiguration(String file) {
-    try {
-      resources = ResourceBundle.getBundle(file);
-    } catch (MissingResourceException mre) {
-      System.err.println(file + ".properties not found, will use default properties");
-    }
+    resources = new PropertyManager(file);
   }
 
   public static ApplicationConfiguration getConfiguration() {
@@ -297,6 +291,6 @@ public class ApplicationConfiguration {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private ResourceBundle                        resources;
+  private PropertyManager                       resources;
   private static ApplicationConfiguration       configuration;
 }

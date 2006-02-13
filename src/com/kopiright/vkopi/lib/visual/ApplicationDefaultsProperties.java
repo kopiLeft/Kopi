@@ -22,8 +22,6 @@ package com.kopiright.vkopi.lib.visual;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
 
 import com.kopiright.vkopi.lib.util.Rexec;
 import com.kopiright.vkopi.lib.util.Printer;
@@ -41,16 +39,18 @@ import com.kopiright.vkopi.lib.util.PreviewPrinter;
  * usinf resource files
  */
 public class ApplicationDefaultsProperties extends ApplicationDefaultsAdapter {
+
+  // ----------------------------------------------------------------------
+  // CONSTRUCTOR
+  // ----------------------------------------------------------------------
+
   /**
-   *
+   * Constructor
+   * @param file               the properties file name
    */
   public ApplicationDefaultsProperties(String file) {
-    try {
-      resources = ResourceBundle.getBundle(file);
-    } catch (MissingResourceException mre) {
-      System.err.println(file + ".properties not found, will use default properties");
-    }
- }
+    resources = new PropertyManager(file);
+  }
 
   /**
    * Returns the failure file to add errors
@@ -404,7 +404,7 @@ public class ApplicationDefaultsProperties extends ApplicationDefaultsAdapter {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private ResourceBundle	resources;
+  private PropertyManager       resources;
 
   public static final String    STANDARD_PRINTER_NAME = "<Standard>";
 }

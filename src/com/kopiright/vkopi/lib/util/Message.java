@@ -19,9 +19,9 @@
 
 package com.kopiright.vkopi.lib.util;
 
+import com.kopiright.vkopi.lib.visual.PropertyManager;
+
 import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 /**
  * This class handles localised messages
@@ -149,23 +149,14 @@ public class Message {
    */
   private static String getString(String key) {
     if (! bundleLoaded) {
-      try {
-	bundle = ResourceBundle.getBundle("vlib_messages");
-      } catch (MissingResourceException e) {
-	System.err.println("properties not found, error message will be sybillin");
-      }
-
+      bundle = new PropertyManager("vlib_messages");
       bundleLoaded = true;
     }
-
+    
     if (bundle == null) {
       return null;
     } else {
-      try {
-	return bundle.getString(key);
-      } catch (MissingResourceException e) {
-	return null;
-      }
+      return bundle.getString(key);
     }
   }
 
@@ -174,7 +165,7 @@ public class Message {
   // ----------------------------------------------------------------------
 
   private static boolean		bundleLoaded = false;
-  private static ResourceBundle		bundle;
+  private static PropertyManager        bundle;
 
   private final String			key;
   private final Object[]		params;

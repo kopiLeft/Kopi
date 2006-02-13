@@ -19,8 +19,8 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
+import com.kopiright.vkopi.lib.visual.PropertyManager;
+
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 
@@ -32,12 +32,8 @@ public class KopiUserColors {
    *
    */
   public KopiUserColors() {
-    try {
-      resources = ResourceBundle.getBundle(USR_COLOR_FILE);
-    } catch (MissingResourceException mre) {
-      System.err.println(USR_COLOR_FILE+".properties not found, will use default colors");
-    }
-
+    resources = new PropertyManager(USR_COLOR_FILE);
+    
     COLOR_1 = getUserColor("color1", COLOR_1);
     COLOR_2 = getUserColor("color2", COLOR_2);
     COLOR_3 = getUserColor("color3", COLOR_3);
@@ -67,26 +63,12 @@ public class KopiUserColors {
   }
   
   public ColorUIResource getUserColor(String key, ColorUIResource def) {
-    if (resources == null) {
-      return def;
-    }
-
-    String      val = null;
-
-    try {
-      val = resources.getString(key);
-    } catch(MissingResourceException e) {
-      return def;
-    }
-
-    if (val == null) {
-      return def;
-    }
-
-    return new ColorUIResource(ColorUIResource.decode(val));
+    String               val = resources.getString(key);
+    
+    return  (val == null)? def : new ColorUIResource(ColorUIResource.decode(val));
   }
 
-  private ResourceBundle        resources;
+  private PropertyManager       resources;
   private static String         USR_COLOR_FILE = "user";
 
   public  ColorUIResource COLOR_1  = new ColorUIResource(248, 247, 241);      // light brown
