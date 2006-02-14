@@ -311,7 +311,14 @@ public abstract class PPage {
   private void addWatermark(PdfPrintJob printJob) throws PSPrintException {
     if (watermark != null) {  
       PdfContentByte    cbwater =  printJob.getWriter().getDirectContent();
-      cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
+
+      if (getWidth() > getHeight()) {
+        // landscape: rotate watermark clockwise by 90 degrees
+        cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 0, -1, 1, 0, 0, getHeight());
+      } else {
+        // portrait
+        cbwater.addTemplate(printJob.getWriter().getImportedPage(watermark, 1), 1, 0, 0, 1, 0, 0);
+      }
     }
   }
 
