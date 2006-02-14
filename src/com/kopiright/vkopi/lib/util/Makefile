@@ -32,7 +32,7 @@ JAVAFILES +=	AWTToPS AbstractPrinter CachePrinter Charset437		\
 		FaxException FaxPrinter FaxStatus			\
 		Filter GroupHandler HylaFAXPrinter IPPPrinter		\
 		KnownBugs LPrinter LabelPrinter Laserjet		\
-		LpRPrinter MailPrinter Message				\
+		LpRPrinter MailPrinter PropertyManager Message		\
 		MultiLineToolTip MultiLineToolTipUI PPaperType		\
 		PixelConsumer PlatformFileWriter			\
 		PreviewPrinter PrintException				\

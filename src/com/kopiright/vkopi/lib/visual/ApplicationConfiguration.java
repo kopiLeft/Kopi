@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.kopiright.vkopi.lib.util.Rexec;
+import com.kopiright.vkopi.lib.util.PropertyManager;
 
 /**
  * Manages Applicatin configuration data

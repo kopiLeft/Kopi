@@ -27,6 +27,7 @@ import com.kopiright.vkopi.lib.util.Rexec;
 import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.RPrinter;
 import com.kopiright.vkopi.lib.util.PreviewPrinter;
+import com.kopiright.vkopi.lib.util.PropertyManager;
 
 /**
  * An interface for kopi application defaults data

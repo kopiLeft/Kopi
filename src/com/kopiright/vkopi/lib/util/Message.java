@@ -19,8 +19,6 @@
 
 package com.kopiright.vkopi.lib.util;
 
-import com.kopiright.vkopi.lib.visual.PropertyManager;
-
 import java.text.MessageFormat;
 
 /**

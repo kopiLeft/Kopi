@@ -17,7 +17,7 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.visual;
+package com.kopiright.vkopi.lib.util;
 
 import java.util.ResourceBundle;
 import java.util.MissingResourceException;

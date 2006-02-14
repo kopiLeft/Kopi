@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import com.kopiright.vkopi.lib.visual.PropertyManager;
+import com.kopiright.vkopi.lib.util.PropertyManager;
 
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
