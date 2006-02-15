@@ -31,4 +31,14 @@ public interface DPositionPanelListener {
    * Requests to go to the previous position.
    */
   void gotoPrevPosition();
+
+  /**
+   * Requests to go to the last position.
+   */
+  void gotoLastPosition();
+
+  /**
+   * Requests to go to the last position.
+   */
+  void gotoFirstPosition();
 }

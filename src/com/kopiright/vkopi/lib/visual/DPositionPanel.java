@@ -49,14 +49,27 @@ public class DPositionPanel extends JPanel {
 
     record = new JPanel();
     record.setLayout(new BorderLayout());
+    
+    recordLeft = new JPanel();
+    recordLeft.setLayout(new BorderLayout());
 
-    info = new JLabel();
-//     info.setFont(DObject.FNT_INFO);
-//     info.setForeground(DObject.CLR_FOREGROUND);
-    info.setText(null);
-//     info.setBorder(DObject.BRD_FOOT_PANEL);
-    record.add(info, BorderLayout.CENTER);
+    recordRight = new JPanel();
+    recordRight.setLayout(new BorderLayout());
 
+    // 'goto first' button
+    first = new JButton(Utils.getImage("arrowfirst.gif"));
+    first.setFocusable(false);
+    first.setBorder(new EtchedBorder());
+    first.setMargin(EMPTY_INSETS);
+    first.setOpaque(false);
+    first.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+          DPositionPanel.this.listener.gotoFirstPosition();
+	}
+      });
+    recordLeft.add(first, BorderLayout.WEST);
+
+    // 'goto previous' button
     left = new JButton(Utils.getImage("arrowleft.gif"));
     left.setFocusable(false);
     left.setBorder(new EtchedBorder());
@@ -67,8 +80,16 @@ public class DPositionPanel extends JPanel {
           DPositionPanel.this.listener.gotoPrevPosition();
 	}
       });
-    record.add(left, BorderLayout.WEST);
+    recordLeft.add(left, BorderLayout.EAST);
+
+    record.add(recordLeft, BorderLayout.WEST);
     
+    // 'position/total' label
+    info = new JLabel();
+    info.setText(null);
+    record.add(info, BorderLayout.CENTER);
+
+    // 'goto next' button
     right = new JButton(Utils.getImage("arrowright.gif"));
     right.setFocusable(false);
     right.setBorder(new EtchedBorder());
@@ -79,7 +100,23 @@ public class DPositionPanel extends JPanel {
           DPositionPanel.this.listener.gotoNextPosition();
 	}
       });
-    record.add(right, BorderLayout.EAST);
+    recordRight.add(right, BorderLayout.WEST);
+
+    // 'goto next' last
+    last = new JButton(Utils.getImage("arrowlast.gif"));
+    last.setFocusable(false);
+    last.setBorder(new EtchedBorder());
+    last.setMargin(EMPTY_INSETS);
+    last.setOpaque(false);
+    last.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+          DPositionPanel.this.listener.gotoLastPosition();
+	}
+      });
+    recordRight.add(last, BorderLayout.EAST);
+
+    record.add(recordRight, BorderLayout.EAST);
+
 
     recordVisible = false;
   }
@@ -101,7 +138,9 @@ public class DPositionPanel extends JPanel {
       }
       info.setText(" " + current + " / " + total + " ");
       left.setEnabled(current > 1);
+      first.setEnabled(current > 1);
       right.setEnabled(current < total);
+      last.setEnabled(current < total);
     }
 
     doLayout();
@@ -116,8 +155,12 @@ public class DPositionPanel extends JPanel {
   private final DPositionPanelListener  listener;
 
   private final JPanel		record;
+  private final JPanel		recordLeft;
+  private final JPanel		recordRight;
   private final JLabel  	info;
   private final JButton		left;
   private final JButton         right;
+  private final JButton		first;
+  private final JButton         last;
   private boolean		recordVisible;
 }

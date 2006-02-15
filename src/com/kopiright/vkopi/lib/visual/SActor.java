@@ -56,11 +56,10 @@ public class SActor {
                                        null);
     if (acceleratorKey != KeyEvent.VK_UNDEFINED) {
       this.action.putValue(Action.ACCELERATOR_KEY,
-                           KeyStroke.getKeyStroke(acceleratorKey, 
+                           KeyStroke.getKeyStroke(acceleratorKey,
                                                   acceleratorModifier));
     }
-    this.action.putValue(Action.SHORT_DESCRIPTION,
-                         help);
+    this.action.putValue(Action.SHORT_DESCRIPTION, help);
     action.setEnabled(false);
   }
 

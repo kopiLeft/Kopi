@@ -55,7 +55,7 @@ OLDGIFS =	all apply arrowleft arrowright article			\
 		split standard stick stop store suggest			\
 		todo top unfold unfoldColumn unstick			\
 		users utils validate wait warning window		\
-		yellow
+		yellow arrowfirst arrowlast
 
 
 PNGFILES =	all apply  article					\
@@ -71,7 +71,7 @@ PNGFILES =	all apply  article					\
 		launch list lock login mail menuquery			\
 		money  note nothing					\
 		notice  open options pageLeft				\
-		pageRight phone preview print				\
+		pageRight pageFirst pageLast phone preview print	\
 		printoptions project quit  refresh			\
 		reload report save search				\
 		search2 searchop sec  send				\
@@ -82,7 +82,8 @@ PNGFILES =	all apply  article					\
 
 PNGNEW =	align_center align_justify align_left align_right bold	\
 		cut ident italic paste redo unident underline undo      \
-		border password zoomminus zoomwidth zoomheight
+		border password zoomminus zoomwidth zoomheight		\
+		zoomoptimal
 
 GIFFILES =	$(FREEGIFS) $(OLDGIFS)
 

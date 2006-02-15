@@ -383,6 +383,28 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   }
 
   /**
+   * Requests to go to the last position.
+   */
+  public void gotoLastPosition() {
+    performAsyncAction(new KopiAction("gotoLastPosition") {
+        public void execute() throws VException {
+          DForm.this.getVForm().getActiveBlock().gotoLastRecord();
+        }
+      });
+  }
+  
+  /**
+   * Requests to go to the first position.
+   */
+  public void gotoFirstPosition() {
+    performAsyncAction(new KopiAction("gotoFirstPosition") {
+        public void execute() throws VException {
+          DForm.this.getVForm().getActiveBlock().gotoFirstRecord();
+        }
+      });
+  }
+
+  /**
    * Returns the number of pages.
    */
   public int getPageCount() {

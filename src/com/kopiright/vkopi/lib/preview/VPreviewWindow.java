@@ -75,57 +75,71 @@ public class VPreviewWindow extends VWindow {
     setTitle("Preview");
     setActors(new SActor[] {
       new SActor(Message.getMessage("menu-file"),
-		 Message.getMessage("close"),
-		 "quit",
-		 KeyEvent.VK_ESCAPE,
-		 0,
-		 Message.getMessage("help-close-help")),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-page-left"),
-		   "pageLeft",
-		   KeyEvent.VK_PAGE_UP,
-		   0,
-		   null),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-page-right"),
-		   "pageRight",
-		   KeyEvent.VK_PAGE_DOWN,
-		   0,
-		   null),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-preview-fit"),
-		   "searchop",
-		   KeyEvent.VK_F5,
-		   0,
-		   null),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-preview-fit-width"),
-		   "zoomwidth",
-		   KeyEvent.VK_F8,
-		   0,
-		   null),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-preview-fit-height"),
-		   "zoomheight",
-		   KeyEvent.VK_F9,
-		   0,
-		   null),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-preview-plus"),
-		   "detail",
-		   KeyEvent.VK_F6,
-		   0,
-		   null),
-        new SActor(Message.getMessage("menu-action"),
-		   Message.getMessage("item-preview-minus"),
-		   "zoomminus",
-		   KeyEvent.VK_F7,
-		   0,
-		   null)
-	});
+                 Message.getMessage("close"),
+                 "quit",
+                 KeyEvent.VK_ESCAPE,
+                 0,
+                 Message.getMessage("help-close-help")),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-page-first"),
+                 "pageFirst",
+                 KeyEvent.VK_HOME,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-page-left"),
+                 "pageLeft",
+                 KeyEvent.VK_PAGE_UP,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-page-right"),
+                 "pageRight",
+                 KeyEvent.VK_PAGE_DOWN,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-page-last"),
+                 "pageLast",
+                 KeyEvent.VK_END,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-preview-fit"),
+                 "zoomoptimal",
+                 KeyEvent.VK_F5,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-preview-fit-width"),
+                 "zoomwidth",
+                 KeyEvent.VK_F8,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-preview-fit-height"),
+                 "zoomheight",
+                 KeyEvent.VK_F9,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-preview-plus"),
+                 "zoomplus",
+                 KeyEvent.VK_F6,
+                 0,
+                 null),
+      new SActor(Message.getMessage("menu-action"),
+                 Message.getMessage("item-preview-minus"),
+                 "zoomminus",
+                 KeyEvent.VK_F7,
+                 0,
+                 null)
+    });
     getActor(CMD_QUIT).setNumber(CMD_QUIT);
+    getActor(CMD_FIRST).setNumber(CMD_FIRST);
     getActor(CMD_LEFT).setNumber(CMD_LEFT);
     getActor(CMD_RIGHT).setNumber(CMD_RIGHT);
+    getActor(CMD_LAST).setNumber(CMD_LAST);
     getActor(CMD_ZOOM_FIT).setNumber(CMD_ZOOM_FIT);
     getActor(CMD_ZOOM_FIT_W).setNumber(CMD_ZOOM_FIT_W);
     getActor(CMD_ZOOM_FIT_H).setNumber(CMD_ZOOM_FIT_H);
@@ -155,8 +169,10 @@ public class VPreviewWindow extends VWindow {
     createImagesFromPostscript();
     currentPage = 1;
     setActorEnabled(CMD_QUIT, true);
+    setActorEnabled(CMD_FIRST, currentPage > 1);
     setActorEnabled(CMD_LEFT, currentPage > 1);
     setActorEnabled(CMD_RIGHT, currentPage < numberOfPages);
+    setActorEnabled(CMD_LAST, currentPage < numberOfPages);
     setActorEnabled(CMD_ZOOM_FIT, true);
     setActorEnabled(CMD_ZOOM_FIT_H, true);
     setActorEnabled(CMD_ZOOM_FIT_W, true);
@@ -221,6 +237,12 @@ public class VPreviewWindow extends VWindow {
     case CMD_QUIT:
       getDisplay().closeWindow();
       break;
+    case CMD_FIRST:
+      setWaitInfo(Message.getMessage("WAIT"));
+      currentPage = 1;
+      firePageChanged(currentPage);
+      unsetWaitInfo();
+      break;
     case CMD_LEFT:
       setWaitInfo(Message.getMessage("WAIT"));
       currentPage -= 1;
@@ -230,6 +252,12 @@ public class VPreviewWindow extends VWindow {
     case CMD_RIGHT:
       setWaitInfo(Message.getMessage("WAIT"));
       currentPage += 1;
+      firePageChanged(currentPage);
+      unsetWaitInfo();
+      break;
+    case CMD_LAST:
+      setWaitInfo(Message.getMessage("WAIT"));
+      currentPage = numberOfPages;
       firePageChanged(currentPage);
       unsetWaitInfo();
       break;
@@ -308,8 +336,10 @@ public class VPreviewWindow extends VWindow {
   }
 
   private void setMenu() {
+    setActorEnabled(CMD_FIRST, currentPage > 1);
     setActorEnabled(CMD_LEFT, currentPage > 1);
     setActorEnabled(CMD_RIGHT, currentPage < numberOfPages);
+    setActorEnabled(CMD_LAST, currentPage < numberOfPages);
   }
 
   public String getPreviewFileName(int current) {
@@ -361,12 +391,16 @@ public class VPreviewWindow extends VWindow {
   private static final int	DEF_WIDTH	= 595;
   private static final float    DEF_ZOOM_RATIO  = 1.30f;
 
+  // the following commands *MUST* be in the same order than 
+  // in 'actors' field set in the contructor of the current class.
   protected static final int	CMD_QUIT	= 0;
-  protected static final int	CMD_LEFT	= 1;
-  protected static final int	CMD_RIGHT	= 2;
-  protected static final int	CMD_ZOOM_FIT	= 3;
-  protected static final int	CMD_ZOOM_FIT_W	= 4;
-  protected static final int	CMD_ZOOM_FIT_H	= 5;
-  protected static final int	CMD_ZOOM_PLUS	= 6;
-  protected static final int	CMD_ZOOM_MINUS	= 7;
+  protected static final int	CMD_FIRST	= 1;
+  protected static final int	CMD_LEFT	= 2;
+  protected static final int	CMD_RIGHT	= 3;
+  protected static final int	CMD_LAST	= 4;
+  protected static final int	CMD_ZOOM_FIT	= 5;
+  protected static final int	CMD_ZOOM_FIT_W	= 6;
+  protected static final int	CMD_ZOOM_FIT_H	= 7;
+  protected static final int	CMD_ZOOM_PLUS	= 8;
+  protected static final int	CMD_ZOOM_MINUS	= 9;
 }

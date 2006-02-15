@@ -76,7 +76,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     setStatePanel(blockInfo = new DPositionPanel(this));
     model.addPreviewListener(this);
     label.addKeyListener(new KeyAdapter () {
-      public void keyPressed(KeyEvent k) {
+        public void keyPressed(KeyEvent k) {
           if (k.getKeyCode() == KeyEvent.VK_PAGE_UP
               && DPreviewWindow.this.model.getCurrentPage() > 1)
             {
@@ -87,8 +87,18 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
             {
               gotoNextPosition();
             }
-      }
-    });
+          if (k.getKeyCode() == KeyEvent.VK_HOME
+              && DPreviewWindow.this.model.getCurrentPage() > 1)
+            {
+              gotoFirstPosition();
+            }
+          if (k.getKeyCode() == KeyEvent.VK_END
+              && DPreviewWindow.this.model.getCurrentPage() < DPreviewWindow.this.model.getNumberOfPages())
+            {
+              gotoLastPosition();
+            }
+        }
+      });
 
     try {
       useRotation = ApplicationConfiguration.getConfiguration().getBooleanFor("print.preview.rotate");
@@ -250,6 +260,28 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     getModel().performAsyncAction(new KopiAction("preview left") {
         public void execute() throws VException {
           getModel().executeVoidTrigger(VPreviewWindow.CMD_LEFT);
+        }
+      });
+  }
+
+  /**
+   * Requests to go to the last position.
+   */
+  public void gotoLastPosition() {
+    getModel().performAsyncAction(new KopiAction("preview last") {
+        public void execute() throws VException {
+          getModel().executeVoidTrigger(VPreviewWindow.CMD_LAST);
+        }
+      });
+  }
+
+  /**
+   * Requests to go to the first position.
+   */
+  public void gotoFirstPosition() {
+    getModel().performAsyncAction(new KopiAction("preview first") {
+        public void execute() throws VException {
+          getModel().executeVoidTrigger(VPreviewWindow.CMD_FIRST);
         }
       });
   }
