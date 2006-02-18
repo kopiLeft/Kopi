@@ -244,6 +244,8 @@ class PLayoutEngine {
 
         currentFont = new Font(base, size);
       } else {
+        //!!! graf 20060218: signal missing font!!!
+
         // default font
         if (((style & PTextStyle.FCE_BOLD) > 0) && ((style & PTextStyle.FCE_ITALIC) > 0)) {
           fontStyle = Font.BOLDITALIC;
