@@ -355,7 +355,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     JDialog     dialog;
     Object      obj;
     
-    pane = new JOptionPane("Go To:",
+    pane = new JOptionPane(Message.getMessage("position-number") + " :",
                            JOptionPane.QUESTION_MESSAGE,
                            JOptionPane.YES_NO_OPTION,
                            null,
@@ -364,7 +364,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     
     pane.setWantsInput(true);
     pane.setComponentOrientation(parent.getComponentOrientation());
-    dialog = pane.createDialog(parent, Message.getMessage("Question"));
+    dialog = pane.createDialog(parent, current +  " " + Message.getMessage("from") + " " + total);
 
     dialog.show();
     dialog.dispose();
