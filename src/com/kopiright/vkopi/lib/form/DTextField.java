@@ -500,7 +500,7 @@ public class DTextField extends DField implements VConstants {
   protected KopiFieldDocument           document;
   protected ModelTransformer            transformer;
   protected DocumentListener            listener;
-  private UndoManager                   undoManager;
+  private   UndoManager                 undoManager;
 
   // ----------------------------------------------------------------------
   // INITIALIZERS

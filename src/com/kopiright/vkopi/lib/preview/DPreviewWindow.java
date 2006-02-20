@@ -21,7 +21,6 @@ package com.kopiright.vkopi.lib.preview;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.visual.*;
-import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintJob;
 
 import java.awt.*;
@@ -282,6 +281,17 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     getModel().performAsyncAction(new KopiAction("preview first") {
         public void execute() throws VException {
           getModel().executeVoidTrigger(VPreviewWindow.CMD_FIRST);
+        }
+      });
+  }
+
+  /**
+   * Requests to go to the specified position.
+   */
+  public void gotoPosition(final int posno) {
+    getModel().performAsyncAction(new KopiAction("preview position") {
+        public void execute() throws VException {
+          ((VPreviewWindow)getModel()).gotoPosition(posno);
         }
       });
   }

@@ -230,7 +230,6 @@ public class VPreviewWindow extends VWindow {
    * Performs the appropriate action.
    *
    * @param	actor		the number of the actor.
-   * @return	true iff an action was found for the specified number
    */
   public void executeVoidTrigger(int key) throws VException {
     switch (key) {
@@ -293,6 +292,19 @@ public class VPreviewWindow extends VWindow {
       unsetWaitInfo();
       break;
      }
+    setMenu();
+  }
+
+  /**
+   * Goto the specified page.
+   *
+   * @param     posno           the page position number.
+   */
+  public void gotoPosition(int posno) throws VException {
+    setWaitInfo(Message.getMessage("WAIT"));
+    currentPage = posno;
+    firePageChanged(currentPage);
+    unsetWaitInfo();
     setMenu();
   }
 
@@ -375,32 +387,29 @@ public class VPreviewWindow extends VWindow {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  //  protected JLabel	label;
   private int                   currentPage;
   private int                   numberOfPages;
   private String                command;
   private PrintJob              printJob;
-
   private File                  printFile;
   private String                imageFile;
   private int                   height;
   private int                   width;
   private EventListenerList     previewListener;
 
-  private static final int	DEF_HEIGHT	= 842;
-  private static final int	DEF_WIDTH	= 595;
+
   private static final float    DEF_ZOOM_RATIO  = 1.30f;
 
   // the following commands *MUST* be in the same order than 
   // in 'actors' field set in the contructor of the current class.
-  protected static final int	CMD_QUIT	= 0;
-  protected static final int	CMD_FIRST	= 1;
-  protected static final int	CMD_LEFT	= 2;
-  protected static final int	CMD_RIGHT	= 3;
-  protected static final int	CMD_LAST	= 4;
-  protected static final int	CMD_ZOOM_FIT	= 5;
-  protected static final int	CMD_ZOOM_FIT_W	= 6;
-  protected static final int	CMD_ZOOM_FIT_H	= 7;
-  protected static final int	CMD_ZOOM_PLUS	= 8;
-  protected static final int	CMD_ZOOM_MINUS	= 9;
+  protected static final int    CMD_QUIT        =  0;
+  protected static final int    CMD_FIRST       =  1;
+  protected static final int    CMD_LEFT        =  2;
+  protected static final int    CMD_RIGHT       =  3;
+  protected static final int    CMD_LAST        =  4;
+  protected static final int    CMD_ZOOM_FIT    =  5;
+  protected static final int    CMD_ZOOM_FIT_W  =  6;
+  protected static final int    CMD_ZOOM_FIT_H  =  7;
+  protected static final int    CMD_ZOOM_PLUS   =  8;
+  protected static final int    CMD_ZOOM_MINUS  =  9;
 }

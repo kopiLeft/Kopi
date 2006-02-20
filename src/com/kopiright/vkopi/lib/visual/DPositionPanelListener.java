@@ -41,4 +41,9 @@ public interface DPositionPanelListener {
    * Requests to go to the last position.
    */
   void gotoFirstPosition();
+
+  /**
+   * Requests to go to the specified position.
+   */
+  void gotoPosition(int posno);
 }

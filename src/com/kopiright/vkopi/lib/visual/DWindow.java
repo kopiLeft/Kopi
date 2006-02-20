@@ -345,6 +345,48 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   }
 
   /**
+   * Asks a position number
+   */
+  public static int askPostition(Component parent, int current, int total) {
+    Object[]    options = { Message.getMessage("OK"), Message.getMessage("NO")};
+    int         userInput;
+    String      s;
+    JOptionPane pane;
+    JDialog     dialog;
+    Object      obj;
+    
+    pane = new JOptionPane("Go To:",
+                           JOptionPane.QUESTION_MESSAGE,
+                           JOptionPane.YES_NO_OPTION,
+                           null,
+                           options,
+                           options[0]);
+    
+    pane.setWantsInput(true);
+    pane.setComponentOrientation(parent.getComponentOrientation());
+    dialog = pane.createDialog(parent, Message.getMessage("Question"));
+
+    dialog.show();
+    dialog.dispose();
+    
+    obj = pane.getInputValue();
+    if(obj == JOptionPane.UNINITIALIZED_VALUE) {
+      s = null;
+    } else {
+      s = (String)obj;
+    }
+    
+    try {
+      userInput = Integer.parseInt(s);
+    } catch (NumberFormatException  nfe) {
+      return current;
+    }
+    
+    return (userInput < 1)? 1 : (userInput > total)? total : userInput ;
+  }
+  
+  
+  /**
    * Displays a warning message.
    */
   public void displayWarning(String message) {

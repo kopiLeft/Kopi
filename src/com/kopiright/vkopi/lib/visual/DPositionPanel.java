@@ -19,15 +19,22 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+
+import java.text.*;
+import javax.swing.text.*;
+import javax.swing.*;
 
 /**
  * The position panel is the used to go trough the rows when fetching
@@ -81,12 +88,23 @@ public class DPositionPanel extends JPanel {
 	}
       });
     recordLeft.add(left, BorderLayout.EAST);
-
+    
     record.add(recordLeft, BorderLayout.WEST);
     
     // 'position/total' label
-    info = new JLabel();
+    info = new JButton();
     info.setText(null);
+    info.setFocusable(false);
+    info.setBorder(new EtchedBorder());
+    info.setMargin(EMPTY_INSETS);
+    info.setOpaque(false);
+    info.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+          DPositionPanel.this.listener.gotoPosition(DWindow.askPostition(DPositionPanel.this,
+                                                                         current,
+                                                                         total));
+	}
+      });
     record.add(info, BorderLayout.CENTER);
 
     // 'goto next' button
@@ -126,6 +144,8 @@ public class DPositionPanel extends JPanel {
    * inform user about nb records fetched and current one
    */
   public void setPosition(int current, int total) {
+    this.current = current;
+    this.total = total;
     if (current == -1 || total == 0) {
       if (recordVisible) {
         remove(record);
@@ -136,6 +156,7 @@ public class DPositionPanel extends JPanel {
         add(record, BorderLayout.CENTER);
         recordVisible = true;
       }
+      
       info.setText(" " + current + " / " + total + " ");
       left.setEnabled(current > 1);
       first.setEnabled(current > 1);
@@ -146,21 +167,25 @@ public class DPositionPanel extends JPanel {
     doLayout();
   }
 
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private static final Insets	EMPTY_INSETS = new Insets(0, 0, 0, 0);
+  private static final Insets   EMPTY_INSETS = new Insets(0, 0, 0, 0);
 
   private final DPositionPanelListener  listener;
+  private final JPanel                  record;
+  private final JPanel                  recordLeft;
+  private final JPanel                  recordRight;
+  private final JButton                 info;
+  private final JButton                 left;
+  private final JButton                 right;
+  private final JButton                 first;
+  private final JButton                 last;
 
-  private final JPanel		record;
-  private final JPanel		recordLeft;
-  private final JPanel		recordRight;
-  private final JLabel  	info;
-  private final JButton		left;
-  private final JButton         right;
-  private final JButton		first;
-  private final JButton         last;
-  private boolean		recordVisible;
+  private boolean       recordVisible;
+  private int           current;
+  private int           total;
+  
 }

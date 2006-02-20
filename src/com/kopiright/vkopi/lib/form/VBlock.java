@@ -804,7 +804,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
 
   /**
-   * GOTO NEXT RECORD
+   * GOTO SPECIFIED RECORD
+   * @param recno               the record number
    * @exception	VException	an exception may occur in record.leave()
    */
   public void gotoRecord(int recno) throws VException {
