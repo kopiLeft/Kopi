@@ -76,7 +76,7 @@ public class  PExport2PDF extends PExport implements Constants {
       export(file);
 
       page = document.getPageSize();
-      printJob = new PrintJob(file, true, PrintJob.FORMAT_A4);
+      printJob = new PrintJob(file, true, new Rectangle((int)page.width(), (int)page.height()));
       printJob.setDataType(PrintJob.DAT_PDF);
       printJob.setTitle(getTitle());
       printJob.setNumberOfPages(pages);
