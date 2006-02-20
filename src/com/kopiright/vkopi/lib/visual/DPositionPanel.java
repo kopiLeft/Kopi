@@ -100,13 +100,13 @@ public class DPositionPanel extends JPanel {
     info.setOpaque(false);
     info.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-          DPositionPanel.this.listener.gotoPosition(DWindow.askPostition(DPositionPanel.this,
-                                                                         current,
-                                                                         total));
-	}
-      });
+          int userInput = DWindow.askPostition(DPositionPanel.this, current, total);
+          if (userInput != current) {
+            DPositionPanel.this.listener.gotoPosition(userInput);
+          }
+        }});
     record.add(info, BorderLayout.CENTER);
-
+    
     // 'goto next' button
     right = new JButton(Utils.getImage("arrowright.gif"));
     right.setFocusable(false);
