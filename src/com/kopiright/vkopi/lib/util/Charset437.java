@@ -54,6 +54,14 @@ public class Charset437 extends Charset {
   public CharsetEncoder newEncoder() {
     return new Encoder437(this);
   }
+
+  // ----------------------------------------------------------------------
+  // INTERFACES
+  // ----------------------------------------------------------------------
+  
+  public int compareTo(Object ob) {
+    return this.compareTo((Charset)ob);
+  }
 }
 
 /**
