@@ -545,7 +545,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
 
     if (!isMulti()) {
-      // there is only one record
+      changeActiveRecord(-fetchPosition);
     } else if (noMove()) {
       throw new VExecFailedException(Message.getMessage("actionInhibited"));
     } else {
@@ -591,7 +591,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
 
     if (!isMulti()) {
-      // there is only one record
+      if (fetchPosition >= fetchCount - 1) {
+        throw new VExecFailedException(Message.getMessage("no_more_data"));
+      }
+      changeActiveRecord(fetchCount - fetchPosition - 1);
     } else if (noMove()) {
       throw new VExecFailedException(Message.getMessage("actionInhibited"));
     } else {
@@ -814,10 +817,12 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     assert this == form.getActiveBlock() :
            this.getName() + " != "
            + (form.getActiveBlock() == null ? "null" : form.getActiveBlock().getName());
-    assert isMulti() : getName() + " is not a multi block";
-    // NOW ALLOWED TO USE WITHOUT AN ACTIVE RECORD
-    // !!! remove:   assert getCurrentRecord() != -1 : "current record "+getCurrentRecord();
-//     act = activeField;
+    
+
+    if (!isMulti()) {
+      changeActiveRecord(recno - fetchPosition);
+      return;
+    }
 
     if (isRecordDeleted(recno)) {
       throw new VExecFailedException();
@@ -825,26 +830,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (recno >= getBufferSize()) {
       throw new VExecFailedException();
     }
-//     if (noMove()) {
-//       throw new VExecFailedException(Message.getMessage("actionInhibited"));
-//     }
+    
     if (noInsert() && !isRecordFetched(recno) && !isRecordChanged(recno)) {
       throw new VExecFailedException();
     }
     changeActiveRecord(recno);
-//     if (getActiveRecord() != -1) {
-//       leaveRecord(true);
-//     }
-
-//     enterRecord(recno);
-
-//     if (act != null && activeField == null) {
-//       act.enter();
-//     }
-
-//     if (activeField == null || activeField.getAccess(getActiveRecord()) < ACS_VISIT) {
-//       gotoNextField();
-//     }
   }
 
 
