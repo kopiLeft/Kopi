@@ -716,7 +716,7 @@ public class MenuTree extends DWindow {
 	break;
       case CMD_INFORMATION:
 	getDisplay().showApplicationInformation(Application.getDefaults().getInformationText()
-						+ "\nbuild: " + new NotNullTimestamp(Utils.getVersion()));
+						+ Utils.getVersion());
 	break;
       case CMD_HELP:
         //try {

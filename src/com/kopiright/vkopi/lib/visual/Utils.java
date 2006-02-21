@@ -20,8 +20,11 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import javax.swing.JPopupMenu;
 import java.net.URL;
+
 /**
  *
  */
@@ -30,22 +33,35 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   /**
    * Returns the version of this build
    */
-  public static long getVersion() {
+  public static String getVersion() {
     try {
       URL       url;
+      String    version = "";
+      FileInputStream fstream;
+      DataInputStream in;
 
       url = ClassLoader.getSystemClassLoader().getResource(APPLICATION_DIR + "/version");
-
+      
       if (url == null) {
-        return 0;
+        return DEFAULT_VERSION;
       }
+      
+      fstream = new FileInputStream(url.getFile());
+      in = new DataInputStream(fstream);
+      
+      while (in.available() !=0) {
+        version += "\n" + in.readLine();
+      }
+      in.close();
 
-      return url.openConnection().getLastModified();
+      return version;
     } catch (Exception e) {
-      return 0;
+      System.err.println("Error while reading version informations");
     }
+    
+    return DEFAULT_VERSION;
   }
-
+  
   public static Component getRoot (Component c, Class type) {
     Component   root = null;
 
@@ -192,4 +208,6 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   }
 
   private static final Insets   SCN_INSESTS = new Insets(22, 22, 22, 22);
+  private static final String   DEFAULT_VERSION = "\nNo version information available.\n" 
+    + "Copyright 1990-2006 kopiRight Managed Solutions GmbH. All rights reserved.";
 }
