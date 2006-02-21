@@ -58,6 +58,7 @@ import javax.swing.SwingUtilities;
     if (waiting != isIndeterminate()) {
       setIndeterminate(waiting);
     }
+    setVisible(waiting);
   }
 
   // ----------------------------------------------------------------------

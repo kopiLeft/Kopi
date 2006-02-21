@@ -58,10 +58,12 @@ public final class DFootPanel extends JPanel {
 
     statePanel = new DStatePanel();
     waitPanel = new DWaitPanel(parent);
+    waitPanel.setVisible(false);
+
 
     east.setLayout(new BoxLayout(east, BoxLayout.X_AXIS));
-    east.add(statePanel);
     east.add(waitPanel);
+    east.add(statePanel);
 
     add(east, BorderLayout.EAST);
   }
