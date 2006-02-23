@@ -139,9 +139,6 @@ public class MenuTree extends DWindow {
     tree.setRowHeight(-1);
     tree.setBackground(UIManager.getColor("menu.background"));
 
-    // MOVED TO MODEL
-    //    createActors();
-
     JScrollPane	sp = new JScrollPane();
 
     sp.setBorder(null);
@@ -372,12 +369,12 @@ public class MenuTree extends DWindow {
    * Builds the module tree.
    */
   private DefaultMutableTreeNode createTree(boolean loadFavorites) {
-    Module[]            	modules;
-    DefaultMutableTreeNode      tree;
+    Module[]            	localModules;
+    DefaultMutableTreeNode      localTree;
 
-    modules = loadModules(loadFavorites);
-    if (modules.length == 0) {
-      tree = null;
+    localModules = loadModules(loadFavorites);
+    if (localModules.length == 0) {
+      localTree = null;
     } else {
       Module            	root;
 
@@ -389,15 +386,15 @@ public class MenuTree extends DWindow {
 			Message.getMessage("program_help"),
 			Module.ACS_PARENT,
 			null);
-      tree = createTree(modules, root, false);
+      localTree = createTree(localModules, root, false);
     }
 
-    if (tree == null) {
+    if (localTree == null) {
       displayError(Message.getMessage("no_menu_available"));
       System.exit(0);
       throw new InconsistencyException();//never accessed
     }
-    return tree;
+    return localTree;
   }
 
   /*
@@ -440,7 +437,7 @@ public class MenuTree extends DWindow {
    */
   private List fetchModules() throws SQLException {
     Query	getModules = new Query(getModel().getDBContext().getDefaultConnection());
-    List	modules = new ArrayList();
+    List	localModules = new ArrayList();
 
     getModules.open(SELECT_MODULES);
     while (getModules.next()) {
@@ -465,12 +462,12 @@ public class MenuTree extends DWindow {
 				 getModules.getString(6),
 				 Module.ACS_PARENT,
 				 icon);
-      modules.add(module);
+      localModules.add(module);
       items.add(module);
     }
     getModules.close();
 
-    return modules;
+    return localModules;
   }
 
   private void fetchGroupRights(List modules) throws SQLException {
@@ -533,14 +530,14 @@ public class MenuTree extends DWindow {
    * Loads the accessible modules.
    */
   private Module[] loadModules(boolean loadFavorites) {
-    List	modules = new ArrayList();
+    List	localModules = new ArrayList();
 
     try {
       getModel().getDBContext().startWork();	// !!! BEGIN_SYNC
 
-      modules = fetchModules();
-      fetchGroupRights(modules);
-      fetchUserRights(modules);
+      localModules = fetchModules();
+      fetchGroupRights(localModules);
+      fetchUserRights(localModules);
       if (loadFavorites) {
 	fetchFavorites();
       }
@@ -557,7 +554,7 @@ public class MenuTree extends DWindow {
 
     if (! isSuperUser()) {
       // walk downwards because we remove elements
-      ListIterator      iterator = modules.listIterator(modules.size() - 1);
+      ListIterator      iterator = localModules.listIterator(localModules.size() - 1);
 
       while (iterator.hasPrevious()) {
         Module  module = (Module)iterator.previous();
@@ -569,7 +566,7 @@ public class MenuTree extends DWindow {
       }
     }
 
-    array = (Module[])Utils.toArray(modules, Module.class);
+    array = (Module[])Utils.toArray(localModules, Module.class);
     return array;
   }
 
@@ -687,36 +684,42 @@ public class MenuTree extends DWindow {
      * @return	true iff an action was found for the specified number
      */
     public void executeVoidTrigger(final int key) throws VException {
-      MenuTree	display = (MenuTree)getDisplay();
+      MenuTree	currentDisplay = (MenuTree)getDisplay();
 
       switch (key) {
       case CMD_QUIT:
-	display.closeWindow();
+	currentDisplay.closeWindow();
 	break;
       case CMD_OPEN:
-	display.launchSelectedForm();
+	currentDisplay.launchSelectedForm();
 	break;
       case CMD_SHOW:
-	display.toolbar.show();
-	display.toolbar.toFront();
+	currentDisplay.toolbar.show();
+	currentDisplay.toolbar.toFront();
 	break;
       case CMD_ADD:
-	display.addSelectedElement();
-	display.setMenu();
+	currentDisplay.addSelectedElement();
+	currentDisplay.setMenu();
 	break;
       case CMD_REMOVE:
-	display.removeSelectedElement();
-	display.setMenu();
+	currentDisplay.removeSelectedElement();
+	currentDisplay.setMenu();
 	break;
       case CMD_FOLD:
-	display.tree.collapseRow(display.tree.getSelectionRows()[0]);
+	currentDisplay.tree.collapseRow(currentDisplay.tree.getSelectionRows()[0]);
 	break;
       case CMD_UNFOLD:
-	display.tree.expandRow(display.tree.getSelectionRows()[0]);
+	currentDisplay.tree.expandRow(currentDisplay.tree.getSelectionRows()[0]);
 	break;
       case CMD_INFORMATION:
-	getDisplay().showApplicationInformation(Application.getDefaults().getInformationText()
-						+ Utils.getVersion());
+        {
+          String[]      versionArray = Utils.getVersion();
+          String      version = "";
+          for (int i=0; i<versionArray.length; i++) {
+            version += "\n" + versionArray[i];
+          }
+          getDisplay().showApplicationInformation(Application.getDefaults().getInformationText() + version);
+        }
 	break;
       case CMD_HELP:
         //try {

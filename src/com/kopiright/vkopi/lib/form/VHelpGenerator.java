@@ -52,6 +52,7 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
   {
     File	file = null;
     FileWriter	fileWriter;
+    String[]	version;
 
     try {
       file 		= Utils.getTempFile(name, "htm");
@@ -99,7 +100,10 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
       p.println("<BR>");
       p.println("<ADDRESS>");
       p.println("<I>kopiRight Managed Solutions GmbH</I><BR>");
-      p.println("<I>Last modification of this form: " + new Date(com.kopiright.vkopi.lib.visual.Utils.getVersion()) + "</I>");
+      version = com.kopiright.vkopi.lib.visual.Utils.getVersion();
+      for (int i=0; i<version.length; i++) {
+	p.println("<I>" + version[i] + "</I><BR>");
+      }
       p.println("</ADDRESS>");
       p.println("</BODY>");
       p.println("</HTML>");

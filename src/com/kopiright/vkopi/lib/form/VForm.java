@@ -798,20 +798,26 @@ public abstract class VForm extends VWindow implements VConstants {
   public String genHelp() {
     String              fileName;
     String              description = getName();
-    String              help = "";
-    Module              mod = Application.getMenu().getModule(this);
+    String              localHelp = "";
+    Module              mod ;
     StringBuffer        surl = new StringBuffer();;
     VField              field;
 
+    try {
+      mod = Application.getMenu().getModule(this);
+    } catch (NullPointerException npe) {
+	mod = null;
+    }
+    
     if (mod != null) {
       description = mod.getDescription();
-      help = mod.getHelp();
+      localHelp = mod.getHelp();
     }
     fileName = new VHelpGenerator().helpOnForm(getName(),
                                                commands,
                                                blocks,
                                                description,
-                                               help,
+                                               localHelp,
                                                "");
 
     try {

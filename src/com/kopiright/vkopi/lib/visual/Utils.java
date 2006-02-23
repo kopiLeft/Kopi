@@ -22,8 +22,9 @@ package com.kopiright.vkopi.lib.visual;
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-import javax.swing.JPopupMenu;
 import java.net.URL;
+import java.util.ArrayList;
+import javax.swing.JPopupMenu;
 
 /**
  *
@@ -33,12 +34,12 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   /**
    * Returns the version of this build
    */
-  public static String getVersion() {
+  public static String[] getVersion() {
     try {
-      URL       url;
-      String    version = "";
-      FileInputStream fstream;
-      DataInputStream in;
+      DataInputStream	in;
+      FileInputStream	fstream;
+      URL		url;
+      ArrayList		list = new ArrayList();
 
       url = ClassLoader.getSystemClassLoader().getResource(APPLICATION_DIR + "/version");
       
@@ -50,13 +51,13 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
       in = new DataInputStream(fstream);
       
       while (in.available() !=0) {
-        version += "\n" + in.readLine();
+        list.add(in.readLine());
       }
       in.close();
 
-      return version;
+      return (String[])list.toArray(new String[list.size()]);
     } catch (Exception e) {
-      System.err.println("Error while reading version informations");
+      System.err.println("Error while reading version informations.\n" + e);
     }
     
     return DEFAULT_VERSION;
@@ -208,6 +209,8 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   }
 
   private static final Insets   SCN_INSESTS = new Insets(22, 22, 22, 22);
-  private static final String   DEFAULT_VERSION = "\nNo version information available.\n" 
-    + "Copyright 1990-2006 kopiRight Managed Solutions GmbH. All rights reserved.";
+  private static final String[] DEFAULT_VERSION = new String[] {
+    "No version information available.",
+    "Copyright 1990-2006 kopiRight Managed Solutions GmbH. All rights reserved."
+  };
 }
