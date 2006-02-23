@@ -31,6 +31,7 @@ import javax.swing.undo.UndoManager;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
@@ -536,7 +537,11 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void executeVoidTrigger(final int VKT_Type) throws VException {
     if (VKT_Type == Constants.CMD_GOTO_SHORTCUTS) {
-      Application.getMenu().gotoShortcuts();
+      try {
+        Application.getMenu().gotoShortcuts();
+      } catch (NullPointerException npe) {
+        throw new VExecFailedException(Message.getMessage("shortcuts-not-available"));
+      }
     }
   }
 

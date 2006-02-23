@@ -49,10 +49,10 @@ public class SActor {
     this.acceleratorKey = acceleratorKey;
     this.acceleratorModifier = acceleratorModifier;
     this.help = help;
-
-    this.action = new SActorAction(menuItem, 
-                                   (iconName != null) ?  
-                                       loadImage(iconName) : 
+    
+    this.action = new SActorAction(menuItem,
+                                   (iconName != null) ?
+                                       loadImage(iconName) :
                                        null);
     if (acceleratorKey != KeyEvent.VK_UNDEFINED) {
       this.action.putValue(Action.ACCELERATOR_KEY,
@@ -110,7 +110,7 @@ public class SActor {
   }
 
   public void performAction() {
-    handler.performAction(new KopiAction(menuItem+" in "+menuName) {
+    handler.performAction(new KopiAction(menuItem + " in " + menuName) {
       public void execute() throws VException {
 	handler.executeVoidTrigger(number);
       }
@@ -159,8 +159,7 @@ public class SActor {
   // --------------------------------------------------------------------
 
   private class SActorAction extends AbstractAction {
-    SActorAction(String name,
-                 Icon icon) {
+    SActorAction(String name, Icon icon) {
       super(name, icon);
     }
 
