@@ -140,56 +140,56 @@ public class VFieldUI implements VConstants, ActionHandler {
   }
 
   private void resetCommands() {
-      for (int i = 0; i < activeCommands.size(); i++) {
-	((VCommand)activeCommands.elementAt(i)).setEnabled(false);
+    for (int i = 0; i < activeCommands.size(); i++) {
+      ((VCommand)activeCommands.elementAt(i)).setEnabled(false);
+    }
+    activeCommands.setSize(0);
+    needResetCommands = false;
+    if (model.hasFocus()) {
+      if (hasEditItem_S()) { // TRY TO REMOVE !!!!
+        VCommand      command = blockView.getFormView().cmdEditItem_S;
+
+        activeCommands.addElement(command);
+        command.setEnabled(true);
+      } else if (hasAutofill) {
+        VCommand      command = blockView.getFormView().cmdAutofill;
+        
+        activeCommands.addElement(command);
+        command.setEnabled(true);
       }
-      activeCommands.setSize(0);
-      needResetCommands = false;
-      if (model.hasFocus()) {
-	if (hasEditItem_S()) { // TRY TO REMOVE !!!!
-          VCommand      command = blockView.getFormView().cmdEditItem_S;
-
-	  activeCommands.addElement(command);
-	  command.setEnabled(true);
-	} else if (hasAutofill) {
-          VCommand      command = blockView.getFormView().cmdAutofill;
-
-	  activeCommands.addElement(command);
-	  command.setEnabled(true);
-	}
-	if (hasNewItem) {
-          VCommand      command = blockView.getFormView().cmdNewItem;
-
-          activeCommands.addElement(command);
-	  command.setEnabled(true);
-	}
-	if (hasEditItem) {
-          VCommand      command = blockView.getFormView().cmdEditItem;
-
-          activeCommands.addElement(command);
-	  command.setEnabled(true);
-	}
-        VCommand[]      commands = model.getCommand();
-
-	if (commands != null) {
-	  for (int i = 0; i < commands.length; i++) {
-	    if (commands[i].isActive(getBlock().getMode())) {
-	      activeCommands.addElement(commands[i]);
-	      commands[i].setEnabled(true);
-	    }
-	  }
-	}
+      if (hasNewItem) {
+        VCommand      command = blockView.getFormView().cmdNewItem;
+        
+        activeCommands.addElement(command);
+        command.setEnabled(true);
+      }
+      if (hasEditItem) {
+        VCommand      command = blockView.getFormView().cmdEditItem;
+        
+        activeCommands.addElement(command);
+        command.setEnabled(true);
+      }
+      VCommand[]      localCommands = model.getCommand();
+      
+      if (localCommands != null) {
+        for (int i = 0; i < localCommands.length; i++) {
+          if (localCommands[i].isActive(getBlock().getMode())) {
+            activeCommands.addElement(localCommands[i]);
+            localCommands[i].setEnabled(true);
+          }
+        }
+      }
     }
     // 20021022 laurent : do the same for increment and decrement buttons ?
     if (model.getAccess(model.getBlock().getActiveRecord()) > VConstants.ACS_SKIPPED &&
         hasAutofillCommand() &&
-	!model.getBlock().isChart() &&
+        !model.getBlock().isChart() &&
         getDisplay() != null  && getDisplay().getAutofillButton() != null)
-      {
-        getDisplay().getAutofillButton().setEnabled(autofillCommand.isActive(model.getBlock().getMode()));
-      }
+    {
+      getDisplay().getAutofillButton().setEnabled(autofillCommand.isActive(model.getBlock().getMode()));
+    }
   }
-
+  
   /**
    *
    */

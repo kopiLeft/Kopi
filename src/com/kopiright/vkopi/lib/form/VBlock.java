@@ -1320,12 +1320,12 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
   protected void fireRecordCountChanged() {
     int                 record = getRecord();
-    int                 recordCount = getRecordCount();
+    int                 localRecordCount = getRecordCount();
     Object[]            listeners = blockListener.getListenerList();
 
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]== BlockRecordListener.class) {
-        ((BlockRecordListener)listeners[i+1]).blockRecordChanged(getSortedPosition(record-1)+1, recordCount);
+        ((BlockRecordListener)listeners[i+1]).blockRecordChanged(getSortedPosition(record-1)+1, localRecordCount);
       }
     }
   }
