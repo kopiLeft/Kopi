@@ -44,10 +44,27 @@ public class VKDescriptionPosition extends VKPosition {
    * @param where		the token reference of this node
    * @param field		the master field
    */
-  public VKDescriptionPosition(TokenReference where, String field) {
+  public VKDescriptionPosition(TokenReference where, String field, int chartPos) {
     super(where);
     this.field = field;
+    this.chartPos = chartPos;
   }
+
+  /**
+   * This is a position given by x and y location
+   *
+   * @param where		the token reference of this node
+   * @param field		the master field
+   */
+  public VKDescriptionPosition(TokenReference where, String field) {
+    this(where, field, -1);
+  }
+
+
+  public void setChartPosition(int chartPos) {
+    this.chartPos = chartPos;
+  }
+
 
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
@@ -124,8 +141,8 @@ public class VKDescriptionPosition extends VKPosition {
 				    new JExpression[] {
 				      VKUtils.toExpression(ref, line),
 				      VKUtils.toExpression(ref, column),
-				      VKUtils.toExpression(ref, columnEnd)
-				    });
+				      VKUtils.toExpression(ref, columnEnd),
+                                      VKUtils.toExpression(ref, chartPos)});
   }
 
   // ----------------------------------------------------------------------
@@ -148,4 +165,5 @@ public class VKDescriptionPosition extends VKPosition {
 
   private String	field;
   private VKField	vkField;
+  private int           chartPos;
 }

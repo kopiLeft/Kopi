@@ -390,7 +390,7 @@ public class VKBlock
   /*package*/ VKPosition positionField(VKField field) {
     return new VKCoordinatePosition(field.getTokenReference(), ++displayedFields);
   }
-  /*package*/ void positionField(VKCoordinatePosition pos) {
+  /*package*/ void positionField(VKPosition pos) {
     pos.setChartPosition (++displayedFields);
   }
 

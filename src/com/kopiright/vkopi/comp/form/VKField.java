@@ -273,8 +273,7 @@ public class VKField
             || block.hasOption(BKO_NODETAIL)
             || hasOption(FDO_NOCHART)
             || block.hasOption(BKO_NOCHART))) {
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! no cast!!!!!!!!
-        block.positionField((VKCoordinatePosition)detailedPos);
+        block.positionField(detailedPos);
       }
       detailedPos.checkCode(context, block);
     } else {

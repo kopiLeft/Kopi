@@ -19,14 +19,15 @@
 
 package com.kopiright.vkopi.comp.form;
 
-import java.awt.Point;
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.comp.base.VKPhylum;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
-import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.TokenReference;
 
+import java.awt.Point;
 /**
  * A position within a block
  */
@@ -43,6 +44,15 @@ public abstract class VKPosition extends VKPhylum {
    */
   protected VKPosition(TokenReference where) {
     super(where);
+  }
+  
+  // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
+  
+  public void setChartPosition(int chartPos) {
+    // this method should not be called
+    throw new InconsistencyException("positionField(VKPosition) should not be called from here !!!");
   }
 
   // ----------------------------------------------------------------------
@@ -72,6 +82,7 @@ public abstract class VKPosition extends VKPhylum {
    */
   public abstract void checkPlace(VKContext context, VKField field, String[][] freePositions) throws PositionedError ;
 
+  
   // ----------------------------------------------------------------------
   // Position method
   // ----------------------------------------------------------------------
