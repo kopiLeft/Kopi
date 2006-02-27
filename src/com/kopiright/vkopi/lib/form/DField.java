@@ -230,11 +230,8 @@ public abstract class DField extends JPanel {
   }
 
   protected final int getAccessAt(int at) {
-    if (getModel() != null && getModel().getBlock() != null) {
-      final VBlock 	block = getModel().getBlock();
-      int               access = getModel().getAccess(model.getBlockView().getRecordFromDisplayLine(at));
-
-      return access;
+    if (getModel() != null) {
+      return getModel().getAccess(model.getBlockView().getRecordFromDisplayLine(at));
     } else {
       return VConstants.ACS_SKIPPED;
     }
@@ -245,7 +242,7 @@ public abstract class DField extends JPanel {
   }
 
   public final void fireMouseHasChanged() {
-    final int	access = getAccess();
+    final int	localAccess = getAccess();
     final int	oldState = state;
 
     state = 0;
@@ -275,7 +272,7 @@ public abstract class DField extends JPanel {
       state |= FieldStates.ROLLOVER;
     }
 
-    switch (access) {
+    switch (localAccess) {
     case VConstants.ACS_HIDDEN:
       state |= FieldStates.HIDDEN;
       break;
@@ -388,7 +385,10 @@ public abstract class DField extends JPanel {
           }
         }
 
-        if (!model.getBlock().isMulti() || model.getBlock().isDetailMode() == isInDetail()) {
+        if (!model.getBlock().isMulti() 
+            || model.getBlock().isDetailMode() == isInDetail()
+            || model.getBlock().noChart()) 
+        {
           KopiAction	action = new KopiAction("mouse1") {
               public void execute() throws VException {
                 model.transferFocus(DField.this); // use here a mouse transferfocus
