@@ -111,4 +111,13 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
     }
     return buffer.toString();
   }
+
+  /**
+   * Splits specified string into an array of strings where each element
+   * represents a single line fitting the specified width (except if a
+   * single word is longer than the specified width.
+   */
+  public static String[] splitForWidth(String source, int width) {
+    return addBreakForWidth(source, width).split("\n");
+  }
 }
