@@ -309,7 +309,7 @@ public abstract class PTextBlock extends PBlock {
   }
 
   /**
-   * Adds a text in current layout engine
+   * Adds an image in current layout engine
    */
   public void addImage(javax.swing.ImageIcon image) {
     if (newLine) {
