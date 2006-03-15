@@ -74,7 +74,7 @@ LEXINC =	$(JAVA) com.kopiright.compiler.tools.include.Main
 endif
 
 ifndef JCC
-JCC =		$(JAVA) -mx64m com.kopiright.compiler.tools.antlr.compiler.Main
+JCC =		$(JAVA) -mx128m com.kopiright.compiler.tools.antlr.compiler.Main
 endif
 
 ## ----------------------------------------------------------------------
