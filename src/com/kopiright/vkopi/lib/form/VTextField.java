@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
@@ -86,10 +87,10 @@ public class VTextField extends VStringField {
    */
   public void setObject(int r, Object v) {
     if (v instanceof byte[]) {
-      if (!ApplicationConfiguration.getConfiguration().isUnicodeDatabase()) {
-        setString(r, new String((byte[])v));
-      } else {
-        setString(r, Utils.convertUTF((byte[])v));
+      try {
+        setString(r, new String((byte[])v, ApplicationConfiguration.getConfiguration().isUnicodeDatabase() ? "UTF-8" : "ISO-8859-1"));
+      } catch (UnsupportedEncodingException e) {
+        throw new InconsistencyException(e);
       }
     } else {
       setString(r, (String)v);
@@ -140,12 +141,16 @@ public class VTextField extends VStringField {
   public Object getObjectImpl(int r) {
     String	c = (String) super.getObjectImpl(r);
 
-    if (!ApplicationConfiguration.getConfiguration().isUnicodeDatabase()) {
-      return c == null ? null : c.getBytes();
+    if (c == null) {
+      return null;
     } else {
-      return c == null ? null : Utils.convertUTF(c);
+      try {
+        return c.getBytes(ApplicationConfiguration.getConfiguration().isUnicodeDatabase() ? "UTF-8" : "ISO-8859-1");
+      } catch (UnsupportedEncodingException e) {
+        throw new InconsistencyException(e);
+      }
     }
-  }  
+  }
 
   /**
    * Returns the SQL representation of field value of given record.
