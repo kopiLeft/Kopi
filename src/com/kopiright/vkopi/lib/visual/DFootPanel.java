@@ -52,7 +52,7 @@ public final class DFootPanel extends JPanel {
     setLayout(new BorderLayout());
     setFocusable(false);
     setBorder(new KopiLookAndFeel.TopLineBorder());
-
+    
     infoPanel = new DInfoPanel();
     add(infoPanel, BorderLayout.CENTER);	// will have maximum size
 
@@ -62,6 +62,12 @@ public final class DFootPanel extends JPanel {
 
 
     east.setLayout(new BoxLayout(east, BoxLayout.X_AXIS));
+    
+    // The empty text label is used to keep showing the footpanel
+    // see bug on ticket [rt #28762]
+    emptyText = new JLabel(" ");
+    east.add(emptyText);
+
     east.add(waitPanel);
     east.add(statePanel);
 
@@ -133,8 +139,9 @@ public final class DFootPanel extends JPanel {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private DWaitPanel		waitPanel;
-  private DInfoPanel		infoPanel;
-  private DStatePanel		statePanel;
-  private String		oldMessage;
+  private DWaitPanel            waitPanel;
+  private DInfoPanel            infoPanel;
+  private DStatePanel           statePanel;
+  private JLabel                emptyText;
+  private String                oldMessage;
 }
