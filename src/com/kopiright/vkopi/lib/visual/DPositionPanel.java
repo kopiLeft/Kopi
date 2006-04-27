@@ -76,7 +76,7 @@ public class DPositionPanel extends JPanel {
 	}
       });
     recordLeft.add(first, BorderLayout.WEST);
-
+    
     // 'goto previous' button
     left = new JButton(Utils.getImage("arrowleft.gif"));
     left.setFocusable(false);
