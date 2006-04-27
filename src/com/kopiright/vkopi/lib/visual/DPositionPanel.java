@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.visual;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -93,6 +94,7 @@ public class DPositionPanel extends JPanel {
     
     // 'position/total' label
     info = new JButton();
+    info.setFont(new Font(null, Font.PLAIN, 9));
     info.setText(null);
     info.setFocusable(false);
     info.setBorder(new EtchedBorder());
