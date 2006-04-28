@@ -40,7 +40,7 @@ public abstract class PExport {
     this.parameters = new DParameters(Color.blue);
     this.firstVisibleColumn = -1;
 
-    for (int j = 0; j <  model.getAccessibleColumnCount(); j++) {
+    for (int j = 0; j < model.getAccessibleColumnCount(); j++) {
       int             visibleColumn = table.convertColumnIndexToModel(j);
       VReportColumn   column = model.getAccessibleColumn(visibleColumn);
 
@@ -57,13 +57,13 @@ public abstract class PExport {
       // same for all -> it is added to the "title"
       columnCount -= 1;
     }
-    maxLevel =  model.getTree().getLevel();
+    maxLevel = model.getTree().getLevel();
   }
 
   public void formatColumns() {
     int         index = 0;
 
-    for (int j = 0; j <  model.getAccessibleColumnCount(); j++) {
+    for (int j = 0; j < model.getAccessibleColumnCount(); j++) {
       int             visibleColumn = table.convertColumnIndexToModel(j);
       VReportColumn   column = model.getAccessibleColumn(visibleColumn);
 
@@ -81,7 +81,7 @@ public abstract class PExport {
     String[]    data = new String[columnCount];
     int         index = 0;
 
-    for (int j = 0; j <  model.getAccessibleColumnCount(); j++) {
+    for (int j = 0; j < model.getAccessibleColumnCount(); j++) {
       int             visibleColumn = table.convertColumnIndexToModel(j);
       VReportColumn   column = model.getAccessibleColumn(visibleColumn);
 
@@ -97,17 +97,38 @@ public abstract class PExport {
   }
 
   protected void exportData() {
-    VGroupRow   group =  model.getTree();
+    VGroupRow   group = model.getTree();
 
     if (!pconfig.groupFormfeed) {
       startGroup(null);
       exportHeader();
     }
+    minLevel = getMinLevel(group);
     addTree(group);
   }
 
+  /**
+   * Gets the minimal visible level
+   */
+  private int getMinLevel(VReportRow row) {
+    if (row.isVisible() || !pconfig.visibleRows) {
+      int       curr = row.getLevel();
+      
+      for (int i = 0; i < row.getChildCount(); i++) {
+        int     childMinLevel =  getMinLevel((VReportRow)row.getChildAt(i));
+        
+        if (childMinLevel < curr) {
+          curr = childMinLevel;
+        }
+      }
+      return curr;
+    } else {
+      return maxLevel;
+    }
+  }
+
   private void addTree(VReportRow row) {
-    boolean restrictedrow	= pconfig.visibleRows;
+    boolean     restrictedrow = pconfig.visibleRows;
 
     if (row.isVisible() || !restrictedrow) { 
       if (pconfig.groupFormfeed && row.getLevel() == maxLevel-1) {
@@ -121,7 +142,7 @@ public abstract class PExport {
           // the sum over all groups is not shown
           && (!pconfig.groupFormfeed || row.getLevel() != maxLevel)) {
         // show sum first
-        exportRow (row, false);
+        exportRow(row, false);
       }
 
       for (int i = 0; i < row.getChildCount(); i++) {
@@ -133,20 +154,20 @@ public abstract class PExport {
           // the sum over all groups is not shown
           && (!pconfig.groupFormfeed || row.getLevel() != maxLevel)) {
         // show sum at the end
-        exportRow (row, true);
+        exportRow(row, true);
       }
     }
   }
 
   private void exportRow (VReportRow row, boolean tail) {
-    int      index  = 0;
-    String[] newrow = new String[columnCount];
-    Object[] newrowOrig = new Object[columnCount];
-    int[]    alignments = new int[columnCount];
+    int         index  = 0;
+    String[]    newrow = new String[columnCount];
+    Object[]    newrowOrig = new Object[columnCount];
+    int[]       alignments = new int[columnCount];
 
     for (int i = 0; i < model.getAccessibleColumnCount(); i++) {
-      int             visibleColumn = table.convertColumnIndexToModel(i);
-      VReportColumn   column = model.getAccessibleColumn(visibleColumn);
+      int               visibleColumn = table.convertColumnIndexToModel(i);
+      VReportColumn     column = model.getAccessibleColumn(visibleColumn);
 
       if (!column.isFolded() && column.isVisible()
           // if we have a new page for each group, we do not use the first
@@ -163,7 +184,7 @@ public abstract class PExport {
         index += 1;
       }
     }
-
+    
     if (tail && row.getParent() != null 
         &&  ((VReportRow) row.getParent()).getFirstChild() == row 
         && row.getChildCount() == 0) {
@@ -195,7 +216,7 @@ public abstract class PExport {
         parent = (VReportRow)parent.getParent();
       }
     }
-    exportRow(row.getLevel(), newrow, newrowOrig, alignments);
+    exportRow(row.getLevel() - minLevel, newrow, newrowOrig, alignments);
   }
 
   public  void export(File file) {
@@ -245,13 +266,14 @@ public abstract class PExport {
     return parameters.getBackground(level);
   }
 
-  private MReport		model;
+  private MReport               model;
   private JTable		table;
   protected PConfig		pconfig;
   private String                title;
-
+  
   private int                   columnCount;      
   private int                   firstVisibleColumn;
   private int                   maxLevel;
+  private int                   minLevel;
   private DParameters           parameters;
 }

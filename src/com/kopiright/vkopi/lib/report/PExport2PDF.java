@@ -125,8 +125,9 @@ public class  PExport2PDF extends PExport implements Constants {
               PdfPTable       head = createHeader(); 
 
               head.setTotalWidth(page.width() - document.leftMargin() - document.rightMargin());
-              head.writeSelectedRows(0, -1, 
-                                     document.leftMargin(), 
+              head.writeSelectedRows(0,
+                                     -1,
+                                     document.leftMargin(),
                                      page.height() - document.topMargin() + head.getTotalHeight() + getPrintConfig().headermargin,
                                      writer.getDirectContent());
             } catch (Exception e) {
