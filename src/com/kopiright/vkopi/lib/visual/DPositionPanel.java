@@ -94,7 +94,7 @@ public class DPositionPanel extends JPanel {
     
     // 'position/total' label
     info = new JButton();
-    info.setFont(new Font(null, Font.PLAIN, 9));
+    info.setFont(new Font(null, Font.PLAIN, 8));
     info.setText(null);
     info.setFocusable(false);
     info.setBorder(new EtchedBorder());
