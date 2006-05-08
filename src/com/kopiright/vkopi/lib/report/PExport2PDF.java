@@ -58,11 +58,19 @@ import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.util.PrintJob;
 
 public class  PExport2PDF extends PExport implements Constants {
+
   /**
    * Constructor
    */
   public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title) {
-    super(table, model, pconfig, title);
+    this(table, model, pconfig, title, false);
+  }
+  
+  /**
+   * Constructor
+   */
+  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, boolean tonerSaveMode) {
+    super(table, model, pconfig, title, tonerSaveMode);
 
     widths = new float[getColumnCount()];
   }
@@ -175,8 +183,12 @@ public class  PExport2PDF extends PExport implements Constants {
   private PdfPTable createHeader() {
     PdfPTable       head = new PdfPTable(1);
               
-    head.addCell(createCell((currentSubtitle == null) ? getTitle() : getTitle() + "  "+ getColumnLabel(0) +" : " + currentSubtitle, 
-                            14, Color.black, Color.white, ALG_LEFT, false));
+    head.addCell(createCell((currentSubtitle == null) ? getTitle() : getTitle() + "  " + getColumnLabel(0) + " : " + currentSubtitle, 
+                            14,
+                            Color.black,
+                            Color.white,
+                            ALG_LEFT,
+                            false));
     return head;
   }
 
@@ -184,8 +196,12 @@ public class  PExport2PDF extends PExport implements Constants {
     PdfPTable       foot = new PdfPTable(2);
                 
     foot.addCell(createCell(getTitle() + " - Seite " + page +"/"+allpages, 7, Color.black, Color.white, ALG_LEFT, false));
-    foot.addCell(createCell(NotNullDate.now().format("dd.MM.yyyy") + " "+ NotNullTime.now().format("HH:mm"), 
-                            7, Color.black, Color.white, ALG_RIGHT, false));
+    foot.addCell(createCell(NotNullDate.now().format("dd.MM.yyyy") + " " + NotNullTime.now().format("HH:mm"), 
+                            7,
+                            Color.black,
+                            Color.white,
+                            ALG_RIGHT,
+                            false));
     return foot;
   }
 
@@ -220,22 +236,37 @@ public class  PExport2PDF extends PExport implements Constants {
 
   protected void exportHeader(String[] data) {
     for (int i = 0; i < data.length; i++) {
-      datatable.addCell(createCell(data[i], scale, Color.white, Color.black, ALG_CENTER, true));
+      datatable.addCell(createCell(data[i],
+                                   scale,
+                                   Color.white,
+                                   Color.black,
+                                   ALG_CENTER,
+                                   true));
     }
     datatable.setHeaderRows(1); 
   }
 
   protected void exportRow(int level, String[] strings, Object[] orig, int[] alignments) {
-    datatable.getDefaultCell().setBorderWidth(BORDER_WIDTH);
-    datatable.getDefaultCell().setBackgroundColor(Color.white);
-
     int       cell = 0;
 
+    datatable.getDefaultCell().setBorderWidth(BORDER_WIDTH);
+    datatable.getDefaultCell().setBackgroundColor(Color.white);
+    
     for (int j = 0; j < strings.length; j++) {
       if (strings[j] != null) {
-        datatable.addCell(createCell(strings[j], scale, Color.black, getBackgroundForLevel(level), alignments[j], true));
+        datatable.addCell(createCell(strings[j],
+                                     scale,
+                                     Color.black,
+                                     getBackgroundForLevel(level),
+                                     alignments[j],
+                                     true));
       } else {
-        datatable.addCell(createCell(" ", scale,  Color.black, getBackgroundForLevel(level), alignments[j], true));
+        datatable.addCell(createCell(" ",
+                                     scale,
+                                     Color.black,
+                                     getBackgroundForLevel(level),
+                                     alignments[j],
+                                     true));
       }
       cell += 1;
     }
@@ -243,7 +274,7 @@ public class  PExport2PDF extends PExport implements Constants {
 
   private PdfPCell createCell(String text, double size, Color textColor, Color background, int alignment, boolean border) {
     PdfPCell    cell;
-    Font        font = FontFactory.getFont(FontFactory.HELVETICA, (float) size, 0 , textColor);
+    Font        font = FontFactory.getFont(FontFactory.HELVETICA, (float) size, 0, tonerSaveMode()? Color.black : textColor);
 
     cell = new PdfPCell(new Paragraph(new Chunk(text, font)));
     cell.setBorderWidth(1);
@@ -267,7 +298,7 @@ public class  PExport2PDF extends PExport implements Constants {
     default:
       throw new InconsistencyException("Unkown alignment");
     }
-    cell.setBackgroundColor(background);
+    cell.setBackgroundColor(tonerSaveMode()? Color.white : background);
     if (!border) {
       cell.setBorder(0);
     }

@@ -28,14 +28,23 @@ import java.awt.Color;
 import javax.swing.JTable;
 
 public abstract class PExport {
+
   /**
    * Constructor
    */
   public PExport(JTable table, MReport model, PConfig pconfig, String title) {
+    this(table, model, pconfig, title, false);
+  }
+
+  /**
+   * Constructor
+   */
+  public PExport(JTable table, MReport model, PConfig pconfig, String title, boolean tonerSaveMode) {
     this.model = model;
     this.table = table;
     this.pconfig = pconfig;
-    this.title = title; 
+    this.title = title;
+    this.tonerSaveMode = tonerSaveMode;
 
     this.parameters = new DParameters(Color.blue);
     this.firstVisibleColumn = -1;
@@ -266,6 +275,15 @@ public abstract class PExport {
     return parameters.getBackground(level);
   }
 
+  /**
+   * checks if  we are in a toner saving mode.
+   *
+   * @return    true if we are in a toner saving mode ?
+   */
+  public boolean tonerSaveMode() {
+    return tonerSaveMode;
+  }
+
   private MReport               model;
   private JTable		table;
   protected PConfig		pconfig;
@@ -276,4 +294,5 @@ public abstract class PExport {
   private int                   maxLevel;
   private int                   minLevel;
   private DParameters           parameters;
+  private boolean               tonerSaveMode;
 }

@@ -220,7 +220,8 @@ public abstract class VReport extends VWindow
       exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
 				 model,
 				 pconfig,
-                                 pageTitle);
+                                 pageTitle,
+                                 Message.getMessage("toner_save_mode").equals("true"));
       printJob = exporter.export();
       printJob.setDocumentType(getDocumentType());
       return printJob;
