@@ -419,8 +419,7 @@ public abstract class VReport extends VWindow
     }
 
     if (idCol != -1 && (getSelectedCell().y != -1)) {
-      id = ((Integer)model.getRow(getSelectedCell().y)
-            .getValueAt(idCol)).intValue();
+      id = ((Integer)model.getRow(getSelectedCell().y).getValueAt(idCol)).intValue();
     }
     if (id == -1) {
       throw new VRuntimeException();
