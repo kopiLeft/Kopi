@@ -35,4 +35,14 @@ public class DBDeadLockException extends DBException {
   public DBDeadLockException(SQLException original) {
     super(original);
   }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   */
+  public DBDeadLockException(String query, SQLException original) {
+    super(query, original);
+  }
 }

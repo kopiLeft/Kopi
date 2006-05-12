@@ -132,13 +132,14 @@ public class TbxDriverInterface extends DriverInterface {
   /**
    * Transforms an SQLException into its corresponding kopi DBException
    *
-   * @param	from		the SQLException
-   * @return	the corresponding kopi DBException
+   * @param     query           the sql query which generated the exception
+   * @param     from            the SQLException
+   * @return    the corresponding kopi DBException
    */
-  public DBException convertException(SQLException from) {
+  public DBException convertException(String query, SQLException from) {
     switch (from.getErrorCode()) {
     case 5:	//FOREIGN_KEY_VIOLATION
-      return parseForeignKeyViolation(from);
+      return parseForeignKeyViolation(query, from);
 
     case 1:     // ABORTSIGNAL :asynchronous abort -> handle like deadlock
     case 2414:	// LM_DB_LOCKED
@@ -149,23 +150,23 @@ public class TbxDriverInterface extends DriverInterface {
     case 16002:	// LOCKS_NOT_GRANTABLE
     case 16003:	// LOCK_TIMEOUT
     case 16023:	// COMMIT_TIMEOUT
-      return new DBDeadLockException(from);
+      return new DBDeadLockException(query, from);
 
     case 9147:	// DUPLIC_IN_INDEX
-      return parseDuplicateIndex(from);
+      return parseDuplicateIndex(query, from);
 
     case 9146:	// INTEGRITY_VIOL2
-      return parseIntegrityViolation(from);
+      return parseIntegrityViolation(query, from);
 
     case 9094:	// INTEGRITY_VIOL1
     case 9148:	// NULL_ERROR
     case 9149:	// NULL_ERROR_POS
     case 9150:	// NULL_ERROR_VIEW
     case 9151:	// REL_TUP_INS
-      return new DBConstraintException(from);
+      return new DBConstraintException(query, from);
 
     default:
-      return new DBUnspecifiedException(from);
+      return new DBUnspecifiedException(query, from);
     }
   }
 
@@ -187,33 +188,33 @@ public class TbxDriverInterface extends DriverInterface {
   /**
    * Parses a foreign key violation exception
    */
-  private static DBForeignKeyException parseForeignKeyViolation(SQLException from) {
+  private static DBForeignKeyException parseForeignKeyViolation(String query, SQLException from) {
     String	mesg = from.getMessage();
     int		index1 = mesg.indexOf("'");
     int		index2 = mesg.lastIndexOf("'");
 
-    return new DBForeignKeyException(from, mesg.substring(index1 + 1, index2));
+    return new DBForeignKeyException(query, from, mesg.substring(index1 + 1, index2));
   }
 
   /**
    * Parses a transbase duplicate index exception
    */
-  private static DBDuplicateIndexException parseDuplicateIndex(SQLException from) {
+  private static DBDuplicateIndexException parseDuplicateIndex(String query, SQLException from) {
     String	mesg = from.getMessage();
     int		index = mesg.lastIndexOf("index ");
 
-    return new DBDuplicateIndexException(from, mesg.substring(index + 6, mesg.length() - 2));
+    return new DBDuplicateIndexException(query, from, mesg.substring(index + 6, mesg.length() - 2));
   }
 
   /**
    * Parses a transbase integrity violation exception
    */
-  private static DBForeignKeyException parseIntegrityViolation(SQLException from) {
+  private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
     String	mesg = from.getMessage();
     int		index1 = mesg.indexOf("'");
     int		index2 = mesg.lastIndexOf("'");
 
-    return new DBForeignKeyException(from, mesg.substring(index1 + 1, index2));
+    return new DBForeignKeyException(query, from, mesg.substring(index1 + 1, index2));
   }
 }
 

@@ -39,4 +39,14 @@ public class DBInvalidDataException extends DBException {
   public DBInvalidDataException(Exception original) {
     super(new SQLException(original.getMessage()));
   }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   */
+  public DBInvalidDataException(String query, Exception original) {
+    super(query, new SQLException(original.getMessage()));
+  }
 }

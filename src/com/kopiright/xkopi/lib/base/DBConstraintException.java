@@ -34,7 +34,18 @@ public class DBConstraintException extends DBException {
    * @param	constraintName		the violated constraint
    */
   public DBConstraintException(SQLException original) {
-    this(original, "unspecified");
+    this(null, original, "unspecified");
+  }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   * @param     constraintName          the violated constraint
+   */
+  public DBConstraintException(String query, SQLException original) {
+    this(query, original, "unspecified");
   }
 
   /**
@@ -44,7 +55,18 @@ public class DBConstraintException extends DBException {
    * @param	constraintName		the violated constraint
    */
   public DBConstraintException(SQLException original, String constraintName) {
-    super(original);
+    this(null, original, constraintName);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param	original		the original SQLException
+   * @param	constraintName		the violated constraint
+   */
+  public DBConstraintException(String query, SQLException original, String constraintName) {
+    super(query, original);
     this.constraintName = constraintName;
   }
 

@@ -31,4 +31,14 @@ public class DBCursorException extends DBRuntimeException {
   public DBCursorException(String message) {
     super(message);
   }
+
+
+  /**
+   * Constructs an exception with a message.
+   *
+   * @param     query           the sql query which generated the exception
+   */
+  public DBCursorException(String query, String message) {
+    super(message + " : " + query);
+  }
 }

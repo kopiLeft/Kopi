@@ -126,15 +126,16 @@ public class OracleDriverInterface extends DriverInterface {
   /**
    * Transforms an SQLException into its corresponding kopi DBException
    *
-   * @param	from		the SQLException
+   * @param     query   the sql query which generated the exception
+   * @param	from    the SQLException
    * @return	the corresponding kopi DBException
    */
-  public DBException convertException(SQLException from) {
+  public DBException convertException(String query, SQLException from) {
     switch (from.getErrorCode()) {
     case 60:	// ORA-00060
     case 104:	// ORA-00104
     case 4020:	// ORA-04020
-      return new DBDeadLockException(from);
+      return new DBDeadLockException(query, from);
 
     case 1:	// ORA-00001
     case 2268:	// ORA-02268
@@ -143,10 +144,10 @@ public class OracleDriverInterface extends DriverInterface {
     case 2273:	// ORA-02273
     case 2274:	// ORA-02274
     case 2275:  // ORA-02275
-      return new DBConstraintException(from);
+      return new DBConstraintException(query, from);
 
     default:
-      return new DBUnspecifiedException(from);
+      return new DBUnspecifiedException(query, from);
     }
   }
 

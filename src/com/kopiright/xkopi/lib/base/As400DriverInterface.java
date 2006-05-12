@@ -132,11 +132,12 @@ public class As400DriverInterface extends DriverInterface {
   /**
    * Transforms an SQLException into its corresponding kopi DBException
    *
-   * @param	from		the SQLException
-   * @return	the corresponding kopi DBException
+   * @param     query           the sql query which generated the exception
+   * @param     from            the SQLException
+   * @return    the corresponding kopi DBException
    */
-  public DBException convertException(SQLException from) {
-    return new DBUnspecifiedException(from);
+  public DBException convertException(String query, SQLException from) {
+    return new DBUnspecifiedException(query, from);
   }
 
   /**

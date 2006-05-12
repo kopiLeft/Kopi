@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
  *
@@ -227,11 +226,26 @@ public class Connection {
     driver.lockTable(conn, tableName);
   }
 
+
   /**
+   * Transforms an SQLException into its corresponding kopi DBException
    *
+   * @param     exc     the SQLException
+   * @return    the corresponding kopi DBException
    */
   public DBException convertException(java.sql.SQLException exc) {
     return driver.convertException(exc);
+  }
+
+  /**
+   * Transforms an SQLException into its corresponding kopi DBException
+   *
+   * @param     query   the sql query which generated the exception
+   * @param     exc     the SQLException
+   * @return    the corresponding kopi DBException
+   */
+  public DBException convertException(String query, java.sql.SQLException exc) {
+    return driver.convertException(query, exc);
   }
 
   /**

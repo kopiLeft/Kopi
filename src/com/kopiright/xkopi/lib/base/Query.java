@@ -186,7 +186,7 @@ public class Query {
 
       rset = stmt.executeQuery(conn.convertSql(text));
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " OPEN", text), exc);
     }
   }
 
@@ -200,7 +200,7 @@ public class Query {
     try {
       return rset.next();
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " FETCH", rset), exc);
     }
   }
 
@@ -214,7 +214,7 @@ public class Query {
     try {
       return rset.previous();
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " FETCH", rset), exc);
     }
   }
 
@@ -228,7 +228,7 @@ public class Query {
     try {
       return rset.isLast();
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " HAS MORE", rset), exc);
     }
   }
 
@@ -237,7 +237,8 @@ public class Query {
    */
   public int update(String format) throws DBException {
     if (! supportsCursorNames()) {
-      throw new DBRuntimeException("operation not supported by JDBC driver");
+      throw new DBRuntimeException(buildQueryForTrace("QUERY " + name + " UPDATE", rset),
+                                   "operation not supported by JDBC driver");
     }
 
     try {
@@ -258,7 +259,7 @@ public class Query {
       }
       return count;
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " UPDATE", text), exc);
     }
   }
 
@@ -267,7 +268,8 @@ public class Query {
    */
   public int delete(String format) throws DBException {
     if (! supportsCursorNames()) {
-      throw new DBRuntimeException("operation not supported by JDBC driver");
+      throw new DBRuntimeException(buildQueryForTrace("QUERY " + name + " DELETE", rset),
+                                   "operation not supported by JDBC driver");
     }
 
     try {
@@ -282,7 +284,7 @@ public class Query {
 
       return count;
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " DELETE", text), exc);
     }
   }
 
@@ -298,7 +300,7 @@ public class Query {
       rset = null;
       buildText("", "CLOSE " + name);
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " CLOSE", text), exc);
     }
   }
 
@@ -318,7 +320,7 @@ public class Query {
 	return stmt.executeUpdate(conn.convertSql(text));
       }
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(buildQueryForTrace("QUERY " + name + " RUN", text), exc);
     }
   }
 
@@ -329,7 +331,8 @@ public class Query {
   public boolean getBoolean(int pos) throws SQLException {
     boolean tmp = rset.getBoolean(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos  
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET BOOLEAN", rset));
     }
     return tmp;
   }
@@ -337,7 +340,8 @@ public class Query {
   public byte getByte(int pos) throws SQLException {
     byte tmp = rset.getByte(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET BYTE", rset));
     }
     return tmp;
   }
@@ -345,7 +349,9 @@ public class Query {
   public short getShort(int pos) throws SQLException {
     short tmp = rset.getShort(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET SHORT", rset));
+      
     }
     return tmp;
   }
@@ -353,7 +359,8 @@ public class Query {
   public int getInt(int pos) throws SQLException {
     int tmp = rset.getInt(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET SHORT", rset));
     }
     return tmp;
   }
@@ -364,7 +371,8 @@ public class Query {
     tmp = rset.getBigDecimal(pos);
 
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET FIXED", rset));
     }
     return new NotNullFixed(tmp);
   }
@@ -372,7 +380,8 @@ public class Query {
   public float getFloat(int pos) throws SQLException {
     float tmp = rset.getFloat(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET FLOAT", rset));
     }
     return tmp;
   }
@@ -380,7 +389,8 @@ public class Query {
   public double getDouble(int pos) throws SQLException {
     double tmp = rset.getDouble(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET DOUBLE", rset));
     }
     return tmp;
   }
@@ -388,7 +398,8 @@ public class Query {
   public char getChar(int pos) throws SQLException {
     String tmp = rset.getString(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET CHAR", rset));
     }
     return tmp.charAt(0);
   }
@@ -400,7 +411,8 @@ public class Query {
   public NotNullMonth getMonth(int pos) throws SQLException {
     int tmp = rset.getInt(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET MONTH", rset));
     }
     return new NotNullMonth(tmp / 100, tmp % 100);
   }
@@ -408,7 +420,8 @@ public class Query {
   public NotNullTime getTime(int pos) throws SQLException {
     java.sql.Time tmp = rset.getTime(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET TIME", rset));
     }
     return new NotNullTime(tmp);
   }
@@ -416,7 +429,8 @@ public class Query {
   public NotNullTimestamp getTimestamp(int pos) throws SQLException {
     java.sql.Timestamp tmp = rset.getTimestamp(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET TIMESTAMP", rset));
     }
     return new NotNullTimestamp(tmp);
   }
@@ -424,7 +438,8 @@ public class Query {
   public NotNullDate getDate(int pos) throws SQLException {
     java.sql.Date tmp = rset.getDate(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET DATE", rset));
     }
     return new NotNullDate(tmp);
   }
@@ -432,7 +447,8 @@ public class Query {
   public NotNullWeek getWeek(int pos) throws SQLException {
     int tmp = rset.getInt(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos);
+      throw new SQLException("null pointer exception at column " + pos
+                             + " : " + buildQueryForTrace("QUERY " + name + " GET WEEK", rset));
     }
     return new NotNullWeek(tmp / 100, tmp % 100);
   }
@@ -568,11 +584,17 @@ public class Query {
 	is.close();
 	return result;
       } catch (OptionalDataException e) {
-	throw new DBInvalidDataException(e);
+	throw new DBInvalidDataException(buildQueryForTrace("QUERY " + name + " GET SERIALIZEDOBJECT",
+                                                            rset),
+                                         e);
       } catch (ClassNotFoundException e) {
-	throw new DBInvalidDataException(e);
+	throw new DBInvalidDataException(buildQueryForTrace("QUERY " + name + " GET SERIALIZEDOBJECT",
+                                                            rset),
+                                         e);
       } catch (IOException e) {
-	throw new DBInvalidDataException(e);
+	throw new DBInvalidDataException(buildQueryForTrace("QUERY " + name + " GET SERIALIZEDOBJECT",
+                                                            rset),
+                                         e);
       } finally {
       }
     }
@@ -651,14 +673,17 @@ public class Query {
   }
 
   /**
-   *
+   * Traces the sql query
    */
   public static void traceQuery(String operation, Object detail) {
-    System.out.print(System.currentTimeMillis());
-    System.out.print(" ");
-    System.out.print(operation);
-    System.out.print(":" );
-    System.out.println(detail.toString());
+    System.out.println(buildQueryForTrace(operation, detail));
+  }
+
+  /**
+   * Build the sql query string for tracing
+   */
+  public static String buildQueryForTrace(String operation, Object detail) {
+    return System.currentTimeMillis() + " " + operation + ": " + detail.toString();
   }
 
   /*
@@ -783,31 +808,31 @@ public class Query {
    */
   private void getSql(int param, StringBuffer buffer) {
     Object	parameter = pars.get(param);
-    String	text;
+    String	localText;
 
     if (parameter == null) {
-      text = "NULL";
+      localText = "NULL";
     } else if (parameter instanceof Fixed) {
-      text = KopiUtils.toSql((Fixed)parameter);
+      localText = KopiUtils.toSql((Fixed)parameter);
     } else if (parameter instanceof Boolean) {
-      text = KopiUtils.toSql((Boolean)parameter);
+      localText = KopiUtils.toSql((Boolean)parameter);
     } else if (parameter instanceof Date) {
-      text = KopiUtils.toSql((Date)parameter);
+      localText = KopiUtils.toSql((Date)parameter);
     } else if (parameter instanceof Integer) {
-      text = KopiUtils.toSql((Integer)parameter);
+      localText = KopiUtils.toSql((Integer)parameter);
     } else if (parameter instanceof String) {
-      text = KopiUtils.toSql((String)parameter);
+      localText = KopiUtils.toSql((String)parameter);
     } else if (parameter instanceof Time) {
-      text = KopiUtils.toSql((Time)parameter);
+      localText = KopiUtils.toSql((Time)parameter);
     } else if (parameter instanceof Month) {
-      text = KopiUtils.toSql((Month)parameter);
+      localText = KopiUtils.toSql((Month)parameter);
     } else if (parameter instanceof Week) {
-      text = KopiUtils.toSql((Week)parameter);
+      localText = KopiUtils.toSql((Week)parameter);
     } else {
       throw new InconsistencyException("undefined parameter type " + parameter.getClass());
     }
 
-    buffer.append(text);
+    buffer.append(localText);
   }
 
   /**

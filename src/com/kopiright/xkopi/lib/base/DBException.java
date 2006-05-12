@@ -33,10 +33,24 @@ public abstract class DBException extends java.sql.SQLException {
    * @param	original		the original SQLException
    */
   public DBException(SQLException original) {
-    super(original.getMessage(), original.getSQLState(), original.getErrorCode());
-    this.original = original;
+    this(null, original);
   }
 
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   */
+  public DBException(String query, SQLException original) {
+    super(original.getMessage() + ((query != null) ?
+                                   "\n---- BEGAIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
+                                   : ""),
+          original.getSQLState(),
+          original.getErrorCode());
+    this.original = original;
+  }
+  
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------

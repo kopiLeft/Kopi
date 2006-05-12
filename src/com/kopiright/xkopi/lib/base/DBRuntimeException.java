@@ -39,6 +39,18 @@ public class DBRuntimeException extends RuntimeException {
   /**
    * Constructs an exception with a message.
    *
+   * @param     query           the sql query which generated the exception
+   * @param     message         the associated message
+   */
+  public DBRuntimeException(String query, String message) {
+    super(message + ((query != null) ? 
+                     "\n---- BEGAIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
+                     : ""));
+  }
+
+  /**
+   * Constructs an exception with a message.
+   *
    * @param	message		the associated message
    */
   public DBRuntimeException(SQLException exc) {
@@ -54,4 +66,16 @@ public class DBRuntimeException extends RuntimeException {
     super(message, exc);
   }
 
+  /**
+   * Constructs an exception with a message.
+   *
+   * @param     query           the sql query which generated the exception
+   * @param     message         the associated message
+   */
+  public DBRuntimeException(String query, String message, SQLException exc) {
+    super(message + ((query != null) ?
+                     "\n---- BEGAIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
+                     : ""),
+          exc);
+  }
 }

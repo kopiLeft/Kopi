@@ -29,6 +29,16 @@ public class DBUnspecifiedException extends DBException {
    * @param	original		the original SQLException
    */
   public DBUnspecifiedException(SQLException original) {
-    super(original);
+    this(null, original);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param	original		the original SQLException
+   */
+  public DBUnspecifiedException(String query, SQLException original) {
+    super(query, original);
   }
 }

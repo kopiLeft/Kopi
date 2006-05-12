@@ -138,10 +138,11 @@ public class SapdbDriverInterface extends DriverInterface {
   /**
    * Transforms an SQLException into its corresponding kopi DBException
    *
-   * @param	from		the SQLException
-   * @return	the corresponding kopi DBException
+   * @param     query           the sql query which generated the exception
+   * @param     from            the SQLException
+   * @return    the corresponding kopi DBException
    */
-  public DBException convertException(SQLException from) {
+  public DBException convertException(String query, SQLException from) {
     switch (from.getErrorCode()) {
     case -50:	// Lock request timeout1
     case -51:	// Lock request timeout2
@@ -149,21 +150,21 @@ public class SapdbDriverInterface extends DriverInterface {
     case -307:	// Connection down, session released
     case 700:	// Session inactivity timeout (work rolled back)
     case 600:   //  Work rolled back,DEADLOCK DETECTED
-      return new DBDeadLockException(from);
+      return new DBDeadLockException(query, from);
 
     case 250:	// Duplicate secondary key
     case -6008:	// Duplicate index name
     case -8018:	// Index name must be unique
-      return parseDuplicateIndex(from);
+      return parseDuplicateIndex(query, from);
 
     case -32:	// Integrity violation
-      return parseIntegrityViolation(from);
+      return parseIntegrityViolation(query, from);
 
     case -1402:	// Integrity violation2
-      return new DBConstraintException(from);
+      return new DBConstraintException(query, from);
 
     default:
-      return new DBUnspecifiedException(from);
+      return new DBUnspecifiedException(query, from);
     }
   }
 
@@ -185,22 +186,22 @@ public class SapdbDriverInterface extends DriverInterface {
   /**
    * Parses a transbase duplicate index exception
    */
-  private static DBDuplicateIndexException parseDuplicateIndex(SQLException from) {
+  private static DBDuplicateIndexException parseDuplicateIndex(String query, SQLException from) {
     String	mesg = from.getMessage();
     int		index = mesg.lastIndexOf("index ");
 
-    return new DBDuplicateIndexException(from, mesg.substring(index + 6, mesg.length() - 2));
+    return new DBDuplicateIndexException(query, from, mesg.substring(index + 6, mesg.length() - 2));
   }
 
   /**
    * Parses a transbase integrity violation exception
    */
-  private static DBForeignKeyException parseIntegrityViolation(SQLException from) {
+  private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
     String	mesg = from.getMessage();
     int		index1 = mesg.indexOf("'");
     int		index2 = mesg.lastIndexOf("'");
 
-    return new DBForeignKeyException(from, mesg.substring(index1 + 1, index2));
+    return new DBForeignKeyException(query, from, mesg.substring(index1 + 1, index2));
   }
 
   /**

@@ -31,4 +31,13 @@ public class DBNoRowException extends DBRuntimeException {
   public DBNoRowException() {
     super("No row");
   }
+
+  /**
+   * Constructs an exception with a message.
+   *
+   * @param     query           the sql query which generated the exception
+   */
+  public DBNoRowException(String query) {
+    super("No row : " + query);
+  }
 }

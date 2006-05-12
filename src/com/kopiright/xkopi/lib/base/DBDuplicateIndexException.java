@@ -32,4 +32,15 @@ public class DBDuplicateIndexException extends DBConstraintException {
   public DBDuplicateIndexException(SQLException original, String indexName) {
     super(original, indexName);
   }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   * @param     constraintName          the violated constraint
+   */
+  public DBDuplicateIndexException(String query, SQLException original, String indexName) {
+    super(query, original, indexName);
+  }
 }

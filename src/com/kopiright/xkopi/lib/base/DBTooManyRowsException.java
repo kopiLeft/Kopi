@@ -29,6 +29,15 @@ public class DBTooManyRowsException extends DBRuntimeException {
    * Constructs an exception with a message.
    */
   public DBTooManyRowsException() {
-    super("Too many rows");
+    this(null);
+  }
+
+  /**
+   * Constructs an exception with a message.
+   *
+   * @param     query           the sql query which generated the exception
+   */
+  public DBTooManyRowsException(String query) {
+    super(query, "Too many rows");
   }
 }

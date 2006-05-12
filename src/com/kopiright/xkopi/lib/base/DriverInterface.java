@@ -105,7 +105,18 @@ public abstract class DriverInterface {
    * @param	from		the SQLException
    * @return	the corresponding kopi DBException
    */
-  public abstract DBException convertException(SQLException from);
+  public DBException convertException(SQLException from) {
+    return convertException(null, from);
+  }
+
+  /**
+   * Transforms an SQLException into its corresponding kopi DBException.
+   *
+   * @param     query           the sql query which generated the exception
+   * @param     from            the SQLException
+   * @return    the corresponding kopi DBException
+   */
+  public abstract DBException convertException(String query, SQLException from);
 
   /**
    * Interrupts the current transaction. Does nothing if this operation

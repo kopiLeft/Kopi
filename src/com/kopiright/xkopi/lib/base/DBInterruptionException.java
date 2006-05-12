@@ -33,4 +33,13 @@ public class DBInterruptionException extends DBException {
   public DBInterruptionException() {
     super(new SQLException("DBInterruptionException"));
   }
+
+  /**
+   * Constructor
+   *
+   * @param     query           the sql query which generated the exception
+   */
+  public DBInterruptionException(String query) {
+    super(query, new SQLException("DBInterruptionException"));
+  }
 }

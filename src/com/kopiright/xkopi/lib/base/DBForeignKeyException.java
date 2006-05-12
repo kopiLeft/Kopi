@@ -32,4 +32,15 @@ public class DBForeignKeyException extends DBConstraintException {
   public DBForeignKeyException(SQLException original, String constraint) {
     super(original, constraint);
   }
+
+  /**
+   * Constructor
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   * @param     constraintName          the violated constraint
+   */
+  public DBForeignKeyException(String query, SQLException original, String constraint) {
+    super(query, original, constraint);
+  }
 }
