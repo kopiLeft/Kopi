@@ -23,6 +23,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -293,10 +295,16 @@ public class DReport extends DWindow implements TableCellRenderer {
   }
 
   private void buildCellRenderers() {
+    TableColumn         tableColumn;
+    HeaderRenderer      headerRenderer;
+
     cellRenderers = new CellRenderer[model.getAccessibleColumnCount()][];
 
     for (int i = 0; i < model.getAccessibleColumnCount(); i++) {
-      table.getColumnModel().getColumn(i).setCellRenderer(this);
+      headerRenderer = new HeaderRenderer();
+      tableColumn = table.getColumnModel().getColumn(i);
+      tableColumn.setCellRenderer(this);
+      tableColumn.setHeaderRenderer(headerRenderer);
       VReportColumn column = model.getAccessibleColumn(i);
       if (column instanceof VSeparatorColumn) {
 	cellRenderers[i] = new CellRenderer[] {new CellRenderer(Constants.STA_SEPARATOR)};
@@ -417,7 +425,6 @@ public class DReport extends DWindow implements TableCellRenderer {
 
     table.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
       public void mousePressed(MouseEvent e) {
-        System.out.println("DReport - getTableHeader.mousePressed(MouseEvent e): " + e.getModifiers() +  "  "+table.columnAtPoint(e.getPoint()));
 	int	mod	= e.getModifiers();
 	int	column	= table.columnAtPoint(e.getPoint());
 
@@ -450,7 +457,6 @@ public class DReport extends DWindow implements TableCellRenderer {
       }
 
       public void mouseReleased(MouseEvent e) {
-        System.out.println("DReport - getTableHeader.mouseReleased(MouseEvent e): " + e.getModifiers() +  "  "+table.columnAtPoint(e.getPoint()));
 	boolean columnOrderChanged	= false;
 
 	if (columnMove) {
@@ -525,11 +531,59 @@ public class DReport extends DWindow implements TableCellRenderer {
     }
     table.getColumnModel().getColumn(pos).setPreferredWidth(width);
 
-    //!!! graf 011005 fails with 1.3 RE-ADD !!!
-    // ((JComponent)table.getColumnModel().getColumn(pos).getHeaderRenderer()).setToolTipText(help);
+
+    ((JComponent)table.getColumnModel().getColumn(pos).getHeaderRenderer()).setToolTipText(help);
 
     return width;
   }
+
+
+  /**
+   * Work around to get tooltips on tables columns
+   * the DefaultTableCellRenderer class overwrites border setting
+   */
+  class HeaderRenderer extends DefaultTableCellRenderer {
+
+    public HeaderRenderer() {
+      setHorizontalAlignment(SwingConstants.CENTER);
+      setOpaque(true);
+      setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+    }
+
+    public void updateUI() {
+      super.updateUI();
+      setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+    }
+
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+      JTableHeader header;
+    
+      if (table == null) {
+        header = null;
+      } else {
+        header = table.getTableHeader();
+      }
+    
+      if (header != null) {
+        setEnabled(header.isEnabled());         
+        setComponentOrientation(header.getComponentOrientation());
+        setForeground(header.getForeground());
+        setBackground(header.getBackground());
+        setFont(header.getFont());
+      } else {
+        setEnabled(true);
+        setComponentOrientation(ComponentOrientation.UNKNOWN);
+        setForeground(UIManager.getColor("TableHeader.foreground"));
+        setBackground(UIManager.getColor("TableHeader.background"));
+        setFont(UIManager.getFont("TableHeader.font"));
+      }
+    
+      setValue(value);
+ 
+      return this;
+    }
+  }
+  
 
   // --------------------------------------------------------------------
   // DATA MEMBERS
