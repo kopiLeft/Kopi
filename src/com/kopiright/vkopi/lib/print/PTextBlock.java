@@ -250,6 +250,7 @@ public abstract class PTextBlock extends PBlock {
   public void setAutoBreak(boolean autoBreak) {
     this.autoBreak = autoBreak;
   }
+
   public boolean getAutoBreak() {
     return this.autoBreak;
   }
@@ -492,24 +493,24 @@ public abstract class PTextBlock extends PBlock {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private static final String	DEFAULT_FONT = "Courier";
-  private static final int	DEFAULT_STYLE = 0;
-  private static final int	DEFAULT_SIZE = 12;
-  private static final PParagraphStyle DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PParagraphStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
+  private static final String           DEFAULT_FONT = "Courier";
+  private static final int              DEFAULT_STYLE = 0;
+  private static final int              DEFAULT_SIZE = 12;
+  private static final PParagraphStyle  DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PParagraphStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
 
-  private Thread		worker;
-  private String		lastTab;
+  private Thread                worker;
+  private String                lastTab;
   private boolean               autoBreak = false;
 
-  protected Vector		engines = new Vector();
-  protected boolean		fixed;
-  protected Throwable		error;
-  protected boolean		isFilled;
-  protected boolean		pending;
-  protected boolean		isFullyPrinted;
-  protected boolean		newLine = true;
-  protected PLayoutEngine	engine;
-  protected PParagraphStyle	paragraphStyle;
-  protected float		currentHeight;
-  protected float		maxSize;
+  protected Vector              engines = new Vector();
+  protected boolean             fixed;
+  protected Throwable           error;
+  protected boolean             isFilled;
+  protected boolean             pending;
+  protected boolean             isFullyPrinted;
+  protected boolean             newLine = true;
+  protected PLayoutEngine       engine;
+  protected PParagraphStyle     paragraphStyle;
+  protected float               currentHeight;
+  protected float               maxSize;
 }
