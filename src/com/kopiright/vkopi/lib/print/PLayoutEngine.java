@@ -457,10 +457,13 @@ class PLayoutEngine {
       }
 
       if (style.getBorder() > 0) {
+        // Add 2 pixels to the box height, to prevent letters like 'g'
+        // to be in contact with the bottom border
+        float     marginedHeight = height + 2;
         cb.setLineWidth(style.getBorder());
         cb.setColorStroke(Color.black);
         if (style.getBorderMode() == PParagraphStyle.BRD_ALL) {
-          cb.rectangle(x, y-translate-height, list.getSize().getWidth(), height);
+          cb.rectangle(x, y-translate-marginedHeight, list.getSize().getWidth(), marginedHeight);
           cb.stroke();
         } else {
           if ((style.getBorderMode() & PParagraphStyle.BRD_TOP) > 0) {
@@ -469,18 +472,18 @@ class PLayoutEngine {
             cb.stroke();
           }
           if ((style.getBorderMode() & PParagraphStyle.BRD_BOTTOM) > 0) {
-            cb.moveTo(x, y-translate-height);
-            cb.lineTo(x+list.getSize().getWidth(), y-translate-height);
+            cb.moveTo(x, y-translate-marginedHeight);
+            cb.lineTo(x+list.getSize().getWidth(), y-translate-marginedHeight);
             cb.stroke();
           }
           if ((style.getBorderMode() & PParagraphStyle.BRD_LEFT) > 0) {
             cb.moveTo(x, y-translate);
-            cb.lineTo(x, y-translate-height);
+            cb.lineTo(x, y-translate-marginedHeight);
             cb.stroke();
           }
           if ((style.getBorderMode() & PParagraphStyle.BRD_RIGHT) > 0) {
             cb.moveTo(x+list.getSize().getWidth(), y-translate);
-            cb.lineTo(x+list.getSize().getWidth(), y-translate-height);
+            cb.lineTo(x+list.getSize().getWidth(), y-translate-marginedHeight);
             cb.stroke();
           }
         }
@@ -531,8 +534,8 @@ class PLayoutEngine {
   private float		lineDescend;
   private float		height;
 
-  private Vector	commands = new Vector();
-  private TranslateCommand translate;
-  private BlockPainter	blockStyle;
-  private StringBuffer  buf;
+  private Vector                commands = new Vector();
+  private TranslateCommand      translate;
+  private BlockPainter          blockStyle;
+  private StringBuffer          buf;
 }
