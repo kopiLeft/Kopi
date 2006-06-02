@@ -22,11 +22,11 @@ package com.kopiright.vkopi.lib.report;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.GregorianCalendar;
+import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Hashtable;
 
 import javax.swing.JTable;
 
@@ -43,15 +43,14 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Date;
+import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Month;
-import com.kopiright.xkopi.lib.type.Week;
-
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullTime;
+import com.kopiright.xkopi.lib.type.Week;
 
-public class  PExport2XLS extends PExport implements Constants {
+public class PExport2XLS extends PExport implements Constants {
   /**
    * Constructor
    */
@@ -152,7 +151,7 @@ public class  PExport2XLS extends PExport implements Constants {
     cellPos = 0;
     for (int j = 0; j < strings.length; j++) {
       HSSFCellStyle       cellStyle =  wb.createCellStyle();
-      HSSFCell            cell =row.createCell((short)cellPos);
+      HSSFCell            cell = row.createCell((short)cellPos);
 
       if (strings[j] != null && orig[j] != null) {
         if (datatype[j] == HSSFCell.CELL_TYPE_STRING) {
@@ -195,7 +194,9 @@ public class  PExport2XLS extends PExport implements Constants {
             // myabe reportIdenticalValue Trigger used
             // nothing
           } else {
-            throw new InconsistencyException("Beinhaltet noch nicht unterstützten Typ: datatype=" + datatype[j] +"  "+ " j= "+j+" " +orig[j].getClass() +" von " + orig[j]);
+            throw new InconsistencyException("Type not supported: datatype=" + datatype[j] 
+                                             + "  " + " j= " + j 
+                                             + " " + orig[j].getClass() + " of " + orig[j]);
           }
         }
         cell.setCellType(datatype[j]);
@@ -203,6 +204,11 @@ public class  PExport2XLS extends PExport implements Constants {
         cell.setCellType(HSSFCell.CELL_TYPE_BLANK);        
       }
 
+      // taoufik 20060602: make wrapping, the text overflows otherwise. [RT #29653]
+      // set vertical alignment to top, default was buttom
+      cellStyle.setWrapText(true);
+      cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
+      
       cellStyle.setFillForegroundColor(rowCol.getIndex());
       cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
       
@@ -237,8 +243,6 @@ public class  PExport2XLS extends PExport implements Constants {
       cellPos++;
     }
     rowNumber += 1;
-            System.out.println();
-          
   }
 
   protected void formatStringColumn(VReportColumn column, int index) {
