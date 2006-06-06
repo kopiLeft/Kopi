@@ -72,7 +72,7 @@ public class Timestamp extends Type {
    *		 0 if the two operands are equal
    */
   public int compareTo(Timestamp other) {
-    return timestamp.compareTo(other);
+    return timestamp.compareTo(other.timestamp);
   }
 
   // !!! TO BE REMOVED
