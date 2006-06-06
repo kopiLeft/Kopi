@@ -251,6 +251,8 @@ public class GVKAccess extends XExpression {
       return TYP_MONTH;
     } else if (type.equals(GStdType.TimeField)) {
       return TYP_TIME;
+    } else if (type.equals(GStdType.TimestampField)) {
+      return TYP_TIMESTAMP;
     } else if (type.equals(GStdType.WeekField)) {
       return TYP_WEEK;
     } else if (type.equals(GStdType.ColorField)) {
@@ -296,6 +298,8 @@ public class GVKAccess extends XExpression {
       return CStdType.String;
     case TYP_TIME:
       return XStdType.Time;
+    case TYP_TIMESTAMP:
+      return XStdType.Timestamp;
     case TYP_BOOLEAN:
     case TYP_BOOLEAN_CODE:
       return XStdType.Boolean;
@@ -331,6 +335,8 @@ public class GVKAccess extends XExpression {
       return CStdType.String;
     case TYP_TIME:
       return XStdType.PTime;
+    case TYP_TIMESTAMP:
+      return XStdType.PTimestamp;
     case TYP_BOOLEAN:
     case TYP_BOOLEAN_CODE:
       return CStdType.Boolean;
@@ -421,6 +427,7 @@ public class GVKAccess extends XExpression {
   private static final int TYP_FIELD		= 13;
   private static final int TYP_WEEK		= 14;
   private static final int TYP_ENUM		= 15;
+  private static final int TYP_TIMESTAMP	= 16;
 
   private static final int MOD_NULLABLE		= 0;
   private static final int MOD_FORCE		= 1;
