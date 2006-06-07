@@ -14,7 +14,7 @@
   <property name="javafiles" 
             value="Rexec.java LPrinter.java RPrinter.java EpsonLQ.java Filter.java FPrinter.java 
                    FileWriter.java DBUtils.java PreviewPrinter.java GroupHandler.java 
-                   LabelPrinter.java Message.java Utils.java MultiLineToolTip.java 
+                   LabelPrinter.java PropertyManager.java Message.java Utils.java MultiLineToolTip.java 
                    MultiLineToolTipUI.java PixelConsumer.java AWTToPS.java 
                    LpRPrinter.java CachePrinter.java AbstractPrinter.java Printer.java 
                    To437.java ToLatin1.java FaxException.java 

@@ -13,6 +13,7 @@
 
 	<property environment="env" />
 	<property name="classroot" value="${env.CLASSROOT}" />
+	<property name="extdirs" value="${env.EXTDIRS}" />
 
 	<property name="jflexskeleton" value="${classroot}/com/kopiright/compiler/skeleton.shared" />
 
@@ -21,11 +22,15 @@
 	</path>
 
 	<presetdef name="java.def">
-		<java classpath="classpath" fork="yes" />
+		<java classpath="classpath" fork="yes">
+			<jvmarg line="-Djava.ext.dirs=${extdirs}" />
+		</java>
 	</presetdef>
 
 	<presetdef name="javac.def">
-		<javac srcdir="${src}" destdir="${classroot}" classpathref="classpath" includes="${javafiles}" compiler="jikes" source="1.4" includeAntRuntime="no" />
+		<javac srcdir="${src}" destdir="${classroot}" classpathref="classpath" includes="${javafiles}" compiler="jikes" source="1.4" includeAntRuntime="no" extdirs="${extdirs}">
+			<compilerarg line="+E +P" />
+		</javac>
 	</presetdef>
 
 	<presetdef name="tok.def">
