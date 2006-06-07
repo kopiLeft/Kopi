@@ -40,7 +40,8 @@
                    VStringField.java VTextColumn.java VTextField.java 
                    VTimeColumn.java VTimeField.java VWeekColumn.java 
                    VTimestampColumn.java VTimestampField.java 
-                   VWeekField.java KopiLayoutManager.java FieldListener.java 
+                   VWeekField.java KopiLayoutManager.java
+                   FieldListener.java FieldChangeListener.java
                    BlockListener.java ViewBlockAlignment.java FormListener.java 
                    PredefinedValueHandler.java GUIPredefinedValueHandler.java 
                    KeyNavigator.java Environment.java Accessor.java ModelTransformer.java" />

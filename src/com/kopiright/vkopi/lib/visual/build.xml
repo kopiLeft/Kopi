@@ -17,10 +17,10 @@
                    ApplicationDefaultsProperties.java 
                    Constants.java DFootPanel.java DInfoPanel.java 
                    DMenuBar.java DMenuItem.java DObject.java DPreferences.java DStatePanel.java 
-                   DWaitPanel.java DWindow.java 
+                   DWaitPanel.java DWindow.java ProgressWindow.java
                    FileChooser.java DHelpViewer.java VHelpViewer.java 
                    KopiAction.java KopiExecutable.java 
-                   MenuItemRenderer.java MenuTree.java 
+                   MenuItemRenderer.java MenuTree.java WaitDialogListener.java
                    Module.java SActor.java SDefaultActor.java VActionListener.java 
                    SplashScreen.java Utils.java VCommand.java VException.java 
                    VExecFailedException.java VHelpGenerator.java 
@@ -28,7 +28,9 @@
                    VTrigger.java VWindow.java DPositionPanel.java DPositionPanelListener.java 
                    VDatabaseUtils.java WindowController.java SwingThreadHandler.java 
                    UIBuilder.java WaitInfoListener.java MessageListener.java 
-                   VerifyConfiguration.java ModelCloseListener.java 
+                   VerifyConfiguration.java ApplicationConfiguration.java
+                   PrinterManager.java PropertyException.java ModelCloseListener.java 
+		   UserConfiguration.java
                    ApplicationOptions.java" />
 
   <property name="options" value="ApplicationOptions" />

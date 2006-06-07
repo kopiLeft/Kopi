@@ -38,6 +38,7 @@
                    PostgresDbiChecker.java
                    ReferentialConstraintDefinition.java SapdbDbiChecker.java
                    SCompilationUnit.java ScriptHeadStatement.java
+                   SequenceDefinition.java DropSequenceStatement.java
                    ShortType.java SpoolFileStatement.java
                    SpoolTableStatement.java StringType.java TransbaseDbiChecker.java
                    TableConstraint.java TableDefinition.java

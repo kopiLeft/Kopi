@@ -21,7 +21,7 @@
                    PrintInformation.java PrintException.java MailPrinter.java FaxPrinter.java 
                    Fax.java FaxStatus.java PPaperType.java UnixFileWriter.java 
                    EltronEPL2.java Laserjet.java IPPPrinter.java KnownBugs.java 
-                   Charset437.java PrintJob.java HylaFAXPrinter.java HylaFAXUtils.java" />
+                   Charset437.java PrintJob.java HylaFAXPrinter.java HylaFAXUtils.java LineBreaker.java" />
 
   <property name="properties" 
             value="vlib_messages_en.properties vlib_messages_fr.properties 

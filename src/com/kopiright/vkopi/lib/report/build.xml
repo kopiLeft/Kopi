@@ -13,15 +13,16 @@
   <property name="src" value="." />
   <property name="javafiles" 
             value="CellRenderer.java Constants.java DColumnStyle.java 
-                   DParameters.java DReport.java MReport.java PConfig.java PGenPS.java 
-                   PGenExcelFile.java Triggers.java VBaseRow.java VBooleanCodeColumn.java 
+                   DParameters.java DReport.java MReport.java PConfig.java
+                   Triggers.java VBaseRow.java VBooleanCodeColumn.java 
                    VBooleanColumn.java VCCDepthFirstCircuitN.java 
                    VCalculateColumn.java VCellFormat.java VCodeColumn.java 
                    VDateColumn.java VFixedCodeColumn.java VFixedColumn.java 
                    VGroupRow.java VIntegerCodeColumn.java VIntegerColumn.java 
                    VMonthColumn.java VReport.java VReportColumn.java VReportRow.java 
                    VStringColumn.java VTimeColumn.java VTimestampColumn.java VWeekColumn.java 
-                   VNoRowException.java VSeparatorColumn.java RDataExtractor.java" />
+                   VNoRowException.java VSeparatorColumn.java VHelpGenerator.java
+                   PExport.java PExport2XLS.java PExport2PDF.java PExport2CSV.java" />
 
 
   <import file="${topdir}/defs.xml" />

@@ -56,7 +56,7 @@
                    XDatabaseColumn.java XDatabaseMember.java XDatabaseTable.java 
                    XKjcEnvironment.java XProtectedExceptionHandler.java XTypeFactory.java 
                    XKjcTypeFactory.java XNewArrayExpression.java XGotoStatement.java 
-                   XParseSqlExpression.java 
+                   XParseSqlExpression.java XExecInsertExpression.java
                    XKjcMessages.java XKjcOptions.java  
                    XSqlcMessages.java" />
 
