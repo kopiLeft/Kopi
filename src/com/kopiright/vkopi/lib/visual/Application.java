@@ -103,6 +103,13 @@ public abstract class Application extends java.applet.Applet implements MessageL
   }
 
   /**
+   * get the database url
+   */
+  public static String getURL() {
+    return instance.context.getDefaultConnection().getURL();
+  }
+
+  /**
    *
    */
   public static boolean isStarted() {
@@ -297,8 +304,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
         exitWithError(1);
       }
     } else {
+      String url = getURL();
+      
       menuTree = new MenuTree(context);
-      menuTree.setTitle("[" + getUserName() + "]");
+      menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
     }
     removeSplashScreen();
   }

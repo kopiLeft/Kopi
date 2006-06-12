@@ -581,7 +581,7 @@ public class MenuTree extends DWindow {
    * Sets the title of the frame
    */
   public void setTitle(String s) {
-    super.setTitle(Message.getMessage("program_menu") + " " + s);
+    super.setTitle(s + " - " + Message.getMessage("program_menu"));
   }
 
   private void callSelectedForm() {
