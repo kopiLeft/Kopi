@@ -182,8 +182,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
     verifyConfiguration();
 
     if (! connectToDatabase()) {
-      removeSplashScreen();
-      System.exit(1);
+      exitWithError(1);
       return false;
     }
 
@@ -198,7 +197,6 @@ public abstract class Application extends java.applet.Applet implements MessageL
 
     startApplication();
 
-    removeSplashScreen();
 
     isStarted = true;
 
@@ -288,20 +286,21 @@ public abstract class Application extends java.applet.Applet implements MessageL
         if (module instanceof VWindow) {
           ((VWindow) module).addModelCloseListener(new ModelCloseListener() {
               public void modelClosed(int type) {
-                System.exit(type);
+                exitWithError(type);
               }
             });
         } else {
-          System.exit(1);
+          exitWithError(1);
         }
       } catch (VException e) {
 	e.printStackTrace();
-        System.exit(1);
+        exitWithError(1);
       }
     } else {
       menuTree = new MenuTree(context);
       menuTree.setTitle("[" + getUserName() + "]");
     }
+    removeSplashScreen();
   }
 
   /**
@@ -326,6 +325,17 @@ public abstract class Application extends java.applet.Applet implements MessageL
       splash = null;
     }
   }
+
+  /**
+   * Exits on error
+   *
+   * @param     code    code of the error
+   */
+  private void exitWithError(int code) {
+    removeSplashScreen();
+    System.exit(code);
+  }
+
 
   // ---------------------------------------------------------------------
   // SEND A BUG REPORT
