@@ -246,8 +246,8 @@ public class JQualifiedAnonymousCreation extends JExpression {
 
     constructor = cstr.getMethod();
     /* JLS 15.9.1 It is a compile-time error if Identifier is 
-       not the simple name (ง6.2) of an accessible (ง6.6) non-abstract 
-       inner class (ง8.1.2) */
+       not the simple name (ยง6.2) of an accessible (ยง6.6) non-abstract 
+       inner class (ยง8.1.2) */
     check(context,
           constructor.getOwner().getSuperClass().isNested() 
           && !constructor.getOwner().getSuperClass().isStatic() 

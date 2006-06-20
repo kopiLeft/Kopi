@@ -111,7 +111,7 @@ public class JThisExpression extends JExpression {
     // that C is the nth lexically enclosing class of the class in which 
     // the qualified this expression appears. The value of an expression 
     // of the form ClassName.this is the nth lexically enclosing instance 
-    // of this (ง8.1.2). The type of the expression is C. It is a 
+    // of this (ยง8.1.2). The type of the expression is C. It is a 
     // compile-time error if the current class is not an inner class of 
     // class C or C itself.
 

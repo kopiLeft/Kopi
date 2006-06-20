@@ -106,7 +106,7 @@ public class JUnqualifiedAnonymousCreation extends JExpression {
     /*
      * JLS 15.9.2: 
      * If the class instance creation expression occurs 
-     * in a static context (ง8.1.2), then i has no immediately enclosing 
+     * in a static context (ยง8.1.2), then i has no immediately enclosing 
      * instance. Otherwise, the immediately enclosing instance of i is this.
      */
     decl.generateInterface(context.getClassReader(), 

@@ -383,7 +383,7 @@ public class JMethodCallExpression extends JExpression {
           // JLS 15.12.1 
           // If it is a simple name, that is, just an Identifier, then the name
           // of the method is the Identifier. If the Identifier appears within 
-          // the scope (ง6.3) of a visible method declaration with that name, 
+          // the scope (ยง6.3) of a visible method declaration with that name, 
           // then there must be an enclosing type declaration of which that 
           //  method is a member. Let T be the innermost such type 
           //  declaration. The class or interface to search is T. 

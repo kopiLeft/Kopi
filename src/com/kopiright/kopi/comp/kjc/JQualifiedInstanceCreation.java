@@ -153,8 +153,8 @@ public class JQualifiedInstanceCreation extends JExpression {
     // check access
     local = context.getClassContext().getCClass();
     /* JLS 15.9.1 It is a compile-time error if Identifier is 
-       not the simple name (ง6.2) of an accessible (ง6.6) non-abstract 
-       inner class (ง8.1.2) */
+       not the simple name (ยง6.2) of an accessible (ยง6.6) non-abstract 
+       inner class (ยง8.1.2) */
     check(context, constructor.isAccessible(local), KjcMessages.CONSTRUCTOR_NOACCESS, type);
     // JLS 6.6.2.2  Qualified Access to a protected constructor
     // very special case for protected constructors

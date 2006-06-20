@@ -684,15 +684,15 @@ public class JClassDeclaration extends JTypeDeclaration {
 
     if (owner.isPublic()) {
       /* JLS 8.8.7 : If the class is declared public, then the default constructor 
-         is implicitly given the access modifier public (ง6.6); */
+         is implicitly given the access modifier public (ยง6.6); */
       modifier = ACC_PUBLIC;
     } else if (owner.isProtected()) {
       /* JLS 8.8.7 : If the class is declared protected, then the default 
-         constructor is implicitly given the access modifier protected (ง6.6); */
+         constructor is implicitly given the access modifier protected (ยง6.6); */
       modifier = ACC_PROTECTED;
     } else if (owner.isPrivate()) {
       /* JLS 8.8.7 : If the class is declared private, then the default constructor is 
-         implicitly given the access modifier private (ง6.6);*/
+         implicitly given the access modifier private (ยง6.6);*/
       modifier = ACC_PRIVATE;
     } else {
       /* JLS 8.8.7 : otherwise, the default constructor has the default 

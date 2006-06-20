@@ -340,8 +340,8 @@ public class Fax {
     // Datei name zurueck. Diese Datei muss sich innerhalb des
     // recvq Verzeichnisses des Servers befinden
 
-    String      pstr;   // String für port
-    byte[]      iaddr;  // byte-array für Internetadresse
+    String      pstr;   // String fÃ¼r port
+    byte[]      iaddr;  // byte-array fÃ¼r Internetadresse
     RecvServ    recsrv; // server-thread-object
 
     // Thread erzeugen
@@ -393,8 +393,8 @@ public class Fax {
    * Verzeichnisses als String zurueck.
    */
   public String infoS(String what) throws PROTOException, IOException {
-    String      pstr;   // String für port
-    byte[]      iaddr;  // byte-array für Internetadresse
+    String      pstr;   // String fÃ¼r port
+    byte[]      iaddr;  // byte-array fÃ¼r Internetadresse
     RecvServ    recsrv; // server-thread-object
 
     // Thread erzeugen
@@ -596,7 +596,7 @@ public class Fax {
      *   in Ordnung ist
      * - erzeugt ein Ausnahmeobjekt vom Typ PROTOException
      *   wenn ein fataler Fehler auftrat
-     * - gibt 0 zurück, wenn str kein Reply-Code ist
+     * - gibt 0 zurÃ¼ck, wenn str kein Reply-Code ist
      */
 
     String              delim;

@@ -104,7 +104,7 @@ public class CCompilationUnit {
 	    CClass	lastClass = (CClass)loadedClasses.get(name);
 
             // 7.5.2 Type-Import-on-Demand Declaration
-            // A type-import-on-demand declaration allows all accessible (ง6.6) types 
+            // A type-import-on-demand declaration allows all accessible (ยง6.6) types 
             // declared in the type or package named by a canonical name to be imported 
             // as needed
             if (lastClass!= null && !lastClass.isAccessible(caller)) {

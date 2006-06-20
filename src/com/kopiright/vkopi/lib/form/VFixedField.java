@@ -272,10 +272,10 @@ public class VFixedField extends VField {
         }
 
         if (minval != null && v.compareTo(minval) == -1) {
-          // !!! fixed.underflow "Warnung: Wert auﬂerhalb des erlaubten Bereichs."
+          // !!! fixed.underflow "Warnung: Wert au√üerhalb des erlaubten Bereichs."
           v = minval;
         } else if (maxval != null && v.compareTo(maxval) == 1) {
-          // !!! fixed overflow "Warnung: Wert auﬂerhalb des erlaubten Bereichs."
+          // !!! fixed overflow "Warnung: Wert au√üerhalb des erlaubten Bereichs."
           v = maxval;
         }
       }

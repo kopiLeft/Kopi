@@ -495,7 +495,7 @@ public abstract class CClass extends CMember {
       if (superClassType.getCClass() == from) {
         return true;
       } 
-      // C directly depends on an interface I that depends (ง9.1.2) on T. 
+      // C directly depends on an interface I that depends (ยง9.1.2) on T. 
       if (superClassType.getCClass().dependsOn(from)) {
         return true;
       }

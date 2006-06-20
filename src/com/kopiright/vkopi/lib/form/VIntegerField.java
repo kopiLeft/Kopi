@@ -166,10 +166,10 @@ public class VIntegerField extends VField {
         value[r] = null;
       } else {
         if (v.intValue() < minval) {
-          // !!! int.underflow "Warnung: Wert auﬂerhalb des erlaubten Bereichs."
+          // !!! int.underflow "Warnung: Wert au√üerhalb des erlaubten Bereichs."
           v = new Integer(minval);
         } else if (v.intValue() > maxval) {
-          // !!! int overflow "Warnung: Wert auﬂerhalb des erlaubten Bereichs."
+          // !!! int overflow "Warnung: Wert au√üerhalb des erlaubten Bereichs."
           v = new Integer(maxval);
         }
         value[r] = v;

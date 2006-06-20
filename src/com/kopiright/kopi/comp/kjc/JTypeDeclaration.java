@@ -331,7 +331,7 @@ public abstract class JTypeDeclaration extends JMemberDeclaration {
 
   // checks that only "simple" characters are used
   // this name will be part of the filename.
-  // If there are "ö, ä, ... in it, the classloader
+  // If there are "Ã¶, Ã¤, ... in it, the classloader
   // may not be able to load it.
   private void verifyName(CContext context, String name) {
     for (int i = 0; i < name.length(); i++) {

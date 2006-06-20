@@ -46,7 +46,7 @@ JAVA =		java -Djava.ext.dirs=$(EXTDIRS)
 endif
 
 ifndef JAVAC
-JAVAC =		jikes +E +P -source 1.4 -extdirs $(EXTDIRS)
+JAVAC =		jikes +E +P -source 1.4 -extdirs $(EXTDIRS) -encoding utf-8
 endif
 
 ifndef TOKDEF

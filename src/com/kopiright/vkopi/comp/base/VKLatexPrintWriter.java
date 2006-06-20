@@ -77,25 +77,25 @@ public class VKLatexPrintWriter extends PrintWriter {
       case '#':
 	dest.append("\\#");
 	break;
-      case 'ü':
+      case 'Ã¼':
 	dest.append("\\\"{u}");
 	break;
-      case 'ä':
+      case 'Ã¤':
 	dest.append("\\\"{a}");
 	break;
-      case 'ö':
+      case 'Ã¶':
 	dest.append("\\\"{o}");
 	break;
-      case 'Ä':
+      case 'Ã„':
 	dest.append("\\\"{A}");
 	break;
-      case 'Ö':
+      case 'Ã–':
 	dest.append("\\\"{O}");
 	break;
-      case 'Ü':
+      case 'Ãœ':
 	dest.append("\\\"{U}");
 	break;
-      case 'ß':
+      case 'ÃŸ':
 	dest.append("{\\ss}");
 	break;
       default:
