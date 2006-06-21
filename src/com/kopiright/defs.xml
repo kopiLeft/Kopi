@@ -29,7 +29,7 @@
 
 	<presetdef name="javac.def">
 		<javac srcdir="${src}" destdir="${classroot}" classpathref="classpath" includes="${javafiles}" compiler="jikes" source="1.4" includeAntRuntime="no" extdirs="${extdirs}">
-			<compilerarg line="+E +P" />
+			<compilerarg line="+E +P -encoding utf-8" />
 		</javac>
 	</presetdef>
 
