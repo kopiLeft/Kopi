@@ -59,7 +59,7 @@ public class Charset437 extends Charset implements java.lang.Comparable {
   // INTERFACES
   // ----------------------------------------------------------------------
   
-  // taoufik 20060220: uncomment this if you are compiling with 1.5 libraries
+  // taoufik 20060220: uncomment this if you are compiling with jikes using a 1.5 JVM
   //   public int compareTo(Object ob) {
   //     return this.compareTo((Charset)ob);
   //   }
