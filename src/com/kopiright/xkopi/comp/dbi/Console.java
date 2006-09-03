@@ -542,6 +542,8 @@ public class Console extends Compiler implements Constants {
         return new TbxDataSource();
       } else if (name.equals("pg")) {
         return new PostgresDataSource();
+      } else if (name.equals("ora")) {
+        return new OracleDataSource();
       } else {
         throw new IllegalArgumentException("No data source corresponding to " + name);
       }
@@ -620,9 +622,9 @@ public class Console extends Compiler implements Constants {
   }
 
   private abstract static class KConnectDataSource extends DbiDataSource {
-    KConnectDataSource(String database, String syntax) {
+    KConnectDataSource(String dbms, String syntax) {
       super("com.kopiright.kconnect.Driver",
-            "jdbc:kconnect:" + database + ":",
+            "jdbc:kconnect:" + dbms + ":",
             syntax);
     }
   }
@@ -630,6 +632,12 @@ public class Console extends Compiler implements Constants {
   private static final class TbxDataSource extends KConnectDataSource {
     TbxDataSource() {
       super("tb", "tbx");
+    }
+  }
+
+  private static final class OracleDataSource extends KConnectDataSource {
+    OracleDataSource() {
+      super("ora", "ora");
     }
   }
 

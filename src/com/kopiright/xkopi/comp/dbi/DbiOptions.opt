@@ -48,7 +48,7 @@ longname		"syntax"
 	type		String
 	default		"jdbc"
 	requireArgument
-	help		"Sets the syntax to use for output (jdbc | tbx | sap | pg)"
+	help		"Sets the syntax to use for output (jdbc | tbx | sap | pg | ora)"
 
 longname		"beautify"
 	shortcut	"b"

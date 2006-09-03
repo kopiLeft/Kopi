@@ -21,7 +21,7 @@ prefix Console
 
 parent com.kopiright.util.base.Options
 
-usage		"usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource (tbx | sap | pg) --host <host> --dbname <dbname> --login <login> --password <password> <dbi-files>"
+usage		"usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource (tbx | sap | pg | ora) --host <host> --dbname <dbname> --login <login> --password <password> <dbi-files>"
 
 package com.kopiright.xkopi.comp.dbi
 
@@ -30,7 +30,7 @@ longname		"datasource"
 	type		String
 	default		"tbx"
 	requireArgument
-	help		"Sets the source to connect to (tbx | sap | pg)"
+	help		"Sets the source to connect to (tbx | sap | pg | ora)"
 
 longname		"host"
 	shortcut	"H"
