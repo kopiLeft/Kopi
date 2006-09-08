@@ -66,7 +66,7 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
       p.println("<META NAME=\"keywords\" CONTENT=\"" + name + "\">");
       p.println("<META NAME=\"resource-type\" CONTENT=\"document\">");
       p.println("<META NAME=\"distribution\" CONTENT=\"global\">");
-      p.println("<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=iso-8859-1\">");
+      p.println("<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">");
       p.println("</HEAD>");
       p.println("<BODY BGCOLOR=#FFFFFF>");
       p.println("<CENTER><H1>" + title + "</H1></CENTER>");
