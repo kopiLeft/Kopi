@@ -29,6 +29,8 @@ import java.sql.Blob;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.list.VListColumn;
+import com.kopiright.vkopi.lib.list.VImageColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;

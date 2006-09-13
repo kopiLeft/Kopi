@@ -17,16 +17,11 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-import java.awt.Color;
+import javax.swing.ImageIcon;
 
-/**
- * laurent :<br>
- * NOTICE : This class was copied from VImageColumn and was not test 
- */
-
-public class VColorColumn extends VListColumn {
+public class VImageColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -35,7 +30,14 @@ public class VColorColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VColorColumn(String title, String column, boolean sortAscending) {
+  public VImageColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 7, sortAscending);
+  }
+
+  /**
+   * Returns a string representation of value
+   */
+  public Object formatObject(Object value) {
+    return value == null ? VConstants.EMPTY_TEXT : (Object)new ImageIcon((byte[])value);
   }
 }

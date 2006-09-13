@@ -17,11 +17,9 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-import com.kopiright.util.base.InconsistencyException;
-
-public class VEnumColumn extends VCodeColumn {
+public class VTimestampColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -30,20 +28,7 @@ public class VEnumColumn extends VCodeColumn {
   /**
    * Constructs a list column.
    */
-  public VEnumColumn(String title, String column, String[] names, boolean sortAscending) {
-    super(title, column, names, sortAscending);
-  }
-
-  /*
-   * Returns the index.of given object
-   */
-  protected int getObjectIndex(Object value) {
-    for (int i = 0; i < names.length; i++) {
-      if ((value).equals(names[i])) {
-	return i;
-      }
-    }
-
-    throw new InconsistencyException("bad code value " + value);
+  public VTimestampColumn(String title, String column, boolean sortAscending) {
+    super(title, column, ALG_LEFT, 5, sortAscending);
   }
 }

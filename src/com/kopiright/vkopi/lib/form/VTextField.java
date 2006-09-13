@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+import com.kopiright.vkopi.lib.list.VListColumn;
+import com.kopiright.vkopi.lib.list.VTextColumn;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.vkopi.lib.util.Utils;

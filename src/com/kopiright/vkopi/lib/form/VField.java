@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.list.VColumn;
+import com.kopiright.vkopi.lib.list.VList;
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Module;

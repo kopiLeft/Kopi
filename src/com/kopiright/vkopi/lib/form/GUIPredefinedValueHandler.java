@@ -24,8 +24,8 @@ import java.io.FileInputStream;
 import java.awt.Color;
 import javax.swing.JColorChooser;
 
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.form.VListColumn;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.type.Date;

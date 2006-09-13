@@ -17,9 +17,11 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-public class VMonthColumn extends VListColumn {
+import com.kopiright.vkopi.lib.util.Message;
+
+public class VTextColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -28,7 +30,14 @@ public class VMonthColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VMonthColumn(String title, String column, boolean sortAscending) {
-    super(title, column, ALG_LEFT, 7, sortAscending);
+  public VTextColumn(String title, String column, int align, int width, boolean sortAscending) {
+    super(title, column, align, Message.getMessage("text-type").length(), sortAscending);
+  }
+
+  /**
+   * Returns a string representation of value
+   */
+  public Object formatObject(Object value) {
+    return value == null ? VConstants.EMPTY_TEXT : Message.getMessage("text-type");
   }
 }

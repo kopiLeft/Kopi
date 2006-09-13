@@ -17,12 +17,9 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.lib.type.Fixed;
-
-public class VFixedCodeColumn extends VCodeColumn {
+public class VStringColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -31,27 +28,26 @@ public class VFixedCodeColumn extends VCodeColumn {
   /**
    * Constructs a list column.
    */
-  public VFixedCodeColumn(String title, String column, String[] names, Fixed[] codes, boolean sortAscending) {
-    super(title, column, names, sortAscending);
-    this.codes = codes;
+  public VStringColumn(String title, String column, int align, int width, boolean sortAscending) {
+    super(title, column, align, width, sortAscending);
   }
 
-  /*
-   * Returns the index.of given object
+  /**
+   * Returns a string representation of value
    */
-  protected int getObjectIndex(Object value) {
-    for (int i = 0; i < codes.length; i++) {
-      if (value.equals(codes[i])) {
-	return i;
-      }
+  public Object formatObject(Object value) {
+    if (value == null) {
+      return VConstants.EMPTY_TEXT;
     }
 
-    throw new InconsistencyException("bad code value " + ((Fixed)value));
+    String	str = (String)value;
+    int		strLength = str.length();
+    int		width = getWidth();
+
+    if (strLength > width) {
+      str = str.substring(0, width) + "..." + str.substring(width);
+    }
+
+    return str;
   }
-
-  // --------------------------------------------------------------------
-  // DATA MEMBERS
-  // --------------------------------------------------------------------
-
-  private final Fixed[]	codes;
 }

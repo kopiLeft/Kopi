@@ -26,6 +26,8 @@ import java.sql.SQLException;
 import javax.swing.JColorChooser;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.list.VColorColumn;
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.Query;
@@ -84,7 +86,7 @@ public class VColorField extends VField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VImageColumn(getHeader(), null, getPriority() >= 0);
+    return new VColorColumn(getHeader(), null, getPriority() >= 0);
   }
 
   /**

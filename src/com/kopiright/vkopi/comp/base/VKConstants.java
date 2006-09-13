@@ -60,8 +60,8 @@ public interface VKConstants {
   String VKO_FIELD			= com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/');
 
   String VKO_VDICTIONARYFORM		= com.kopiright.vkopi.lib.form.VDictionaryForm.class.getName().replace('.','/');
-  String VKO_VLISTCOLUMN		= com.kopiright.vkopi.lib.form.VListColumn.class.getName().replace('.','/');
-  String VKO_VLIST			= com.kopiright.vkopi.lib.form.VList.class.getName().replace('.','/');
+  String VKO_VLISTCOLUMN		= com.kopiright.vkopi.lib.list.VListColumn.class.getName().replace('.','/');
+  String VKO_VLIST			= com.kopiright.vkopi.lib.list.VList.class.getName().replace('.','/');
   String VKO_SQLEXCEPTION		= "java/sql/SQLException";
   String VKO_VEXCEPTION			= com.kopiright.vkopi.lib.visual.VException.class.getName().replace('.','/');
   String VKO_VRUNTIMEEXCEPTION		= com.kopiright.vkopi.lib.visual.VRuntimeException.class.getName().replace('.','/');

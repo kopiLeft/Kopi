@@ -17,11 +17,9 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-import com.kopiright.vkopi.lib.util.Message;
-
-public class VTextColumn extends VListColumn {
+public class VFixedColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -30,14 +28,14 @@ public class VTextColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VTextColumn(String title, String column, int align, int width, boolean sortAscending) {
-    super(title, column, align, Message.getMessage("text-type").length(), sortAscending);
+  public VFixedColumn(String title, String column, int align, int width, int scale, boolean sortAscending) {
+    super(title, column, align, width, sortAscending);
+    this.scale = scale;
   }
 
-  /**
-   * Returns a string representation of value
-   */
-  public Object formatObject(Object value) {
-    return value == null ? VConstants.EMPTY_TEXT : Message.getMessage("text-type");
-  }
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
+
+  private final int		scale;		// number of digits after dot
 }

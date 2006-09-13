@@ -36,25 +36,22 @@ JAVAFILES +=	BlockAlignment Commands					\
 		KopiFieldDocument KopiScanDocument 	                \
 		KopiMultiBlockLayout KopiSimpleBlockLayout		\
 		LatexPrintWriter ListDialog MultiFieldAlignment		\
-		Triggers VBlock						\
-		VBooleanCodeColumn VBooleanCodeField VBooleanColumn	\
-		VBooleanField VCodeColumn VCodeField			\
-		VColorColumn VColorField VColumn VConstants		\
-		VDateColumn VDateField VDictionaryForm			\
-		VDocGenerator VEnumColumn VEnumField			\
+		Triggers VBlock VBooleanCodeField			\
+		VBooleanField VCodeField				\
+		VColorField VConstants					\
+		VDateField VDictionaryForm				\
+		VDocGenerator VEnumField				\
 		VField VFieldCommand VFieldException			\
-		VFieldUI VFixedCodeColumn VFixedCodeField		\
-		VFixedColumn VFixedField VForm				\
-		VHelpGenerator VImageColumn VImageField			\
-		VImportedBlock VIntegerCodeColumn VIntegerCodeField	\
-		VIntegerColumn VIntegerField VList			\
-		VListColumn  VMonthColumn				\
+		VFieldUI VFixedCodeField				\
+		VFixedField VForm					\
+		VHelpGenerator VImageField				\
+		VImportedBlock VIntegerCodeField			\
+		VIntegerField						\
 		VMonthField VPosition BlockRecordListener		\
 		VQueryNoRowException VQueryOverflowException		\
-		VSkipRecordException  VStringColumn			\
-		VStringField VTextColumn VTextField			\
-		VTimeColumn VTimeField VWeekColumn			\
-		VTimestampColumn VTimestampField			\
+		VSkipRecordException					\
+		VStringField VTextField					\
+		VTimeField VTimestampField				\
 		VWeekField KopiLayoutManager				\
 		FieldListener FieldChangeListener			\
 		BlockListener ViewBlockAlignment FormListener		\
@@ -65,23 +62,22 @@ JAVAFILES +=	BlockAlignment Commands					\
 ##JAVAFILES +=	BlockAlignment Commands					\
 ##		LatexPrintWriter ListDialog				\
 ##		Triggers VBlock						\
-##		VBooleanCodeColumn VBooleanCodeField VBooleanColumn	\
-##		VBooleanField VCodeColumn VCodeField			\
-##		VColorColumn VColorField VColumn VConstants		\
-##		VDateColumn VDateField VDictionaryForm			\
-##		VDocGenerator VEnumColumn VEnumField			\
+##		VBooleanCodeField					\
+##		VBooleanField VCodeField				\
+##		VColorField VConstants					\
+##		VDateField VDictionaryForm				\
+##		VDocGenerator VEnumField				\
 ##		VField VFieldException					\
-##		VFixedCodeColumn VFixedCodeField			\
-##		VFixedColumn VFixedField VForm				\
-##		VHelpGenerator VImageColumn VImageField			\
-##		VImportedBlock VIntegerCodeColumn VIntegerCodeField	\
-##		VIntegerColumn VIntegerField VList			\
-##		VListColumn  VMonthColumn				\
+##		VFixedCodeField						\
+##		VFixedField VForm					\
+##		VHelpGenerator VImageField				\
+##		VImportedBlock VIntegerCodeField			\
+##		VIntegerField						\
 ##		VMonthField VPosition					\
 ##		VQueryNoRowException VQueryOverflowException		\
-##		VSkipRecordException  VStringColumn			\
-##		VStringField VTextColumn VTextField			\
-##		VTimeColumn VTimeField VWeekColumn			\
+##		VSkipRecordException					\
+##		VStringField VTextField					\
+##		VTimeField						\
 ##		VWeekField KopiLayoutManager FieldListener		\
 ##		BlockListener FormListener PredefinedValueHandler
 

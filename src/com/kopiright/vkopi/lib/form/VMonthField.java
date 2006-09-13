@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.list.VListColumn;
+import com.kopiright.vkopi.lib.list.VMonthColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.Query;

@@ -34,6 +34,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.list.VListColumn;
+import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.DObject;
 import com.kopiright.vkopi.lib.visual.DWindow;

@@ -17,18 +17,21 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-public class VIntegerColumn extends VListColumn {
+import javax.swing.JLabel;
 
-  // --------------------------------------------------------------------
-  // CONSTRUCTION
-  // --------------------------------------------------------------------
+public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
 
-  /**
-   * Constructs a list column.
-   */
-  public VIntegerColumn(String title, String column, int align, int width, boolean sortAscending) {
-    super(title, column, align, width, sortAscending);
-  }
+  // ---------------------------------------------------------------------
+  // ALIGNMENT
+  // ---------------------------------------------------------------------
+
+  int ALG_DEFAULT			= JLabel.LEFT;
+  int ALG_LEFT				= JLabel.LEFT;
+  int ALG_CENTER			= JLabel.CENTER;
+  int ALG_RIGHT				= JLabel.RIGHT;
+
+
+  String EMPTY_TEXT			= "";
 }

@@ -48,28 +48,28 @@ public class VKKjcTypeFactory extends com.kopiright.vkopi.comp.trig.GKjcTypeFact
 
     SActorType = createType(com.kopiright.vkopi.lib.visual.SActor.class.getName().replace('.','/'), false);
     SDefaultActorType = createType(com.kopiright.vkopi.lib.visual.SDefaultActor.class.getName().replace('.','/'), false);
-    VListType = createType(com.kopiright.vkopi.lib.form.VList.class.getName().replace('.','/'), false);
+    VListType = createType(com.kopiright.vkopi.lib.list.VList.class.getName().replace('.','/'), false);
     VExceptionType = createType(com.kopiright.vkopi.lib.visual.VException.class.getName().replace('.','/'), false);
     VRuntimeExceptionType = createType(com.kopiright.vkopi.lib.visual.VRuntimeException.class.getName().replace('.','/'), false);
     VCommandType = createType(com.kopiright.vkopi.lib.visual.VCommand.class.getName().replace('.','/'), false);
     VPositionType = createType(com.kopiright.vkopi.lib.form.VPosition.class.getName().replace('.','/'), false);
-    VColumnType = createType(com.kopiright.vkopi.lib.form.VColumn.class.getName().replace('.','/'), false);
-    VListColumnType = createType(com.kopiright.vkopi.lib.form.VListColumn.class.getName().replace('.','/'), false);
-    VStringColumnType = createType(com.kopiright.vkopi.lib.form.VStringColumn.class.getName().replace('.','/'), false);
-    VFixedColumnType = createType(com.kopiright.vkopi.lib.form.VFixedColumn.class.getName().replace('.','/'), false);
-    VIntegerColumnType = createType(com.kopiright.vkopi.lib.form.VIntegerColumn.class.getName().replace('.','/'), false);
-    VDateColumnType = createType(com.kopiright.vkopi.lib.form.VDateColumn.class.getName().replace('.','/'), false);
-    VMonthColumnType = createType(com.kopiright.vkopi.lib.form.VMonthColumn.class.getName().replace('.','/'), false);
-    VTimeColumnType = createType(com.kopiright.vkopi.lib.form.VTimeColumn.class.getName().replace('.','/'), false);
-    VWeekColumnType = createType(com.kopiright.vkopi.lib.form.VWeekColumn.class.getName().replace('.','/'), false);
-    VTextColumnType = createType(com.kopiright.vkopi.lib.form.VTextColumn.class.getName().replace('.','/'), false);
-    VBooleanColumnType = createType(com.kopiright.vkopi.lib.form.VBooleanColumn.class.getName().replace('.','/'), false);
-    VBooleanCodeColumnType = createType(com.kopiright.vkopi.lib.form.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    VIntegerCodeColumnType = createType(com.kopiright.vkopi.lib.form.VIntegerCodeColumn.class.getName().replace('.','/'), false);
-    VFixedCodeColumnType = createType(com.kopiright.vkopi.lib.form.VFixedCodeColumn.class.getName().replace('.','/'), false);
-    VColorColumnType = createType(com.kopiright.vkopi.lib.form.VColorColumn.class.getName().replace('.','/'), false);
-    VImageColumnType = createType(com.kopiright.vkopi.lib.form.VImageColumn.class.getName().replace('.','/'), false);
-    VEnumColumnType = createType(com.kopiright.vkopi.lib.form.VEnumColumn.class.getName().replace('.','/'), false);
+    VColumnType = createType(com.kopiright.vkopi.lib.list.VColumn.class.getName().replace('.','/'), false);
+    VListColumnType = createType(com.kopiright.vkopi.lib.list.VListColumn.class.getName().replace('.','/'), false);
+    VStringColumnType = createType(com.kopiright.vkopi.lib.list.VStringColumn.class.getName().replace('.','/'), false);
+    VFixedColumnType = createType(com.kopiright.vkopi.lib.list.VFixedColumn.class.getName().replace('.','/'), false);
+    VIntegerColumnType = createType(com.kopiright.vkopi.lib.list.VIntegerColumn.class.getName().replace('.','/'), false);
+    VDateColumnType = createType(com.kopiright.vkopi.lib.list.VDateColumn.class.getName().replace('.','/'), false);
+    VMonthColumnType = createType(com.kopiright.vkopi.lib.list.VMonthColumn.class.getName().replace('.','/'), false);
+    VTimeColumnType = createType(com.kopiright.vkopi.lib.list.VTimeColumn.class.getName().replace('.','/'), false);
+    VWeekColumnType = createType(com.kopiright.vkopi.lib.list.VWeekColumn.class.getName().replace('.','/'), false);
+    VTextColumnType = createType(com.kopiright.vkopi.lib.list.VTextColumn.class.getName().replace('.','/'), false);
+    VBooleanColumnType = createType(com.kopiright.vkopi.lib.list.VBooleanColumn.class.getName().replace('.','/'), false);
+    VBooleanCodeColumnType = createType(com.kopiright.vkopi.lib.list.VBooleanCodeColumn.class.getName().replace('.','/'), false);
+    VIntegerCodeColumnType = createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
+    VFixedCodeColumnType = createType(com.kopiright.vkopi.lib.list.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    VColorColumnType = createType(com.kopiright.vkopi.lib.list.VColorColumn.class.getName().replace('.','/'), false);
+    VImageColumnType = createType(com.kopiright.vkopi.lib.list.VImageColumn.class.getName().replace('.','/'), false);
+    VEnumColumnType = createType(com.kopiright.vkopi.lib.list.VEnumColumn.class.getName().replace('.','/'), false);
 
     try {
       VFieldType = (CReferenceType) VFieldType.checkType(context); 

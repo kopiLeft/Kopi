@@ -17,9 +17,16 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-public class VStringColumn extends VListColumn {
+import java.awt.Color;
+
+/**
+ * laurent :<br>
+ * NOTICE : This class was copied from VImageColumn and was not test 
+ */
+
+public class VColorColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -28,26 +35,7 @@ public class VStringColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VStringColumn(String title, String column, int align, int width, boolean sortAscending) {
-    super(title, column, align, width, sortAscending);
-  }
-
-  /**
-   * Returns a string representation of value
-   */
-  public Object formatObject(Object value) {
-    if (value == null) {
-      return VConstants.EMPTY_TEXT;
-    }
-
-    String	str = (String)value;
-    int		strLength = str.length();
-    int		width = getWidth();
-
-    if (strLength > width) {
-      str = str.substring(0, width) + "..." + str.substring(width);
-    }
-
-    return str;
+  public VColorColumn(String title, String column, boolean sortAscending) {
+    super(title, column, ALG_LEFT, 7, sortAscending);
   }
 }

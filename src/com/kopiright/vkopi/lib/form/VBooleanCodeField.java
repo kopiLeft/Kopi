@@ -22,6 +22,8 @@ package com.kopiright.vkopi.lib.form;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.list.VBooleanCodeColumn;
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.xkopi.lib.base.Query;
 
 public class VBooleanCodeField extends VCodeField {

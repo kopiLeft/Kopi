@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.form;
 
 import java.awt.Color;
 
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.type.Date;
 

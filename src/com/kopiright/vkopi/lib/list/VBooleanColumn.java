@@ -17,11 +17,11 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-import javax.swing.ImageIcon;
+import com.kopiright.vkopi.lib.util.Message;
 
-public class VImageColumn extends VListColumn {
+public class VBooleanColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -30,14 +30,23 @@ public class VImageColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VImageColumn(String title, String column, boolean sortAscending) {
-    super(title, column, ALG_LEFT, 7, sortAscending);
+  public VBooleanColumn(String title, String column, boolean sortAscending) {
+    super(title, column, ALG_LEFT, Math.max(trueRep.length(), falseRep.length()), sortAscending);
   }
 
   /**
    * Returns a string representation of value
    */
   public Object formatObject(Object value) {
-    return value == null ? VConstants.EMPTY_TEXT : (Object)new ImageIcon((byte[])value);
+    return value == null ?
+      VConstants.EMPTY_TEXT :
+      ((Boolean)value).booleanValue() ? trueRep : falseRep;
   }
+
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
+
+  private static String		trueRep = Message.getMessage("true");
+  private static String		falseRep = Message.getMessage("false");
 }

@@ -17,9 +17,9 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-public class VDateColumn extends VListColumn {
+public class VIntegerColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -28,7 +28,7 @@ public class VDateColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VDateColumn(String title, String column, boolean sortAscending) {
-    super(title, column, ALG_LEFT, 10, sortAscending);
+  public VIntegerColumn(String title, String column, int align, int width, boolean sortAscending) {
+    super(title, column, align, width, sortAscending);
   }
 }

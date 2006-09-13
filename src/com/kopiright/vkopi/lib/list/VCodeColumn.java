@@ -17,11 +17,9 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-import com.kopiright.util.base.InconsistencyException;
-
-public class VBooleanCodeColumn extends VCodeColumn {
+public abstract class VCodeColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -30,49 +28,44 @@ public class VBooleanCodeColumn extends VCodeColumn {
   /**
    * Constructs a list column.
    */
-  public VBooleanCodeColumn(String title, String column, String[] names, Boolean[] codes, boolean sortAscending) {
-    super(title, column, names, sortAscending);
-    this.codes = codes;
+  public VCodeColumn(String title, String column, String[] names, boolean sortAscending) {
+    super(title, column, ALG_LEFT, getMaxWidth(names), sortAscending);
+    this.names = names;
   }
 
   /**
-   * Constructs a list column.
-   *
+   * Returns a string representation of value
    */
-  public VBooleanCodeColumn(String title, String column, String[] names, boolean[] codes, boolean sortAscending) {
-    this(title, column, names, makeObjectArray(codes), sortAscending);
+  public Object formatObject(Object value) {
+    return value == null ? VConstants.EMPTY_TEXT : names[getObjectIndex(value)];
   }
 
-  /*
-   *
-   */
-  private static Boolean[] makeObjectArray(boolean[] input) {
-    Boolean[]	output;
-
-    output = new Boolean[input.length];
-    for (int i = 0; i < input.length; i++) {
-      output[i] = new Boolean(input[i]);
-    }
-
-    return output;
-  }
+  // --------------------------------------------------------------------
+  // PROTECTED METHODS
+  // --------------------------------------------------------------------
 
   /*
    * Returns the index.of given object
    */
-  protected int getObjectIndex(Object value) {
-    for (int i = 0; i < codes.length; i++) {
-      if (value.equals(codes[i])) {
-	return i;
-      }
+  protected abstract int getObjectIndex(Object value);
+
+  // --------------------------------------------------------------------
+  // PRIVATE METHODS
+  // --------------------------------------------------------------------
+
+  private static int getMaxWidth(String[] names) {
+    int		res = 0;
+
+    for (int i = 0; i < names.length; i++) {
+      res = Math.max(names[i].length(), res);
     }
 
-    throw new InconsistencyException("bad code value " + value);
+    return res;
   }
 
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private final Boolean[]	codes;		// code array
+  protected String[]		names;
 }

@@ -17,9 +17,9 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
-public class VFixedColumn extends VListColumn {
+public class VDateColumn extends VListColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -28,14 +28,7 @@ public class VFixedColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VFixedColumn(String title, String column, int align, int width, int scale, boolean sortAscending) {
-    super(title, column, align, width, sortAscending);
-    this.scale = scale;
+  public VDateColumn(String title, String column, boolean sortAscending) {
+    super(title, column, ALG_LEFT, 10, sortAscending);
   }
-
-  // --------------------------------------------------------------------
-  // DATA MEMBERS
-  // --------------------------------------------------------------------
-
-  private final int		scale;		// number of digits after dot
 }

@@ -17,7 +17,7 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.form;
+package com.kopiright.vkopi.lib.list;
 
 public class VWeekColumn extends VListColumn {
 
