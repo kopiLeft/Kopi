@@ -22,7 +22,6 @@
 @literal	IMPLEMENTS
 @literal	INDEX
 @literal	INIT
-@literal	LABEL
 @literal	LEFT
 @literal	LINE
 @literal	LOWERED

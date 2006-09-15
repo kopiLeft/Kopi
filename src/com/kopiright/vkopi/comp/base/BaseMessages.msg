@@ -76,3 +76,15 @@ error		BAD_DYNAMIC_AND_FIXED
 error		UNSET_DYNAMIC_AND_FIXED
 		"Option FIXED ON/OFF has to be set"
 		"VKJC"
+
+error		TRANSLATION_WITHOUT_LOCALE
+		"Translation for \"{0}\" given but no locale is specified"
+		"VKJC"
+
+error		LOCALE_WITHOUT_TRANSLATION
+		"Locale \"{0}\" specified but no translation for \"{1}\" given"
+		"VKJC"
+
+warning         BAD_LOCALE_DEFINITION
+		"Bad locale \"{0}\", it should be in the form \"ll_CC\" where \"ll\" is the language code and \"CC\" is the country code."
+		"VKJC"

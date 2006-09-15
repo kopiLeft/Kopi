@@ -9,7 +9,6 @@
 @literal	FORMAT
 @literal	GROUP
 @literal	HIDDEN
-@literal	LABEL
 @literal	LEFT
 @literal	NO
 @literal	POSTREPORT

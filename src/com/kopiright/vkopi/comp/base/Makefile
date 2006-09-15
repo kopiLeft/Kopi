@@ -34,7 +34,7 @@ SCANNER1 =	Base
 OPTIONS =	VKOptions
 
 # Compiler classes
-JAVAFILES +=	BaseScanner VKParseContext VKParseVKWindowContext
+JAVAFILES +=	BaseScanner Parser VKParseContext VKParseVKWindowContext
 
 # Syntax tree classes
 JAVAFILES +=	Commandable						\

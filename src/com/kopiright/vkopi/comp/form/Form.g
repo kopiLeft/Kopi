@@ -52,7 +52,7 @@ options {
   codeGenMakeSwitchThreshold = 2;	// Some optimizations
   codeGenBitsetTestThreshold = 3;
   defaultErrorHandler = false;		// Don't generate parser error handlers
-  superClass = "com.kopiright.compiler.tools.antlr.extra.Parser";
+  superClass = "com.kopiright.vkopi.comp.base.Parser";
   access = "private";			// Set default rule access
 }
 {

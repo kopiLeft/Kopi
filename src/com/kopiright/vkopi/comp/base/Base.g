@@ -27,11 +27,11 @@ header { package com.kopiright.vkopi.comp.base; }
   import com.kopiright.compiler.base.TokenReference;
   import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.kopi.comp.kjc.*;
+  import com.kopiright.vkopi.comp.trig.GKjcParser;
+  import com.kopiright.vkopi.comp.trig.GSqlcParser;
   import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
   import com.kopiright.xkopi.comp.sqlc.TableName;
   import com.kopiright.xkopi.comp.sqlc.TableReference;
-  import com.kopiright.vkopi.comp.trig.GKjcParser;
-  import com.kopiright.vkopi.comp.trig.GSqlcParser;
   import com.kopiright.xkopi.lib.type.Fixed;
   import com.kopiright.xkopi.lib.type.NotNullFixed;
 }
@@ -49,7 +49,7 @@ options {
   codeGenMakeSwitchThreshold = 2;	// Some optimizations
   codeGenBitsetTestThreshold = 3;
   defaultErrorHandler = false;		// Don't generate parser error handlers
-  superClass = "com.kopiright.compiler.tools.antlr.extra.Parser";
+  superClass = "com.kopiright.vkopi.comp.base.Parser";
   access = "private";			// Set default rule access
 }
 {
@@ -68,6 +68,17 @@ options {
 
   private final VKEnvironment  environment;
 }
+
+public vkLocaleDeclaration []
+{
+  String        locale = null;
+}
+:
+  ( "LOCALE" locale = vkString[] )?
+    {
+      setLocale(locale);
+    }
+;
 
 public vkCompilationUnit []
   returns [VKInsert self]

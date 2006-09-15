@@ -24,7 +24,9 @@
 @literal	IS
 @literal	ITEM
 @literal	KEY
+@literal	LABEL
 @literal	LIST
+@literal	LOCALE
 @literal	LONG
 @literal	LOWER
 @literal	MAXVAL
