@@ -26,17 +26,6 @@ public class VList implements VConstants {
   // --------------------------------------------------------------------
 
   /**
-   * Constructs a list. (!!! TO BE REMOVED)
-   * &&&&&&&&&&&&&
-   */
-  public VList(String newForm, VListColumn[] columns, int table) {
-    this.newForm = newForm;
-    this.columns = columns;
-    this.table   = table;
-    this.hasShortcut = false;
-  }
-
-  /**
    * Constructs a list.
    * &&&&&&&&&&&&&
    */
@@ -48,13 +37,21 @@ public class VList implements VConstants {
   }
 
   /**
+   * Constructs a list. (!!! TO BE REMOVED)
+   * &&&&&&&&&&&&&
+   */
+  public VList(String newForm, VListColumn[] columns, int table) {
+    this(newForm, columns, table, false);
+  }
+
+  /**
    * Constructs a list.
    */
   public VList(VListColumn[] columns, int table, Class newForm, boolean hasShortcut) {
-    this.newForm = newForm == null ? null : newForm.getName();
-    this.columns = columns;
-    this.table   = table;
-    this.hasShortcut = hasShortcut;
+    this(newForm == null ? null : newForm.getName(),
+         columns,
+         table,
+         hasShortcut);
   }
 
   /**
