@@ -37,10 +37,10 @@ public class VKFixedCodeType extends VKCodeType {
    * !!!
    *
    * @param where		the token reference of this node
-   * @param code		a list of code value pairs
+   * @param codes		a list of code value pairs
    */
-  public VKFixedCodeType(TokenReference where, VKCodeDesc[] code) {
-    super(where, code);
+  public VKFixedCodeType(TokenReference where, VKCodeDesc[] codes) {
+    super(where, codes);
   }
 
   // ----------------------------------------------------------------------
@@ -56,9 +56,10 @@ public class VKFixedCodeType extends VKCodeType {
 
   public JExpression genValues() {
     TokenReference	ref = getTokenReference();
-    JExpression[]	init =  new JExpression[code.length];
-    for (int i = 0; i < code.length; i++) {
-      init[i] = VKUtils.toExpression(ref, code[i].getFixed());
+    JExpression[]	init =  new JExpression[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
+      init[i] = VKUtils.toExpression(ref, codes[i].getFixed());
     }
     return VKUtils.createArray(ref, com.kopiright.xkopi.comp.xkjc.XStdType.Fixed, init);
   }
@@ -100,6 +101,6 @@ public class VKFixedCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printCodeType("FIXED", code);
+    p.printCodeType("FIXED", codes);
   }
 }

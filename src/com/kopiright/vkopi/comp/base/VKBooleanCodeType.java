@@ -37,10 +37,10 @@ public class VKBooleanCodeType extends VKCodeType {
    * This is a position given by x and y location
    *
    * @param where		the token reference of this node
-   * @param code		a list of code pair
+   * @param codes		a list of code pairs
    */
-  public VKBooleanCodeType(TokenReference where, VKCodeDesc[] code) {
-    super(where, code);
+  public VKBooleanCodeType(TokenReference where, VKCodeDesc[] codes) {
+    super(where, codes);
   }
 
   // ----------------------------------------------------------------------
@@ -56,9 +56,10 @@ public class VKBooleanCodeType extends VKCodeType {
 
   public JExpression genValues() {
     TokenReference	ref = getTokenReference();
-    JExpression[]	init = new JExpression[code.length];
-    for (int i = 0; i < code.length; i++) {
-      init[i] = new JBooleanLiteral(ref, code[i].getBoolean());
+    JExpression[]	init = new JExpression[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
+      init[i] = new JBooleanLiteral(ref, codes[i].getBoolean());
     }
     return VKUtils.createArray(ref, CStdType.Boolean, init);
   }
@@ -100,6 +101,6 @@ public class VKBooleanCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printCodeType("BOOL", code);
+    p.printCodeType("BOOL", codes);
   }
 }

@@ -21,7 +21,7 @@ package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseStringColumn;
+import com.kopiright.xkopi.comp.database.DatabaseEnumColumn;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.NotImplementedException;
@@ -80,10 +80,10 @@ public class VKStringCodeType extends VKCodeType {
 
   public JExpression genValues() {
     TokenReference	ref = getTokenReference();
-    JExpression[]	init =  new JExpression[code.length];
+    JExpression[]	init =  new JExpression[codes.length];
 
-    for (int i = 0; i < code.length; i++) {
-      init[i] = new JStringLiteral(ref, code[i].getString());
+    for (int i = 0; i < codes.length; i++) {
+      init[i] = new JStringLiteral(ref, codes[i].getString());
     }
     return VKUtils.createArray(ref, CStdType.String, init);
   }
@@ -103,7 +103,13 @@ public class VKStringCodeType extends VKCodeType {
    * @return the info
    */
   public DatabaseColumn getColumnInfo() {
-    return new DatabaseStringColumn(true);
+    String[]	values;
+
+    values = new String[codes.length];
+    for (int i = 0; i < codes.length; i++) {
+      values[i] = codes[i].getString();
+    }
+    return new DatabaseEnumColumn(true, values);
   }
 
   /**
@@ -125,6 +131,6 @@ public class VKStringCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printCodeType("STRING", code);
+    p.printCodeType("STRING", codes);
   }
 }

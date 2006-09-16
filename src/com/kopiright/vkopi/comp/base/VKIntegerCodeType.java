@@ -37,10 +37,10 @@ public class VKIntegerCodeType extends VKCodeType {
    * This is a position given by x and y location
    *
    * @param where		the token reference of this node
-   * @param code		a list of code pair
+   * @param codes		a list of code value pairs
    */
-  public VKIntegerCodeType(TokenReference where, VKCodeDesc[] code) {
-    super(where, code);
+  public VKIntegerCodeType(TokenReference where, VKCodeDesc[] codes) {
+    super(where, codes);
   }
 
   // ----------------------------------------------------------------------
@@ -56,9 +56,10 @@ public class VKIntegerCodeType extends VKCodeType {
 
   public JExpression genValues() {
     TokenReference	ref = getTokenReference();
-    JExpression[]	init = new JExpression[code.length];
-    for (int i = 0; i < code.length; i++) {
-      init[i] = new JIntLiteral(ref, code[i].getInteger());
+    JExpression[]	init = new JExpression[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
+      init[i] = new JIntLiteral(ref, codes[i].getInteger());
     }
     return VKUtils.createArray(ref, CStdType.Integer, init);
   }
@@ -108,6 +109,6 @@ public class VKIntegerCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printCodeType("LONG", code);
+    p.printCodeType("LONG", codes);
   }
 }

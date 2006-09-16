@@ -36,11 +36,11 @@ public abstract class VKCodeType extends VKType {
    * This is a position given by x and y location
    *
    * @param where		the token reference of this node
-   * @param code		a list of code pair
+   * @param codes		a list of code pair
    */
-  public VKCodeType(TokenReference where, VKCodeDesc[] code) {
+  public VKCodeType(TokenReference where, VKCodeDesc[] codes) {
     super(where, 0, 0);
-    this.code = code;
+    this.codes = codes;
   }
 
   // ----------------------------------------------------------------------
@@ -80,9 +80,10 @@ public abstract class VKCodeType extends VKType {
    */
   public JExpression genNames()  {
     TokenReference	ref = getTokenReference();
-    JExpression[]	init = new JExpression[code.length];
-    for (int i = 0; i < code.length; i++) {
-      init[i] = new JStringLiteral(ref, code[i].getName());
+    JExpression[]	init = new JExpression[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
+      init[i] = new JStringLiteral(ref, codes[i].getName());
     }
     return VKUtils.createArray(ref, CStdType.String, init);
   }
@@ -107,5 +108,5 @@ public abstract class VKCodeType extends VKType {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  protected VKCodeDesc[] code;
+  protected VKCodeDesc[]        codes;
 }
