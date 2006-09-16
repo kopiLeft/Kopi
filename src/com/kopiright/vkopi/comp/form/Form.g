@@ -151,7 +151,7 @@ vkBlock []
   ( vkBlockIndices[context] )?
   ( vkModeAndCommands[access, context] )?
   ( vkBlockTriggers[context] )?
-  vkBlockObjects[context]
+  ( vkField[context] )+
   ( vkContextFooter[context.getClassContext()] )?
   "END" "BLOCK"
     {
@@ -213,19 +213,6 @@ vkAccess []
   "SKIPPED"	{ self = com.kopiright.vkopi.lib.form.VConstants.ACS_SKIPPED; }
 |
   "HIDDEN"	{ self = com.kopiright.vkopi.lib.form.VConstants.ACS_HIDDEN; }
-;
-
-vkBlockObjects [VKParseBlockContext context]
-:
-  (
-      //(
-      vkField[context]
-      //|
-      //vkLabel[context]
-      //|
-      //vkImage[context]
-      //)
-  )+
 ;
 
 vkModeAndCommands[int[] access, VKParseContext context]
@@ -530,7 +517,7 @@ vkField [VKParseBlockContext block]
   ( pos = vkPosition[] )?
   ( label = vkFieldLabel[name] )?
   help = vkHelp[]
-  type = vkFieldType[]
+  type = vfFieldType[]
   (
     "IS" alias = vkQualifiedIdent[]
     ( columns = vkFieldColumns[] )?
@@ -784,26 +771,24 @@ vkFieldTriggers [VKParseFieldContext context]
   )+
 ;
 
-vkFieldType []
+vfFieldType []
   returns [VKFieldType self = null]
 {
   VKType		def;
-  VKFieldList		list;
-  String		name;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
-  self = vkFieldTypeName[]
+  self = vfFieldTypeName[]
 |
-  def = vkFieldTypeDefinition[] ( list = vkFieldList[] { def.addList(list); } )?
+  def = vkPredefinedFieldType[]
     { self = new VKDefinitionType(sourceRef, def); }
 ;
 
-vkFieldTypeName []
+vfFieldTypeName []
   returns [VKFieldTypeName self]
 {
   String		name;
-  JExpression[]	params = null;
+  JExpression[]         params = null;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :

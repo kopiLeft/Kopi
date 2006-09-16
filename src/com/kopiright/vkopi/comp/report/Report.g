@@ -303,14 +303,12 @@ vrFieldType []
   returns [VRFieldType self = null]
 {
   VKType		def;
-  VKFieldList		list;
-  String		name;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comment
 }
 :
   self = vrFieldTypeName[]
 |
-  def = vkFieldTypeDefinition[] ( list = vkFieldList[] { def.addList(list); } )?
+  def = vkPredefinedFieldType[]
     { self = new VRDefinitionType(sourceRef, def); }
 ;
 
@@ -318,17 +316,15 @@ vrFieldTypeName []
   returns [VRFieldTypeName self]
 {
   String		name;
-  JExpression[]	params = null;
+  JExpression[]         params = null;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comment
 }
 :
-    "TYPE" name = vkQualifiedIdent[]
-    (
-      LPAREN
-      {
-        params = buildGKjcParser().gArguments();
-      }
+  "TYPE" name = vkQualifiedIdent[]
+  (
+    LPAREN
+      { params = buildGKjcParser().gArguments(); }
       // RPAREN
-    )?
+  )?
     { self = new VRFieldTypeName(sourceRef, name, params); }
 ;

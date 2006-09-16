@@ -100,20 +100,18 @@ vkBool []
   "FALSE" { self = false; }
 ;
 
-vkFieldTypeDefinition []
+vkPredefinedFieldType []
   returns [VKType self]
 :
+  self = vkFixedFieldType[]
+|
   self = vkImageFieldType[]
+|
+  self = vkIntegerFieldType[]
 |
   self = vkStringFieldType[]
 |
   self = vkTextFieldType[]
-|
-  self = vkFixedFieldType[]
-|
-  self = vkIntegerFieldType[]
-|
-  self = vkCodeFieldType[]
 |
   "DATE"	{ self = new VKDateType(buildTokenReference()); }
 |
@@ -446,7 +444,7 @@ vkListDesc []
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
-  title = vkString[] ASSIGN column = vkSimpleIdent[] COLON type = vkFieldTypeDefinition[]
+  title = vkString[] ASSIGN column = vkSimpleIdent[] COLON type = vkFieldType[]
    { self = new VKListDesc(sourceRef, title, column, type); }
 ;
 
@@ -524,10 +522,19 @@ vkTypeDef []
     // RPAREN
   )?
   "IS"
-  type = vkFieldTypeDefinition[]
+  type = vkFieldType[] 
   ( list = vkFieldList[] { type.addList(list); } )?
   "END" "TYPE"
     { self = new VKTypeDefinition(sourceRef, name, type, params); }
+;
+
+
+vkFieldType[]
+  returns [VKType self]
+:
+  self = vkPredefinedFieldType[]
+|
+  self = vkCodeFieldType[]
 ;
 
 vkFieldList []
