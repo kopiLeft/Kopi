@@ -51,10 +51,10 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
   public static CReferenceType TimeField;
   public static CReferenceType TimestampField;
   public static CReferenceType WeekField;
-  public static CReferenceType EnumField;
   public static CReferenceType BooleanCodeField;
   public static CReferenceType IntegerCodeField;
   public static CReferenceType FixedCodeField;
+  public static CReferenceType StringCodeField;
   public static CReferenceType TextField;
 
   public static CReferenceType StringColumn;
@@ -67,8 +67,9 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
   public static CReferenceType TimestampColumn;
   public static CReferenceType WeekColumn;
   public static CReferenceType BooleanCodeColumn;
-  public static CReferenceType IntegerCodeColumn;
   public static CReferenceType FixedCodeColumn;
+  public static CReferenceType IntegerCodeColumn;
+  public static CReferenceType StringCodeColumn;
 
   public static CReferenceType Color;
   public static CReferenceType Image;
@@ -90,7 +91,6 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
     Form = tf.createType(com.kopiright.vkopi.lib.form.VForm.class.getName().replace('.','/'), false);
     Block = tf.createType(com.kopiright.vkopi.lib.form.VBlock.class.getName().replace('.','/'), false);
     Field = tf.createType(com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/'), false);
-    EnumField = tf.createType(com.kopiright.vkopi.lib.form.VEnumField.class.getName().replace('.','/'), false);
     BooleanField = tf.createType(com.kopiright.vkopi.lib.form.VBooleanField.class.getName().replace('.','/'), false);
     IntegerField = tf.createType(com.kopiright.vkopi.lib.form.VIntegerField.class.getName().replace('.','/'), false);
     FixedField = tf.createType(com.kopiright.vkopi.lib.form.VFixedField.class.getName().replace('.','/'), false);
@@ -103,9 +103,10 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
     TimestampField = tf.createType(com.kopiright.vkopi.lib.form.VTimestampField.class.getName().replace('.','/'), false);
     WeekField = tf.createType(com.kopiright.vkopi.lib.form.VWeekField.class.getName().replace('.','/'), false);
     TextField = tf.createType(com.kopiright.vkopi.lib.form.VTextField.class.getName().replace('.','/'), false);
-    FixedCodeField = tf.createType(com.kopiright.vkopi.lib.form.VFixedCodeField.class.getName().replace('.','/'), false);
     BooleanCodeField = tf.createType(com.kopiright.vkopi.lib.form.VBooleanCodeField.class.getName().replace('.','/'), false);
+    FixedCodeField = tf.createType(com.kopiright.vkopi.lib.form.VFixedCodeField.class.getName().replace('.','/'), false);
     IntegerCodeField = tf.createType(com.kopiright.vkopi.lib.form.VIntegerCodeField.class.getName().replace('.','/'), false);
+    StringCodeField = tf.createType(com.kopiright.vkopi.lib.form.VStringCodeField.class.getName().replace('.','/'), false);
 
     StringColumn = tf.createType(com.kopiright.vkopi.lib.report.VStringColumn.class.getName().replace('.','/'), false);
     IntegerColumn = tf.createType(com.kopiright.vkopi.lib.report.VIntegerColumn.class.getName().replace('.','/'), false);
@@ -117,8 +118,9 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
     TimestampColumn = tf.createType(com.kopiright.vkopi.lib.report.VTimestampColumn.class.getName().replace('.','/'), false);
     WeekColumn = tf.createType(com.kopiright.vkopi.lib.report.VWeekColumn.class.getName().replace('.','/'), false);
     BooleanCodeColumn = tf.createType(com.kopiright.vkopi.lib.report.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    IntegerCodeColumn = tf.createType(com.kopiright.vkopi.lib.report.VIntegerCodeColumn.class.getName().replace('.','/'), false);
     FixedCodeColumn = tf.createType(com.kopiright.vkopi.lib.report.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    IntegerCodeColumn = tf.createType(com.kopiright.vkopi.lib.report.VIntegerCodeColumn.class.getName().replace('.','/'), false);
+    StringCodeColumn = tf.createType(com.kopiright.vkopi.lib.report.VStringCodeColumn.class.getName().replace('.','/'), false);
 
     Color = tf.createReferenceType(GTypeFactory.RFT_COLOR);
     Image = tf.createReferenceType(GTypeFactory.RFT_IMAGE);
@@ -137,10 +139,10 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
       TimestampField = (CReferenceType) TimestampField.checkType(context);
       WeekField = (CReferenceType) WeekField.checkType(context);
       TextField = (CReferenceType) TextField.checkType(context);
-      EnumField = (CReferenceType) EnumField.checkType(context);
-      FixedCodeField = (CReferenceType) FixedCodeField.checkType(context);
       BooleanCodeField = (CReferenceType) BooleanCodeField.checkType(context);
+      FixedCodeField = (CReferenceType) FixedCodeField.checkType(context);
       IntegerCodeField = (CReferenceType) IntegerCodeField.checkType(context);
+      StringCodeField = (CReferenceType) StringCodeField.checkType(context);
 
       StringColumn = (CReferenceType) StringColumn.checkType(context);
       IntegerColumn = (CReferenceType) IntegerColumn.checkType(context);
@@ -152,8 +154,9 @@ public class GStdType extends com.kopiright.util.base.Utils implements Constants
       TimestampColumn = (CReferenceType) TimestampColumn.checkType(context);
       WeekColumn = (CReferenceType) WeekColumn.checkType(context);
       BooleanCodeColumn =  (CReferenceType) BooleanCodeColumn.checkType(context);
-      IntegerCodeColumn = (CReferenceType) IntegerCodeColumn.checkType(context);
       FixedCodeColumn = (CReferenceType) FixedCodeColumn.checkType(context);
+      IntegerCodeColumn = (CReferenceType) IntegerCodeColumn.checkType(context);
+      StringCodeColumn = (CReferenceType) StringCodeColumn.checkType(context);
 
       Color = (CReferenceType) Color.checkType(context);
       Image = (CReferenceType) Image.checkType(context);

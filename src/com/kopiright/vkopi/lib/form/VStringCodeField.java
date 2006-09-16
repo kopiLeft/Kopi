@@ -23,10 +23,10 @@ import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.list.VEnumColumn;
+import com.kopiright.vkopi.lib.list.VStringCodeColumn;
 import com.kopiright.xkopi.lib.base.Query;
 
-public class VEnumField extends VCodeField {
+public class VStringCodeField extends VCodeField {
 
   /*
    * ----------------------------------------------------------------------
@@ -37,8 +37,9 @@ public class VEnumField extends VCodeField {
   /**
    * Constructor
    */
-  public VEnumField(String[] names) {
+  public VStringCodeField(String[] names, String[] codes) {
     super(names);
+    this.codes = codes;
   }
 
   /*
@@ -51,14 +52,14 @@ public class VEnumField extends VCodeField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VEnumColumn(getHeader(), null, names, getPriority() >= 0);
+    return new VStringCodeColumn(getHeader(), null, names, codes, getPriority() >= 0);
   }
 
   /**
    * Returns the array of codes.
    */
   protected Object[] getCodes() {
-    return names;
+    return codes;
   }
 
   /*
@@ -66,6 +67,35 @@ public class VEnumField extends VCodeField {
    * Interface bd/Triggers
    * ----------------------------------------------------------------------
    */
+
+  /**
+   * Sets the field value of given record to a fixed value.
+   */
+  public void setString(int r, String v) {
+    if (v == null) {
+      setCode(r, -1);
+    } else {
+      int	code = -1;	// cannot be null
+
+      for (int i = 0; code == -1 && i < codes.length; i++) {
+	if (v.equals(codes[i])) {
+	  code = i;
+	}
+      }
+      if (code == -1) {
+//!!!TEST
+{
+  for (int i = 0; i < codes.length; i++) {
+    System.err.println(">>> " + i + ": " + codes[i]);
+  }
+}
+//!!!TEST
+	throw new InconsistencyException("bad code value " + v);
+      }
+
+      setCode(r, code);
+    }
+  }
 
   /**
    * Sets the field value of given record.
@@ -88,10 +118,17 @@ public class VEnumField extends VCodeField {
   }
 
   /**
+   * Returns the field value of given record as a int value.
+   */
+  public String getString(int r) {
+    return (String) getObject(r);
+  }
+
+  /**
    * Returns the field value of the current record as an object
    */
   public Object getObjectImpl(int r) {
-    return getString(r);
+    return value[r] == -1 ? null : codes[value[r]];
   }
 
   /**
@@ -100,7 +137,7 @@ public class VEnumField extends VCodeField {
   public String getSqlImpl(int r) {
     return value[r] == -1 ?
       "NULL" :
-      com.kopiright.xkopi.lib.base.KopiUtils.toSql(names[value[r]]);
+      com.kopiright.xkopi.lib.base.KopiUtils.toSql(codes[value[r]]);
   }
 
   /*
@@ -115,8 +152,8 @@ public class VEnumField extends VCodeField {
   protected String formatString(String value) {
     int	code = -1;	// cannot be null
 
-    for (int i = 0; code == -1 && i < names.length; i++) {
-      if (value == names[i]) {
+    for (int i = 0; code == -1 && i < codes.length; i++) {
+      if (value == codes[i]) {
 	code = i;
       }
     }
@@ -132,4 +169,6 @@ public class VEnumField extends VCodeField {
    * DATA MEMBERS
    * ----------------------------------------------------------------------
    */
+
+  private final String[]        codes;
 }

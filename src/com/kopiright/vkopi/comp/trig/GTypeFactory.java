@@ -39,10 +39,10 @@ public interface GTypeFactory extends com.kopiright.xkopi.comp.xkjc.XTypeFactory
   int           RFT_MONTHFIELD          = (MIN_TYPE_ID + 10);
   int           RFT_TIMEFIELD           = (MIN_TYPE_ID + 11);
   int           RFT_WEEKFIELD           = (MIN_TYPE_ID + 12);
-  int           RFT_ENUMFIELD           = (MIN_TYPE_ID + 13);
-  int           RFT_BOOLEANCODEFIELD    = (MIN_TYPE_ID + 14);
+  int           RFT_BOOLEANCODEFIELD    = (MIN_TYPE_ID + 13);
+  int           RFT_FIXEDCODEFIELD      = (MIN_TYPE_ID + 14);
   int           RFT_INTEGERCODEFIELD    = (MIN_TYPE_ID + 15);
-  int           RFT_FIXEDCODEFIELD      = (MIN_TYPE_ID + 16);
+  int           RFT_STRINGCODEFIELD     = (MIN_TYPE_ID + 16);
   int           RFT_TEXTFIELD           = (MIN_TYPE_ID + 17);
 
   int           RFT_STRINGCOLUMN        = (MIN_TYPE_ID + 18);
@@ -54,11 +54,12 @@ public interface GTypeFactory extends com.kopiright.xkopi.comp.xkjc.XTypeFactory
   int           RFT_TIMECOLUMN          = (MIN_TYPE_ID + 24);
   int           RFT_WEEKCOLUMN          = (MIN_TYPE_ID + 25);
   int           RFT_BOOLEANCODECOLUMN   = (MIN_TYPE_ID + 26);
-  int           RFT_INTEGERCODECOLUMN   = (MIN_TYPE_ID + 27);
-  int           RFT_FIXEDCODECOLUMN     = (MIN_TYPE_ID + 28);
+  int           RFT_FIXEDCODECOLUMN     = (MIN_TYPE_ID + 27);
+  int           RFT_INTEGERCODECOLUMN   = (MIN_TYPE_ID + 28);
+  int           RFT_STRINGCODECOLUMN    = (MIN_TYPE_ID + 29);
 
-  int           RFT_COLOR               = (MIN_TYPE_ID + 29);
-  int           RFT_IMAGE               = (MIN_TYPE_ID + 30);
+  int           RFT_COLOR               = (MIN_TYPE_ID + 30);
+  int           RFT_IMAGE               = (MIN_TYPE_ID + 31);
 
   int           MAX_TYPE_ID             = RFT_IMAGE;
 }

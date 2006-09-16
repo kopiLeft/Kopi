@@ -113,8 +113,6 @@ vkFieldTypeDefinition []
 |
   self = vkIntegerFieldType[]
 |
-  self = vkEnumFieldType[]
-|
   self = vkCodeFieldType[]
 |
   "DATE"	{ self = new VKDateType(buildTokenReference()); }
@@ -239,39 +237,41 @@ vkIntegerFieldType []
     { self = new VKIntegerType(sourceRef, width, 1, min, max); }
 ;
 
-vkEnumFieldType []
-  returns [VKEnumType self]
-{
-  String[]	names;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
-}
-:
-  "ENUM" LPAREN names = vkStringList[] RPAREN
-    { self = new VKEnumType(sourceRef, names); }
-;
-
 vkCodeFieldType []
   returns [VKCodeType self]
 {
   VKCodeDesc[]		codes;
+  String[]              names;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
+  "ENUM" LPAREN names = vkStringList[] RPAREN
+    {
+      codes = new VKCodeDesc[names.length];
+      for (int i = 0; i < names.length; i++) {
+        codes[i] = new VKCodeDesc(sourceRef, names[i], names[i]);
+      }
+      self = new VKStringCodeType(sourceRef, codes);
+    }
+|
   "CODE"
   (
-    "BOOL" "IS" codes = vkCodeBoolList[]
+    "BOOL" "IS" codes = vkBooleanCodeList[]
       { self = new VKBooleanCodeType(sourceRef, codes); }
   |
-    "LONG" "IS" codes = vkCodeLongList[]
+    "FIXED" "IS" codes = vkFixedCodeList[]
+      { self = new VKFixedCodeType(sourceRef, codes); }
+  |
+    "LONG" "IS" codes = vkIntegerCodeList[]
       { self = new VKIntegerCodeType(sourceRef, codes); }
   |
-    "FIXED" "IS" codes = vkCodeFixedList[]
-      { self = new VKFixedCodeType(sourceRef, codes); }
+    "STRING" "IS" codes = vkStringCodeList[]
+      { self = new VKStringCodeType(sourceRef, codes); }
   )
   "END" "CODE"
 ;
 
-vkCodeBoolList []
+vkBooleanCodeList []
   returns [VKCodeDesc[] self = null]
 {
   ArrayList		vect = new ArrayList();
@@ -287,7 +287,23 @@ vkCodeBoolList []
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
 ;
 
-vkCodeLongList []
+vkFixedCodeList []
+  returns [VKCodeDesc[] self = null]
+{
+  ArrayList		vect = new ArrayList();
+  String		name;
+  Fixed			value;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+}
+:
+  (
+    name = vkString[] ASSIGN value = vkFixedOrInteger[]
+      { vect.add(new VKCodeDesc(sourceRef, name, value)); }
+  )+
+    { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
+;
+
+vkIntegerCodeList []
   returns [VKCodeDesc[] self = null]
 {
   Vector		vect = new Vector();
@@ -303,17 +319,17 @@ vkCodeLongList []
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
 ;
 
-vkCodeFixedList []
+vkStringCodeList []
   returns [VKCodeDesc[] self = null]
 {
-  ArrayList		vect = new ArrayList();
+  Vector		vect = new Vector();
   String		name;
-  Fixed			value;
+  String		value;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
   (
-    name = vkString[] ASSIGN value = vkFixedOrInteger[]
+    name = vkString[] ASSIGN value = vkString[]
       { vect.add(new VKCodeDesc(sourceRef, name, value)); }
   )+
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }

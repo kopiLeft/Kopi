@@ -100,6 +100,6 @@ public class VKBooleanCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printBooleanCodeType(code);
+    p.printCodeType("BOOL", code);
   }
 }

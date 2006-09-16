@@ -31,15 +31,16 @@ import com.kopiright.kopi.comp.kjc.ClassReader;
 /**
  * Factory for visual Java Types
  */
-public class GKjcTypeFactory extends com.kopiright.xkopi.comp.xkjc.XKjcTypeFactory implements GTypeFactory, com.kopiright.kopi.comp.kjc.Constants {
-
+public class GKjcTypeFactory
+  extends com.kopiright.xkopi.comp.xkjc.XKjcTypeFactory
+  implements GTypeFactory, com.kopiright.kopi.comp.kjc.Constants
+{
   public GKjcTypeFactory (Compiler compiler, ClassReader reader, boolean genericEnabled) {
     super(compiler, reader, genericEnabled);
 
     formType = createType(com.kopiright.vkopi.lib.form.VForm.class.getName().replace('.','/'), false);
     blockType = createType(com.kopiright.vkopi.lib.form.VBlock.class.getName().replace('.','/'), false);
     fieldType = createType(com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/'), false);
-    enumFieldType = createType(com.kopiright.vkopi.lib.form.VEnumField.class.getName().replace('.','/'), false);
     booleanFieldType = createType(com.kopiright.vkopi.lib.form.VBooleanField.class.getName().replace('.','/'), false);
     integerFieldType = createType(com.kopiright.vkopi.lib.form.VIntegerField.class.getName().replace('.','/'), false);
     fixedFieldType = createType(com.kopiright.vkopi.lib.form.VFixedField.class.getName().replace('.','/'), false);
@@ -51,9 +52,10 @@ public class GKjcTypeFactory extends com.kopiright.xkopi.comp.xkjc.XKjcTypeFacto
     timeFieldType = createType(com.kopiright.vkopi.lib.form.VTimeField.class.getName().replace('.','/'), false);
     weekFieldType = createType(com.kopiright.vkopi.lib.form.VWeekField.class.getName().replace('.','/'), false);
     textFieldType = createType(com.kopiright.vkopi.lib.form.VTextField.class.getName().replace('.','/'), false);
-    fixedCodeFieldType = createType(com.kopiright.vkopi.lib.form.VFixedCodeField.class.getName().replace('.','/'), false);
     booleanCodeFieldType = createType(com.kopiright.vkopi.lib.form.VBooleanCodeField.class.getName().replace('.','/'), false);
+    fixedCodeFieldType = createType(com.kopiright.vkopi.lib.form.VFixedCodeField.class.getName().replace('.','/'), false);
     integerCodeFieldType = createType(com.kopiright.vkopi.lib.form.VIntegerCodeField.class.getName().replace('.','/'), false);
+    stringCodeFieldType = createType(com.kopiright.vkopi.lib.form.VStringCodeField.class.getName().replace('.','/'), false);
 
     stringColumnType = createType(com.kopiright.vkopi.lib.report.VStringColumn.class.getName().replace('.','/'), false);
     integerColumnType = createType(com.kopiright.vkopi.lib.report.VIntegerColumn.class.getName().replace('.','/'), false);
@@ -64,8 +66,8 @@ public class GKjcTypeFactory extends com.kopiright.xkopi.comp.xkjc.XKjcTypeFacto
     timeColumnType = createType(com.kopiright.vkopi.lib.report.VTimeColumn.class.getName().replace('.','/'), false);
     weekColumnType = createType(com.kopiright.vkopi.lib.report.VWeekColumn.class.getName().replace('.','/'), false);
     booleanCodeColumnType = createType(com.kopiright.vkopi.lib.report.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    integerCodeColumnType = createType(com.kopiright.vkopi.lib.report.VIntegerCodeColumn.class.getName().replace('.','/'), false);
     fixedCodeColumnType = createType(com.kopiright.vkopi.lib.report.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    integerCodeColumnType = createType(com.kopiright.vkopi.lib.report.VIntegerCodeColumn.class.getName().replace('.','/'), false);
 
     colorType = createType(JAV_COLOR, true);
     imageType = createType(JAV_IMAGE, true);
@@ -141,8 +143,8 @@ public class GKjcTypeFactory extends com.kopiright.xkopi.comp.xkjc.XKjcTypeFacto
       return timeFieldType;
     case RFT_WEEKFIELD:
       return weekFieldType;
-    case RFT_ENUMFIELD:
-      return enumFieldType;
+    case RFT_STRINGCODEFIELD:
+      return stringCodeFieldType;
     case RFT_BOOLEANCODEFIELD:
       return booleanCodeFieldType;
     case RFT_INTEGERCODEFIELD:
@@ -205,10 +207,10 @@ public class GKjcTypeFactory extends com.kopiright.xkopi.comp.xkjc.XKjcTypeFacto
   private CReferenceType        monthFieldType;
   private CReferenceType        timeFieldType;
   private CReferenceType        weekFieldType;
-  private CReferenceType        enumFieldType;
   private CReferenceType        booleanCodeFieldType;
-  private CReferenceType        integerCodeFieldType;
   private CReferenceType        fixedCodeFieldType;
+  private CReferenceType        integerCodeFieldType;
+  private CReferenceType        stringCodeFieldType;
   private CReferenceType        textFieldType;
 
   private CReferenceType        stringColumnType;

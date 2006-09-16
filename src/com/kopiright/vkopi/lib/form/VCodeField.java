@@ -135,45 +135,41 @@ public abstract class VCodeField extends VField {
 	throw new VFieldException(this, Message.getMessage("multiple_choice"));
 
       default:
-	setString(block.getActiveRecord(), names[found]);
+	setCode(block.getActiveRecord(), found);
       }
     }
   }
 
-//   /**
-//    * autofill (with a list of possible value if more than one)
-//    * @exception com.kopiright.vkopi.lib.visual.VException an exception may occur
-//    * in gotoNextField
-//    */
-//   public void autofill(boolean showDialog, boolean gotoNextField) 
-//     throws VException
-//   {
-//     final int		selected;
-//     final ListDialog	list;
-    
-//     list = new ListDialog(new VListColumn[] { getListColumn() },
-//                           new Object[][]{ getCodes() });
-//     selected = list.selectFromDialog(getForm().getDisplay(), getDisplay());
-    
-//     if (selected != -1) {
-//       setString(names[selected]);
-//       if (gotoNextField) {
-// 	block.gotoNextField();
-//       }
-//     }
-//   }
   public boolean fillField(PredefinedValueHandler handler) 
     throws VException
   {    
     if (handler != null) {
-      String    value;
+      String    selected;
 
-      value = handler.selectFromList(new VListColumn[] { getListColumn() },
-                                     new Object[][]{ getCodes() },
-                                     names);
+      selected = handler.selectFromList(new VListColumn[] { getListColumn() },
+                                        new Object[][]{ getCodes() },
+                                        names);
 
-      if (value != null) {
-        setString(block.getActiveRecord(), value);
+      if (selected != null) {
+        /*
+         * -1:  no match
+         * >=0: one match
+         * -2:  two (or more) matches: cannot choose
+         */
+        int     found = -1;
+
+        for (int i = 0; found != -2 && i < names.length; i++) {
+	  if (names[i].equals(selected)) {
+            if (found == -1) {
+              found = i;
+            } else {
+              found = -2;
+            }
+          }
+        }
+
+        assert found >= 0;
+	setCode(block.getActiveRecord(), found);
         return true;
       }
     }
@@ -238,28 +234,6 @@ public abstract class VCodeField extends VField {
   }
 
   /**
-   * Sets the field value of given record to a boolean value.
-   */
-  public void setString(int r, String v) {
-    if (v == null || v.equals("")) {
-      setCode(r, -1);
-    } else {
-      int	code = -1;	// cannot be null
-
-      for (int i = 0; code == -1 && i < names.length; i++) {
-	if (v.equals(names[i])) {
-	  code = i;
-	}
-      }
-      if (code == -1) {
-	throw new InconsistencyException("bad code string " + v);
-      }
-
-      setCode(r, code);
-    }
-  }
-
-  /**
    * Is the field value of given record null ?
    */
   public boolean isNullImpl(int r) {
@@ -288,10 +262,10 @@ public abstract class VCodeField extends VField {
   }
 
   /**
-   * Returns the field value of given record as a boolean value.
+   * Returns the field value of given record as a string value.
    */
   public String getString(int r) {
-    return value[r] == -1 ? null : names[value[r]];
+    throw new InconsistencyException();
   }
 
   /**

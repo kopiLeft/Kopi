@@ -29,11 +29,11 @@ PACKAGE =	com/kopiright/vkopi/lib/list
 
 JAVAFILES +=	VBooleanCodeColumn VBooleanColumn			\
 		VCodeColumn VColorColumn VColumn			\
-		VConstants VDateColumn VEnumColumn			\
+		VConstants VDateColumn					\
 		VFixedCodeColumn VFixedColumn				\
 		VImageColumn VIntegerCodeColumn				\
 		VIntegerColumn VList VListColumn			\
-		VMonthColumn VStringColumn				\
+		VMonthColumn  VStringCodeColumn VStringColumn		\
 		VTextColumn VTimeColumn					\
 		VWeekColumn VTimestampColumn
 

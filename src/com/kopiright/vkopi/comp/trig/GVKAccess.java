@@ -267,7 +267,7 @@ public class GVKAccess extends XExpression {
       return TYP_INTEGER_CODE;
     } else if (type.equals(GStdType.TextField)) {
       return TYP_TEXT;
-    } else if (type.equals(GStdType.EnumField)) {
+    } else if (type.equals(GStdType.StringCodeField)) {
       return TYP_ENUM;
     } else {
       throw new InconsistencyException(">>>>>>>>>> " + type);

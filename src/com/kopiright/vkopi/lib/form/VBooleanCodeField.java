@@ -181,6 +181,5 @@ public class VBooleanCodeField extends VCodeField {
    * ----------------------------------------------------------------------
    */
 
-  // dynamic data
-  private final Boolean[]	codes;		// code array
+  private final Boolean[]	codes;
 }

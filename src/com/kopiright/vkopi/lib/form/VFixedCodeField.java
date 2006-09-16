@@ -117,7 +117,7 @@ public class VFixedCodeField extends VCodeField {
    */
 
   /**
-   * Sets the field value of given record to a int value.
+   * Sets the field value of given record to a fixed value.
    */
   public void setFixed(int r, Fixed v) {
     if (v == null) {

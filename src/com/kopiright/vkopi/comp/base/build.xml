@@ -25,7 +25,7 @@
                    VKContext.java 
                    VKDateType.java VKDefaultCommand.java VKDefinition.java 
                    VKDefinitionCollector.java 
-                   VKEnumType.java VKEnvironment.java VKExternAction.java VKFieldList.java 
+                   VKStringCodeType.java VKEnvironment.java VKExternAction.java VKFieldList.java 
                    VKFixedCodeType.java VKFixedType.java 
                    VKHelpUtils.java VKImageType.java VKInsert.java 
                    VKInsertParser.java VKIntegerCodeType.java 

@@ -32,8 +32,10 @@ import com.kopiright.kopi.comp.kjc.ClassReader;
 /**
  * Factory for visual Java Types
  */
-public class VKKjcTypeFactory extends com.kopiright.vkopi.comp.trig.GKjcTypeFactory implements VKTypeFactory, com.kopiright.kopi.comp.kjc.Constants {
-
+public class VKKjcTypeFactory
+  extends com.kopiright.vkopi.comp.trig.GKjcTypeFactory
+  implements VKTypeFactory, com.kopiright.kopi.comp.kjc.Constants
+{
   public VKKjcTypeFactory (Compiler compiler, ClassReader reader, boolean genericEnabled) {
     super(compiler, reader, genericEnabled);
 
@@ -65,11 +67,11 @@ public class VKKjcTypeFactory extends com.kopiright.vkopi.comp.trig.GKjcTypeFact
     VTextColumnType = createType(com.kopiright.vkopi.lib.list.VTextColumn.class.getName().replace('.','/'), false);
     VBooleanColumnType = createType(com.kopiright.vkopi.lib.list.VBooleanColumn.class.getName().replace('.','/'), false);
     VBooleanCodeColumnType = createType(com.kopiright.vkopi.lib.list.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    VIntegerCodeColumnType = createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
     VFixedCodeColumnType = createType(com.kopiright.vkopi.lib.list.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    VIntegerCodeColumnType = createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
+    VStringCodeColumnType = createType(com.kopiright.vkopi.lib.list.VStringCodeColumn.class.getName().replace('.','/'), false);
     VColorColumnType = createType(com.kopiright.vkopi.lib.list.VColorColumn.class.getName().replace('.','/'), false);
     VImageColumnType = createType(com.kopiright.vkopi.lib.list.VImageColumn.class.getName().replace('.','/'), false);
-    VEnumColumnType = createType(com.kopiright.vkopi.lib.list.VEnumColumn.class.getName().replace('.','/'), false);
 
     try {
       VFieldType = (CReferenceType) VFieldType.checkType(context); 
@@ -100,11 +102,11 @@ public class VKKjcTypeFactory extends com.kopiright.vkopi.comp.trig.GKjcTypeFact
       VTextColumnType = (CReferenceType) VTextColumnType.checkType(context);
       VBooleanColumnType = (CReferenceType) VBooleanColumnType.checkType(context);
       VBooleanCodeColumnType = (CReferenceType) VBooleanCodeColumnType.checkType(context);
-      VIntegerCodeColumnType = (CReferenceType) VIntegerCodeColumnType.checkType(context);
       VFixedCodeColumnType = (CReferenceType) VFixedCodeColumnType.checkType(context);
+      VIntegerCodeColumnType = (CReferenceType) VIntegerCodeColumnType.checkType(context);
+      VStringCodeColumnType = (CReferenceType) VStringCodeColumnType.checkType(context);
       VColorColumnType = (CReferenceType) VColorColumnType.checkType(context);
       VImageColumnType = (CReferenceType) VImageColumnType.checkType(context);
-      VEnumColumnType = (CReferenceType) VEnumColumnType.checkType(context);
     } catch (UnpositionedError cue) {
       throw new InconsistencyException("Failure while loading standard types.");
     }
@@ -179,8 +181,8 @@ public class VKKjcTypeFactory extends com.kopiright.vkopi.comp.trig.GKjcTypeFact
       return VColorColumnType;
     case RFT_VIMAGECOLUMN:
       return VImageColumnType;
-    case RFT_VENUMCOLUMN:
-      return VEnumColumnType;
+    case RFT_VSTRINGCODECOLUMN:
+      return VStringCodeColumnType;
     default:
       return super.createReferenceType(typeShortcut);
     }
@@ -224,5 +226,5 @@ public class VKKjcTypeFactory extends com.kopiright.vkopi.comp.trig.GKjcTypeFact
   private CReferenceType         VFixedCodeColumnType;
   private CReferenceType         VColorColumnType;
   private CReferenceType         VImageColumnType;
-  private CReferenceType         VEnumColumnType;
+  private CReferenceType         VStringCodeColumnType;
 }

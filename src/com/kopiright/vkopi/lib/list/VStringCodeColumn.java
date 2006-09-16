@@ -21,7 +21,7 @@ package com.kopiright.vkopi.lib.list;
 
 import com.kopiright.util.base.InconsistencyException;
 
-public class VEnumColumn extends VCodeColumn {
+public class VStringCodeColumn extends VCodeColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -30,20 +30,27 @@ public class VEnumColumn extends VCodeColumn {
   /**
    * Constructs a list column.
    */
-  public VEnumColumn(String title, String column, String[] names, boolean sortAscending) {
+  public VStringCodeColumn(String title, String column, String[] names, String[] codes, boolean sortAscending) {
     super(title, column, names, sortAscending);
+    this.codes = codes;
   }
 
   /*
    * Returns the index.of given object
    */
   protected int getObjectIndex(Object value) {
-    for (int i = 0; i < names.length; i++) {
-      if ((value).equals(names[i])) {
+    for (int i = 0; i < codes.length; i++) {
+      if ((value).equals(codes[i])) {
 	return i;
       }
     }
 
     throw new InconsistencyException("bad code value " + value);
   }
+
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
+
+  private final String[]        codes;
 }

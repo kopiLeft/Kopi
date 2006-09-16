@@ -108,6 +108,6 @@ public class VKIntegerCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printIntegerCodeType(code);
+    p.printCodeType("LONG", code);
   }
 }

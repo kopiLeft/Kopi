@@ -34,10 +34,10 @@ public class VKFixedCodeType extends VKCodeType {
   // ----------------------------------------------------------------------
 
   /**
-   * This is a position given by x and y location
+   * !!!
    *
    * @param where		the token reference of this node
-   * @param code		a list of code pair
+   * @param code		a list of code value pairs
    */
   public VKFixedCodeType(TokenReference where, VKCodeDesc[] code) {
     super(where, code);
@@ -100,6 +100,6 @@ public class VKFixedCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printFixedCodeType(code);
+    p.printCodeType("FIXED", code);
   }
 }

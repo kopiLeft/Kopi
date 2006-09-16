@@ -24,7 +24,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Fixed;
 
 /**
- * This class represents the description of acode value
+ * This class represents the description of a code name value pair.
  */
 public class VKCodeDesc extends VKPhylum {
 
@@ -33,16 +33,16 @@ public class VKCodeDesc extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * This is a position given by x and y location
+   * Construct a new code name value pair.
    *
    * @param where		the token reference of this node
    * @param name		the name of this element
-   * @param val			the value of this element
+   * @param value		the value of this element
    */
-  public VKCodeDesc(TokenReference where, String name, Object val) {
+  public VKCodeDesc(TokenReference where, String name, Object value) {
     super(where);
     this.name = name;
-    this.val = val;
+    this.value = value;
   }
 
   // ----------------------------------------------------------------------
@@ -50,42 +50,53 @@ public class VKCodeDesc extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * Returns the name of this code
+   * Returns the name of this code.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Returns the value of this node as a boolean
+   * Returns the value of this node as a boolean.
    */
   public boolean getBoolean() {
-    if (val instanceof Boolean) {
-      return ((Boolean)val).booleanValue();
+    if (value instanceof Boolean) {
+      return ((Boolean)value).booleanValue();
     }
     throw new InconsistencyException();
-    // !!!!throw new PositionedError(getTokenReference(), "vk-not-boolean", getName(), val);
+    // !!!!throw new PositionedError(getTokenReference(), "vk-not-boolean", getName(), value);
   }
 
   /**
-   * Returns the value of this node as an integer
+   * Returns the value of this node as an integer.
    */
   public int getInteger() {
-    if (val instanceof Integer) {
-      return ((Integer)val).intValue();
+    if (value instanceof Integer) {
+      return ((Integer)value).intValue();
     }
     throw new InconsistencyException();
-    // !!!throw new PositionedError(getTokenReference(), "vk-not-integer", getName(), val);
+    // !!!throw new PositionedError(getTokenReference(), "vk-not-integer", getName(), value);
   }
 
   /**
-   * Returns the value of this node as an integer
+   * Returns the value of this node as a fixed.
    */
   public Fixed getFixed() {
-    if (val instanceof Fixed) {
-      return (Fixed)val;
+    if (value instanceof Fixed) {
+      return (Fixed)value;
     }
-    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-fixed", getName(), val);
+    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-fixed", getName(), value);
+    throw new InconsistencyException();
+  }
+
+  /**
+   * Returns the value of this node as a string.
+   */
+  public String getString() {
+    if (value instanceof String) {
+      return (String)value;
+    }
+    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-string", getName(), value);
     throw new InconsistencyException();
   }
 
@@ -100,10 +111,10 @@ public class VKCodeDesc extends VKPhylum {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    if (val instanceof Boolean) {
-      p.printCodeDesc(name, ((Boolean)val).booleanValue() ? "TRUE" : "FALSE");
+    if (value instanceof Boolean) {
+      p.printCodeDesc(name, ((Boolean)value).booleanValue() ? "TRUE" : "FALSE");
     } else {
-      p.printCodeDesc(name, val.toString());
+      p.printCodeDesc(name, value.toString());
     }
   }
 
@@ -112,5 +123,5 @@ public class VKCodeDesc extends VKPhylum {
   // ----------------------------------------------------------------------
 
   private String      name;
-  private Object      val;
+  private Object      value;
 }

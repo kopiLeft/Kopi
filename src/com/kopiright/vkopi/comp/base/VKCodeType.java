@@ -71,8 +71,8 @@ public abstract class VKCodeType extends VKType {
    */
   public JExpression genConstructor() {
     return new JUnqualifiedInstanceCreation(getTokenReference(),
-				    getType(),
-				    new JExpression[]{ genNames(), genValues() });
+                                            getType(),
+                                            new JExpression[]{ genNames(), genValues() });
   }
 
   /**

@@ -458,35 +458,9 @@ public class VKPrettyPrinter {
   /**
    * Prints a type
    */
-  public void printBooleanCodeType(VKCodeDesc[] code) {
+  public void printCodeType(String baseType, VKCodeDesc[] code) {
     newLine();
-    print("CODE BOOL IS");
-    pos += TAB_SIZE;
-    printCode(code);
-    pos -= TAB_SIZE;
-    newLine();
-    print("END CODE");
-  }
-
-  /**
-   * Prints a type
-   */
-  public void printIntegerCodeType(VKCodeDesc[] code) {
-    newLine();
-    print("CODE LONG IS");
-    pos += TAB_SIZE;
-    printCode(code);
-    pos -= TAB_SIZE;
-    newLine();
-    print("END CODE");
-  }
-
-  /**
-   * Prints a type
-   */
-  public void printFixedCodeType(VKCodeDesc[] code) {
-    newLine();
-    print("CODE FIXED IS");
+    print("CODE " + baseType + " IS");
     pos += TAB_SIZE;
     printCode(code);
     pos -= TAB_SIZE;

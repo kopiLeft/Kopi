@@ -57,11 +57,11 @@ public interface VKTypeFactory extends com.kopiright.vkopi.comp.trig.GTypeFactor
   int           RFT_VTEXTCOLUMN         = (MIN_TYPE_ID + 24);
   int           RFT_VBOOLEANCOLUMN      = (MIN_TYPE_ID + 25);
   int           RFT_VBOOLEANCODECOLUMN  = (MIN_TYPE_ID + 26);
-  int           RFT_VINTEGERCODECOLUMN  = (MIN_TYPE_ID + 27);
-  int           RFT_VFIXEDCODECOLUMN    = (MIN_TYPE_ID + 28);
-  int           RFT_VCOLORCOLUMN        = (MIN_TYPE_ID + 29);
-  int           RFT_VIMAGECOLUMN        = (MIN_TYPE_ID + 30);
-  int           RFT_VENUMCOLUMN         = (MIN_TYPE_ID + 31);
+  int           RFT_VFIXEDCODECOLUMN    = (MIN_TYPE_ID + 27);
+  int           RFT_VINTEGERCODECOLUMN  = (MIN_TYPE_ID + 28);
+  int           RFT_VSTRINGCODECOLUMN   = (MIN_TYPE_ID + 29);
+  int           RFT_VCOLORCOLUMN        = (MIN_TYPE_ID + 30);
+  int           RFT_VIMAGECOLUMN        = (MIN_TYPE_ID + 31);
 
-  int           MAX_TYPE_ID             = RFT_VENUMCOLUMN;
+  int           MAX_TYPE_ID             = RFT_VIMAGECOLUMN;
 }

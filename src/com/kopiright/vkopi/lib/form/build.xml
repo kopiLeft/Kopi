@@ -26,7 +26,7 @@
                    VBooleanField.java VCodeColumn.java VCodeField.java
                    VColorColumn.java VColorField.java VColumn.java VConstants.java
                    VDateColumn.java VDateField.java VDictionaryForm.java
-                   VDocGenerator.java VEnumColumn.java VEnumField.java
+                   VDocGenerator.java VStringCodeColumn.java VStringCodeField.java
                    VField.java VFieldCommand.java VFieldException.java
                    VFieldUI.java VFixedCodeColumn.java VFixedCodeField.java
                    VFixedColumn.java VFixedField.java VForm.java
@@ -57,7 +57,7 @@
                    VBooleanField.java VCodeColumn.java VCodeField.java 
                    VColorColumn.java VColorField.java VColumn.java VConstants.java 
                    VDateColumn.java VDateField.java VDictionaryForm.java 
-                   VDocGenerator.java VEnumColumn.java VEnumField.java 
+                   VDocGenerator.java VStringCodeColumn.java VStringCodeField.java 
                    VField.java VFieldException.java 
                    VFixedCodeColumn.java VFixedCodeField.java 
                    VFixedColumn.java VFixedField.java VForm.java 

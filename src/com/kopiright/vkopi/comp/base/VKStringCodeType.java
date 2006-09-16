@@ -21,29 +21,28 @@ package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseEnumColumn;
+import com.kopiright.xkopi.comp.database.DatabaseStringColumn;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.NotImplementedException;
 
 /**
- * This class represents the definition of an enum type
+ * This class represents the definition of an string code type
  */
-public class VKEnumType extends VKType {
+public class VKStringCodeType extends VKCodeType {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
   /**
-   * This is a position given by x and y location
+   * !!!
    *
    * @param where		the token reference of this node
-   * @param names		the list of names
+   * @param code		a list of code value pairs
    */
-  public VKEnumType(TokenReference where, String[] names) {
-    super(where, 0, 0);
-    this.names = names;
+  public VKStringCodeType(TokenReference where, VKCodeDesc[] codes) {
+    super(where, codes);
   }
 
   // ----------------------------------------------------------------------
@@ -54,7 +53,7 @@ public class VKEnumType extends VKType {
    * Returns the column viewer
    */
   public CReferenceType getListColumnType() {
-    return VKStdType.VEnumColumn;
+    return VKStdType.VStringCodeColumn;
   }
 
   // ----------------------------------------------------------------------
@@ -79,24 +78,12 @@ public class VKEnumType extends VKType {
   // CODE GENERATION
   // ----------------------------------------------------------------------
 
-  /**
-   * Check expression and evaluate and alter context
-   * @exception	PositionedError	Error catched as soon as possible
-   */
-  public JExpression genConstructor() {
-    return new JUnqualifiedInstanceCreation(getTokenReference(),
-				    getType(),
-				    new JExpression[]{ genNames() });
-  }
-
-  /**
-   * Generates the names of this type
-   */
-  protected JExpression genNames() {
+  public JExpression genValues() {
     TokenReference	ref = getTokenReference();
-    JExpression[]	init = new JExpression[names.length];
-    for (int i = 0; i < names.length; i++) {
-      init[i] = new JStringLiteral(ref, names[i].toString());
+    JExpression[]	init =  new JExpression[code.length];
+
+    for (int i = 0; i < code.length; i++) {
+      init[i] = new JStringLiteral(ref, code[i].getString());
     }
     return VKUtils.createArray(ref, CStdType.String, init);
   }
@@ -106,7 +93,7 @@ public class VKEnumType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.EnumField;
+    return com.kopiright.vkopi.comp.trig.GStdType.StringCodeField;
   }
 
 
@@ -115,12 +102,8 @@ public class VKEnumType extends VKType {
    *
    * @return the info
    */
-  public DatabaseColumn getColumnInfo(){
-    if (names != null) {
-      return new DatabaseEnumColumn(true, names);  
-    } else {
-      return new DatabaseEnumColumn(true);
-    }
+  public DatabaseColumn getColumnInfo() {
+    return new DatabaseStringColumn(true);
   }
 
   /**
@@ -128,7 +111,7 @@ public class VKEnumType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    throw new NotImplementedException();
+    return com.kopiright.vkopi.comp.trig.GStdType.StringCodeColumn;
   }
 
   // ----------------------------------------------------------------------
@@ -142,12 +125,6 @@ public class VKEnumType extends VKType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    throw new NotImplementedException();
+    p.printCodeType("STRING", code);
   }
-
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS
-  // ----------------------------------------------------------------------
-
-  private String[]	names;
 }

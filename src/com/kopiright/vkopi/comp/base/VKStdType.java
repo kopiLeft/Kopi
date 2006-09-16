@@ -61,11 +61,11 @@ public class VKStdType {
   public static CReferenceType VTextColumn;
   public static CReferenceType VBooleanColumn;
   public static CReferenceType VBooleanCodeColumn;
-  public static CReferenceType VIntegerCodeColumn;
   public static CReferenceType VFixedCodeColumn;
+  public static CReferenceType VIntegerCodeColumn;
+  public static CReferenceType VStringCodeColumn;
   public static CReferenceType VColorColumn;
   public static CReferenceType VImageColumn;
-  public static CReferenceType VEnumColumn;
 
   // ----------------------------------------------------------------------
   // INITIALIZERS
@@ -111,11 +111,11 @@ public class VKStdType {
     VTextColumn = tf.createType(com.kopiright.vkopi.lib.list.VTextColumn.class.getName().replace('.','/'), false);
     VBooleanColumn = tf.createType(com.kopiright.vkopi.lib.list.VBooleanColumn.class.getName().replace('.','/'), false);
     VBooleanCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    VIntegerCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
     VFixedCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    VIntegerCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
+    VStringCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VStringCodeColumn.class.getName().replace('.','/'), false);
     VColorColumn = tf.createType(com.kopiright.vkopi.lib.list.VColorColumn.class.getName().replace('.','/'), false);
     VImageColumn = tf.createType(com.kopiright.vkopi.lib.list.VImageColumn.class.getName().replace('.','/'), false);
-    VEnumColumn = tf.createType(com.kopiright.vkopi.lib.list.VEnumColumn.class.getName().replace('.','/'), false);
     try {
       VField = (CReferenceType) VField.checkType(context);
       VBlock = (CReferenceType) VBlock.checkType(context);
@@ -146,11 +146,11 @@ public class VKStdType {
       VTextColumn = (CReferenceType) VTextColumn.checkType(context);
       VBooleanColumn = (CReferenceType) VBooleanColumn.checkType(context);
       VBooleanCodeColumn = (CReferenceType) VBooleanCodeColumn.checkType(context);
-      VIntegerCodeColumn = (CReferenceType) VIntegerCodeColumn.checkType(context);
       VFixedCodeColumn = (CReferenceType) VFixedCodeColumn.checkType(context);
+      VIntegerCodeColumn = (CReferenceType) VIntegerCodeColumn.checkType(context);
+      VStringCodeColumn = (CReferenceType) VStringCodeColumn.checkType(context);
       VColorColumn = (CReferenceType) VColorColumn.checkType(context);
       VImageColumn = (CReferenceType) VImageColumn.checkType(context);
-      VEnumColumn = (CReferenceType) VEnumColumn.checkType(context);
     } catch (UnpositionedError cue) {
       compiler.reportTrouble(new PositionedError(TokenReference.NO_REF, BaseMessages.CANT_LOAD_CLASSES));
     }

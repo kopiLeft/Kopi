@@ -40,7 +40,7 @@ JAVAFILES +=	BlockAlignment Commands					\
 		VBooleanField VCodeField				\
 		VColorField VConstants					\
 		VDateField VDictionaryForm				\
-		VDocGenerator VEnumField				\
+		VDocGenerator						\
 		VField VFieldCommand VFieldException			\
 		VFieldUI VFixedCodeField				\
 		VFixedField VForm					\
@@ -50,49 +50,13 @@ JAVAFILES +=	BlockAlignment Commands					\
 		VMonthField VPosition BlockRecordListener		\
 		VQueryNoRowException VQueryOverflowException		\
 		VSkipRecordException					\
-		VStringField VTextField					\
+		VStringCodeField VStringField VTextField		\
 		VTimeField VTimestampField				\
 		VWeekField KopiLayoutManager				\
 		FieldListener FieldChangeListener			\
 		BlockListener ViewBlockAlignment FormListener		\
 		PredefinedValueHandler GUIPredefinedValueHandler	\
 		KeyNavigator Environment Accessor ModelTransformer
-
-## How to separte Model and Gui in 2 packages:
-##JAVAFILES +=	BlockAlignment Commands					\
-##		LatexPrintWriter ListDialog				\
-##		Triggers VBlock						\
-##		VBooleanCodeField					\
-##		VBooleanField VCodeField				\
-##		VColorField VConstants					\
-##		VDateField VDictionaryForm				\
-##		VDocGenerator VEnumField				\
-##		VField VFieldException					\
-##		VFixedCodeField						\
-##		VFixedField VForm					\
-##		VHelpGenerator VImageField				\
-##		VImportedBlock VIntegerCodeField			\
-##		VIntegerField						\
-##		VMonthField VPosition					\
-##		VQueryNoRowException VQueryOverflowException		\
-##		VSkipRecordException					\
-##		VStringField VTextField					\
-##		VTimeField						\
-##		VWeekField KopiLayoutManager FieldListener		\
-##		BlockListener FormListener PredefinedValueHandler
-
-##		MultiFieldAlignment					\
-##		DateChooser ImageFileChooser				\
-##		KopiAlignment	 VFieldCommand				\
-##		KopiFieldDocument ModelTransformer			\
-##		KopiMultiBlockLayout KopiSimpleBlockLayout		\
-##		KopiScanDocument KopiTextField				\
-##		ViewBlockAlignment					\
-##		VFieldUI GUIPredefinedValueHandler			\
-##		DBlock DColorField DField				\
-##		DForm DImage DImageField DLabel				\
-##		DMultiBlock DObjectField DPage				\
-##		DTextEditor DTextField	
 
 ## ----------------------------------------------------------------------
 ## GOALS
