@@ -75,6 +75,7 @@ options {
 public vfCompilationUnit []
   returns [VKWindow self = null]
 :
+  vkLocaleDeclaration[]
   (
      self = vkForm[]
   |

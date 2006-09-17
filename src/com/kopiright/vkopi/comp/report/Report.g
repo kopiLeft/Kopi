@@ -74,6 +74,7 @@ options {
 public vrCompilationUnit []
   returns [VRReport self]
 :
+  vkLocaleDeclaration[]
   self = vrReport[]
   EOF
 ;

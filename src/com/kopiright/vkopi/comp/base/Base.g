@@ -82,11 +82,9 @@ public vkLocaleDeclaration []
 
 public vkCompilationUnit []
   returns [VKInsert self]
-{
-  // !!! graf 990707: was TOKEN(line=0)
-  self = new VKInsert(buildTokenReference(), environment);
-}
 :
+  vkLocaleDeclaration[]
+    {  self = new VKInsert(buildTokenReference(), environment); }
   vkContextHeader[self.getCompilationUnitContext()]
   vkDefinitions[self.getDefinitionCollector()]
   EOF
