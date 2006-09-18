@@ -88,9 +88,6 @@ public class VKActor extends VKDefinition {
   {
     menuDef = collector.getMenuDef(menu);
     check(menuDef != null, BaseMessages.UNDEFINED_MENU, menu);
-    //!!!TEST
-    System.err.println(menu + "->" + menuDef + ": " + menuDef.getLabel());
-    //!!!TEST
   }
 
   private void checkKey() throws PositionedError {
