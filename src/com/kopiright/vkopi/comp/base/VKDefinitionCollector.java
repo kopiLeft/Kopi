@@ -68,6 +68,8 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
     this.insert = insert;
   }
 
+  // -------------------------------------------------------------------
+
   /**
    * search the field type in compilation unit
    */
@@ -96,6 +98,8 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
     types.put(type.getIdent(), type);
   }
 
+  // -------------------------------------------------------------------
+
   /**
    * search the command in compilation unit
    */
@@ -123,6 +127,38 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
     own_commands.addElement(command);
     commands.put(command.getIdent(), command);
   }
+
+  // -------------------------------------------------------------------
+
+  /**
+   * search the command in compilation unit
+   */
+  public VKMenuDefinition getMenuDef(String name) {
+    Object	obj = menus.get(name);
+
+    if (obj != null) {
+      return (VKMenuDefinition)obj;
+    } else {
+      for (int i = inserts.length - 1; i >= 0; i--) {
+	obj = inserts[i].getMenuDef(name);
+	if (obj != null) {
+	  menus.put(name, obj);
+	  return (VKMenuDefinition)obj;
+	}
+      }
+      return null;
+    }
+  }
+
+  /**
+   * add new menu on top of definition for name
+   */
+  public void addMenuDef(VKMenuDefinition menu) {
+    own_menus.addElement(menu);
+    menus.put(menu.getIdent(), menu);
+  }
+
+  // -------------------------------------------------------------------
 
   /**
    * search the Actor in compilation unit
@@ -304,6 +340,7 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
   public void genVKCode(VKPrettyPrinter p) {
     p.printDefinitionCollector(inserts_V,
                                own_types,
+                               own_menus,
                                own_actors,
                                own_commands);
   }
@@ -318,11 +355,13 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
   private Vector			inserts_V	= new Vector();
   private Vector			own_types	= new Vector();
   private Vector			own_commands	= new Vector();
+  private Vector			own_menus	= new Vector();
   private Vector			own_actors	= new Vector();
   private Hashtable			types		= new Hashtable();
   private Hashtable			commands	= new Hashtable();
-  private Hashtable			actors		= new Hashtable(); // $$$ CHANGE
-  private Hashtable			usedActors	= new Hashtable(); // $$$ CHANGE
+  private Hashtable			menus		= new Hashtable();
+  private Hashtable			actors		= new Hashtable();
+  private Hashtable			usedActors	= new Hashtable();
   private int				countActors;
   private String[]                      insertDirectories;
 }

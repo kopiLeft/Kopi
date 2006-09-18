@@ -92,7 +92,7 @@ vrReport []
   "REPORT" name = vkString[]
   vkContextHeader[context.getCompilationUnitContext()]
   help = vkHelp[] 
-  vkDefinitions[context.getDefinitionCollector()]
+  vkDefinitions[context.getDefinitionCollector(), context.getCompilationUnitContext().getPackageName().getName()]
   "BEGIN"
   ( vrReportCommands[context] )?
   ( vrReportTriggers[context] )?

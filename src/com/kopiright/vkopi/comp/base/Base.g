@@ -75,9 +75,7 @@ public vkLocaleDeclaration []
 }
 :
   ( "LOCALE" locale = vkString[] )?
-    {
-      setLocale(locale);
-    }
+    { setLocale(locale); }
 ;
 
 public vkCompilationUnit []
@@ -86,7 +84,7 @@ public vkCompilationUnit []
   vkLocaleDeclaration[]
     {  self = new VKInsert(buildTokenReference(), environment); }
   vkContextHeader[self.getCompilationUnitContext()]
-  vkDefinitions[self.getDefinitionCollector()]
+  vkDefinitions[self.getDefinitionCollector(), self.getCompilationUnitContext().getPackageName().getName()]
   EOF
 ;
 
@@ -446,17 +444,23 @@ vkListDesc []
    { self = new VKListDesc(sourceRef, title, column, type); }
 ;
 
-vkDefinitions [VKDefinitionCollector coll]
+vkDefinitions [VKDefinitionCollector coll, String pack]
 {
   VKDefinition		def;
 }
 :
   (
-    vkMenuDef[coll]
+    def = vkMenuDef[pack]
+      { coll.addMenuDef((VKMenuDefinition)def); }
   |
-    def = vkTypeDef[] { coll.addFieldTypeDef((VKTypeDefinition)def); }
+    def = vkActorDef[pack]
+      { coll.addActorDef((VKActor)def); }
   |
-    def = vkCommandDef[] { coll.addCommandDef((VKCommandDefinition)def); }
+    def = vkTypeDef[]
+      { coll.addFieldTypeDef((VKTypeDefinition)def); }
+  |
+    def = vkCommandDef[]
+      { coll.addCommandDef((VKCommandDefinition)def); }
   |
     vkInsertDefinitions[coll]
   )*
@@ -471,34 +475,48 @@ vkInsertDefinitions[VKDefinitionCollector coll]
 ;
 
 
-vkMenuDef [VKDefinitionCollector coll]
+vkMenuDef [String pack]
+  returns [VKMenuDefinition self]
 {
-  String	name;
-  VKActor	actor;
+  String                ident;
+  String                label = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
-  "MENU" name = vkString[]
-  ( actor = vkMenuItem[name] { coll.addActorDef(actor); } )+
+  "MENU" ident = vkSimpleIdent[]
+  ( "LABEL" label = vkString[] )?
+    {
+      checkLocaleIsSpecifiedIff(label != null, "MENU ITEM LABEL");
+      self = new VKMenuDefinition(sourceRef, pack, ident, label);
+    }
   "END" "MENU"
 ;
 
-vkMenuItem [String menu]
+vkActorDef [String pack]
   returns [VKActor self]
 {
-  String	ident;
-  String	name;
-  String	icon = null;
-  String	help;
-  String	acc = null;
+  String                ident;
+  String                menu;
+  String                label = null;
+  String                help;
+  String                acc = null;
+  String                icon = null;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
-  "ITEM" ident = vkSimpleIdent[]
-  "NAME" name = vkString[]
+  "ACTOR"
+  ident = vkSimpleIdent[]
+  "MENU" menu = vkSimpleIdent[]
+  ( "LABEL" label = vkString[] )?
+  help = vkHelp[]
   ( "KEY" acc = vkString[] )?
   ( "ICON" icon = vkString[] )?
-  help = vkHelp[]
-    { self = new VKActor(sourceRef, ident, menu, name, icon, acc, help); }
+  "END" "ACTOR"
+    {
+      checkLocaleIsSpecifiedIff(label != null, "ACTOR LABEL");
+      checkLocaleIsSpecifiedIff(help != null, "ACTOR HELP");
+      self = new VKActor(sourceRef, pack, ident, menu, label, help, acc, icon);
+    }
 ;
 
 vkTypeDef []

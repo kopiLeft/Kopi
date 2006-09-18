@@ -3,6 +3,7 @@
 
 @literal	ACCESS
 @literal	ACTION
+@literal	ACTOR
 @literal	BLOCK
 @literal	BOOL
 @literal	CALL

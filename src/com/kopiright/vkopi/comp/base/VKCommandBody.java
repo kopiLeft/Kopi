@@ -59,9 +59,9 @@ public class VKCommandBody extends VKPhylum {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context, Commandable commandable) throws PositionedError {
-    actorVK = commandable.getDefinitionCollector().getActorDef(actor);
-    check(actorVK != null, BaseMessages.UNDEFINED_ACTION, actor);
-    actorVK.checkCode(context);
+    actorDef = commandable.getDefinitionCollector().getActorDef(actor);
+    check(actorDef != null, BaseMessages.UNDEFINED_ACTOR, actor);
+    actorDef.checkCode(context, commandable.getDefinitionCollector());
     // !!!check(number != -1, "vk-item-not-found", actor);
   }
 
@@ -114,7 +114,7 @@ public class VKCommandBody extends VKPhylum {
 
   /**
    * Generate the code in kopi form
-   * It is useful to debug and tune compilation process
+   *
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
@@ -127,6 +127,6 @@ public class VKCommandBody extends VKPhylum {
   // ---------------------------------------------------------------------
 
   private String		actor;
-  private VKActor		actorVK;
+  private VKActor		actorDef;
   private VKAction		action;
 }

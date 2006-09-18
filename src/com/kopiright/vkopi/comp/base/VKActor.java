@@ -39,27 +39,30 @@ public class VKActor extends VKDefinition {
   /**
    * Construct a menu element
    * @param where		the token reference of this node
-   * @param ident		the menu item ident
-   * @param menu		the menu name
-   * @param item		the item name
-   * @param icon		the icon name
-   * @param key			the shorcut
+   * @param pack                the package name of the class defining this object
+   * @param ident		the ident
+   * @param menu		the containing menu
+   * @param label		the label
    * @param help		the help
+   * @param key			the shortcut
+   * @param icon		the icon
    */
   public VKActor(TokenReference where,
-		 String ident,
+                 String pack,
+                 String ident,
 		 String menu,
-		 String item,
-		 String icon,
+		 String label,
+		 String help,
 		 String key,
-		 String help) {
-    super(where, help, ident);
+		 String icon)
+  {
+    super(where, pack, ident);
 
-    this.menu	= menu;
-    this.item	= item;
-    this.icon	= icon;
-    this.key	= key;
-    this.help	= help;
+    this.menu = menu;
+    this.label = label;
+    this.help = help;
+    this.key = key;
+    this.icon = icon;
   }
 
   // ----------------------------------------------------------------------
@@ -72,46 +75,68 @@ public class VKActor extends VKDefinition {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context) throws PositionedError {
+    checkKey();
+  }
+
+  /**
+   * Check expression and evaluate and alter context
+   * @param form	the actual context of analyse
+   * @exception	PositionedError	Error catched as soon as possible
+   */
+  public void checkCode(VKContext context, VKDefinitionCollector collector)
+    throws PositionedError
+  {
+    menuDef = collector.getMenuDef(menu);
+    check(menuDef != null, BaseMessages.UNDEFINED_MENU, menu);
+    //!!!TEST
+    System.err.println(menu + "->" + menuDef + ": " + menuDef.getLabel());
+    //!!!TEST
+  }
+
+  private void checkKey() throws PositionedError {
     if (key == null) {
-      return;
-    }
-
-    // $$$ use a static hashtable
-    String	s = key;
-    int	shiftIndex = s.indexOf("Shift-");
-    if (shiftIndex != -1) {
-      s = s.substring(shiftIndex + ("Shift-").length());
-      keyModifier = java.awt.event.KeyEvent.SHIFT_MASK;
-    }
-
-    if (s.equals("F1")) {
-      keyCode = java.awt.event.KeyEvent.VK_F1;
-    } else if (s.equals("F2")) {
-      keyCode = java.awt.event.KeyEvent.VK_F2;
-    } else if (s.equals("F3")) {
-      keyCode = java.awt.event.KeyEvent.VK_F3;
-    } else if (s.equals("F4")) {
-      keyCode = java.awt.event.KeyEvent.VK_F4;
-    } else if (s.equals("F5")) {
-      keyCode = java.awt.event.KeyEvent.VK_F5;
-    } else if (s.equals("F6")) {
-      keyCode = java.awt.event.KeyEvent.VK_F6;
-    } else if (s.equals("F7")) {
-      keyCode = java.awt.event.KeyEvent.VK_F7;
-    } else if (s.equals("F8")) {
-      keyCode = java.awt.event.KeyEvent.VK_F8;
-    } else if (s.equals("F9")) {
-      keyCode = java.awt.event.KeyEvent.VK_F9;
-    } else if (s.equals("F10")) {
-      keyCode = java.awt.event.KeyEvent.VK_F10;
-    } else if (s.equals("F11")) {
-      keyCode = java.awt.event.KeyEvent.VK_F11;
-    } else if (s.equals("F12")) {
-      keyCode = java.awt.event.KeyEvent.VK_F12;
-    } else if (s.equals("esc")) {
-      keyCode = java.awt.event.KeyEvent.VK_ESCAPE;
+      keyModifier = 0;
+      keyCode = KeyEvent.VK_UNDEFINED;
     } else {
-      check(false, BaseMessages.MENU_UNDEFINED_KEY, s);
+      String    baseKey;
+
+      if (key.indexOf("Shift-") == -1) {
+        baseKey = key;
+        keyModifier = 0;
+      } else {
+        baseKey = key.substring(key.indexOf("Shift-") + ("Shift-").length());
+        keyModifier = KeyEvent.SHIFT_MASK;
+      }
+
+      if (baseKey.equals("F1")) {
+        keyCode = KeyEvent.VK_F1;
+      } else if (baseKey.equals("F2")) {
+        keyCode = KeyEvent.VK_F2;
+      } else if (baseKey.equals("F3")) {
+        keyCode = KeyEvent.VK_F3;
+      } else if (baseKey.equals("F4")) {
+        keyCode = KeyEvent.VK_F4;
+      } else if (baseKey.equals("F5")) {
+        keyCode = KeyEvent.VK_F5;
+      } else if (baseKey.equals("F6")) {
+        keyCode = KeyEvent.VK_F6;
+      } else if (baseKey.equals("F7")) {
+        keyCode = KeyEvent.VK_F7;
+      } else if (baseKey.equals("F8")) {
+        keyCode = KeyEvent.VK_F8;
+      } else if (baseKey.equals("F9")) {
+        keyCode = KeyEvent.VK_F9;
+      } else if (baseKey.equals("F10")) {
+        keyCode = KeyEvent.VK_F10;
+      } else if (baseKey.equals("F11")) {
+        keyCode = KeyEvent.VK_F11;
+      } else if (baseKey.equals("F12")) {
+        keyCode = KeyEvent.VK_F12;
+      } else if (baseKey.equals("esc")) {
+        keyCode = KeyEvent.VK_ESCAPE;
+      } else {
+        check(false, BaseMessages.ACTOR_INVALID_KEY, key, getIdent());
+      }
     }
   }
 
@@ -124,7 +149,8 @@ public class VKActor extends VKDefinition {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public JExpression genCode(TokenReference ref, int notused) {
-    int		number = 0;
+    int		number;
+
     if (getIdent().equals(VKConstants.CMD_AUTOFILL)) {
       number = com.kopiright.vkopi.lib.form.VForm.CMD_AUTOFILL;
     } else if (getIdent().equals(VKConstants.CMD_NEWITEM)){
@@ -133,14 +159,40 @@ public class VKActor extends VKDefinition {
       number = com.kopiright.vkopi.lib.form.VForm.CMD_EDITITEM;
     } else if (getIdent().equals(VKConstants.CMD_SHORTCUT)) {
       number = com.kopiright.vkopi.lib.form.VForm.CMD_EDITITEM_S;
+    } else {
+      number = 0;
     }
 
     JExpression[]	exprs;
+
+    /*
+     * !!! graf 20060918 REPLACE WHEN LOCALIZED
     if (number != 0) {
       exprs = new JExpression[] {
 	VKUtils.toExpression(ref, number),
-	VKUtils.toExpression(ref, menu),
-	VKUtils.toExpression(ref, item),
+        VKUtils.toExpression(ref, getSource()),
+	VKUtils.toExpression(ref, menuDef.getIdent()),
+	VKUtils.toExpression(ref, getIdent()),
+	VKUtils.toExpression(ref, icon),
+	VKUtils.toExpression(ref, keyCode),
+	VKUtils.toExpression(ref, keyModifier)
+      };
+    } else {
+      exprs = new JExpression[] {
+        VKUtils.toExpression(ref, getSource()),
+	VKUtils.toExpression(ref, menuDef.getIdent()),
+	VKUtils.toExpression(ref, getIdent()),
+	VKUtils.toExpression(ref, icon),
+	VKUtils.toExpression(ref, keyCode),
+	VKUtils.toExpression(ref, keyModifier)
+      };
+    }
+    */
+    if (number != 0) {
+      exprs = new JExpression[] {
+	VKUtils.toExpression(ref, number),
+	VKUtils.toExpression(ref, menuDef.getLabel()),
+	VKUtils.toExpression(ref, label),
 	VKUtils.toExpression(ref, icon),
 	VKUtils.toExpression(ref, keyCode),
 	VKUtils.toExpression(ref, keyModifier),
@@ -148,8 +200,8 @@ public class VKActor extends VKDefinition {
       };
     } else {
       exprs = new JExpression[] {
-	VKUtils.toExpression(ref, menu),
-	VKUtils.toExpression(ref, item),
+	VKUtils.toExpression(ref, menuDef.getLabel()),
+	VKUtils.toExpression(ref, label),
 	VKUtils.toExpression(ref, icon),
 	VKUtils.toExpression(ref, keyCode),
 	VKUtils.toExpression(ref, keyModifier),
@@ -157,11 +209,11 @@ public class VKActor extends VKDefinition {
       };
     }
     return new JUnqualifiedInstanceCreation(ref,
-				    number == 0 ? VKStdType.SActor : VKStdType.SDefaultActor,
-				    exprs);
-
+                                            number == 0 ? VKStdType.SActor : VKStdType.SDefaultActor,
+                                            exprs);
   }
-
+  
+  
   // ----------------------------------------------------------------------
   // VK CODE GENERATION
   // ----------------------------------------------------------------------
@@ -173,18 +225,35 @@ public class VKActor extends VKDefinition {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printActor(menu, getIdent(), item, key, icon, help);
+    p.printActor(menuDef.getIdent(), getIdent(), label, key, icon, help);
   }
 
+  // ----------------------------------------------------------------------
+  // VK XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.addActor(menu, getIdent(), label, help);
+  }
+
+  public void genLocalization() {
+  
+  }
+   */
+  
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private final String		menu;
-  private final String		item;
-  private final String		icon;
-  private final String		key;
-  private final String		help;
-  private	int		keyModifier;
-  private	int		keyCode = KeyEvent.VK_UNDEFINED;
+  private final String          menu;
+  private final String          label;
+  private final String          help;
+  private final String          key;
+  private final String          icon;
+
+  private VKMenuDefinition      menuDef;
+  private int                   keyCode;
+  private int                   keyModifier;
 }

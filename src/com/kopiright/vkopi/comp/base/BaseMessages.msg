@@ -25,12 +25,16 @@ error		UNDEFINED_TYPE
 		"the type \"{0}\" is not defined"
 		"VKJC"
 
-error		MENU_UNDEFINED_KEY
-		"the menu \"{0}\" is not defined"
+error		ACTOR_INVALID_KEY
+		"the accelerator \"{0}\" specified by actor \"{1}\" is not valid"
 		"VKJC"
 
-error		UNDEFINED_ACTION
-		"the action item named \"{0}\" is not defined"
+error		UNDEFINED_MENU
+		"the menu named \"{0}\" is not defined"
+		"VKJC"
+
+error		UNDEFINED_ACTOR
+		"the actor named \"{0}\" is not defined"
 		"VKJC"
 
 error		FILE_UNKNOWN

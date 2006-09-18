@@ -79,27 +79,31 @@ public abstract class VKFieldType extends VKPhylum {
    * @exception	PositionedError	Error catched as soon as possible
    */
   protected void checkAutofills(VKContext context, VKField field, Commandable commandable) throws PositionedError {
+    VKDefinitionCollector       collector;
+
+    collector = field.getBlock().getDefinitionCollector();
     if (getDef().hasAutofill()) {
       //autofill = field.getBlock().getCommandNumber(CMD_AUTOFILL);
-      actorAutofill = field.getBlock().getDefinitionCollector().getActorDef(CMD_AUTOFILL);
+      actorAutofill = collector.getActorDef(CMD_AUTOFILL);
       check(actorAutofill != null, BaseMessages.COMMAND_DEF_NOT_FOUND, CMD_AUTOFILL); // $$$ DO IT ONE TIME
-      actorAutofill.checkCode(context);
+      actorAutofill.checkCode(context, collector);
     }
     if (getDef().hasShortcut()) {
       //shortcut = field.getBlock().getCommandNumber(CMD_SHORTCUT);
-      actorShortcut = field.getBlock().getDefinitionCollector().getActorDef(CMD_SHORTCUT);
+      actorShortcut = collector.getActorDef(CMD_SHORTCUT);
       check(actorShortcut != null, BaseMessages.COMMAND_DEF_NOT_FOUND, CMD_SHORTCUT);
-      actorShortcut.checkCode(context);
+      actorShortcut.checkCode(context, collector);
     }
     if (getDef().hasNewItem()) {
       //newitem = field.getBlock().getCommandNumber(CMD_NEWITEM);
-      actorNewitem = field.getBlock().getDefinitionCollector().getActorDef(CMD_NEWITEM);
-      actorNewitem.checkCode(context);
+      actorNewitem = collector.getActorDef(CMD_NEWITEM);
+      actorNewitem.checkCode(context, collector);
       check(actorNewitem != null, BaseMessages.COMMAND_DEF_NOT_FOUND, CMD_NEWITEM);
+
       //edititem = field.getBlock().getCommandNumber(CMD_EDITITEM);
-      actorEdititem = field.getBlock().getDefinitionCollector().getActorDef(CMD_EDITITEM);
+      actorEdititem = collector.getActorDef(CMD_EDITITEM);
       check(actorEdititem != null, BaseMessages.COMMAND_DEF_NOT_FOUND, CMD_EDITITEM);
-      actorEdititem.checkCode(context);
+      actorEdititem.checkCode(context, collector);
     }
   }
 

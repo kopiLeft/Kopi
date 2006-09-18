@@ -22,21 +22,22 @@ header { package com.kopiright.vkopi.comp.form; }
 {
   import java.util.Vector;
   import java.util.ArrayList;
+
   import com.kopiright.compiler.base.Compiler;
   import com.kopiright.compiler.base.PositionedError;
-  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.compiler.base.TokenReference;
+  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.kopi.comp.kjc.*;
+  import com.kopiright.util.base.InconsistencyException;
+  import com.kopiright.vkopi.comp.base.*;
+  import com.kopiright.vkopi.comp.base.VKEnvironment;
+  import com.kopiright.vkopi.comp.trig.GKjcParser;
+  import com.kopiright.vkopi.comp.trig.GSqlcParser;
   import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
   import com.kopiright.xkopi.comp.sqlc.TableName;
   import com.kopiright.xkopi.comp.sqlc.TableReference;
-  import com.kopiright.util.base.InconsistencyException;
-  import com.kopiright.vkopi.comp.base.*;
-  import com.kopiright.vkopi.comp.trig.GKjcParser;
-  import com.kopiright.vkopi.comp.trig.GSqlcParser;
   import com.kopiright.xkopi.lib.type.Fixed;
   import com.kopiright.xkopi.lib.type.NotNullFixed;
-  import com.kopiright.vkopi.comp.base.VKEnvironment;
 }
 
 // ----------------------------------------------------------------------
@@ -69,7 +70,7 @@ options {
     return new GSqlcParser(getCompiler(), getBuffer(), environment);
   }
 
-  private final VKEnvironment  environment;
+  private final VKEnvironment   environment;
 }
 
 public vfCompilationUnit []
@@ -77,9 +78,9 @@ public vfCompilationUnit []
 :
   vkLocaleDeclaration[]
   (
-     self = vkForm[]
+    self = vkForm[]
   |
-     self = vkBlockUnit[]
+    self = vkBlockUnit[]
   )
   EOF
 ;
@@ -94,7 +95,7 @@ vkBlockUnit []
 :
   "BLOCK" "INSERT"
   vkContextHeader[context.getCompilationUnitContext()]
-  vkDefinitions[context.getDefinitionCollector()]
+  vkDefinitions[context.getDefinitionCollector(), context.getCompilationUnitContext().getPackageName().getName()]
   block = vkBlock[]
   {
     context.addFormElement(block);
@@ -831,7 +832,7 @@ vkForm []
     )*
   )?
   vkContextHeader[context.getCompilationUnitContext()]
-  vkDefinitions[context.getDefinitionCollector()]
+  vkDefinitions[context.getDefinitionCollector(), context.getCompilationUnitContext().getPackageName().getName()]
   "BEGIN"
   ( opt = vkFormOptions[] )?
   ( vkFormCommands[context] )?

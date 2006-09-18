@@ -213,47 +213,51 @@ public class VKPrettyPrinter {
   }
 
   /**
+   * Prints a menu.
+   */
+  public void printMenu(String ident, String label) {
+    print("MENU ");
+    print(ident);
+    pos += TAB_SIZE;
+    if (label != null) {
+      newLine();
+      print("LABEL   " + '"'  + label + '"');
+    }
+    pos -= TAB_SIZE;
+    newLine();
+    print("END MENU");
+  }
+
+  /**
    * prints a compilation unit
    */
-  public void printActor(String menu,
-                         String item,
-                         String name,
+  public void printActor(String ident,
+                         String menu,
+                         String label,
+                         String help,
                          String key,
-                         String icon,
-                         String help)
+                         String icon)
   {
-    if (old_menu != null && !old_menu.equals(menu)) {
-      newLine();
-      print("END MENU");
-      old_menu = null;
-    }
-
-    if (old_menu == null) {
-      newLine();
-      print("MENU \"" + menu + '"');
-      old_menu = menu;
-    }
-
+    print("ACTOR ");
+    print(ident);
     pos += TAB_SIZE;
-    newLine();
-    print("ITEM " + item);
-
-    pos += TAB_SIZE;
-    if (name != null) {
+    print("MENU    " + menu);
+    if (label != null) {
       newLine();
-      print("NAME \"" + name + '"');
+      print("LABEL   " + '"' + label + '"');
     }
+    printHelp(help);
     if (key != null) {
       newLine();
-      print("KEY \"" + key + '"');
+      print("KEY     " + '"' + key + '"');
     }
     if (icon != null) {
       newLine();
-      print("ICON \"" + icon + '"');
+      print("ICON    " + '"' + icon + '"');
     }
-    printHelp(help);
     pos -= TAB_SIZE;
-    pos -= TAB_SIZE;
+    newLine();
+    print("END ACTOR");
   }
 
   /**
@@ -523,6 +527,7 @@ public class VKPrettyPrinter {
    */
   public void printDefinitionCollector(Vector inserts,
 				       Vector types,
+				       Vector menus,
 				       Vector actors,
 				       Vector commands)
   {
@@ -543,16 +548,18 @@ public class VKPrettyPrinter {
 	((VKDefinition)types.elementAt(i)).genVKCode(this);
       }
     }
+    if (menus != null && menus.size() != 0) {
+      newLine();
+      newLine();
+      for (int  i = 0; i < menus.size(); i++) {
+	((VKDefinition)menus.elementAt(i)).genVKCode(this);
+      }
+    }
     if (actors != null && actors.size() != 0) {
       newLine();
       newLine();
       for (int  i = 0; i < actors.size(); i++) {
 	((VKDefinition)actors.elementAt(i)).genVKCode(this);
-      }
-      if (old_menu != null) {
-	old_menu = null;
-	newLine();
-	print("END MENU");
       }
     }
     if (commands != null && commands.size() != 0) {

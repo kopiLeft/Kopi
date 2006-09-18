@@ -50,8 +50,8 @@ JAVAFILES +=	Commandable						\
 		VKHelpUtils VKImageType VKInsert			\
 		VKInsertParser VKIntegerCodeType			\
 		VKIntegerType VKInternAction VKKjcTypeFactory		\
-		VKLatexPrintWriter					\
-		VKListDesc VKMethodAction VKMonthType VKPhylum		\
+		VKLatexPrintWriter VKListDesc VKMenuDefinition		\
+		VKMethodAction VKMonthType VKPhylum			\
 		VKPrettyPrinter VKStdType VKStringType VKTextType	\
 		VKTimeType VKTimestampType VKTopLevel VKTrigger		\
 		VKType VKTypeFactory VKTypeDefinition VKUtils		\
