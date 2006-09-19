@@ -176,7 +176,7 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
 	obj = inserts[i].getActorDef(name);
 	if (obj != null) {
 	  actors.put(name, obj);
- 	  usedActors.put(name, new Integer(countActors++));
+          usedActors.put(name, new Integer(countActors++));
 	  return (VKActor)obj;
 	}
       }
@@ -195,7 +195,7 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
   public int getActorPos(String actor) {
     Integer	integer = (Integer)usedActors.get(actor);
 
-    return integer == null ? countActors++ : integer.intValue();
+    return integer == null ? -1 : integer.intValue();
   }
 
   // ----------------------------------------------------------------------
@@ -310,7 +310,7 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
   /**
    * Generates the code for all used actors
    */
-  public JExpression genCode(TokenReference ref, Commandable commandable) {
+  public JExpression genCode(TokenReference ref, Commandable unused) {
     if (actors.size() == 0) {
       return new JNullLiteral(ref);
     } else {
@@ -321,9 +321,16 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
         int	actorPos = getActorPos(actor.getIdent());
 
         if (actorPos != -1) {
-          init1[actorPos] = actor.genCode(ref, actorPos);
+          init1[actorPos] = actor.genCode(ref);
         }
       }
+      //!!!TRY
+      for (int i = 0; i < init1.length; i++) {
+        if (init1[i] == null) {
+          init1[i] = new JNullLiteral(ref);
+        }
+      }
+      //!!!TRY
       return VKUtils.createArray(ref, VKStdType.SActor, init1);
     }
   }

@@ -145,7 +145,7 @@ public class VKActor extends VKDefinition {
    * Check expression and evaluate and alter context
    * @exception	PositionedError	Error catched as soon as possible
    */
-  public JExpression genCode(TokenReference ref, int notused) {
+  public JExpression genCode(TokenReference ref) {
     int		number;
 
     if (getIdent().equals(VKConstants.CMD_AUTOFILL)) {
