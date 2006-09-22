@@ -75,7 +75,6 @@ public class VKActor extends VKDefinition {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context) throws PositionedError {
-    checkKey();
   }
 
   /**
@@ -86,6 +85,7 @@ public class VKActor extends VKDefinition {
   public void checkCode(VKContext context, VKDefinitionCollector collector)
     throws PositionedError
   {
+    checkKey();
     menuDef = collector.getMenuDef(menu);
     check(menuDef != null, BaseMessages.UNDEFINED_MENU, menu);
   }
@@ -135,6 +135,8 @@ public class VKActor extends VKDefinition {
         check(false, BaseMessages.ACTOR_INVALID_KEY, key, getIdent());
       }
     }
+    //!!!TEST
+    System.err.println(getIdent() + "." + key + "->" + keyCode + "/" + keyModifier);
   }
 
   // ----------------------------------------------------------------------
