@@ -135,8 +135,6 @@ public class VKActor extends VKDefinition {
         check(false, BaseMessages.ACTOR_INVALID_KEY, key, getIdent());
       }
     }
-    //!!!TEST
-    System.err.println(getIdent() + "." + key + "->" + keyCode + "/" + keyModifier);
   }
 
   // ----------------------------------------------------------------------
