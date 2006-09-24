@@ -185,6 +185,20 @@ public abstract class VKType extends VKPhylum {
   protected void genType(PrintWriter p, String name, Object par1, Object par2) {
   }
 
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Generate localization for this type.
+   * When overriden, subclasses MUST call it (because of lists).
+   *
+   * @param     ident           the type name
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genType(list);
+  }
+  
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------

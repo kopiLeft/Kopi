@@ -353,6 +353,32 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
   }
 
   // ----------------------------------------------------------------------
+  // VK XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    // types
+    for (int i = 0; i < own_types.size(); i++) {
+      ((VKDefinition)own_types.elementAt(i)).genLocalization(writer);
+    }
+    // menus
+    for (int i = 0; i < own_menus.size(); i++) {
+      ((VKDefinition)own_menus.elementAt(i)).genLocalization(writer);
+    }
+    // actors
+    for (int i = 0; i < own_actors.size(); i++) {
+      ((VKDefinition)own_actors.elementAt(i)).genLocalization(writer);
+    }
+    // commands
+    for (int i = 0; i < own_commands.size(); i++) {
+      ((VKDefinition)own_commands.elementAt(i)).genLocalization(writer);
+    }
+  }
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 

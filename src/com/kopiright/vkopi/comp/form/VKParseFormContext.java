@@ -61,7 +61,7 @@ public class VKParseFormContext extends VKParseVKWindowContext {
     element.setPageNumber(pages.size() == 0 ? 0 : pages.size() - 1);
   }
 
-  public void addPage(String page) {
+  public void addPage(VKPage page) {
     pages.addElement(page);
   }
 
@@ -77,8 +77,8 @@ public class VKParseFormContext extends VKParseVKWindowContext {
     return (VKFormElement[])Utils.toArray(elements, VKFormElement.class);
   }
 
-  public String[] getPages() {
-    return (String[])Utils.toArray(pages, String.class);
+  public VKPage[] getPages() {
+    return (VKPage[])Utils.toArray(pages, VKPage.class);
   }
 
   public CReferenceType[] getInterfaces() {

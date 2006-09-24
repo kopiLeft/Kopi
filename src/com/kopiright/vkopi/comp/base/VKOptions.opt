@@ -44,3 +44,16 @@ longname		"sqlTrigger"
 	type		boolean
 	default		"false"
 	help		"Allow SQL in ALL triggers"
+
+longname		"localizationDirectory"
+	shortcut	"l"
+	type		String
+	default		"null"
+	requireArgument
+	help		"Destination directory for XML localization files."
+
+longname		"localizationOnly"
+	shortcut	"L"
+	type		boolean
+	default		"false"
+	help		"Generate XML localization files only."

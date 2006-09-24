@@ -61,7 +61,7 @@ public class VKListDesc extends VKPhylum {
   // SEMANTIC ANALYSIS
   // ----------------------------------------------------------------------
 
-  public void verfiyColumnType(VKContext context, TableReference table) {
+  public void verifyColumnType(VKContext context, TableReference table) {
 
     if (!table.hasColumn(column)) {
       String name  = null;
@@ -128,7 +128,7 @@ public class VKListDesc extends VKPhylum {
 				      new JExpression[] {
 					VKUtils.toExpression(ref, title),
 					VKUtils.toExpression(ref, column),
-					((VKCodeType)type).genNames(),
+					((VKCodeType)type).genLabels(),
 					((VKCodeType)type).genValues(),
 					VKUtils.trueLiteral(ref)});
     } else if (hasSize(type)) {
@@ -184,6 +184,17 @@ public class VKListDesc extends VKPhylum {
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
     p.printListDesc(title, column, type);
+  }
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genListDesc(column, title);
   }
 
   // ----------------------------------------------------------------------

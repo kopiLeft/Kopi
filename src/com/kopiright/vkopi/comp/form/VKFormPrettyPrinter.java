@@ -153,7 +153,8 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
 			       VKDefinitionCollector coll,
 			       VKBlock block,
 			       JClassDeclaration decl,
-			       JavaStyleComment[] comments) {
+			       JavaStyleComment[] comments)
+  {
     printCopyright(name);
     printComment(comments);
 
@@ -179,6 +180,18 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
   }
 
   /**
+   * Prints a new page.
+   */
+  public void printPage(String ident, String title) {
+    newLine();
+    print("NEW PAGE ");
+    print(ident);
+    print(" ");
+    print('"' + title + '"');
+    newLine();
+  }
+
+  /**
    * prints a compilation unit
    */
   public void printBlock(String name,
@@ -199,9 +212,11 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
 			 Vector triggers,
 			 Vector objects,
 			 String page,
-			 JClassDeclaration decl) {
+			 JClassDeclaration decl)
+  {
     if (page != null && !page.equals(current_page)) {
       current_page = page;
+      //!!!page.genVKCode(this);
       newLine();
       print("NEW PAGE \"" + page + '"');
       newLine();
@@ -371,12 +386,23 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
     //newLine();
   }
 
+
+  public void printBlockIndex(String ident, String message) {
+    newLine();
+    print("INDEX " + ident);
+    if (message != null) {
+      print(" ");
+      print('"' + message + '"');
+    }
+  }
+
   /**
    * Prints imported block
    */
   public void printImporterBlock(String name, String shortcut, String page) {
     if (page != null && !page.equals(current_page)) {
       current_page = page;
+      //!!!page.genVKCode(this);
       newLine();
       print("NEW PAGE \"" + page + '"');
       newLine();

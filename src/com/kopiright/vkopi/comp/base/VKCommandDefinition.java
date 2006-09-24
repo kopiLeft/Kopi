@@ -79,9 +79,20 @@ public class VKCommandDefinition extends VKDefinition {
     p.printVKCommandDefinition(getIdent(), command);
   }
 
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    // nothing to do
+  }
+  
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private VKCommandBody	command;
+  private VKCommandBody         command;
 }

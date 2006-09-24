@@ -72,18 +72,18 @@ public abstract class VKCodeType extends VKType {
   public JExpression genConstructor() {
     return new JUnqualifiedInstanceCreation(getTokenReference(),
                                             getType(),
-                                            new JExpression[]{ genNames(), genValues() });
+                                            new JExpression[]{ genLabels(), genValues() });
   }
 
   /**
    * Generates the names of this type
    */
-  public JExpression genNames()  {
+  public JExpression genLabels()  {
     TokenReference	ref = getTokenReference();
     JExpression[]	init = new JExpression[codes.length];
 
     for (int i = 0; i < codes.length; i++) {
-      init[i] = new JStringLiteral(ref, codes[i].getName());
+      init[i] = new JStringLiteral(ref, codes[i].getLabel());
     }
     return VKUtils.createArray(ref, CStdType.String, init);
   }
@@ -103,6 +103,18 @@ public abstract class VKCodeType extends VKType {
    * @param p		the printwriter into the code is generated
    */
   public abstract void genVKCode(VKPrettyPrinter p);
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genCodeType(codes);
+    super.genLocalization(writer);
+  }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

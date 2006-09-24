@@ -14,38 +14,43 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VKMenuDefinition.java 25059 2006-09-06 15:07:19Z taoufik $
+ * $Id: VKBlockIndex.java 24203 2006-01-29 14:40:15Z graf $
  */
 
-package com.kopiright.vkopi.comp.base;
+package com.kopiright.vkopi.comp.form;
 
+
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.compiler.base.UnpositionedError;
+import com.kopiright.vkopi.comp.base.*;
+import com.kopiright.xkopi.comp.xkjc.XUtils;
+import com.kopiright.xkopi.comp.xkjc.XDatabaseColumn;
 
 /**
- * This class represents a menu
+ * A binding to database
  */
-public class VKMenuDefinition extends VKDefinition {
+public class VKBlockIndex extends VKPhylum {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
   /**
-   * Construct a menu element
+   * This is a position given by x and y location
+   *
    * @param where		the token reference of this node
-   * @param pack                the package name of the class defining this object
-   * @param ident		the menu ident
-   * @param label		the menu label (inline l10n)
+   * @param ident		the identifier of the index
+   * @param message		the error message in the default locale
    */
-  public VKMenuDefinition(TokenReference where,
-                          String pack,
-                          String ident,
-                          String label)
-  {
-    super(where, pack, ident);
+  public VKBlockIndex(TokenReference where, String ident, String message) {
+    super(where);
 
-    this.label = label;
+    this.ident = ident;
+    this.message = message;
   }
 
   // ----------------------------------------------------------------------
@@ -53,24 +58,26 @@ public class VKMenuDefinition extends VKDefinition {
   // ----------------------------------------------------------------------
 
   /**
-   * Returns the label.
+   * Returns the identifier of this page.
    */
-  public String getLabel() {
-    return label;
+  public String getIdent() {
+    return ident;
+  }
+
+  /**
+   * Returns the message to display for this page.
+   */
+  public String getMessage() {
+    return message;
   }
 
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
   // ----------------------------------------------------------------------
 
-  /**
-   * Check expression and evaluate and alter context
-   * @param form	the actual context of analyse
-   * @exception	PositionedError	Error catched as soon as possible
-   */
-  public void checkCode(VKContext context) throws PositionedError {
-    //!!! never called
-  }
+  // ----------------------------------------------------------------------
+  // CODE GENERATION
+  // ----------------------------------------------------------------------
 
   // ----------------------------------------------------------------------
   // VK CODE GENERATION
@@ -83,7 +90,7 @@ public class VKMenuDefinition extends VKDefinition {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printMenu(getIdent(), label);
+    ((VKFormPrettyPrinter)p).printBlockIndex(ident, message);
   }
 
   // ----------------------------------------------------------------------
@@ -94,12 +101,13 @@ public class VKMenuDefinition extends VKDefinition {
    * !!!FIX:taoufik
    */
   public void genLocalization(VKLocalizationWriter writer) {
-    writer.genMenuDefinition(getIdent(), label);
+    ((VKFormLocalizationWriter)writer).genBlockIndex(ident, message);
   }
+  
+  // ----------------------------------------------------------------------
+  // PRIVATE DATA
+  // ----------------------------------------------------------------------
 
-  // ---------------------------------------------------------------------
-  // DATA MEMBERS
-  // ---------------------------------------------------------------------
-
-  private final String          label;
+  private final String          ident;
+  private final String          message;
 }

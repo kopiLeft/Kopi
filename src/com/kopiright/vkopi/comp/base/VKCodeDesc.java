@@ -24,7 +24,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Fixed;
 
 /**
- * This class represents the description of a code name value pair.
+ * This class represents the description of a code label value pair.
  */
 public class VKCodeDesc extends VKPhylum {
 
@@ -33,15 +33,21 @@ public class VKCodeDesc extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * Construct a new code name value pair.
+   * Construct a new code label value pair.
    *
    * @param where		the token reference of this node
-   * @param name		the name of this element
+   * @param ident               the identifier of the code value
+   * @param label		the string representation in the default locale
    * @param value		the value of this element
    */
-  public VKCodeDesc(TokenReference where, String name, Object value) {
+  public VKCodeDesc(TokenReference where,
+                    String ident,
+                    String label,
+                    Object value)
+  {
     super(where);
-    this.name = name;
+    this.ident = ident;
+    this.label = label;
     this.value = value;
   }
 
@@ -50,10 +56,17 @@ public class VKCodeDesc extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * Returns the name of this code.
+   * Returns the ident of this code.
    */
-  public String getName() {
-    return name;
+  public String getIdent() {
+    return ident;
+  }
+
+  /**
+   * Returns the label of this code.
+   */
+  public String getLabel() {
+    return label;
   }
 
   /**
@@ -64,7 +77,7 @@ public class VKCodeDesc extends VKPhylum {
       return ((Boolean)value).booleanValue();
     }
     throw new InconsistencyException();
-    // !!!!throw new PositionedError(getTokenReference(), "vk-not-boolean", getName(), value);
+    // !!!!throw new PositionedError(getTokenReference(), "vk-not-boolean", getLabel(), value);
   }
 
   /**
@@ -75,7 +88,7 @@ public class VKCodeDesc extends VKPhylum {
       return ((Integer)value).intValue();
     }
     throw new InconsistencyException();
-    // !!!throw new PositionedError(getTokenReference(), "vk-not-integer", getName(), value);
+    // !!!throw new PositionedError(getTokenReference(), "vk-not-integer", getLabel(), value);
   }
 
   /**
@@ -85,7 +98,7 @@ public class VKCodeDesc extends VKPhylum {
     if (value instanceof Fixed) {
       return (Fixed)value;
     }
-    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-fixed", getName(), value);
+    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-fixed", getLabel(), value);
     throw new InconsistencyException();
   }
 
@@ -96,7 +109,7 @@ public class VKCodeDesc extends VKPhylum {
     if (value instanceof String) {
       return (String)value;
     }
-    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-string", getName(), value);
+    // !!! check somewhere else but not in gen code !!!throw new PositionedError(getTokenReference(), "vk-not-string", getLabel(), value);
     throw new InconsistencyException();
   }
 
@@ -112,16 +125,28 @@ public class VKCodeDesc extends VKPhylum {
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
     if (value instanceof Boolean) {
-      p.printCodeDesc(name, ((Boolean)value).booleanValue() ? "TRUE" : "FALSE");
+      p.printCodeDesc(ident, label, ((Boolean)value).booleanValue() ? "TRUE" : "FALSE");
     } else {
-      p.printCodeDesc(name, value.toString());
+      p.printCodeDesc(ident, label, value.toString());
     }
+  }
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genCodeDesc(ident, label);
   }
 
   // ----------------------------------------------------------------------
   // DATA
   // ----------------------------------------------------------------------
 
-  private String      name;
-  private Object      value;
+  private final String          ident;
+  private final String          label;
+  private final Object          value;
 }

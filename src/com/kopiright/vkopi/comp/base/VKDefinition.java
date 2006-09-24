@@ -37,14 +37,14 @@ public abstract class VKDefinition extends VKPhylum {
    * Create a new block element
    *
    * @param where		the token reference of this node
-   * @param help		the help
+   * @param pack                the package name of the class defining this object
    * @param ident		the name of this definition
    */
-  public VKDefinition(TokenReference where, String help, String ident) {
+  public VKDefinition(TokenReference where, String pack, String ident) {
     super(where);
 
-    this.help = help;
-    this.ident = ident;
+    this.source = pack == null ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
+    this.ident = ident == null ? ("SYNTHETIC_IDENT_" + syntheticIdentCounter++) : ident;
   }
 
   // ----------------------------------------------------------------------
@@ -63,16 +63,34 @@ public abstract class VKDefinition extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * Returns the help associtaed with this phylum
+   * Returns the identifier associated with this phylum
    */
   public String getIdent() {
     return ident;
   }
 
+  /**
+   * Returns the source path containing the current definition
+   */
+  public String getSource() {
+    return source;
+  }
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public abstract void genLocalization(VKLocalizationWriter writer);
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private String		ident;
-  private String		help;
+  private static int            syntheticIdentCounter = 0;
+
+  private final String          source;
+  private final String          ident;
 }

@@ -28,7 +28,8 @@ import com.kopiright.compiler.base.TokenReference;
 
 class VRReport
   extends VKWindow
-  implements com.kopiright.vkopi.lib.report.Constants, com.kopiright.kopi.comp.kjc.Constants
+  implements com.kopiright.vkopi.lib.report.Constants,
+             com.kopiright.kopi.comp.kjc.Constants
 {
 
   // ----------------------------------------------------------------------
@@ -48,15 +49,18 @@ class VRReport
 		  CParseClassContext classContext,
 		  VKDefinitionCollector coll,
 		  String name,
+                  String locale,
 		  VKCommand[] commands,
 		  VKTrigger[] triggers,
 		  VRField[] fields,
-                  String help) {
+                  String help)
+  {
     super(where,
 	  cunit,
 	  classContext,
 	  coll,
 	  name,
+          locale,
 	  CReferenceType.lookup(VRConstants.VKO_REPORT),
 	  new CReferenceType[0],
 	  0,
@@ -228,7 +232,7 @@ class VRReport
 								       null,
 								       "setPageTitle",
 								       new JExpression[] {
-									 VKUtils.toExpression(ref, getName())
+									 VKUtils.toExpression(ref, getTitle())
 								       }),
 					     null));
     body.addElement(new JExpressionStatement(ref,
@@ -365,6 +369,42 @@ class VRReport
   public void genVKCode(VKPrettyPrinter p) {
   }
 
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX : comment move file creation to upper level (VKPhylum?)
+   */
+  public void genLocalization(String destination) {
+    /*
+    if (getLocale() != null) {
+      String        fileName;
+      
+      fileName = getTokenReference().getFile();
+      fileName = fileName.substring(0, fileName.lastIndexOf(".vf")) + "-" + getLocale() + ".xml";
+      
+      try {
+        VKFormLocalizationWriter        writer;
+        
+        writer = new VKFormLocalizationWriter(destination, fileName);
+        genLocalization(writer);
+        writer.close();
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+        System.err.println("cannot write : " + fileName);
+      }
+    }
+    */
+  }
+  
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    //!!!COMPLETE
+  }
+  
   // ----------------------------------------------------------------------
   // PRIVATE CONSTANTS
   // ----------------------------------------------------------------------

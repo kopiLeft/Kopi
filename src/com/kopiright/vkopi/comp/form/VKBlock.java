@@ -78,7 +78,7 @@ public class VKBlock
 		 String help,
 		 int options,
 		 VKBlockTable[] tables,
-		 String[] indices,
+		 VKBlockIndex[] indices,
 		 int[] access,
 		 VKCommand[] commands,
 		 VKTrigger[] triggers,
@@ -543,7 +543,7 @@ public class VKBlock
     if (indices.length > 0) {
       JExpression[] init = new JExpression[indices.length];
       for (int i = 0; i < indices.length; i++) {
-	init[i] = new JStringLiteral(ref, indices[i]);
+	init[i] = new JStringLiteral(ref, indices[i].getMessage());       //!!!localize
       }
       body.addElement(VKUtils.assign(ref, "indices", VKUtils.createArray(ref, CStdType.String, init)));
     }
@@ -680,6 +680,21 @@ public class VKBlock
   }
 
   // ----------------------------------------------------------------------
+  // VK XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    ((VKFormLocalizationWriter)writer).genBlock(getIdent(),
+                                                title,
+                                                help,
+                                                indices,
+                                                fields);
+  }
+
+  // ----------------------------------------------------------------------
   //
   // ----------------------------------------------------------------------
 
@@ -735,12 +750,12 @@ public class VKBlock
   private int			options;
   private int			visible;
   private int			buffer;
-  private VKBlockTable[]	tables;   // <VKBlockTable>
-  private String[]		indices;  // <String>
+  private VKBlockTable[]	tables;
+  private VKBlockIndex[]        indices;
   private int[]			access;
-  private VKCommand[]		commands; // <VKCommand>
-  private VKTrigger[]		triggers; // <VKTrigger>
-  private VKField[]		fields;   // <VKObject>
+  private VKCommand[]		commands;
+  private VKTrigger[]		triggers;
+  private VKField[]		fields;
 
   private int			indicesUsed;
   private int			countSyntheticName;

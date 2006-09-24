@@ -46,7 +46,8 @@ public class VKFieldList extends VKPhylum {
 		     TableReference table,
 		     CType newForm,
 		     VKListDesc[] columns,
-		     boolean access) {
+		     boolean access)
+  {
     super(where);
     this.table = table;
     this.newForm = newForm;
@@ -104,7 +105,7 @@ public class VKFieldList extends VKPhylum {
     }
 */
     for (int i = 0; i < columns.length; i++) {
-      columns[i].verfiyColumnType(context, table);
+      columns[i].verifyColumnType(context, table);
       columns[i].checkCode(context);
     }
   }
@@ -150,6 +151,18 @@ public class VKFieldList extends VKPhylum {
     p.printList(table, newForm, columns, access);
   }
 
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Generate localization for this type.
+   *
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genFieldList(columns);
+  }
+  
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------

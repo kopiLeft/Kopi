@@ -424,6 +424,19 @@ public class VKField
   }
 
   // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    if (!isInternal()) {
+      ((VKFormLocalizationWriter)writer).genField(getIdent(), label, help);
+    }
+  }
+  
+  // ----------------------------------------------------------------------
   // IMPLEMENTATION
   // ----------------------------------------------------------------------
 

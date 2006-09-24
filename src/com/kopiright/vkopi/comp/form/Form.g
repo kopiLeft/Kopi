@@ -28,7 +28,6 @@ header { package com.kopiright.vkopi.comp.form; }
   import com.kopiright.compiler.base.TokenReference;
   import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.kopi.comp.kjc.*;
-  import com.kopiright.util.base.InconsistencyException;
   import com.kopiright.vkopi.comp.base.*;
   import com.kopiright.vkopi.comp.base.VKEnvironment;
   import com.kopiright.vkopi.comp.trig.GKjcParser;
@@ -88,9 +87,9 @@ public vfCompilationUnit []
 vkBlockUnit []
   returns [VKBlockInsert self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
-  VKBlock		block;
-  VKParseFormContext	context = VKParseFormContext.getInstance(environment);
+  TokenReference        sourceRef = buildTokenReference();	// !!! add comments;
+  VKBlock               block;
+  VKParseFormContext    context = VKParseFormContext.getInstance(environment);
 }
 :
   "BLOCK" "INSERT"
@@ -101,10 +100,11 @@ vkBlockUnit []
     context.addFormElement(block);
     self = new VKBlockInsert(sourceRef,
                              environment,
-			     context.getCompilationUnitContext(),
-			     context.getClassContext(),
-	                     context.getDefinitionCollector(),
-			     context.getElements());
+                             context.getCompilationUnitContext(),
+                             context.getClassContext(),
+                             context.getDefinitionCollector(),
+                             context.getElements(),
+                             getLocale());
   }
   "END" "INSERT"
 ;
@@ -115,13 +115,14 @@ vkBlock []
   final int		ACCESS		= com.kopiright.vkopi.lib.form.VConstants.ACS_MUSTFILL;
   String		name;
   String		ident;
-  String		title;
-  int			border		= 0;
-  CReferenceType	superBlock	= null;
-  VKBlockAlign		align		= null;
+  String		title = null;
+  int			border = 0;
+  CReferenceType	superBlock = null;
+  VKBlockAlign		align = null;
   String		help;
   String		inter;
   int			opts;
+  VKBlockIndex[]        indices;
   int			buffer;
   int			vis;
   int[]			access		= new int[] {ACCESS, ACCESS, ACCESS};
@@ -131,7 +132,8 @@ vkBlock []
 :
   "BLOCK" LPAREN buffer = vkInteger[] COMMA vis = vkInteger[] RPAREN
   name = vkBlockName[]
-  title = vkString[]
+  ( title = vkString[] )?
+    { checkLocaleIsSpecifiedIff(title != null, "BLOCK TITLE"); }
   (
     "IS" ident = vkQualifiedIdent[]
       { superBlock = environment.getTypeFactory().createType(ident.replace('.', '/'), false); }
@@ -150,7 +152,7 @@ vkBlock []
   help = vkHelp[]
   opts = vkBlockOptions[]
   ( vkBlockTables[context] )?
-  ( vkBlockIndices[context] )?
+  indices = vkBlockIndices[]
   ( vkModeAndCommands[access, context] )?
   ( vkBlockTriggers[context] )?
   ( vkField[context] )+
@@ -170,7 +172,7 @@ vkBlock []
 			 help,
 			 opts,
 			 context.getTables(),
-			 context.getIndices(),
+			 indices,
 			 access,
 			 context.getCommands(),
 			 context.getTriggers(),
@@ -197,7 +199,7 @@ vkBorder []
 vkImportedBlock []
   returns [VKImportedBlock self]
 {
-  String			name;
+  String		name;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
@@ -344,12 +346,40 @@ vkBlockEventList []
   ( COMMA e = vkBlockEvent[] { self |= (1 << e); } )*
 ;
 
-vkBlockIndices[VKParseBlockContext context]
+vkBlockIndices []
+  returns [VKBlockIndex[] self]
 {
-  String	s;
+  ArrayList     container = new ArrayList();
+  VKBlockIndex	index;
 }
 :
-  ( "INDEX" s = vkString[] { context.addIndice(s); } )+
+  ( 
+    index = vkBlockIndex[container.size()]
+      { container.add(index); }
+  )*
+    { self = (VKBlockIndex[])container.toArray(new VKBlockIndex[container.size()]); }
+;
+
+vkBlockIndex [int count]
+  returns [VKBlockIndex self]
+{
+  String                ident = null;
+  String                message = null;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
+}
+:
+  "INDEX"
+  ( ident = vkSimpleIdent[] )?
+    {
+      if (ident == null) {
+        checkLocaleIsSpecified("BLOCK INDEX IDENT");
+        // if null, create a synthetic identifier
+        ident = "Id$" + count;
+      }
+    }
+  ( message = vkString[] )?
+    { checkLocaleIsSpecifiedIff(message != null, "BLOCK INDEX MESSAGE"); }
+    { self = new VKBlockIndex(sourceRef, ident, message); }
 ;
 
 vkBlockName []
@@ -387,9 +417,9 @@ vkBlockOptions []
 
 vkBlockTables [VKParseBlockContext context]
 {
-  String	n;
-  String	c;
-  String	t;
+  String                n;
+  String                c;
+  String                t;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
@@ -421,32 +451,33 @@ vkBlockTriggers [VKParseBlockContext context]
 
 vkBlocks [VKParseFormContext context]
 {
-  VKFormElement	b;
-  String	p;
+  VKFormElement         block;
+  VKPage                page;
 }
 :
   (
     ( 
-      p = vkNewpage[] 
-                { 
-                  if (context.getElements().length > 0 && context.getPages().length == 0) {
-                      reportTrouble(new PositionedError(buildTokenReference(),
-                                                        FormMessages.MISSING_PAGE));
-                  } 
-                  context.addPage(p);
-                } 
+      page = vkNewpage[context.getPages().length]
+        { 
+          if (context.getElements().length > 0 && context.getPages().length == 0) {
+            reportTrouble(new PositionedError(buildTokenReference(),
+                                              FormMessages.MISSING_PAGE));
+          } 
+          context.addPage(page);
+        } 
     )?
-    ( b = vkBlock[] | b = vkImportedBlock[] ) { context.addFormElement(b); }
+    ( block = vkBlock[] | block = vkImportedBlock[] )
+      { context.addFormElement(block); }
   )+
 ;
 
 vkPosition []
   returns [VKPosition self]
 {
-  String	block       = null;
-  String	field       = null;
-  int		line, column;
-  int		end         = 0;
+  String                field = null;
+  int                   line;
+  int                   column;
+  int                   end = 0;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
@@ -496,21 +527,22 @@ vkLabel [VKParseBlockContext block]
     { block.addElement(new VKLabel(sourceRef, name, pos, border)); }
 ;
 */
+
 vkField [VKParseBlockContext block]
 {
-  String		name		= null;
-  VKPosition		pos		= null;
-  ArrayList		label		= null;
+  String                name = null;
+  VKPosition            pos = null;
+  ArrayList             label = null;
   String		help;
   VKFieldType		type;
-  VKFieldColumns	columns		= null;
-  int			align		= com.kopiright.vkopi.lib.form.VConstants.ALG_LEFT;
-  int			opts		= 0;
+  VKFieldColumns	columns = null;
+  int			align = com.kopiright.vkopi.lib.form.VConstants.ALG_LEFT;
+  int			opts = 0;
   int[]			access;
-  String		alias		= null;
-  int			multiField	= 1;
+  String		alias = null;
+  int			multiField = 1;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comment
-  VKParseFieldContext	context		= VKParseFieldContext.getInstance();
+  VKParseFieldContext	context = VKParseFieldContext.getInstance();
 }
 :
   access = vkFieldSpec[]
@@ -533,35 +565,35 @@ vkField [VKParseBlockContext block]
   "END" "FIELD"
     {
       if (multiField > 1) {
-	VKMultiField.generateFields(block,
-				    sourceRef,
-				    name,
-				    multiField,
-				    pos,
-				    label,
-				    help,
-				    type,
-				    align,
-				    opts,
-				    columns,
-				    access,
-				    context.getCommands(),
-				    context.getTriggers(),
-				    alias);
+        VKMultiField.generateFields(block,
+                                    sourceRef,
+                                    name,
+                                    multiField,
+                                    pos,
+                                    label,
+                                    help,
+                                    type,
+                                    align,
+                                    opts,
+                                    columns,
+                                    access,
+                                    context.getCommands(),
+                                    context.getTriggers(),
+                                    alias);
       } else {
         block.addField(new VKField(sourceRef,
-				     name,
-				     pos,
-				     label == null ? null : (String)label.get(0),
-				     help,
-				     type,
-				     align,
-				     opts,
-				     columns,
-				     access,
-				     context.getCommands(),
-				     context.getTriggers(),
-				     alias));
+                                   name,
+                                   pos,
+                                   label == null ? null : (String)label.get(0),
+                                   help,
+                                   type,
+                                   align,
+                                   opts,
+                                   columns,
+                                   access,
+                                   context.getCommands(),
+                                   context.getTriggers(),
+                                   alias));
       }
       context.release();
    }
@@ -673,7 +705,8 @@ vkFieldIndices []
     x = vkInteger[]
       {
         if (x < 0 || x >= 32) {
-	  throw new InconsistencyException("INDEX VALUE OUT OF RANGE"); // !!!
+          reportTrouble(new PositionedError(buildTokenReference(),
+                                            FormMessages.INDEX_OUT_OF_RANGE));
 	}
         self |= (1 << x);
       }
@@ -806,18 +839,17 @@ vfFieldTypeName []
 vkForm []
   returns [VKForm self = null]
 {
-  String		name;
-  String		ident;
-  CReferenceType	superForm = null;
-  ArrayList		commands = null;
-  ArrayList		triggers = null;
-  ArrayList		interfaces = null;
-  int			opt = 0;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
-  VKParseFormContext	context = VKParseFormContext.getInstance(environment);
+  String                title = null;
+  String                ident;
+  CReferenceType        superForm = null;
+  int                   opt = 0;
+  TokenReference        sourceRef = buildTokenReference();	// !!! add comments;
+  VKParseFormContext    context = VKParseFormContext.getInstance(environment);
 }
 :
-  "FORM"  name = vkString[]
+  "FORM"
+  ( title = vkString[] )?
+    { checkLocaleIsSpecifiedIff(title != null, "FORM TITLE"); }
   (
     "IS" ident = vkQualifiedIdent[]
       { superForm = environment.getTypeFactory().createType(ident.replace('.', '/'), false); }
@@ -843,19 +875,20 @@ vkForm []
     {
       self = new VKForm(sourceRef,
                         environment,
-			context.getCompilationUnitContext(),
-			context.getClassContext(),
-	                context.getDefinitionCollector(),
-			name,
-			superForm,
-			context.getInterfaces(),
-			opt,
-			context.getCommands(),
-			context.getTriggers(),
-			context.getElements(),
-			context.getPages());
+                        context.getCompilationUnitContext(),
+                        context.getClassContext(),
+                        context.getDefinitionCollector(),
+                        title,
+                        getLocale(),
+                        superForm,
+                        context.getInterfaces(),
+                        opt,
+                        context.getCommands(),
+                        context.getTriggers(),
+                        context.getElements(),
+                        context.getPages());
       context.release();
-   }
+    }
 ;
 
 vkFormOptions []
@@ -956,8 +989,24 @@ vkModeList []
   ( COMMA mode = vkMode[] { self |= mode; } )*
 ;
 
-vkNewpage []
-  returns [String self]
+vkNewpage [int count]
+  returns [VKPage self]
+{
+  String                ident = null;
+  String                title = null;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
+}
 :
-  "NEW" "PAGE" self = vkString[] ( "CENTER" { self += "<CENTER>"; })? // !!! temp
+  "NEW" "PAGE" 
+  ( ident = vkSimpleIdent[])?
+    {
+      if (ident == null) {
+        checkLocaleIsSpecified("PAGE IDENT");
+        // if null, create a synthetic identifier
+        ident = "Id$" + count;
+      }
+    }
+  ( title = vkString[] )?
+    { checkLocaleIsSpecifiedIff(title != null, "PAGE TITLE"); }
+    { self = new VKPage(sourceRef, ident, title); }
 ;

@@ -28,10 +28,12 @@ import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.util.base.Utils;
 import com.kopiright.vkopi.comp.base.VKCommand;
 import com.kopiright.vkopi.comp.base.VKConstants;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKDefinitionCollector;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
 import com.kopiright.vkopi.comp.base.VKStdType;
 import com.kopiright.vkopi.comp.base.VKTrigger;
@@ -51,7 +53,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
    * This class represents the definition of a form
    *
    * @param where		the token reference of this node
-   * @param name		the name of this form
+   * @param title		the title of this form
    * @param superName		the type of the form
    */
   public VKForm(TokenReference where,
@@ -59,20 +61,22 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 		CParseCompilationUnitContext cunit,
 		CParseClassContext classContext,
 		VKDefinitionCollector coll,
-		String name,
+		String title,
+		String locale,
 		CReferenceType superForm,
 		CReferenceType[] interfaces,
 		int options,
 		VKCommand[] commands,
 		VKTrigger[] triggers,
 		VKFormElement[] blocks,
-		String[] pages)
+		VKPage[] pages)
   {
     super(where,
 	  cunit,
 	  classContext,
 	  coll,
-	  name,
+	  title,
+          locale,
 	  superForm == null ? CReferenceType.lookup(VKConstants.VKO_FORM) : superForm,
 	  interfaces,
 	  options,
@@ -174,8 +178,8 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 							       JFormalParameter.EMPTY,
 							       VKUtils.VECT_VException,
 							       new JConstructorBlock(ref,
-                                                                                 null,
-                                                                                 new JStatement[0]),
+                                                                                     null,
+                                                                                     new JStatement[0]),
 							       null,
 							       null,
                                                                factory);
@@ -250,20 +254,6 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 					 expr);
   }
 
-  /**
-   * get block number
-   *
-  public int getBlockNumber(VKFormElement b) {
-    for (int i = 0; i < blocks.size(); i++) {
-      // !!!!$$$$
-      if (((VKFormElement)blocks.elementAt(i)) == b) {
-	return i;
-      }
-    }
-    throw new InconsistencyException("FATAL ERROR: Undefined block" + b.getIdent());
-  }
-*/
-
   // ----------------------------------------------------------------------
   // CODE GENERATION
   // ----------------------------------------------------------------------
@@ -281,7 +271,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
     // PAGES
     JExpression[]	init1 = new JExpression[pages.length];
     for (int i = 0; i < pages.length; i++) {
-      init1[i] = new JStringLiteral(ref, pages[i]);
+      init1[i] = new JStringLiteral(ref, pages[i].getTitle());     //!!!localize
     }
     body.addElement(VKUtils.assign(ref, "pages", VKUtils.createArray(ref, CStdType.String, init1)));
 
@@ -315,12 +305,13 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 							  new JNameExpression(ref, CMP_BLOCK_ARRAY),
 							  new JIntLiteral(ref, i));
 	JExpression	assign = new JAssignmentExpression(ref, left, expr);
+
 	body.addElement(new JExpressionStatement(ref, assign, null));
       }
     }
 
-    // Set Title
-    body.addElement(new JExpressionStatement(ref, VKUtils.call(ref, "setTitle", VKUtils.toExpression(ref, getName())), null));
+    // Set Title: remove when localized !!!
+    body.addElement(new JExpressionStatement(ref, VKUtils.call(ref, "setTitle", VKUtils.toExpression(ref, getTitle())), null));
 
     for (int i = 0; i < blocks.length; i++) {
       VKFormElement	block = blocks[i];
@@ -329,7 +320,9 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
       left = new JMethodCallExpression(ref,
 				       JNameExpression.build(ref, block.getIdent()),
 				       "setInfo",
-				       new JExpression[] {VKUtils.toExpression(ref, block.getPageNumber())});
+				       new JExpression[] {
+                                         VKUtils.toExpression(ref, block.getPageNumber())
+                                       });
       body.addElement(new JExpressionStatement(ref, left, null));
     }
 
@@ -341,7 +334,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 				  JFormalParameter.EMPTY,
 				  CReferenceType.EMPTY,
 				  new JBlock(ref,
-					     (JStatement[])com.kopiright.util.base.Utils.toArray(body, JStatement.class),
+					     (JStatement[])Utils.toArray(body, JStatement.class),
 					     null),
 				  null,
 				  null);
@@ -366,11 +359,11 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
     }
 
     try {
-    final VKPrettyPrinter       pp;
+      final VKPrettyPrinter       pp;
 
-    pp = new VKFormPrettyPrinter(fileName, factory);
-    genVKCode(pp);
-    pp.close();
+      pp = new VKFormPrettyPrinter(fileName, factory);
+      genVKCode(pp);
+      pp.close();
     } catch (IOException ioe) {
       ioe.printStackTrace();
       System.err.println("cannot write : " + fileName);
@@ -386,10 +379,47 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
   }
 
   // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX : comment move file creation to upper level (VKPhylum?)
+   */
+  public void genLocalization(String destination) {
+    if (getLocale() != null) {
+      String        baseName;
+      
+      baseName = getTokenReference().getFile();
+      baseName = baseName.substring(0, baseName.lastIndexOf(".vf"));
+      
+      try {
+        VKFormLocalizationWriter        writer;
+        
+        writer = new VKFormLocalizationWriter();
+        genLocalization(writer);
+        writer.write(destination, baseName, getLocale());
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+        System.err.println("cannot write : " + baseName);
+      }
+    }
+  }
+  
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    ((VKFormLocalizationWriter)writer).genForm(getTitle(), 
+                                               getDefinitionCollector(),
+                                               pages,
+                                               blocks);
+  }
+  
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
   private VKFormElement[]		blocks;
-  private String[]			pages;
+  private VKPage[]			pages;
   private final KjcEnvironment          environment;
 }

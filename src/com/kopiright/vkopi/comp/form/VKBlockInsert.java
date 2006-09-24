@@ -22,17 +22,18 @@ package com.kopiright.vkopi.comp.form;
 import java.io.File;
 import java.io.IOException;
 
+import com.kopiright.compiler.base.Compiler;
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.vkopi.comp.base.VKCommand;
 import com.kopiright.vkopi.comp.base.VKConstants;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKDefinitionCollector;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
 import com.kopiright.vkopi.comp.base.VKTrigger;
 import com.kopiright.vkopi.comp.base.VKWindow;
-import com.kopiright.kopi.comp.kjc.*;
-import com.kopiright.compiler.base.Compiler;
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.TokenReference;
 
 /**
  * This class represents the definition of a form
@@ -55,12 +56,15 @@ class VKBlockInsert extends VKWindow {
 		       CParseCompilationUnitContext cunit,
 		       CParseClassContext classContext,
 		       VKDefinitionCollector coll,
-		       VKFormElement[] blocks) {
+		       VKFormElement[] blocks,
+                       String locale)
+  {
     super(where,
 	  cunit,
 	  classContext,
 	  coll,
 	  "BlockInsert",
+          locale,
 	  CReferenceType.lookup(VKConstants.VKO_BLOCK),
 	  CReferenceType.EMPTY,
 	  0,
@@ -158,6 +162,41 @@ class VKBlockInsert extends VKWindow {
   public void genVKCode(VKPrettyPrinter p) {
   }
 
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX : comment + move file creation to upper level (VKPhylum?)
+   */
+  public void genLocalization(String destination) {
+    if (getLocale() != null) {
+      String        baseName;
+      
+      baseName = getTokenReference().getFile();
+      baseName = baseName.substring(0, baseName.lastIndexOf(".vf"));
+      
+      try {
+        VKFormLocalizationWriter        writer;
+        
+        writer = new VKFormLocalizationWriter();
+        genLocalization(writer);
+        writer.write(destination, baseName, getLocale());
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+        System.err.println("cannot write : " + baseName);
+      }
+    }
+  }
+  
+  /**
+   * !!!FIX
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    ((VKFormLocalizationWriter)writer).genBlockInsert(getDefinitionCollector(),
+                                                      block);
+  }
+  
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

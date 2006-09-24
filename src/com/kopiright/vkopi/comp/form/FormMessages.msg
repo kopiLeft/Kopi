@@ -25,6 +25,10 @@ error		UNDEFINED_INDEX
 		"The index number {0} is not defined in this block"
 		"FORM"
 
+error		INDEX_OUT_OF_RANGE
+		"The index number {0} is outside the allowed range (0 .. 32)"
+		"FORM"
+
 error		BLOCK_NOT_FOUND
 		"Block \"{0}\" is not defined."
 		"FORM"

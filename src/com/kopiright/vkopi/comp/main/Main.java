@@ -45,6 +45,7 @@ import com.kopiright.vkopi.comp.base.*;
 import com.kopiright.vkopi.comp.form.FormParser;
 import com.kopiright.vkopi.comp.print.PrintParser;
 import com.kopiright.vkopi.comp.report.ReportParser;
+
 /**
  * This class implements the entry point of the Kopi compiler
  */
@@ -112,8 +113,10 @@ public class Main extends Compiler implements VKInsertParser {
     topLevel = new VKTopLevel(this, this, environment);
     errorFound = false;
 
+    
     gkopic.initialize(environment);
     com.kopiright.xkopi.comp.xkjc.XUtils.initialize(environment, options.xkjcpath, !options.nooo, options.database);
+
 
     if (options.sqlCase != null) {
       if (options.sqlCase.equals("upper")) {
@@ -138,10 +141,21 @@ public class Main extends Compiler implements VKInsertParser {
 
     options.destination = checkDestination(options.destination);
 
+   if (options.localizationOnly) {
+     VKInsert[] tree = new VKInsert[infiles.size()];
+         
+     for (int count = 0; count < tree.length; count++) {
+       tree[count] = (VKInsert)parseFile((File)infiles.get(count), environment);
+       tree[count].genLocalization(options.localizationDirectory);
+     }
+     return true;
+   }
+
     // PARSING
-    VKCompilationUnit[]	tree = new VKCompilationUnit[infiles.size()];
+    VKCompilationUnit[]  tree = new VKCompilationUnit[infiles.size()];
+    
     for (int count = 0; count < tree.length; count++) {
-      tree[count] = parseFile((File)infiles.get(count), environment);
+      tree[count] = (VKCompilationUnit)parseFile((File)infiles.get(count), environment);
     }
 
     if (errorFound) {
@@ -161,57 +175,60 @@ public class Main extends Compiler implements VKInsertParser {
     }
 
 
-   if (!options.beautify) {
-      for (int count = 0; count < tree.length; count++) {
-	try {
-	  tree[count].checkCode(new VKContext(this, topLevel, options.sqlTrigger));
-	} catch (PositionedError e) {
-	  reportTrouble(e);
-	}
-      }
+   if (!options.beautify && !options.localizationOnly) {
+     for (int count = 0; count < tree.length; count++) {
+       try {
+         tree[count].checkCode(new VKContext(this, topLevel, options.sqlTrigger));
+         tree[count].genLocalization(options.localizationDirectory);
+       } catch (PositionedError e) {
+         reportTrouble(e);
+       }
+     }
+     
+     if (errorFound) {
+       return false;
+     }
 
-      if (errorFound) {
-	return false;
-      }
+     JCompilationUnit[]	cunits = topLevel.genCUnits(this, tree);
 
-      JCompilationUnit[]	cunits = topLevel.genCUnits(this, tree);
+     // $$$ IN ONE BIG METHOD IN GKOPIC
+     
+     if (!gkopic.join(cunits)) {
+       return false;
+     }
+     if (!gkopic.checkInterface(cunits)) {
+       return false;
+     }
+     if (!gkopic.prepareInitializers()) {
+       return false;
+     }
+     if (!gkopic.checkInitializers()) {
+       return false;
+     }
+     if (!gkopic.checkBody()) {
+       return false;
+     }
+   }
+   
+   if (options.beautify) {
+     for (int count = 0; count < tree.length; count++) {
+       tree[count].genVKCode(options.destination, environment.getTypeFactory());
+     }
+   }
+   
 
-      // $$$ IN ONE BIG METHOD IN GKOPIC
-
-      if (!gkopic.join(cunits)) {
-	return false;
-      }
-      if (!gkopic.checkInterface(cunits)) {
-	return false;
-      }
-      if (!gkopic.prepareInitializers()) {
-	return false;
-      }
-      if (!gkopic.checkInitializers()) {
-	return false;
-      }
-      if (!gkopic.checkBody()) {
-	return false;
-      }
-    }
-
-    if (options.beautify) {
-      for (int count = 0; count < tree.length; count++) {
-	tree[count].genVKCode(options.destination, environment.getTypeFactory());
-      }
-    }
-
-    gkopic.genCode(environment.getTypeFactory());
-
-    if (verboseMode()) {
-      inform(CompilerMessages.COMPILATION_ENDED);
-    }
+   
+   gkopic.genCode(environment.getTypeFactory());
+   
+   if (verboseMode()) {
+     inform(CompilerMessages.COMPILATION_ENDED);
+   }
 
     if (environment.isDeprecatedUsed() && !environment.showDeprecated()) {
       // One warning in something deprecated is used
       inform(KjcMessages.SOMETHING_DEPRECATED_USED);
     }
-
+    
     return true;
   }
 
@@ -336,7 +353,7 @@ public class Main extends Compiler implements VKInsertParser {
    * @param	file		the name of the file (assert exists)
    * @return	the compilation unit defined by this file
    */
-  protected VKCompilationUnit parseFile(File file, VKEnvironment environment) {
+  protected VKPhylum parseFile(File file, VKEnvironment environment) {
     InputBuffer		buffer;
 
     try {
@@ -352,23 +369,28 @@ public class Main extends Compiler implements VKInsertParser {
       return null;
     }
 
-    Parser		parser = null;
-    VKCompilationUnit	unit;
-    long		lastTime = System.currentTimeMillis();
+    Parser      parser = null;
+    VKPhylum    unit;
+    long        lastTime = System.currentTimeMillis();
 
     try {
-      if (file.getName().endsWith(".vf")) {
-	parser = new FormParser(this, buffer, environment);
-	unit = ((FormParser)parser).vfCompilationUnit();
-      } else if (file.getName().endsWith(".vr")) {
-	parser = new ReportParser(this, buffer, environment);
-	unit = ((ReportParser)parser).vrCompilationUnit();
-      } else if (file.getName().endsWith(".vp")) {
-	parser = new PrintParser(this, buffer, environment);
-	unit = ((PrintParser)parser).prCompilationUnit();
+      if (options.localizationOnly) {
+        parser = new BaseParser(this, buffer, environment);
+        unit = ((BaseParser)parser).vkCompilationUnit();
       } else {
-	inform(BaseMessages.UNKNOWN_FILE_SUFFIX, file.getPath());
-	return null;
+        if (file.getName().endsWith(".vf")) {
+          parser = new FormParser(this, buffer, environment);
+          unit = ((FormParser)parser).vfCompilationUnit();
+        } else if (file.getName().endsWith(".vr")) {
+          parser = new ReportParser(this, buffer, environment);
+          unit = ((ReportParser)parser).vrCompilationUnit();
+        } else if (file.getName().endsWith(".vp")) {
+          parser = new PrintParser(this, buffer, environment);
+          unit = ((PrintParser)parser).prCompilationUnit();
+        } else {
+          inform(BaseMessages.UNKNOWN_FILE_SUFFIX, file.getPath());
+          return null;
+        }
       }
     } catch (ParserException e) {
       reportTrouble(parser.beautifyParseError(e));

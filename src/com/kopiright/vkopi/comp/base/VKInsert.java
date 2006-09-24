@@ -19,6 +19,8 @@
 
 package com.kopiright.vkopi.comp.base;
 
+import java.io.IOException;
+
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
@@ -50,17 +52,19 @@ public class VKInsert
    * This class represents the definition of a form
    *
    * @param where		the token reference of this node
-   * @param name		the name of this form
-   * @param superName		the type of the form
+   * @param environment		the compilation environment
+   * @param locale              the locale specified in the source
    */
   public VKInsert(TokenReference where,
-                  VKEnvironment environment)
+                  VKEnvironment environment,
+                  String locale)
   {
     super(where);
 
     this.environment = environment;
     this.cunit = new CParseCompilationUnitContext();
     this.clazz = new CParseClassContext();
+    this.locale = locale;
   }
 
   // ----------------------------------------------------------------------
@@ -179,6 +183,37 @@ public class VKInsert
   }
 
   // ----------------------------------------------------------------------
+  // VK XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   */
+  public void genLocalization(String directory) {
+    String        baseName;
+    
+    baseName = getTokenReference().getFile();
+    baseName = baseName.substring(0, baseName.lastIndexOf("."));
+      
+    try {
+      final VKLocalizationWriter writer;
+        
+      writer = new VKLocalizationWriter();
+      genLocalization(writer);
+      writer.write(directory, baseName, locale);
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      System.err.println("cannot write : " + baseName);
+    }
+  }
+  
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genInsert(coll);
+  }
+  
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
@@ -186,4 +221,5 @@ public class VKInsert
   private CParseCompilationUnitContext		cunit;
   private CParseClassContext			clazz;
   protected final VKEnvironment                 environment;
+  private final String                          locale;
 }

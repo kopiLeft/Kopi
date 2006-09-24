@@ -28,6 +28,7 @@ import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKDefinition;
 import com.kopiright.vkopi.comp.base.VKLatexPrintWriter;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
 
 /**
@@ -119,6 +120,17 @@ public abstract class PRStyle extends VKDefinition {
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
+    throw new NotImplementedException();
+  }
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
     throw new NotImplementedException();
   }
 

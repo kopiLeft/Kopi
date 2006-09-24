@@ -40,13 +40,12 @@ public class VKExternAction extends VKAction {
   /**
    * Construct a menu element
    * @param where		the token reference of this node
-   * @param modes		the events that this trigger listen
-   * @param action		the action to perform
+   * @param ident               the identifier of the action to perform
    */
-  public VKExternAction(TokenReference where, String name) {
+  public VKExternAction(TokenReference where, String ident) {
     super(where);
 
-    this.name = name;
+    this.ident = ident;
   }
 
   // ----------------------------------------------------------------------
@@ -62,7 +61,7 @@ public class VKExternAction extends VKAction {
     JNameExpression	name;
     JExpression		expr;
 
-    name = XNameExpression.build(ref, this.name.replace('.', '/'));
+    name = XNameExpression.build(ref, ident.replace('.', '/'));
     expr = new JMethodCallExpression(ref,
 				     name.getPrefix(),
 				     name.getName(),
@@ -86,12 +85,12 @@ public class VKExternAction extends VKAction {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printExternAction(name);
+    p.printExternAction(ident);
   }
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private String	name;
+  private final String          ident;
 }

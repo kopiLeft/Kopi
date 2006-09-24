@@ -55,7 +55,7 @@ JAVAFILES +=	Commandable						\
 		VKPrettyPrinter VKStdType VKStringType VKTextType	\
 		VKTimeType VKTimestampType VKTopLevel VKTrigger		\
 		VKType VKTypeFactory VKTypeDefinition VKUtils		\
-		VKWeekType VKWindow
+		VKWeekType VKWindow VKLocalizationWriter
 
 MESSAGES =	BaseMessages
 

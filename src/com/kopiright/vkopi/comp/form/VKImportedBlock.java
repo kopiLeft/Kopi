@@ -21,6 +21,7 @@ package com.kopiright.vkopi.comp.form;
 
 import com.kopiright.vkopi.comp.base.VKWindow;
 import com.kopiright.vkopi.comp.base.VKContext;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.TokenReference;
@@ -29,7 +30,10 @@ import com.kopiright.compiler.base.TokenReference;
  * A block on a form
  * A block contains fields and reference to database
  */
-public class VKImportedBlock extends VKFormElement implements com.kopiright.vkopi.lib.form.VConstants {
+public class VKImportedBlock
+  extends VKFormElement
+  implements com.kopiright.vkopi.lib.form.VConstants
+{
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -99,6 +103,17 @@ public class VKImportedBlock extends VKFormElement implements com.kopiright.vkop
     genComments(p);
     ((VKFormPrettyPrinter)p).printImporterBlock(getIdent(), getShortcut(), page);
     */
+  }
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    //!!! what to do ???
   }
 
   // ----------------------------------------------------------------------

@@ -20,8 +20,10 @@
 package com.kopiright.vkopi.comp.base;
 
 import java.util.Vector;
+
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.Compiler;
+import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 
@@ -38,22 +40,25 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
    * This class represents the definition of a form
    *
    * @param where		the token reference of this node
-   * @param name		the name of this form
+   * @param title		the title of this form
    * @param superName		the type of the form
    */
   public VKWindow(TokenReference where,
  		  CParseCompilationUnitContext cunit,
 		  CParseClassContext classContext,
 		  VKDefinitionCollector coll,
-		  String name,
+		  String title,
+		  String locale,
 		  CReferenceType superWindow,
 		  CReferenceType[] interfaces,
 		  int options,
 		  VKCommand[] commands,
-		  VKTrigger[] triggers) {
+		  VKTrigger[] triggers)
+  {
     super(where);
 
-    this.name = name;
+    this.title = title;
+    this.locale = locale;
     this.cunit = cunit;
     this.classContext = classContext;
     this.coll = coll;
@@ -67,16 +72,23 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
     verify(coll != null);
   }
 
+  // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX
+   */
+  public String getLocale() {
+    return locale;
+  }
+
   /**
    * Returns a collector for definitiion
    */
   public VKDefinitionCollector getDefinitionCollector() {
     return coll;
   }
-
-  // ----------------------------------------------------------------------
-  // ACCESSORS
-  // ----------------------------------------------------------------------
 
   /**
    * Returns the name
@@ -86,10 +98,10 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
   }
 
   /**
-   * Returns the name
+   * Returns the title
    */
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
   /**
@@ -150,6 +162,8 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context) throws PositionedError {
+    checkLocale(context);
+
     context.setMode(true);
     context.setClassContext(getClassContext());
     context.setFullName(getFullName());
@@ -167,6 +181,28 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
 			  getDefinitionCollector(),
 			  commands,
 			  triggers);
+  }
+
+  /**
+   * check if the locale is set properly
+   * !!! move to Utils
+   */
+  private void checkLocale(VKContext context) throws PositionedError {
+    if (getLocale() != null) {
+      char[]    chars = getLocale().toCharArray();
+      
+      if(chars.length != 5
+         || chars[0] < 'a' || chars[0] > 'z'
+         || chars[1] < 'a' || chars[1] > 'z'
+         || chars[2] != '_'
+         || chars[3] < 'A' || chars[3] > 'Z'
+         || chars[4] < 'A' || chars[4] > 'Z'
+         ) {
+        context.reportTrouble(new CWarning(getTokenReference(),
+                                           BaseMessages.BAD_LOCALE_DEFINITION,
+                                           getLocale()));
+      }
+    }
   }
 
   // ----------------------------------------------------------------------
@@ -198,6 +234,10 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
   public abstract void genVKCode(String destination, TypeFactory factory);
 
   // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  // ----------------------------------------------------------------------
   // PROTECTED METHODS
   // ----------------------------------------------------------------------
 
@@ -213,16 +253,17 @@ public abstract class VKWindow extends VKPhylum implements VKCompilationUnit, co
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private CParseClassContext            classContext;
   private VKDefinitionCollector		coll;
   private CParseCompilationUnitContext	cunit;
-  private CParseClassContext		classContext;
 
-  private String		ident;
-  private String		name;
+  private String                        ident;
+  private String                        title;
+  private String                        locale;
   private CReferenceType[]		interfaces;
   private CReferenceType		superWindow;
-  private int			options;
-  private VKCommand[]		commands;
-  private VKTrigger[]		triggers;
-  private Commandable		commandable;
+  private int                           options;
+  private VKCommand[]                   commands;
+  private VKTrigger[]                   triggers;
+  private Commandable                   commandable;
 }

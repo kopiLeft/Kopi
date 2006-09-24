@@ -82,7 +82,7 @@ public vkCompilationUnit []
   returns [VKInsert self]
 :
   vkLocaleDeclaration[]
-    {  self = new VKInsert(buildTokenReference(), environment); }
+    {  self = new VKInsert(buildTokenReference(), environment, getLocale()); }
   vkContextHeader[self.getCompilationUnitContext()]
   vkDefinitions[self.getDefinitionCollector(), self.getCompilationUnitContext().getPackageName().getName()]
   EOF
@@ -243,7 +243,7 @@ vkCodeFieldType []
     {
       codes = new VKCodeDesc[names.length];
       for (int i = 0; i < names.length; i++) {
-        codes[i] = new VKCodeDesc(sourceRef, names[i], names[i]);
+        codes[i] = new VKCodeDesc(sourceRef, "Id$" + i, names[i], names[i]);
       }
       self = new VKStringCodeType(sourceRef, codes);
     }
@@ -269,64 +269,152 @@ vkBooleanCodeList []
   returns [VKCodeDesc[] self = null]
 {
   ArrayList		vect = new ArrayList();
-  String		name;
-  boolean		value;
+  VKCodeDesc            item;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
   (
-    name = vkString[] ASSIGN value = vkBool[]
-      { vect.add(new VKCodeDesc(sourceRef, name, value ? Boolean.TRUE : Boolean.FALSE)); }
+    item = vkBooleanCodeItem[vect.size()]
+      { vect.add(item); }
   )+
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
+;
+
+vkBooleanCodeItem [int count]
+  returns [VKCodeDesc self]
+{
+  String		label = null;
+  String		ident = null;
+  boolean		value;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+}
+:
+  ( label = vkString[] ASSIGN )?
+    { checkLocaleIsSpecifiedIff(label != null, "CODE LABEL"); }
+  ( ident = vkSimpleIdent[] COLON)?
+    {
+      if (ident == null) {
+        checkLocaleIsSpecified("CODE IDENT");
+        // if null, create a synthetic identifier
+        ident = "Id$" + count;
+      }
+    }
+  value = vkBool[]
+    { self = new VKCodeDesc(sourceRef, ident, label, value ? Boolean.TRUE : Boolean.FALSE); }
 ;
 
 vkFixedCodeList []
   returns [VKCodeDesc[] self = null]
 {
   ArrayList		vect = new ArrayList();
-  String		name;
-  Fixed			value;
+  VKCodeDesc            item;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
   (
-    name = vkString[] ASSIGN value = vkFixedOrInteger[]
-      { vect.add(new VKCodeDesc(sourceRef, name, value)); }
+    item = vkFixedCodeItem[vect.size()]
+      { vect.add(item); }
   )+
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
+;
+
+vkFixedCodeItem [int count]
+  returns [VKCodeDesc self]
+{
+  String		label = null;
+  String		ident = null;
+  Fixed			value;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+}
+:
+  ( label = vkString[] ASSIGN )?
+    { checkLocaleIsSpecifiedIff(label != null, "CODE LABEL"); }
+  ( ident = vkSimpleIdent[] COLON)?
+    {
+      if (ident == null) {
+        checkLocaleIsSpecified("CODE IDENT");
+        // if null, create a synthetic identifier
+        ident = "Id$" + count;
+      }
+    }
+  value = vkFixedOrInteger[].
+    { self = new VKCodeDesc(sourceRef, ident, label, value); }
 ;
 
 vkIntegerCodeList []
   returns [VKCodeDesc[] self = null]
 {
   Vector		vect = new Vector();
-  String		name;
-  int			value;
+  VKCodeDesc            item;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
   (
-    name = vkString[] ASSIGN value = vkSignedInteger[]
-      { vect.add(new VKCodeDesc(sourceRef, name, new Integer(value))); }
+    item = vkIntegerCodeItem[vect.size()]
+      { vect.add(item); }
   )+
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
+;
+
+vkIntegerCodeItem [int count]
+  returns [VKCodeDesc self]
+{
+  String		label = null;
+  String		ident = null;
+  int			value;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+}
+:
+  ( label = vkString[] ASSIGN )?
+    { checkLocaleIsSpecifiedIff(label != null, "CODE LABEL"); }
+  ( ident = vkSimpleIdent[] COLON)?
+    {
+      if (ident == null) {
+        checkLocaleIsSpecified("CODE IDENT");
+        // if null, create a synthetic identifier
+        ident = "Id$" + count;
+      }
+    }
+  value = vkSignedInteger[]
+    { self = new VKCodeDesc(sourceRef, ident, label, new Integer(value)); }
 ;
 
 vkStringCodeList []
   returns [VKCodeDesc[] self = null]
 {
   Vector		vect = new Vector();
-  String		name;
-  String		value;
+  VKCodeDesc            item;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
 :
   (
-    name = vkString[] ASSIGN value = vkString[]
-      { vect.add(new VKCodeDesc(sourceRef, name, value)); }
+    item = vkStringCodeItem[vect.size()]
+      { vect.add(item); }
   )+
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
+;
+
+vkStringCodeItem [int count]
+  returns [VKCodeDesc self]
+{
+  String		label = null;
+  String		ident = null;
+  String		value;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+}
+:
+  ( label = vkString[] ASSIGN )?
+    { checkLocaleIsSpecifiedIff(label != null, "CODE LABEL"); }
+  ( ident = vkSimpleIdent[] COLON)?
+    {
+      if (ident == null) {
+        checkLocaleIsSpecified("CODE IDENT");
+        // if null, create a synthetic identifier
+        ident = "Id$" + count;
+      }
+    }
+  value = vkString[]
+    { self = new VKCodeDesc(sourceRef, ident, label, value); }
 ;
 
 vkFixed []
@@ -434,14 +522,16 @@ vkListDescs []
 vkListDesc []
   returns [VKListDesc self]
 {
-  String		title;
+  String		title = null;
   String		column;
   VKType		type;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference	sourceRef = buildTokenReference();
 }
 :
-  title = vkString[] ASSIGN column = vkSimpleIdent[] COLON type = vkFieldType[]
-   { self = new VKListDesc(sourceRef, title, column, type); }
+  ( title = vkString[] ASSIGN )?
+    { checkLocaleIsSpecifiedIff(title != null, "LIST DESC TITLE"); }
+  column = vkSimpleIdent[] COLON type = vkFieldType[]
+    { self = new VKListDesc(sourceRef, title, column, type); }
 ;
 
 vkDefinitions [VKDefinitionCollector coll, String pack]
@@ -466,12 +556,13 @@ vkDefinitions [VKDefinitionCollector coll, String pack]
   )*
 ;
 
-vkInsertDefinitions[VKDefinitionCollector coll]
+vkInsertDefinitions [VKDefinitionCollector coll]
 {
   String			name;
 }
 :
-  "INSERT" name = vkString[] { coll.addInsert(name, buildTokenReference().getPath()); }
+  "INSERT" name = vkString[]
+    { coll.addInsert(name, buildTokenReference().getPath()); }
 ;
 
 
@@ -486,7 +577,7 @@ vkMenuDef [String pack]
   "MENU" ident = vkSimpleIdent[]
   ( "LABEL" label = vkString[] )?
     {
-      checkLocaleIsSpecifiedIff(label != null, "MENU ITEM LABEL");
+      checkLocaleIsSpecifiedIff(label != null, "MENU LABEL");
       self = new VKMenuDefinition(sourceRef, pack, ident, label);
     }
   "END" "MENU"
@@ -499,7 +590,7 @@ vkActorDef [String pack]
   String                menu;
   String                label = null;
   String                help;
-  String                acc = null;
+  String                key = null;
   String                icon = null;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments
 }
@@ -509,13 +600,13 @@ vkActorDef [String pack]
   "MENU" menu = vkSimpleIdent[]
   ( "LABEL" label = vkString[] )?
   help = vkHelp[]
-  ( "KEY" acc = vkString[] )?
+  ( "KEY" key = vkString[] )?
   ( "ICON" icon = vkString[] )?
   "END" "ACTOR"
     {
       checkLocaleIsSpecifiedIff(label != null, "ACTOR LABEL");
       checkLocaleIsSpecifiedIff(help != null, "ACTOR HELP");
-      self = new VKActor(sourceRef, pack, ident, menu, label, help, acc, icon);
+      self = new VKActor(sourceRef, pack, ident, menu, label, help, key, icon);
     }
 ;
 
@@ -532,9 +623,7 @@ vkTypeDef []
   "TYPE" name = vkSimpleIdent[]
   (
     LPAREN
-    {
-      params = buildGKjcParser().gFormalParameter(JLocalVariable.DES_PARAMETER);
-    }
+      { params = buildGKjcParser().gFormalParameter(JLocalVariable.DES_PARAMETER); }
     // RPAREN
   )?
   "IS"
@@ -556,7 +645,7 @@ vkFieldType[]
 vkFieldList []
   returns [VKFieldList self]
 {
-  TableReference	table;
+  TableReference        table;
   boolean		access = false;
   String		name = null;
   VKListDesc[]		columns;
@@ -568,8 +657,13 @@ vkFieldList []
   ( ( "NEW" | "ACCESS" { access = true; } ) name = vkQualifiedIdent[] )?
   "IS" columns = vkListDescs[]
   "END" "LIST"
-    { self = new VKFieldList(sourceRef, table,
-	name == null ? null : environment.getTypeFactory().createType(name.replace('.', '/'), false), columns, access); }
+    {
+      self = new VKFieldList(sourceRef,
+                             table,
+                             name == null ? null : environment.getTypeFactory().createType(name.replace('.', '/'), false),
+                             columns,
+                             access);
+    }
 ;
 
 vkListTable[]

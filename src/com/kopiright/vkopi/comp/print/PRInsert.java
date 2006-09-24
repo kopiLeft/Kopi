@@ -44,7 +44,7 @@ public class PRInsert extends VKInsert implements com.kopiright.kopi.comp.kjc.Co
    * @param superName		the type of the form
    */
   public PRInsert(TokenReference where, VKEnvironment environment) {
-    super(where, environment);
+    super(where, environment, null);
 
     this.cunit = new CParseCompilationUnitContext();
     this.clazz = new CParseClassContext();

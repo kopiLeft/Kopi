@@ -106,6 +106,7 @@ vrReport []
 			  context.getClassContext(),
 			  context.getDefinitionCollector(),
 			  name,
+                          getLocale(),
 			  context.getCommands(),
 			  context.getTriggers(),
 			  context.getFields(),

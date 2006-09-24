@@ -460,6 +460,17 @@ public class PRPage
   }
 
   // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX : comment move file creation to upper level (VKPhylum?)
+   */
+  public void genLocalization(String destination) {
+    // no localization for print files
+  }
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 

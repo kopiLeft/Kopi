@@ -27,7 +27,10 @@ import com.kopiright.compiler.base.TokenReference;
 1 * This class represents an TypeDefinition, ie a menu element with a name and may be an icon, a shortcut
  * and a help
  */
-public class VKTypeDefinition extends VKDefinition implements com.kopiright.kopi.comp.kjc.Constants {
+public class VKTypeDefinition
+  extends VKDefinition
+  implements com.kopiright.kopi.comp.kjc.Constants
+{
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -46,7 +49,8 @@ public class VKTypeDefinition extends VKDefinition implements com.kopiright.kopi
   public VKTypeDefinition(TokenReference where,
 			  String ident,
 			  VKType type,
-			  JFormalParameter[] params) {
+			  JFormalParameter[] params)
+  {
     super(where, null, ident);
 
     this.type	= type;
@@ -147,6 +151,17 @@ public class VKTypeDefinition extends VKDefinition implements com.kopiright.kopi
     p.printVKTypeDefinition(getIdent(), params, type);
   }
 
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    writer.genTypeDefinition(getIdent(), type);
+  }
+  
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------

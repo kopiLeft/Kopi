@@ -45,7 +45,6 @@ public class VKParseBlockContext extends VKParseContext {
 
   private void clear() {
     tables.setSize(0);
-    indices.setSize(0);
     fields.setSize(0);
     interfaces.setSize(0);
   }
@@ -56,10 +55,6 @@ public class VKParseBlockContext extends VKParseContext {
 
   public void addTable(VKBlockTable table) {
     tables.addElement(table);
-  }
-
-  public void addIndice(String indice) {
-    indices.addElement(indice);
   }
 
   public void addField(VKField field) {
@@ -82,10 +77,6 @@ public class VKParseBlockContext extends VKParseContext {
     return (VKBlockTable[])Utils.toArray(tables, VKBlockTable.class);
   }
 
-  public String[] getIndices() {
-    return (String[])Utils.toArray(indices, String.class);
-  }
-
   public VKField[] getFields() {
     return (VKField[])Utils.toArray(fields, VKField.class);
   }
@@ -98,12 +89,11 @@ public class VKParseBlockContext extends VKParseContext {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private Vector	tables = new Vector();
-  private Vector	indices = new Vector();
-  private Vector	fields = new Vector();
-  private Vector	interfaces = new Vector();
+  private Vector                tables = new Vector();
+  private Vector                fields = new Vector();
+  private Vector                interfaces = new Vector();
 
-  private CParseClassContext		classContext = new CParseClassContext();
+  private CParseClassContext	classContext = new CParseClassContext();
 
-  private static Stack stack = new Stack();
+  private static Stack          stack = new Stack();
 }

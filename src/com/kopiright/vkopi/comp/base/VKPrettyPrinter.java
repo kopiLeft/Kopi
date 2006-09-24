@@ -634,16 +634,23 @@ public class VKPrettyPrinter {
     }*/
   }
 
-  public void printCodeDesc(String name, String val) {
+  public void printCodeDesc(String ident, String label, String value) {
     newLine();
-    print('"' + name + '"' + space(30 - name.length()));
-    print("= " + val);
+    if (label != null) {
+      print('"' + label + '"' + " = ");
+    }
+    if (ident != null) {
+      print(ident + " : ");
+    }
+    print(value);
   }
 
-  public void printListDesc(String name, String column, VKType type) {
+  public void printListDesc(String title, String column, VKType type) {
     newLine();
-    print('"' + name + '"' + space(30 - name.length()));
-    print("= " + column + space(20 - name.length()));
+    if (title != null) {
+      print('"' + title + '"' + "= ");
+    }
+    print(column + " : ");
     type.genVKCode(this);
   }
 

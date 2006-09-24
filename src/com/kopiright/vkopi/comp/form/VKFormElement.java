@@ -19,15 +19,16 @@
 
 package com.kopiright.vkopi.comp.form;
 
-import com.kopiright.vkopi.comp.base.VKPhylum;
-import com.kopiright.vkopi.comp.base.VKWindow;
-import com.kopiright.vkopi.comp.base.VKContext;
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.JClassDeclaration;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.vkopi.comp.base.VKContext;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
+import com.kopiright.vkopi.comp.base.VKPhylum;
+import com.kopiright.vkopi.comp.base.VKWindow;
 
 /**
  * A block on a form
@@ -112,6 +113,15 @@ public abstract class VKFormElement extends VKPhylum {
   public abstract JExpression genConstructorCall();
 
   public abstract CReferenceType getType();
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  public abstract void genLocalization(VKLocalizationWriter writer);
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

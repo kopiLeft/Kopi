@@ -226,15 +226,17 @@ public class VKActor extends VKDefinition {
   }
 
   // ----------------------------------------------------------------------
-  // VK XML LOCALIZATION GENERATION
+  // XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------
 
   /**
    * !!!FIX:taoufik
+   */
   public void genLocalization(VKLocalizationWriter writer) {
-    writer.addActor(menu, getIdent(), label, help);
+    writer.genActorDefinition(getIdent(), label, help);
   }
 
+  /*!!!
   public void genLocalization() {
   
   }

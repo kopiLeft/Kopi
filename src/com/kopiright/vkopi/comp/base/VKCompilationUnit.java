@@ -59,4 +59,13 @@ public interface VKCompilationUnit {
    * @param p		the printwriter into the code is generated
    */
   void genVKCode(String destination, TypeFactory factory);
+
+  // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!!FIX:taoufik
+   */
+  void genLocalization(String destination);
 }

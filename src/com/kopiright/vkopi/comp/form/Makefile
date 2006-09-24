@@ -32,15 +32,16 @@ GRM1DEP =	../base/Base
 SCANNER1 =	Form
 
 # Compiler classes
-JAVAFILES +=	FormScanner VKParseFormContext				\
+JAVAFILES +=	FormScanner VKFormLocalizationWriter			\
+		VKParseFormContext					\
 		VKParseBlockContext VKParseFieldContext
 
 # Syntax tree classes
-JAVAFILES +=	VKBlock VKBlockAlign VKBlockTable			\
+JAVAFILES +=	VKBlock VKBlockAlign VKBlockIndex VKBlockTable		\
 		VKField	VKFieldColumn VKFieldColumns			\
 		VKFieldTypeName VKForm VKFieldType			\
 		VKDescriptionPosition VKCoordinatePosition		\
-		VKPosition						\
+		VKPage VKPosition					\
 		VKDefinitionType VKAliasType VKBlockInsert		\
 		VKImportedBlock VKFormElement VKFormPrettyPrinter	\
 		VKMultiField VKMultiFieldPosition
