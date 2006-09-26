@@ -42,11 +42,17 @@ public class VKImportedBlock
   /**
    * This class represents the definition of a form
    *
-   * @param where		the token reference of this node
-   * @param name		the name of this form
+   * @param     where           the token reference of this node
+   * @param     pkg             the package where this object is defined
+   * @param     ident           the identifier of this block
+   * @param     shortcut        the shortcut of this block
    */
-  public VKImportedBlock(TokenReference where, String name) {
-    super(where, name);
+  public VKImportedBlock(TokenReference where,
+                         String pkg,
+                         String ident,
+                         String shortcut)
+  {
+    super(where, pkg, ident, shortcut);
   }
 
   // ----------------------------------------------------------------------
@@ -78,8 +84,8 @@ public class VKImportedBlock
    */
   public JExpression genConstructorCall() {
     return new JUnqualifiedInstanceCreation(getTokenReference(),
-				    getType(),
-				    new JExpression[]{new JThisExpression(getTokenReference())});
+                                            getType(),
+                                            new JExpression[]{new JThisExpression(getTokenReference())});
   }
 
   /**

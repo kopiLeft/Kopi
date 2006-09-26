@@ -95,7 +95,7 @@ vkBlockUnit []
   "BLOCK" "INSERT"
   vkContextHeader[context.getCompilationUnitContext()]
   vkDefinitions[context.getDefinitionCollector(), context.getCompilationUnitContext().getPackageName().getName()]
-  block = vkBlock[]
+  block = vkBlock[context.getCompilationUnitContext().getPackageName().getName()]
   {
     context.addFormElement(block);
     self = new VKBlockInsert(sourceRef,
@@ -109,14 +109,16 @@ vkBlockUnit []
   "END" "INSERT"
 ;
 
-vkBlock []
+vkBlock [String pkg]
   returns [VKBlock self]
 {
-  final int		ACCESS		= com.kopiright.vkopi.lib.form.VConstants.ACS_MUSTFILL;
+  final int		ACCESS = com.kopiright.vkopi.lib.form.VConstants.ACS_MUSTFILL;
   String		name;
   String		ident;
+  String		shortcut = null;
   String		title = null;
   int			border = 0;
+  String		superName;
   CReferenceType	superBlock = null;
   VKBlockAlign		align = null;
   String		help;
@@ -126,17 +128,17 @@ vkBlock []
   int			buffer;
   int			vis;
   int[]			access		= new int[] {ACCESS, ACCESS, ACCESS};
-  VKParseBlockContext	context		= VKParseBlockContext.getInstance();
+  VKParseBlockContext	context = VKParseBlockContext.getInstance();
   TokenReference	sourceRef = buildTokenReference();	// !!! add comment
 }
 :
   "BLOCK" LPAREN buffer = vkInteger[] COMMA vis = vkInteger[] RPAREN
-  name = vkBlockName[]
+  ident = vkSimpleIdent[] ( COLON shortcut = vkSimpleIdent[] )?
   ( title = vkString[] )?
     { checkLocaleIsSpecifiedIff(title != null, "BLOCK TITLE"); }
   (
-    "IS" ident = vkQualifiedIdent[]
-      { superBlock = environment.getTypeFactory().createType(ident.replace('.', '/'), false); }
+    "IS" superName = vkQualifiedIdent[]
+      { superBlock = environment.getTypeFactory().createType(superName.replace('.', '/'), false); }
   )?
   (
     "IMPLEMENTS"
@@ -160,11 +162,13 @@ vkBlock []
   "END" "BLOCK"
     {
       self = new VKBlock(sourceRef,
+                         pkg,
 			 context.getClassContext(),
 			 context.getInterfaces(),
 			 buffer,
 			 vis,
-			 name,
+			 ident,
+                         shortcut,
 			 superBlock,
 			 title,
 			 border,
@@ -196,15 +200,16 @@ vkBorder []
   )
 ;
 
-vkImportedBlock []
+vkImportedBlock [String pkg]
   returns [VKImportedBlock self]
 {
-  String		name;
+  String		ident;
+  String                shortcut = null;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
-  "INSERT"  name = vkQualifiedIdent[]
-    { self = new VKImportedBlock(sourceRef, name); }
+  "INSERT" ident = vkQualifiedIdent[] ( COLON shortcut = vkSimpleIdent[] )?
+    { self = new VKImportedBlock(sourceRef, pkg, ident, shortcut); }
 ;
 
 vkAccess []
@@ -382,15 +387,6 @@ vkBlockIndex [int count]
     { self = new VKBlockIndex(sourceRef, ident, message); }
 ;
 
-vkBlockName []
-  returns [String self]
-{
-  String s;
-}
-:
-  self = vkSimpleIdent[] ( DOT s = vkSimpleIdent[] { self += "." + s; } )?
-;
-
 vkBlockOptions []
   returns [int self]
 { self = 0; }
@@ -466,7 +462,11 @@ vkBlocks [VKParseFormContext context]
           context.addPage(page);
         } 
     )?
-    ( block = vkBlock[] | block = vkImportedBlock[] )
+    (
+      block = vkBlock[context.getCompilationUnitContext().getPackageName().getName()]
+    |
+      block = vkImportedBlock[context.getCompilationUnitContext().getPackageName().getName()]
+    )
       { context.addFormElement(block); }
   )+
 ;

@@ -337,7 +337,7 @@ vkFixedCodeItem [int count]
         ident = "Id$" + count;
       }
     }
-  value = vkFixedOrInteger[].
+  value = vkFixedOrInteger[]
     { self = new VKCodeDesc(sourceRef, ident, label, value); }
 ;
 

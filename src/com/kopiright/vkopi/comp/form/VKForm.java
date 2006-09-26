@@ -310,9 +310,6 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
       }
     }
 
-    // Set Title: remove when localized !!!
-    body.addElement(new JExpressionStatement(ref, VKUtils.call(ref, "setTitle", VKUtils.toExpression(ref, getTitle())), null));
-
     for (int i = 0; i < blocks.length; i++) {
       VKFormElement	block = blocks[i];
 

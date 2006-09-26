@@ -48,11 +48,13 @@ public class VKBlock
    * This class represents the definition of a form
    *
    * @param	where		the token reference of this node
+   * @param     pkg             the package where this object is defined
    * @param     context         the parser context
    * @param     interfaces      the interfaces implemented by this block
    * @param	buffer		the buffer size of this block
    * @param	visible		the number of visible elements
-   * @param	name		the name of this form
+   * @param	ident		the simple identifier of this block
+   * @param	shortcut	the shortcut of this block
    * @param	title		the title of the block
    * @param	border		the border of the block
    * @param	align		the type of alignment in form
@@ -66,11 +68,13 @@ public class VKBlock
    * @param	fields		the objects that populate the block
    */
   public VKBlock(TokenReference where,
+                 String pkg,
 		 CParseClassContext context,
 		 CReferenceType[] interfaces,
 		 int buffer,
 		 int visible,
-		 String name,
+		 String ident,
+                 String shortcut,
                  CReferenceType superBlock,
 		 String title,
 		 int border,
@@ -84,7 +88,7 @@ public class VKBlock
 		 VKTrigger[] triggers,
 		 VKField[] fields)
     {
-      super(where, name);
+      super(where, pkg, ident, shortcut);
 
       this.context = context;
       this.interfaces = interfaces;
@@ -103,7 +107,6 @@ public class VKBlock
       this.commands = commands;
       this.triggers = triggers;
       this.fields = fields;
-      alignment = ALG_CENTER;
     }
 
   // ----------------------------------------------------------------------
@@ -135,7 +138,7 @@ public class VKBlock
    *
    */
   public int getMaxDisplayWidth() {
-      return Math.max(displayedFields, maxColumnPos);
+    return Math.max(displayedFields, maxColumnPos);
   }
 
   /**
@@ -421,7 +424,6 @@ public class VKBlock
     // ADD CONSTRUCTOR
     context.addMethodDeclaration(buildConstructor(factory));
     context.addMethodDeclaration(buildSetInfo(factory));
-    context.addMethodDeclaration(buildDisplay());
 
     // ADD TRIGGERS
     if (commandable.countTriggers(TRG_VOID) > 0) {
@@ -482,14 +484,19 @@ public class VKBlock
     TokenReference	ref = getTokenReference();
     Vector		body = new Vector(20 + fields.length);
 
+    body.addElement(VKUtils.assign(ref, "source", VKUtils.toExpression(ref, getSource())));
     body.addElement(VKUtils.assign(ref, "name", VKUtils.toExpression(ref, getIdent())));
     body.addElement(VKUtils.assign(ref, "shortcut", VKUtils.toExpression(ref, getShortcut())));
     body.addElement(VKUtils.assign(ref, "bufferSize", VKUtils.toExpression(ref, buffer)));
     body.addElement(VKUtils.assign(ref, "displaySize", VKUtils.toExpression(ref, visible)));
-    body.addElement(VKUtils.assign(ref, "title", VKUtils.toExpression(ref, title)));
-    body.addElement(VKUtils.assign(ref, "help", VKUtils.toExpression(ref, help)));
     body.addElement(VKUtils.assign(ref, "page", VKUtils.toExpression(ref, getPageNumber())));
     body.addElement(VKUtils.assign(ref, "options", VKUtils.toExpression(ref, options)));
+
+    
+    body.addElement(VKUtils.assign(ref, "border", VKUtils.toExpression(ref, border)));
+    body.addElement(VKUtils.assign(ref, "maxRowPos", VKUtils.toExpression(ref, maxRowPos)));
+    body.addElement(VKUtils.assign(ref, "maxColumnPos", VKUtils.toExpression(ref, maxColumnPos)));
+    body.addElement(VKUtils.assign(ref, "displayedFields", VKUtils.toExpression(ref, displayedFields)));
 
     // TRIGGER HANDLING
     commandable.genCode(ref, body, !isInner(), true);
@@ -626,39 +633,6 @@ public class VKBlock
     }
 
     return new JConstructorCall(ref, false, new JExpression[] { expr });
-  }
-
-  private JMethodDeclaration buildDisplay() {
-    TokenReference	ref = getTokenReference();
-    CReferenceType	type = VKStdType.VBlockUIProperties;
-    JUnqualifiedInstanceCreation display;
-    JStatement          stmt;
-
-    display = new JUnqualifiedInstanceCreation(ref,
-                                               type,
-                                               new JExpression[] {
-                                                 VKUtils.toExpression(ref, border),
-                                                 VKUtils.toExpression(ref, title),
-                                                 VKUtils.toExpression(ref, alignment),
-                                                 VKUtils.toExpression(ref, maxRowPos),
-                                                 VKUtils.toExpression(ref, maxColumnPos),
-                                                 VKUtils.toExpression(ref, displayedFields)});
-    stmt = new JExpressionStatement(ref,
-                                    new JMethodCallExpression(ref,
-                                                              null,
-                                                              "setUIProperties",
-                                                              new JExpression[] {display}),
-                                    null);
-    return new JMethodDeclaration(ref,
-				  ACC_PUBLIC,
-                                  CTypeVariable.EMPTY,
-				  CStdType.Void,
-				  "buildDisplay",
-				  JFormalParameter.EMPTY,
-				  CReferenceType.EMPTY,
-				  new JBlock(ref, new JStatement[] {stmt}, null),
-				  null,
-				  null);
   }
 
   // ----------------------------------------------------------------------

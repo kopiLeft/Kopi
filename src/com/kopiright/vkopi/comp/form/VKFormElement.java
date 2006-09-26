@@ -43,21 +43,36 @@ public abstract class VKFormElement extends VKPhylum {
   /**
    * This class represents the definition of a form
    *
-   * @param where		the token reference of this node
-   * @param name		the name of this form
+   * @param     where           the token reference of this node
+   * @param     pkg             the package where this object is defined
+   * @param     ident           the identifier of this block
+   * @param     shortcut        the shortcut of this block
    */
-  public VKFormElement(TokenReference where, String name) {
+  public VKFormElement(TokenReference where,
+                       String pkg,
+                       String ident,
+                       String shortcut)
+  {
     super(where);
 
-    int index = name.indexOf(".");
-
-    this.ident = index > 0 ? name.substring(0, index) : name;
-    this.shortcut = index > 0 ? name.substring(index + 1) : null;
+    this.pkg = pkg;
+    this.ident = ident;
+    this.shortcut = shortcut;
   }
 
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
+
+  /**
+   * Returns the qualified source file name where this object is defined.
+   */
+  public String getSource() {
+    String      basename;
+
+    basename = getTokenReference().getName().substring(0, getTokenReference().getName().lastIndexOf('.'));
+    return pkg == null ? basename : pkg + "/" + basename;
+  }
 
   /**
    * Returns the name of this block
@@ -127,7 +142,8 @@ public abstract class VKFormElement extends VKPhylum {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private String	ident;
-  private String	shortcut;
-  private int		pageNumber;
+  private final String          pkg;
+  private final String          ident;
+  private final String          shortcut;
+  private int                   pageNumber;
 }

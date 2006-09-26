@@ -32,7 +32,6 @@ public class VKStdType {
   public static CReferenceType VReport;
   public static CReferenceType VForm;
   public static CReferenceType VBlock;
-  public static CReferenceType VBlockUIProperties;
   public static CReferenceType DBlock;
   public static CReferenceType DMultiBlock;
   public static CReferenceType VField;
@@ -83,7 +82,6 @@ public class VKStdType {
 
     VField = tf.createType(com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/'), false);
     VBlock = tf.createType(com.kopiright.vkopi.lib.form.VBlock.class.getName().replace('.','/'), false);
-    VBlockUIProperties = tf.createType(com.kopiright.vkopi.lib.form.VBlock.UIProperties.class.getName().replace('.','/'), false);
     DBlock = tf.createType(com.kopiright.vkopi.lib.form.DBlock.class.getName().replace('.','/'), false);
     DMultiBlock = tf.createType(com.kopiright.vkopi.lib.form.DMultiBlock.class.getName().replace('.','/'), false);
     VDictionaryForm = tf.createType(com.kopiright.vkopi.lib.form.VDictionaryForm.class.getName().replace('.','/'), false);
@@ -119,7 +117,6 @@ public class VKStdType {
     try {
       VField = (CReferenceType) VField.checkType(context);
       VBlock = (CReferenceType) VBlock.checkType(context);
-      VBlockUIProperties = (CReferenceType) VBlockUIProperties.checkType(context);
       DBlock = (CReferenceType) DBlock.checkType(context);
       DMultiBlock = (CReferenceType) DMultiBlock.checkType(context);
       VDictionaryForm = (CReferenceType) VDictionaryForm.checkType(context);

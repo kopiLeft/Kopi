@@ -115,7 +115,9 @@ public class VKFormLocalizationWriter extends VKLocalizationWriter {
 
     self = new Element("block");
     self.setAttribute("name", name);
-    self.setAttribute("title", (title == null) ? name : title);
+    if (title != null) {
+      self.setAttribute("title", title);
+    }
     if (help != null) {
       self.setAttribute("help", help);
     }
