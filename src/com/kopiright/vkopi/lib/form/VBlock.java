@@ -225,13 +225,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       //!!! inhibits relocalization of a running form
       indices[i] = loc.getIndexMessage(indices[i]);
     }
-    /*!!!DOIT
     for (int i = 0; i < fields.length; i++) {
       if (!fields[i].isInternal()) {
-        fields[i].localize(manager, loc);
+        fields[i].localize(loc);
       }
     }
-    */
   }
   
   

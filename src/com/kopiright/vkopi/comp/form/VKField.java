@@ -320,15 +320,13 @@ public class VKField
    */
   public JStatement genInfo() {
     TokenReference		ref = getTokenReference();
-    JExpression[]		infos = new JExpression[15];
+    JExpression[]		infos = new JExpression[13];
     int				count = 0;
 
     // PRIMARY INFO
     infos[count++] = VKUtils.toExpression(ref, getIdent());
     infos[count++] = VKUtils.toExpression(ref, getIndex());
-    infos[count++] = VKUtils.toExpression(ref, label);
     infos[count++] = VKUtils.toExpression(ref, getPosInArray());
-    infos[count++] = VKUtils.toExpression(ref, help);
     infos[count++] = VKUtils.toExpression(ref, options);
 
     // ACCESS
@@ -347,8 +345,12 @@ public class VKField
       infos[count++] = VKUtils.zeroLiteral(ref);
       infos[count++] = VKUtils.zeroLiteral(ref);
     } else {
-      columns.genCode(this, infos);
-      count += 3;
+      JExpression[]     exprs;
+
+      exprs = columns.genCode(this);
+      for (int i = 0; i < 3; i++) {
+        infos[count++] = exprs[i];
+      }
     }
 
     // COMMANDS

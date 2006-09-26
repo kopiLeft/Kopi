@@ -41,9 +41,13 @@ public class BlockLocalizer {
   /**
    * //!!!FIX:taoufik
    */
-  public BlockLocalizer(Document document, String ident) {
+  public BlockLocalizer(LocalizationManager manager,
+                        Document document,
+                        String ident)
+  {
     Element     root;
 
+    this.manager = manager;
     root = document.getRootElement();
     if (! root.getName().equals("form")
         && ! root.getName().equals("blockinsert")) {
@@ -81,22 +85,12 @@ public class BlockLocalizer {
   }
 
   /**
-   * Returns the value of the page child.
-  public String getPage(int position) {
-    List        pages;
-
-    pages = root.getChildren("page");
-    for (Iterator i = pages.iterator(); i.hasNext(); ) {
-      Element   p;
-
-      p = (Element)i.next();
-      if (p.getAttributeValue("ident").equals("Id$" + position)) {
-        return p.getAttributeValue("title");
-      }
-    }
-    throw new InconsistencyException("page " + position + " not found");
-  }
+   *
    */
+  public FieldLocalizer getFieldLocalizer(String ident) {
+    return new FieldLocalizer(manager,
+                              lookupChild(self, "field", "ident", ident));
+  }
 
   // ----------------------------------------------------------------------
   // IMPLEMENTATION
@@ -127,6 +121,7 @@ public class BlockLocalizer {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  
-  private final Element         self;
+
+  private final LocalizationManager     manager;
+  private final Element                 self;
 }

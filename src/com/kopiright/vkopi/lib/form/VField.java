@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
+import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.list.VColumn;
 import com.kopiright.vkopi.lib.list.VList;
 import com.kopiright.vkopi.lib.list.VListColumn;
@@ -84,9 +86,7 @@ public abstract class VField implements VConstants {
    */
   public void setInfo(String name,
 		      int index,
-		      String label,
 		      int posInArray,
-		      String help,
 		      int options,
 		      int[] access,
 		      VList list,
@@ -101,7 +101,6 @@ public abstract class VField implements VConstants {
     this.name = name;
     this.index = index;
     this.posInArray = posInArray;
-    this.help = help;
     this.options = options;
     this.access = access;
     this.list = list;
@@ -111,7 +110,6 @@ public abstract class VField implements VConstants {
     }
     this.indices = indices;
     this.priority = priority;
-    this.label = label;
     this.align = align;
     if (this instanceof VFixedField) {
       // move it to compiler !!!
@@ -121,14 +119,14 @@ public abstract class VField implements VConstants {
     this.cmd = commands;
     this.alias = alias;
     if (alias != null) {
-    alias.addFieldChangeListener(new FieldChangeListener() {
-        public void labelChanged() {}
-        public void searchOperatorChanged() {}
-        public void valueChanged(int r) {
-          fireValueChanged(r);
-        }
-        public void accessChanged(int r) {}
-      });
+      alias.addFieldChangeListener(new FieldChangeListener() {
+          public void labelChanged() {}
+          public void searchOperatorChanged() {}
+          public void valueChanged(int r) {
+            fireValueChanged(r);
+          }
+          public void accessChanged(int r) {}
+        });
     }
   }
 
@@ -277,6 +275,23 @@ public abstract class VField implements VConstants {
     return pos;
   }
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localizes this block
+   *
+   * @param     manager         the manger to use for localization
+   */
+  public void localize(BlockLocalizer parent) {
+    FieldLocalizer      loc;
+
+    loc = parent.getFieldLocalizer(name);
+    setLabel(loc.getLabel()); 
+    help = loc.getHelp();
+  }
+  
   // ----------------------------------------------------------------------
   // PUBLIC COMMANDS
   // ----------------------------------------------------------------------

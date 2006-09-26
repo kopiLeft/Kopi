@@ -96,22 +96,23 @@ public class VKFieldColumns extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * Check expression and evaluate and alter context
-   * @exception	PositionedError	Error catched as soon as possible
+   * Generate init code for this node.
    */
-  public void genCode(VKField field, JExpression[] exprs) {
-    verify(exprs[8] == null);
-    verify(exprs[9] == null);
-    verify(exprs[10] == null);
+  public JExpression[] genCode(VKField field) {
+    JExpression[]       exprs;
+    TokenReference	ref;
+    JExpression[]	init;
 
-    TokenReference	ref = getTokenReference();
-    JExpression[]	init = new JExpression[columns.length];
+    exprs = new JExpression[3];
+    ref = getTokenReference();
+    init = new JExpression[columns.length];
     for (int i = 0; i < columns.length; i++) {
       init[i] = columns[i].genCode();
     }
-    exprs[8] = VKUtils.createArray(ref, VKStdType.VColumn, init);
-    exprs[9] = VKUtils.toExpression(ref, indices);
-    exprs[10] = VKUtils.toExpression(ref, priority);
+    exprs[0] = VKUtils.createArray(ref, VKStdType.VColumn, init);
+    exprs[1] = VKUtils.toExpression(ref, indices);
+    exprs[2] = VKUtils.toExpression(ref, priority);
+    return exprs;
   }
 
   // ----------------------------------------------------------------------
