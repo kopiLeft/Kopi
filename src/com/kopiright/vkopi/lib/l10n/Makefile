@@ -14,14 +14,24 @@
 ## License along with this library; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
-## $Id: Makefile,v 1.11 2003/07/17 18:44:05 lackner Exp $
+## $Id: Makefile,v 1.11 2003/10/13 14:02:05 lackner Exp $
 ##
 
-TOPDIR =	../..
+TOPDIR =	../../..
 
-SUBDIRS =	util ui spellchecker visual l10n list			\
-		form preview print report				\
-		cross doc resource
+PACKAGE =	com/kopiright/vkopi/lib/l10n
+
+## ----------------------------------------------------------------------
+## TOOLS
+
+## ----------------------------------------------------------------------
+## FILES
+
+JAVAFILES +=	BlockLocalizer LocalizationManager FormLocalizer
+
+OPTIONS =	
+
+PROPERTIES =
 
 ## ----------------------------------------------------------------------
 ## GOALS

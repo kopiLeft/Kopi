@@ -53,25 +53,18 @@ public class DBlock extends JPanel implements BlockListener {
   /**
    * Constructor
    */
-  public DBlock(DForm parent,
-                VBlock model,
-		int border,
-		String title,
-		int align,
-                int maxRowPos,
-                int maxColumnPos,
-                int displayedFields)
-  {
+  public DBlock(DForm parent, VBlock model) {
     SwingThreadHandler.verifyRunsInEventThread("DBlock <init>");
-    setBorder(border, title);
+
+    setBorder(model.getBorder(), model.getTitle());
     setFocusCycleRoot(true);
     setFocusable(false);
 
     model.addBlockListener(this);
 
-    this.maxRowPos = maxRowPos;
-    this.maxColumnPos = maxColumnPos;
-    this.displayedFields = displayedFields;
+    this.maxRowPos = model.getMaxRowPos();
+    this.maxColumnPos = model.getMaxColumnPos();
+    this.displayedFields = model.getDisplayedFields();
     this.model = model;
     this.formView = parent;
 
@@ -503,7 +496,8 @@ public class DBlock extends JPanel implements BlockListener {
 
   protected final int		maxRowPos;
   protected final int		maxColumnPos;
-  protected final int		displayedFields ;
+  protected final int		displayedFields;
+
   // cached infos
   private  int			sortedToprec;		// first record displayed
   private  int[]		sortedRecToDisplay;

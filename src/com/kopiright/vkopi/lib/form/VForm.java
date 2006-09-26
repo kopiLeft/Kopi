@@ -27,6 +27,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
+
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -34,6 +36,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.l10n.FormLocalizer;
 import com.kopiright.vkopi.lib.util.AWTToPS;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintJob;
@@ -111,6 +115,9 @@ public abstract class VForm extends VWindow implements VConstants {
       callTrigger(TRG_PREFORM);
     }
     initActors();
+    
+    // localize the form using the default locale
+    localize(Locale.getDefault());
   }
 
   /**
@@ -257,6 +264,32 @@ public abstract class VForm extends VWindow implements VConstants {
       environment = new Environment();
     }
     return environment;
+  }
+
+  /**
+   * Localize this form
+   * 
+   * @param     locale  the locale to use
+   */
+  public void localize(Locale locale) {
+    LocalizationManager         manager;
+    
+    manager = new LocalizationManager(locale);
+    localize(manager);
+    manager = null;    //!!! is this enough ?
+  }
+
+  private void localize(LocalizationManager manager) {
+    FormLocalizer       loc;
+
+    loc = manager.getFormLocalizer(getClass().getName());
+    setTitle(loc.getTitle());
+    for (int i = 0; i < pages.length; i++) {
+      pages[i] = loc.getPage(i);
+    }
+    for (int i = 0; i < blocks.length; i++) {
+      blocks[i].localize(manager);
+    }
   }
 
   // ----------------------------------------------------------------------

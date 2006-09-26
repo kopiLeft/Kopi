@@ -169,10 +169,11 @@ public class SwingThreadHandler {
 
   private static final void sendDebugMail(final String where, 
                                           final String data, 
-                                          final Throwable failure) {
+                                          final Throwable failure)
+  {
     if (!Application.getDefaults().isDebugModeEnabled()) {
       // send the mail NOT in the awt-event-thread 
-      Runnable  runner = new Runnable() {
+      Runnable  localRunner = new Runnable() {
           public void run() {
             Application.reportTrouble("Event Handling Queue",
                                       where,
@@ -180,7 +181,7 @@ public class SwingThreadHandler {
                                       failure);
           }
         };
-      new Thread(runner).start();
+      new Thread(localRunner).start();
     } else {
       failure.printStackTrace();
     }

@@ -25,9 +25,12 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
@@ -59,7 +62,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public VBlock(VForm form) {
     this.form = form;
     blockListener = new EventListenerList();
-    buildDisplay(); // method created by the compiler
     orderModel = new OrderModel();
   }
 
@@ -152,9 +154,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // has to be set
   }
 
-  // !!! Rename (in compiler too)
-  public abstract void buildDisplay();
-
   public void build() {
     //  default does nothing
   }
@@ -206,6 +205,31 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return detailMode;
   }
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localizes this block
+   *
+   * @param     manager         the manger to use for localization
+   */
+  public void localize(LocalizationManager manager) {
+    BlockLocalizer      loc;
+
+    loc = manager.getBlockLocalizer(source, name);
+    title = loc.getTitle();
+    help = loc.getHelp();
+    /*!!!DOIT
+    for (int i = 0; i < fields.length; i++) {
+      if (!fields[i].isInternal()) {
+        fields[i].localize(manager, loc);
+      }
+    }
+    */
+  }
+  
+  
   // ----------------------------------------------------------------------
   // Navigation
   // ----------------------------------------------------------------------
@@ -2871,7 +2895,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
-   * Returns the block title
+   * Returns the block name
    */
   public String getName() {
     return name;
@@ -3009,6 +3033,25 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
 
+  // ----------------------------------------------------------------------
+  // UI
+  // ----------------------------------------------------------------------
+
+  public int getBorder() {
+    return border;
+  }
+
+  public int getMaxRowPos() {
+    return maxRowPos;
+  }
+
+  public int getMaxColumnPos() {
+    return maxColumnPos;
+  }
+
+  public int getDisplayedFields() {
+    return displayedFields;
+  }
 
   // ----------------------------------------------------------------------
   // TRAILING
@@ -4066,39 +4109,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
     return information.toString();
   }
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS
-  // ----------------------------------------------------------------------
-
-  public UIProperties getUIProperties() {
-    return uiProperties;
-  }
-  protected void setUIProperties(UIProperties uiProperties) {
-    this.uiProperties = uiProperties;
-  }
-
-  public static class UIProperties {
-    public UIProperties(int border,
-                        String title,
-                        int alignment,
-                        int maxRowPos,
-                        int maxColumnPos,
-                        int displayedFields) {
-      this.border = border;
-      this.title = title;
-      this.alignment = alignment;
-      this.maxRowPos = maxRowPos;
-      this.maxColumnPos = maxColumnPos;
-      this.displayedFields = displayedFields;
-    }
-
-    public final int			maxRowPos;
-    public final int			maxColumnPos;
-    public final int			displayedFields ;
-    public final int			alignment; //left, right, center
-    public final String                 title;
-    public final int			border;
-  }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
@@ -4120,13 +4130,12 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   // static (compiled) data
   protected  VForm		form;		// enclosing form
 
-  protected UIProperties        uiProperties;   // info for ui
-
   protected int			bufferSize;	// max number of buffered records
   protected int			fetchSize;	// max number of buffered IDs
   protected int			displaySize;	// max number of displayed records
   protected int			page;		// page number
 
+  protected String              source;         // qualified name of source file
   protected String		name;		// block name
   protected String		shortcut;       // block short name
   protected String		title;		// block title
@@ -4159,4 +4168,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
   protected EventListenerList   blockListener;
   protected OrderModel          orderModel;
+
+  protected int                 border;
+  protected int                 maxRowPos;
+  protected int                 maxColumnPos;
+  protected int                 displayedFields;
 }

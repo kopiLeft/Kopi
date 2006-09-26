@@ -42,16 +42,8 @@ public class DMultiBlock extends DChartBlock {
   /**
    * Constructor
    */
-  public DMultiBlock(DForm form,
-                     VBlock model,
-		     int border,
-		     String title,
-		     int align,
-                     int maxRowPos, 
-                     int maxColumnPos, 
-                     int displayedFields) {
-    super(form, model, border, title, align,  
-          maxRowPos, maxColumnPos, displayedFields);
+  public DMultiBlock(DForm form, VBlock model) {
+    super(form, model);
 
     button = new MoveButton(MoveButton.CHART);
     firstButton = new MoveButton(MoveButton.FIRST);

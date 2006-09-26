@@ -43,22 +43,11 @@ public class DChartBlock extends DBlock {
   /**
    * Constructor
    */
-  public DChartBlock(DForm form,
-                     VBlock model,
-		     int border,
-		     String title,
-		     int align,
-                     int maxRowPos, 
-                     int maxColumnPos, 
-                     int displayedFields) {
-    super(form, model, border, title, align, 
-          maxRowPos, maxColumnPos, displayedFields);
-
+  public DChartBlock(DForm form, VBlock model) {
+    super(form, model);
     if (getModel().getDisplaySize() < getModel().getBufferSize()) {
       scrollBar = createScrollBar();
-
       scrollBar.setFocusable(false);
-
       addScrollBar(scrollBar);
     }
   }

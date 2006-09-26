@@ -174,51 +174,22 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
 
   protected DBlock createViewForBlock(VBlock blockModel) {
     final boolean               isChart = blockModel.isMulti() && blockModel.isChart();
-    final VBlock.UIProperties   uiProperties = blockModel.getUIProperties();
-
     DBlock                      blockView;
 
-    if (blockModel.isMulti()) {
+    if (! blockModel.isMulti()) {
+      blockView = new DBlock(this, blockModel);
+    } else {
       if (blockModel.noChart() && blockModel.noDetail()) {
         // !! no display; warn ?
         throw new InconsistencyException("Block " + blockModel.getName() + " is \"NO DEATIL\" and \"NO CHART\" at the same time");
-      } else if (blockModel.noChart()) {
-        blockView = new DBlock(this,
-                               blockModel,
-                               uiProperties.border,
-                               uiProperties.title,
-                               uiProperties.alignment,
-                               uiProperties.maxRowPos,
-                               uiProperties.maxColumnPos,
-                               uiProperties.displayedFields);
-      } else if (blockModel.noDetail()) {
-        blockView = new DChartBlock(this,
-                                    blockModel,
-                                    uiProperties.border,
-                                    uiProperties.title,
-                                    uiProperties.alignment,
-                                    uiProperties.maxRowPos,
-                                    uiProperties.maxColumnPos,
-                                    uiProperties.displayedFields);
-      } else {
-        blockView = new DMultiBlock(this,
-                                    blockModel,
-                                    uiProperties.border,
-                                    uiProperties.title,
-                                    uiProperties.alignment,
-                                    uiProperties.maxRowPos,
-                                    uiProperties.maxColumnPos,
-                                    uiProperties.displayedFields);
       }
-    } else {
-      blockView = new DBlock(this,
-                             blockModel,
-                             uiProperties.border,
-                             uiProperties.title,
-                             uiProperties.alignment,
-                             uiProperties.maxRowPos,
-                             uiProperties.maxColumnPos,
-                             uiProperties.displayedFields);
+      if (blockModel.noChart()) {
+        blockView = new DBlock(this, blockModel);
+      } else if (blockModel.noDetail()) {
+        blockView = new DChartBlock(this, blockModel);
+      } else {
+        blockView = new DMultiBlock(this, blockModel);
+      }
     }    
     return blockView;
   }
