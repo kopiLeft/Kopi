@@ -71,6 +71,16 @@ public class BlockLocalizer {
   }
 
   /**
+   * Returns the message for the specified index.
+   */
+  public String getIndexMessage(String ident) {
+    Element     e;
+
+    e = lookupChild(self, "index", "ident", ident);
+    return e.getAttributeValue("message");
+  }
+
+  /**
    * Returns the value of the page child.
   public String getPage(int position) {
     List        pages;

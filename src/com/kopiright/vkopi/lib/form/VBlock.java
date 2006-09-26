@@ -220,6 +220,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     loc = manager.getBlockLocalizer(source, name);
     title = loc.getTitle();
     help = loc.getHelp();
+    for (int i = 0; i < indices.length; i++) {
+      //!!! for now, overwrite ident with localized message
+      //!!! inhibits relocalization of a running form
+      indices[i] = loc.getIndexMessage(indices[i]);
+    }
     /*!!!DOIT
     for (int i = 0; i < fields.length; i++) {
       if (!fields[i].isInternal()) {

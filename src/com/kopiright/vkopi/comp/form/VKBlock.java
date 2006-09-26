@@ -550,7 +550,7 @@ public class VKBlock
     if (indices.length > 0) {
       JExpression[] init = new JExpression[indices.length];
       for (int i = 0; i < indices.length; i++) {
-	init[i] = new JStringLiteral(ref, indices[i].getMessage());       //!!!localize
+	init[i] = new JStringLiteral(ref, indices[i].getIdent());
       }
       body.addElement(VKUtils.assign(ref, "indices", VKUtils.createArray(ref, CStdType.String, init)));
     }
