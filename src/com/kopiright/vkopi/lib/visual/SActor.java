@@ -155,6 +155,29 @@ public class SActor {
   }
 
   // --------------------------------------------------------------------
+  // DEBUG
+  // --------------------------------------------------------------------
+
+  public String toString() {
+    StringBuffer        buffer;
+
+    buffer = new StringBuffer();
+    buffer.append("SActor[");
+    buffer.append("menu=" + menuName + ":" + menuItem);
+    if (iconName != null) {
+      buffer.append(", ");
+      buffer.append("icon=" + iconName);
+    }
+    if (acceleratorKey != 0) {
+      buffer.append(", ");
+      buffer.append("key=" + acceleratorKey + ":" + acceleratorModifier);
+    }
+    buffer.append(", ");
+    buffer.append("help=" + help);
+    buffer.append("]");
+    return buffer.toString();
+  }
+  // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
