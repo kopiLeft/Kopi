@@ -314,7 +314,7 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
     if (actors.size() == 0) {
       return new JNullLiteral(ref);
     } else {
-      JExpression[]     init1 = new JExpression[actors.size()];
+      JExpression[]     init1 = new JExpression[usedActors.size()];
 
       for (Enumeration elems = actors.elements(); elems.hasMoreElements(); ) {
         VKActor	actor = (VKActor)elems.nextElement();
@@ -324,13 +324,6 @@ public class VKDefinitionCollector extends com.kopiright.util.base.Utils {
           init1[actorPos] = actor.genCode(ref);
         }
       }
-      //!!!TRY
-      for (int i = 0; i < init1.length; i++) {
-        if (init1[i] == null) {
-          init1[i] = new JNullLiteral(ref);
-        }
-      }
-      //!!!TRY
       return VKUtils.createArray(ref, VKStdType.SActor, init1);
     }
   }
