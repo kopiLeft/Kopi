@@ -282,7 +282,7 @@ public abstract class VForm extends VWindow implements VConstants {
   private void localize(LocalizationManager manager) {
     FormLocalizer       loc;
 
-    loc = manager.getFormLocalizer(getClass().getName());
+    loc = manager.getFormLocalizer(source);
     setTitle(loc.getTitle());
     for (int i = 0; i < pages.length; i++) {
       pages[i] = loc.getPage(i);
@@ -1045,6 +1045,7 @@ public abstract class VForm extends VWindow implements VConstants {
   // ----------------------------------------------------------------------
 
   // static (compiled) data
+  protected String              source;         // qualified name of source file
   protected VBlock[]		blocks;
   protected String[]		pages;
   protected String		help;

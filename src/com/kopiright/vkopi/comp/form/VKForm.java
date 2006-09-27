@@ -52,9 +52,9 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
   /**
    * This class represents the definition of a form
    *
-   * @param where		the token reference of this node
-   * @param title		the title of this form
-   * @param superName		the type of the form
+   * @param     where		the token reference of this node
+   * @param     title		the title of this form
+   * @param     superName       the type of the form
    */
   public VKForm(TokenReference where,
                 KjcEnvironment environment,
@@ -83,6 +83,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 	  commands,
 	  triggers);
 
+    this.pkg = cunit.getPackageName().getName();
     this.blocks = blocks;
     this.pages = pages;
     this.environment = environment;
@@ -254,6 +255,17 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 					 expr);
   }
 
+  /**
+   * Returns the qualified source file name where this object is defined.
+   */
+  private String getSource() {
+    String      basename;
+
+    basename = getTokenReference().getName().substring(0, getTokenReference().getName().lastIndexOf('.'));
+    return pkg == null ? basename : pkg + "/" + basename;
+  }
+
+
   // ----------------------------------------------------------------------
   // CODE GENERATION
   // ----------------------------------------------------------------------
@@ -267,6 +279,9 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
     Vector		body = new Vector(10 + blocks.length);
 
     super.genInit(body);
+
+    // SOURCE
+    body.addElement(VKUtils.assign(ref, "source", VKUtils.toExpression(ref, getSource())));
 
     // PAGES
     JExpression[]	init1 = new JExpression[pages.length];
@@ -416,6 +431,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private final String                  pkg;
   private VKFormElement[]		blocks;
   private VKPage[]			pages;
   private final KjcEnvironment          environment;
