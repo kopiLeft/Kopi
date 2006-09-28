@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
 import java.net.URL;
@@ -26,7 +27,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Locale;
 import javax.swing.text.Document;
 import javax.swing.*;
 import javax.swing.event.HyperlinkListener;
@@ -75,7 +75,7 @@ public class VHelpViewer extends VWindow {
 */
 	});
     
-    // localize the form using the default locale
+    // localize the help viewer using the default locale
     localize(Locale.getDefault());
 
     getActor(CMD_QUIT).setNumber(CMD_QUIT);

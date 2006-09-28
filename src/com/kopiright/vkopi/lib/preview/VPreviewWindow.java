@@ -31,10 +31,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Locale;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.event.EventListenerList;
 
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintInformation;
 import com.kopiright.vkopi.lib.util.PrintJob;
@@ -147,6 +149,9 @@ public class VPreviewWindow extends VWindow {
 
     });
 
+    // localize the preview using the default locale
+    localize(Locale.getDefault());
+    
     getActor(CMD_QUIT).setNumber(CMD_QUIT);
     getActor(CMD_FIRST).setNumber(CMD_FIRST);
     getActor(CMD_LEFT).setNumber(CMD_LEFT);
@@ -318,6 +323,26 @@ public class VPreviewWindow extends VWindow {
     firePageChanged(currentPage);
     unsetWaitInfo();
     setMenu();
+  }
+
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localize this menu tree
+   * 
+   * @param     locale  the locale to use
+   */
+  public void localize(Locale locale) {
+    LocalizationManager         manager;
+      
+    manager = new LocalizationManager(locale);
+    
+    // localizes the actors in VWindow
+    super.localizeActors(manager);
+    
+    manager = null;
   }
 
   // ----------------------------------------------------------------------

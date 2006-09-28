@@ -23,6 +23,7 @@ import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
+import java.util.Locale;
 import javax.swing.SwingUtilities;
 
 import com.kopiright.util.base.InconsistencyException;
@@ -36,6 +37,7 @@ import com.kopiright.vkopi.lib.print.Printable;
 import com.kopiright.vkopi.lib.visual.*;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 
 public abstract class VReport extends VWindow
   implements Constants, VConstants, Printable {
@@ -70,6 +72,9 @@ public abstract class VReport extends VWindow
     }
 
     init();
+
+    // localize the report using the default locale
+    localize(Locale.getDefault());
   }
 
   /**
@@ -164,6 +169,26 @@ public abstract class VReport extends VWindow
       });
   }
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localize this menu tree
+   * 
+   * @param     locale  the locale to use
+   */
+  public void localize(Locale locale) {
+    LocalizationManager         manager;
+      
+    manager = new LocalizationManager(locale);
+    
+    // localizes the actors in VWindow
+    super.localizeActors(manager);
+    
+    manager = null;
+  }
+  
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
