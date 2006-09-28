@@ -280,9 +280,9 @@ public abstract class VField implements VConstants {
   // ----------------------------------------------------------------------
   
   /**
-   * Localizes this block
+   * Localizes this field
    *
-   * @param     manager         the manger to use for localization
+   * @param     parent         the caller localizer
    */
   public void localize(BlockLocalizer parent) {
     FieldLocalizer      loc;

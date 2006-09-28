@@ -94,7 +94,7 @@ public abstract class VForm extends VWindow implements VConstants {
     super(ctxt);
     initIntern(true);
   }
-
+  
   /**
    * Constructor
    */
@@ -266,6 +266,10 @@ public abstract class VForm extends VWindow implements VConstants {
     return environment;
   }
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+
   /**
    * Localize this form
    * 
@@ -275,10 +279,19 @@ public abstract class VForm extends VWindow implements VConstants {
     LocalizationManager         manager;
     
     manager = new LocalizationManager(locale);
+
+    // localizes the actors in VWindow
+    super.localizeActors(manager);
+
     localize(manager);
     manager = null;    //!!! is this enough ?
   }
 
+  /**
+   * Localizes this form
+   *
+   * @param     manager         the manger to use for localization
+   */
   private void localize(LocalizationManager manager) {
     FormLocalizer       loc;
 

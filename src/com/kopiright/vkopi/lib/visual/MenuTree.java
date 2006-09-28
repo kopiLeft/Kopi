@@ -34,6 +34,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -50,7 +51,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.ui.base.JBookmarkPanel;
 import com.kopiright.xkopi.lib.base.DBContext;
@@ -647,17 +650,21 @@ public class MenuTree extends DWindow {
 
       MenuTree.actors = new SActor[9];
 
-      createActor(CMD_QUIT, "menu-file", "close", "quit", 0 /*KeyEvent.VK_ESCAPE*/, 0, "menu-close-help");
-      createActor(CMD_OPEN, "menu-edit", "open", "open", KeyEvent.VK_ENTER, 0, "menu-open-help");
-      createActor(CMD_SHOW, "menu-edit", "menu-show", null, 0, 0, "menu-show-help");
-      createActor(CMD_ADD, "menu-edit", "menu-add", null, 0, 0, "menu-add-help");
-      createActor(CMD_REMOVE, "menu-edit", "menu-remove", null, 0, 0, "menu-remove-help");
-      createActor(CMD_FOLD, "menu-edit", "fold", "fold", KeyEvent.VK_ENTER, 0, "menu-fold-help");
-      createActor(CMD_UNFOLD, "menu-edit", "unfold", "unfold", KeyEvent.VK_ENTER, 0, "menu-unfold-help");
-      createActor(CMD_INFORMATION, "help-menu", "help-item", null, 0, 0, "help-item");
-      createActor(CMD_HELP, "help-menu", "help-menu", "help", KeyEvent.VK_F1, 0, "menu-help-help");
+      createActor(CMD_QUIT, "File", "Close", "quit", 0 /*KeyEvent.VK_ESCAPE*/, 0);
+      createActor(CMD_OPEN, "Edit", "Open", "open", KeyEvent.VK_ENTER, 0);
+      createActor(CMD_SHOW, "Edit", "Show", null, 0, 0);
+      createActor(CMD_ADD, "Edit", "Add", null, 0, 0);
+      createActor(CMD_REMOVE, "Edit", "Remove", null, 0, 0);
+      createActor(CMD_FOLD, "Edit", "Fold", "fold", KeyEvent.VK_ENTER, 0);
+      createActor(CMD_UNFOLD, "Edit", "Unfold", "unfold", KeyEvent.VK_ENTER, 0);
+      createActor(CMD_INFORMATION, "Help", "HelpItem", null, 0, 0);
+      createActor(CMD_HELP, "Help", "HelpMenu", "help", KeyEvent.VK_F1, 0);
 
       setActors(MenuTree.actors);
+
+      // localize the form using the default locale
+      localize(Locale.getDefault());
+
     }
 
     private void createActor(int number,
@@ -665,18 +672,34 @@ public class MenuTree extends DWindow {
                              String item,
                              String icon,
                              int key,
-                             int modifier,
-                             String help)
+                             int modifier)
     {
-      MenuTree.actors[number] = new SActor(Message.getMessage(menu),
-                                           Message.getMessage(item),
+      MenuTree.actors[number] = new SActor(menu,
+                                           MENU_LOCALIZATION_RESOURCE,
+                                           item,
+                                           MENU_LOCALIZATION_RESOURCE,
                                            icon,
                                            key,
-                                           modifier,
-                                           Message.getMessage(help));
+                                           modifier);
       MenuTree.actors[number].setNumber(number);
     }
-
+    
+    /**
+     * Localize this menu tree
+     * 
+     * @param     locale  the locale to use
+     */
+    public void localize(Locale locale) {
+      LocalizationManager         manager;
+      
+      manager = new LocalizationManager(locale);
+      
+      // localizes the actors in VWindow
+      super.localizeActors(manager);
+      
+      manager = null;
+    }
+    
     /**
      * Performs the appropriate action.
      *
@@ -749,6 +772,7 @@ public class MenuTree extends DWindow {
     return getModel().getDBContext().getDefaultConnection().getUserID();
   }
 
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
@@ -782,6 +806,8 @@ public class MenuTree extends DWindow {
   private static final int	CMD_UNFOLD	= 6;
   private static final int	CMD_INFORMATION = 7;
   private static final int	CMD_HELP	= 8;
+
+  private static final String   MENU_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Menu";
 
   private static SActor[]	actors;
 

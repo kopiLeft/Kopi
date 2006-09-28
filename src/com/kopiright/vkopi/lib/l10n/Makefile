@@ -27,7 +27,8 @@ PACKAGE =	com/kopiright/vkopi/lib/l10n
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	BlockLocalizer FormLocalizer FieldLocalizer		\
+JAVAFILES +=	Utils BlockLocalizer FormLocalizer			\
+		FieldLocalizer ActorLocalizer MenuLocalizer		\
 		LocalizationManager
 
 OPTIONS =	

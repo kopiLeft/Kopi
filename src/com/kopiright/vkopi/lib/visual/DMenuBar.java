@@ -46,7 +46,7 @@ public class DMenuBar extends JMenuBar {
     DMenuItem		item;
 
     //!!! NOT YET IMPLEMENTED IN SWING
-    if (actor.menuName.equals(Message.getMessage("help-menu"))) {
+    if (actor.getMenuIdent().equals("Help")) {
       if ((menu = getHelpMenu()) == null) {
 	menu = new JMenu(actor.menuName);
 	setHelpMenu(menu);

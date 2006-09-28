@@ -29,7 +29,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.undo.UndoManager;
 
+
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
@@ -65,12 +67,13 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   private void init() {
-    f12 = new SActor(Message.getMessage("menu-file"),
-                     Message.getMessage("goto-shortcuts"),
+    f12 = new SActor("File",
+                     WINDOW_LOCALIZATION_RESOURCE,
+                     "GotoShortcuts",
+                     WINDOW_LOCALIZATION_RESOURCE,
                      null,
                      KeyEvent.VK_F12,
-                     0,
-                     Message.getMessage("help-goto-shortcuts"));
+                     0);
     f12.setNumber(Constants.CMD_GOTO_SHORTCUTS);
     f12.setHandler(this);
     setActors(new SActor[] {f12});
@@ -411,6 +414,21 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localizes the actors of this window
+   *
+   * @param     manager         the manger to use for localization
+   */
+  public void localizeActors(LocalizationManager manager) {
+    for (int i = 0; i < actors.length; i++) {
+      actors[i].localize(manager);
+    }
+  }
+
+  // ----------------------------------------------------------------------
   // PROTECTED ACCESSORS
   // ----------------------------------------------------------------------
 
@@ -742,6 +760,8 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public static final int	CDE_QUIT	= 0;
   public static final int	CDE_ESCAPED	= 1;
   public static final int	CDE_VALIDATE	= 2;
+
+  public static final String    WINDOW_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Window";
 
   private final Object          transactionMonitor = new Object(); 
   protected     SActor          f12;

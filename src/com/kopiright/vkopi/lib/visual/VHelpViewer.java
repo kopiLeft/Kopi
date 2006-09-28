@@ -50,12 +50,13 @@ public class VHelpViewer extends VWindow {
   public VHelpViewer() {
     setTitle("Help Viewer");
     setActors(new SActor[] {
-      new SActor(com.kopiright.vkopi.lib.util.Message.getMessage("menu-file"),
-		 com.kopiright.vkopi.lib.util.Message.getMessage("close"),
-		 "quit",
+      new SActor("File",
+                 HELPVIEWER_LOCALIZATION_RESOURCE,
+                 "Close",
+		 HELPVIEWER_LOCALIZATION_RESOURCE,
+                 "quit",
 		 java.awt.event.KeyEvent.VK_ESCAPE,
-		 0,
-		 com.kopiright.vkopi.lib.util.Message.getMessage("help-close-help"))
+		 0)
 /*        new SActor(com.kopiright.vkopi.lib.util.Message.getMessage("menu-action"),
 		   com.kopiright.vkopi.lib.util.Message.getMessage("item-top"),
 		   "top",
@@ -143,6 +144,8 @@ public class VHelpViewer extends VWindow {
 
   private URL			url;
   private boolean		started;
+
+  private static final String    HELPVIEWER_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/HelpViewer";
 
   private static final int	CMD_QUIT	= 0;
 //   private static final int	CMD_TOP		= 1;

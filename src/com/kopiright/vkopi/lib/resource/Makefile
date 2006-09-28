@@ -91,7 +91,8 @@ PSFILES =	German StoneGerman german report
 
 
 OTHERFILES =	general.tex macros.tex splash.jpg			\
-		titlepage.sty top.tex
+		titlepage.sty top.tex Menu-de_AT.xml Window-de_AT.xml	\
+		HelpViewer-de_AT.xml Preview-de_AT.xml
 
 FILES =		$(PNGFILES:%=%.png) $(PNGNEW:%=%.png) $(GIFFILES:%=%.gif) $(PSFILES:%=%.ps) $(OTHERFILES)
 

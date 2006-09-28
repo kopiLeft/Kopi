@@ -20,16 +20,33 @@
 package com.kopiright.vkopi.lib.visual;
 
 public class SDefaultActor extends SActor {
+  
+  public SDefaultActor(int code,
+		       String menuIdent,
+                       String menuSource,
+		       String actorIdent,
+		       String actorSource,
+		       String iconName,
+		       int acceleratorKey,
+		       int acceleratorModifier)
+  {
+    super(menuIdent, menuSource, actorIdent, actorSource, iconName, acceleratorKey, acceleratorModifier);
+    this.code = code;
+  }
+
+  /*
   public SDefaultActor(int code,
 		       String menuName,
 		       String menuItem,
 		       String iconName,
 		       int acceleratorKey,
 		       int acceleratorModifier,
-		       String help) {
+		       String help)
+  {
     super(menuName, menuItem, iconName, acceleratorKey, acceleratorModifier, help);
     this.code = code;
   }
+  */
 
   /**
    * Return the code of this default command

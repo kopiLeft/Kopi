@@ -59,6 +59,32 @@ public class Localizer {
   }
 
   // ----------------------------------------------------------------------
+  // IMPLEMENTATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Returns the child with specified type and attribute = value.
+   */
+  public Element lookupChild(Element parent,
+                              String type,
+                              String attribute,
+                              String value)
+  {
+    List        childs;
+    
+    childs = parent.getChildren(type);
+    for (Iterator i = childs.iterator(); i.hasNext(); ) {
+      Element   e;
+
+      e = (Element)i.next();
+      if (e.getAttributeValue(attribute).equals(value)) {
+        return e;
+      }
+    }
+    throw new InconsistencyException(type + " " + attribute + " = " + value + " not found");
+  }
+  
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   

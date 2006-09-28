@@ -216,7 +216,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void localize(LocalizationManager manager) {
     BlockLocalizer      loc;
-
+    
     loc = manager.getBlockLocalizer(source, name);
     title = loc.getTitle();
     help = loc.getHelp();

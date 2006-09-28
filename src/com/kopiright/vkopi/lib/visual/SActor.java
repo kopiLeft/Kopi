@@ -19,6 +19,10 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.l10n.ActorLocalizer;
+import com.kopiright.vkopi.lib.l10n.MenuLocalizer;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.Action;
@@ -36,6 +40,25 @@ public class SActor {
   /**
    * Creates a new actor.
    */
+  public SActor(String menuIdent,
+                String menuSource,
+                String actorIdent,
+                String actorSource,
+		String iconName,
+		int acceleratorKey,
+		int acceleratorModifier)
+  {
+    this.menuIdent = menuIdent;
+    this.menuSource = menuSource;
+    this.actorIdent = actorIdent;
+    this.actorSource = actorSource;
+    this.iconName = iconName;
+    this.acceleratorKey = acceleratorKey;
+    this.acceleratorModifier = acceleratorModifier;
+  }
+
+  /**
+   * Creates a new actor.
   public SActor(String menuName,
 		String menuItem,
 		String iconName,
@@ -62,6 +85,7 @@ public class SActor {
     this.action.putValue(Action.SHORT_DESCRIPTION, help);
     action.setEnabled(false);
   }
+  */
 
   public Action getAction() {
     return action;
@@ -80,6 +104,11 @@ public class SActor {
   // ----------------------------------------------------------------------
   // ACCESSORS / MUTATORS
   // ----------------------------------------------------------------------
+
+
+  public String getMenuIdent() {
+    return menuIdent;
+  }
 
   /**
    * Checks whether the atcor is enabled.
@@ -141,6 +170,46 @@ public class SActor {
     }
   }
 
+  /**
+   *
+   */
+  private void initAction() {
+    action = new SActorAction(menuItem,
+                              (iconName != null) ?
+                              loadImage(iconName) :
+                              null);
+    if (acceleratorKey != KeyEvent.VK_UNDEFINED) {
+      action.putValue(Action.ACCELERATOR_KEY,
+                      KeyStroke.getKeyStroke(acceleratorKey,
+                                             acceleratorModifier));
+    }
+    action.putValue(Action.SHORT_DESCRIPTION, help);
+    action.setEnabled(false);
+  }
+
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Localizes this actor
+   *
+   * @param     manager         the manger to use for localization
+   */
+  public void localize(LocalizationManager manager) {
+    ActorLocalizer      actorLoc;
+    MenuLocalizer       menuLoc;
+    
+    menuLoc = manager.getMenuLocalizer(menuSource, menuIdent);
+    actorLoc = manager.getActorLocalizer(actorSource, actorIdent);
+    
+    menuName = menuLoc.getLabel();
+    menuItem = actorLoc.getLabel();
+    help = actorLoc.getHelp();
+    
+    initAction();
+  }
+
   // ----------------------------------------------------------------------
   // HELP HANDLING
   // ----------------------------------------------------------------------
@@ -195,13 +264,22 @@ public class SActor {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  public final String		menuName;
-  public final String		menuItem;
+
+
   public final String		iconName;
   public final int		acceleratorKey;
   public final int		acceleratorModifier;
-  public final String		help;
+  
 
+  public String                 menuName;
+  public String                 menuItem;
+  public String                 help;
+  private String                menuSource;  // qualified name of menu's source file
+  private String                menuIdent;
+  private String                actorSource; // qualified name of actor's source file
+  private String                actorIdent;
+
+  
   private Action                action; // replaces dactor
   private boolean		enabled;
   private int                   number;

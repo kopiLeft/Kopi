@@ -69,6 +69,14 @@ public class LocalizationManager {
     return new BlockLocalizer(this, getDocument(source), name);
   }
 
+  public ActorLocalizer getActorLocalizer(String source, String name) {
+    return new ActorLocalizer(getDocument(source), name);
+  }
+  
+  public MenuLocalizer getMenuLocalizer(String source, String name) {
+    return new MenuLocalizer(getDocument(source), name);
+  }
+
   // ----------------------------------------------------------------------
   // FILE HANDLING
   // ----------------------------------------------------------------------

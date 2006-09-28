@@ -19,7 +19,7 @@
 
 TOPDIR =	../..
 
-SUBDIRS =	util ui spellchecker visual l10n list			\
+SUBDIRS =	util ui spellchecker l10n visual list			\
 		form preview print report				\
 		cross doc resource
 

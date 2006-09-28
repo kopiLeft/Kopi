@@ -162,49 +162,29 @@ public class VKActor extends VKDefinition {
 
     JExpression[]	exprs;
 
-    /*
-     * !!! graf 20060918 REPLACE WHEN LOCALIZED
     if (number != 0) {
       exprs = new JExpression[] {
 	VKUtils.toExpression(ref, number),
-        VKUtils.toExpression(ref, getSource()),
-	VKUtils.toExpression(ref, menuDef.getIdent()),
+      	VKUtils.toExpression(ref, menuDef.getIdent()),
+	VKUtils.toExpression(ref, menuDef.getSource()),
 	VKUtils.toExpression(ref, getIdent()),
+        VKUtils.toExpression(ref, getSource()),
 	VKUtils.toExpression(ref, icon),
 	VKUtils.toExpression(ref, keyCode),
 	VKUtils.toExpression(ref, keyModifier)
       };
     } else {
       exprs = new JExpression[] {
-        VKUtils.toExpression(ref, getSource()),
 	VKUtils.toExpression(ref, menuDef.getIdent()),
+	VKUtils.toExpression(ref, menuDef.getSource()),
 	VKUtils.toExpression(ref, getIdent()),
+        VKUtils.toExpression(ref, getSource()),
 	VKUtils.toExpression(ref, icon),
 	VKUtils.toExpression(ref, keyCode),
 	VKUtils.toExpression(ref, keyModifier)
       };
     }
-    */
-    if (number != 0) {
-      exprs = new JExpression[] {
-	VKUtils.toExpression(ref, number),
-	VKUtils.toExpression(ref, menuDef.getLabel()),
-	VKUtils.toExpression(ref, label),
-	VKUtils.toExpression(ref, icon),
-	VKUtils.toExpression(ref, keyCode),
-	VKUtils.toExpression(ref, keyModifier),
-	VKUtils.toExpression(ref, help)
-      };
-    } else {
-      exprs = new JExpression[] {
-	VKUtils.toExpression(ref, menuDef.getLabel()),
-	VKUtils.toExpression(ref, label),
-	VKUtils.toExpression(ref, icon),
-	VKUtils.toExpression(ref, keyCode),
-	VKUtils.toExpression(ref, keyModifier),
-	VKUtils.toExpression(ref, help)
-      };
-    }
+
     return new JUnqualifiedInstanceCreation(ref,
                                             number == 0 ? VKStdType.SActor : VKStdType.SDefaultActor,
                                             exprs);
