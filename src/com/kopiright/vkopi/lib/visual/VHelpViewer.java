@@ -26,10 +26,13 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Locale;
 import javax.swing.text.Document;
 import javax.swing.*;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent;
+
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 
 /**
  * A special window that display an html help
@@ -71,6 +74,10 @@ public class VHelpViewer extends VWindow {
 		   com.kopiright.vkopi.lib.util.Message.getMessage("help-index-help"))
 */
 	});
+    
+    // localize the form using the default locale
+    localize(Locale.getDefault());
+
     getActor(CMD_QUIT).setNumber(CMD_QUIT);
     setActorEnabled(CMD_QUIT, true);
   }
@@ -87,6 +94,26 @@ public class VHelpViewer extends VWindow {
     WindowController.getWindowController().doNotModal(this);
   }
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localize this menu tree
+   * 
+   * @param     locale  the locale to use
+   */
+  public void localize(Locale locale) {
+    LocalizationManager         manager;
+      
+    manager = new LocalizationManager(locale);
+    
+    // localizes the actors in VWindow
+    super.localizeActors(manager);
+    
+    manager = null;
+  }
+  
   // ---------------------------------------------------------------------
   // ACCESSORS
   // ---------------------------------------------------------------------
