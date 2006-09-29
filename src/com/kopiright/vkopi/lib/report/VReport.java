@@ -38,6 +38,7 @@ import com.kopiright.vkopi.lib.visual.*;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.l10n.ReportLocalizer;
 
 public abstract class VReport extends VWindow
   implements Constants, VConstants, Printable {
@@ -174,7 +175,7 @@ public abstract class VReport extends VWindow
   // ----------------------------------------------------------------------
   
   /**
-   * Localize this menu tree
+   * Localizes this report
    * 
    * @param     locale  the locale to use
    */
@@ -185,10 +186,25 @@ public abstract class VReport extends VWindow
     
     // localizes the actors in VWindow
     super.localizeActors(manager);
-    
+
+    localize(manager);
     manager = null;
   }
-  
+
+  /**
+   * Localizes this report
+   *
+   * @param     manager         the manger to use for localization
+   */
+  private void localize(LocalizationManager manager) {
+    ReportLocalizer       loc;
+
+    loc = manager.getReportLocalizer(source);
+    setPageTitle(loc.getTitle());
+    setHelp(loc.getHelp());
+    // FIELDS
+  }
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
@@ -205,6 +221,13 @@ public abstract class VReport extends VWindow
    */
   public void setMedia(String media) {
     this.media = media;
+  }
+
+  /**
+   * Set the source for this document
+   */
+  public void setSource(String source) {
+    this.source = source;
   }
 
   // ----------------------------------------------------------------------
@@ -628,26 +651,27 @@ public abstract class VReport extends VWindow
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private VCommand		cmdFold;
-  private VCommand		cmdUnfold;
-  private VCommand		cmdSort;
-  private VCommand		cmdOpenLine;
-  private VCommand		cmdFoldColumn;
-  private VCommand		cmdUnfoldColumn;
-  private VCommand		cmdColumnInfo;
+  private VCommand              cmdFold;
+  private VCommand              cmdUnfold;
+  private VCommand              cmdSort;
+  private VCommand              cmdOpenLine;
+  private VCommand              cmdFoldColumn;
+  private VCommand              cmdUnfoldColumn;
+  private VCommand              cmdColumnInfo;
 
-  private Thread		currentThread;
-  protected MReport		model;
-  private boolean		built;
-  private String		pageTitle = "";
+  private String                source;
+  private Thread                currentThread;
+  protected MReport             model;
+  private boolean               built;
+  private String                pageTitle = "";
   private String                help;
 
-  protected int[][]		VKT_Triggers;	// trigger list
-  protected VCommand[]		commands;	// commands
-  private Vector		activeCommands;
+  protected int[][]             VKT_Triggers;	// trigger list
+  protected VCommand[]          commands;	// commands
+  private Vector                activeCommands;
 
-  private PConfig		pconfig;	// print configuration object
-  private boolean		inAction;
+  private PConfig               pconfig;	// print configuration object
+  private boolean               inAction;
 
   private String                media;
 

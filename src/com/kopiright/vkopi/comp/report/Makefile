@@ -38,7 +38,8 @@ JAVAFILES +=	ReportScanner VRParseReportContext			\
 # Syntax tree classes
 JAVAFILES +=	VRConstants VRReport VRField VRFieldType		\
 		VRDefinitionType VRFieldTypeName VRSeparatorField	\
-		VRSeparatorFieldType VRMultiField
+		VRSeparatorFieldType VRMultiField			\
+		VRReportLocalizationWriter
 
 MESSAGES =	ReportMessages
 

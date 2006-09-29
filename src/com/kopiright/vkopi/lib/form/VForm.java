@@ -284,7 +284,7 @@ public abstract class VForm extends VWindow implements VConstants {
     super.localizeActors(manager);
 
     localize(manager);
-    manager = null;    //!!! is this enough ?
+    manager = null;
   }
 
   /**

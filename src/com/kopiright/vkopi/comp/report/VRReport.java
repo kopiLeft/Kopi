@@ -19,7 +19,9 @@
 
 package com.kopiright.vkopi.comp.report;
 
+import java.io.IOException;
 import java.util.Vector;
+
 import com.kopiright.vkopi.comp.base.*;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.Compiler;
@@ -67,6 +69,7 @@ class VRReport
 	  commands,
 	  triggers);
 
+    this.pkg = cunit.getPackageName().getName();
     this.help = help;
     this.fields = fields;
     this.environment = environment;
@@ -141,6 +144,8 @@ class VRReport
       fields[i].checkCode(context, this);
     }
   }
+
+
 
   // ----------------------------------------------------------------------
   // CODE GENERATION
@@ -217,6 +222,16 @@ class VRReport
   }
 
   /**
+   * Returns the qualified source file name where this object is defined.
+   */
+  private String getSource() {
+    String      basename;
+    
+    basename = getTokenReference().getName().substring(0, getTokenReference().getName().lastIndexOf('.'));
+    return pkg == null ? basename : pkg + "/" + basename;
+  }
+
+  /**
    * Check expression and evaluate and alter context
    * @@exception	PositionedError	Error catched as soon as possible
    */
@@ -226,6 +241,17 @@ class VRReport
 
     super.genInit(body);
 
+    // SET SOURCE
+    body.addElement(new JExpressionStatement(ref,
+					     new JMethodCallExpression(ref,
+								       null,
+								       "setSource",
+								       new JExpression[] {
+									 VKUtils.toExpression(ref, getSource())
+								       }),
+					     null));
+    /**
+     * taoufik 200060929 we get the title and the help from localization files
     // SET TITLE
     body.addElement(new JExpressionStatement(ref,
 					     new JMethodCallExpression(ref,
@@ -243,6 +269,7 @@ class VRReport
 									 VKUtils.toExpression(ref, getHelp())
 								       }),
 					     null));
+    */
 
     for (int i = 0; i < fields.length; i++) {
       fields[i].getCommandable().genCode(ref, body, false, false);
@@ -377,32 +404,33 @@ class VRReport
    * !!!FIX : comment move file creation to upper level (VKPhylum?)
    */
   public void genLocalization(String destination) {
-    /*
     if (getLocale() != null) {
-      String        fileName;
+      String        baseName;
       
-      fileName = getTokenReference().getFile();
-      fileName = fileName.substring(0, fileName.lastIndexOf(".vf")) + "-" + getLocale() + ".xml";
+      baseName = getTokenReference().getFile();
+      baseName = baseName.substring(0, baseName.lastIndexOf(".vr"));
       
       try {
-        VKFormLocalizationWriter        writer;
+        VRReportLocalizationWriter        writer;
         
-        writer = new VKFormLocalizationWriter(destination, fileName);
+        writer = new VRReportLocalizationWriter();
         genLocalization(writer);
-        writer.close();
+        writer.write(destination, baseName, getLocale());
       } catch (IOException ioe) {
         ioe.printStackTrace();
-        System.err.println("cannot write : " + fileName);
+        System.err.println("cannot write : " + baseName);
       }
     }
-    */
   }
   
   /**
-   * !!!FIX:taoufik
+   * !!! COMMENT ME
    */
   public void genLocalization(VKLocalizationWriter writer) {
-    //!!!COMPLETE
+    ((VRReportLocalizationWriter)writer).genReport(getTitle(),
+                                                   help,
+                                                   getDefinitionCollector(),
+                                                   fields);
   }
   
   // ----------------------------------------------------------------------
@@ -424,6 +452,7 @@ class VRReport
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private final String          pkg;
   private final String          help;
   private final VRField[]       fields;
   private int                   countSyntheticName;

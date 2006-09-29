@@ -300,6 +300,19 @@ public class VRField
   }
 
   // ----------------------------------------------------------------------
+  // XML LOCALIZATION GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * !!! COMMENT ME
+   */
+  public void genLocalization(VKLocalizationWriter writer) {
+    if (! isHidden()) {
+      ((VRReportLocalizationWriter)writer).genField(getIdent(), label, help);
+    }
+  }
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 

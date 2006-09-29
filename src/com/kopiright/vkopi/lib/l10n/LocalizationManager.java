@@ -77,6 +77,10 @@ public class LocalizationManager {
     return new MenuLocalizer(getDocument(source), name);
   }
 
+  public ReportLocalizer getReportLocalizer(String source) {
+    return new ReportLocalizer(getDocument(source));
+  }
+
   // ----------------------------------------------------------------------
   // FILE HANDLING
   // ----------------------------------------------------------------------
