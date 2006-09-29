@@ -202,7 +202,9 @@ public abstract class VReport extends VWindow
     loc = manager.getReportLocalizer(source);
     setPageTitle(loc.getTitle());
     setHelp(loc.getHelp());
-    // FIELDS
+    for (int i = 0; i < model.columns.length; i++) {
+      model.columns[i].localize(loc);
+    }
   }
 
   // ----------------------------------------------------------------------

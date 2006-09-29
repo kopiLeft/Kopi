@@ -19,6 +19,9 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
+import com.kopiright.vkopi.lib.l10n.ReportLocalizer;
+
 public abstract class VReportColumn {
   /**
    * Constructs a report column description
@@ -43,8 +46,8 @@ public abstract class VReportColumn {
 		       int height,
 		       VCellFormat format) {
     this.name		= name;
-    this.label		= name;
-    this.help		= help;
+    //    this.label		= name;
+    //    this.help		= help;
     this.options	= options;
     this.align		= align;
     this.groups		= groups;
@@ -55,6 +58,10 @@ public abstract class VReportColumn {
     this.visible  	= true;
     this.folded  	= false;
   }
+
+  // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
 
   /**
    * Returns the column label
@@ -131,6 +138,13 @@ public abstract class VReportColumn {
    */
   public int getHeight() {
     return height;
+  }
+
+  /**
+   * Returns true if this Column is hidden
+   */
+  public boolean isHidden() {
+    return (options & com.kopiright.vkopi.lib.report.Constants.CLO_HIDDEN) > 0;
   }
 
   public String format(Object o) {
@@ -215,6 +229,25 @@ public abstract class VReportColumn {
   public void helpOnColumn(VHelpGenerator help) {
     help.helpOnColumn(label,
                       this.help);
+  }
+
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Localizes this field
+   *
+   * @param     parent         the caller localizer
+   */
+  public void localize(ReportLocalizer parent) {
+    if (! isHidden() && ! name.equals("")){
+      FieldLocalizer      loc;
+ 
+      loc = parent.getFieldLocalizer(name);
+      label = loc.getLabel();
+      help = loc.getHelp();
+    }
   }
 
   // --------------------------------------------------------------------
