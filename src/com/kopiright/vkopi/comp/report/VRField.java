@@ -215,8 +215,8 @@ public class VRField
   public JExpression genConstructorCall() {
     TokenReference	ref = getTokenReference();
     Vector		params = new Vector(14); // $$$
-    //params.addElement(VKUtils.toExpression(ref, ident));
-    params.addElement(VKUtils.toExpression(ref, label == null ? ident : label));
+    params.addElement(VKUtils.toExpression(ref, ident));
+    //params.addElement(VKUtils.toExpression(ref, label == null ? ident : label));
     params.addElement(VKUtils.toExpression(ref, help));
     params.addElement(VKUtils.toExpression(ref, options));
     params.addElement(VKUtils.toExpression(ref, align));

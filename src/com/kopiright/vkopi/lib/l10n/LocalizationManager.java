@@ -78,7 +78,7 @@ public class LocalizationManager {
   }
 
   public ReportLocalizer getReportLocalizer(String source) {
-    return new ReportLocalizer(getDocument(source));
+    return new ReportLocalizer(this, getDocument(source));
   }
 
   // ----------------------------------------------------------------------

@@ -41,7 +41,8 @@ public class ReportLocalizer {
   /**
    * Constructor
    */
-  public ReportLocalizer(Document document) {
+  public ReportLocalizer(LocalizationManager manager, Document document) {
+    this.manager = manager;
     this.root = document.getRootElement();
     if (! root.getName().equals("report")) {
       throw new InconsistencyException("bad root element " + root.toString());
@@ -66,9 +67,18 @@ public class ReportLocalizer {
     return root.getAttributeValue("help");
   }
 
+  /**
+   *
+   */
+  public FieldLocalizer getFieldLocalizer(String ident) {
+    return new FieldLocalizer(manager,
+                              Utils.lookupChild(root, "field", "ident", ident));
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-  private final Element         root;
+  private final LocalizationManager     manager;
+  private final Element                 root;
 }
