@@ -36,17 +36,31 @@ public class VBooleanCodeField extends VCodeField {
 
   /**
    * Constructor
+   *
+   * @param     ident           the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VBooleanCodeField(String[] names, Boolean[] codes) {
-    super(names);
+  public VBooleanCodeField(String ident,
+                           String source,
+                           String[] names,
+                           Boolean[] codes)
+  {
+    super(ident, source, names);
     this.codes = codes;
   }
 
   /**
    * Constructor
+   *
+   * @param     ident           the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VBooleanCodeField(String[] names, boolean[] codes) {
-    super(names);
+  public VBooleanCodeField(String ident,
+                           String source,
+                           String[] names,
+                           boolean[] codes)
+  {
+    super(ident, source, names);
     this.codes = new Boolean[codes.length];
     for (int i = 0; i < codes.length; i++) {
       this.codes[i] = new Boolean(codes[i]);
@@ -63,7 +77,7 @@ public class VBooleanCodeField extends VCodeField {
    * Returns a list column for list.
    */
   protected VListColumn getListColumn() {
-    return new VBooleanCodeColumn(getHeader(), null, names, codes, getPriority() >= 0);
+    return new VBooleanCodeColumn(getHeader(), null, getLabels(), codes, getPriority() >= 0);
   }
 
   /**

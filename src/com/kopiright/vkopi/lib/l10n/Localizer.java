@@ -38,116 +38,24 @@ public class Localizer {
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
 
-  public Localizer(String source, Locale locale) {
-    String      fileName;
-    SAXBuilder  builder;
-    Document    document;
-
-    //!!!TEST
-    System.err.println("*** " + locale);
-    //!!!TEST
-    //!!!FIX:taoufik locale.toString() will probably output 'de' instead of 'de_AT'
-    fileName = source.replace('.', '/') + "-" + locale.toString() + ".xml";
-    builder = new SAXBuilder();
-    try {
-      document = builder.build(Localizer.class.getClassLoader().getResourceAsStream(fileName));
-    } catch (Exception e) {
-      //!!!FIX:taoufik exception handling
-      throw new InconsistencyException("Cannot load file " + fileName + ": " + e.getMessage());
-    }
-    this.root = document.getRootElement();
+  public Localizer(LocalizationManager manager) {
+    this.manager = manager;
   }
 
   // ----------------------------------------------------------------------
-  // IMPLEMENTATION
+  // ACCESSOR
   // ----------------------------------------------------------------------
 
   /**
-   * Returns the child with specified type and attribute = value.
+   * Returns the object managing localization file handling.
    */
-  public Element lookupChild(Element parent,
-                              String type,
-                              String attribute,
-                              String value)
-  {
-    List        childs;
-    
-    childs = parent.getChildren(type);
-    for (Iterator i = childs.iterator(); i.hasNext(); ) {
-      Element   e;
-
-      e = (Element)i.next();
-      if (e.getAttributeValue(attribute).equals(value)) {
-        return e;
-      }
-    }
-    throw new InconsistencyException(type + " " + attribute + " = " + value + " not found");
+  public LocalizationManager getManager() {
+    return manager;
   }
-  
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS
-  // ----------------------------------------------------------------------
-  
-  private final Element         root;
-}
-
-  /**
-   * //!!!FIX:taoufik
-  private void initLocalization(String source) {
-    List        blockList;
-    SAXBuilder  builder = new SAXBuilder();
-    Document    localization;
-  
-    //!!!FIX:taoufik locale.toString() will probably output 'de' instead of 'de_AT'
-    this.fileName =  source + "-" + this.locale.toString() + ".xml";
-    
-    try {
-      localization = builder.build(FormLocalizationManager.class.getClassLoader().getResourceAsStream(this.fileName));
-    } catch (Exception e) {
-      //!!!FIX:taoufik more specific catched exception
-      //!!!FIX:taoufik execption handling
-      System.err.println("Cannot load file " + this.fileName);
-      return;
-    }
-    
-    this.root = localization.getRootElement();
-    addManager(source, this);
-  }
-  
-  
-  **
-   * Returns the source managed by this class.
-   *
-  public String getSource() {
-    return source;
-  }
-
-  **
-   * //!!!FIX:taoufik
-   *
-  public Element getRoot() {
-    return root;
-  }
-
-  **
-   *
-   *
-  public String getFileName() {
-    return fileName;
-  }
-
-  // ----------------------------------------------------------------------
-  // 
-  // ----------------------------------------------------------------------
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-  private final String                  source;
-  private final Locale                  locale;
-  private String                        fileName;
-
-  private static final Hashtable        managers = new Hashtable();
+  private final LocalizationManager     manager;
 }
-  */

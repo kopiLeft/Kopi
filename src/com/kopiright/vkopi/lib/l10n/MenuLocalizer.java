@@ -40,8 +40,7 @@ public class MenuLocalizer {
   /**
    * //!!!FIX:taoufik
    */
-  public MenuLocalizer(Document document,
-                       String ident) {
+  public MenuLocalizer(Document document, String ident) {
     Element root;
     
     root = document.getRootElement();

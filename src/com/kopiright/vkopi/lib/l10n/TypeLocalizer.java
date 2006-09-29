@@ -31,7 +31,7 @@ import com.kopiright.util.base.InconsistencyException;
 /**
  * //!!!FIX:taoufik
  */
-public class BlockLocalizer extends Localizer {
+public class TypeLocalizer extends Localizer {
 
 
   // ----------------------------------------------------------------------
@@ -41,20 +41,23 @@ public class BlockLocalizer extends Localizer {
   /**
    * //!!!FIX:taoufik
    */
-  public BlockLocalizer(LocalizationManager manager,
-                        Document document,
-                        String ident)
+  public TypeLocalizer(LocalizationManager manager,
+                       Document document,
+                       String ident)
   {
     super(manager);
 
     Element     root;
+    Element     type;
 
     root = document.getRootElement();
     if (! root.getName().equals("form")
-        && ! root.getName().equals("blockinsert")) {
+        && ! root.getName().equals("blockinsert")
+        && ! root.getName().equals("insert")) {
       throw new InconsistencyException("bad root element " + root.toString());
     }
-    self = Utils.lookupChild(root, "block", "name", ident);
+    type = Utils.lookupChild(root, "type", "ident", ident);
+    self = Utils.lookupChild(type, "code");
   }
   
   // ----------------------------------------------------------------------
@@ -62,35 +65,13 @@ public class BlockLocalizer extends Localizer {
   // ----------------------------------------------------------------------
 
   /**
-   * Returns the value of the title attribute.
+   * Returns the title of the specified item.
    */
-  public String getTitle() {
-    return self.getAttributeValue("title");
-  }
-
-  /**
-   * Returns the value of the help attribute.
-   */
-  public String getHelp() {
-    return self.getAttributeValue("help");
-  }
-
-  /**
-   * Returns the message for the specified index.
-   */
-  public String getIndexMessage(String ident) {
+  public String getCodeLabel(String column) {
     Element     e;
 
-    e = Utils.lookupChild(self, "index", "ident", ident);
-    return e.getAttributeValue("message");
-  }
-
-  /**
-   *
-   */
-  public FieldLocalizer getFieldLocalizer(String ident) {
-    return new FieldLocalizer(getManager(),
-                              Utils.lookupChild(self, "field", "ident", ident));
+    e = Utils.lookupChild(self, "codedesc", "ident", column);
+    return e.getAttributeValue("label");
   }
 
   // ----------------------------------------------------------------------

@@ -19,6 +19,9 @@
 
 package com.kopiright.vkopi.lib.list;
 
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.l10n.ListLocalizer;
+
 public class VList implements VConstants {
 
   // --------------------------------------------------------------------
@@ -27,28 +30,38 @@ public class VList implements VConstants {
 
   /**
    * Constructs a list.
-   * &&&&&&&&&&&&&
+   *
+   * @param     ident           the identifier of the list type
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VList(String newForm, VListColumn[] columns, int table, boolean hasShortcut) {
+  public VList(String ident,
+               String source,
+               String newForm,
+               VListColumn[] columns,
+               int table,
+               boolean hasShortcut)
+  {
+    this.ident = ident;
+    this.source = source;
     this.newForm = newForm;
     this.columns = columns;
-    this.table   = table;
+    this.table = table;
     this.hasShortcut = hasShortcut;
-  }
-
-  /**
-   * Constructs a list. (!!! TO BE REMOVED)
-   * &&&&&&&&&&&&&
-   */
-  public VList(String newForm, VListColumn[] columns, int table) {
-    this(newForm, columns, table, false);
   }
 
   /**
    * Constructs a list.
    */
-  public VList(VListColumn[] columns, int table, Class newForm, boolean hasShortcut) {
-    this(newForm == null ? null : newForm.getName(),
+  public VList(String ident,
+               String source,
+               VListColumn[] columns,
+               int table,
+               Class newForm,
+               boolean hasShortcut)
+  {
+    this(ident,
+         source,
+         newForm == null ? null : newForm.getName(),
          columns,
          table,
          hasShortcut);
@@ -96,10 +109,26 @@ public class VList implements VConstants {
     return hasShortcut;
   }
 
+  /**
+   * Localize this object.
+   * 
+   * @param     manager         
+   */
+  public void localize(LocalizationManager manager) {
+    ListLocalizer       loc;
+
+    loc = manager.getListLocalizer(source, ident);
+    for (int i = 0; i < columns.length; i++) {
+      columns[i].localize(loc);
+    }
+  }
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
+  private final String                  ident;
+  private final String                  source;
   private final String			newForm;
   private final VListColumn[]		columns;
   private final int			table;

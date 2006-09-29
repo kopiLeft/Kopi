@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.list;
 
+import com.kopiright.vkopi.lib.l10n.ListLocalizer;
 import com.kopiright.vkopi.lib.ui.base.ListDialogCellRenderer;
 
 /**
@@ -85,6 +86,19 @@ public abstract class VListColumn implements VConstants, ListDialogCellRenderer.
    */
   public Object formatObject(Object value) {
     return value == null ? VConstants.EMPTY_TEXT : value.toString();
+  }
+
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Localize this object.
+   * 
+   * @param     manager         
+   */
+  public void localize(ListLocalizer loc) {
+    title = loc.getColumnTitle(column);
   }
 
   // --------------------------------------------------------------------

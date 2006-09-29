@@ -38,9 +38,16 @@ public class VFixedCodeField extends VCodeField {
 
   /**
    * Constructor
+   *
+   * @param     ident           the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VFixedCodeField(String[] names, Fixed[] codes) {
-    super(names);
+  public VFixedCodeField(String ident,
+                         String source,
+                         String[] names,
+                         Fixed[] codes)
+  {
+    super(ident, source, names);
     this.codes = codes;
   }
 
@@ -54,7 +61,7 @@ public class VFixedCodeField extends VCodeField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VFixedCodeColumn(getHeader(), null, names, codes, getPriority() >= 0);
+    return new VFixedCodeColumn(getHeader(), null, getLabels(), codes, getPriority() >= 0);
   }
 
   /**

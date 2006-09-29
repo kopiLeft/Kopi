@@ -32,7 +32,7 @@ public class VBooleanField extends VBooleanCodeField {
    * Constructor
    */
   public VBooleanField() {
-    super(booleanNames, booleanCodes);
+    super("boolean", GENERAL_LOCALIZATION_RESOURCE, booleanNames, booleanCodes);
   }
 
   /**
@@ -61,7 +61,7 @@ public class VBooleanField extends VBooleanCodeField {
    * DATA MEMBERS
    * ----------------------------------------------------------------------
    */
-
-  private static String[]	booleanNames = { Message.getMessage("true"), Message.getMessage("false") };
+  private static final String   GENERAL_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/General";
+  private static String[]	booleanNames = { "true", "false" };
   private static Boolean[]	booleanCodes = { Boolean.TRUE, Boolean.FALSE };
 }

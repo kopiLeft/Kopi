@@ -20,6 +20,8 @@
 package com.kopiright.vkopi.lib.form;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
+import com.kopiright.vkopi.lib.l10n.TypeLocalizer;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -29,10 +31,16 @@ public abstract class VCodeField extends VField {
 
   /**
    * Constructor
+   *
+   * @param     type            the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
+   * @param     idents          an array of identifiers identifying each code value
    */
-  protected VCodeField(String[] names) {
-    super(getMaxWidth(names), 1);
-    this.names = names;
+  protected VCodeField(String type, String source, String[] idents) {
+    super(1, 1);
+    this.type = type;
+    this.source = source;
+    this.idents = idents;
   }
 
   /**
@@ -71,7 +79,7 @@ public abstract class VCodeField extends VField {
    *
    */
   protected void helpOnType(VHelpGenerator help) {
-    super.helpOnType(help, (this instanceof VBooleanField) ? null : names);
+    super.helpOnType(help, (this instanceof VBooleanField) ? null : labels);
   }
 
   /*
@@ -86,8 +94,8 @@ public abstract class VCodeField extends VField {
   public boolean checkText(String s) {
     s = s.toLowerCase();
 
-    for (int i = 0; i < names.length; i++) {
-      if (names[i].toLowerCase().startsWith(s)) {
+    for (int i = 0; i < labels.length; i++) {
+      if (labels[i].toLowerCase().startsWith(s)) {
 	return true;
       }
     }
@@ -113,9 +121,9 @@ public abstract class VCodeField extends VField {
 
       s = s.toLowerCase();
 
-      for (int i = 0; found != -2 && i < names.length; i++) {
-	if (names[i].toLowerCase().startsWith(s)) {
-	  if (names[i].toLowerCase().equals(s)) {
+      for (int i = 0; found != -2 && i < labels.length; i++) {
+	if (labels[i].toLowerCase().startsWith(s)) {
+	  if (labels[i].toLowerCase().equals(s)) {
 	    found = i;
 	    break;
 	  }
@@ -148,7 +156,7 @@ public abstract class VCodeField extends VField {
 
       selected = handler.selectFromList(new VListColumn[] { getListColumn() },
                                         new Object[][]{ getCodes() },
-                                        names);
+                                        labels);
 
       if (selected != null) {
         /*
@@ -158,8 +166,8 @@ public abstract class VCodeField extends VField {
          */
         int     found = -1;
 
-        for (int i = 0; found != -2 && i < names.length; i++) {
-	  if (names[i].equals(selected)) {
+        for (int i = 0; found != -2 && i < labels.length; i++) {
+	  if (labels[i].equals(selected)) {
             if (found == -1) {
               found = i;
             } else {
@@ -191,11 +199,11 @@ public abstract class VCodeField extends VField {
     int	pos = value[getBlock().getActiveRecord()];
 
     if (pos == -1 && desc) {
-      pos = names.length;
+      pos = labels.length;
     }
     pos += desc ? -1 : 1;
 
-    if (pos < 0 || pos >= names.length) {
+    if (pos < 0 || pos >= labels.length) {
       throw new VExecFailedException();	// no message to display
     } else {
       setCode(getBlock().getActiveRecord(), pos);
@@ -205,6 +213,13 @@ public abstract class VCodeField extends VField {
   // ----------------------------------------------------------------------
   // INTERFACE BD/TRIGGERS
   // ----------------------------------------------------------------------
+
+  /**
+   * return the name of this field
+   */
+  public String[] getLabels() {
+    return labels;
+  }
 
   /**
    * Returns the array of codes.
@@ -272,7 +287,7 @@ public abstract class VCodeField extends VField {
    * Returns the display representation of field value of given record.
    */
   public String getTextImpl(int r) {
-    return value[r] == -1 ? "" : names[value[r]];
+    return value[r] == -1 ? "" : labels[value[r]];
   }
 
   /**
@@ -297,7 +312,7 @@ public abstract class VCodeField extends VField {
    * Returns a string representation of a code value wrt the field type.
    */
   protected String formatCode(int code) {
-    return names[code];
+    return labels[code];
   }
 
   /**
@@ -321,15 +336,35 @@ public abstract class VCodeField extends VField {
     throw new InconsistencyException();
   }
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Localizes this field
+   *
+   * @param     parent         the caller localizer
+   */
+  protected void localize(FieldLocalizer parent) {
+    TypeLocalizer       loc;
+
+    loc = parent.getManager().getTypeLocalizer(source, type);
+    labels = new String[idents.length];
+    for (int i = 0; i < labels.length; i++) {
+      labels[i] = loc.getCodeLabel(idents[i]);
+    }
+    setDimension(getMaxWidth(labels), 1);
+  }
+
   // --------------------------------------------------------------------
   // PRIVATE METHODS
   // --------------------------------------------------------------------
 
-  private static int getMaxWidth(String[] names) {
+  private static int getMaxWidth(String[] labels) {
     int		res = 0;
 
-    for (int i = 0; i < names.length; i++) {
-      res = Math.max(names[i].length(), res);
+    for (int i = 0; i < labels.length; i++) {
+      res = Math.max(labels[i].length(), res);
     }
 
     return res;
@@ -341,8 +376,12 @@ public abstract class VCodeField extends VField {
    * ----------------------------------------------------------------------
    */
 
+  private final String          type;
+  private final String          source;
+
   // static (compiled) data
-  protected String[]		names;
+  private final String[]	idents;
+  private String[]		labels;
 
   // dynamic data
   protected int[]		value;		// -1: null

@@ -55,4 +55,19 @@ public class Utils {
     throw new InconsistencyException(type + " " + attribute + " = " + value + " not found");
   }
 
+  /**
+   * Returns the child with specified type.
+   */
+  public static Element lookupChild(Element parent, String type) {
+    List        childs;
+    
+    childs = parent.getChildren(type);
+    if (childs.size() == 0) {
+      throw new InconsistencyException(type + " not found");
+    } else if (childs.size() > 1) {
+      throw new InconsistencyException(type + " not unique");
+    } else {
+      return (Element)childs.get(0);
+    }
+  }
 }

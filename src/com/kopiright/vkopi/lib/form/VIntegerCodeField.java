@@ -34,17 +34,31 @@ public class VIntegerCodeField extends VCodeField {
 
   /**
    * Constructor
+   *
+   * @param     ident           the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VIntegerCodeField(String[] names, Integer[] codes) {
-    super(names);
+  public VIntegerCodeField(String ident,
+                           String source,
+                           String[] names,
+                           Integer[] codes)
+  {
+    super(ident, source, names);
     this.codes = codes;
   }
 
   /**
    * Constructor
+   *
+   * @param     ident           the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VIntegerCodeField(String[] names, int[] codes) {
-    super(names);
+  public VIntegerCodeField(String ident,
+                           String source,
+                           String[] names,
+                           int[] codes)
+  {
+    super(ident, source, names);
     this.codes = new Integer[codes.length];
     for (int i = 0; i < codes.length; i++) {
       this.codes[i] = new Integer(codes[i]);
@@ -59,7 +73,7 @@ public class VIntegerCodeField extends VCodeField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VIntegerCodeColumn(getHeader(), null, names, codes, getPriority() >= 0);
+    return new VIntegerCodeColumn(getHeader(), null, getLabels(), codes, getPriority() >= 0);
   }
 
   /**

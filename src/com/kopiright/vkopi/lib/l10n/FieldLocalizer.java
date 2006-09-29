@@ -31,7 +31,7 @@ import com.kopiright.util.base.InconsistencyException;
 /**
  * //!!!FIX:taoufik
  */
-public class FieldLocalizer {
+public class FieldLocalizer extends Localizer {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
@@ -41,7 +41,7 @@ public class FieldLocalizer {
    * //!!!FIX:taoufik
    */
   public FieldLocalizer(LocalizationManager manager, Element self) {
-    this.manager = manager;
+    super(manager);
     this.self = self;
   }
   
@@ -64,35 +64,8 @@ public class FieldLocalizer {
   }
 
   // ----------------------------------------------------------------------
-  // IMPLEMENTATION
-  // ----------------------------------------------------------------------
-
-  /**
-   * Returns the child with specified type and attribute = value.
-   */
-  private Element lookupChild(Element parent,
-                              String type,
-                              String attribute,
-                              String value)
-  {
-    List        childs;
-    
-    childs = parent.getChildren(type);
-    for (Iterator i = childs.iterator(); i.hasNext(); ) {
-      Element   e;
-
-      e = (Element)i.next();
-      if (e.getAttributeValue(attribute).equals(value)) {
-        return e;
-      }
-    }
-    throw new InconsistencyException(type + " " + attribute + " = " + value + " not found");
-  }
-
-  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final LocalizationManager     manager;
   private final Element                 self;
 }

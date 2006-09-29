@@ -89,12 +89,19 @@ GIFFILES =	$(FREEGIFS) $(OLDGIFS)
 
 PSFILES =	German StoneGerman german report
 
+LOCALIZATIONS =	General HelpViewer Preview Menu Window
 
 OTHERFILES =	general.tex macros.tex splash.jpg			\
-		titlepage.sty top.tex Menu-de_AT.xml Window-de_AT.xml	\
-		HelpViewer-de_AT.xml Preview-de_AT.xml
+		titlepage.sty top.tex					\
 
-FILES =		$(PNGFILES:%=%.png) $(PNGNEW:%=%.png) $(GIFFILES:%=%.gif) $(PSFILES:%=%.ps) $(OTHERFILES)
+
+FILES =		$(PNGFILES:%=%.png)					\
+		$(PNGNEW:%=%.png)					\
+		$(GIFFILES:%=%.gif)					\
+		$(PSFILES:%=%.ps)					\
+		$(LOCALIZATIONS:%=%-de_AT.xml)				\
+		$(LOCALIZATIONS:%=%-fr_FR.xml)				\
+		$(OTHERFILES)
 
 ## ----------------------------------------------------------------------
 ## GOALS

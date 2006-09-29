@@ -31,7 +31,7 @@ import com.kopiright.util.base.InconsistencyException;
 /**
  * !!! COMMENT ME
  */
-public class ReportLocalizer {
+public class ReportLocalizer extends Localizer {
 
 
   // ----------------------------------------------------------------------
@@ -42,7 +42,7 @@ public class ReportLocalizer {
    * Constructor
    */
   public ReportLocalizer(LocalizationManager manager, Document document) {
-    this.manager = manager;
+    super(manager);
     this.root = document.getRootElement();
     if (! root.getName().equals("report")) {
       throw new InconsistencyException("bad root element " + root.toString());
@@ -71,7 +71,7 @@ public class ReportLocalizer {
    *
    */
   public FieldLocalizer getFieldLocalizer(String ident) {
-    return new FieldLocalizer(manager,
+    return new FieldLocalizer(getManager(),
                               Utils.lookupChild(root, "field", "ident", ident));
   }
 
@@ -79,6 +79,5 @@ public class ReportLocalizer {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-  private final LocalizationManager     manager;
   private final Element                 root;
 }

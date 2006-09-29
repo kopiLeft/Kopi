@@ -290,8 +290,23 @@ public abstract class VField implements VConstants {
     loc = parent.getFieldLocalizer(name);
     setLabel(loc.getLabel()); 
     help = loc.getHelp();
+    if (list != null) {
+      list.localize(loc.getManager());
+    }
+
+    // field type specific localizations
+    localize(loc);
   }
   
+  /**
+   * Localizes this field
+   *
+   * @param     parent         the caller localizer
+   */
+  protected void localize(FieldLocalizer loc) {
+    // by default nothing to do
+  }
+
   // ----------------------------------------------------------------------
   // PUBLIC COMMANDS
   // ----------------------------------------------------------------------

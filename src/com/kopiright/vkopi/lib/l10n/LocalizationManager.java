@@ -77,6 +77,14 @@ public class LocalizationManager {
     return new MenuLocalizer(getDocument(source), name);
   }
 
+  public ListLocalizer getListLocalizer(String source, String name) {
+    return new ListLocalizer(this, getDocument(source), name);
+  }
+
+  public TypeLocalizer getTypeLocalizer(String source, String name) {
+    return new TypeLocalizer(this, getDocument(source), name);
+  }
+
   public ReportLocalizer getReportLocalizer(String source) {
     return new ReportLocalizer(this, getDocument(source));
   }

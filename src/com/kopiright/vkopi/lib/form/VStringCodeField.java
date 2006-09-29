@@ -36,9 +36,16 @@ public class VStringCodeField extends VCodeField {
 
   /**
    * Constructor
+   *
+   * @param     ident           the identifier of the type in the source file
+   * @param     source          the qualified name of the source file defining the list
    */
-  public VStringCodeField(String[] names, String[] codes) {
-    super(names);
+  public VStringCodeField(String ident,
+                          String source,
+                          String[] names,
+                          String[] codes)
+  {
+    super(ident, source, names);
     this.codes = codes;
   }
 
@@ -52,7 +59,7 @@ public class VStringCodeField extends VCodeField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VStringCodeColumn(getHeader(), null, names, codes, getPriority() >= 0);
+    return new VStringCodeColumn(getHeader(), null, getLabels(), codes, getPriority() >= 0);
   }
 
   /**
