@@ -34,13 +34,19 @@ public class VKIntegerCodeType extends VKCodeType {
   // ----------------------------------------------------------------------
 
   /**
-   * This is a position given by x and y location
+   * 
    *
    * @param where		the token reference of this node
+   * @param pack                the package name of the class defining the type
+   * @param type		the identifier of the type definition
    * @param codes		a list of code value pairs
    */
-  public VKIntegerCodeType(TokenReference where, VKCodeDesc[] codes) {
-    super(where, codes);
+  public VKIntegerCodeType(TokenReference where,
+                           String pack, 
+                           String type,
+                           VKCodeDesc[] codes)
+  {
+    super(where, pack, type, codes);
   }
 
   // ----------------------------------------------------------------------

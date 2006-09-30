@@ -33,13 +33,21 @@ public abstract class VKCodeType extends VKType {
   // ----------------------------------------------------------------------
 
   /**
-   * This is a position given by x and y location
+   * !!!
    *
    * @param where		the token reference of this node
+   * @param pack                the package name of the class defining the type
+   * @param type		the identifier of the type definition
    * @param codes		a list of code pair
    */
-  public VKCodeType(TokenReference where, VKCodeDesc[] codes) {
+  public VKCodeType(TokenReference where,
+                    String pack, 
+                    String type,
+                    VKCodeDesc[] codes)
+  {
     super(where, 0, 0);
+    this.source = pack == null ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
+    this.type = type;
     this.codes = codes;
   }
 
@@ -70,9 +78,29 @@ public abstract class VKCodeType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public JExpression genConstructor() {
-    return new JUnqualifiedInstanceCreation(getTokenReference(),
+    TokenReference      ref = getTokenReference();
+
+    return new JUnqualifiedInstanceCreation(ref,
                                             getType(),
-                                            new JExpression[]{ genLabels(), genValues() });
+                                            new JExpression[]{
+                                              VKUtils.toExpression(ref, type),
+                                              VKUtils.toExpression(ref, source),
+                                              genIdents(),
+                                              genValues()
+                                            });
+  }
+
+  /**
+   * Generates the names of this type
+   */
+  public JExpression genIdents()  {
+    TokenReference	ref = getTokenReference();
+    JExpression[]	init = new JExpression[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
+      init[i] = new JStringLiteral(ref, codes[i].getIdent());
+    }
+    return VKUtils.createArray(ref, CStdType.String, init);
   }
 
   /**
@@ -120,5 +148,7 @@ public abstract class VKCodeType extends VKType {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private final String          source;
+  private final String          type;
   protected VKCodeDesc[]        codes;
 }

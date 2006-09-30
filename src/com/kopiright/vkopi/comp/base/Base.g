@@ -231,7 +231,7 @@ vkIntegerFieldType []
     { self = new VKIntegerType(sourceRef, width, 1, min, max); }
 ;
 
-vkCodeFieldType []
+vkCodeFieldType [String pack, String type]
   returns [VKCodeType self]
 {
   VKCodeDesc[]		codes;
@@ -245,22 +245,22 @@ vkCodeFieldType []
       for (int i = 0; i < names.length; i++) {
         codes[i] = new VKCodeDesc(sourceRef, "Id$" + i, names[i], names[i]);
       }
-      self = new VKStringCodeType(sourceRef, codes);
+      self = new VKStringCodeType(sourceRef, pack, type, codes);
     }
 |
   "CODE"
   (
     "BOOL" "IS" codes = vkBooleanCodeList[]
-      { self = new VKBooleanCodeType(sourceRef, codes); }
+      { self = new VKBooleanCodeType(sourceRef, pack, type, codes); }
   |
     "FIXED" "IS" codes = vkFixedCodeList[]
-      { self = new VKFixedCodeType(sourceRef, codes); }
+      { self = new VKFixedCodeType(sourceRef, pack, type, codes); }
   |
     "LONG" "IS" codes = vkIntegerCodeList[]
-      { self = new VKIntegerCodeType(sourceRef, codes); }
+      { self = new VKIntegerCodeType(sourceRef, pack, type, codes); }
   |
     "STRING" "IS" codes = vkStringCodeList[]
-      { self = new VKStringCodeType(sourceRef, codes); }
+      { self = new VKStringCodeType(sourceRef, pack, type, codes); }
   )
   "END" "CODE"
 ;
@@ -530,7 +530,7 @@ vkListDesc []
 :
   ( title = vkString[] ASSIGN )?
     { checkLocaleIsSpecifiedIff(title != null, "LIST DESC TITLE"); }
-  column = vkSimpleIdent[] COLON type = vkFieldType[]
+  column = vkSimpleIdent[] COLON type = vkFieldType[null, null]
     { self = new VKListDesc(sourceRef, title, column, type); }
 ;
 
@@ -546,7 +546,7 @@ vkDefinitions [VKDefinitionCollector coll, String pack]
     def = vkActorDef[pack]
       { coll.addActorDef((VKActor)def); }
   |
-    def = vkTypeDef[]
+    def = vkTypeDef[pack]
       { coll.addFieldTypeDef((VKTypeDefinition)def); }
   |
     def = vkCommandDef[]
@@ -610,7 +610,7 @@ vkActorDef [String pack]
     }
 ;
 
-vkTypeDef []
+vkTypeDef [String pack]
   returns [VKTypeDefinition self]
 {
   String		name;
@@ -627,22 +627,22 @@ vkTypeDef []
     // RPAREN
   )?
   "IS"
-  type = vkFieldType[] 
-  ( list = vkFieldList[] { type.addList(list); } )?
+  type = vkFieldType[pack, name] 
+  ( list = vkFieldList[pack, name] { type.addList(list); } )?
   "END" "TYPE"
     { self = new VKTypeDefinition(sourceRef, name, type, params); }
 ;
 
 
-vkFieldType[]
+vkFieldType[String pack, String name]
   returns [VKType self]
 :
   self = vkPredefinedFieldType[]
 |
-  self = vkCodeFieldType[]
+  self = vkCodeFieldType[pack, name]
 ;
 
-vkFieldList []
+vkFieldList [String pack, String type]
   returns [VKFieldList self]
 {
   TableReference        table;
@@ -659,6 +659,8 @@ vkFieldList []
   "END" "LIST"
     {
       self = new VKFieldList(sourceRef,
+                             pack,
+                             type,
                              table,
                              name == null ? null : environment.getTypeFactory().createType(name.replace('.', '/'), false),
                              columns,

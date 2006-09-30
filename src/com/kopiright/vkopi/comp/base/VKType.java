@@ -71,8 +71,8 @@ public abstract class VKType extends VKPhylum {
   /**
    * Adds a list of value to this type
    */
-  public void addList(VKFieldList l) {
-    this.list = l;
+  public void addList(VKFieldList list) {
+    this.list = list;
   }
 
   /**

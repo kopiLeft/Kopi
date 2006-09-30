@@ -37,10 +37,16 @@ public class VKFixedCodeType extends VKCodeType {
    * !!!
    *
    * @param where		the token reference of this node
+   * @param pack                the package name of the class defining the type
+   * @param type		the identifier of the type definition
    * @param codes		a list of code value pairs
    */
-  public VKFixedCodeType(TokenReference where, VKCodeDesc[] codes) {
-    super(where, codes);
+  public VKFixedCodeType(TokenReference where,
+                         String pack, 
+                         String type,
+                         VKCodeDesc[] codes)
+  {
+    super(where, pack, type, codes);
   }
 
   // ----------------------------------------------------------------------

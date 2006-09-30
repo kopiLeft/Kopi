@@ -132,7 +132,8 @@ public class VKUtils {
 							      int modifiers,
 							      CType type,
 							      String name,
-							      JExpression value) {
+							      JExpression value)
+  {
     JVariableDefinition	def = new JVariableDefinition(ref,
 						      modifiers,
 						      type,

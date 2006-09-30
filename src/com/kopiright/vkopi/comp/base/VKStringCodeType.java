@@ -39,10 +39,16 @@ public class VKStringCodeType extends VKCodeType {
    * !!!
    *
    * @param where		the token reference of this node
+   * @param pack                the package name of the class defining the type
+   * @param type		the identifier of the type definition
    * @param code		a list of code value pairs
    */
-  public VKStringCodeType(TokenReference where, VKCodeDesc[] codes) {
-    super(where, codes);
+  public VKStringCodeType(TokenReference where,
+                          String pack, 
+                          String type,
+                          VKCodeDesc[] codes)
+  {
+    super(where, pack, type, codes);
   }
 
   // ----------------------------------------------------------------------

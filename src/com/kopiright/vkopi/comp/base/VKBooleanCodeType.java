@@ -34,13 +34,19 @@ public class VKBooleanCodeType extends VKCodeType {
   // ----------------------------------------------------------------------
 
   /**
-   * This is a position given by x and y location
+   * !!!
    *
    * @param where		the token reference of this node
+   * @param pack                the package name of the class defining the type
+   * @param type		the identifier of the type definition
    * @param codes		a list of code pairs
    */
-  public VKBooleanCodeType(TokenReference where, VKCodeDesc[] codes) {
-    super(where, codes);
+  public VKBooleanCodeType(TokenReference where,
+                           String pack, 
+                           String type,
+                           VKCodeDesc[] codes)
+  {
+    super(where, pack, type, codes);
   }
 
   // ----------------------------------------------------------------------

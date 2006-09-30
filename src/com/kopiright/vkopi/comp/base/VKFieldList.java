@@ -37,18 +37,24 @@ public class VKFieldList extends VKPhylum {
    * This is a position given by x and y location
    *
    * @param where		the token reference of this node
+   * @param pack                the package name of the class defining the list containing type
+   * @param type		the identifier of the type containing this list
    * @param table		the statement to select data
    * @param newForm		the name of the form to edit data
    * @param columns		a description of the columns
    * @param access		true if this field is only an access to a form
    */
   public VKFieldList(TokenReference where,
+                     String pack,
+                     String type,
 		     TableReference table,
 		     CType newForm,
 		     VKListDesc[] columns,
 		     boolean access)
   {
     super(where);
+    this.source = pack == null ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
+    this.type = type;
     this.table = table;
     this.newForm = newForm;
     this.columns = columns;
@@ -119,22 +125,26 @@ public class VKFieldList extends VKPhylum {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public JExpression genCode(int actionNumber) {
-    TokenReference	ref = getTokenReference();
-    JExpression[]	init = new JExpression[columns.length];
+    JExpression[]	init;
+    TokenReference	ref;
+
+    init = new JExpression[columns.length];
     for (int i = 0; i < columns.length; i++) {
       init[i] = columns[i].genCode();
     }
-
+    ref = getTokenReference();
     return new JUnqualifiedInstanceCreation(ref,
-				    VKStdType.VList,
-				    new JExpression[] {
-				      VKUtils.createArray(ref, VKStdType.VListColumn, init),
-				      VKUtils.toExpression(ref, actionNumber),
-				      newForm != null
-				      ? new JClassExpression(ref, newForm, 0)
-				      : (JExpression)new JNullLiteral(ref),
-				      VKUtils.toExpression(ref, hasShortcut())
-				    });
+                                            VKStdType.VList,
+                                            new JExpression[] {
+                                              VKUtils.toExpression(ref, type),
+                                              VKUtils.toExpression(ref, source),
+                                              VKUtils.createArray(ref, VKStdType.VListColumn, init),
+                                              VKUtils.toExpression(ref, actionNumber),
+                                              newForm != null
+                                              ? new JClassExpression(ref, newForm, 0)
+                                              : (JExpression)new JNullLiteral(ref),
+                                              VKUtils.toExpression(ref, hasShortcut())
+                                            });
   }
 
   // ----------------------------------------------------------------------
@@ -167,8 +177,10 @@ public class VKFieldList extends VKPhylum {
   // PRIVATE DATA
   // ----------------------------------------------------------------------
 
-  private	TableReference       	table;
-  private       CType			newForm;
-  private	VKListDesc[]		columns;
-  private	boolean			access;
+  private final String                  source;
+  private final String                  type;
+  private final	TableReference       	table;
+  private final CType			newForm;
+  private final VKListDesc[]		columns;
+  private final boolean			access;
 }
