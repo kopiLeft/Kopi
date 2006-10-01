@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <insert>
-  <menu ident="File" label="Datei" />
-  <menu ident="Edit" label="Bearbeiten" />
-  <menu ident="Help" label="Hilfe" />
+  <menu ident="File" label="Fichier" />
+  <menu ident="Edit" label="Procédure" />
+  <menu ident="Help" label="Aide" />
   <actor ident="Close" label="Beenden" help="Programm beenden" />
   <actor ident="Open" label="Aufrufen" help="Programm aufrufen" />
   <actor ident="Show" label="Favoriten anzeigen" help="Favoriten anzeigen" />
@@ -10,6 +10,6 @@
   <actor ident="Remove" label="Favoriten entfernen" help="Favoriten entfernen" />
   <actor ident="Fold" label="schließen" help="Das ausgewählte Verzeichniss schließen" />
   <actor ident="Unfold" label="öffnen" help="Das ausgewählte Verzeichniss öffnen" />
-  <actor ident="HelpItem" label="Information" help="Information" />
-  <actor ident="HelpMenu" label="Help" help="Das Hilfefenster öffnen" />
+  <actor ident="Information" label="Information" help="Information" />
+  <actor ident="Help" label="Aide" help="Ouvrir 'l'aide" />
 </insert>

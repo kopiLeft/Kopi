@@ -657,8 +657,8 @@ public class MenuTree extends DWindow {
       createActor(CMD_REMOVE, "Edit", "Remove", null, 0, 0);
       createActor(CMD_FOLD, "Edit", "Fold", "fold", KeyEvent.VK_ENTER, 0);
       createActor(CMD_UNFOLD, "Edit", "Unfold", "unfold", KeyEvent.VK_ENTER, 0);
-      createActor(CMD_INFORMATION, "Help", "HelpItem", null, 0, 0);
-      createActor(CMD_HELP, "Help", "HelpMenu", "help", KeyEvent.VK_F1, 0);
+      createActor(CMD_INFORMATION, "Help", "Information", null, 0, 0);
+      createActor(CMD_HELP, "Help", "Help", "help", KeyEvent.VK_F1, 0);
 
       setActors(MenuTree.actors);
 
