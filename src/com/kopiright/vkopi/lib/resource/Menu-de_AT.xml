@@ -12,5 +12,5 @@
   <actor ident="Fold" label="Schließen" help="Das ausgewählte Verzeichnis schließen" />
   <actor ident="Unfold" label="Öffnen" help="Das ausgewählte Verzeichnis öffnen" />
   <actor ident="Information" label="Information" help="Information" />
-  <actor ident="Aide" label="Help" help="Das Hilfefenster öffnen" />
+  <actor ident="Help" label="Hilfe" help="Das Hilfefenster öffnen" />
 </insert>
