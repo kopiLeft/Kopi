@@ -286,7 +286,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
     // PAGES
     JExpression[]	init1 = new JExpression[pages.length];
     for (int i = 0; i < pages.length; i++) {
-      init1[i] = new JStringLiteral(ref, pages[i].getTitle());     //!!!localize
+      init1[i] = new JStringLiteral(ref, pages[i].getIdent());
     }
     body.addElement(VKUtils.assign(ref, "pages", VKUtils.createArray(ref, CStdType.String, init1)));
 
