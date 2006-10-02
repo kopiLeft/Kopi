@@ -29,16 +29,19 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a field localizer.
  */
 public class FieldLocalizer extends Localizer {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             manager         the manager to use for localization
+   * @param             self            the field element
    */
   public FieldLocalizer(LocalizationManager manager, Element self) {
     super(manager);

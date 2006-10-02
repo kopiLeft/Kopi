@@ -29,17 +29,18 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a form localizer.
  */
 public class FormLocalizer {
-
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             document        the document containing the form localization
    */
   public FormLocalizer(Document document) {
     this.root = document.getRootElement();
@@ -61,6 +62,8 @@ public class FormLocalizer {
 
   /**
    * Returns the value of the page child.
+   *
+   * @param             position                the position of the page
    */
   public String getPage(int position) {
     List        pages;

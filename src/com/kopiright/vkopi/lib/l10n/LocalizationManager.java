@@ -34,17 +34,18 @@ import org.jdom.input.SAXBuilder;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a localization manager.
  */
 public class LocalizationManager {
-
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             locale          the locale used for localization management
    */
   public LocalizationManager(Locale locale) {
     this.locale = locale;
@@ -61,30 +62,70 @@ public class LocalizationManager {
     return locale;
   }
 
+  /**
+   * Constructs a form localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   */
   public FormLocalizer getFormLocalizer(String source) {
     return new FormLocalizer(getDocument(source));
   }
 
+  /**
+   * Constructs a block localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   * @param             name            the identifier of the block
+   */
   public BlockLocalizer getBlockLocalizer(String source, String name) {
     return new BlockLocalizer(this, getDocument(source), name);
   }
 
+  /**
+   * Constructs an actor localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   * @param             name            the identifier of the actor
+   */
   public ActorLocalizer getActorLocalizer(String source, String name) {
     return new ActorLocalizer(getDocument(source), name);
   }
   
+  /**
+   * Constructs a menu localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   * @param             name            the identifier of the menu
+   */
   public MenuLocalizer getMenuLocalizer(String source, String name) {
     return new MenuLocalizer(getDocument(source), name);
   }
 
+  /**
+   * Constructs a list localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   * @param             name            the identifier of the list
+   */
   public ListLocalizer getListLocalizer(String source, String name) {
     return new ListLocalizer(this, getDocument(source), name);
   }
 
+  /**
+   * Constructs a type localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   * @param             name            the identifier of the type
+   */
   public TypeLocalizer getTypeLocalizer(String source, String name) {
     return new TypeLocalizer(this, getDocument(source), name);
   }
 
+  /**
+   * Constructs a report localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   */
   public ReportLocalizer getReportLocalizer(String source) {
     return new ReportLocalizer(this, getDocument(source));
   }
@@ -94,7 +135,9 @@ public class LocalizationManager {
   // ----------------------------------------------------------------------
 
   /**
-   * //!!!FIX:taoufik
+   * Returns the document manging the given source.
+   *
+   * @param             source          the source qualied name
    */
   private Document getDocument(String source) {
     if (! documents.contains(source)) {
@@ -119,7 +162,6 @@ public class LocalizationManager {
     try {
       document = builder.build(LocalizationManager.class.getClassLoader().getResourceAsStream(fileName));
     } catch (Exception e) {
-      //!!!FIX:taoufik exception handling
       throw new InconsistencyException("Cannot load file " + fileName + ": " + e.getMessage());
     }
     return document;

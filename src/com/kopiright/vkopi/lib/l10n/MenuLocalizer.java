@@ -29,16 +29,19 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a menu localizer.
  */
 public class MenuLocalizer {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             document        the document containing the menu localization
+   * @param             ident           the identifier of the menu localization
    */
   public MenuLocalizer(Document document, String ident) {
     Element root;

@@ -28,10 +28,13 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Defines methods used for localization.
  */
 public class Utils {
 
+  // ----------------------------------------------------------------------
+  // UTILITIES
+  // ----------------------------------------------------------------------
 
   /**
    * Returns the child with specified type and attribute = value.

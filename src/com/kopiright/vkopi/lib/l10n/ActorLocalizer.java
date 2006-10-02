@@ -29,19 +29,21 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements an actor localizer.
  */
 public class ActorLocalizer {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             document        the document containing the actor localization
+   * @param             ident           the identifier of the actor localization
    */
-  public ActorLocalizer(Document document,
-                        String ident) {
+  public ActorLocalizer(Document document, String ident) {
     Element root;
     
     root = document.getRootElement();

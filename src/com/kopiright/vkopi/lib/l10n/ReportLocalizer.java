@@ -29,17 +29,19 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * !!! COMMENT ME
+ * Implements a report localizer.
  */
 public class ReportLocalizer extends Localizer {
-
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
    * Constructor
+   *
+   * @param             manager         the manager to use for localization
+   * @param             document        the document containing the report localization
    */
   public ReportLocalizer(LocalizationManager manager, Document document) {
     super(manager);
@@ -68,7 +70,9 @@ public class ReportLocalizer extends Localizer {
   }
 
   /**
+   * Constructs a field localizer for the given field.
    *
+   * @param             ident           the identifier of the field
    */
   public FieldLocalizer getFieldLocalizer(String ident) {
     return new FieldLocalizer(getManager(),

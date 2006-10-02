@@ -29,17 +29,20 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a block localizer.
  */
 public class BlockLocalizer extends Localizer {
-
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             manager         the manager to use for localization
+   * @param             document        the document containing the block localization
+   * @param             ident           the identifier of the block
    */
   public BlockLocalizer(LocalizationManager manager,
                         Document document,
@@ -77,6 +80,8 @@ public class BlockLocalizer extends Localizer {
 
   /**
    * Returns the message for the specified index.
+   *
+   * @param             ident           the identifier of the index
    */
   public String getIndexMessage(String ident) {
     Element     e;
@@ -86,7 +91,9 @@ public class BlockLocalizer extends Localizer {
   }
 
   /**
+   * Constructs a field localizer for the given field.
    *
+   * @param             ident           the identifier of the field
    */
   public FieldLocalizer getFieldLocalizer(String ident) {
     return new FieldLocalizer(getManager(),

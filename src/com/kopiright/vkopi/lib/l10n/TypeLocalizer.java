@@ -29,17 +29,20 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a type localizer.
  */
 public class TypeLocalizer extends Localizer {
-
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             manager         the manager to use for localization
+   * @param             document        the document containing the type localization
+   * @param             ident           the identifier of the type
    */
   public TypeLocalizer(LocalizationManager manager,
                        Document document,

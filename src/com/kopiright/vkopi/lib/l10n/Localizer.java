@@ -32,13 +32,21 @@ import org.jdom.input.SAXBuilder;
 
 import com.kopiright.util.base.InconsistencyException;
 
+/**
+ * Implements a localizer.
+ */
 public class Localizer {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
 
-  public Localizer(LocalizationManager manager) {
+  /**
+   * Constructor
+   *
+   * @param             manager         the manager to use for localization
+   */
+   public Localizer(LocalizationManager manager) {
     this.manager = manager;
   }
 

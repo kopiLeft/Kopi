@@ -29,17 +29,20 @@ import org.jdom.JDOMException;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * //!!!FIX:taoufik
+ * Implements a list localizer.
  */
 public class ListLocalizer extends Localizer {
-
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
-   * //!!!FIX:taoufik
+   * Constructor
+   *
+   * @param             manager         the manager to use for localization
+   * @param             document        the document containing the list localization
+   * @param             ident           the identifier of the list
    */
   public ListLocalizer(LocalizationManager manager,
                        Document document,
@@ -66,6 +69,8 @@ public class ListLocalizer extends Localizer {
 
   /**
    * Returns the title of the specified item.
+   *
+   * @param             column          the identifier of the column
    */
   public String getColumnTitle(String column) {
     Element     e;
