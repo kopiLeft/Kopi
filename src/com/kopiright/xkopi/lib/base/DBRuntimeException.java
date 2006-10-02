@@ -44,7 +44,7 @@ public class DBRuntimeException extends RuntimeException {
    */
   public DBRuntimeException(String query, String message) {
     super(message + ((query != null) ? 
-                     "\n---- BEGAIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
+                     "\n---- BEGIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
                      : ""));
   }
 
@@ -74,7 +74,7 @@ public class DBRuntimeException extends RuntimeException {
    */
   public DBRuntimeException(String query, String message, SQLException exc) {
     super(message + ((query != null) ?
-                     "\n---- BEGAIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
+                     "\n---- BEGIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
                      : ""),
           exc);
   }

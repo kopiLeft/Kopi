@@ -44,7 +44,7 @@ public abstract class DBException extends java.sql.SQLException {
    */
   public DBException(String query, SQLException original) {
     super(original.getMessage() + ((query != null) ?
-                                   "\n---- BEGAIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
+                                   "\n---- BEGIN QUERY TRACE ----\n" + query + "\n----  END QUERY TRACE   ----"
                                    : ""),
           original.getSQLState(),
           original.getErrorCode());
