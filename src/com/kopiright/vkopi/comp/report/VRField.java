@@ -233,7 +233,7 @@ public class VRField
     params.addElement(getFormat());
 
     if (type.getDef() instanceof VKCodeType) {
-      params.addElement(((VKCodeType)type.getDef()).genLabels());
+      params.addElement(((VKCodeType)type.getDef()).genIdents());
       params.addElement(((VKCodeType)type.getDef()).genValues());
     }
 
