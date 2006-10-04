@@ -47,8 +47,10 @@ public class LocalizationChecker {
   // ----------------------------------------------------------------------
 
   /**
-   * Constructor
+   * Constructor.
    *
+   * @param             model           the localization model
+   * @param             model           the localization condidate
    */
   public LocalizationChecker(String model, String candidate) {
     this.modelDoc = loadDocument(model);
@@ -58,9 +60,9 @@ public class LocalizationChecker {
   }
 
   /**
-   *
+   * Initializes the XML writer.
    */
-  void initWriter() {
+  private void initWriter() {
     Format              format;
 
     format = Format.getPrettyFormat();
@@ -74,7 +76,7 @@ public class LocalizationChecker {
   // ----------------------------------------------------------------------
 
   /**
-   *
+   * Entry point.
    */
   public static void main(String[] args) {
     if (args.length != 2) {
@@ -89,7 +91,9 @@ public class LocalizationChecker {
   }
   
   /**
+   * Runs the check process.
    *
+   * @param             outFile         name of the file to generate
    */
   private void run(String outFile) {
     
@@ -104,7 +108,8 @@ public class LocalizationChecker {
   }
 
   /**
-   *
+   * Checks that the condidate document matches the model,
+   * otherwise and generates a new valid one.
    */
   private void check() {
     Element model;
@@ -127,7 +132,11 @@ public class LocalizationChecker {
   }
   
   /**
+   * Checks the children of the given elements.
    *
+   * @param             model           the model element
+   * @param             candidate       the candidate element
+   * @param             validated       the element to generate
    */
   private void checkChildren(Element model, Element candidate, Element validated) {
     List        children;
@@ -172,14 +181,21 @@ public class LocalizationChecker {
   }
   
   /**
+   * Constructs a comment content from an element.
    *
+   * @param             element         the element to comment
+   * @return            the constructed comment
    */
   private Comment toComment(Element element) {
     return new Comment(" " +  writer.outputString(element) + " ");
   }
 
   /**
-   *
+   * Checks the attributes of the given elements and return a valid one.
+   * 
+   * @param             model           the model element
+   * @param             candidate       the candidate element
+   * @return            a valid element
    */
   private Element checkAttributes(Element model, Element candidate) {
     Element     e;
@@ -213,7 +229,9 @@ public class LocalizationChecker {
   }
   
   /**
+   * Writes the XML tree to the specified file.
    *
+   * @param             fileName                the name of the file
    */
   private void write(String fileName) {
     try {
@@ -228,7 +246,9 @@ public class LocalizationChecker {
   // ----------------------------------------------------------------------
   
   /**
+   * Used on a failure.
    *
+   * @param             msg             the error message to output
    */
   public static void fail(String msg) {
     System.err.println(msg);
@@ -236,7 +256,10 @@ public class LocalizationChecker {
   }
   
   /**
+   * Retruns the attribute used for the identification of an element.
    *
+   * @param             name            the name of the element
+   * @return            the name of the identifier attribute
    */
   private String getIdentOf(String name) {
     return (String)idents.get(name);
@@ -249,7 +272,8 @@ public class LocalizationChecker {
   /**
    * Loads the XML document.
    *
-   * @param     fileName          the name of the file.
+   * @param             fileName          the name of the file.
+   * @return            the document associated to the given file
    */
   private Document loadDocument(String fileName) {
     SAXBuilder  builder;
@@ -270,7 +294,6 @@ public class LocalizationChecker {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-
   private Document                      modelDoc;
   private Document                      candidateDoc;
   private Document                      validatedDoc;
@@ -278,9 +301,8 @@ public class LocalizationChecker {
   private boolean                       modified = false;
   private XMLOutputter                  writer;
 
-
   private static Hashtable              idents = new Hashtable();
-
+  
   static {
     // sets the ident name of each element
     idents.put("actor",    "ident");
