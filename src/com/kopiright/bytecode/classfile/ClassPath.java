@@ -269,7 +269,11 @@ public class ClassPath {
 
       info = dirs[i].loadClass(name, interfaceOnly);
       if (info != null) {
-	return info;
+        if (name.equals(info.getName())) {
+          return info;
+        } else {
+          // we might throw an exception here
+        }
       }
     }
 
