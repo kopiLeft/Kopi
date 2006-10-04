@@ -50,7 +50,7 @@ public class LocalizationChecker {
    * Constructor.
    *
    * @param             model           the localization model
-   * @param             model           the localization condidate
+   * @param             model           the localization candidate
    */
   public LocalizationChecker(String model, String candidate) {
     this.modelDoc = loadDocument(model);
@@ -108,7 +108,7 @@ public class LocalizationChecker {
   }
 
   /**
-   * Checks that the condidate document matches the model,
+   * Checks that the candidate document matches the model,
    * otherwise and generates a new valid one.
    */
   private void check() {
@@ -148,7 +148,7 @@ public class LocalizationChecker {
       Element   ev; // validated
 
       em = (Element)i.next();
-      // elements with no ident
+      // elements with no identifier
       if (getIdentOf(em.getName()) == null) {
         ec = Utils.lookupChild(candidate, em.getName());
         ec.detach();
@@ -223,6 +223,8 @@ public class LocalizationChecker {
     // test if the candidate still have attributes
     if (candidate == null || candidate.getAttributes().size() != 0) {
       modified = true;
+      // the remaining attributes may contain useful data
+      e.addContent(toComment(candidate));
     }
       
     return e;
@@ -256,7 +258,7 @@ public class LocalizationChecker {
   }
   
   /**
-   * Retruns the attribute used for the identification of an element.
+   * Returns the attribute used for the identification of an element.
    *
    * @param             name            the name of the element
    * @return            the name of the identifier attribute
@@ -304,7 +306,7 @@ public class LocalizationChecker {
   private static Hashtable              idents = new Hashtable();
   
   static {
-    // sets the ident name of each element
+    // sets the identifier name of each element
     idents.put("actor",    "ident");
     idents.put("block",    "name");
     idents.put("codedesc", "ident");
