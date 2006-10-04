@@ -220,13 +220,17 @@ public class LocalizationChecker {
       }
     }
     
+    if (candidate == null) {
+      modified = true;
+    }
     // test if the candidate still have attributes
-    if (candidate == null || candidate.getAttributes().size() != 0) {
+    if (candidate != null
+        && candidate.getAttributes().size() != 0) {
       modified = true;
       // the remaining attributes may contain useful data
       e.addContent(toComment(candidate));
     }
-      
+    
     return e;
   }
   
