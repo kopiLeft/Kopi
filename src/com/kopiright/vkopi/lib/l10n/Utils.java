@@ -51,7 +51,8 @@ public class Utils {
       Element   e;
 
       e = (Element)i.next();
-      if (e.getAttributeValue(attribute).equals(value)) {
+      if (e.getAttributeValue(attribute) != null
+          && e.getAttributeValue(attribute).equals(value)) {
         return e;
       }
     }
