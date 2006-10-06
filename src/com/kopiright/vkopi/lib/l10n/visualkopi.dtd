@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+	
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License version 2
+	as published by the Free Software Foundation.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+	
+	$Id$
+-->
+
+<!ELEMENT root (form | report | insert | blockinsert)>
+
+<!ELEMENT form ((type | menu | actor)*, page*, block*)>
+<!ATTLIST form
+	title		CDATA	#IMPLIED
+>
+
+<!ELEMENT report ((type | menu | actor)*, field*)>
+<!ATTLIST report
+	title		CDATA	#IMPLIED
+>
+
+<!ELEMENT insert ((type | menu | actor)*)>
+
+<!ELEMENT blockinsert ((type | menu | actor)*, block)>
+
+<!ELEMENT type (code | list)?>
+<!ATTLIST type
+	ident		CDATA	#REQUIRED
+>
+
+<!ELEMENT code (codedesc*)>
+
+<!ELEMENT codedesc EMPTY>
+<!ATTLIST codedesc
+	ident		CDATA	#REQUIRED
+	label		CDATA	#REQUIRED
+>
+
+<!ELEMENT list (listdesc*)>
+
+<!ELEMENT listdesc EMPTY>
+<!ATTLIST listdesc
+	column		CDATA	#REQUIRED
+	title		CDATA	#REQUIRED
+>
+
+<!ELEMENT menu EMPTY>
+<!ATTLIST menu
+	ident		CDATA	#REQUIRED
+	label		CDATA	#REQUIRED
+>
+
+
+<!ELEMENT actor EMPTY>
+<!ATTLIST actor
+	ident		CDATA	#REQUIRED
+	label		CDATA	#REQUIRED
+	help		CDATA	#IMPLIED
+>
+
+<!ELEMENT page EMPTY>
+<!ATTLIST page
+	ident		CDATA	#REQUIRED
+	title		CDATA	#IMPLIED
+>
+
+<!ELEMENT block (index*, field*)>
+<!ATTLIST block
+	name		CDATA	#REQUIRED
+	title		CDATA	#IMPLIED
+	help		CDATA	#IMPLIED
+>
+
+<!ELEMENT index EMPTY>
+<!ATTLIST index
+	ident		CDATA	#REQUIRED
+	message		CDATA	#REQUIRED
+>
+
+<!ELEMENT field EMPTY>
+<!ATTLIST field
+	ident		CDATA	#REQUIRED
+	label		CDATA	#IMPLIED
+	help		CDATA	#IMPLIED
+>
+
+
