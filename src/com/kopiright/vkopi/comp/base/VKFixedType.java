@@ -104,7 +104,9 @@ public class VKFixedType extends VKType {
    * @return the info
    */
   public DatabaseColumn getColumnInfo(){
-    if ((min != null) || (max != null)) return new DatabaseFixedColumn(true, min, max);
+    if ((min != null) || (max != null)) {
+      return new DatabaseFixedColumn(true, min, max);
+    }
     return new DatabaseFixedColumn(true);
   }
 
