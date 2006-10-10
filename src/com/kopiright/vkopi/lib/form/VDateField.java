@@ -159,14 +159,6 @@ public class VDateField extends VField {
       throw new VFieldException(this, Message.getMessage("date_format"));      
     }
 
-    // INVERSE DAY AND MONTH FOR US DATE  ENGLISH USED FOR THE MOMENT SO TBR
-    if (java.util.Locale.getDefault().equals(java.util.Locale.ENGLISH) ||
-	java.util.Locale.getDefault().equals(java.util.Locale.US)) {
-      int i = day;
-      day = month;
-      month = i;
-    }
-
     if (!isDate(day, month, year)) {
       throw new VFieldException(this, Message.getMessage("date_format"));
     }

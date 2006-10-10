@@ -271,34 +271,16 @@ public class Date extends Type {
     StringBuffer	buffer = new StringBuffer();
     int[]		gregorian = julianToGregorian(this.scalar);
 
-    if (locale == Locale.GERMAN ||
-	locale == Locale.FRENCH) {
-      buffer.append(gregorian[2] / 10);
-      buffer.append(gregorian[2] % 10);
-      buffer.append('.');
-      buffer.append(gregorian[1] / 10);
-      buffer.append(gregorian[1] % 10);
-      buffer.append('.');
-      buffer.append(gregorian[0]);
-    } else if (locale == Locale.US ||
-	       locale == Locale.ENGLISH) {
-      buffer.append(gregorian[1] / 10);
-      buffer.append(gregorian[1] % 10);
-      buffer.append('/');
-      buffer.append(gregorian[2] / 10);
-      buffer.append(gregorian[2] % 10);
-      buffer.append('/');
-      buffer.append(gregorian[0]);
-    } else {
-      buffer.append(gregorian[0]);
-      buffer.append('.');
-      buffer.append(gregorian[1] / 10);
-      buffer.append(gregorian[1] % 10);
-      buffer.append('.');
-      buffer.append(gregorian[2] / 10);
-      buffer.append(gregorian[2] % 10);
-    }
-
+    // !!! taoufik 20061010
+    // LOCALIZATION NOT HANDLED
+    buffer.append(gregorian[2] / 10);
+    buffer.append(gregorian[2] % 10);
+    buffer.append('.');
+    buffer.append(gregorian[1] / 10);
+    buffer.append(gregorian[1] % 10);
+    buffer.append('.');
+    buffer.append(gregorian[0]);
+      
     return buffer.toString();
   }
 
