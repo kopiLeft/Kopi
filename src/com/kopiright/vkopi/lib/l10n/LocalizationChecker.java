@@ -149,18 +149,22 @@ public class LocalizationChecker {
 
       em = (Element)i.next();
       // elements with no identifier
-      if (getIdentOf(em.getName()) == null) {
-        ec = Utils.lookupChild(candidate, em.getName());
-        ec.detach();
+      if (candidate == null) {
+        ec = null;
       } else {
-        try {
-          ec = Utils.lookupChild(candidate,
-                                 em.getName(),
-                                 getIdentOf(em.getName()),
-                                 em.getAttributeValue(getIdentOf(em.getName())));
+        if (getIdentOf(em.getName()) == null) {
+          ec = Utils.lookupChild(candidate, em.getName());
           ec.detach();
-        } catch (InconsistencyException e) {
-          ec = null;
+        } else {
+          try {
+            ec = Utils.lookupChild(candidate,
+                                   em.getName(),
+                                   getIdentOf(em.getName()),
+                                   em.getAttributeValue(getIdentOf(em.getName())));
+            ec.detach();
+          } catch (InconsistencyException e) {
+            ec = null;
+          }
         }
       }
       ev = checkAttributes(em, ec);
