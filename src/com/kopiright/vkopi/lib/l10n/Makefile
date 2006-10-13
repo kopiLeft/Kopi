@@ -30,7 +30,7 @@ PACKAGE =	com/kopiright/vkopi/lib/l10n
 JAVAFILES +=	ActorLocalizer BlockLocalizer FieldLocalizer		\
 		FormLocalizer ListLocalizer LocalizationManager		\
 		Localizer MenuLocalizer ReportLocalizer			\
-		TypeLocalizer Utils LocalizationChecker
+		TypeLocalizer ModuleLocalizer Utils LocalizationChecker
 
 OPTIONS =	
 

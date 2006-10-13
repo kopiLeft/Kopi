@@ -140,7 +140,7 @@ public class LocalizationManager {
    * @param             source          the source qualied name
    */
   private Document getDocument(String source) {
-    if (! documents.contains(source)) {
+    if (! documents.containsKey(source)) {
       documents.put(source, loadDocument(source));
     }
     return (Document)documents.get(source);
