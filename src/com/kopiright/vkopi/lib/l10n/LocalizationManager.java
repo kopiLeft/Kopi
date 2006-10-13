@@ -130,6 +130,16 @@ public class LocalizationManager {
     return new ReportLocalizer(this, getDocument(source));
   }
 
+  /**
+   * Constructs a module localizer using the specified source.
+   *
+   * @param             source          the source qualified name
+   * @param             name            the identifier of the module
+   */
+  public ModuleLocalizer getModuleLocalizer(String source, String name) {
+    return new ModuleLocalizer(getDocument(source), name);
+  }
+
   // ----------------------------------------------------------------------
   // FILE HANDLING
   // ----------------------------------------------------------------------
