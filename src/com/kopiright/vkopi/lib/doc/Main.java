@@ -40,6 +40,7 @@ import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.form.LatexPrintWriter;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.xkopi.lib.base.DBContext;
@@ -340,7 +341,7 @@ public class Main {
    * Builds the module tree.
    */
   private DefaultMutableTreeNode createTree() {
-    Module[]	modules = loadModules();
+    Module[]	modules = loadModules(ApplicationConfiguration.getConfiguration().isUnicodeDatabase());
 
     if (modules == null) {
       System.exit(0);
@@ -354,7 +355,6 @@ public class Main {
 			Message.getMessage("PROGRAM"),
 			Message.getMessage("program"),
 			null,
-			Message.getMessage("program_help"),
 			Module.ACS_TRUE,
 			null);
 
@@ -405,7 +405,7 @@ public class Main {
   /*
    * Loads the accessible modules.
    */
-  private Module[] loadModules() {
+  private Module[] loadModules(boolean isUnicode) {
     Query	query = new Query(context.getDefaultConnection());
     Vector	vector = new Vector();
 
@@ -419,7 +419,6 @@ public class Main {
 				     query.getString(3),
 				     query.getString(4),
 				     query.getString(5),
-				     query.getString(6),
 				     Module.ACS_TRUE,
 				     null));
       }
@@ -473,7 +472,7 @@ public class Main {
   // ----------------------------------------------------------------------
 
   private static final String	QUERY_INIT =
-    " SELECT	M.ID, M.Vater, M.Kurzname, M.Bezeichnung, M.Objekt, M.Hilfe" +
+    " SELECT	M.ID, M.Vater, M.Kurzname, M.Source, M.Objekt" +
     " FROM	MODULE M" +
     " ORDER BY	1";
 
