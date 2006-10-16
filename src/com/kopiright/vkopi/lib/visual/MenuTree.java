@@ -92,6 +92,7 @@ public class MenuTree extends DWindow {
 
     items = new ArrayList();
     tree = new JTree(createTree(loadFavorites));
+    localize(Locale.getDefault());
 
     tree.addMouseListener(new MouseAdapter() {
       private long lastClick;
@@ -386,7 +387,6 @@ public class MenuTree extends DWindow {
 			Message.getMessage("PROGRAM"),
 			Message.getMessage("program"),
 			null,
-			Message.getMessage("program_help"),
 			Module.ACS_PARENT,
 			null);
       localTree = createTree(localModules, root, false);
@@ -438,7 +438,7 @@ public class MenuTree extends DWindow {
   /**
    * Fetches the modules from the database.
    */
-  private List fetchModules() throws SQLException {
+  private List fetchModules(boolean isUnicode) throws SQLException {
     Query	getModules = new Query(getModel().getDBContext().getDefaultConnection());
     List	localModules = new ArrayList();
 
@@ -448,8 +448,8 @@ public class MenuTree extends DWindow {
       String	icon = null;
 
       try {
-	if (getModules.getInt(8) != 0) {
-	  getIcons.open("SELECT Objekt FROM SYMBOLE WHERE ID = " + getModules.getInt(8));
+	if (getModules.getInt(7) != 0) {
+	  getIcons.open("SELECT Objekt FROM SYMBOLE WHERE ID = " + getModules.getInt(7));
 	  icon = getIcons.next() ? getIcons.getString(1) : null;
 	  getIcons.close();
 	}
@@ -459,10 +459,9 @@ public class MenuTree extends DWindow {
 
       Module module = new Module(getModules.getInt(1),
 				 getModules.getInt(2),
-				 getModules.getString(3),
-				 getModules.getString(4),
-				 getModules.getString(5),
-				 getModules.getString(6),
+				 getModules.getString(3, isUnicode),
+				 getModules.getString(4, isUnicode),
+				 getModules.getString(5, isUnicode),
 				 Module.ACS_PARENT,
 				 icon);
       localModules.add(module);
@@ -538,7 +537,7 @@ public class MenuTree extends DWindow {
     try {
       getModel().getDBContext().startWork();	// !!! BEGIN_SYNC
 
-      localModules = fetchModules();
+      localModules = fetchModules(ApplicationConfiguration.getConfiguration().isUnicodeDatabase());
       fetchGroupRights(localModules);
       fetchUserRights(localModules);
       if (loadFavorites) {
@@ -662,7 +661,7 @@ public class MenuTree extends DWindow {
 
       setActors(MenuTree.actors);
 
-      // localize the form using the default locale
+      // localize the menu tree using the default locale
       localize(Locale.getDefault());
 
     }
@@ -773,14 +772,39 @@ public class MenuTree extends DWindow {
   }
 
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+
+    /**
+     * Localize this menu tree
+     * 
+     * @param     locale  the locale to use
+     */
+    public void localize(Locale locale) {
+      LocalizationManager         manager;
+      
+      manager = new LocalizationManager(locale);
+      
+      // localizes the modules
+      for (ListIterator i = items.listIterator(); i.hasNext(); ) {
+        Module          item;
+
+        item = (Module)i.next();
+        item.localize(manager);
+      }
+      
+      manager = null;
+    }
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
   private static final String	SELECT_MODULES =
-    " SELECT	M.ID, M.Vater, M.Kurzname, M.Bezeichnung, M.Objekt, M.Hilfe, M.Prioritaet, M.Symbol" +
-    " FROM	MODULE M" +
-    " ORDER BY	7 DESC, 1";
+    " SELECT    M.ID, M.Vater, M.Kurzname, M.Source, M.Objekt, M.Prioritaet, M.Symbol" +
+    " FROM      MODULE M" +
+    " ORDER BY  6 DESC, 1";
 
   private static final String	SELECT_USER_RIGHTS =
     " SELECT	M.ID, B.Zugriff, M.Prioritaet" +

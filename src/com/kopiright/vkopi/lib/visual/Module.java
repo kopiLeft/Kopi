@@ -20,9 +20,13 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.util.Hashtable;
+import java.util.Locale;
 import javax.swing.ImageIcon;
 
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.l10n.ModuleLocalizer;
 import com.kopiright.xkopi.lib.base.DBContext;
+
 
 public class Module {
 
@@ -32,17 +36,15 @@ public class Module {
   public Module(int id,
 		int parent,
 		String shortname,
-		String description,
+                String source,
 		String object,
-		String help,
 		int access,
 		String icon)
   {
     this.id = id;
     this.parent = parent;
     this.shortname = shortname;
-    this.description = description;
-    this.help = help;
+    this.source = source;
     this.object = object;
     //!!! graf 2006.01.30: temporary work-around
     //!!! remove as soon as all modules have been
@@ -203,13 +205,34 @@ public class Module {
     return shortname;
   }
 
-  public static final int ACS_PARENT	= 0;
-  public static final int ACS_TRUE	= 1;
-  public static final int ACS_FALSE	= 2;
+  // ---------------------------------------------------------------------
+  // LOCALIZATION
+  // ---------------------------------------------------------------------
+
+  /**
+   * Localize this module
+   * 
+   * @param     manager         the manger to use for localization
+   */
+  public void localize(LocalizationManager manager) {
+    ModuleLocalizer      loc;
+    if (source != null) {
+      loc = manager.getModuleLocalizer(source, shortname);
+      description = loc.getLabel();
+      help = loc.getHelp();
+    } else {
+      description = "!!! " + shortname + " !!!";
+    }
+  }
+  
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
+
+  public static final int ACS_PARENT	= 0;
+  public static final int ACS_TRUE	= 1;
+  public static final int ACS_FALSE	= 2;
 
   private int			id;
   private int			parent;
@@ -217,6 +240,7 @@ public class Module {
   private String		description;
   private String		object;
   private String		help;
+  private String		source;
   private int			access;
   private ImageIcon		icon;
   private ImageIcon		smallIcon;

@@ -408,6 +408,31 @@ public class Query {
     return rset.getString(pos);
   }
 
+  /**
+   * java.sql.ResultSet.getString(int) always reads data as "ISO-8859-1"
+   * when 'isUnicode' is set to true this will reads it as "UTF-8"
+   */
+  public String getString(int pos, boolean isUnicode) throws SQLException {
+    if (!isUnicode) {
+      return getString(pos);
+    }
+
+    String res;
+    
+    res = rset.getString(pos);
+    if (res == null) {
+      return null; 
+    }
+    
+    try {
+      res = new String(res.getBytes("ISO-8859-1"), "UTF-8");
+    } catch (java.io.UnsupportedEncodingException e) {
+      throw new InconsistencyException(e);
+    }
+    
+    return res;
+  }
+
   public NotNullMonth getMonth(int pos) throws SQLException {
     int tmp = rset.getInt(pos);
     if (rset.wasNull()) {
