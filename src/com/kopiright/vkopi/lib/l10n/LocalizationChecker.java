@@ -322,6 +322,7 @@ public class LocalizationChecker {
     idents.put("index",    "ident");
     idents.put("listdesc", "column");
     idents.put("menu",     "ident");
+    idents.put("module",   "ident");
     idents.put("page",     "ident");
     idents.put("type",     "ident");
   }
