@@ -174,6 +174,10 @@ public class LocalizationManager {
     } catch (Exception e) {
       throw new InconsistencyException("Cannot load file " + fileName + ": " + e.getMessage());
     }
+    
+    // the URI is used to report the file name when a child lookup fails
+    document.setBaseURI(fileName);
+    
     return document;
   }
 

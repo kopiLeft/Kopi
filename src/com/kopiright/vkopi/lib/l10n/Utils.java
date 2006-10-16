@@ -56,7 +56,8 @@ public class Utils {
         return e;
       }
     }
-    throw new InconsistencyException(type + " " + attribute + " = " + value + " not found");
+    throw new InconsistencyException(parent.getDocument().getBaseURI() + ": "
+                                     + type + " " + attribute + " = " + value + " not found");
   }
 
   /**
@@ -67,9 +68,11 @@ public class Utils {
     
     childs = parent.getChildren(type);
     if (childs.size() == 0) {
-      throw new InconsistencyException(type + " not found");
+      throw new InconsistencyException(parent.getDocument().getBaseURI() + ": "
+                                       + type + " not found");
     } else if (childs.size() > 1) {
-      throw new InconsistencyException(type + " not unique");
+      throw new InconsistencyException(parent.getDocument().getBaseURI() + ": "
+                                       + type + " not unique");
     } else {
       return (Element)childs.get(0);
     }
