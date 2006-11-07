@@ -144,20 +144,19 @@ public abstract class VReportColumn {
    * Returns true if this Column is hidden
    */
   public boolean isHidden() {
-    return (options & com.kopiright.vkopi.lib.report.Constants.CLO_HIDDEN) > 0;
+    return (options & Constants.CLO_HIDDEN) > 0;
   }
 
   public String format(Object o) {
-    if (isFolded() || o == null){
+    if (isFolded() || o == null) {
       return "";
     } else if (format != null) {
       return format.format(o);
-    } else if (height == 1){
+    } else if (height == 1) {
       String		str = o.toString();
       int		strLength = str.length();
-      return strLength <= width ?
-	str :
-	str.substring(0, width);
+
+      return strLength <= width ? str : str.substring(0, width);
     } else {
       return o.toString();
     }
