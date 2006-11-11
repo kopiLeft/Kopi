@@ -35,8 +35,9 @@ JAVAFILES +=	ActionHandler Application ApplicationDefaults		\
 		DWaitPanel DWindow ProgressWindow			\
 		FileChooser DHelpViewer VHelpViewer			\
 		KopiAction KopiExecutable				\
-		MenuItemRenderer MenuTree WaitDialogListener		\
-		Module SActor SDefaultActor VActionListener		\
+		MenuItemRenderer MenuTree MessageCode Module 		\
+		Register WaitDialogListener				\
+		SActor SDefaultActor VActionListener			\
 		SplashScreen Utils VCommand VException			\
 		VExecFailedException VHelpGenerator			\
 		VInterruptException VRuntimeException			\

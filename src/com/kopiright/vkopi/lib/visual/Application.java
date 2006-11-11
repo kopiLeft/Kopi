@@ -44,12 +44,24 @@ public abstract class Application extends java.applet.Applet implements MessageL
   // ---------------------------------------------------------------------
   // CONSTRUCTOR
   // ---------------------------------------------------------------------
+
+  /**
+   * Constructor, show splashscreen
+   *
+   * @param     defaults        the application defaults.
+   * @param     register        the register to use for this appilcation.
+   */
+  public Application(ApplicationDefaults defaults, Register register) {
+    Application.instance = this;
+    this.defaults = defaults;
+    this.register = register;
+  }
+
   /**
    * Constructor, show splashscreen
    */
   public Application(ApplicationDefaults defaults) {
-    Application.instance = this;
-    this.defaults = defaults;
+    this(defaults, null);
   }
 
   // ---------------------------------------------------------------------
@@ -125,6 +137,13 @@ public abstract class Application extends java.applet.Applet implements MessageL
     }
   }
 
+  /**
+   * Retruns the register for this application.
+   */
+  public static Register getRegister() {
+    return instance.register;
+  }
+
   // --------------------------------------------------------------------
 
   /**
@@ -152,6 +171,9 @@ public abstract class Application extends java.applet.Applet implements MessageL
     // french: Message.setLocale(Locale.FRENCH)
     // com.kopiright.vkopi.lib.util.Query.traceQueries(true);
     // com.kopiright.vkopi.lib.visual.VWindow.setDebugModeEnabled();
+    if (register != null) {
+      register.buildDependencies();
+    }
   }
 
   /**
@@ -599,22 +621,22 @@ public abstract class Application extends java.applet.Applet implements MessageL
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private static Application	instance;
+  private static Application            instance;
 
-  private ApplicationOptions	options;
-  private ApplicationDefaults	defaults;
-  private MenuTree		menuTree;
-  private DBContext		context;
-  private boolean		isGeneratingHelp;
-  private SplashScreen		splash;
-  private boolean		isStarted;
-
+  private ApplicationOptions            options;
+  private ApplicationDefaults           defaults;
+  private MenuTree                      menuTree;
+  private DBContext                     context;
+  private boolean                       isGeneratingHelp;
+  private SplashScreen                  splash;
+  private boolean                       isStarted;
+  private Register                      register;
 
   // ---------------------------------------------------------------------
   // Failure cause informations
   // ---------------------------------------------------------------------
 
-  private static final Date     startupTime; // remembers the startup time
+  private static final Date             startupTime; // remembers the startup time
   
   static {
     startupTime = new Date();

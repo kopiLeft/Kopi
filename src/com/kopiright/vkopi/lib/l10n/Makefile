@@ -28,9 +28,10 @@ PACKAGE =	com/kopiright/vkopi/lib/l10n
 ## FILES
 
 JAVAFILES +=	ActorLocalizer BlockLocalizer FieldLocalizer		\
-		FormLocalizer ListLocalizer LocalizationManager		\
-		Localizer MenuLocalizer ReportLocalizer			\
-		TypeLocalizer ModuleLocalizer Utils LocalizationChecker
+		FormLocalizer ListLocalizer LocalizationChecker		\
+		LocalizationManager Localizer MenuLocalizer		\
+		MessageLocalizer ModuleLocalizer ReportLocalizer	\
+		TypeLocalizer Utils
 
 OPTIONS =	
 

@@ -45,7 +45,7 @@ public class LocalizationManager {
   /**
    * Constructor
    *
-   * @param             locale          the locale used for localization management
+   * @param     locale          the locale used for localization management
    */
   public LocalizationManager(Locale locale) {
     this.locale = locale;
@@ -65,7 +65,7 @@ public class LocalizationManager {
   /**
    * Constructs a form localizer using the specified source.
    *
-   * @param             source          the source qualified name
+   * @param     source          the source qualified name
    */
   public FormLocalizer getFormLocalizer(String source) {
     return new FormLocalizer(getDocument(source));
@@ -74,8 +74,8 @@ public class LocalizationManager {
   /**
    * Constructs a block localizer using the specified source.
    *
-   * @param             source          the source qualified name
-   * @param             name            the identifier of the block
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the block
    */
   public BlockLocalizer getBlockLocalizer(String source, String name) {
     return new BlockLocalizer(this, getDocument(source), name);
@@ -84,8 +84,8 @@ public class LocalizationManager {
   /**
    * Constructs an actor localizer using the specified source.
    *
-   * @param             source          the source qualified name
-   * @param             name            the identifier of the actor
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the actor
    */
   public ActorLocalizer getActorLocalizer(String source, String name) {
     return new ActorLocalizer(getDocument(source), name);
@@ -94,8 +94,8 @@ public class LocalizationManager {
   /**
    * Constructs a menu localizer using the specified source.
    *
-   * @param             source          the source qualified name
-   * @param             name            the identifier of the menu
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the menu
    */
   public MenuLocalizer getMenuLocalizer(String source, String name) {
     return new MenuLocalizer(getDocument(source), name);
@@ -104,8 +104,8 @@ public class LocalizationManager {
   /**
    * Constructs a list localizer using the specified source.
    *
-   * @param             source          the source qualified name
-   * @param             name            the identifier of the list
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the list
    */
   public ListLocalizer getListLocalizer(String source, String name) {
     return new ListLocalizer(this, getDocument(source), name);
@@ -114,8 +114,8 @@ public class LocalizationManager {
   /**
    * Constructs a type localizer using the specified source.
    *
-   * @param             source          the source qualified name
-   * @param             name            the identifier of the type
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the type
    */
   public TypeLocalizer getTypeLocalizer(String source, String name) {
     return new TypeLocalizer(this, getDocument(source), name);
@@ -124,7 +124,7 @@ public class LocalizationManager {
   /**
    * Constructs a report localizer using the specified source.
    *
-   * @param             source          the source qualified name
+   * @param     source          the source qualified name
    */
   public ReportLocalizer getReportLocalizer(String source) {
     return new ReportLocalizer(this, getDocument(source));
@@ -133,13 +133,22 @@ public class LocalizationManager {
   /**
    * Constructs a module localizer using the specified source.
    *
-   * @param             source          the source qualified name
-   * @param             name            the identifier of the module
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the module
    */
   public ModuleLocalizer getModuleLocalizer(String source, String name) {
     return new ModuleLocalizer(getDocument(source), name);
   }
 
+  /**
+   * Constructs a message localizer using the specified source.
+   *
+   * @param     source          the source qualified name
+   * @param     name            the identifier of the message
+   */
+  public MessageLocalizer getMessageLocalizer(String source, String name) {
+    return new MessageLocalizer(getDocument(source), name);
+  }
   // ----------------------------------------------------------------------
   // FILE HANDLING
   // ----------------------------------------------------------------------
@@ -147,7 +156,7 @@ public class LocalizationManager {
   /**
    * Returns the document manging the given source.
    *
-   * @param             source          the source qualied name
+   * @param     source          the source qualied name
    */
   private Document getDocument(String source) {
     if (! documents.containsKey(source)) {
@@ -162,9 +171,9 @@ public class LocalizationManager {
    * @param     source          the qualified name of the document.
    */
   private Document loadDocument(String source) {
-    String      fileName;
-    SAXBuilder  builder;
-    Document    document;
+    String              fileName;
+    SAXBuilder          builder;
+    Document            document;
 
     //!!!FIX:taoufik locale.toString() will probably output 'de' instead of 'de_AT'
     fileName = source.replace('.', '/') + "-" + locale.toString() + ".xml";
@@ -185,6 +194,6 @@ public class LocalizationManager {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-  private final Hashtable       documents = new Hashtable();
-  private final Locale          locale;
+  private final Hashtable               documents = new Hashtable();
+  private final Locale                  locale;
 }
