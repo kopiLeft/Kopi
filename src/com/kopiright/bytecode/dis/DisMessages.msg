@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: DisMessages.msg,v 1.3 2001/06/04 13:30:24 graf Exp $
+ * $Id$
  */
 
 package com.kopiright.bytecode.dis

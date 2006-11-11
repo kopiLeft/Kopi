@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: KsmMessages.msg,v 1.4 2001/10/22 17:48:43 lackner Exp $
+ * $Id$
  */
 
 package com.kopiright.bytecode.ksm

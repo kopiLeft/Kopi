@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: XString.x,v 1.2 2001/05/24 19:28:57 graf Exp $
+ * $Id$
  */
 
 package com.kopiright.xkopi.lib.oper;

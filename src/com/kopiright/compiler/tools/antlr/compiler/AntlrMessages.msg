@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: AntlrMessages.msg,v 1.1 2001/07/08 16:06:56 graf Exp $
+ * $Id$
  */
 
 package com.kopiright.compiler.tools.antlr.compiler

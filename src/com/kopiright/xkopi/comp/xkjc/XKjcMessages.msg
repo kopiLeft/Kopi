@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: XKjcMessages.msg,v 1.7 2003/09/02 08:21:51 vgp Exp $
+ * $Id$
  */
 
 package com.kopiright.xkopi.comp.xkjc

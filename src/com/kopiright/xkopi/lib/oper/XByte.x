@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: XByte.x,v 1.3 2002/08/21 14:41:42 lackner Exp $
+ * $Id$
  */
 
 package com.kopiright.xkopi.lib.oper;

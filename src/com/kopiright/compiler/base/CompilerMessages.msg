@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CompilerMessages.msg,v 1.6 2001/09/07 15:35:12 lackner Exp $
+ * $Id$
  */
 
 {
@@ -34,7 +34,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: CompilerMessages.msg,v 1.6 2001/09/07 15:35:12 lackner Exp $
+ * $Id$
  */
 }
 

@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: XSqlcMessages.msg,v 1.1 2003/05/29 21:28:17 graf Exp $
+ * $Id$
  */
 
 package com.kopiright.xkopi.comp.xkjc

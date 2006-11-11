@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: SqlcMessages.msg,v 1.9 2004/02/21 17:14:24 graf Exp $
+ * $Id$
  */
 
 package com.kopiright.xkopi.comp.sqlc

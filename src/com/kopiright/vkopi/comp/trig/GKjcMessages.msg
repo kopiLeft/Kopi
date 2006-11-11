@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: GKjcMessages.msg,v 1.5 2002/01/06 13:56:00 graf Exp $
+ * $Id$
  */
 
 package com.kopiright.vkopi.comp.trig
