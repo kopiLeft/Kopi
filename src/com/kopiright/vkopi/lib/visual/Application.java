@@ -51,10 +51,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * @param     defaults        the application defaults.
    * @param     register        the register to use for this appilcation.
    */
-  public Application(ApplicationDefaults defaults, Register register) {
+  public Application(ApplicationDefaults defaults, Registery registery) {
     Application.instance = this;
     this.defaults = defaults;
-    this.register = register;
+    this.registery = registery;
   }
 
   /**
@@ -140,8 +140,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
   /**
    * Retruns the register for this application.
    */
-  public static Register getRegister() {
-    return instance.register;
+  public static Registery getRegistery() {
+    return instance.registery;
   }
 
   // --------------------------------------------------------------------
@@ -167,12 +167,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * you should use it to define locale, debugMode...
    */
   public void initialize() {
-    // default: Message.setLocale(Locale.GERMAN)
-    // french: Message.setLocale(Locale.FRENCH)
-    // com.kopiright.vkopi.lib.util.Query.traceQueries(true);
-    // com.kopiright.vkopi.lib.visual.VWindow.setDebugModeEnabled();
-    if (register != null) {
-      register.buildDependencies();
+    if (registery != null) {
+      registery.buildDependencies();
     }
   }
 
@@ -630,7 +626,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private boolean                       isGeneratingHelp;
   private SplashScreen                  splash;
   private boolean                       isStarted;
-  private Register                      register;
+  private Registery                     registery;
 
   // ---------------------------------------------------------------------
   // Failure cause informations
