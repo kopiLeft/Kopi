@@ -802,7 +802,7 @@ public class MenuTree extends DWindow {
   // ---------------------------------------------------------------------
 
   private static final String	SELECT_MODULES =
-    " SELECT    M.ID, M.Vater, M.Kurzname, M.Source, M.Objekt, M.Prioritaet, M.Symbol" +
+    " SELECT    M.ID, M.Vater, M.Kurzname, M.Quelle, M.Objekt, M.Prioritaet, M.Symbol" +
     " FROM      MODULE M" +
     " ORDER BY  6 DESC, 1";
 
