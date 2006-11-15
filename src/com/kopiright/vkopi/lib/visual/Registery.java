@@ -30,7 +30,7 @@ public class Registery {
   /**
    * Constructor
    *
-   * @param     domain           the 3 upper-case letter identifier of this registery.
+   * @param     domain          the 3 upper-case letter identifier of this registery.
    * @param     parents         the parent registers of this instance.
    */
   protected Registery(String domain, Registery[] parents) {
