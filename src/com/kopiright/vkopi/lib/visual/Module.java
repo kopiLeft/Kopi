@@ -215,14 +215,11 @@ public class Module {
    * @param     manager         the manger to use for localization
    */
   public void localize(LocalizationManager manager) {
-    ModuleLocalizer      loc;
-    if (source != null) {
-      loc = manager.getModuleLocalizer(source, shortname);
-      description = loc.getLabel();
-      help = loc.getHelp();
-    } else {
-      description = "!!! " + shortname + " !!!";
-    }
+    ModuleLocalizer             loc;
+    
+    loc = manager.getModuleLocalizer(source, shortname);
+    description = loc.getLabel();
+    help = loc.getHelp();
   }
   
 
@@ -230,20 +227,20 @@ public class Module {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  public static final int ACS_PARENT	= 0;
-  public static final int ACS_TRUE	= 1;
-  public static final int ACS_FALSE	= 2;
+  public static final int       ACS_PARENT = 0;
+  public static final int       ACS_TRUE   = 1;
+  public static final int       ACS_FALSE  = 2;
 
-  private int			id;
-  private int			parent;
-  private String		shortname;
-  private String		description;
-  private String		object;
-  private String		help;
-  private String		source;
-  private int			access;
-  private ImageIcon		icon;
-  private ImageIcon		smallIcon;
+  private int                   id;
+  private int                   parent;
+  private String                shortname;
+  private String                description;
+  private String                object;
+  private String                help;
+  private String                source;
+  private int                   access;
+  private ImageIcon             icon;
+  private ImageIcon             smallIcon;
 
-  private static Hashtable	icons = new Hashtable();
+  private static Hashtable      icons = new Hashtable();
 }
