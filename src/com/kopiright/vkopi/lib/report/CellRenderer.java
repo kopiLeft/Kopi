@@ -46,18 +46,18 @@ public class CellRenderer extends JComponent {
 
   public void paint(Graphics g) {
     Dimension   size = getSize();
-    Color	back;
+    Color	bg;
     switch (state) {
     case Constants.STA_FOLDED:
-      back = Color.lightGray;
+      bg = Color.lightGray;
       break;
     case Constants.STA_SEPARATOR:
-      back = Color.red;
+      bg = Color.red;
       break;
     default:
-      back = selected ? Color.black : this.back == Color.white ? level : this.back;
+      bg = selected ? Color.black : this.back == Color.white ? level : this.back;
     }
-    g.setColor(back);
+    g.setColor(bg);
     g.fillRect(0, 0, size.width, size.height);
 
     switch (state) {
@@ -66,12 +66,12 @@ public class CellRenderer extends JComponent {
       break;
     default:
       if (state != Constants.STA_SEPARATOR && str != null) {
-	Color		fore = selected ? level : this.fore;
+	Color		fg = selected ? level : this.fore;
 	int		left;
 	int		index = 0, oldIndex = 0;
 	int		line = 0;
 
-	g.setColor(fore);
+	g.setColor(fg);
 	g.setFont(font);
 
 	while ((index = str.indexOf('\n', oldIndex)) != -1) {
