@@ -87,7 +87,7 @@ PNGNEW =	align_center align_justify align_left align_right bold	\
 
 GIFFILES =	$(FREEGIFS) $(OLDGIFS)
 
-PSFILES =	German StoneGerman german report
+PSFILES =	StoneGerman german report
 
 LOCALIZATIONS =	General HelpViewer Preview Menu Window
 
