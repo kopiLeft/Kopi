@@ -234,9 +234,9 @@ vkIntegerFieldType []
 vkCodeFieldType [String pack, String type]
   returns [VKCodeType self]
 {
-  VKCodeDesc[]		codes;
+  VKCodeDesc[]          codes;
   String[]              names;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ENUM" LPAREN names = vkStringList[] RPAREN

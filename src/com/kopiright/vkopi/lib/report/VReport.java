@@ -463,7 +463,7 @@ public abstract class VReport extends VWindow
     int         id = -1;
 
     for (int i = 0; i < model.getModelColumnCount() && idCol == -1; i++) {
-      if (model.getModelColumn(i).getName().equals("ID")) {
+      if (model.getModelColumn(i).getLabel().equals("ID")) {
         idCol = i;
       }
     }

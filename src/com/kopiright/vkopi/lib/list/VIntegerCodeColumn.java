@@ -30,7 +30,12 @@ public class VIntegerCodeColumn extends VCodeColumn {
   /**
    * Constructs a list column.
    */
-  public VIntegerCodeColumn(String title, String column, String[] names, Integer[] codes, boolean sortAscending) {
+  public VIntegerCodeColumn(String title,
+                            String column,
+                            String[] names,
+                            Integer[] codes,
+                            boolean sortAscending)
+  {
     super(title, column, names, sortAscending);
     this.codes = codes;
   }
@@ -39,7 +44,12 @@ public class VIntegerCodeColumn extends VCodeColumn {
    * Constructs a list column.
    *
    */
-  public VIntegerCodeColumn(String title, String column, String[] names, int[] codes, boolean sortAscending) {
+  public VIntegerCodeColumn(String title,
+                            String column,
+                            String[] names,
+                            int[] codes,
+                            boolean sortAscending)
+  {
     this(title, column, names, makeObjectArray(codes), sortAscending);
   }
 

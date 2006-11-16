@@ -520,7 +520,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 
     if (column.isFolded() && !(column instanceof VSeparatorColumn)) {
       width = 1;
-      help = column.getName();
+      help = column.getLabel();
     } else {
       width = Math.max(column.getLabel().length(), column.getWidth());
       help = column.getHelp();

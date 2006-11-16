@@ -136,7 +136,7 @@ public class VKCodeDesc extends VKPhylum {
   // ----------------------------------------------------------------------
 
   /**
-   * !!!FIX:taoufik
+   * Generates ListDesc localization.
    */
   public void genLocalization(VKLocalizationWriter writer) {
     writer.genCodeDesc(ident, label);

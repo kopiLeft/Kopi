@@ -25,15 +25,13 @@ public class VTimestampColumn extends VReportColumn {
   /**
    * Constructs a report column description
    *
-   * @param name The column label
-   * @param help A help text to be displayed as tool tip
-   * @param options The column options as bitmap
-   * @param align The column alignment
-   * @param groups The index of the column grouped by this one or -1
-   * @param function An (optional) summation function
+   * @param     ident           The column ident
+   * @param     options         The column options as bitmap
+   * @param     align           The column alignment
+   * @param     groups          The index of the column grouped by this one or -1
+   * @param     function        An (optional) summation function
    */
-  public VTimestampColumn(String name,
-                          String help,
+  public VTimestampColumn(String ident,
                           int options,
                           int align,
                           int groups,
@@ -41,8 +39,7 @@ public class VTimestampColumn extends VReportColumn {
                           int width,
                           VCellFormat format)
   {
-    super(name,
-	  help,
+    super(ident,
 	  options,
 	  align,
 	  groups,

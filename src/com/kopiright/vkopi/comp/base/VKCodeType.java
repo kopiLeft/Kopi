@@ -91,9 +91,23 @@ public abstract class VKCodeType extends VKType {
   }
 
   /**
+   * Generates the type
+   */
+  public JExpression genType() {
+    return new JStringLiteral(getTokenReference(), type);
+  }
+
+  /**
+   * Generates the source
+   */
+  public JExpression genSource() {
+    return new JStringLiteral(getTokenReference(), source);
+  }
+
+  /**
    * Generates the names of this type
    */
-  public JExpression genIdents()  {
+  public JExpression genIdents() {
     TokenReference	ref = getTokenReference();
     JExpression[]	init = new JExpression[codes.length];
 
@@ -137,7 +151,7 @@ public abstract class VKCodeType extends VKType {
   // ----------------------------------------------------------------------
 
   /**
-   * !!!FIX:taoufik
+   * Generates localization.
    */
   public void genLocalization(VKLocalizationWriter writer) {
     writer.genCodeType(codes);

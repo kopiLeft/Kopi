@@ -111,42 +111,45 @@ public class VKListDesc extends VKPhylum {
    */
   public JExpression genCode() {
     TokenReference	ref = getTokenReference();
-
     if (type instanceof VKFixedType) {
       return new JUnqualifiedInstanceCreation(ref,
-				      type.getListColumnType(),
-				      new JExpression[] {
-					VKUtils.toExpression(ref, title),
-					VKUtils.toExpression(ref, column),
-					VKUtils.toExpression(ref, type.getDefaultAlignment()),
-					VKUtils.toExpression(ref, type.getWidth()),
-					VKUtils.toExpression(ref, type.getHeight()),
-					VKUtils.trueLiteral(ref)});
+                                              type.getListColumnType(),
+                                              new JExpression[] {
+                                                VKUtils.toExpression(ref, title),
+                                                VKUtils.toExpression(ref, column),
+                                                VKUtils.toExpression(ref, type.getDefaultAlignment()),
+                                                VKUtils.toExpression(ref, type.getWidth()),
+                                                VKUtils.toExpression(ref, type.getHeight()),
+                                                VKUtils.trueLiteral(ref)
+                                              });
     } else if (type instanceof VKCodeType) {
       return new JUnqualifiedInstanceCreation(ref,
-				      type.getListColumnType(),
-				      new JExpression[] {
-					VKUtils.toExpression(ref, title),
-					VKUtils.toExpression(ref, column),
-					((VKCodeType)type).genLabels(),
-					((VKCodeType)type).genValues(),
-					VKUtils.trueLiteral(ref)});
+                                              type.getListColumnType(),
+                                              new JExpression[] {
+                                                VKUtils.toExpression(ref, title),
+                                                VKUtils.toExpression(ref, column),
+                                                ((VKCodeType)type).genLabels(),
+                                                ((VKCodeType)type).genValues(),
+                                                VKUtils.trueLiteral(ref)
+                                              });
     } else if (hasSize(type)) {
-       return new JUnqualifiedInstanceCreation(ref,
-				      type.getListColumnType(),
-				      new JExpression[] {
-					VKUtils.toExpression(ref, title),
-					VKUtils.toExpression(ref, column),
-					VKUtils.toExpression(ref, type.getDefaultAlignment()),
-					VKUtils.toExpression(ref, type.getWidth()),
-					VKUtils.trueLiteral(ref)});
+      return new JUnqualifiedInstanceCreation(ref,
+                                              type.getListColumnType(),
+                                              new JExpression[] {
+                                                VKUtils.toExpression(ref, title),
+                                                VKUtils.toExpression(ref, column),
+                                                VKUtils.toExpression(ref, type.getDefaultAlignment()),
+                                                VKUtils.toExpression(ref, type.getWidth()),
+                                                VKUtils.trueLiteral(ref)
+                                              });
     } else {
-       return new JUnqualifiedInstanceCreation(ref,
-				       type.getListColumnType(),
-				       new JExpression[] {
-					 VKUtils.toExpression(ref, title),
-					 VKUtils.toExpression(ref, column),
-					 VKUtils.trueLiteral(ref)});
+      return new JUnqualifiedInstanceCreation(ref,
+                                              type.getListColumnType(),
+                                              new JExpression[] {
+                                                VKUtils.toExpression(ref, title),
+                                                VKUtils.toExpression(ref, column),
+                                                VKUtils.trueLiteral(ref)
+                                              });
     }
   }
 
@@ -190,8 +193,8 @@ public class VKListDesc extends VKPhylum {
   // XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------
 
-  /**
-   * !!!FIX:taoufik
+  /*
+   * Generates localization.
    */
   public void genLocalization(VKLocalizationWriter writer) {
     writer.genListDesc(column, title);

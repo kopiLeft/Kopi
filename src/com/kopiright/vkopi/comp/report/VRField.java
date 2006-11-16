@@ -214,10 +214,12 @@ public class VRField
    */
   public JExpression genConstructorCall() {
     TokenReference	ref = getTokenReference();
-    Vector		params = new Vector(14); // $$$
+    Vector		params = new Vector(14);
     params.addElement(VKUtils.toExpression(ref, ident));
-    //params.addElement(VKUtils.toExpression(ref, label == null ? ident : label));
-    params.addElement(VKUtils.toExpression(ref, help));
+    if (type.getDef() instanceof VKCodeType) {
+      params.addElement(((VKCodeType)type.getDef()).genType());
+      params.addElement(((VKCodeType)type.getDef()).genSource());
+    }
     params.addElement(VKUtils.toExpression(ref, options));
     params.addElement(VKUtils.toExpression(ref, align));
     params.addElement(VKUtils.toExpression(ref, groupID));
@@ -240,8 +242,8 @@ public class VRField
     return new JAssignmentExpression(ref,
 				     getThis(),
 				     new JUnqualifiedInstanceCreation(ref,
-							      type.getDef().getReportType(),
-							      (JExpression[])com.kopiright.util.base.Utils.toArray(params, JExpression.class)));
+                                                                      type.getDef().getReportType(),
+                                                                      (JExpression[])com.kopiright.util.base.Utils.toArray(params, JExpression.class)));
   }
 
   private JExpression getCompute() {
@@ -252,11 +254,12 @@ public class VRField
 	JExpression	expr;
 
 	expr = new JMethodCallExpression(ref,
-					 null,
-					 "callTrigger",
-					 new JExpression[] {
-					   VKUtils.toExpression(ref, com.kopiright.vkopi.lib.report.Constants.TRG_COMPUTE),
-					   VKUtils.toExpression(ref, getIndex() + 1)});
+                                         null,
+                                         "callTrigger",
+                                         new JExpression[] {
+                                           VKUtils.toExpression(ref, com.kopiright.vkopi.lib.report.Constants.TRG_COMPUTE),
+                                           VKUtils.toExpression(ref, getIndex() + 1)
+                                         });
 
 	return new JCastExpression(ref, expr, COMPUTE_TYPE);
       }

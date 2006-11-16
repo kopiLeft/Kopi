@@ -26,8 +26,7 @@ public abstract class VReportColumn {
   /**
    * Constructs a report column description
    *
-   * @param	name		The name of the field
-   * @param	help		A help text to be displayed as tool tip
+   * @param	ident		The identifier of the field
    * @param	options		The column options as bitmap
    * @param	align		The column alignment
    * @param	groups		The index of the column grouped by this one or -1
@@ -36,27 +35,25 @@ public abstract class VReportColumn {
    * @param	height		The height of a cell in characters
    * @param	format		format of the cells
    */
-  public VReportColumn(String name,
-		       String help,
+  public VReportColumn(String ident,
 		       int options,
 		       int align,
 		       int groups,
 		       VCalculateColumn function,
 		       int width,
 		       int height,
-		       VCellFormat format) {
-    this.name		= name;
-    //    this.label		= name;
-    //    this.help		= help;
-    this.options	= options;
-    this.align		= align;
-    this.groups		= groups;
-    this.function	= function;
-    this.width		= width;
-    this.height		= height;
-    this.format		= format;
-    this.visible  	= true;
-    this.folded  	= false;
+		       VCellFormat format)
+  {
+    this.ident = ident;
+    this.options = options;
+    this.align = align;
+    this.groups = groups;
+    this.function = function;
+    this.width = width;
+    this.height = height;
+    this.format = format;
+    this.visible = true;
+    this.folded = false;
   }
 
   // ----------------------------------------------------------------------
@@ -71,17 +68,17 @@ public abstract class VReportColumn {
   }
 
   /**
+   * Returns the identifier
+   */
+  public String getIdent() {
+    return ident;
+  }
+
+  /**
    * Sets the column label
    */
   public void setLabel(String label) {
     this.label = label;
-  }
-
-  /**
-   * Returns the column label
-   */
-  public String getName() {
-    return name;
   }
 
   /**
@@ -240,21 +237,32 @@ public abstract class VReportColumn {
    * @param     parent         the caller localizer
    */
   public void localize(ReportLocalizer parent) {
-    if (! isHidden() && ! name.equals("")){
+    if (! isHidden() && ! ident.equals("")){
       FieldLocalizer      loc;
  
-      loc = parent.getFieldLocalizer(name);
+      loc = parent.getFieldLocalizer(ident);
       label = loc.getLabel();
       help = loc.getHelp();
+      localize(loc);
     }
   }
 
-  // --------------------------------------------------------------------
+    
+  /**
+   * Localizes this field
+   *
+   * @param     parent         the caller localizer
+   */
+  protected void localize(FieldLocalizer loc) {
+    // by default nothing to do
+  }
+
+// --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
+  private	String			ident;
   private	String			label;
-  private	String			name;
   private	String			help;
   private	int			options;
   private	int			align;

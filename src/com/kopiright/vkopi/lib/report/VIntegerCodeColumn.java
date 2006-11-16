@@ -25,15 +25,15 @@ public class VIntegerCodeColumn extends VCodeColumn {
   /**
    * Constructs a report column description (!!!! TO BE REMOVED)
    *
-   * @param name The column label
-   * @param help A help text to be displayed as tool tip
-   * @param options The column options as bitmap
-   * @param align The column alignment
-   * @param groups The index of the column grouped by this one or -1
-   * @param function An (optional) summation function
+   * @param     ident           The column identifier
+   * @param     options         The column options as bitmap
+   * @param     align           The column alignment
+   * @param     groups          The index of the column grouped by this one or -1
+   * @param     function        An (optional) summation function
    */
-  public VIntegerCodeColumn(String name,
-			    String help,
+  public VIntegerCodeColumn(String ident,
+                            String type,
+                            String source,
 			    int options,
 			    int align,
 			    int groups,
@@ -41,27 +41,28 @@ public class VIntegerCodeColumn extends VCodeColumn {
 			    int width,
 			    VCellFormat format,
 			    String[] names,
-			    Integer[] codes) {
-    super(name, help, options, align, groups, function, width, format, names);
-
+			    Integer[] codes)
+  {
+    super(ident, type, source, options, align, groups, function, width, format, names);
+    
     this.codes = new int[codes.length];
- throw new InconsistencyException();
- //for (int i = 0; i < codes.length; i++) // !!! what about null value
- //    this.codes[i] = codes[i].intValue();
+    throw new InconsistencyException();
+    //for (int i = 0; i < codes.length; i++) // !!! what about null value
+    //    this.codes[i] = codes[i].intValue();
   }
 
   /**
    * Constructs a report column description
    *
-   * @param name The column label
-   * @param help A help text to be displayed as tool tip
-   * @param options The column options as bitmap
-   * @param align The column alignment
-   * @param groups The index of the column grouped by this one or -1
-   * @param function An (optional) summation function
+   * @param     ident           The column identifier
+   * @param     options         The column options as bitmap
+   * @param     align           The column alignment
+   * @param     groups          The index of the column grouped by this one or -1
+   * @param     function        An (optional) summation function
    */
-  public VIntegerCodeColumn(String name,
-			    String help,
+  public VIntegerCodeColumn(String ident,
+                            String type,
+                            String source,
 			    int options,
 			    int align,
 			    int groups,
@@ -69,8 +70,9 @@ public class VIntegerCodeColumn extends VCodeColumn {
 			    int width,
 			    VCellFormat format,
 			    String[] names,
-			    int[] codes) {
-    super(name, help, options, align, groups, function, width, format, names);
+			    int[] codes)
+  {
+    super(ident, type, source, options, align, groups, function, width, format, names);
 
     this.codes = codes;
     fastIndex = codes[0];

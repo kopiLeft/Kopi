@@ -19,28 +19,31 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
+import com.kopiright.vkopi.lib.l10n.TypeLocalizer;
+
 public abstract class VCodeColumn extends VReportColumn {
   /**
    * Constructs a report column description
    *
-   * @param name The column label
-   * @param help A help text to be displayed as tool tip
-   * @param options The column options as bitmap
-   * @param align The column alignment
-   * @param groups The index of the column grouped by this one or -1
-   * @param function An (optional) summation function
+   * @param     ident           The column identifier
+   * @param     options         The column options as bitmap
+   * @param     align           The column alignment
+   * @param     groups          The index of the column grouped by this one or -1
+   * @param     function        An (optional) summation function
    */
-  public VCodeColumn(String name,
-		     String help,
+  public VCodeColumn(String ident,
+                     String type,
+                     String source,
 		     int options,
 		     int align,
 		     int groups,
 		     VCalculateColumn function,
 		     int width,
 		     VCellFormat format,
-		     String[] names) {
-    super(name,
-	  help,
+		     String[] idents)
+  {
+    super(ident,
 	  options,
 	  align,
 	  groups,
@@ -49,11 +52,9 @@ public abstract class VCodeColumn extends VReportColumn {
 	  1,
 	  format);
 
-    for (int i = 0; i < names.length; i++) {
-      this.width = Math.max(this.width, names[i].length());
-    }
-
-    this.names = names;
+    this.type = type;
+    this.source = source;
+    this.idents = idents;
   }
 
   /**
@@ -87,9 +88,35 @@ public abstract class VCodeColumn extends VReportColumn {
    */
   public abstract int getIndex(Object object);
 
+  // ----------------------------------------------------------------------
+  // LOCALIZATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Localizes this field
+   *
+   * @param     parent         the caller localizer
+   */
+  protected void localize(FieldLocalizer parent) {
+    TypeLocalizer       loc;
+    
+    System.err.println("... source: " + source + " type: " + type);
+    
+    loc = parent.getManager().getTypeLocalizer(source, type);
+    names = new String[idents.length];
+    for (int i = 0; i < names.length; i++) {
+      names[i] = loc.getCodeLabel(idents[i]);
+      this.width = Math.max(this.width, names[i].length());
+    }
+  }
+
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  protected String[]		names;	// array of external representations
+  private String                type;
+  private String                source;
+  private String[]              idents;
+  protected String[]            names;  // array of external representations
 }

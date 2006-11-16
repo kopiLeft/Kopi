@@ -25,24 +25,22 @@ public class VFixedColumn extends VReportColumn {
   /**
    * Constructs a report column description
    *
-   * @param name The column label
-   * @param help A help text to be displayed as tool tip
-   * @param options The column options as bitmap
-   * @param align The column alignment
-   * @param groups The index of the column grouped by this one or -1
-   * @param function An (optional) summation function
+   * @param     ident           The column identifier
+   * @param     options         The column options as bitmap
+   * @param     align           The column alignment
+   * @param     groups          The index of the column grouped by this one or -1
+   * @param     function        An (optional) summation function
    */
-  public VFixedColumn(final String name,
-		      final String help,
+  public VFixedColumn(final String ident,
 		      final int options,
 		      final int align,
 		      final int groups,
 		      final VCalculateColumn function,
 		      final int width,
 		      final int scale,
-		      final VCellFormat format) {
-    super(name,
-	  help,
+		      final VCellFormat format)
+  {
+    super(ident,
 	  options,
 	  align,
 	  groups,
