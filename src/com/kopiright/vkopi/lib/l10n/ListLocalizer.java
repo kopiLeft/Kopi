@@ -55,6 +55,7 @@ public class ListLocalizer extends Localizer {
 
     root = document.getRootElement();
     if (! root.getName().equals("form")
+        && ! root.getName().equals("report")
         && ! root.getName().equals("blockinsert")
         && ! root.getName().equals("insert")) {
       throw new InconsistencyException("bad root element " + root.toString());
