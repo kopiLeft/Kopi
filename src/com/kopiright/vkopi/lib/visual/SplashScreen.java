@@ -23,6 +23,9 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+
 
 public class SplashScreen extends Window {
 
@@ -42,8 +45,8 @@ public class SplashScreen extends Window {
    * Paint the splash screen.
    */
   public void paint(Graphics gc) {
-    Dimension size = getSize();
-    FontMetrics fm = gc.getFontMetrics();
+    Dimension           size = getSize();
+    FontMetrics         fm = gc.getFontMetrics();
 
     gc.setColor(Color.black);
     gc.drawRect(0, 0, size.width - 1, size.height - 1);
@@ -68,6 +71,12 @@ public class SplashScreen extends Window {
     if (flag) {
       pack();
       centerWindow(this);
+      addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+          setVisible(false);
+          dispose();
+        }
+      });
     }
     super.setVisible(flag);
   }
