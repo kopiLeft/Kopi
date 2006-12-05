@@ -448,7 +448,7 @@ public class MenuTree extends DWindow {
 
       try {
 	if (getModules.getNullableInt(7) != null
-            && getModules.getNullableInt(7).intValue() != 0) {
+            && getModules.getInt(7) != 0) {
 	  getIcons.open("SELECT Objekt FROM SYMBOLE WHERE ID = " + getModules.getInt(7));
 	  icon = getIcons.next() ? getIcons.getString(1) : null;
 	  getIcons.close();
