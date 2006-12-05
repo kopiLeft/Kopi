@@ -198,14 +198,7 @@ public class Week extends Type {
     int year = scalar / 53;
     int	week = scalar % 53 + 1;
 
-    if (locale == java.util.Locale.GERMAN ||
-	locale == java.util.Locale.FRENCH ||
-	locale == java.util.Locale.US ||
-	locale == java.util.Locale.ENGLISH) {
-      return (week < 10 ? "0" + week : "" + week) + "." + year;
-    } else {
-      return year + "." + (week < 10 ? "0" + week : "" + week);
-    }
+    return (week < 10 ? "0" + week : "" + week) + "." + year;
   }
 
   /**
