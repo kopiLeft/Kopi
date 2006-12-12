@@ -51,10 +51,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * @param     defaults        the application defaults.
    * @param     register        the register to use for this appilcation.
    */
-  public Application(ApplicationDefaults defaults, Registery registery) {
+  public Application(ApplicationDefaults defaults, Registry registry) {
     Application.instance = this;
     this.defaults = defaults;
-    this.registery = registery;
+    this.registry = registry;
   }
 
   /**
@@ -140,8 +140,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
   /**
    * Retruns the register for this application.
    */
-  public static Registery getRegistery() {
-    return instance.registery;
+  public static Registry getRegistry() {
+    return instance.registry;
   }
 
   // --------------------------------------------------------------------
@@ -167,8 +167,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * you should use it to define locale, debugMode...
    */
   public void initialize() {
-    if (registery != null) {
-      registery.buildDependencies();
+    if (registry != null) {
+      registry.buildDependencies();
     }
   }
 
@@ -626,7 +626,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private boolean                       isGeneratingHelp;
   private SplashScreen                  splash;
   private boolean                       isStarted;
-  private Registery                     registery;
+  private Registry                      registry;
 
   // ---------------------------------------------------------------------
   // Failure cause informations

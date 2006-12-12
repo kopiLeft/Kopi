@@ -92,10 +92,10 @@ public class MessageCode {
     }
     domain = key.substring(0, 3);
     ident = key.substring(4, 9);
-    if (Application.getRegistery() == null) {
-      throw new InconsistencyException("No Registery set for this application.");
+    if (Application.getRegistry() == null) {
+      throw new InconsistencyException("No Registry set for this application.");
     }
-    src = Application.getRegistery().getMessageSource(domain);
+    src = Application.getRegistry().getMessageSource(domain);
     if (src == null) {
       throw new InconsistencyException("No message source found for module '"
                                        + domain + "'");

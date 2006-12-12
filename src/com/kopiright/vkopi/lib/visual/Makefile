@@ -36,7 +36,7 @@ JAVAFILES +=	ActionHandler Application ApplicationDefaults		\
 		FileChooser DHelpViewer VHelpViewer			\
 		KopiAction KopiExecutable				\
 		MenuItemRenderer MenuTree MessageCode Module 		\
-		Registery WaitDialogListener				\
+		Registry WaitDialogListener				\
 		SActor SDefaultActor VActionListener			\
 		SplashScreen Utils VCommand VException			\
 		VExecFailedException VHelpGenerator			\

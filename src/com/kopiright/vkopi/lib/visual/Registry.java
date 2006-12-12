@@ -21,7 +21,7 @@ package com.kopiright.vkopi.lib.visual;
 
 import java.util.Hashtable;
 
-public class Registery {
+public class Registry {
   
   // ---------------------------------------------------------------------
   // CONSTRUCTOR
@@ -30,10 +30,10 @@ public class Registery {
   /**
    * Constructor
    *
-   * @param     domain          the 3 upper-case letter identifier of this registery.
+   * @param     domain          the 3 upper-case letter identifier of this registry.
    * @param     parents         the parent registers of this instance.
    */
-  protected Registery(String domain, Registery[] parents) {
+  protected Registry(String domain, Registry[] parents) {
     this.domain = domain;
     this.parents = parents;
   }
@@ -87,6 +87,6 @@ public class Registery {
   // ---------------------------------------------------------------------
   
   private final String                  domain;
-  private final Registery[]             parents;
+  private final Registry[]              parents;
   private Hashtable                     dependencies = new Hashtable();
 }
