@@ -56,8 +56,8 @@ public class Utils {
         return e;
       }
     }
-    throw new InconsistencyException(parent.getDocument().getBaseURI() + ": "
-                                     + type + " " + attribute + " = " + value + " not found");
+    throw new InconsistencyException(((parent.getDocument() == null)? "<filename not set>" : parent.getDocument().getBaseURI()) 
+                                     + ": " + type + " " + attribute + " = " + value + " not found");
   }
 
   /**
