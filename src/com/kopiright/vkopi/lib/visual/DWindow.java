@@ -35,6 +35,7 @@ import javax.swing.undo.CannotRedoException;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.KnownBugs;
+import com.kopiright.vkopi.lib.util.LineBreaker;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.ui.base.JButtonPanel;
 import com.kopiright.vkopi.lib.ui.base.JMenuButton;
@@ -325,6 +326,15 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       } catch (Exception e) {
         e.printStackTrace();
       }
+    }
+
+    //!!!FIXME
+    // wrap long text messages:
+    // some SQL exceptions are too long and make the error window larger than
+    // the screen width, this is a work around until a 'detail' option is added to
+    // error windows. 
+    if (message.length() > 100 ) {
+      message = LineBreaker.addBreakForWidth(message, 100);
     }
 
     displayError(frame, message);
