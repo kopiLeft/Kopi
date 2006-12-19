@@ -401,7 +401,7 @@ public class DTextField extends DField implements VConstants {
           col = 40;
         }
 
-        textfield = new JTextArea(visibleRows, col+1);
+        textfield = new JTextArea(visibleRows, col);
         ((JTextArea) textfield).setLineWrap(true);
         ((JTextArea) textfield).setWrapStyleWord(true);
       } else {
@@ -641,7 +641,7 @@ public class DTextField extends DField implements VConstants {
   }
 
 
-  static String convertToSingleLine(String source, int col, int row) {
+  public static String convertToSingleLine(String source, int col, int row) {
       StringBuffer      target = new StringBuffer();
       int               length = source.length();
       int               start = 0;
@@ -673,7 +673,7 @@ public class DTextField extends DField implements VConstants {
             // find white space to break line
             int   i;
             
-            for (i = start+col; i > start; i--) {
+            for (i = start+col-1; i > start; i--) {
               if (Character.isWhitespace(source.charAt(i))) {
                 break;
               }
@@ -681,18 +681,18 @@ public class DTextField extends DField implements VConstants {
             if (i == start) {
               index = start+col;
             } else {
-              index = i;
+              index = i+1;
             }
-
+            
             target.append(source.substring(start, index));
-            for (int j = index - start; j < col; j++) {
+            for (int j = (index - start)%col; j != 0 && j < col; j++) {
               target.append(' ');
             }
-            start = index + 1;
+            start = index;
           }
         }
         lines++;
       }
       return target.toString();
-}
+  }
 }

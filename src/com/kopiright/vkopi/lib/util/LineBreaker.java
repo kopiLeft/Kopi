@@ -30,29 +30,31 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
    * @param	col	the width of the text
    */
   public static String textToModel(String source, int col, int lin) {
-    StringBuffer	target = new StringBuffer();
-    int		length = source.length();
-    int		start = 0;
-    int		lines = 0;
-
+    StringBuffer        target = new StringBuffer();
+    int                 length = source.length();
+    int                 start = 0;
+    int                 lines = 0;
+    
     while (start < length && lines < lin) {
-      int	index = source.indexOf('\n', start);
+      int       index;
+      
+      index = source.indexOf('\n', start);
       if (index == -1) {
-	target.append(source.substring(start, length));
-	start = length;
+        target.append(source.substring(start, length));
+        start = length;
       } else {
-	target.append(source.substring(start, index));
-	for (int i = index - start; i < col; i++) {
-	  target.append(' ');
-	}
-	start = index + 1;
-	lines++;
+        target.append(source.substring(start, index));
+        for (int i = (index - start)%col; i != 0 && i < col; i++) {
+          target.append(' ');
+        }
+        start = index + 1;
+        lines++;
       }
     }
-
+    
     return target.toString();
   }
-
+  
   /**
    * Replaces blanks by new-lines
    *
@@ -91,7 +93,7 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
   public static String addBreakForWidth(String source, int width) {
     BreakIterator       boundary = BreakIterator.getLineInstance();
     boundary.setText(source);
-
+    
     int                 start = boundary.first();
     int                 length = 0;
     StringBuffer        buffer = new StringBuffer(source.length());
@@ -99,16 +101,17 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
     for (int end = boundary.next();
          end != BreakIterator.DONE;
          start = end, end = boundary.next()) {
-      length += (end-start);
+      length += (end - start);
       if (length > width) {
-        length = (end-start);
+        length = (end - start);
         buffer.append("\n");
       }
-      buffer.append(source.substring(start,end));
-      if (source.substring(start,end).endsWith("\n")) {
+      buffer.append(source.substring(start, end));
+      if (source.substring(start, end).endsWith("\n")) {
         length = 0;
       }
     }
+
     return buffer.toString();
   }
 
