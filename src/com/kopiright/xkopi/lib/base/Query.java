@@ -182,9 +182,10 @@ public class Query {
         name = "C" + nextCursorId++;
 	stmt.setCursorName(name);
       }
-      buildText(format, "OPEN " + name);
-
+      buildText(format, "QUERY  " + name + " OPEN");
+      queryStartTime = System.currentTimeMillis();
       rset = stmt.executeQuery(conn.convertSql(text));
+      traceQueryTime(TRL_TIMER, "QUERY  " + name + " OPEN", queryStartTime);
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("QUERY " + name + " OPEN", text), exc);
     }
@@ -194,11 +195,18 @@ public class Query {
    *
    */
   public boolean next() throws DBException {
-    if (Query.getTraceLevel() >= TRL_ALL) {
-      Query.traceQuery("QUERY " + name + " FETCH", rset);
+    if (Query.getTraceLevel() >= TRL_FETCH) {
+      Query.traceQuery("QUERY  " + name + " FETCH", rset);
     }
     try {
-      return rset.next();
+      boolean   ret;
+      long      startTime;
+
+      startTime = System.currentTimeMillis();
+      ret = rset.next();
+      traceQueryTime(TRL_FETCH, "QUERY  " + name + " FETCH", startTime);
+      
+      return ret;
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("QUERY " + name + " FETCH", rset), exc);
     }
@@ -208,11 +216,18 @@ public class Query {
    *
    */
   public boolean previous() throws DBException {
-    if (Query.getTraceLevel() >= TRL_ALL) {
-      Query.traceQuery("QUERY " + name + " FETCH", rset);
+    if (Query.getTraceLevel() >= TRL_FETCH) {
+      Query.traceQuery("QUERY  " + name + " FETCH", rset);
     }
     try {
-      return rset.previous();
+      boolean   ret;
+      long      startTime;
+
+      startTime = System.currentTimeMillis();
+      ret = rset.previous();
+      traceQueryTime(TRL_FETCH, "QUERY  " + name + " FETCH", startTime);
+      
+      return ret;
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("QUERY " + name + " FETCH", rset), exc);
     }
@@ -222,11 +237,18 @@ public class Query {
    *
    */
   public boolean hasMore() throws DBException {
-    if (Query.getTraceLevel() >= TRL_ALL) {
-      Query.traceQuery("QUERY " + name + " HAS MORE", rset);
+    if (Query.getTraceLevel() >= TRL_FETCH) {
+      Query.traceQuery("QUERY  " + name + " HAS MORE", rset);
     }
     try {
-      return rset.isLast();
+      boolean   ret;
+      long      startTime;
+
+      startTime = System.currentTimeMillis();
+      ret = rset.isLast();
+      traceQueryTime(TRL_FETCH, "QUERY  " + name + " HAS MORE", startTime);
+      
+      return ret;
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("QUERY " + name + " HAS MORE", rset), exc);
     }
@@ -298,7 +320,7 @@ public class Query {
       }
       stmt = null;
       rset = null;
-      buildText("", "CLOSE " + name);
+      traceQueryTime(TRL_QUERIES, "CLOSE  " + name, queryStartTime);
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("QUERY " + name + " CLOSE", text), exc);
     }
@@ -680,7 +702,8 @@ public class Query {
     switch (level) {
     case TRL_NONE:
     case TRL_QUERIES:
-    case TRL_ALL:
+    case TRL_TIMER:
+    case TRL_FETCH:
       traceLevel = level;
       break;
     default:
@@ -695,6 +718,15 @@ public class Query {
    */
   public static int getTraceLevel() {
     return traceLevel;
+  }
+
+  /**
+   * Traces the sql query duration
+   */
+  public static void traceQueryTime(int level, String operation, long startTime) {
+    if (Query.getTraceLevel() >= level) {
+      System.out.println(buildQueryForTrace(operation + " TIME", (System.currentTimeMillis() - startTime) + " ms"));
+    }
   }
 
   /**
@@ -894,7 +926,8 @@ public class Query {
 
   public static final int       TRL_NONE                = 0;
   public static final int       TRL_QUERIES             = 1;
-  public static final int       TRL_ALL                 = 2;
+  public static final int       TRL_TIMER                = 2;
+  public static final int       TRL_FETCH               = 3;
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
@@ -910,6 +943,7 @@ public class Query {
   private Statement		stmt;
   private ResultSet		rset;
   private String                name;
+  private long                  queryStartTime;
 
   private static int		nextCursorId = 0;
 

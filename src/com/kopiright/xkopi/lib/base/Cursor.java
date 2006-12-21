@@ -86,8 +86,10 @@ public class Cursor {
           stmt.setCursorName(name);
         }
         trace(Query.TRL_QUERIES, "OPEN", sql);
-
+        cursorStartTime = System.currentTimeMillis();
         rset = stmt.executeQuery(conn.convertSql(sql));
+        traceTime(Query.TRL_TIMER, "OPEN", cursorStartTime);
+
         //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
         rset.setFetchSize(1);
       } catch (SQLException exc) {
@@ -120,9 +122,14 @@ public class Cursor {
   public boolean next() throws DBException {
     checkCursorIsOpened();
     try {
-      trace(Query.TRL_ALL, "FETCH", rset);
+      long    startTime;
 
-      return (isFetched = rset.next());
+      trace(Query.TRL_FETCH, "FETCH", rset);
+      startTime = System.currentTimeMillis();
+      isFetched = rset.next();
+      traceTime(Query.TRL_FETCH, "FETCH", startTime);
+
+      return isFetched;
     } catch (SQLException exc) {
       throw conn.convertException(exc);
     }
@@ -133,11 +140,15 @@ public class Cursor {
    */
   public void executeUpdate(String sql) throws DBException {
     try {
+      long    startTime;
+
       trace(Query.TRL_QUERIES, "UPDATE", sql);
 
+      startTime = System.currentTimeMillis();
       if (stmt != null) {
 	stmt.executeUpdate(conn.convertSql(sql));
       }
+      traceTime(Query.TRL_TIMER, "UPDATE", startTime);
     } catch (SQLException exc) {
       throw conn.convertException(exc);
     }
@@ -155,7 +166,7 @@ public class Cursor {
         stmt = null;
         isFetched = false;
       }
-      trace(Query.TRL_QUERIES, "CLOSE", "");
+      traceTime(Query.TRL_QUERIES, "CLOSE", cursorStartTime);
     } catch (SQLException exc) {
       throw conn.convertException(exc);
     }
@@ -181,7 +192,9 @@ public class Cursor {
 
       PreparedStatement         updater;
       int                       count;
-
+      long                      startTime;
+      
+      startTime = System.currentTimeMillis();
       sql += " WHERE CURRENT OF " + rset.getCursorName();
       updater = conn.getJDBCConnection().prepareStatement(conn.convertSql(sql));
       for (int i = 0; blobs != null && i < blobs.length; i++) {
@@ -195,6 +208,7 @@ public class Cursor {
 
       count = updater.executeUpdate();
       updater.close();
+      traceTime(Query.TRL_TIMER, "UPDATE", startTime);
 
       return count;
     } catch (SQLException exc) {
@@ -580,6 +594,10 @@ public class Cursor {
     }
   }
 
+  private void traceTime(int level, String action, long startTime) throws SQLException {
+    Query.traceQueryTime(level, "CURSOR " + name + " " + action, startTime);
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -589,7 +607,8 @@ public class Cursor {
   private Connection		conn;
   private Statement		stmt;
   private String                name;
-
+  private long                  cursorStartTime;
+  
   protected ResultSet		rset;
   protected boolean             isFetched;
 }
