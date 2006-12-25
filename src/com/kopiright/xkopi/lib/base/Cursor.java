@@ -85,10 +85,9 @@ public class Cursor {
           this.name = "K" + nextCursorId++;
           stmt.setCursorName(name);
         }
-        trace(Query.TRL_QUERIES, "OPEN", sql);
-        cursorStartTime = System.currentTimeMillis();
+        traceQuery(Query.TRL_QUERY, "OPEN", sql);
         rset = stmt.executeQuery(conn.convertSql(sql));
-        traceTime(Query.TRL_TIMER, "OPEN", cursorStartTime);
+        traceTimer(Query.TRL_TIMER, "OPEN");
 
         //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
         rset.setFetchSize(1);
@@ -122,12 +121,9 @@ public class Cursor {
   public boolean next() throws DBException {
     checkCursorIsOpened();
     try {
-      long    startTime;
-
-      trace(Query.TRL_FETCH, "FETCH", rset);
-      startTime = System.currentTimeMillis();
+      traceQuery(Query.TRL_FETCH, "FETCH", null);
       isFetched = rset.next();
-      traceTime(Query.TRL_FETCH, "FETCH", startTime);
+      traceTimer(Query.TRL_FETCH, "FETCH");
 
       return isFetched;
     } catch (SQLException exc) {
@@ -140,15 +136,11 @@ public class Cursor {
    */
   public void executeUpdate(String sql) throws DBException {
     try {
-      long    startTime;
-
-      trace(Query.TRL_QUERIES, "UPDATE", sql);
-
-      startTime = System.currentTimeMillis();
+      traceQuery(Query.TRL_QUERY, "UPDATE", sql);
       if (stmt != null) {
 	stmt.executeUpdate(conn.convertSql(sql));
       }
-      traceTime(Query.TRL_TIMER, "UPDATE", startTime);
+      traceTimer(Query.TRL_TIMER, "UPDATE");
     } catch (SQLException exc) {
       throw conn.convertException(exc);
     }
@@ -159,6 +151,7 @@ public class Cursor {
    */
   public void close() throws SQLException {
     try {
+      traceQuery(Query.TRL_FETCH, "CLOSE", null);
       if (stmt != null) {
         rset.close();
 	stmt.close();
@@ -166,7 +159,7 @@ public class Cursor {
         stmt = null;
         isFetched = false;
       }
-      traceTime(Query.TRL_QUERIES, "CLOSE", cursorStartTime);
+      traceTimer(Query.TRL_FETCH, "CLOSE");
     } catch (SQLException exc) {
       throw conn.convertException(exc);
     }
@@ -188,14 +181,14 @@ public class Cursor {
       if (! supportsCursorNames()) {
 	throw new SQLException("operation not supported by JDBC driver");
       }
-      trace(Query.TRL_QUERIES, "UPDATE", sql);
 
       PreparedStatement         updater;
       int                       count;
-      long                      startTime;
-      
-      startTime = System.currentTimeMillis();
+
       sql += " WHERE CURRENT OF " + rset.getCursorName();
+
+      traceQuery(Query.TRL_QUERY, "UPDATE", sql);
+
       updater = conn.getJDBCConnection().prepareStatement(conn.convertSql(sql));
       for (int i = 0; blobs != null && i < blobs.length; i++) {
         if (blobs[i] == null) {
@@ -205,10 +198,10 @@ public class Cursor {
           updater.setBinaryStream(i + 1, new ByteArrayInputStream(blob), blob.length);
         }
       }
-
       count = updater.executeUpdate();
       updater.close();
-      traceTime(Query.TRL_TIMER, "UPDATE", startTime);
+
+      traceTimer(Query.TRL_TIMER, "UPDATE");
 
       return count;
     } catch (SQLException exc) {
@@ -588,14 +581,13 @@ public class Cursor {
     }
   }
 
-  private void trace(int level, String action, Object obj) throws SQLException {
-    if (Query.getTraceLevel() >= level) {
-      Query.traceQuery("CURSOR " + name + " " + action, obj);
-    }
+  private void traceQuery(int level, String action, Object detail) throws SQLException {
+    queryStartTime = System.currentTimeMillis();
+    Query.traceQuery(level, action + " " + name, detail);
   }
 
-  private void traceTime(int level, String action, long startTime) throws SQLException {
-    Query.traceQueryTime(level, "CURSOR " + name + " " + action, startTime);
+  private void traceTimer(int level, String action) throws SQLException {
+    Query.traceTimer(level, action + " " + name, queryStartTime);
   }
 
   // ----------------------------------------------------------------------
@@ -607,7 +599,7 @@ public class Cursor {
   private Connection		conn;
   private Statement		stmt;
   private String                name;
-  private long                  cursorStartTime;
+  private long                  queryStartTime;
   
   protected ResultSet		rset;
   protected boolean             isFetched;

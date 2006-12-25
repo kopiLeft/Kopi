@@ -232,11 +232,14 @@ public class KopiUtils {
   private static final int executeUpdate(java.sql.Connection conn, String text, Object[] blobs)
     throws SQLException
   {
-    if (Query.getTraceLevel() != Query.TRL_NONE) {
-      Query.traceQuery("UPDATE", text);
-    }
+    PreparedStatement	stmt;
+    int                 count;
+    long                timer;
 
-    PreparedStatement	stmt = conn.prepareStatement(text);
+    timer = System.currentTimeMillis();
+    Query.traceQuery(Query.TRL_QUERY, "UPDATE", text);
+
+    stmt = conn.prepareStatement(text);
 
     if (blobs != null) {
       try {
@@ -262,12 +265,15 @@ public class KopiUtils {
           stmt.setBinaryStream(i + 1, new ByteArrayInputStream(data), data.length);
 	}
       } catch (IOException e) {
-	e.printStackTrace();throw new DBInvalidDataException(e);
+        throw new DBInvalidDataException(e);
       }
     }
 
-    int         count = stmt.executeUpdate();
+    count = stmt.executeUpdate();
     stmt.close();
+
+    Query.traceTimer(Query.TRL_QUERY, "UPDATE", timer);
+
     return count;
   }
 
@@ -288,14 +294,19 @@ public class KopiUtils {
    * execute an query and close statement
    */
   private static final int executeUpdate(java.sql.Connection conn, String text) throws SQLException {
-    if (Query.getTraceLevel() != Query.TRL_NONE) {
-      Query.traceQuery("UPDATE", text);
-    }
+    Statement           stmt;
+    int                 count;
+    long                timer;
 
-    Statement	stmt = conn.createStatement();
-    int		count = stmt.executeUpdate(text);
+    timer = System.currentTimeMillis();
+    Query.traceQuery(Query.TRL_QUERY, "UPDATE", text);
 
+    stmt = conn.createStatement();
+    count = stmt.executeUpdate(text);
     stmt.close();
+
+    Query.traceTimer(Query.TRL_QUERY, "UPDATE", timer);
+
     return count;
   }
 

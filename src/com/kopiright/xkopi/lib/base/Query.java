@@ -182,12 +182,12 @@ public class Query {
         name = "C" + nextCursorId++;
 	stmt.setCursorName(name);
       }
-      buildText(format, "QUERY  " + name + " OPEN");
-      queryStartTime = System.currentTimeMillis();
+      buildText(format);
+      traceQuery(TRL_QUERY, "OPEN " + name);
       rset = stmt.executeQuery(conn.convertSql(text));
-      traceQueryTime(TRL_TIMER, "QUERY  " + name + " OPEN", queryStartTime);
+      traceTimer(TRL_QUERY, "OPEN " + name);
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " OPEN", text), exc);
+      throw conn.convertException(buildQueryForTrace("OPEN " + name, text), exc);
     }
   }
 
@@ -195,20 +195,16 @@ public class Query {
    *
    */
   public boolean next() throws DBException {
-    if (Query.getTraceLevel() >= TRL_FETCH) {
-      Query.traceQuery("QUERY  " + name + " FETCH", rset);
-    }
     try {
       boolean   ret;
-      long      startTime;
 
-      startTime = System.currentTimeMillis();
+      traceQuery(TRL_FETCH, "FETCH NEXT " + name);
       ret = rset.next();
-      traceQueryTime(TRL_FETCH, "QUERY  " + name + " FETCH", startTime);
-      
+      traceTimer(TRL_FETCH, "FETCH NEXT " + name);
+
       return ret;
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " FETCH", rset), exc);
+      throw conn.convertException(buildQueryForTrace("FETCH NEXT " + name, rset), exc);
     }
   }
 
@@ -216,20 +212,16 @@ public class Query {
    *
    */
   public boolean previous() throws DBException {
-    if (Query.getTraceLevel() >= TRL_FETCH) {
-      Query.traceQuery("QUERY  " + name + " FETCH", rset);
-    }
     try {
       boolean   ret;
-      long      startTime;
 
-      startTime = System.currentTimeMillis();
+      traceQuery(TRL_FETCH, "FETCH PREV " + name);
       ret = rset.previous();
-      traceQueryTime(TRL_FETCH, "QUERY  " + name + " FETCH", startTime);
-      
+      traceTimer(TRL_FETCH, "FETCH PREV " + name);
+
       return ret;
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " FETCH", rset), exc);
+      throw conn.convertException(buildQueryForTrace("FETCH PREV " + name, rset), exc);
     }
   }
 
@@ -237,20 +229,16 @@ public class Query {
    *
    */
   public boolean hasMore() throws DBException {
-    if (Query.getTraceLevel() >= TRL_FETCH) {
-      Query.traceQuery("QUERY  " + name + " HAS MORE", rset);
-    }
     try {
       boolean   ret;
-      long      startTime;
 
-      startTime = System.currentTimeMillis();
+      traceQuery(TRL_FETCH, "HAS MORE " + name);
       ret = rset.isLast();
-      traceQueryTime(TRL_FETCH, "QUERY  " + name + " HAS MORE", startTime);
-      
+      traceTimer(TRL_FETCH, "HAS MORE " + name);
+
       return ret;
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " HAS MORE", rset), exc);
+      throw conn.convertException(buildQueryForTrace("HAS MORE " + name, rset), exc);
     }
   }
 
@@ -259,19 +247,20 @@ public class Query {
    */
   public int update(String format) throws DBException {
     if (! supportsCursorNames()) {
-      throw new DBRuntimeException(buildQueryForTrace("QUERY " + name + " UPDATE", rset),
+      throw new DBRuntimeException(buildQueryForTrace("UPDPOS " + name, rset),
                                    "operation not supported by JDBC driver");
     }
 
     try {
-      Statement	updater;
+      Statement         updater;
       int		count;
 
-      buildText(format, "UPDPOS");
+      buildText(format);
+
+      traceQuery(TRL_QUERY, "UPDPOS " + name);
 
       if (!lobs.isEmpty()) {
 	updater = createFilledPreparedStatement(text + " WHERE CURRENT OF " + rset.getCursorName());
-
         count = ((PreparedStatement)updater).executeUpdate();
         updater.close();
       } else {
@@ -279,9 +268,12 @@ public class Query {
 	count = updater.executeUpdate(conn.convertSql(text + " WHERE CURRENT OF " + rset.getCursorName()));
 	updater.close();
       }
+
+      traceTimer(TRL_QUERY, "UPDPOS " + name);
+
       return count;
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " UPDATE", text), exc);
+      throw conn.convertException(buildQueryForTrace("UPDPOS " + name, text), exc);
     }
   }
 
@@ -290,7 +282,7 @@ public class Query {
    */
   public int delete(String format) throws DBException {
     if (! supportsCursorNames()) {
-      throw new DBRuntimeException(buildQueryForTrace("QUERY " + name + " DELETE", rset),
+      throw new DBRuntimeException(buildQueryForTrace("DELPOS " + name, rset),
                                    "operation not supported by JDBC driver");
     }
 
@@ -298,15 +290,19 @@ public class Query {
       Statement	updater;
       int		count;
 
-      buildText(format, "DELPOS");
+      buildText(format);
+
+      traceQuery(TRL_QUERY, "DELPOS " + name);
 
       updater = conn.getJDBCConnection().createStatement();
       count = updater.executeUpdate(conn.convertSql(text + " WHERE CURRENT OF " + rset.getCursorName()));
       updater.close();
 
+      traceTimer(TRL_QUERY, "DELPOS " + name);
+
       return count;
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " DELETE", text), exc);
+      throw conn.convertException(buildQueryForTrace("DELPOS " + name, text), exc);
     }
   }
 
@@ -315,14 +311,17 @@ public class Query {
    */
   public void close() throws DBException {
     try {
+      traceQuery(TRL_FETCH, "CLOSE " + name);
+
       if (stmt != null) {
 	stmt.close();
       }
       stmt = null;
       rset = null;
-      traceQueryTime(TRL_QUERIES, "CLOSE  " + name, queryStartTime);
+
+      traceTimer(TRL_FETCH, "CLOSE " + name);
     } catch (SQLException exc) {
-      throw conn.convertException(buildQueryForTrace("QUERY " + name + " CLOSE", text), exc);
+      throw conn.convertException(buildQueryForTrace("CLOSE " + name, text), exc);
     }
   }
 
@@ -331,16 +330,23 @@ public class Query {
    */
   public int run(String format) throws DBException {
     try {
-      buildText(format, "RUN");
+      int		count;
+
+      buildText(format);
+
+      traceQuery(TRL_QUERY, "RUN");
 
       if (!lobs.isEmpty()) {
         stmt = createFilledPreparedStatement(text);
-
-	return ((PreparedStatement)stmt).executeUpdate();
+	count = ((PreparedStatement)stmt).executeUpdate();
       } else {
 	stmt = conn.getJDBCConnection().createStatement();
-	return stmt.executeUpdate(conn.convertSql(text));
+	count = stmt.executeUpdate(conn.convertSql(text));
       }
+
+      traceTimer(TRL_QUERY, "RUN");
+
+      return count;
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("QUERY " + name + " RUN", text), exc);
     }
@@ -353,7 +359,7 @@ public class Query {
   public boolean getBoolean(int pos) throws SQLException {
     boolean tmp = rset.getBoolean(pos);
     if (rset.wasNull()) {
-      throw new SQLException("null pointer exception at column " + pos  
+      throw new SQLException("null pointer exception at column " + pos
                              + " : " + buildQueryForTrace("QUERY " + name + " GET BOOLEAN", rset));
     }
     return tmp;
@@ -373,7 +379,7 @@ public class Query {
     if (rset.wasNull()) {
       throw new SQLException("null pointer exception at column " + pos
                              + " : " + buildQueryForTrace("QUERY " + name + " GET SHORT", rset));
-      
+
     }
     return tmp;
   }
@@ -440,18 +446,18 @@ public class Query {
     }
 
     String res;
-    
+
     res = rset.getString(pos);
     if (res == null) {
-      return null; 
+      return null;
     }
-    
+
     try {
       res = new String(res.getBytes("ISO-8859-1"), "UTF-8");
     } catch (java.io.UnsupportedEncodingException e) {
       throw new InconsistencyException(e);
     }
-    
+
     return res;
   }
 
@@ -699,16 +705,10 @@ public class Query {
    * @param     level   one of the Query.TRL_
    */
   public static void setTraceLevel(int level) {
-    switch (level) {
-    case TRL_NONE:
-    case TRL_QUERIES:
-    case TRL_TIMER:
-    case TRL_FETCH:
-      traceLevel = level;
-      break;
-    default:
+    if (level < 0 || level >= (1 << (TRL_MAX + 1))) {
       throw new IllegalArgumentException("Bad level value: " + level);
     }
+    traceLevel = level;
   }
 
   /**
@@ -716,32 +716,60 @@ public class Query {
    *
    * @return    the trace level, see Query.TRL_
    */
-  public static int getTraceLevel() {
-    return traceLevel;
-  }
-
-  /**
-   * Traces the sql query duration
-   */
-  public static void traceQueryTime(int level, String operation, long startTime) {
-    if (Query.getTraceLevel() >= level) {
-      System.out.println(buildQueryForTrace(operation + " TIME", (System.currentTimeMillis() - startTime) + " ms"));
-    }
+  private static boolean hasTraceLevel(int level) {
+    return (traceLevel & (1 << level)) != 0;
   }
 
   /**
    * Traces the sql query
    */
-  public static void traceQuery(String operation, Object detail) {
-    System.out.println(buildQueryForTrace(operation, detail));
+  public static void traceQuery(int level, String operation, Object detail) {
+    if (Query.hasTraceLevel(level)) {
+      System.out.println(buildQueryForTrace(operation, detail));
+    }
+  }
+
+  /**
+   * Traces the sql query duration
+   */
+  public static void traceTimer(int level, String operation, long startTime) {
+    if (Query.hasTraceLevel(level) && Query.hasTraceLevel(TRL_TIMER)) {
+      System.out.println(buildQueryForTrace(operation + " TIME", (System.currentTimeMillis() - startTime) + " ms"));
+    }
   }
 
   /**
    * Build the sql query string for tracing
    */
   public static String buildQueryForTrace(String operation, Object detail) {
-    return System.currentTimeMillis() + " " + operation + ": " + detail.toString();
+    StringBuffer        buffer;
+
+    buffer = new StringBuffer();
+    buffer.append(System.currentTimeMillis());
+    buffer.append(" ");
+    buffer.append(operation);
+    if (detail != null) {
+      buffer.append(" ");
+      buffer.append(detail.toString());
+    }
+    return buffer.toString();
   }
+
+  /**
+   * Traces the sql query
+   */
+  public void traceQuery(int level, String operation) {
+    traceQuery(level, operation, level == TRL_QUERY ? this.text : null);
+    queryStartTime = System.currentTimeMillis();
+  }
+
+  /**
+   * Traces the sql query duration
+   */
+  public void traceTimer(int level, String operation) {
+    traceTimer(level, operation, queryStartTime);
+  }
+
 
   /*
    * ----------------------------------------------------------------------
@@ -763,7 +791,7 @@ public class Query {
   /*
    * Builds the query text.
    */
-  private void buildText(String format, String type) {
+  private void buildText(String format) {
     final int           IN_FORMAT	= 1;	// in format string
     final int           IN_QUOTE	= 2;	// in quoted string
     final int           IN_SQL          = 3;	// expand param to SQL
@@ -843,10 +871,6 @@ public class Query {
 
     // release parameters
     pars = new LinkedList();
-
-    if (Query.getTraceLevel() >= TRL_QUERIES) {
-      Query.traceQuery(type, text);
-    }
   }
 
   /**
@@ -924,16 +948,16 @@ public class Query {
   // CONSTANTS
   // ----------------------------------------------------------------------
 
-  public static final int       TRL_NONE                = 0;
-  public static final int       TRL_QUERIES             = 1;
-  public static final int       TRL_TIMER                = 2;
-  public static final int       TRL_FETCH               = 3;
+  public static final int       TRL_QUERY               = 0;
+  public static final int       TRL_FETCH               = 1;
+  public static final int       TRL_TIMER               = 2;
+  private static final int      TRL_MAX                 = TRL_TIMER;
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private static int            traceLevel = TRL_NONE;
+  private static int            traceLevel = 0;
 
   private LinkedList		pars;
   private String 		text;
