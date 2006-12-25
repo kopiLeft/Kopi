@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <insert>
-  <menu ident="File" label="Datei" />
-  <menu ident="Action" label="Aktionen" />
-  <actor ident="Close" label="Beenden" help="Programm beenden" />
-  <actor ident="PageFirst" label="Erste" />
-  <actor ident="PageLeft" label="Seite -" />
-  <actor ident="PageRight" label="Seite +" />
-  <actor ident="PageLast" label="Vorherige" />
+  <menu ident="File" label="File" />
+  <menu ident="Action" label="Action" />
+  <actor ident="Close" label="Quit" help="Quit program" />
+  <actor ident="PageFirst" label="First" />
+  <actor ident="PageLeft" label="Next" />
+  <actor ident="PageRight" label="Prev" />
+  <actor ident="PageLast" label="Last" />
   <actor ident="PreviewFit" label="Optimal" />
-  <actor ident="PreviewFitWidth" label="Breite" />
-  <actor ident="PreviewFitHeight" label="Höhe" />
-  <actor ident="PreviewPlus" label="Zomm +" />
+  <actor ident="PreviewFitWidth" label="Width" />
+  <actor ident="PreviewFitHeight" label="Height" />
+  <actor ident="PreviewPlus" label="Zoom +" />
   <actor ident="PreviewMinus" label="Zoom -" />
 </insert>

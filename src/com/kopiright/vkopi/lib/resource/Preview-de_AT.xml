@@ -6,10 +6,10 @@
   <actor ident="PageFirst" label="Erste" />
   <actor ident="PageLeft" label="Seite -" />
   <actor ident="PageRight" label="Seite +" />
-  <actor ident="PageLast" label="Vorherige" />
+  <actor ident="PageLast" label="Letzte" />
   <actor ident="PreviewFit" label="Optimal" />
   <actor ident="PreviewFitWidth" label="Breite" />
   <actor ident="PreviewFitHeight" label="Höhe" />
-  <actor ident="PreviewPlus" label="Zomm +" />
+  <actor ident="PreviewPlus" label="Zoom +" />
   <actor ident="PreviewMinus" label="Zoom -" />
 </insert>
