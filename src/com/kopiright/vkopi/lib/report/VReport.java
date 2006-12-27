@@ -463,11 +463,10 @@ public abstract class VReport extends VWindow
     int         id = -1;
 
     for (int i = 0; i < model.getModelColumnCount() && idCol == -1; i++) {
-      if (model.getModelColumn(i).getLabel().equals("ID")) {
+      if (model.getModelColumn(i).getIdent().equals("ID")) {
         idCol = i;
       }
     }
-
     if (idCol != -1 && (getSelectedCell().y != -1)) {
       id = ((Integer)model.getRow(getSelectedCell().y).getValueAt(idCol)).intValue();
     }
