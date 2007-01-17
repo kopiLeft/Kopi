@@ -20,8 +20,8 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.PrintWriter;
+
 import com.kopiright.vkopi.lib.util.Utils;
 
 /**

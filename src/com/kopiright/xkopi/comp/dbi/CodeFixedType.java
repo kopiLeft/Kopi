@@ -19,17 +19,14 @@
 
 package com.kopiright.xkopi.comp.dbi;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.kopiright.kopi.comp.kjc.CStdType;
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.xkopi.comp.xkjc.XStdType;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.xkopi.comp.database.*;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseFixedColumn;
 import com.kopiright.xkopi.comp.sqlc.IntegerLiteral;
-import com.kopiright.xkopi.comp.sqlc.NumericType;
-import java.sql.SQLException;
 
 public class CodeFixedType extends com.kopiright.xkopi.comp.sqlc.NumericType implements DbiType {
 

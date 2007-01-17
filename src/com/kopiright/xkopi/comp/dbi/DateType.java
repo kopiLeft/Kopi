@@ -20,14 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseDateColumn;
-import com.kopiright.kopi.comp.kjc.CStdType;
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.xkopi.comp.xkjc.XStdType;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseDateColumn;
 
 public class DateType extends com.kopiright.xkopi.comp.sqlc.Type implements DbiType {
 

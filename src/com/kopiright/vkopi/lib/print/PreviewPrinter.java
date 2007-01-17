@@ -19,28 +19,12 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
+import com.kopiright.vkopi.lib.preview.VPreviewWindow;
 import com.kopiright.vkopi.lib.util.AbstractPrinter;
 import com.kopiright.vkopi.lib.util.PrintException;
-import com.kopiright.vkopi.lib.util.PrintInformation;
-import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.preview.VPreviewWindow;
-import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.VException;
 
 /**

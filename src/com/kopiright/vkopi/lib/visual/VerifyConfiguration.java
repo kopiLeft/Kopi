@@ -23,10 +23,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Hashtable;
-import javax.swing.ImageIcon;
 
-import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.util.mailer.Mailer;
 
 public class VerifyConfiguration {

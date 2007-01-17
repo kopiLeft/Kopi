@@ -26,7 +26,6 @@ import com.kopiright.vkopi.lib.util.KnownBugs;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
 

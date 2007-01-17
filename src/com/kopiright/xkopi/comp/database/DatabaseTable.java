@@ -20,12 +20,10 @@ package com.kopiright.xkopi.comp.database;
 
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.kopi.comp.kjc.CClassNameType;
-import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.CStdType;
 import com.kopiright.kopi.comp.kjc.JArrayInitializer;
-import com.kopiright.kopi.comp.kjc.JFieldAccessExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.kopi.comp.kjc.JNameExpression;
+import com.kopiright.kopi.comp.kjc.JFieldAccessExpression;
 import com.kopiright.kopi.comp.kjc.JNewArrayExpression;
 import com.kopiright.kopi.comp.kjc.JStringLiteral;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;

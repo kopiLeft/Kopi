@@ -19,16 +19,10 @@
 
 package com.kopiright.vkopi.lib.l10n;
 
-import java.io.File;
 import java.util.Hashtable;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.kopiright.util.base.InconsistencyException;

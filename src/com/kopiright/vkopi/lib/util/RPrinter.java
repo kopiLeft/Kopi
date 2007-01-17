@@ -19,8 +19,10 @@
 
 package com.kopiright.vkopi.lib.util;
 
-import java.io.*;
-import com.lowagie.text.PageSize;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Remote execution client

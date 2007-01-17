@@ -19,34 +19,25 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import java.awt.geom.AffineTransform;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.PrintException;
-import com.kopiright.vkopi.lib.util.PrintInformation;
-import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.Application;
-import com.kopiright.vkopi.lib.visual.VExecFailedException;
-
 import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * Handle the generation of a document

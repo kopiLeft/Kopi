@@ -22,8 +22,6 @@ package com.kopiright.vkopi.lib.print;
 import java.awt.Color;
 import java.util.Hashtable;
 
-import com.lowagie.text.pdf.PdfPTable;
-
 /**
  * A paragraph style is responsible of painting a line or a paragraphe style.
  */

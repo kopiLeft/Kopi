@@ -19,10 +19,8 @@
 
 package com.kopiright.xkopi.comp.dbi;
 
-import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.xkopi.comp.sqlc.Type;
+import com.kopiright.compiler.base.TokenReference;
 
 public class CodeBoolDesc extends CodeDesc {
 

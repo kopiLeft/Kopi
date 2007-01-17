@@ -19,16 +19,16 @@
 
 package com.kopiright.vkopi.lib.ui.base;
 
-import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 
 public class JFieldButton extends JButton {
 

@@ -19,18 +19,8 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.util.Locale;
-import java.util.List;
-import java.util.ArrayList;
 import java.net.URL;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.text.Document;
-import javax.swing.*;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.event.HyperlinkEvent;
+import java.util.Locale;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 

@@ -20,11 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseStringColumn;
-import com.kopiright.kopi.comp.kjc.CType;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseStringColumn;
 import com.kopiright.xkopi.comp.sqlc.ArrayPrecision;
 import com.kopiright.xkopi.comp.sqlc.CharType;
 import com.kopiright.xkopi.comp.sqlc.IntegerLiteral;

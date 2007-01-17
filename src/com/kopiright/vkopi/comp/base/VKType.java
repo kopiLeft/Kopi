@@ -25,7 +25,6 @@ import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
-import com.kopiright.kopi.comp.kjc.CType;
 import com.kopiright.kopi.comp.kjc.JExpression;
 
 /**

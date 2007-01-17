@@ -22,14 +22,10 @@ package com.kopiright.vkopi.lib.print;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.PrintJob;
-
 import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;

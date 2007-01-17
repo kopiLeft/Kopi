@@ -19,10 +19,9 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.PrintException;
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.visual.VException;
 
 public interface Printable {
 

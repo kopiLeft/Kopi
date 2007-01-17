@@ -20,10 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.xkopi.comp.database.*;
-import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.xkopi.comp.database.DatabaseBlobColumn;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
 
 public class BlobType extends com.kopiright.xkopi.comp.sqlc.BlobType implements DbiType {
 

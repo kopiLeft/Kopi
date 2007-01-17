@@ -20,7 +20,7 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.util.Hashtable;
-import java.util.Locale;
+
 import javax.swing.ImageIcon;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;

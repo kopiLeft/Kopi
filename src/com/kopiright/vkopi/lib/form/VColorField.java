@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
-import javax.swing.JColorChooser;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VColorColumn;

@@ -20,11 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.util.ArrayList;
-import com.kopiright.compiler.base.UnpositionedError;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
 import com.kopiright.xkopi.comp.sqlc.Expression;
+import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
 import com.kopiright.xkopi.comp.sqlc.TableReference;
 
 /**

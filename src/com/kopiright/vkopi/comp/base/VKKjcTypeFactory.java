@@ -19,8 +19,6 @@
 
 package com.kopiright.vkopi.comp.base;
 
-import java.util.Hashtable;
-
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.util.base.InconsistencyException;

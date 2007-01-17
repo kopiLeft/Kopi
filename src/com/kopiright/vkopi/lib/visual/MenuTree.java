@@ -20,25 +20,20 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.ArrayList;
 import java.util.Locale;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -53,11 +48,10 @@ import javax.swing.tree.TreePath;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.ui.base.JBookmarkPanel;
+import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
-import com.kopiright.xkopi.lib.type.NotNullTimestamp;
 
 public class MenuTree extends DWindow {
 

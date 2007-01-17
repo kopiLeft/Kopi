@@ -19,18 +19,17 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import com.kopiright.vkopi.lib.util.Utils;
+import java.awt.AWTEvent;
+import java.awt.Toolkit;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.InvocationEvent;
+
+import javax.swing.JScrollBar;
+
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.kopiright.vkopi.lib.visual.VRuntimeException;
-import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.ui.base.JFieldButton;
-import com.kopiright.vkopi.lib.ui.plaf.KopiScrollBarUI;
 
 public class DChartBlock extends DBlock {
 

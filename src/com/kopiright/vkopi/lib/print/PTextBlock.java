@@ -19,16 +19,9 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import com.kopiright.vkopi.lib.form.VBooleanField;
-
-import java.util.ArrayList;
 import java.util.Vector;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfPCell;
+import com.kopiright.vkopi.lib.form.VBooleanField;
 
 /**
  * A block of data to print

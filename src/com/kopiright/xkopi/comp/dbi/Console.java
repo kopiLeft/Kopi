@@ -34,23 +34,22 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-import java.util.ArrayList;
 
-import com.kopiright.kopi.comp.kjc.CTypeContext;
-import com.kopiright.xkopi.comp.sqlc.SelectStatement;
-import com.kopiright.xkopi.comp.sqlc.SqlContext;
-import com.kopiright.xkopi.comp.sqlc.TableReference;
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.CompilerMessages;
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
 import com.kopiright.compiler.tools.antlr.runtime.ParserException;
+import com.kopiright.kopi.comp.kjc.CTypeContext;
 import com.kopiright.util.base.Utils;
+import com.kopiright.xkopi.comp.sqlc.SelectStatement;
+import com.kopiright.xkopi.comp.sqlc.SqlContext;
+import com.kopiright.xkopi.comp.sqlc.TableReference;
 import com.kopiright.xkopi.lib.base.DriverInterface;
 
 /**

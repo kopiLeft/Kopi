@@ -19,12 +19,8 @@
 
 package com.kopiright.vkopi.lib.l10n;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 
 import com.kopiright.util.base.InconsistencyException;
 

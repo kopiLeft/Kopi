@@ -21,24 +21,32 @@ package com.kopiright.vkopi.lib.report;
 
 import java.awt.Point;
 import java.io.File;
-import java.io.IOException;
-import java.util.Vector;
 import java.util.Locale;
+import java.util.Vector;
+
 import javax.swing.SwingUtilities;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.util.PrintException;
-import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
-import com.kopiright.vkopi.lib.print.Printable;
-import com.kopiright.vkopi.lib.visual.*;
-import com.kopiright.xkopi.lib.base.DBContext;
-import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ReportLocalizer;
+import com.kopiright.vkopi.lib.print.Printable;
+import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.util.PrintException;
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.DWindow;
+import com.kopiright.vkopi.lib.visual.FileChooser;
+import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
+import com.kopiright.vkopi.lib.visual.UIBuilder;
+import com.kopiright.vkopi.lib.visual.VCommand;
+import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VHelpViewer;
+import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.vkopi.lib.visual.VWindow;
+import com.kopiright.vkopi.lib.visual.WindowController;
+import com.kopiright.xkopi.lib.base.DBContextHandler;
 
 public abstract class VReport extends VWindow
   implements Constants, VConstants, Printable {

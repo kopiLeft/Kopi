@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
 import com.kopiright.xkopi.comp.xkjc.*;

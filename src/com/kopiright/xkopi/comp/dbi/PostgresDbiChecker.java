@@ -24,9 +24,13 @@ import java.util.List;
 
 import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.xkopi.comp.sqlc.*;
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.xkopi.comp.sqlc.Expression;
+import com.kopiright.xkopi.comp.sqlc.FieldNameList;
+import com.kopiright.xkopi.comp.sqlc.JdbcDateLiteral;
+import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
+import com.kopiright.xkopi.comp.sqlc.SqlContext;
+import com.kopiright.xkopi.comp.sqlc.Type;
 import com.kopiright.xkopi.lib.base.DriverInterface;
 import com.kopiright.xkopi.lib.base.PostgresDriverInterface;
 import com.kopiright.xkopi.lib.type.Date;

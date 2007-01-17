@@ -19,16 +19,10 @@
 
 package com.kopiright.vkopi.comp.form;
 
-import java.io.IOException;
-import java.util.Vector;
+import org.jdom.Element;
 
-import com.kopiright.vkopi.comp.base.VKCodeDesc;
-import com.kopiright.vkopi.comp.base.VKCodeType;
 import com.kopiright.vkopi.comp.base.VKDefinitionCollector;
 import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
-import com.kopiright.vkopi.comp.base.VKType;
-
-import org.jdom.Element;
 
 /**
  * This class implements an  XML localization file generator

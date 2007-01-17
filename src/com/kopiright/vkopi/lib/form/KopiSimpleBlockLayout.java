@@ -19,12 +19,18 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.Vector;
+
 import javax.swing.UIManager;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.DObject;
 
 /**
  *

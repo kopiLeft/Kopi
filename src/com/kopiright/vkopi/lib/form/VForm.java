@@ -20,43 +20,35 @@
 package com.kopiright.vkopi.lib.form;
 
 import java.awt.Toolkit;
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Locale;
 
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.FormLocalizer;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.AWTToPS;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.Application;
-import com.kopiright.vkopi.lib.visual.DObject;
+import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.SActor;
 import com.kopiright.vkopi.lib.visual.SDefaultActor;
-import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.UIBuilder;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VHelpViewer;
-import com.kopiright.vkopi.lib.visual.VInterruptException;
-import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VWindow;
 import com.kopiright.vkopi.lib.visual.WindowController;
 import com.kopiright.xkopi.lib.base.DBContext;

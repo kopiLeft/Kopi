@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
-import java.util.List;
 
 import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.Compiler;
@@ -40,9 +39,9 @@ import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
 import com.kopiright.compiler.tools.antlr.runtime.ParserException;
-import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.Utils;
+import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 /**

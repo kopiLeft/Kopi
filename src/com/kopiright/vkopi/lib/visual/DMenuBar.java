@@ -21,10 +21,8 @@ package com.kopiright.vkopi.lib.visual;
 
 import java.util.Vector;
 
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
 
 import com.kopiright.vkopi.lib.util.Message;
 

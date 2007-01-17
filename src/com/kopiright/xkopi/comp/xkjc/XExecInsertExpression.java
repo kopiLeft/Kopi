@@ -24,8 +24,17 @@ import java.util.ArrayList;
 import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.kopi.comp.kjc.*;
+import com.kopiright.kopi.comp.kjc.CArrayType;
+import com.kopiright.kopi.comp.kjc.CExpressionContext;
+import com.kopiright.kopi.comp.kjc.CStdType;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.JArrayInitializer;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JNewArrayExpression;
+import com.kopiright.kopi.comp.kjc.JStringLiteral;
+import com.kopiright.kopi.comp.kjc.JThisExpression;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
 
 /**

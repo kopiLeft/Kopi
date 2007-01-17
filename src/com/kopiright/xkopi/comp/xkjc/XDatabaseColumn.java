@@ -18,7 +18,6 @@
  */
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.CType;
 
 

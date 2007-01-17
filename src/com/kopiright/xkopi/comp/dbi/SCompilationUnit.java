@@ -20,7 +20,6 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.io.PrintWriter;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

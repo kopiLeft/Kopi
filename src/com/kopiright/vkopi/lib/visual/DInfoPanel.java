@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.Color;
 import javax.swing.JLabel;
 
 /**

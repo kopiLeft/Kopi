@@ -20,21 +20,12 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.ImageObserver;
-import javax.swing.AbstractAction;
+
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 import com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel;
 

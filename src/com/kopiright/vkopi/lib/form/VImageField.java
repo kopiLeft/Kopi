@@ -21,19 +21,16 @@ package com.kopiright.vkopi.lib.form;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VImageColumn;
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.xkopi.lib.base.Query;
 

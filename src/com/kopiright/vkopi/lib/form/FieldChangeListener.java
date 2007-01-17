@@ -19,10 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Component;
 import java.util.EventListener;
-
-import com.kopiright.vkopi.lib.visual.VException;
 
 public interface FieldChangeListener extends EventListener {
 

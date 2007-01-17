@@ -24,11 +24,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.VCommand;
 
 /**

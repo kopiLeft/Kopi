@@ -19,14 +19,15 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import java.util.Hashtable;
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.util.base.InconsistencyException;
-
-import com.kopiright.kopi.comp.kjc.*;
+import com.kopiright.kopi.comp.kjc.CNullType;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.CTypeContext;
 import com.kopiright.kopi.comp.kjc.ClassReader;
 import com.kopiright.kopi.comp.kjc.KjcTypeFactory;
+import com.kopiright.util.base.InconsistencyException;
 
 /**
  * Factory for extended Java Types

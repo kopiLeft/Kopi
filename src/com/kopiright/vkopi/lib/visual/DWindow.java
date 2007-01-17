@@ -19,26 +19,56 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AWTEvent;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import java.util.*;
-
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultFocusManager;
+import javax.swing.FocusManager;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
-import javax.swing.event.MouseInputAdapter;
 import javax.swing.text.JTextComponent;
-import javax.swing.undo.UndoManager;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
-import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.ui.base.JButtonPanel;
+import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 import com.kopiright.vkopi.lib.util.KnownBugs;
 import com.kopiright.vkopi.lib.util.LineBreaker;
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.ui.base.JButtonPanel;
-import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 
 /**
  * This class displays a window with a menu, a tool bar, a content panel

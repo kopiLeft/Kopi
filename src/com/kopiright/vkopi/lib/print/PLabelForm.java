@@ -21,12 +21,11 @@ package com.kopiright.vkopi.lib.print;
 
 import java.io.IOException;
 
-import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.util.LabelPrinter;
-import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VExecFailedException;
 
 /**
  * Form (like payment bill) with a specific label printer

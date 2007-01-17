@@ -19,25 +19,20 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.PrintWriter;
+import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import javax.swing.*;
-import javax.swing.event.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
-
-import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBContext;
+import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
-import com.kopiright.xkopi.lib.base.DBInterruptionException;
 import com.kopiright.xkopi.lib.base.XInterruptProtectedException;
 
 public abstract class VWindow implements DBContextHandler, KopiExecutable, ActionHandler {

@@ -20,16 +20,13 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.kopiright.compiler.base.CWarning;
-import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.xkopi.comp.sqlc.Type;
 import com.kopiright.xkopi.comp.sqlc.Expression;
+import com.kopiright.xkopi.comp.sqlc.Type;
 
 /**
  * This class represents a column

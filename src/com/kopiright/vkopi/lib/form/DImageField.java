@@ -19,16 +19,18 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-
-import com.kopiright.vkopi.lib.visual.DObject;
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 /**
  * DImageField is a panel composed in a Image field and a label behind

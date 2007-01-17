@@ -20,16 +20,26 @@
 package com.kopiright.xkopi.comp.xkjc;
 
 import java.lang.reflect.Field;
-import java.util.Vector;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.kopi.comp.kjc.*;
-import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
-import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.kopi.comp.kjc.CBinaryTypeContext;
+import com.kopiright.kopi.comp.kjc.CExpressionContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.JArrayInitializer;
+import com.kopiright.kopi.comp.kjc.JCastExpression;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JNewArrayExpression;
+import com.kopiright.kopi.comp.kjc.JNullLiteral;
+import com.kopiright.kopi.comp.kjc.JTypeNameExpression;
+import com.kopiright.kopi.comp.kjc.KjcEnvironment;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.Utils;
+import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
 
 public class XUtils extends com.kopiright.util.base.Utils {
 

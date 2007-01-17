@@ -19,12 +19,11 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.kopi.comp.kjc.TypeFactory;
-import com.kopiright.xkopi.comp.sqlc.SearchCondition;
-import com.kopiright.xkopi.comp.sqlc.SqlVisitor;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.xkopi.comp.sqlc.SearchCondition;
+import com.kopiright.xkopi.comp.sqlc.SqlVisitor;
 
 /**
  * This class represents a java expression within a Sql context

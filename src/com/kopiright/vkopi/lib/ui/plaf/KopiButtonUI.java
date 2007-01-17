@@ -19,16 +19,31 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.StringTokenizer;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
-import com.kopiright.vkopi.lib.ui.base.*;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
+import javax.swing.plaf.metal.MetalButtonUI;
+
+import com.kopiright.vkopi.lib.ui.base.JFieldButton;
+import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 import com.kopiright.vkopi.lib.util.KnownBugs;
 
 public class KopiButtonUI extends MetalButtonUI {

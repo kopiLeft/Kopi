@@ -19,13 +19,20 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.bytecode.classfile.MultiarrayInstruction;
-import com.kopiright.bytecode.classfile.ClassRefInstruction;
-import com.kopiright.bytecode.classfile.NewarrayInstruction;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.kopi.comp.kjc.*;
+import com.kopiright.kopi.comp.kjc.CArrayType;
+import com.kopiright.kopi.comp.kjc.CExpressionContext;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.GenerationContext;
+import com.kopiright.kopi.comp.kjc.JArrayInitializer;
+import com.kopiright.kopi.comp.kjc.JCastExpression;
+import com.kopiright.kopi.comp.kjc.JCheckedExpression;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JNewArrayExpression;
+import com.kopiright.kopi.comp.kjc.KjcMessages;
+import com.kopiright.kopi.comp.kjc.KjcVisitor;
 
 /**
  * JLS 15.10 Array Creation Expressions.

@@ -19,37 +19,22 @@
 
 package com.kopiright.vkopi.lib.preview;
 
-import java.awt.Insets;
-import java.awt.Image;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Enumeration;
 import java.util.Locale;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.util.PrintInformation;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.DWindow;
-import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.SActor;
 import com.kopiright.vkopi.lib.visual.UIBuilder;
 import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VWindow;
 import com.kopiright.vkopi.lib.visual.WindowController;
 

@@ -18,7 +18,6 @@
  */
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.CReferenceType;
 
 /**
  * The type of a field in Database.k

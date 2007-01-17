@@ -21,12 +21,18 @@ package com.kopiright.xkopi.comp.dbi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.xkopi.comp.sqlc.*;
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.xkopi.comp.sqlc.DefaultSqlVisitor;
+import com.kopiright.xkopi.comp.sqlc.Expression;
+import com.kopiright.xkopi.comp.sqlc.FieldNameList;
+import com.kopiright.xkopi.comp.sqlc.SelectStatement;
+import com.kopiright.xkopi.comp.sqlc.Statement;
+import com.kopiright.xkopi.comp.sqlc.TableReference;
+import com.kopiright.xkopi.comp.sqlc.Type;
+import com.kopiright.xkopi.comp.sqlc.TypeName;
 import com.kopiright.xkopi.lib.type.Fixed;
 
 /**

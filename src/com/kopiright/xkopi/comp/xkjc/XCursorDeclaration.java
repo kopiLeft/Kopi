@@ -19,13 +19,34 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import java.util.List;
-
-import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.JavadocComment;
-import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.CContext;
+import com.kopiright.kopi.comp.kjc.CParseClassContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CTypeVariable;
+import com.kopiright.kopi.comp.kjc.JAssignmentExpression;
+import com.kopiright.kopi.comp.kjc.JBlock;
+import com.kopiright.kopi.comp.kjc.JClassDeclaration;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JExpressionStatement;
+import com.kopiright.kopi.comp.kjc.JFieldDeclaration;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JMethodDeclaration;
+import com.kopiright.kopi.comp.kjc.JNameExpression;
+import com.kopiright.kopi.comp.kjc.JPhylum;
+import com.kopiright.kopi.comp.kjc.JReturnStatement;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JThisExpression;
+import com.kopiright.kopi.comp.kjc.JTypeDeclaration;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.kopi.comp.kjc.JVariableDeclarationStatement;
+import com.kopiright.kopi.comp.kjc.JVariableDefinition;
+import com.kopiright.kopi.comp.kjc.KjcVisitor;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents cursor definition in kopi grammar

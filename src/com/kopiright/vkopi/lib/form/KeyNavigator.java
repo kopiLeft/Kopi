@@ -19,32 +19,21 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.*;
-import javax.swing.event.*;
 
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.Application;
-import com.kopiright.vkopi.lib.visual.DObject;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.text.JTextComponent;
+
+import com.kopiright.vkopi.lib.ui.base.Stateful;
+import com.kopiright.vkopi.lib.util.PrintException;
+import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.PrinterManager;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-
-import com.kopiright.vkopi.lib.ui.base.Stateful;
-import com.kopiright.vkopi.lib.ui.base.FieldStates;
-import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.PrintException;
 
 public class KeyNavigator extends AbstractAction {
 

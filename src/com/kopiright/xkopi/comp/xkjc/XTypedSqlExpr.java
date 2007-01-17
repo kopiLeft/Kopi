@@ -21,19 +21,18 @@ package com.kopiright.xkopi.comp.xkjc;
 
 import java.util.ArrayList;
 
+import com.kopiright.compiler.base.CWarning;
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.xkopi.comp.sqlc.Expression;
 import com.kopiright.xkopi.comp.sqlc.FieldReference;
-import com.kopiright.xkopi.comp.sqlc.SelectElemExpression;
 import com.kopiright.xkopi.comp.sqlc.SelectElem;
+import com.kopiright.xkopi.comp.sqlc.SelectElemExpression;
 import com.kopiright.xkopi.comp.sqlc.SqlVisitor;
 import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
 import com.kopiright.xkopi.comp.sqlc.TableReference;
-import com.kopiright.compiler.base.CWarning;
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.compiler.base.TokenReference;
 
 /**
  * This class represents an SqlExpression

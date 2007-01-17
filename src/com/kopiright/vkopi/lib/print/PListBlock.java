@@ -19,8 +19,6 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * A block of data to print

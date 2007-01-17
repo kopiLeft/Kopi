@@ -19,10 +19,16 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.CExpressionContext;
+import com.kopiright.kopi.comp.kjc.JCheckedExpression;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JFieldAccessExpression;
+import com.kopiright.kopi.comp.kjc.JIntLiteral;
+import com.kopiright.kopi.comp.kjc.JLocalVariableExpression;
+import com.kopiright.kopi.comp.kjc.JPostfixExpression;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents unary expressions.

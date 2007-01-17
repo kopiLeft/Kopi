@@ -19,11 +19,15 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.JavadocComment;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.kopi.comp.kjc.JFieldDeclaration;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JMethodDeclaration;
+import com.kopiright.kopi.comp.kjc.JPhylum;
+import com.kopiright.kopi.comp.kjc.JTypeDeclaration;
+import com.kopiright.kopi.comp.kjc.KjcVisitor;
 
 /**
  * This class represents a cursor type definition in kopi grammar

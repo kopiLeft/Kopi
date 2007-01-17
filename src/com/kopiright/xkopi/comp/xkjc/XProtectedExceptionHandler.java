@@ -21,14 +21,38 @@ package com.kopiright.xkopi.comp.xkjc;
 
 import java.util.Enumeration;
 
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.compiler.base.CWarning;
-import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.JavaStyleComment;
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.compiler.base.UnpositionedError;
+import com.kopiright.kopi.comp.kjc.CBodyContext;
+import com.kopiright.kopi.comp.kjc.CCatchContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CSimpleBodyContext;
+import com.kopiright.kopi.comp.kjc.CThrowableInfo;
+import com.kopiright.kopi.comp.kjc.CTryContext;
+import com.kopiright.kopi.comp.kjc.CodeLabel;
+import com.kopiright.kopi.comp.kjc.CodeSequence;
+import com.kopiright.kopi.comp.kjc.GenerationContext;
+import com.kopiright.kopi.comp.kjc.JBlock;
+import com.kopiright.kopi.comp.kjc.JBooleanLiteral;
+import com.kopiright.kopi.comp.kjc.JCatchClause;
+import com.kopiright.kopi.comp.kjc.JConditionalOrExpression;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JExpressionStatement;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JIfStatement;
+import com.kopiright.kopi.comp.kjc.JLocalVariable;
+import com.kopiright.kopi.comp.kjc.JLocalVariableExpression;
+import com.kopiright.kopi.comp.kjc.JLogicalComplementExpression;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JPhylum;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JThrowStatement;
+import com.kopiright.kopi.comp.kjc.KjcVisitor;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.base.XInterruptProtectedException;
-import com.kopiright.kopi.comp.kjc.*;
 
 /**
  * JLS 14.19: Try Statement

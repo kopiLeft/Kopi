@@ -26,7 +26,6 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;

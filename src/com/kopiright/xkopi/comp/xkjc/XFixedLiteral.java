@@ -21,9 +21,16 @@ package com.kopiright.xkopi.comp.xkjc;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.kopi.comp.kjc.*;
+import com.kopiright.kopi.comp.kjc.CExpressionContext;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.GenerationContext;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JLiteral;
+import com.kopiright.kopi.comp.kjc.JStringLiteral;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.kopi.comp.kjc.KjcVisitor;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
 /**

@@ -19,28 +19,39 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseAdapter;
 import java.util.Collections;
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.*;
-import javax.swing.text.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.text.JTextComponent;
 import javax.swing.undo.UndoManager;
 
-import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.spellchecker.SpellChecker;
 import com.kopiright.vkopi.lib.spellchecker.SpellException;
-import com.kopiright.vkopi.lib.ui.base.FieldStates;
 import com.kopiright.vkopi.lib.ui.base.TextSelecter;
+import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
-import com.kopiright.vkopi.lib.visual.DObject;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.Utils;

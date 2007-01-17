@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.Component;
 import java.util.EventListener;
 
 public interface WaitDialogListener extends EventListener {

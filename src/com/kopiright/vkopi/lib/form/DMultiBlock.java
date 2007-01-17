@@ -19,17 +19,29 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
-import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.ui.base.JFieldButton;
-import com.kopiright.vkopi.lib.ui.plaf.KopiScrollBarUI;
 
 public class DMultiBlock extends DChartBlock {
 

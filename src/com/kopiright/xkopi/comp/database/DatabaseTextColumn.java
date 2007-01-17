@@ -18,13 +18,6 @@
  */
 package com.kopiright.xkopi.comp.database;
 
-import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.kopi.comp.kjc.*;
-import com.kopiright.kopi.comp.kjc.CClassNameType;
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
-import com.kopiright.xkopi.comp.xkjc.XStdType;
 
 /**
  * The type of a field which represents a integer-column in Database.k. 

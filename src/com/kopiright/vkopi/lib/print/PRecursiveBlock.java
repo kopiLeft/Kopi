@@ -23,8 +23,6 @@ import java.util.Vector;
 
 import com.kopiright.util.base.InconsistencyException;
 
-import com.lowagie.text.pdf.PdfWriter;
-
 /**
  * A block of data to print
  */

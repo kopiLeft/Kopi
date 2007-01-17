@@ -20,11 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseWeekColumn;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseWeekColumn;
 import com.kopiright.xkopi.comp.sqlc.Type;
 
 public class WeekType extends Type implements DbiType {

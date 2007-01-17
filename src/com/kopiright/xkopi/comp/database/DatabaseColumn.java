@@ -22,7 +22,6 @@ import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.CType;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.xkopi.comp.xkjc.XDatabaseColumn;
-import com.kopiright.util.base.InconsistencyException;
 
 /**
  * The type of a field which represents a column in Database.k. Subclasses 

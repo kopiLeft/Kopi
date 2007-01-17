@@ -19,11 +19,34 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Set;
-import java.util.TreeSet;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.FocusManager;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JWindow;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -31,20 +54,18 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
+import com.kopiright.vkopi.lib.ui.base.ListDialogCellRenderer;
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.visual.DObject;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.Module;
-import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.Utils;
-import com.kopiright.vkopi.lib.ui.base.ListDialogCellRenderer;
+import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.xkopi.lib.type.Date;
 
 /**

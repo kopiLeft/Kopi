@@ -20,13 +20,13 @@
 package com.kopiright.xkopi.comp.xkjc;
 
 import java.util.ArrayList;
+
+import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.kopi.comp.kjc.CBodyContext;
 import com.kopiright.kopi.comp.kjc.CTypeContext;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.xkopi.comp.sqlc.SqlContext;
 import com.kopiright.xkopi.comp.sqlc.TableReference;
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.util.base.InconsistencyException;
 
 /**
  * This class represents a java expression within a Sql context

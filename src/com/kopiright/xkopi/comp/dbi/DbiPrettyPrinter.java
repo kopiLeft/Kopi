@@ -20,22 +20,19 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+import java.util.StringTokenizer;
 
 import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.comp.sqlc.Expression;
 import com.kopiright.xkopi.comp.sqlc.FieldNameList;
-import com.kopiright.xkopi.comp.sqlc.IntegerLiteral;
 import com.kopiright.xkopi.comp.sqlc.SelectStatement;
 import com.kopiright.xkopi.comp.sqlc.SqlcPrettyPrinter;
-import com.kopiright.xkopi.comp.sqlc.Statement;
 import com.kopiright.xkopi.comp.sqlc.TableReference;
 import com.kopiright.xkopi.comp.sqlc.Type;
-import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Fixed;
 
 /**

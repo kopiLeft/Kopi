@@ -20,12 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseImageColumn;
-import com.kopiright.kopi.comp.kjc.CStdType;
-import com.kopiright.kopi.comp.kjc.CType;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseImageColumn;
 import com.kopiright.xkopi.comp.sqlc.BlobType;
 
 public class ImageType extends BlobType implements DbiType {

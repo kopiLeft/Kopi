@@ -19,10 +19,10 @@
 
 package com.kopiright.xkopi.comp.dbi;
 
-import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
 import java.sql.SQLException;
+
+import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
 
 /**
  * This class represents a table definition

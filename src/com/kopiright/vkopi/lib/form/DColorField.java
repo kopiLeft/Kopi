@@ -28,9 +28,6 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
-import javax.swing.text.JTextComponent;
-
-import com.kopiright.vkopi.lib.visual.DObject;
 
 /**
  * DColorField is a panel composed in a color field and a label behind

@@ -19,11 +19,9 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.kopi.comp.kjc.CReferenceType;
-import com.kopiright.kopi.comp.kjc.TypeFactory;
-import com.kopiright.kopi.comp.kjc.CTypeContext;
 import com.kopiright.compiler.base.UnpositionedError;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.CTypeContext;
 
 /**
  * This class represents primitive class type

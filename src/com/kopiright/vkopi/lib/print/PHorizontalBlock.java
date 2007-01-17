@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * A block of data to print

@@ -19,11 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Component;
 import java.util.EventListener;
-
-import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.VException;
 
 public interface FormListener extends EventListener {
   void currentBlockChanged(VBlock oldBlock, VBlock newBlock);

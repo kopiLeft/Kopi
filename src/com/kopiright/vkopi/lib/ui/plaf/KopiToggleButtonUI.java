@@ -19,16 +19,16 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import java.awt.*;
-import java.awt.font.*;
-import java.text.*;
-import java.util.StringTokenizer;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalToggleButtonUI;
-
-import com.kopiright.vkopi.lib.ui.base.*;
 
 public class KopiToggleButtonUI extends MetalToggleButtonUI {
   protected static KopiToggleButtonUI kopiButtonUI = new KopiToggleButtonUI();

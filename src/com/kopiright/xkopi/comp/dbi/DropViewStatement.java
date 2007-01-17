@@ -19,12 +19,12 @@
 
 package com.kopiright.xkopi.comp.dbi;
 
-import com.kopiright.compiler.base.UnpositionedError;
+import java.sql.SQLException;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.xkopi.comp.sqlc.Expression;
 import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
-import java.sql.SQLException;
 
 /**
  * This class represents a View deletion

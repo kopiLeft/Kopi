@@ -23,14 +23,12 @@ import java.io.IOException;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TabbedPrintWriter;
-import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
-import com.kopiright.xkopi.comp.sqlc.SearchCondition;
-import com.kopiright.xkopi.comp.sqlc.SqlcPrettyPrinter;
+import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JLocalVariable;
 import com.kopiright.kopi.comp.kjc.KjcPrettyPrinter;
-import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.kopi.comp.kjc.TypeFactory;
-import com.kopiright.kopi.comp.kjc.CBodyContext;
+import com.kopiright.xkopi.comp.sqlc.SearchCondition;
+import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
+import com.kopiright.xkopi.comp.sqlc.SqlcPrettyPrinter;
 
 /**
  * This class implements a Java pretty printer

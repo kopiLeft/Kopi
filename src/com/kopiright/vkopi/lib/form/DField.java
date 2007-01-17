@@ -20,25 +20,21 @@
 package com.kopiright.vkopi.lib.form;
 
 import java.awt.BorderLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
 
-import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.ui.base.FieldStates;
+import com.kopiright.vkopi.lib.ui.base.JFieldButton;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
-import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.ui.base.FieldStates;
-import com.kopiright.vkopi.lib.ui.base.JFieldButton;
 
 /**
  * DField is a panel composed in a text field and an information panel

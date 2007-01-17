@@ -24,15 +24,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Vector;
-
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintException;
-import com.kopiright.vkopi.lib.util.Printer;
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
@@ -40,9 +37,8 @@ import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
-
-import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 /**
  * Handle the generation of a document

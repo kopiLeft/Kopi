@@ -20,11 +20,9 @@
 package com.kopiright.xkopi.comp.sqlc;
 
 import java.util.ArrayList;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-
-
-import com.kopiright.compiler.base.UnpositionedError;
 
 public class TableInsertSource extends InsertSource {
 

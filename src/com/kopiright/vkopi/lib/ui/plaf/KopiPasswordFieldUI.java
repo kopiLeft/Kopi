@@ -19,16 +19,13 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import java.awt.*;
-import java.awt.geom.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.text.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-import com.kopiright.vkopi.lib.ui.base.*;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicPasswordFieldUI;
+import javax.swing.text.JTextComponent;
 
 public class KopiPasswordFieldUI extends BasicPasswordFieldUI {
 

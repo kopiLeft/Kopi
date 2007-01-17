@@ -20,21 +20,13 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.util.ArrayList;
-import java.sql.SQLException;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.kopi.comp.kjc.CTypeContext;
 import com.kopiright.xkopi.comp.sqlc.Expression;
-import com.kopiright.xkopi.comp.sqlc.ExpressionList;
-import com.kopiright.xkopi.comp.sqlc.InsertStatement;
-import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
 import com.kopiright.xkopi.comp.sqlc.SqlContext;
-import com.kopiright.xkopi.comp.sqlc.StringLiteral;
 import com.kopiright.xkopi.comp.sqlc.TableReference;
-import com.kopiright.xkopi.comp.sqlc.ValueList;
-import com.kopiright.xkopi.comp.sqlc.ValueListInsertSource;
 
 /**
  * This class represents a table definition

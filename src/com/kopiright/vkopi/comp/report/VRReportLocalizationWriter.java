@@ -19,9 +19,6 @@
 
 package com.kopiright.vkopi.comp.report;
 
-import java.io.IOException;
-import java.util.Vector;
-
 import com.kopiright.vkopi.comp.base.VKDefinitionCollector;
 import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
 

@@ -21,19 +21,18 @@ package com.kopiright.vkopi.lib.form;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VTextColumn;
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.lib.base.Query;
-import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.xkopi.lib.base.Query;
 
 /**
  * This class implements multi-line text fields.

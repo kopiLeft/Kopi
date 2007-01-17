@@ -19,21 +19,22 @@
 
 package com.kopiright.vkopi.comp.trig;
 
-import java.util.ArrayList;
-
-import com.kopiright.compiler.base.CWarning;
-import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.kopi.comp.kjc.*;
-import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
-import com.kopiright.xkopi.comp.xkjc.*;
-
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.lib.base.DBDeadLockException;
-import com.kopiright.xkopi.lib.base.DBInterruptionException;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.JBlock;
+import com.kopiright.kopi.comp.kjc.JCatchClause;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JLocalVariable;
+import com.kopiright.kopi.comp.kjc.JLocalVariableExpression;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JStringLiteral;
+import com.kopiright.kopi.comp.kjc.JThrowStatement;
+import com.kopiright.kopi.comp.kjc.JTryCatchStatement;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.xkopi.comp.xkjc.XNameExpression;
 
 /**
  * wrapps a protected statement as following

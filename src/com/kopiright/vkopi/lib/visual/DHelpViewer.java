@@ -19,16 +19,20 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.net.URL;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.text.Document;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.*;
-import javax.swing.event.HyperlinkListener;
+import java.net.URL;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.Document;
 
 /**
  * A window with an html pane

@@ -19,10 +19,6 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-
-import com.kopiright.vkopi.lib.visual.DObject;
 
 /**
  * DField is a panel composed in a text field and an information panel

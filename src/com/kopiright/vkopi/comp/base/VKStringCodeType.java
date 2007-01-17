@@ -24,7 +24,6 @@ import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.xkopi.comp.database.DatabaseEnumColumn;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.util.base.NotImplementedException;
 
 /**
  * This class represents the definition of an string code type

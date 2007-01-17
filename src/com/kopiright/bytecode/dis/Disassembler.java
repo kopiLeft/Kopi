@@ -38,7 +38,6 @@ import com.kopiright.bytecode.classfile.Instruction;
 import com.kopiright.bytecode.classfile.LocalVariableInfo;
 import com.kopiright.bytecode.classfile.Member;
 import com.kopiright.bytecode.classfile.MethodInfo;
-import com.kopiright.compiler.base.CompilerMessages;
 import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.Utils;

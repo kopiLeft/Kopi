@@ -21,7 +21,6 @@ package com.kopiright.xkopi.comp.dbi;
 
 import java.util.List;
 
-import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 

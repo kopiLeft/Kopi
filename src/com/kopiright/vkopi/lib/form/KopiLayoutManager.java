@@ -20,13 +20,6 @@
 package com.kopiright.vkopi.lib.form;
 
 import java.awt.LayoutManager2;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.AdjustmentEvent;
-import javax.swing.JScrollBar;
-import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
-import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.ui.plaf.KopiScrollBarUI;
 
 public interface KopiLayoutManager extends LayoutManager2 {
   /**

@@ -20,12 +20,10 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.io.File;
-import java.io.IOException;
-
 import java.util.ArrayList;
 
-import com.kopiright.vkopi.lib.util.Rexec;
 import com.kopiright.vkopi.lib.util.PropertyManager;
+import com.kopiright.vkopi.lib.util.Rexec;
 
 /**
  * Manages Applicatin configuration data

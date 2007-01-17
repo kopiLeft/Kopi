@@ -19,14 +19,11 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import java.io.IOException;
-
-import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.PrintException;
-import com.kopiright.vkopi.lib.visual.VWindow;
+import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.vkopi.lib.visual.VWindow;
 
 public class DefaultPrintManager implements PrintManager {
   /**

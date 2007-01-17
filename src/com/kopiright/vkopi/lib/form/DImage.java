@@ -23,8 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import com.kopiright.vkopi.lib.visual.Utils;
-import com.kopiright.vkopi.lib.visual.DObject;
-
 import java.awt.Component;
 
 public class DImage extends JPanel {

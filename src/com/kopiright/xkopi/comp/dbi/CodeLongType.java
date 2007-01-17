@@ -19,15 +19,13 @@
 
 package com.kopiright.xkopi.comp.dbi;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseIntegerColumn;
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.xkopi.comp.xkjc.XStdType;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseIntegerColumn;
 import com.kopiright.xkopi.comp.sqlc.IntegerType;
 
 public class CodeLongType extends IntegerType implements DbiType {

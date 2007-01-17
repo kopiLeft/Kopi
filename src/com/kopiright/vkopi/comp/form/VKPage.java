@@ -20,15 +20,10 @@
 package com.kopiright.vkopi.comp.form;
 
 
-import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
-import com.kopiright.compiler.base.CWarning;
-import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.compiler.base.UnpositionedError;
-import com.kopiright.vkopi.comp.base.*;
-import com.kopiright.xkopi.comp.xkjc.XUtils;
-import com.kopiright.xkopi.comp.xkjc.XDatabaseColumn;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
+import com.kopiright.vkopi.comp.base.VKPhylum;
+import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
 
 /**
  * 

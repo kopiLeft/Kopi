@@ -20,27 +20,23 @@
 package com.kopiright.vkopi.lib.preview;
 
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+
 import javax.swing.UIManager;
 
-import com.kopiright.xkopi.lib.base.DBContext;
-import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationDefaultsAdapter;
 import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.DObject;
-
+import com.kopiright.xkopi.lib.base.DBContext;
 import com.lowagie.text.Rectangle;
 
 /**

@@ -19,12 +19,8 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
-import com.kopiright.bytecode.classfile.FieldInfo;
-import com.kopiright.compiler.base.Compiler;
-import com.kopiright.kopi.comp.kjc.*;
+import com.kopiright.kopi.comp.kjc.CClass;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
 
 /**
  * This class represents the exported members of a class (inner classes, methods and fields)

@@ -23,13 +23,18 @@ import java.util.ArrayList;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.kopi.comp.kjc.CBodyContext;
 import com.kopiright.kopi.comp.kjc.CBlockError;
+import com.kopiright.kopi.comp.kjc.CBodyContext;
 import com.kopiright.kopi.comp.kjc.JPhylum;
 import com.kopiright.kopi.comp.kjc.KjcVisitor;
-import com.kopiright.kopi.comp.kjc.TypeFactory;
-import com.kopiright.xkopi.comp.sqlc.*;
-import com.kopiright.util.base.Utils;
+import com.kopiright.xkopi.comp.sqlc.FromClause;
+import com.kopiright.xkopi.comp.sqlc.GroupByClause;
+import com.kopiright.xkopi.comp.sqlc.HavingClause;
+import com.kopiright.xkopi.comp.sqlc.SelectStatement;
+import com.kopiright.xkopi.comp.sqlc.SortSpec;
+import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
+import com.kopiright.xkopi.comp.sqlc.UpdSpec;
+import com.kopiright.xkopi.comp.sqlc.WhereClause;
 
 /**
  * This class represents an Sql select statement

@@ -19,13 +19,13 @@
 
 package com.kopiright.vkopi.lib.ui.base;
 
+import java.awt.Dimension;
+import java.awt.Insets;
+
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JToolTip;
 import javax.swing.UIManager;
-import java.awt.Insets;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 
 public class JMenuButton extends JButton {
 

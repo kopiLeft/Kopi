@@ -20,12 +20,11 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseShortColumn;
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.xkopi.comp.xkjc.XStdType;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseShortColumn;
 import com.kopiright.xkopi.comp.sqlc.SmallIntType;
 
 public class ShortType extends SmallIntType implements DbiType {

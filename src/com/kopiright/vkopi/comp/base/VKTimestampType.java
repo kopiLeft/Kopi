@@ -21,10 +21,8 @@ package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseTimeColumn;
 import com.kopiright.xkopi.comp.database.DatabaseTimestampColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
-import com.kopiright.kopi.comp.kjc.CType;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 

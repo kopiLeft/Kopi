@@ -20,8 +20,8 @@
 package com.kopiright.xkopi.comp.dbi;
 
 import java.sql.SQLException;
+
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.kopi.comp.kjc.CType;
 
 /**
  * This class represents a DbiType Interface

@@ -19,22 +19,19 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.lang.reflect.InvocationTargetException;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.undo.UndoManager;
+import java.awt.AWTEvent;
+import java.awt.ActiveEvent;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Frame;
+import java.awt.MenuComponent;
+import java.awt.Window;
+
+import javax.swing.FocusManager;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.xkopi.lib.base.DBContextHandler;
-import com.kopiright.xkopi.lib.base.DBContext;
-import com.kopiright.xkopi.lib.base.DBDeadLockException;
-import com.kopiright.xkopi.lib.base.DBInterruptionException;
-import com.kopiright.xkopi.lib.base.XInterruptProtectedException;
 
 /**
  * Creates the GUI, opens the window, form, ...

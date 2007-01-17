@@ -21,10 +21,9 @@ package com.kopiright.xkopi.comp.xkjc;
 
 import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CStdType;
 import com.kopiright.kopi.comp.kjc.CType;
 import com.kopiright.kopi.comp.kjc.CTypeContext;
-import com.kopiright.kopi.comp.kjc.CContext;
-import com.kopiright.kopi.comp.kjc.CStdType;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.SimpleStringBuffer;
 

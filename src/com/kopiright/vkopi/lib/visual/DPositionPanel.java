@@ -21,21 +21,14 @@ package com.kopiright.vkopi.lib.visual;
 
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
-
-import java.text.*;
-import javax.swing.text.*;
-import javax.swing.*;
 
 /**
  * The position panel is the used to go trough the rows when fetching

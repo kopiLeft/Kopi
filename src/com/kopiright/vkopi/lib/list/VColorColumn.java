@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.list;
 
-import java.awt.Color;
 
 /**
  * laurent :<br>

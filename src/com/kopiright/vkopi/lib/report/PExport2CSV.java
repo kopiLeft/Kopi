@@ -20,7 +20,6 @@
 package com.kopiright.vkopi.lib.report;
 
 import java.io.OutputStream;
-import java.io.IOException;
 
 import javax.swing.JTable;
 

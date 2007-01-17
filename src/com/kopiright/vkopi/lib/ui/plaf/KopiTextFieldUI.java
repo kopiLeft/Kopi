@@ -19,12 +19,13 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.text.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.metal.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.metal.MetalTextFieldUI;
+import javax.swing.text.JTextComponent;
 
 public class KopiTextFieldUI extends MetalTextFieldUI {
 

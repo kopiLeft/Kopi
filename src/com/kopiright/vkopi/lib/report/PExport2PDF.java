@@ -21,25 +21,25 @@ package com.kopiright.vkopi.lib.report;
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
 
 import javax.swing.JTable;
 
+import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.util.PPaperType;
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.xkopi.lib.type.NotNullDate;
+import com.kopiright.xkopi.lib.type.NotNullTime;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.ExceptionConverter;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
@@ -48,14 +48,6 @@ import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
-
-
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.lib.type.NotNullDate;
-import com.kopiright.xkopi.lib.type.NotNullTime;
-import com.kopiright.vkopi.lib.util.PPaperType;
-import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.util.PrintJob;
 
 public class  PExport2PDF extends PExport implements Constants {
 

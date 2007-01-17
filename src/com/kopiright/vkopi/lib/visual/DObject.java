@@ -19,11 +19,9 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.*;
-import java.util.Vector;
+import java.awt.Frame;
+import java.awt.Image;
 
-import javax.swing.border.*;
-import javax.swing.UIManager;
 import javax.swing.ImageIcon;
 
 /**

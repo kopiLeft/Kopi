@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.util;
 
-import java.io.*;
 
 /*
  * ----------------------------------------------------------------------

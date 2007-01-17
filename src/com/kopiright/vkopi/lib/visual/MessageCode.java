@@ -19,13 +19,12 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.l10n.MessageLocalizer;
-
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
+
+import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 
 /**
  * This class handles localized messages.

@@ -20,14 +20,13 @@
 package com.kopiright.vkopi.lib.visual;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import com.kopiright.vkopi.lib.util.Rexec;
-import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.RPrinter;
 import com.kopiright.vkopi.lib.util.PreviewPrinter;
+import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.PropertyManager;
+import com.kopiright.vkopi.lib.util.RPrinter;
+import com.kopiright.vkopi.lib.util.Rexec;
 
 /**
  * An interface for kopi application defaults data

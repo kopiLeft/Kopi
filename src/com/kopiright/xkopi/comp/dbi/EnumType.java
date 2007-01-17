@@ -19,17 +19,15 @@
 
 package com.kopiright.xkopi.comp.dbi;
 
-import java.util.ArrayList;
- 
 import java.sql.SQLException;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseEnumColumn;
-import com.kopiright.kopi.comp.kjc.CType;
+import java.util.ArrayList;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseEnumColumn;
 import com.kopiright.xkopi.comp.sqlc.ArrayPrecision;
 import com.kopiright.xkopi.comp.sqlc.CharType;
-import com.kopiright.util.base.Utils;
 
 public class EnumType extends CharType implements DbiType, Constants {
 

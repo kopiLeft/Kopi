@@ -19,31 +19,45 @@
 
 package com.kopiright.vkopi.lib.preview;
 
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.*;
-import com.kopiright.vkopi.lib.util.PrintJob;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.Frame;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.MediaTracker;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import javax.swing.*;
+
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.BoundedRangeModel;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
+
+import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.DPositionPanel;
+import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
+import com.kopiright.vkopi.lib.visual.DWindow;
+import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.PropertyException;
+import com.kopiright.vkopi.lib.visual.UserConfiguration;
+import com.kopiright.vkopi.lib.visual.Utils;
+import com.kopiright.vkopi.lib.visual.VException;
 
 /**
  * A window with an html pane

@@ -23,9 +23,8 @@ package com.kopiright.xkopi.comp.xkjc;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JLocalVariable;
-import com.kopiright.kopi.comp.kjc.TypeFactory;
-import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
 import com.kopiright.xkopi.comp.sqlc.SearchCondition;
+import com.kopiright.xkopi.comp.sqlc.SqlPhylum;
 
 /**
  * This class implements a Java pretty printer

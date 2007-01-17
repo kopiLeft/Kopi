@@ -19,12 +19,9 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.JFormalParameter;
-import com.kopiright.kopi.comp.kjc.CType;
-import com.kopiright.kopi.comp.kjc.CTypeContext;
-import com.kopiright.kopi.comp.kjc.CBodyContext;
-import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
 
 /**
  * This class represents a parameter declaration in the syntax tree

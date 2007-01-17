@@ -21,26 +21,15 @@ package com.kopiright.vkopi.lib.form;
 
 import java.awt.Component;
 import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.LayoutManager;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.ui.base.KopiTitledBorder;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.kopiright.vkopi.lib.visual.DObject;
-import com.kopiright.vkopi.lib.ui.base.KopiTitledBorder;
 
 public class DBlock extends JPanel implements BlockListener {
 

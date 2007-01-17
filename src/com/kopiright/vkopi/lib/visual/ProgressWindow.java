@@ -25,23 +25,19 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.text.JTextComponent;
-import javax.swing.undo.UndoManager;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.CannotRedoException;
-
-import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.KnownBugs;
-import com.kopiright.vkopi.lib.util.Message;
-import com.kopiright.vkopi.lib.ui.base.JButtonPanel;
-import com.kopiright.vkopi.lib.ui.base.JMenuButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.WindowConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
  * This class displays a window with a menu, a tool bar, a content panel

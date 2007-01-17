@@ -21,16 +21,12 @@ package com.kopiright.vkopi.lib.form;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import javax.swing.JLabel;
+
 import javax.swing.JToolTip;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
-import com.kopiright.vkopi.lib.util.MultiLineToolTip;
 import com.kopiright.vkopi.lib.ui.base.JFieldLabel;
-import com.kopiright.vkopi.lib.visual.DObject;
+import com.kopiright.vkopi.lib.util.MultiLineToolTip;
 
 /**
  * !!! NEED COMMENTS

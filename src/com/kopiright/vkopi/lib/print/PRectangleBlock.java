@@ -21,7 +21,6 @@ package com.kopiright.vkopi.lib.print;
 
 import java.awt.Color;
 
-import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.PdfContentByte;
 
 

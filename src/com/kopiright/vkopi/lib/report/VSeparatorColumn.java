@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.report;
 
-import com.kopiright.vkopi.lib.util.Message;
 
 public class VSeparatorColumn extends VReportColumn {
   /**
