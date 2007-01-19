@@ -180,7 +180,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   }
 
   protected DBlock createViewForBlock(VBlock blockModel) {
-    final boolean               isChart = blockModel.isMulti() && blockModel.isChart();
+    
     DBlock                      blockView;
 
     if (! blockModel.isMulti()) {
@@ -470,8 +470,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   }
 
   public void release() {
-    int         blockcount = getVForm().getBlockCount();
-
+   
     getVForm().removeFormListener(this);
     for (int i = 0; i < blockViews.length; i++) {
       getVForm().getBlock(i).removeBlockListener(blockListener);

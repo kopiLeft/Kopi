@@ -62,8 +62,7 @@ public class JEnumSwitchInnerDeclaration extends JClassDeclaration {
     JExpression         length;
     JExpression         init;
     JVariableDefinition var;
-    JFieldDeclaration   field;
-    
+        
     // Code to create: new int[<Enum Ident>.values().length];
     length = new JArrayLengthExpression(where,
                                         new JMethodCallExpression(where,

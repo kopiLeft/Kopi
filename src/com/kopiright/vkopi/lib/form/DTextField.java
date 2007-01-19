@@ -166,8 +166,7 @@ public class DTextField extends DField implements VConstants {
                   SpellChecker  spellChecker = new SpellChecker(spellCommand,
                                                                 Utils.getFrameAncestor(field),
                                                                 document);
-                  String        checked = null;
-            
+                            
                   try {
                     spellChecker.check();
                   } catch (SpellException se) {
@@ -332,8 +331,7 @@ public class DTextField extends DField implements VConstants {
 
   private void leaveMe() {
     VField      model = getModel();
-    int         pos = getPosition();
-
+    
     if (!noEdit) {
       document.removeUndoableEditListener(model.getForm().getUndoableEditListener());
     }

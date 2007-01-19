@@ -438,10 +438,7 @@ public class ListDialog extends JPanel {
             break;
           default:
             char aKey = k.getKeyChar();
-            int i,c;
-            int currentSelection = table.getSelectedRow();
-            String v;
-            String pattern;
+            int i;
             
             if (!Character.isLetterOrDigit(aKey)) {
               return;

@@ -161,8 +161,7 @@ public class PRPage
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context) throws PositionedError {
-    TokenReference	ref = getTokenReference();
-
+   
     this.context = context;
     context.setMode(true);
     context.setClassContext(clazz);

@@ -68,8 +68,7 @@ public class PHorizontalBlock extends PBlock {
    * Prints this block
    */
   public void doPrint(PPage page) throws PSPrintException {
-    float       currentPos = 0;
-
+   
     for (int i = 0; i < blocks.length; i++) {
       if (blocks[i].isShownOnThisPage()) {
         page.getPdfContentByte().saveState();

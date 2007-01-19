@@ -691,7 +691,7 @@ public class JavaCodeGenerator {
       currentASTResult = blk.getLabel();
     }
 
-    boolean ok = grammar.theLLkAnalyzer.deterministic(blk);
+    grammar.theLLkAnalyzer.deterministic(blk);
 
     JavaBlockFinishingInfo howToFinish = genCommonBlock(blk, true);
     genBlockFinish(howToFinish, throwNoViable);
@@ -903,7 +903,7 @@ public class JavaCodeGenerator {
       currentASTResult = blk.getLabel();
     }
 
-    boolean ok = grammar.theLLkAnalyzer.deterministic(blk);
+    grammar.theLLkAnalyzer.deterministic(blk);
 
     // generate exit test if greedy set to false
     // and an alt is ambiguous with exit branch
@@ -1236,7 +1236,7 @@ public class JavaCodeGenerator {
       currentASTResult = blk.getLabel();
     }
 
-    boolean ok = grammar.theLLkAnalyzer.deterministic(blk);
+    grammar.theLLkAnalyzer.deterministic(blk);
 
     // generate exit test if greedy set to false
     // and an alt is ambiguous with exit branch
@@ -1868,7 +1868,7 @@ public class JavaCodeGenerator {
   }
   private void genMatchUsingAtomTokenType(GrammarAtom atom) {
     // If the literal can be mangled, generate the symbolic constant instead
-    String mangledName = null;
+    
     String s = getValueString(atom.getType());
 
     // matching
@@ -1916,7 +1916,7 @@ public class JavaCodeGenerator {
     nextTokenRs.access = "private";
     grammar.define(nextTokenRs);
     // Analyze the nextToken rule
-    boolean ok = grammar.theLLkAnalyzer.deterministic(nextTokenBlk);
+    grammar.theLLkAnalyzer.deterministic(nextTokenBlk);
 
     // Generate the next token rule
     String filterRule=null;
@@ -2204,7 +2204,7 @@ public class JavaCodeGenerator {
       genAlt(alt, rblk);
     } else {
       // Multiple alternatives -- generate complex form
-      boolean ok = grammar.theLLkAnalyzer.deterministic(rblk);
+      grammar.theLLkAnalyzer.deterministic(rblk);
 
       JavaBlockFinishingInfo howToFinish = genCommonBlock(rblk, false);
       genBlockFinish(howToFinish, throwNoViable);

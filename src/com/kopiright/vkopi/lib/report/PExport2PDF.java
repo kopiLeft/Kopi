@@ -119,8 +119,7 @@ public class  PExport2PDF extends PExport implements Constants {
       writer.setPageEvent(new PdfPageEventHelper() {
           public void onEndPage(PdfWriter writer, Document document) {
             try {
-              Paragraph       p;
-              PdfPCell        cell;
+              
               Rectangle       page = document.getPageSize();
               PdfPTable       head = createHeader(); 
 
@@ -301,19 +300,18 @@ public class  PExport2PDF extends PExport implements Constants {
    * Gets the scale to be used for this report
    */
   private double getScale(double min, double max, double precision) {
-    int         innerSpace =1;
-    int         width, height;
-    float       point;
-
+   
+    int         width;
+    
     // setting format parameters
     PPaperType	paper = PPaperType.getPaperTypeFromCode(pconfig.papertype);
 
     if (pconfig.paperlayout.equals("Landscape")) {
       width = paper.getHeight();
-      height = paper.getWidth();
+    
     } else {
       width = paper.getWidth();
-      height = paper.getHeight();
+     
     }
 
     double      widthSumMin;

@@ -206,7 +206,6 @@ public abstract class Grammar {
   public boolean setOption(String key, Token value) {
     options.put(key, value);
     String s = value.getText();
-    int i;
     if (key.equals("k")) {
       try {
 	maxk = getIntegerOption("k");
@@ -217,7 +216,7 @@ public abstract class Grammar {
     }
     if (key.equals("codeGenMakeSwitchThreshold")) {
       try {
-	i = getIntegerOption("codeGenMakeSwitchThreshold");
+	   getIntegerOption("codeGenMakeSwitchThreshold");
       } catch (NumberFormatException e) {
 	tool.error("option 'codeGenMakeSwitchThreshold' must be an integer", getFilename(), value.getLine());
       }
@@ -225,7 +224,7 @@ public abstract class Grammar {
     }
     if (key.equals("codeGenBitsetTestThreshold")) {
       try {
-	i = getIntegerOption("codeGenBitsetTestThreshold");
+	   getIntegerOption("codeGenBitsetTestThreshold");
       } catch (NumberFormatException e) {
 	tool.error("option 'codeGenBitsetTestThreshold' must be an integer", getFilename(), value.getLine());
       }

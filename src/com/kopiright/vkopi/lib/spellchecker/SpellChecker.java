@@ -141,10 +141,7 @@ public class SpellChecker {
   {
     String              originalWord;
     int                 originalIndex;
-    String              leftText;
-    String              rightText;
-    StringBuffer        buf;
-
+   
     originalWord = result.getOriginalWord();
     originalIndex = result.getOffset();
     try {

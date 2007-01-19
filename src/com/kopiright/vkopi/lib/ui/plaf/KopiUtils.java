@@ -88,7 +88,6 @@ public class KopiUtils {
         if (fl.getAutofill()
             && clipRect.width > 20
             && (fl.getState() & FieldStates.FLD_MASK) > FieldStates.SKIPPED) {
-          int           h = Math.max(clipRect.height, 20);
           int           w = clipRect.width;
           int[]         xPoints = new int[] {w-6, w-2, w-10};
           int[]         yPoints = new int[] {2, 7, 7};
@@ -205,8 +204,7 @@ public class KopiUtils {
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
       Color oldColor = g.getColor();
-      int i;
-
+     
       g.setColor(lineColor);
       g.drawRoundRect(x, y, width-1, height-1, border_arc, border_arc);
       g.setColor(oldColor);
@@ -220,8 +218,6 @@ public class KopiUtils {
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
       Color oldColor = g.getColor();
-      int i;
-
       g.setColor(lineColor);
       g.drawRoundRect(x, y, width-1, height-1, border_arc, border_arc);
       g.setColor(oldColor);

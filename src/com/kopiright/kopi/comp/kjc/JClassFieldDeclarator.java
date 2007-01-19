@@ -121,7 +121,7 @@ public class JClassFieldDeclarator extends JStatement {
    * @param	code		the code list
    */
   public void genCode(GenerationContext context) {
-    CodeSequence        code = context.getCodeSequence();
+    
     TypeFactory         factory = context.getTypeFactory();
 
     if (decl.getField().getConstantValue(factory) == null) {

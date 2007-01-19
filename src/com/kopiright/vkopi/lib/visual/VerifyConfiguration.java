@@ -36,8 +36,6 @@ public class VerifyConfiguration {
     PrintWriter         writer = new PrintWriter(buffer);
     boolean             configurationError = false;
     String              hostname;
-    String              user;
-
     // get Hostname
     try {
       InetAddress     inetAdress = InetAddress.getLocalHost();

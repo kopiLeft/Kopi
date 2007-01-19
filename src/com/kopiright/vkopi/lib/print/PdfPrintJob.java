@@ -96,8 +96,7 @@ public class PdfPrintJob extends PrintJob {
 
       int               i = 0;
       PdfContentByte    under;
-      PdfContentByte    over;
-
+      
       while (i < n) {
         i++;
 

@@ -47,8 +47,7 @@ public class KopiToggleButtonUI extends MetalToggleButtonUI {
   public void paint(Graphics g, JComponent c) {
     AbstractButton      b = (AbstractButton) c;
     ButtonModel         model = b.getModel();
-    Rectangle           rect = b.getBounds();
-
+    
     b.setRolloverEnabled(true);
 
     super.paint(g, c);

@@ -838,8 +838,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception	VException	an exception may occur in record.leave()
    */
   public void gotoRecord(int recno) throws VException {
-    VField	act;
-
+    
     assert this == form.getActiveBlock() :
            this.getName() + " != "
            + (form.getActiveBlock() == null ? "null" : form.getActiveBlock().getName());
@@ -2198,8 +2197,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void fetchLookupFirst(VField fld) throws VException {
     int		table = -1;
-    String      columnName = null;
-
+    
     assert fld != null : "fld = " + fld;
     assert this == form.getActiveBlock() :
            this.getName() + " != "
@@ -3284,11 +3282,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    *
    */
   protected void selectLookup(int table, int recno) throws SQLException, VException {
-    VField	idfld;
     String	headbuff, tailbuff;
     Query	query;
 
-    idfld = null;
+  
     headbuff = "";
     tailbuff = "";
 
@@ -3302,9 +3299,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	}
 	headbuff += col;
 
-	if (col.equals("ID")) {
-	  idfld = fld;
-	}
 
 	if (!fld.isInternal() || !fld.isNull(recno)) {
 	  String  sql = fld.getSql(recno);

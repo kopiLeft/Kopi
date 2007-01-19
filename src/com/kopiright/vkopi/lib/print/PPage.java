@@ -415,8 +415,7 @@ public abstract class PPage {
       fullyPrinted = true;
       newPage();
       addWatermark(printJob);
-      float     cummul = 0;
-
+      
       for (int i = 0; i < blocks.size(); i++) {
 	// fill all blocks
 	PBlock  block = (PBlock)blocks.elementAt(i);

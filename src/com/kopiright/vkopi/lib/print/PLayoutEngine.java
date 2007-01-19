@@ -76,7 +76,6 @@ class PLayoutEngine {
     Dimension   dim = new Dimension();
 
     if (image.getIconHeight() > 500 || image.getIconWidth() > 500) {
-      int       x, y;
       double    scale;
 
       scale = Math.min(450.0/image.getIconHeight(), 450.0/image.getIconWidth());

@@ -369,10 +369,8 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
       synchronized (target.getTreeLock()) {
 	Insets insets = target.getInsets();
 	int top = align == null ? insets.top : 0;
-	int bottom = target.getSize().height - insets.bottom;
 	int left = insets.left;
-	int right = target.getSize().width - insets.right;
-
+	
 	if (components.length == 0) {
 	  return;
 	}
@@ -387,8 +385,7 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
 	      Dimension         d = components[x][y].getPreferredSize();
 	      int               cleft;
 	      int               sup = 0;
-              int               add = 0;
-
+            
 	      if (aligns[x][y] instanceof MultiFieldAlignment) {
 		if (aligns[x][y].alignRight) {
 		  // label

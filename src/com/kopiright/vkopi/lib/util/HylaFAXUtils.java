@@ -106,8 +106,7 @@ public class HylaFAXUtils {
   {
     try {
       HylaFAXClient       faxClient;
-      Vector              entries;
-
+      
       faxClient =  new HylaFAXClient();
       faxClient.open(host);
 
@@ -138,8 +137,7 @@ public class HylaFAXUtils {
   {
     try {
       HylaFAXClient       faxClient;
-      Vector              entries;
-      
+    
       faxClient =  new HylaFAXClient();
       faxClient.open(host);
       

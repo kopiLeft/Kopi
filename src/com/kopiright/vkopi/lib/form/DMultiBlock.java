@@ -154,8 +154,7 @@ public class DMultiBlock extends DChartBlock {
     chartPane.add(new JLabel(""), new KopiAlignment(0, 0, 1, false));
 
     for (int i=1; i < displaySize+1; i++) {
-      final int row = i;
-
+      
       DetailButton detailbutton = new DetailButton(i-1);
 
       getModel().addBlockListener(detailbutton);
@@ -295,8 +294,7 @@ public class DMultiBlock extends DChartBlock {
         getModel().getForm().displayError(ex.getMessage());
       }
     } else {
-      final VField      field = getModel().getActiveField();
-                  
+                       
       try {
         // show chart view
                     

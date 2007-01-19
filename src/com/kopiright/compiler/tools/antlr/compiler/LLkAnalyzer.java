@@ -76,7 +76,6 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
     boolean det = true;
     int nalts = blk.alternatives.size();
     AlternativeBlock saveCurrentBlock = currentBlock;
-    Alternative wildcardAlt = null;
     currentBlock = blk;
 
     /* don't allow nongreedy (...) blocks */
@@ -182,11 +181,11 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 	   * then remove elements from alt i lookahead from alt j's lookahead.
 	   * Don't do an ambiguity warning.
 	   */
-	  else if ( altUsesWildcardDefault(aj) ) {
+	  //else if ( altUsesWildcardDefault(aj) ) {
 	    // System.out.println("removing pred sets");
 	    // removeCompetingPredictionSetsFromWildcard(aj.cache, aj.head, grammar.maxk);
-	    wildcardAlt = aj;
-	  }
+	    //wildcardAlt = aj;
+	  //}
 
 	  /* If the user specified warnWhenFollowAmbig=false, then we
 	   * can turn off this warning IFF one of the alts is empty;

@@ -446,8 +446,7 @@ public class Patterns implements com.kopiright.bytecode.classfile.Constants {
    * Optimizes the byte code for a single method.
    */
   public static boolean optimizePushLiteralInstruction(InstructionHandle handle, int opcode) {
-    PushLiteralInstruction	current = (PushLiteralInstruction)handle.getInstruction();
-
+    
     //    comparison to 0 or 1
     if (handle.getNext().isJump()) {
       InstructionHandle next = handle.getNext();

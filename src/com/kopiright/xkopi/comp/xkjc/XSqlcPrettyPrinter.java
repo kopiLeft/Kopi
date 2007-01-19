@@ -109,8 +109,7 @@ public class XSqlcPrettyPrinter extends SqlcPrettyPrinter implements XSqlVisitor
 			       XSqlExpr elseClause)
     throws PositionedError
   {
-    JavaSqlContext	sqlStatement = XSqlChecker.getJavaContext(getContext());
-
+    
     left.accept(this);
     println();
     pos -= TAB_SIZE;
@@ -138,8 +137,6 @@ public class XSqlcPrettyPrinter extends SqlcPrettyPrinter implements XSqlVisitor
                                boolean asText)
     throws PositionedError
   {
-    JavaSqlContext	sqlStatement = XSqlChecker.getJavaContext(getContext());
-
     print(":");
     if (asText) {
       print("!");

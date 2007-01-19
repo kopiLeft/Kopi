@@ -163,7 +163,6 @@ public class JEnhancedForStatement extends JForStatement {
       }
   	    
       JVariableDefinition   	            iterator;
-      JVariableDefinition   	            exprVariable;
       
       JMethodCallExpression               callIterator;
       

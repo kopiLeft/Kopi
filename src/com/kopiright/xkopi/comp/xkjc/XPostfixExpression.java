@@ -25,7 +25,6 @@ import com.kopiright.kopi.comp.kjc.CExpressionContext;
 import com.kopiright.kopi.comp.kjc.JCheckedExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JFieldAccessExpression;
-import com.kopiright.kopi.comp.kjc.JIntLiteral;
 import com.kopiright.kopi.comp.kjc.JLocalVariableExpression;
 import com.kopiright.kopi.comp.kjc.JPostfixExpression;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
@@ -96,10 +95,7 @@ public class XPostfixExpression extends JPostfixExpression {
 
     TokenReference	ref = getTokenReference();
     JExpression	left = new JCheckedExpression(ref, expr);
-    JExpression	right = new XCompoundAssignmentExpression(ref, OPE_PLUS,
-							  new JCheckedExpression(ref, expr),
-							  new JIntLiteral(ref, oper == OPE_POSTINC ? 1 : -1));
-
+   
     /* remove if it works / dont forget to remove com/kopiright/xkopi/lib/base/XKjcRtUtils
     CReferenceType    utilType = (CReferenceType) context.getTypeFactory().createType(com.kopiright.xkopi.lib.base.XKjcRtUtils.class.getName().replace('.','/'), true);
 

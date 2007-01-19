@@ -225,8 +225,6 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
  
   public void zoomFit(int type) {
     Dimension         dim = bodypane.getSize(); // size of view
-    int               height = model.getHeight();
-    int               width = model.getWidth();
     float             ratio;
 
     switch (type) {

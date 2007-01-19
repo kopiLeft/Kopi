@@ -118,7 +118,7 @@ public class XUnprotectedStatement extends XStatement {
     //    JCatchClause                catchWithAbort;
     JFormalParameter            exceptionVar;
     JCatchClause                catchWithPrint;
-    CType                       exceptionType = context.getTypeFactory().createReferenceType(TypeFactory.RFT_EXCEPTION);
+    
     CType                       systemType = context.getTypeFactory().createType("java/lang/System", false);
     CType                       sqlType = context.getTypeFactory().createType("java/sql/SQLException", false);
 

@@ -482,9 +482,7 @@ public class JClassDeclaration extends JTypeDeclaration {
       addOuterThis();
     }
     try {
-      CVariableInfo	instanceInfo = null;
-      CVariableInfo[]	constructorsInfo;
-
+     
       if (instanceInit != null) {
         instanceInit.prepareInitializer(self);
         instanceInit.checkInitializer(self);
@@ -504,7 +502,7 @@ public class JClassDeclaration extends JTypeDeclaration {
       
 
       // First we compile constructors
-      constructorsInfo = compileConstructors(context);
+      compileConstructors(context);
       
       if (defaultInvariant != null) { // default invariant
         defaultInvariant.checkBody1(self);

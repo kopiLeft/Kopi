@@ -255,7 +255,6 @@ public class Mailer {
 			  List attachments)
     throws SMTPException
   {
-    String              separator = ",";
     List                recipients = split(recipient);
     List                ccRecipients = split(ccRecipient);
     List                bccRecipients = split(bccRecipient);

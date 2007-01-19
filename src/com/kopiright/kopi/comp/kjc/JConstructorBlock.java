@@ -76,7 +76,7 @@ public class JConstructorBlock extends JBlock {
     // assumed by the compiler to begin with a superclass constructor
     // invocation "super();", an invocation of the constructor of its
     // direct superclass that takes no arguments.
-    CType objectType = context.getTypeFactory().createReferenceType(TypeFactory.RFT_OBJECT);
+   
 
     if (constructorCall == null && !(sourceClass.getQualifiedName() == JAV_OBJECT)) {
       constructorCall = new JConstructorCall(getTokenReference(),

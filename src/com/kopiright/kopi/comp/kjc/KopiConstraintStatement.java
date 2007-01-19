@@ -61,9 +61,7 @@ public class KopiConstraintStatement extends JStatement {
                                                       new JEmptyStatement(ref, null), 
                                                       new JEmptyStatement(ref, null)};
     CMethod             method = context.getMethodContext().getCMethod();
-    CClassContext       classContext = context.getClassContext();
-    CClass              clazz = classContext.getCClass();
-    CReferenceType          storage = null;
+      
     final CMethod       postmethod = method.getPostconditionMethod();
     CMethod             premethod = method.getPreconditionMethod();
 

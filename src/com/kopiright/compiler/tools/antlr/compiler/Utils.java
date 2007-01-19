@@ -20,7 +20,6 @@
 package com.kopiright.compiler.tools.antlr.compiler;
 
 import java.io.File;
-import java.io.DataInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -105,9 +104,7 @@ public class Utils extends com.kopiright.util.base.Utils {
       // exist, make sure the directory exists and is writeable.
       if (destinationFile.exists()) {
 	if (destinationFile.isFile()) {
-	  DataInputStream in = new DataInputStream(System.in);
-	  String response;
-
+	  
 	  if (!destinationFile.canWrite()) {
 	    throw new FileCopyException("FileCopy: destination file is unwriteable: " + destName);
 	  }

@@ -206,7 +206,7 @@ public class JSwitchStatement extends JStatement {
   private void enumToNormalSwitch(CBodyContext context) throws PositionedError {
 
     CClassContext outer;
-    String enumId, outerId;
+    String enumId;
     
     // The fartest class context
     outer = context.getClassContext();

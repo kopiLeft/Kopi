@@ -252,7 +252,6 @@ public class XProtectedExceptionHandler extends JStatement {
       JStatement        ifStmt = null;
       JExpression       retryableAbort;
       JExpression       retryQuestion;
-      JExpression       instanceofExpr;
       boolean           interrupt = false;
       CReferenceType    interruptType;
       JFormalParameter  exceptionVar;

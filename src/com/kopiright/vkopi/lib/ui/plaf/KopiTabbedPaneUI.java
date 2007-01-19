@@ -121,8 +121,7 @@ public class KopiTabbedPaneUI extends MetalTabbedPaneUI {
       if (isFirstTab(tabIndex)) {
         // first tab
         Polygon   p = new Polygon(new int[] {x,x+TAB_X_SPACE*2,x},new int[]{y,y,y+h-1},3);
-        Shape     save = g.getClip();
-
+      
         g.setColor(areaColor);  
         g.fillPolygon(p);
 
@@ -134,8 +133,7 @@ public class KopiTabbedPaneUI extends MetalTabbedPaneUI {
       } else {
         // later tabs
         Polygon   p = new Polygon(new int[] {x+TAB_X_SPACE, x+TAB_X_SPACE*2, x+TAB_X_SPACE}, new int[]{y, y, y+(h/2)-1}, 3);
-        Shape     save = g.getClip();
-
+       
         g.setColor(areaColor);  
         g.fillPolygon(p);
 
@@ -143,8 +141,7 @@ public class KopiTabbedPaneUI extends MetalTabbedPaneUI {
           g.setColor(tabPane.getBackgroundAt(tabIndex-1));
 
           Polygon   p1 = new Polygon(new int[] {x, x+TAB_X_SPACE-1, x+TAB_X_SPACE-1, x}, new int[]{y+2, y+2, y+(h/2)-1, y+h-1}, 4);
-          Shape     save1 = g.getClip();
-
+         
           g.fillPolygon(p1);    
     
           g.setColor(lightHighlight);  
@@ -154,8 +151,7 @@ public class KopiTabbedPaneUI extends MetalTabbedPaneUI {
           g.setColor((tabIndex-1 == tabPane.getSelectedIndex()) ? selectedColor : tabPane.getBackgroundAt(tabIndex-1));
 
           Polygon   p1 = new Polygon(new int[] {x, x+TAB_X_SPACE, x+TAB_X_SPACE, x}, new int[]{y+2, y+2, y+h, y+h}, 4);
-          Shape     save1 = g.getClip();
-
+          
           g.fillPolygon(p1);  
   
           g.setColor(lightHighlight);  

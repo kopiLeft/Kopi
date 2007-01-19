@@ -222,7 +222,7 @@ public class Instrumenter implements com.kopiright.bytecode.classfile.Constants 
     if (cstr.getCodeInfo() == null) {
       return false;
     } else {
-      Instruction[]	insns = cstr.getCodeInfo().getInstructions();
+     
       return true;
     }
   }

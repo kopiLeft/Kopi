@@ -59,8 +59,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
       int         w = width;
       int         h = height;
       int         arrowHeight = (height+1) / 4;
-      int         arrowWidth = (height+1) / 2;
-
+     
       if (!isEnabled) {
         g.setColor(thumbColor);
       } else if (isPressed) {
@@ -303,7 +302,6 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
       return;
     }
 
-    Graphics2D          g2d = (Graphics2D) g;
     boolean             leftToRight = c.getComponentOrientation().isLeftToRight();;
     
     g.translate( thumbBounds.x, thumbBounds.y );

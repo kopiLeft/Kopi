@@ -171,7 +171,7 @@ class Graph {
     out.println("    switch(n) {");
 
     // special case of zero
-    for (int i = 0, outed = 0; i < nodeCnt; i++) {
+    for (int i = 0 ; i < nodeCnt; i++) {
       Node	node = (Node)nodes.elementAt(i);
 
       if (node.getGValue() == 0) {
@@ -179,7 +179,7 @@ class Graph {
       }
     }
     out.println("      return 0;");
-    for (int i = 0, outed = 0; i < nodeCnt; i++) {
+    for (int i = 0 ; i < nodeCnt; i++) {
       Node	node = (Node)nodes.elementAt(i);
 
       if (node.getGValue() != 0) {

@@ -94,7 +94,6 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
 
       // ALLE ATTACHMENTS IN EINEM VEKTOR
       List allattachments = new ArrayList();
-      Attachment attachment;
       
       allattachments.add(new Attachment(gsJob.getTitle() + (sendPdf ? ".pdf" : ".ps"),
                                         sendPdf ? "application/pdf" : "application/postscript",

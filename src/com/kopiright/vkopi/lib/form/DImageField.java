@@ -132,14 +132,8 @@ public class DImageField extends DObjectField {
   // ----------------------------------------------------------------------
 
   public void setDisplayProperties() {
-    JComponent c;
-    if (image == null) {
-      c = empty;
-    } else {
-      c = icon;
-    }
-
-    repaint();
+    
+   repaint();
   }
 
   // ----------------------------------------------------------------------

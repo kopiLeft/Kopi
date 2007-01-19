@@ -97,14 +97,10 @@ public class SpellcheckerDialog extends JDialog {
     changeTo = new JTextField();
     changeTo.setMinimumSize( new Dimension(200, changeTo.getPreferredSize().height));
     changeTo.setMaximumSize( new Dimension(Integer.MAX_VALUE, changeTo.getPreferredSize().height));
-
-    Dimension           textFieldDim;
-
-
+   
     originalWordTextField = new JTextField(); //originalWord);
 
-    textFieldDim = new Dimension(Integer.MAX_VALUE, changeTo.getPreferredSize().height);
-
+   
     originalWordTextField.setMinimumSize(new Dimension(200, originalWordTextField.getPreferredSize().height));
     originalWordTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, originalWordTextField.getPreferredSize().height));
 

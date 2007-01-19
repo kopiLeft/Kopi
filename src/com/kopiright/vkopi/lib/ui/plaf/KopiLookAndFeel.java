@@ -98,7 +98,6 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
     Font        propFont = new Font("helvetica", Font.PLAIN, 12);
     Font        fixFont = new Font("dialoginput", Font.PLAIN, 12);
     Font        propFontSmall = new Font("helvetica", Font.PLAIN, 10);
-    Font        fixFontSmall = new Font("dialoginput", Font.PLAIN, 10);
     Font        keyTipFont = new Font("helvetica", Font.PLAIN, 9);
     Font        infoFont = new Font("dialoginput", Font.PLAIN, 10);
 
