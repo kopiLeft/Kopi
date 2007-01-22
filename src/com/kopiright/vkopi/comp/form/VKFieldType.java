@@ -147,11 +147,7 @@ public abstract class VKFieldType extends VKPhylum {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
-  private	int		autofill;
-  private	int		shortcut;
-  private	int		newitem;
-  private	int		edititem;
+  
   private	VKActor		actorAutofill;
   private	VKActor		actorShortcut;
   private	VKActor		actorNewitem;

@@ -524,5 +524,4 @@ class PLayoutEngine {
   private Vector                commands = new Vector();
   private TranslateCommand      translate;
   private BlockPainter          blockStyle;
-  private StringBuffer          buf;
 }

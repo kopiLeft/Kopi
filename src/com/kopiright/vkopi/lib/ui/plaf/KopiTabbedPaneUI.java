@@ -312,7 +312,5 @@ public class KopiTabbedPaneUI extends MetalTabbedPaneUI {
   }
 
   private static final int      TAB_X_SPACE = 10;
-  private static final int      TAB_RUN_OFFSET = 7;
-
   private static Color          areaColor;
 }

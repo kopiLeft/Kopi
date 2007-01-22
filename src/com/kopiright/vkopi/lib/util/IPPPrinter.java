@@ -118,9 +118,7 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private File                  document;
   private String		user;
-  private String		command;
   private String		host;
   private String                printer;
   private int                   port;

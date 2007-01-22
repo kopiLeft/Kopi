@@ -19,8 +19,6 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.util.Vector;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
@@ -110,5 +108,4 @@ public class DMenuBar extends JMenuBar {
   // ---------------------------------------------------------------------
 
   private JMenu 	help;
-  private Vector 	listeners;
 }

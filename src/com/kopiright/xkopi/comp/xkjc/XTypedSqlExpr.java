@@ -50,7 +50,6 @@ public class XTypedSqlExpr extends SelectElem {
     super(ref);
     this.expr = expr;
     this.type = type;
-    this.first = first;
   }
 
   // ----------------------------------------------------------------------
@@ -123,5 +122,4 @@ public class XTypedSqlExpr extends SelectElem {
 
   private SelectElem		expr;
   private CType			type;		//!!! graf 991208 not used remove
-  private boolean		first;		//!!! graf 991208 not used remove
 }

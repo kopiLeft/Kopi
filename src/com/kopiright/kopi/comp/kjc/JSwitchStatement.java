@@ -51,7 +51,7 @@ public class JSwitchStatement extends JStatement {
     super(where, comments);
     this.expr = expr;
     this.groups = groups;
-    this.hasBreak = false;
+    
   }
 
   // ----------------------------------------------------------------------
@@ -234,7 +234,6 @@ public class JSwitchStatement extends JStatement {
   
   private JExpression      expr;
   private JSwitchGroup[]   groups;
-  private boolean          hasBreak;
   private CodeLabel	       endLabel = new CodeLabel();
   private JEnumSwitchInnerDeclaration innerEnumMap = null;
 }

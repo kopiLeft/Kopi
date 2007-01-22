@@ -205,14 +205,14 @@ public class Optimizer implements AccessorContainer {
     }
     System.err.flush();
   }
-
-  private void dumpCode() {
+  /*** never used locally 
+  /*private void dumpCode() {
     int		i = 0;
     for (InstructionHandle handle = this.codeStart; handle != null; handle = handle.getNext()) {
       System.err.println(i++ + ":\t" + com.kopiright.bytecode.classfile.OpcodeNames.getName(handle.getInstruction().getOpcode()));
     }
     System.err.flush();
-  }
+  }*/
 
   // --------------------------------------------------------------------
   // RECONSTRUCT A CodeInfo STRUCTURE

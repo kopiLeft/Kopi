@@ -99,7 +99,6 @@ public class RPrinter extends AbstractPrinter implements CachePrinter {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private File                  document;
   private String		user;
   private String		pass;
   private String		command;

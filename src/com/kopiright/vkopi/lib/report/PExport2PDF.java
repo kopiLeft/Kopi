@@ -396,9 +396,7 @@ public class  PExport2PDF extends PExport implements Constants {
     widthSum += widths[index];
   }
 
-  private String                title;
   private PdfPTable             datatable;  
-  private int[]			columnsAlign;
   private int                   pages;
   private Document              document;
   private String                currentSubtitle;

@@ -151,10 +151,5 @@ public class VKFormLocalizationWriter extends VKLocalizationWriter {
     }
     peekNode(null).addContent(self);
   }
-  
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS
-  // ----------------------------------------------------------------------
- 
-  private Element       blockElement;
+   
 }

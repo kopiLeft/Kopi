@@ -121,9 +121,7 @@ public class JFieldDeclaration extends JMemberDeclaration {
    */
   public CSourceField checkInterface(CClassContext context) throws PositionedError {
     int		modifiers = variable.getModifiers();
-
-    classContext = context;
-
+    
     /*
      * JLS 8.3.1:
      * A compile-time error occurs if a final variable is also declared volatile.
@@ -278,7 +276,6 @@ public class JFieldDeclaration extends JMemberDeclaration {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  private CClassContext                         classContext;
   private boolean                               synthetic;
   protected JVariableDefinition                 variable;
   public static final JFieldDeclaration[]       EMPTY = new JFieldDeclaration[0];

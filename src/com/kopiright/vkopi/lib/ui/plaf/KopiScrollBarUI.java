@@ -372,12 +372,10 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
 
   protected void configureScrollBarColors() {
     super.configureScrollBarColors();
-    shadowColor         = UIManager.getColor("ScrollBar.shadow");
+    
     highlightColor      = UIManager.getColor("ScrollBar.highlight");
-    darkShadowColor     = UIManager.getColor("ScrollBar.darkShadow");
     thumbColor          = UIManager.getColor("ScrollBar.thumb");
-    thumbShadow         = UIManager.getColor("ScrollBar.thumbShadow");
-    thumbHighlightColor = UIManager.getColor("ScrollBar.thumbHighlight");
+   
   }
  
   /**
@@ -488,10 +486,6 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
       return false;
     }
   }
-  private static Color shadowColor;
   private static Color highlightColor;
-  private static Color darkShadowColor;
-  private static Color thumbColor;
-  private static Color thumbShadow;
-  private static Color thumbHighlightColor; 
+  private static Color thumbColor; 
 }

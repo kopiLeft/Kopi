@@ -234,7 +234,8 @@ public class Instrumenter implements com.kopiright.bytecode.classfile.Constants 
   /**
    * Finds field with specified name.
    */
-  private FieldInfo findField(String name) {
+   /*** never used locally 
+  /*private FieldInfo findField(String name) {
     FieldInfo[]	fields = classInfo.getFields();
 
     if (fields == null) {
@@ -247,7 +248,7 @@ public class Instrumenter implements com.kopiright.bytecode.classfile.Constants 
       }
       return null;
     }
-  }
+  }*/
 
   /**
    * Adds a field.

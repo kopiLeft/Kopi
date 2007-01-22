@@ -309,7 +309,6 @@ public class LocalizationChecker {
   private Document                      modelDoc;
   private Document                      candidateDoc;
   private Document                      validatedDoc;
-  private String                        candidateName;
   private boolean                       modified = false;
   private XMLOutputter                  writer;
 

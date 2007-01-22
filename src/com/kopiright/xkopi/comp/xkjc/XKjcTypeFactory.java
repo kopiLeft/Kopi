@@ -249,9 +249,6 @@ public class XKjcTypeFactory extends KjcTypeFactory implements XTypeFactory, XCo
   private CReferenceType	pWeekType;
   private CReferenceType	pFixedType;
 
-  private CReferenceType        colorType;
-  private CReferenceType        imageType;
-
   private CReferenceType	cursorType;
   private CReferenceType	connectionType;
   private CReferenceType	dBContextHandlerType;

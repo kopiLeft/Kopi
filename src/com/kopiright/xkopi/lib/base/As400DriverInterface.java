@@ -164,9 +164,7 @@ public class As400DriverInterface extends DriverInterface {
    */
   public As400Parser(String input) {
     super(input);
-    this.length = input.length();
-    this.position = 0;
-    this.parsed = null;
+   
   }
 
 
@@ -298,17 +296,6 @@ public class As400DriverInterface extends DriverInterface {
       }
     }
   }
-
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS
-  // ----------------------------------------------------------------------
-
-  /*  private String		input;*/			// the string to parse
-  private int			length;			// its length
-  private int			position;		// the current position
-
-  private String		parsed;			// the result of parsing.
-  private String		cursorName;
 
   private static Hashtable	functions;
 

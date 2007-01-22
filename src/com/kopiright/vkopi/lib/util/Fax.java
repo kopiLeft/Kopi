@@ -680,21 +680,10 @@ public class Fax {
   // DATA CONSTANTS
   // ----------------------------------------------------------------------
 
-  // Reply Codes des ftp Protokolles (rfc959)
-  private static final int CONNECTION_ALREADY_OPEN  = 125;
   private static final int ABOUT_TO_OPEN_DATACON    = 150;
-  private static final int COMMAND_OK               = 200;
-  private static final int COM_NOT_IMPL_SUPERFLUOUS = 202;
   private static final int SYSTEM_STATUS            = 211;
-  private static final int DIRECTORY_STATUS         = 212;
-  private static final int FILE_STATUS              = 213;
   private static final int HELP_MESSAGE             = 214;
-  private static final int CLOSING_CONNECTION       = 221;
-  private static final int CLOSING_DATA_CONNECTION  = 226;
-  private static final int USER_LOGGED_IN           = 230;
-  private static final int FILE_ACTION_OK           = 250;
   private static final int NEEDS_PASSWD             = 331;
-  private static final int NEEDS_ACCOUNT            = 332;
   private static final int SERVICE_NOT_AVAILABLE    = 421;
   private static final int NO_DATA_CONNECTION       = 425;
   private static final int CONNECTION_CLOSED        = 426;

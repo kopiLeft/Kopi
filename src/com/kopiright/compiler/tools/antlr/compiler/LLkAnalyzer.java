@@ -1070,6 +1070,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
    * @el The element of interest
    * @k  How deep into lookahead to modify
    */
+  // Method never used locally
+  /*
   private void removeCompetingPredictionSetsFromWildcard(Lookahead[] look, AlternativeElement el, int k) {
     for (int d = 1; d <= k; d++) {
       for (int i = 0; i < currentBlock.analysisAlt; i++) {
@@ -1078,7 +1080,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
       }
     }
   }
-
+  */ 
   /**
    * reset the analyzer so it looks like a new one
    */

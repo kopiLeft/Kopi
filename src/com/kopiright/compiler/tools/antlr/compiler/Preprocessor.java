@@ -129,9 +129,12 @@ public Preprocessor(ParserSharedInputState state) {
 					
 									Option newOp = new Option(op.getText(),rhs.getText(),gr);
 									options.appendElement(newOp.getName(),newOp);
-									if ( gr!=null && op.getText().equals("importVocab") ) {
-										gr.setImportVocabulary(rhs.getText());
-									} else if ( gr!=null && op.getText().equals("exportVocab") ) {
+									// private variable importVocab not read in class GrammarDefinition 
+									/*if ( gr!=null && op.getText().equals("importVocab") ) {
+										//gr.setImportVocabulary(rhs.getText());
+									} else */
+									
+									if ( gr!=null && op.getText().equals("exportVocab") ) {
 										// don't want ';' included in outputVocab.
 										// This is heinously inconsistent!  Ugh.
 										gr.setExportVocabulary(rhs.getText().substring(0,rhs.getText().length()-1));

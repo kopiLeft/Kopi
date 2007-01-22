@@ -668,7 +668,6 @@ public abstract class VReport extends VWindow
   private VCommand              cmdColumnInfo;
 
   private String                source;
-  private Thread                currentThread;
   protected MReport             model;
   private boolean               built;
   private String                pageTitle = "";
@@ -679,8 +678,6 @@ public abstract class VReport extends VWindow
   private Vector                activeCommands;
 
   private PConfig               pconfig;	// print configuration object
-  private boolean               inAction;
-
   private String                media;
 
   public static final int       TYP_CSV = 1;

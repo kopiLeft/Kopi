@@ -44,7 +44,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JWindow;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
@@ -189,7 +188,8 @@ public class ListDialog extends JPanel {
   public void setTooManyRows() {
     tooManyRows = true;
   }
-
+  // method not read locally.
+  /*
   private static boolean isInJWindow(Component c) {
     while (c.getParent() != null) {
       if (c instanceof JWindow) {
@@ -199,7 +199,7 @@ public class ListDialog extends JPanel {
     }
     return false;
   }
-
+  */
   /**
    * Displays a dialog box returning position of selected element.
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by string formater
@@ -702,12 +702,10 @@ public class ListDialog extends JPanel {
 	throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECTi DIALOG");
       }
       if (columns == null) {
-	offset = 0;
       } else {
 	if (data.length > columns.length) {
 	  throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECT DIALOG");
 	}
-	offset = columns.length - data.length;
       }
     }
 
@@ -840,20 +838,19 @@ public class ListDialog extends JPanel {
 
     private String[]		columns;
     private Object[][]		data;
-    private int			offset;  // used in skip first column
     private int			count;
     private int[]		lineID;
     private int[]		tab;
   }
 
-
-
+   // class DialogFactory is never read locally.
+  /*
   private static class DialogFactory {
     static JDialog getDialog(Frame frame) {
       return new JDialog(frame, Message.getMessage("pick_in_list"));
     }
   }
-
+  */ 
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

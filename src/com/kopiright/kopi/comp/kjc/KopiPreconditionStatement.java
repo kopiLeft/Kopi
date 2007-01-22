@@ -39,7 +39,6 @@ public class KopiPreconditionStatement extends JStatement {
         super(where, null);
         this.stmt = stmt;
         this.parameters = parameters;
-        this.returnType = returnType;
   }
   // ----------------------------------------------------------------------
   // CODE CHECKING
@@ -183,7 +182,6 @@ public class KopiPreconditionStatement extends JStatement {
   // PRIVATE DATA MEMBERS
   // ----------------------------------------------------------------------
   private JBlock                stmt;
-  private CType                 returnType;
   private JFormalParameter[]    parameters;
   private JStatement            impl = null;
   private CBodyContext          conditionContext;

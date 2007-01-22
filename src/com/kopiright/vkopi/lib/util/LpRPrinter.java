@@ -19,11 +19,8 @@
 
 package com.kopiright.vkopi.lib.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-
 import com.kopiright.util.lpr.LpR;
 import com.kopiright.util.lpr.LpdException;
 
@@ -166,8 +163,5 @@ public class LpRPrinter implements Printer {
 
   private int                   tray;
   private String                paperFormat;
-  private PrintInformation      info;
-
-  private File                  file;
-  private OutputStream          ous;
+ 
 }

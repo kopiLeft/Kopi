@@ -144,7 +144,6 @@ public class VFieldUI implements VConstants, ActionHandler {
       ((VCommand)activeCommands.elementAt(i)).setEnabled(false);
     }
     activeCommands.setSize(0);
-    needResetCommands = false;
     if (model.hasFocus()) {
       if (hasEditItem_S()) { // TRY TO REMOVE !!!!
         VCommand      command = blockView.getFormView().cmdEditItem_S;
@@ -887,8 +886,6 @@ public class VFieldUI implements VConstants, ActionHandler {
   // dynamic data
   private	VField		model;	        // The corresponding VField
   private	Vector		activeCommands;	// commands currently actives
-  private       boolean		needResetCommands = true;
-
   private	VCommand	incrementCommand;
   private	VCommand	decrementCommand;
   private	VCommand	autofillCommand;
@@ -896,5 +893,4 @@ public class VFieldUI implements VConstants, ActionHandler {
 
   private static final Color    color_mark = UIManager.getColor("KopiField.ul.chart");
   private static final Color    color_active = UIManager.getColor("KopiField.ul.chart.active");
-  private static final Color    color_back = UIManager.getColor("KopiField.background.skipped.color");
 }

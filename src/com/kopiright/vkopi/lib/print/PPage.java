@@ -511,7 +511,6 @@ public abstract class PPage {
   private Vector		blocks;
   private Hashtable		blocksByName;
   private String		title;
-  private String		prolog;
   private int			border;
 //  protected int			height;
 //  protected int			width;

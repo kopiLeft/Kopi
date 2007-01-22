@@ -48,8 +48,6 @@ public class PParagraphStyle extends PBodyStyle {
     this.borderMode = borderMode;
     this.border = border / 10.0f;
     this.color = color;
-    this.marginLeft = marginLeft;
-    this.marginRight = marginRight;
     this.noBackground = noBackground;
     tabArray = stops;
     if (stops != null) {
@@ -218,8 +216,6 @@ public class PParagraphStyle extends PBodyStyle {
   private PTabStop[]    tabArray;
   private int           align;
   private int           indentLeft;
-  private int           marginLeft;
-  private int           marginRight;
   private float         border;
   private int           borderMode;
   private Color         color;

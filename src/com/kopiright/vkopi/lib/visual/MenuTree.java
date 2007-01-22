@@ -34,7 +34,6 @@ import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
@@ -129,7 +128,7 @@ public class MenuTree extends DWindow {
       }
     });
 
-    tree.setCellRenderer(itemRenderer = new MenuItemRenderer(isSuperUser()));
+    tree.setCellRenderer(new MenuItemRenderer(isSuperUser()));
     tree.putClientProperty("JTree.lineStyle", "None");
 
     /* Make tree ask for the height of each row. */
@@ -831,13 +830,11 @@ public class MenuTree extends DWindow {
 
   private JTree                 tree;
   private List  		items;
-  private JPanel		buttons;
   private JBookmarkPanel	toolbar;
   private Hashtable		shortcuts;
   private ArrayList		orderdShorts;
   private List                  modules;
 
-  private MenuItemRenderer	itemRenderer;
   private String		userName;
   private boolean		isSuperUser;
   private List                  shortcutsID;

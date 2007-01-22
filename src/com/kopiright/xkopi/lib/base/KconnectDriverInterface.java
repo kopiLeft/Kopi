@@ -202,10 +202,12 @@ public class KconnectDriverInterface extends DriverInterface {
   /**
    * Parses a foreign key violation exception
    */
+  // method never used locally 
+  /*
   private static DBForeignKeyException parseForeignKeyViolation(SQLException from) {
     return parseForeignKeyViolation(null, from);
   }
-
+   */
   /**
    * Parses a foreign key violation exception
    */
@@ -220,10 +222,12 @@ public class KconnectDriverInterface extends DriverInterface {
   /**
    * Parses a transbase duplicate index exception
    */
+  // method not used locally
+  /*
   private static DBDuplicateIndexException parseDuplicateIndex(SQLException from) {
     return parseDuplicateIndex(null, from);
   }
-  
+  */
   /**
    * Parses a transbase duplicate index exception
    */
@@ -237,10 +241,12 @@ public class KconnectDriverInterface extends DriverInterface {
   /**
    * Parses a transbase integrity violation exception
    */
+  // method not used locally
+  /*
   private static DBForeignKeyException parseIntegrityViolation(SQLException from) {
     return parseIntegrityViolation(null, from);
   }
-
+  */
   /**
    * Parses a transbase integrity violation exception
    */

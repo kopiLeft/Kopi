@@ -679,6 +679,7 @@ public class Patterns implements com.kopiright.bytecode.classfile.Constants {
    * Return true if an optimization is made
    * This method should not modify other instructions
    */
+  /*
   private static boolean optimize5(InstructionHandle handle, int opcode) {
     // replace boolean branch
     //    Java code that looks like this:     with this:
@@ -774,7 +775,7 @@ public class Patterns implements com.kopiright.bytecode.classfile.Constants {
     }
     return false;
   }
-
+  */
   // --------------------------------------------------------------------
   // LOCAL VAR INSTRUCTION
   // --------------------------------------------------------------------

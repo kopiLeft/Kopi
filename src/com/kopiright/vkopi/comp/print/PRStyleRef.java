@@ -52,7 +52,7 @@ public class PRStyleRef extends PRSourceElement {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context, PRBlock block) throws PositionedError {
-    check((style = block.getPage().getStyle(name)) != null, PrintMessages.UNDEFINED_STYLE, name);
+    check(( block.getPage().getStyle(name)) != null, PrintMessages.UNDEFINED_STYLE, name);
   }
 
   // ----------------------------------------------------------------------
@@ -85,6 +85,5 @@ public class PRStyleRef extends PRSourceElement {
   // ----------------------------------------------------------------------
 
   private String		name;
-  private PRStyle		style;
   private boolean		hasBang;
 }

@@ -269,10 +269,13 @@ public class JavaCodeGenerator {
    * @param t The action token
    * @return A string containing the text of the type
    */
-  private String extractTypeOfAction(Token t) {
+  /*** never used locally 
+  /*
+   private String extractTypeOfAction(Token t) {
     return extractTypeOfAction(t.getText(), t.getLine());
   }
-
+  */
+   
   /**
    * Get the type portion of an argument-action.
    * The type of an action is assumed to precede a trailing identifier
@@ -1823,10 +1826,11 @@ public class JavaCodeGenerator {
   private void genLiteralsTestForPartialToken() {
     println("_ttype = testLiteralsTable(new String(text.getBuffer(),_begin,text.length()-_begin),_ttype);");
   }
-
+  // method never used locally
+  /*
   private void genMatch(BitSet b) {
   }
-
+  */ 
   private void genMatch(GrammarAtom atom) {
     if ( atom instanceof StringLiteralElement ) {
       if ( grammar instanceof LexerGrammar ) {

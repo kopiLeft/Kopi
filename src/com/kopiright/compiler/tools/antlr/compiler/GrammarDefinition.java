@@ -36,7 +36,7 @@ class GrammarDefinition {
   private boolean predefined=false;	// one of the predefined grammars?
   private boolean alreadyExpanded = false;
 
-  private String importVocab = null;
+  
   private String exportVocab = null;
 
   public GrammarDefinition(String name, String superGrammar, IndexedVector rules) {
@@ -199,10 +199,11 @@ class GrammarDefinition {
       this.memberAction = memberAction;
     }
   }
-
+  // 
+  /*
   public void setImportVocabulary(String text) {
-    importVocab = text;
-  }
+   // importVocab = text;
+  }*/
   public void setExportVocabulary(String text) {
     exportVocab = text;
   }

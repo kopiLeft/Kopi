@@ -49,11 +49,11 @@ public class FaxStatus {
     this.pages = (pages.compareTo("") == 0) ? null : pages;
     this.text = (text.compareTo("") == 0) ? null : text;
     this.dials = (dials.compareTo("") == 0) ? null : dials;
-
-    this.sendtime = null;
+    // not used
+    /* 
     if (isSent()) {		// TRY TO GATHER THE SEND TIME
       this.sendtime = Fax.readSendtime(id);
-    }
+    }*/
   }
 
   // ----------------------------------------------------------------------
@@ -191,12 +191,6 @@ public class FaxStatus {
   private String dialNo;
   private String dials;
   private String state;
-  private String sendtime;
-
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS FOR INCOMMING FAXES
-  // ----------------------------------------------------------------------
-
   private String filename;
   private String incomingtime;
   private String sender;

@@ -159,9 +159,7 @@ public class Db2UdbDriverInterface extends DriverInterface {
    */
   public Db2UdbParser(String input) {
     super(input);
-    this.length = input.length();
-    this.position = 0;
-    this.parsed = null;
+   
   }
 
   // ----------------------------------------------------------------------
@@ -292,16 +290,7 @@ public class Db2UdbDriverInterface extends DriverInterface {
     }
   }
 
-  // ----------------------------------------------------------------------
-  // DATA MEMBERS
-  // ----------------------------------------------------------------------
-
-  private String		input;			// the string to parse
-  private int			length;			// its length
-  private int			position;		// the current position
-
-  private String		parsed;			// the result of parsing.
-  private String		cursorName;
+  
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

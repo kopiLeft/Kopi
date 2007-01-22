@@ -56,5 +56,4 @@ public class PLabelForm implements Printable {
   private LabelPrinter          labelPrinter;
   private LabelPrintable        document;
   private int                   anzahl;
-  private String                media;
 }

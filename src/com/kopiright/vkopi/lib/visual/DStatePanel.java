@@ -47,13 +47,11 @@ import javax.swing.JPanel;
    * set the info panel that current process accept user interrupt
    */
   public void setUserInterrupt(boolean allowed) {
-    userInterruptAllowed = allowed;
   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private boolean		userInterruptAllowed;
   private JPanel		info;
 }

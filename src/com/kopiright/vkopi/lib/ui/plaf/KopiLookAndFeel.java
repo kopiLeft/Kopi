@@ -361,8 +361,6 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
                                                   new BasicBorders.MarginBorder());
   private static Border PGB_BORDER = new LineBorder(KopiTheme.USER_COLORS.COLOR_3, 1);
 
-  private static Border         BRD_BTN_LINE = new ButtonLineBorder(KopiTheme.USER_COLORS.COLOR_5);
-  private static Border         BRD_BTN_EMPTY = new EmptyBorder(3, 3, 3, 3);
   private static Border         blockBorder = new EmptyBorder(5, 5, 5, 5);
     
   private static boolean themeHasBeenSet = false;

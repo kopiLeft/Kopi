@@ -744,5 +744,5 @@ public class VKBlock
   private int			maxRowPos;
   private int			maxColumnPos;
   private int			displayedFields ;
-  private int			alignment; //left, right, center
+  
 }

@@ -160,7 +160,6 @@ public abstract class VField implements VConstants {
    * The position of the label (left / top)
    */
   public void setLabelPos(int pos) {
-    this.labelPos = pos;
     fireLabelChanged();
   }
 
@@ -2463,7 +2462,6 @@ public abstract class VField implements VConstants {
   private	int		indices;	// bitset of unique indices
   private	String		name;		// field name (for dumps)
   private	String		label;		// field label
-  private	int		labelPos;	// field label position
   private	int		options;	// options
   private	String		help;		// help text
   private	int		index;		// The position in parent field array

@@ -281,7 +281,6 @@ public class SActor {
 
   
   private Action                action; // replaces dactor
-  private boolean		enabled;
   private int                   number;
   private ActionHandler         handler;
   private boolean		synchronous;

@@ -54,7 +54,6 @@ import com.kopiright.vkopi.lib.visual.DPositionPanel;
 import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.UserConfiguration;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -112,12 +111,12 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
             }
         }
       });
-
+    // not used
+     /*
     try {
       useRotation = ApplicationConfiguration.getConfiguration().getBooleanFor("print.preview.rotate");
     } catch (PropertyException e) {
-      useRotation = false;
-    }
+    }*/
   }
 
   /**
@@ -339,7 +338,6 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private boolean               useRotation;
   private VPreviewWindow        model;
   private JLabel                label;
   private JScrollPane           bodypane;

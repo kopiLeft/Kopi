@@ -240,9 +240,6 @@ public class KopiUtils {
   private static final int      border_arc = UIManager.getInt("MenuButton.border.arc");
 
   private static final Color    color_border = UIManager.getColor("MenuButton.border");
-  private static final Color    color_border_b = UIManager.getColor("MenuButton.border.highlight");
-  private static final Color    color_border_d = UIManager.getColor("MenuButton.border.darkshadow");
-
   private static Border         BRD_BTN_ROLL = new ButtonRollBorder(color_border);
   private static Border         BRD_BTN_PRESSED = new ButtonLineBorder(color_border);
   private static Border         BRD_BTN_EMPTY = new EmptyBorder(3, 3, 3, 3);
@@ -280,8 +277,5 @@ public class KopiUtils {
     color_back_visit    = UIManager.getColor("KopiField.background.visit.color");
     color_back_mustfill = UIManager.getColor("KopiField.background.mustfill.color");
   }
-
-  private static final int      TXT_Y_SPACE = UIManager.getInt("FieldText.y.space");
-  private static final int      TXT_X_SPACE = UIManager.getInt("FieldText.x.space");
 
 }

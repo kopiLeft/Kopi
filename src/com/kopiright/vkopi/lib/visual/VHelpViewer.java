@@ -160,8 +160,6 @@ public class VHelpViewer extends VWindow {
   // ---------------------------------------------------------------------
 
   private URL			url;
-  private boolean		started;
-
   private static final String    HELPVIEWER_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/HelpViewer";
 
   private static final int	CMD_QUIT	= 0;

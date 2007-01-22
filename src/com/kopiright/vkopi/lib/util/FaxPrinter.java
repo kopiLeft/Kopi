@@ -26,9 +26,13 @@ import java.io.IOException;
  */
  class FaxPrinter extends AbstractPrinter implements CachePrinter {
 
-  /**
+  
+/**
    * Constructs a fax printer
    */
+ 	
+  // never used locally but must be implemented.
+ 
   private FaxPrinter(final String faxHost,
 		    final String nummer,
 		    final String user,
@@ -40,7 +44,7 @@ import java.io.IOException;
     this.user = user;
     this.id = id;
   }
-
+  
   /**
    * Gets the phone nummer
    */

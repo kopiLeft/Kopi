@@ -63,8 +63,7 @@ public class PRTextStyle extends PRStyle {
 		     String font,
 		     int size) {
     super(where, ident, superId);
-    this.background = background;
-    this.foreground = foreground;
+    
     this.face = face;
     this.font = font;
     this.size = size;
@@ -134,8 +133,6 @@ public class PRTextStyle extends PRStyle {
 
   private static CReferenceType	TYPE = CReferenceType.lookup(com.kopiright.vkopi.lib.print.PTextStyle.class.getName().replace('.','/'));
 
-  private Color		background;
-  private Color		foreground;
   private int		face;
   private String	font;
   private int		size;

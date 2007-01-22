@@ -75,16 +75,4 @@ public class Laserjet extends LabelPrinter {
     printRawString("&a" + pos + "V");
   }
 
-  // ----------------------------------------------------------------------
-  // PRINTER SPECIFIC DATA MEMBERS
-  // ----------------------------------------------------------------------
-
-  private final char   CPI10		= 0;
-  private final char   CPI12		= 1;
-  private final char   PROPORTIONAL	= 2;
-  private final char   SMALL		= 4;
-  private final char   BOLD		= 8;
-  private final char   DOUBLE		= 16;
-  private final char   ITALIC		= 32;
-  private final char   UNDERLINE	= 64;
 }
