@@ -491,4 +491,9 @@ public class DBlock extends JPanel implements BlockListener {
   private  int			sortedToprec;		// first record displayed
   private  int[]		sortedRecToDisplay;
   private  int[]		displayToSortedRec;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8665529498396399382L;
+
 }

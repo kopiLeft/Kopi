@@ -27,7 +27,8 @@ public class DBInterruptionException extends DBException {
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructor
    */
   public DBInterruptionException() {
@@ -42,4 +43,9 @@ public class DBInterruptionException extends DBException {
   public DBInterruptionException(String query) {
     super(query, new SQLException("DBInterruptionException"));
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -3981670122598635429L;
+
 }

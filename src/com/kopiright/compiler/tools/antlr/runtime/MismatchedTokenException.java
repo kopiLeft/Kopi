@@ -20,7 +20,8 @@
 package com.kopiright.compiler.tools.antlr.runtime;
 
 public class MismatchedTokenException extends RecognitionException {
-  // Token names array for formatting
+  
+// Token names array for formatting
   String[] tokenNames;
   // The token that was encountered
   public Token token;
@@ -145,4 +146,8 @@ public class MismatchedTokenException extends RecognitionException {
   public String toString() {
     return FileLineFormatter.getFormatter().getFormatString(fileName,line)+getMessage();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -2810487733639051106L;
 }

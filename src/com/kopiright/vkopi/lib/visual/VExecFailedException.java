@@ -23,8 +23,8 @@ package com.kopiright.vkopi.lib.visual;
  * This class represents exceptions occuring during execution process.
  */
 public class VExecFailedException extends VException {
-
-  /**
+  
+/**
    * Constructs an exception with no message.
    *
    * @param	message		the associated message
@@ -58,4 +58,8 @@ public class VExecFailedException extends VException {
   public VExecFailedException() {
     super();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -4610334020287734455L;
 }

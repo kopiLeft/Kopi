@@ -27,7 +27,8 @@ import java.awt.Component;
 
 public class DImage extends JPanel {
 
-  /**
+  
+/**
    * Constructor
    */
   public DImage(String name, int border) {
@@ -78,4 +79,9 @@ public class DImage extends JPanel {
 
   private ImageIcon	image;
   private JLabel        label;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 7670435167866572674L;
+
 }

@@ -32,8 +32,8 @@ public class UnpositionedError extends Throwable {
   // --------------------------------------------------------------------
   // CONSTRUCTORS
   // --------------------------------------------------------------------
-
-  /**
+ 
+/**
    * Creates an error with a formatted message as argument.
    * @param	message		the formatted message
    */
@@ -117,4 +117,8 @@ public class UnpositionedError extends Throwable {
   // ----------------------------------------------------------------------
 
   private /* javac bug final */ Message		message;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -7655687110734308852L;
 }

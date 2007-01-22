@@ -30,8 +30,8 @@ public class CMethodNotFoundError extends PositionedError {
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
-
-  /**
+  
+/**
    * An error with two parameters
    * @param	where		the reference to token where error happen
    * @param	caller		the location of method invocation
@@ -81,4 +81,8 @@ public class CMethodNotFoundError extends PositionedError {
   // ----------------------------------------------------------------------
 
   private final JMethodCallExpression		caller;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1026770898006444558L;
 }

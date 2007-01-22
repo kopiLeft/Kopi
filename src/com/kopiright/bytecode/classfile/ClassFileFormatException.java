@@ -24,7 +24,8 @@ package com.kopiright.bytecode.classfile;
  */
 public class ClassFileFormatException extends Exception {
 
-  /**
+  
+/**
    * Constructs a class file read exception
    */
   public ClassFileFormatException() {
@@ -39,4 +40,9 @@ public class ClassFileFormatException extends Exception {
   public ClassFileFormatException(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1839666354388065339L;
+
 }

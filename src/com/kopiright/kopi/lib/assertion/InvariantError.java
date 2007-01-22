@@ -20,7 +20,8 @@
 package com.kopiright.kopi.lib.assertion;
 
 public class InvariantError extends AssertionError {
-  public InvariantError() {
+  
+public InvariantError() {
     super();
   }
 
@@ -50,4 +51,9 @@ public class InvariantError extends AssertionError {
   public InvariantError(double detailMessage) {
     this("" +  detailMessage);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3224933084612098957L;
+
 }

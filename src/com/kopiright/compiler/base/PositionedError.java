@@ -34,7 +34,8 @@ public class PositionedError extends FormattedException {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+  
+/**
    * An error with a formatted message as argument
    * @param	where		the position in the source code
    * @param	message		the formatted message
@@ -115,4 +116,9 @@ public class PositionedError extends FormattedException {
   // ----------------------------------------------------------------------
 
   private final TokenReference		where;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 40711485077424146L;
+
 }

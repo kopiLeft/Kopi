@@ -198,7 +198,8 @@ public class SwingThreadHandler {
   }
 
   class DebugableEvent extends InvocationEvent {
-    DebugableEvent(Object source, Runnable runnable) {
+    
+	DebugableEvent(Object source, Runnable runnable) {
       super(source, runnable);
     }
 
@@ -210,6 +211,11 @@ public class SwingThreadHandler {
         sendDebugMail("invoke in awt-thread ", runnable.toString(), failure);
       }
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+     private static final long serialVersionUID = -8836047819796761837L;
+
   }
 
   // ----------------------------------------------------------------------

@@ -26,8 +26,8 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public class KopiTitledBorder extends TitledBorder {
-
-  /**
+  
+/**
    * Creates a KopiTitledBorder instance.
    * 
    * @param title  the title the border should display
@@ -139,4 +139,8 @@ public class KopiTitledBorder extends TitledBorder {
   public static final Border    BRD_ETCHED =  UIManager.getBorder("KopiTitleBorder.border.etched");
   public static final Border    BRD_LINE =    UIManager.getBorder("KopiTitleBorder.border.line");
   public static final Border    BRD_LOWERED = UIManager.getBorder("KopiTitleBorder.border.lowered");
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -1785569445115086891L;
 }

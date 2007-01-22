@@ -20,7 +20,8 @@
 package com.kopiright.compiler.tools.antlr.runtime;
 
 public class NoViableAltForCharException extends RecognitionException {
-  public char foundChar;
+  
+public char foundChar;
 
   public NoViableAltForCharException(char c, CharScanner scanner) {
     super("NoViableAlt");
@@ -42,4 +43,8 @@ public class NoViableAltForCharException extends RecognitionException {
   public String getMessage() {
     return "unexpected char: "+(char)foundChar;
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5200391943809889730L;
 }

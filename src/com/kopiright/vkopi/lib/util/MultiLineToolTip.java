@@ -22,7 +22,12 @@ package com.kopiright.vkopi.lib.util;
 import javax.swing.JToolTip;
 
 public class MultiLineToolTip extends JToolTip {
-  public MultiLineToolTip() {
+  
+public MultiLineToolTip() {
     setUI(new MultiLineToolTipUI());
   }
+/**
+ * Comment for <code>serialVersionUID</code>
+ */
+ private static final long serialVersionUID = 3113464481131798390L;
 }

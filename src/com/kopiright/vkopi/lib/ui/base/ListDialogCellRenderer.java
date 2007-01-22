@@ -60,8 +60,8 @@ public class ListDialogCellRenderer implements TableCellRenderer {
   }
 
   private static class CellRenderer extends JComponent {
-    
-    public void paint(Graphics g) {
+    	
+	public void paint(Graphics g) {
       Dimension   size = getSize();
       
       g.setColor(isSelected ? color_back_sel : color_back);
@@ -102,6 +102,10 @@ public class ListDialogCellRenderer implements TableCellRenderer {
     private	int		align;
     private	boolean		isSelected;
     private	String		str;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -3447204841285947085L;
   }
   
   private ObjectFormater[]		columns;
@@ -113,4 +117,8 @@ public class ListDialogCellRenderer implements TableCellRenderer {
   private static final Color    color_fore_sel = UIManager.getColor("ListDialog.foreground.selected");
 
   private static final Font     font_dialog    = UIManager.getFont("ListDialog.font");
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3447204841285947085L;
 }

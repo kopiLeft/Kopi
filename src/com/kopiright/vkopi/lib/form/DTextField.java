@@ -62,7 +62,10 @@ import com.kopiright.vkopi.lib.visual.VException;
  * The text field appear as a JLabel until it is edited
  */
 public class DTextField extends DField implements VConstants {
-  public DTextField(VFieldUI model,
+  
+
+
+public DTextField(VFieldUI model,
                     DLabel label,
                     int align,
                     int options,
@@ -161,7 +164,12 @@ public class DTextField extends DField implements VConstants {
 
           spellCommand = dictionaryServer+" " + languages[i].options;
           spellChecker = new AbstractAction(Message.getMessage(languages[i].language)) {
-              public void actionPerformed(ActionEvent e) {
+              /**
+			 * Comment for <code>serialVersionUID</code>
+			 */
+			private static final long serialVersionUID = 5656229829162013955L;
+
+			public void actionPerformed(ActionEvent e) {
                 if (field.isEditable()) {
                   SpellChecker  spellChecker = new SpellChecker(spellCommand,
                                                                 Utils.getFrameAncestor(field),
@@ -365,7 +373,8 @@ public class DTextField extends DField implements VConstants {
 
   class ListAction extends AbstractAction {
     
-    ListAction() {
+   
+	ListAction() {
       super(Message.getMessage("item-index"));
     }
     
@@ -377,6 +386,10 @@ public class DTextField extends DField implements VConstants {
           }
         });
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 410472821803045205L;
   }
 
   // ----------------------------------------------------------------------
@@ -394,7 +407,12 @@ public class DTextField extends DField implements VConstants {
 
     if (noEcho && rows == 1) {
       textfield = new JPasswordField(col) {
-            public Dimension getPreferredSize() {
+            /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -6305606934554696596L;
+
+			public Dimension getPreferredSize() {
               // lackner 29.09.2004
               // the default calkulation is one pixel too small
               Dimension         dim = super.getPreferredSize();
@@ -415,7 +433,12 @@ public class DTextField extends DField implements VConstants {
         ((JTextArea) textfield).setWrapStyleWord(true);
       } else {
         textfield = new JTextField(col) {
-            public Dimension getPreferredSize() {
+            /**
+			 * Comment for <code>serialVersionUID</code>
+			 */
+			private static final long serialVersionUID = -2960748127356900841L;
+
+			public Dimension getPreferredSize() {
               // lackner 29.09.2004
               // the default calkulation is one pixel too small
               // lackner 05.11.2004
@@ -704,4 +727,8 @@ public class DTextField extends DField implements VConstants {
       }
       return target.toString();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -2367294538619200551L;
 }

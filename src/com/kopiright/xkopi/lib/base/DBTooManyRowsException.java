@@ -25,7 +25,8 @@ public class DBTooManyRowsException extends DBRuntimeException {
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructs an exception with a message.
    */
   public DBTooManyRowsException() {
@@ -40,4 +41,9 @@ public class DBTooManyRowsException extends DBRuntimeException {
   public DBTooManyRowsException(String query) {
     super(query, "Too many rows");
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5253004977076964709L;
+
 }

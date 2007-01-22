@@ -27,8 +27,8 @@ import javax.swing.text.AttributeSet;
  * !!! NEED COMMENTS 
  */
 /*package*/ class KopiScanDocument extends KopiFieldDocument {
-
-  public KopiScanDocument(VField model, ModelTransformer transformer)
+ 
+public KopiScanDocument(VField model, ModelTransformer transformer)
   {
     super(model, transformer);
 
@@ -96,4 +96,8 @@ import javax.swing.text.AttributeSet;
   private int           progress;
 
   private static String PROGRESS_BAR = ".........................";
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 7109691655153595581L;
 }

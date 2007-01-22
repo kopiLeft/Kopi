@@ -26,8 +26,8 @@ import javax.swing.JPanel;
  * STATE PANEL CLASS
  */
 /*package*/ class DStatePanel extends JPanel {
-
-  public DStatePanel() {
+  
+public DStatePanel() {
     setFocusable(false);
     setOpaque(true);
     setLayout(new BorderLayout());
@@ -54,4 +54,9 @@ import javax.swing.JPanel;
   // ----------------------------------------------------------------------
 
   private JPanel		info;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 8643682015437204576L;
+
 }

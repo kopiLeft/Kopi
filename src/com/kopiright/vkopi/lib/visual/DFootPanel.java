@@ -34,7 +34,8 @@ import com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel;
  */
 public final class DFootPanel extends JPanel {
 
-  /**
+  
+/**
    * Constructs a foot panel
    */
   public DFootPanel(DWindow parent) {
@@ -135,4 +136,8 @@ public final class DFootPanel extends JPanel {
   private DStatePanel           statePanel;
   private JLabel                emptyText;
   private String                oldMessage;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8670576072788822069L;
 }

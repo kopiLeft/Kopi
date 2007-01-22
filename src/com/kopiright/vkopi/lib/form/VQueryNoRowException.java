@@ -25,8 +25,8 @@ import com.kopiright.vkopi.lib.visual.VException;
  * This class represents exceptions occuring during execution process.
  */
 public class VQueryNoRowException extends VException {
-
-  /**
+  
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -41,4 +41,8 @@ public class VQueryNoRowException extends VException {
   public VQueryNoRowException() {
     this((String)null);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3240879218073841150L;
 }

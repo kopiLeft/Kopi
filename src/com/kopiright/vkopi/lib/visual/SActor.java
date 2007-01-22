@@ -251,13 +251,18 @@ public class SActor {
   // --------------------------------------------------------------------
 
   private class SActorAction extends AbstractAction {
-    SActorAction(String name, Icon icon) {
+    
+	SActorAction(String name, Icon icon) {
       super(name, icon);
     }
 
     public void actionPerformed(ActionEvent e) {
       SActor.this.performAction();
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -6510825866215273279L;
   }
 
   // --------------------------------------------------------------------

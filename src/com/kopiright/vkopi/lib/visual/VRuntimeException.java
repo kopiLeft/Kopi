@@ -27,7 +27,7 @@ package com.kopiright.vkopi.lib.visual;
  */
 public class VRuntimeException extends RuntimeException {
 
-  /**
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -64,5 +64,8 @@ public class VRuntimeException extends RuntimeException {
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
-
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -5068537789034913647L;
 }

@@ -25,7 +25,7 @@ package com.kopiright.bytecode.classfile;
  */
 public class LocalVariableOverflowException extends ClassFileFormatException {
 
-  /**
+/**
    * Constructs a class file read exception
    */
   public LocalVariableOverflowException() {
@@ -50,4 +50,8 @@ public class LocalVariableOverflowException extends ClassFileFormatException {
   }
 
   private String        method;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8008931401046318642L;
 }

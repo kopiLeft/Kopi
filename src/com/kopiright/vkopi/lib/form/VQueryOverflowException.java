@@ -25,8 +25,8 @@ import com.kopiright.vkopi.lib.visual.VException;
  * This class represents exceptions occuring during execution process.
  */
 public class VQueryOverflowException extends VException {
-
-  /**
+  
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -41,4 +41,8 @@ public class VQueryOverflowException extends VException {
   public VQueryOverflowException() {
     this((String)null);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 9015037020212553764L;
 }

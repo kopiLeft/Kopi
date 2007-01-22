@@ -32,7 +32,8 @@ public class MsggenError extends FormattedException {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+
+/**
    * An exception with a formatted message as argument
    * @param	message		the formatted message
    */
@@ -75,4 +76,9 @@ public class MsggenError extends FormattedException {
   public MsggenError(MessageDescription description) {
     super(description);
   }
+
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 886569319351294442L;
 }

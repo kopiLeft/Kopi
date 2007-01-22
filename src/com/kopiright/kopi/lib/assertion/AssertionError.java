@@ -26,7 +26,8 @@ package com.kopiright.kopi.lib.assertion;
  */
 public class AssertionError extends Error {
 
-  /**
+  
+/**
    * Constructs an AssertionError with no detail message.
    */
   public AssertionError() {
@@ -63,4 +64,8 @@ public class AssertionError extends Error {
   public AssertionError(double detailMessage) {
     this("" +  detailMessage);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -2370231220023072057L;
 }

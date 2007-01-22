@@ -24,7 +24,8 @@ package com.kopiright.xkopi.lib.base;
  * be subclasses of this exception.
  */
 public class XInterruptProtectedException extends Exception{
-  public XInterruptProtectedException() {
+  
+public XInterruptProtectedException() {
     super();
   }
 
@@ -39,4 +40,9 @@ public class XInterruptProtectedException extends Exception{
   public XInterruptProtectedException(Throwable cause) {
     super(cause);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3115536699382779416L;
+
 }

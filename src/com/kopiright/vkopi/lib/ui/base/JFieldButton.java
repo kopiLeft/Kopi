@@ -45,8 +45,8 @@ public class JFieldButton extends JButton {
   }
 
   static class ButtonLineBorder extends LineBorder {
-
-    public ButtonLineBorder(Color color, Color disabledColor)  {
+    
+		public ButtonLineBorder(Color color, Color disabledColor)  {
       super(color, 1, true);
 
       this.disabledColor = disabledColor;
@@ -65,6 +65,11 @@ public class JFieldButton extends JButton {
     }
 
     private Color       disabledColor;
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 261415262407169537L;
+
   }
 
   private static final Color    border_color = UIManager.getColor("FieldButton.border.color");
@@ -72,5 +77,9 @@ public class JFieldButton extends JButton {
   private static final int      border_arc = UIManager.getInt("FieldButton.border.arc");
 
   private static ButtonLineBorder  border = new ButtonLineBorder(border_color, border_disabled);
+  /**
+	 * Comment for <code>serialVersionUID</code>
+     */
+	private static final long serialVersionUID = 261415262407169537L;
 }
 

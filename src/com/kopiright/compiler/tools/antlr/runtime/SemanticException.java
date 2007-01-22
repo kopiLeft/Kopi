@@ -20,10 +20,15 @@
 package com.kopiright.compiler.tools.antlr.runtime;
 
 public class SemanticException extends RecognitionException {
-  public SemanticException(String s) {
+  
+public SemanticException(String s) {
     super(s);
   }
   public SemanticException(String s, String fileName, int line) {
     super(s, fileName, line);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1941771481903536050L;
 }

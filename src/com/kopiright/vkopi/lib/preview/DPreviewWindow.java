@@ -63,7 +63,8 @@ import com.kopiright.vkopi.lib.visual.VException;
  */
 class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewListener {
 
-  /**
+  
+/**
    *
    */
   public DPreviewWindow(VPreviewWindow model) {
@@ -71,7 +72,12 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     this.model = model;
     model.setDisplay(this);
     registerKeyboardAction(new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -3945777720296639744L;
+
+	public void actionPerformed(ActionEvent e) {
 	closeWindow();
       }},
       null,
@@ -342,4 +348,8 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   private JLabel                label;
   private JScrollPane           bodypane;
   private DPositionPanel        blockInfo;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3057089222899270837L;
 }

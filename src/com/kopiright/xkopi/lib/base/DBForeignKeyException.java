@@ -23,7 +23,8 @@ import java.sql.SQLException;
 
 public class DBForeignKeyException extends DBConstraintException {
 
-  /**
+
+/**
    * Constructor
    *
    * @param	original		the original SQLException
@@ -43,4 +44,9 @@ public class DBForeignKeyException extends DBConstraintException {
   public DBForeignKeyException(String query, SQLException original, String constraint) {
     super(query, original, constraint);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 7172366406602713556L;
+  
 }

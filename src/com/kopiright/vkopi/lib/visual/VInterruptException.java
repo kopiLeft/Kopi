@@ -21,7 +21,8 @@ package com.kopiright.vkopi.lib.visual;
 
 public class VInterruptException extends Exception {
 
-  /**
+
+/**
    * Constructs an exception with a message.
    *
    * @param	code		the exception code
@@ -30,4 +31,8 @@ public class VInterruptException extends Exception {
   public VInterruptException() {
     super();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3930478310940033140L;
 }

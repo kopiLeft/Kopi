@@ -20,8 +20,8 @@
 package com.kopiright.compiler.tools.antlr.runtime;
 
 public class NoViableAltException extends RecognitionException {
-
-  public Token token;
+  
+public Token token;
 
   public NoViableAltException(Token t, String fileName) {
     super("NoViableAlt");
@@ -44,4 +44,8 @@ public class NoViableAltException extends RecognitionException {
   public String toString() {
     return FileLineFormatter.getFormatter().getFormatString(fileName,line)+getMessage();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 8091207225599225404L;
 }

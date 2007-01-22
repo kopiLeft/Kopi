@@ -25,7 +25,8 @@ import com.kopiright.vkopi.lib.util.PrintException;
  * Postscript Print Failure
  */
 public class PSPrintException extends PrintException {
-  /**
+  
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -43,5 +44,8 @@ public class PSPrintException extends PrintException {
   public  PSPrintException(String message, Throwable cause) {
     super(message, cause, EXC_FATAL);
   }
-  
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -2888904066024784526L;
 }

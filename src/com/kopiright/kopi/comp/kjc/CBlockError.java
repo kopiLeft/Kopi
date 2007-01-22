@@ -33,7 +33,9 @@ public class CBlockError extends PositionedError {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+  
+
+/**
    * An error with a formatted message as argument
    * @param	where		the position in the source code
    * @param	message		the formatted message
@@ -85,4 +87,8 @@ public class CBlockError extends PositionedError {
   public CBlockError(TokenReference where, MessageDescription description) {
     super(where, description);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -7823048620407296651L;
 }

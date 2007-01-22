@@ -40,13 +40,23 @@ import javax.swing.text.Document;
 /*package*/ class DHelpViewer extends DWindow implements HyperlinkListener {
 
   /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -5681828259231318466L;
+
+/**
    *
    */
   public DHelpViewer(VHelpViewer model) {
     super(model);
     model.setDisplay(this);
     registerKeyboardAction(new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -4312276387422409187L;
+
+		public void actionPerformed(ActionEvent e) {
           closeWindow();
         }},
                            null,

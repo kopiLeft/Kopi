@@ -23,11 +23,16 @@ package com.kopiright.compiler.tools.antlr.runtime;
  * Anything that goes wrong while generating a stream of tokens.
  */
 public class TokenStreamException extends ParserException {
-
-  public TokenStreamException() {
+  
+public TokenStreamException() {
   }
 
   public TokenStreamException(String s) {
     super(s);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -4520140932470396924L;
+
 }

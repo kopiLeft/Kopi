@@ -151,4 +151,8 @@ class MenuItemRenderer extends JLabel implements TreeCellRenderer {
     CLR_FOCUS    = UIManager.getColor("kopi.menuitem.focus");
     CLR_FOCUS_BACK    = UIManager.getColor("kopi.menuitem.focus.background");
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5890176862796914299L;
 }

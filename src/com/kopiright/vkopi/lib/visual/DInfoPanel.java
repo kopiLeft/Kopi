@@ -26,7 +26,8 @@ import javax.swing.JLabel;
  */
 /*package*/ class DInfoPanel extends JLabel {
 
-  /**
+  
+/**
    * Constructs the information panel
    */
   public DInfoPanel() {
@@ -49,6 +50,11 @@ import javax.swing.JLabel;
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -7394760313569275609L;
+
 }
 
 

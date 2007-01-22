@@ -42,6 +42,11 @@ import com.kopiright.xkopi.lib.type.Week;
 public class DateChooser extends JPanel implements ActionListener {
 
   /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 8823525349311235417L;
+
+/**
    * Construct a new <code>DateChooser</code>. The date for the chooser will
    * be initialized to the current date.
    */
@@ -247,7 +252,12 @@ public class DateChooser extends JPanel implements ActionListener {
 
   private Date doModal(final Container parent, final Component field, final Date date) {
     popup = new JPopupMenu() {
-      public Dimension getPreferredSize() {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 3509735766988472178L;
+
+	public Dimension getPreferredSize() {
 	Dimension dim = super.getPreferredSize();
 	return new Dimension(dim.width, dim.height);
       }
@@ -574,5 +584,9 @@ public class DateChooser extends JPanel implements ActionListener {
   private int				dp;
   private Color				highlightColor;
   private DateChooser			dateChooser;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 8823525349311235417L;
 
 }

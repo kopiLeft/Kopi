@@ -25,6 +25,11 @@ package com.kopiright.util.lpr;
 public class LpdException extends Exception {
 
   /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 2797165751873309406L;
+
+/**
    * Constructs an exception with a message.
    *
    * @param	code		the exception code

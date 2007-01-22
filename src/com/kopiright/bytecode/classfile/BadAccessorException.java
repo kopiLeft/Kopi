@@ -24,7 +24,9 @@ package com.kopiright.bytecode.classfile;
  */
 public class BadAccessorException extends Exception {
 
-  /**
+  
+
+/**
    * Constructs a BadAccessorException object.
    */
   public BadAccessorException() {
@@ -39,4 +41,8 @@ public class BadAccessorException extends Exception {
   public BadAccessorException(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 4225306197561723640L;
 }

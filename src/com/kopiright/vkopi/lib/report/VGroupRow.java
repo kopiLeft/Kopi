@@ -20,8 +20,8 @@
 package com.kopiright.vkopi.lib.report;
 
 public class VGroupRow extends VReportRow {
-
-  /**
+  
+/**
    * Constructs a description for a grouping row
    *
    * @param	report		the report
@@ -127,4 +127,9 @@ public class VGroupRow extends VReportRow {
   // --------------------------------------------------------------------
 
   private final int		level;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8302160476135819433L;
+
 }

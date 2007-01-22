@@ -72,7 +72,8 @@ import com.kopiright.xkopi.lib.type.Date;
  */
 public class ListDialog extends JPanel {  
 
-  /**
+  
+/**
    * returned value if a user click on a forced new button and there
 
    * is no form to create a record
@@ -685,8 +686,8 @@ public class ListDialog extends JPanel {
   // ----------------------------------------------------------------------
 
   private class KopiTableModel extends AbstractTableModel implements TableColumnModelListener {
-
-    public KopiTableModel(String[] columns, Object[][] data, int[] lineID, int count) {
+        
+	public KopiTableModel(String[] columns, Object[][] data, int[] lineID, int count) {
       if (lineID[0] != 0) {// maintain compatiblility
 	skipFirstLine = false;
       }
@@ -841,6 +842,10 @@ public class ListDialog extends JPanel {
     private int			count;
     private int[]		lineID;
     private int[]		tab;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 1956519774210966774L;
   }
 
    // class DialogFactory is never read locally.
@@ -874,4 +879,8 @@ public class ListDialog extends JPanel {
   private boolean		doNewForm;
 
   private static final int      rowHeight = UIManager.getInt("ListDialog.row.height");
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -7531584148431229270L;
 }

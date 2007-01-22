@@ -30,7 +30,8 @@ import javax.swing.SwingUtilities;
  */
 /*package*/ class DWaitPanel extends JProgressBar {
 
-  public DWaitPanel(DWindow parent) {
+  
+public DWaitPanel(DWindow parent) {
     this.parent = parent;
 
     //    setBorder(null);
@@ -66,4 +67,9 @@ import javax.swing.SwingUtilities;
   // ----------------------------------------------------------------------
 
   private final DWindow         parent;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3378968554858753808L;
+
 }

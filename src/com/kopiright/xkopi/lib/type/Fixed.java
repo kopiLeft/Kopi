@@ -27,7 +27,7 @@ import com.ibm.math.MathContext;
  */
 public class Fixed extends Number implements Comparable {
 
-  /*package*/ Fixed(BigDecimal b) {
+/*package*/ Fixed(BigDecimal b) {
     value = b;
   }
 
@@ -268,4 +268,8 @@ public class Fixed extends Number implements Comparable {
   // ----------------------------------------------------------------------
 
   public static final NotNullFixed	DEFAULT		= new NotNullFixed(0);
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8892496902069793576L;
 }

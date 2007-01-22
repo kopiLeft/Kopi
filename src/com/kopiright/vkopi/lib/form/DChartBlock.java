@@ -39,7 +39,7 @@ public class DChartBlock extends DBlock {
    * ----------------------------------------------------------------------
    */
 
-  /**
+/**
    * Constructor
    */
   public DChartBlock(DForm form, VBlock model) {
@@ -138,7 +138,8 @@ public class DChartBlock extends DBlock {
   // ----------------------------------------------------------------------
 
   class RNCEvent extends InvocationEvent implements Runnable {
-    RNCEvent() {
+    
+	RNCEvent() {
       super(DChartBlock.this, EVT_RNC, null, null, false);
       runnable = this;
     }
@@ -148,6 +149,10 @@ public class DChartBlock extends DBlock {
     }
 
     static final int    EVT_RNC = 2100;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 1727735012273500143L;
   }
 
   protected AWTEvent coalesceEvents(AWTEvent existingEvent,
@@ -169,4 +174,8 @@ public class DChartBlock extends DBlock {
 
   private AdjustmentListener    adjustmentListener;
   private JScrollBar            scrollBar;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -7342909071556158313L;
 }

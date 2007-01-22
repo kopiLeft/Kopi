@@ -29,7 +29,8 @@ import javax.swing.UIManager;
 
 public class JMenuButton extends JButton {
 
- /**
+ 
+/**
    * Constructor
    */
   public JMenuButton(Action action) {
@@ -93,5 +94,9 @@ public class JMenuButton extends JButton {
   private static Dimension	dimension = new Dimension(52, 52);
   private static Dimension	dimensionSmall = new Dimension(40, 40);
   private static Insets		inset = new Insets(1, 1, 1, 1);
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -2120770411233444725L;
 }
 

@@ -36,8 +36,8 @@ import com.kopiright.vkopi.lib.visual.VException;
  * This is the display class of a report. 
  */
 public class DReport extends DWindow implements TableCellRenderer {
-
-  /**
+  
+/**
    * Constructs a new report view
    *
    * @param	model		the report model
@@ -543,8 +543,8 @@ public class DReport extends DWindow implements TableCellRenderer {
    * the DefaultTableCellRenderer class overwrites border setting
    */
   class HeaderRenderer extends DefaultTableCellRenderer {
-
-    public HeaderRenderer() {
+    
+	public HeaderRenderer() {
       setHorizontalAlignment(SwingConstants.CENTER);
       setOpaque(true);
       setBorder(UIManager.getBorder("TableHeader.cellBorder"));
@@ -582,6 +582,10 @@ public class DReport extends DWindow implements TableCellRenderer {
  
       return this;
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	 private static final long serialVersionUID = 565901305687203629L; 
   }
   
 
@@ -611,4 +615,8 @@ public class DReport extends DWindow implements TableCellRenderer {
   private int			fromIndex;		// from index column
   private int			toIndex;		// to index column
   private int			tableWidth;		// Table width
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -6833408762223390823L;
 }

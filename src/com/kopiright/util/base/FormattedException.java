@@ -28,7 +28,8 @@ public class FormattedException extends Exception {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+  
+/**
    * An exception with a formatted message as argument
    * @param	message		the formatted message
    */
@@ -104,4 +105,10 @@ public class FormattedException extends Exception {
   // ----------------------------------------------------------------------
 
   private final Message		message;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6590654347028052938L;
+
+
 }

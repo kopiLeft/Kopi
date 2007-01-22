@@ -20,7 +20,9 @@
 package com.kopiright.kopi.lib.assertion;
 
 public class PostconditionError extends AssertionError {
-  public PostconditionError() {
+  
+
+public PostconditionError() {
     super();
   }
 
@@ -51,4 +53,8 @@ public class PostconditionError extends AssertionError {
   public PostconditionError(double detailMessage) {
     this("" +  detailMessage);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+   private static final long serialVersionUID = -409676899400309009L;
 }

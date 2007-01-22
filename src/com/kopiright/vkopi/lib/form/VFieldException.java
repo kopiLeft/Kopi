@@ -23,7 +23,8 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 
 public class VFieldException extends VExecFailedException {
 
-  /**
+  
+/**
    * Constructs an exception with no message.
    *
    * @param	field		the field that has not a correct value
@@ -77,4 +78,8 @@ public class VFieldException extends VExecFailedException {
 
   private final Object		newValue;
   private final VField		field;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6144600115974545873L;
 }

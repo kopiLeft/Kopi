@@ -20,7 +20,13 @@
 package com.kopiright.compiler.tools.antlr.compiler;
 
 class FileCopyException extends java.io.IOException {
-  public FileCopyException(String msg) {
+  
+public FileCopyException(String msg) {
     super(msg);
   }
+/**
+ * Comment for <code>serialVersionUID</code>
+ */
+ private static final long serialVersionUID = 1669560080235065444L;
+
 }

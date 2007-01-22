@@ -25,7 +25,8 @@ package com.kopiright.util.base;
  */
 public class InconsistencyException extends RuntimeException {
 
-  /**
+  
+/**
    * Constructs am InconsistencyException with no specified detail message.
    * @deprecated        Use the constructor with the message or build it with the 
    *                    exception which cause this case.
@@ -60,4 +61,8 @@ public class InconsistencyException extends RuntimeException {
   public InconsistencyException(String message, Throwable e) {
     super(message, e);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -5494569374304974143L;
 }

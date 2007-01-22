@@ -26,7 +26,8 @@ import java.awt.Point;
  */
 public class DPreferences extends java.util.Hashtable {
 
-  /**
+  
+/**
    *
    */
   public void setButtonSize(boolean small) {
@@ -64,4 +65,8 @@ public class DPreferences extends java.util.Hashtable {
 
   private static final String	PRF_WINDOW_LOCATION	= "window_location";
   private static final String	PRF_BUTTON_SIZE		= "button_size";
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 8427341992030423029L;
 }

@@ -20,7 +20,8 @@
 package com.kopiright.compiler.tools.antlr.runtime;
 
 public class MismatchedCharException extends RecognitionException {
-  // Types of chars
+  
+// Types of chars
   public static final int CHAR = 1;
   public static final int NOT_CHAR = 2;
   public static final int RANGE = 3;
@@ -139,4 +140,8 @@ public class MismatchedCharException extends RecognitionException {
 
     return sb.toString();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3212020376928611610L;
 }

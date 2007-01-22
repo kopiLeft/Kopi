@@ -26,7 +26,8 @@ import com.ibm.math.BigDecimal;
  */
 public class NotNullFixed extends Fixed {
 
-  public NotNullFixed(BigDecimal b) {
+  
+public NotNullFixed(BigDecimal b) {
     super(b);
   }
 
@@ -65,4 +66,9 @@ public class NotNullFixed extends Fixed {
     return (other instanceof NotNullFixed)
       && super.equals(other);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 2957374343736750463L;
+
 }

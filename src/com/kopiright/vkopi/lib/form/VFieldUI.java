@@ -809,7 +809,8 @@ public class VFieldUI implements VConstants, ActionHandler {
   }
 
   class ChartHeaderLabel extends DLabel implements VBlock.OrderListener {
-    ChartHeaderLabel(String text, String help, int index, VBlock.OrderModel model) {
+    
+	ChartHeaderLabel(String text, String help, int index, VBlock.OrderModel model) {
       super(text, help);
 
       fieldIndex = index;
@@ -857,6 +858,10 @@ public class VFieldUI implements VConstants, ActionHandler {
     
     int                 fieldIndex;
     VBlock.OrderModel   sortModel;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 8142184714004772529L;
   }
 
 

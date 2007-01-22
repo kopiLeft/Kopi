@@ -21,10 +21,16 @@ package com.kopiright.xkopi.lib.oper;
 
 public class NullValueInCastOperator extends RuntimeException {
 
-  public NullValueInCastOperator() {
+  
+public NullValueInCastOperator() {
   }
 
   public NullValueInCastOperator(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -4961830053579375796L;
+
 }

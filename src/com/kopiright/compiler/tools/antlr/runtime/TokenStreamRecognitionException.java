@@ -24,9 +24,14 @@ package com.kopiright.compiler.tools.antlr.runtime;
  * can pass it along.
  */
 public class TokenStreamRecognitionException extends TokenStreamException {
-  public RecognitionException recog;
+  
+public RecognitionException recog;
   public TokenStreamRecognitionException(RecognitionException re) {
     super(re.getMessage());
     this.recog = re;
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -463302395138481834L;
 }

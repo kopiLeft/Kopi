@@ -31,8 +31,8 @@ public class OptgenError extends FormattedException {
   // --------------------------------------------------------------------
   // CONSTRUCTORS
   // --------------------------------------------------------------------
-
-  /**
+  
+/**
    * An exception with a formatted message as argument
    * @param	message		the formatted message
    */
@@ -75,4 +75,9 @@ public class OptgenError extends FormattedException {
   public OptgenError(MessageDescription description) {
     super(description);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -1940949686284187233L;
+
 }

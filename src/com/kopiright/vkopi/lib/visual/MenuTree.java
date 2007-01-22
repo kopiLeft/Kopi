@@ -54,7 +54,8 @@ import com.kopiright.xkopi.lib.base.Query;
 
 public class MenuTree extends DWindow {
 
-  /**
+  
+/**
    * Constructs a new instance of MenuTree.
    * @param ctxt the context where to look for application
    */
@@ -271,6 +272,11 @@ public class MenuTree extends DWindow {
     if (!shortcuts.containsKey(module)) {
       AbstractAction    action = new AbstractAction(module.getDescription(),
                                                     module.getIcon()) {
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -3982166081244304443L;
+
 	public void actionPerformed(ActionEvent e) {
 	  setWaitInfo(Message.getMessage("menu_form_started"));
 	  getModel().performAsyncAction(new KopiAction("menu_form_started") {
@@ -839,4 +845,8 @@ public class MenuTree extends DWindow {
   private boolean		isSuperUser;
   private List                  shortcutsID;
   private Module[]		array;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3362913896589388495L;
 }

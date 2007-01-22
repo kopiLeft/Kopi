@@ -38,7 +38,9 @@ public class DColorField extends DObjectField {
   // CONSTRUCTION
   // ----------------------------------------------------------------------
 
-  /**
+  
+
+/**
    * Constructor
    *
    * @param	model		the model for this text field
@@ -61,7 +63,12 @@ public class DColorField extends DObjectField {
     inner.setOpaque(true);
 
     registerKeyboardAction(new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -1310894091877733337L;
+
+	public void actionPerformed(ActionEvent e) {
 	setObject(null);
 	update();
       }},
@@ -214,4 +221,8 @@ public class DColorField extends DObjectField {
 
     textHeight = fm.getHeight();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 1L;
 }

@@ -23,8 +23,8 @@ package com.kopiright.vkopi.lib.util;
  * An error has occur during printing
  */
 public class PrintException extends Exception {
-
-  /**
+  
+/**
    * PrintException
    *
    * @param	msg	Explanation of the error
@@ -85,4 +85,8 @@ public class PrintException extends Exception {
   // ----------------------------------------------------------------------
 
   private int	code;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3227176125342451475L;
 }

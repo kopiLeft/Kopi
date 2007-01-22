@@ -26,7 +26,7 @@ import com.kopiright.vkopi.lib.visual.VException;
  */
 public class VSkipRecordException extends VException {
 
-  /**
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -41,4 +41,8 @@ public class VSkipRecordException extends VException {
   public VSkipRecordException() {
     this((String)null);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6534950848256780433L;
 }

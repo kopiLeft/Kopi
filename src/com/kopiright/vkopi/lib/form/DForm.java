@@ -79,7 +79,8 @@ import com.lowagie.text.pdf.PdfWriter;
  * This is the display class of a form.
  */
 public class DForm extends DWindow implements DPositionPanelListener, FormListener {
-  /**
+  
+/**
    * Constructor
    */
   public DForm(VForm model) {
@@ -129,6 +130,10 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
 
       // set the model after creating the tabs
       tabbedBlockPanel.setModel(new DefaultSingleSelectionModel() {
+	/**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+	private static final long serialVersionUID = -8625496726239343162L;
 	public void setSelectedIndex(final int index) {
 	  if (getCurrentPage() != index) {
 	    performBasicAction(new KopiAction("setSelectedIndex") {
@@ -636,4 +641,8 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   /*package*/ final VCommand cmdEditItem_S = new VFieldCommand(this, VForm.CMD_EDITITEM_S);
   /*package*/ final VCommand cmdEditItem = new VFieldCommand(this, VForm.CMD_EDITITEM);
   /*package*/ final VCommand cmdNewItem = new VFieldCommand(this, VForm.CMD_NEWITEM);
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -5894823173117976720L;
 }

@@ -31,7 +31,8 @@ public class CLineError extends CBlockError {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+  
+/**
    * An error with a formatted message as argument
    * @param	where		the position in the source code
    * @param	message		the formatted message
@@ -83,4 +84,8 @@ public class CLineError extends CBlockError {
   public CLineError(TokenReference where, MessageDescription description) {
     super(where, description);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 4854273767953453511L;
 }

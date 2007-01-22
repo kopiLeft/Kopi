@@ -21,7 +21,8 @@ package com.kopiright.kopi.lib.assertion;
 
 public class PreconditionError extends AssertionError {
 
-  public PreconditionError(Class clazz) {
+  
+public PreconditionError(Class clazz) {
     super();
     this.clazz = clazz;
   }
@@ -88,4 +89,8 @@ PreconditionError: (A) error msg 2
   private PreconditionError     pe;
   private static final String   nl = System.getProperty("line.separator");
   private Class                 clazz = null;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1075194206838929421L;
 }

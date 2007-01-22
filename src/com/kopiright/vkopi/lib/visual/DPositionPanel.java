@@ -37,7 +37,8 @@ import javax.swing.border.EtchedBorder;
  */
 public class DPositionPanel extends JPanel {
 
-  /**
+  
+/**
    * Creates a new position panel.
    *
    * @param     listener        the window that gets the requests
@@ -182,5 +183,9 @@ public class DPositionPanel extends JPanel {
   private boolean       recordVisible;
   private int           current;
   private int           total;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3047549694322579187L;
   
 }

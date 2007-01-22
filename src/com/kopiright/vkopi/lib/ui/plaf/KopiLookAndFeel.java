@@ -38,7 +38,8 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.MetalTheme;
 
 public class KopiLookAndFeel extends MetalLookAndFeel {
-  public KopiLookAndFeel() {
+  
+public KopiLookAndFeel() {
     // install with the UIManager, if not done yet.
     if (!isInstalled) {
       UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("Kopi", "com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel"));
@@ -285,8 +286,11 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
 
  
   static class KopiButtonBorder extends LineBorder {
-    public KopiButtonBorder() {
+    
+	
+	public KopiButtonBorder() {
       super(KopiTheme.USER_COLORS.COLOR_5, 4);
+      
     }
     /**
      *
@@ -309,12 +313,17 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
       }
       g.setColor(oldColor);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -530054692818299534L;
   }
 
 
   static class ButtonLineBorder extends LineBorder {
 
-    public ButtonLineBorder(Color color)  {
+    
+	public ButtonLineBorder(Color color)  {
       super(color, 3, true);
     }    
 
@@ -325,10 +334,16 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
       g.drawRoundRect(x+1, y+1, width-2, height-2, 7, 7);
       g.setColor(oldColor);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -4848831354770955851L;
+
   }
 
   public static class TopLineBorder extends LineBorder {
-    public TopLineBorder()  {
+    
+	public TopLineBorder()  {
       super(KopiTheme.USER_COLORS.COLOR_3, 3, true);
     }    
 
@@ -339,6 +354,10 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
       g.drawLine(x, y, x+width, y);
       g.setColor(oldColor);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -4029306344254390258L;
   }
 
 //   private static Color COLOR_1  = new Color(248, 247, 241);      // light brown
@@ -375,4 +394,8 @@ public class KopiLookAndFeel extends MetalLookAndFeel {
   private static Color LBL_COLOR_BACK_MUSTFILL =  new Color(156, 184, 231);
   private static Color LBL_COLOR_BACK_VISIT = new Color(198, 255, 198);
   private static Color COLOR_SEL_FLD = new Color(255, 255, 174);
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5215994622108520908L;
 }

@@ -33,7 +33,10 @@ import javax.swing.MenuSelectionManager;
  */
 
 public class DMenuItem extends JMenuItem {
-  /**
+
+	
+
+/**
    * Creates a menu item with text.
    */
   public DMenuItem(Action action) {//String text) {
@@ -55,6 +58,11 @@ public class DMenuItem extends JMenuItem {
 
     if (keyStroke != null) {
       registerKeyboardAction(new AbstractAction() {
+	/**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -3940868217103016855L;
+
 	public void actionPerformed(ActionEvent e) {
 	  MenuSelectionManager.defaultManager().clearSelectedPath();
 	  doClick();
@@ -77,4 +85,8 @@ public class DMenuItem extends JMenuItem {
   }
 
   private KeyStroke	accelerator;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1355170976267948069L;
 }

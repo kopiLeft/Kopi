@@ -198,7 +198,7 @@ public class KopiUtils {
 
   static class ButtonRollBorder extends LineBorder {
 
-    public ButtonRollBorder(Color color)  {
+    	public ButtonRollBorder(Color color)  {
       super(color, 3, true);
     }
 
@@ -209,10 +209,14 @@ public class KopiUtils {
       g.drawRoundRect(x, y, width-1, height-1, border_arc, border_arc);
       g.setColor(oldColor);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 471089859986089910L;
   }
   static class ButtonLineBorder extends LineBorder {
-
-    public ButtonLineBorder(Color color)  {
+    
+	public ButtonLineBorder(Color color)  {
       super(color, 3, true);
     }
 
@@ -222,10 +226,15 @@ public class KopiUtils {
       g.drawRoundRect(x, y, width-1, height-1, border_arc, border_arc);
       g.setColor(oldColor);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 4281247693790203982L; 
   }
 
   static class KopiFieldBorder extends LineBorder {
-    public KopiFieldBorder(JTextComponent textfield)  {
+    
+	public KopiFieldBorder(JTextComponent textfield)  {
       super(Color.white, 2, true);
       this.textfield = textfield;
     }
@@ -235,6 +244,10 @@ public class KopiUtils {
     }
 
     private JTextComponent      textfield;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 6999600953201731055L;
   }
 
   private static final int      border_arc = UIManager.getInt("MenuButton.border.arc");

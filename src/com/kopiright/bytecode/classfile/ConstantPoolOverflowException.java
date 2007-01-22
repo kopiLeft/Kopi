@@ -25,7 +25,7 @@ package com.kopiright.bytecode.classfile;
  */
 public class ConstantPoolOverflowException extends ClassFileFormatException {
 
-  /**
+/**
    * Constructs a class file read exception
    *
    * @param	message		the detail message
@@ -33,4 +33,8 @@ public class ConstantPoolOverflowException extends ClassFileFormatException {
   public ConstantPoolOverflowException(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -8373811686303860133L;
 }

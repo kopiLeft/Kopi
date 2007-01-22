@@ -30,7 +30,8 @@ public class DTextEditor extends DTextField {
   // CONSTRUCTION
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructor
    *
    * @param	model		the model for this text field
@@ -51,5 +52,9 @@ public class DTextEditor extends DTextField {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 449581722481726591L;
 
 }

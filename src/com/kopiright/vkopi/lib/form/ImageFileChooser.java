@@ -97,7 +97,9 @@ public class ImageFileChooser {
   // ----------------------------------------------------------------------
 
   private static class ImagePreview extends JComponent implements PropertyChangeListener {
-    ImageIcon thumbnail = null;
+  
+	
+	ImageIcon thumbnail = null;
     File f = null;
 
     public ImagePreview(JFileChooser fc) {
@@ -148,6 +150,10 @@ public class ImageFileChooser {
 	thumbnail.paintIcon(this, g, x, y);
       }
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	 private static final long serialVersionUID = -253909169278804396L;
   }
 
   // ----------------------------------------------------------------------
@@ -211,4 +217,8 @@ public class ImageFileChooser {
       return ext;
     }
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -253909169278804396L;
 }

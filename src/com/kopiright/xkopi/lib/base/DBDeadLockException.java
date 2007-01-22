@@ -45,4 +45,9 @@ public class DBDeadLockException extends DBException {
   public DBDeadLockException(String query, SQLException original) {
     super(query, original);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -6117097506873413152L;
+
 }

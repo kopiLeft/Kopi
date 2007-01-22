@@ -740,7 +740,8 @@ public class Fax {
    * fuer die Protokollabhaengigen Fehler
    */
   public class PROTOException extends FaxException {
-    public PROTOException(String s, int number) {
+    
+	public PROTOException(String s, int number) {
       super(s);
       this.number = number;
     }
@@ -754,6 +755,10 @@ public class Fax {
     // ----------------------------------------------------------------------
 
     public final int number; // Diese Variable speichert den Reply-Code
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -2616931043801263148L;
   }
 
 

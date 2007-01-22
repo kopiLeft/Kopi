@@ -32,13 +32,15 @@ public class CExpressionError extends CLineError {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+ 
+/**
    * An error with a formatted message as argument
    * @param	where		the position in the source code
    * @param	message		the formatted message
    */
   public CExpressionError(TokenReference where, Message message) {
     super(where, message);
+ 
   }
 
   /**
@@ -84,4 +86,9 @@ public class CExpressionError extends CLineError {
   public CExpressionError(TokenReference where, MessageDescription description) {
     super(where, description);
   }
+
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 7970200384233018941L;
 }

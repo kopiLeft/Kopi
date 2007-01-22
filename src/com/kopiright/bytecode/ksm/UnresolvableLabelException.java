@@ -31,8 +31,9 @@ public class UnresolvableLabelException extends BadAccessorException {
   // --------------------------------------------------------------------
   // CONSTRUCTORS
   // --------------------------------------------------------------------
+   
 
-  /**
+/**
    * An exception with a formatted message as argument
    * @param	message		the formatted message
    */
@@ -101,4 +102,8 @@ public class UnresolvableLabelException extends BadAccessorException {
   // ----------------------------------------------------------------------
 
   private /* javac bug final */ Message		message;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -4621409536256706963L;
 }

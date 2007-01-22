@@ -25,8 +25,8 @@ import com.kopiright.vkopi.lib.visual.VRuntimeException;
  * This class represents exceptions occuring during execution process.
  */
 public class VNoRowException extends VRuntimeException {
-
-  /**
+  
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -41,4 +41,9 @@ public class VNoRowException extends VRuntimeException {
   public VNoRowException() {
     this(null);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -5435963954463379807L;
+
 }

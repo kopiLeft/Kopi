@@ -72,7 +72,12 @@ public abstract class DField extends JPanel {
       if (model.hasAutofill()) {
 	info = new JFieldButton(listImg);
 	info.addActionListener(new AbstractAction() {
-	  public void actionPerformed(ActionEvent e) {
+	  /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 2172836625163999381L;
+
+	public void actionPerformed(ActionEvent e) {
 	    getModel().getForm().performAsyncAction(new KopiAction("autofill") {
 	      public void execute() throws VException {
 		DField.this.model.transferFocus(DField.this);
@@ -88,7 +93,12 @@ public abstract class DField extends JPanel {
       if (model.getDecrementCommand() != null) {
 	decr = new JFieldButton(leftImg);
 	decr.addActionListener(new AbstractAction() {
-	  public void actionPerformed(ActionEvent e) {
+	  /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -6114904737254808842L;
+
+	public void actionPerformed(ActionEvent e) {
 	    DField.this.model.getDecrementCommand().performAction();
 	  }
 	});
@@ -97,7 +107,12 @@ public abstract class DField extends JPanel {
       if (model.getIncrementCommand() != null) {
 	incr = new JFieldButton(rightImg);
 	incr.addActionListener(new AbstractAction() {
-	  public void actionPerformed(ActionEvent e) {
+	  /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -3670989616287237005L;
+
+	public void actionPerformed(ActionEvent e) {
 	    DField.this.model.getIncrementCommand().performAction();
 	  }
 	});

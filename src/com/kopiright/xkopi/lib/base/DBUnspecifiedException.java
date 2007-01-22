@@ -23,7 +23,8 @@ import java.sql.SQLException;
 
 public class DBUnspecifiedException extends DBException {
 
-  /**
+  
+/**
    * Constructor
    *
    * @param	original		the original SQLException
@@ -41,4 +42,9 @@ public class DBUnspecifiedException extends DBException {
   public DBUnspecifiedException(String query, SQLException original) {
     super(query, original);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 8277836206246772504L;
+
 }

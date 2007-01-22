@@ -33,6 +33,11 @@ public class LexgenError extends FormattedException {
   // --------------------------------------------------------------------
 
   /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 4343063981406515726L;
+
+/**
    * An exception with a formatted message as argument
    * @param	message		the formatted message
    */

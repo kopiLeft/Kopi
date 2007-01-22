@@ -20,11 +20,17 @@
 package com.kopiright.vkopi.lib.spellchecker;
 
 public class SpellException extends Exception {
-    public SpellException(String message)  {
+    
+	public SpellException(String message)  {
         super(message);
     }
 
     public SpellException(String message, Throwable cause)  {
         super(message, cause);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 8871082496962296305L;
+
 }

@@ -41,7 +41,8 @@ public class DImageField extends DObjectField {
   // CONSTRUCTION
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructor
    *
    * @param	model		the model for this text field
@@ -65,7 +66,12 @@ public class DImageField extends DObjectField {
     icon = new JLabel();
 
     empty = new JPanel() {
-      public Dimension getPreferredSize() {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+	  private static final long serialVersionUID = 4603093785481453119L;
+
+	public Dimension getPreferredSize() {
 	return new Dimension(DImageField.this.width, DImageField.this.height);
       }
     };
@@ -75,7 +81,12 @@ public class DImageField extends DObjectField {
     add(empty, BorderLayout.CENTER);
 
     registerKeyboardAction(new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+	  private static final long serialVersionUID = -555322973317509685L;
+
+	public void actionPerformed(ActionEvent e) {
 	setObject(null);
       }},
       null,
@@ -176,4 +187,8 @@ public class DImageField extends DObjectField {
   private	int		width;
   private	int		height;
   private	byte[]		image;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -4798732518710333986L;
 }

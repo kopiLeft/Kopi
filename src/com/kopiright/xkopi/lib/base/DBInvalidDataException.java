@@ -31,7 +31,9 @@ public class DBInvalidDataException extends DBException {
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
-  /**
+  
+
+/**
    * Constructor
    *
    * @param	original		the original SQLException
@@ -49,4 +51,8 @@ public class DBInvalidDataException extends DBException {
   public DBInvalidDataException(String query, Exception original) {
     super(query, new SQLException(original.getMessage()));
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -3750935745427151198L;
 }

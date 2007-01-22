@@ -23,7 +23,8 @@ package com.kopiright.vkopi.lib.visual;
  */
 public class PropertyException extends Exception {
 
-  /**
+  
+/**
    * Constructs an exception with no message.
    */
   public PropertyException() {
@@ -57,4 +58,9 @@ public class PropertyException extends Exception {
   public PropertyException(Throwable cause) {
     super(cause);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5151822597040726650L;
+
 }

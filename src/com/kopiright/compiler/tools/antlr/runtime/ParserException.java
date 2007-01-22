@@ -21,7 +21,7 @@ package com.kopiright.compiler.tools.antlr.runtime;
 
 public class ParserException extends ANTLRException {
 
-  public ParserException() {
+public ParserException() {
     super("parsing error");
   }
 
@@ -48,4 +48,8 @@ public class ParserException extends ANTLRException {
   public int getColumn() {
     return -1;
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1552690380937780408L;
 }

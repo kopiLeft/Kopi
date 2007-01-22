@@ -25,7 +25,8 @@ import java.util.Hashtable;
 import javax.swing.*;
 
 public class JBookmarkPanel extends JFrame  {
-  public JBookmarkPanel(String title) {
+  
+public JBookmarkPanel(String title) {
     super(title);
 
     buttons = new JPanel();
@@ -65,4 +66,8 @@ public class JBookmarkPanel extends JFrame  {
 
   private JPanel                buttons;
   private Hashtable		shortcuts;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -349948284157504110L;
 }

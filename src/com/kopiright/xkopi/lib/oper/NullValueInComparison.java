@@ -20,11 +20,16 @@
 package com.kopiright.xkopi.lib.oper;
 
 public class NullValueInComparison extends RuntimeException {
-
-  public NullValueInComparison() {
+  
+public NullValueInComparison() {
   }
 
   public NullValueInComparison(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6842931985226252664L;
+
 }

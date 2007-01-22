@@ -24,7 +24,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 public class JButtonPanel extends JPanel  {
-  public JButtonPanel() {
+  
+public JButtonPanel() {
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     //    setBorder(new LineBorder(borderColor));
     setBackground(backColor);
@@ -34,8 +35,8 @@ public class JButtonPanel extends JPanel  {
   }
 
   static class PanelBorder extends LineBorder {
-
-    public PanelBorder(Color color)  {
+	    
+	public PanelBorder(Color color)  {
       super(color, 1, true);
     }    
 
@@ -47,8 +48,16 @@ public class JButtonPanel extends JPanel  {
       g.drawLine(x, height-1, width, height-1);
       g.setColor(oldColor);
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -5268179554807018796L;
   }
 
   private static final Color    borderColor = UIManager.getColor("ButtonPanel.border");
   private static final Color    backColor = UIManager.getColor("ButtonPanel.back");
+  /**
+	 * Comment for <code>serialVersionUID</code>
+  */
+  private static final long serialVersionUID = -7046386378185269176L;
 }

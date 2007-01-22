@@ -32,7 +32,8 @@ import com.kopiright.vkopi.lib.ui.base.Stateful;
  */
 /*package*/ class KopiFieldDocument extends PlainDocument implements  Stateful {
 
-  public KopiFieldDocument(VField model, ModelTransformer transformer) {
+  
+public KopiFieldDocument(VField model, ModelTransformer transformer) {
     this.model = model;
     this.transformer = transformer;
   }
@@ -152,4 +153,8 @@ import com.kopiright.vkopi.lib.ui.base.Stateful;
 
   private VField		model;
   private ModelTransformer      transformer;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -7098798410173878552L;
 }

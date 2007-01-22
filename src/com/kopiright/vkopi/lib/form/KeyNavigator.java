@@ -37,7 +37,7 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 
 public class KeyNavigator extends AbstractAction {
 
-    protected KeyNavigator(int keyCode) {
+    	protected KeyNavigator(int keyCode) {
       super("navigation-key");
       this.keyCode = keyCode;
     }
@@ -248,4 +248,8 @@ public class KeyNavigator extends AbstractAction {
       new KeyNavigator(KEY_PRINTFORM)
     };
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3277175963522587180L;
 }

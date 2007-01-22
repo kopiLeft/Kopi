@@ -33,7 +33,8 @@ public class KsmError extends RecognitionException {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+  
+/**
    * An error with a formatted message as argument
    * @param	where		the reference to token where error happen
    * @param	message		the formatted message
@@ -112,4 +113,8 @@ public class KsmError extends RecognitionException {
 
   protected TokenReference	where;
   protected Message		message;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -2912460560028564490L;
 }

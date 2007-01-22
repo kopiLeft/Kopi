@@ -20,7 +20,8 @@
 package com.kopiright.compiler.tools.antlr.runtime;
 
 public class RecognitionException extends ParserException {
-  public String fileName;		// not used by treeparsers
+  
+public String fileName;		// not used by treeparsers
   public int line;			// not used by treeparsers
   public int column;			// not used by treeparsers
 
@@ -63,4 +64,8 @@ public class RecognitionException extends ParserException {
     return FileLineFormatter.getFormatter().
       getFormatString(fileName,line)+getMessage();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3313261821924988501L;
 }

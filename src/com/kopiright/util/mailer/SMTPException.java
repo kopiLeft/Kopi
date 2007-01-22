@@ -24,12 +24,17 @@ public class SMTPException extends Exception {
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
+ 
 
-  public SMTPException(Exception parent) {
+public SMTPException(Exception parent) {
     super(parent);
   }
 
   public SMTPException(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -3163907066759338592L;
 }

@@ -23,7 +23,8 @@ import java.awt.*;
 import javax.swing.JPanel;
 
 public class JDisablePanel extends JPanel  {
-  public JDisablePanel() {
+  
+public JDisablePanel() {
     super();
   }
 
@@ -42,4 +43,8 @@ public class JDisablePanel extends JPanel  {
     }
     g.setColor(bgc);
   } 
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 8258783355588510649L;
 }

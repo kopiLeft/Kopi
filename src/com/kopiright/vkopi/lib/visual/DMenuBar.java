@@ -26,7 +26,8 @@ import com.kopiright.vkopi.lib.util.Message;
 
 public class DMenuBar extends JMenuBar {
 
-  /**
+  
+/**
    * Constructs a menu panel
    */
   /*package*/ DMenuBar() {
@@ -108,4 +109,9 @@ public class DMenuBar extends JMenuBar {
   // ---------------------------------------------------------------------
 
   private JMenu 	help;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5957063959837257811L;
+
 }

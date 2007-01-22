@@ -23,11 +23,17 @@ package com.kopiright.compiler.tools.antlr.runtime;
  * Anything that goes wrong while generating a stream of characters
  */
 public class CharStreamException extends ANTLRException {
-  /**
+  
+/**
    * CharStreamException constructor comment.
    * @param s java.lang.String
    */
   public CharStreamException(String s) {
     super(s);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3905272433808901381L;
+  
 }

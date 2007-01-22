@@ -33,6 +33,11 @@ public class MReport extends AbstractTableModel implements Constants {
   // --------------------------------------------------------------------
 
   /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -7372702648334281245L;
+
+/**
    * Constructs a new report instance
    */
   public MReport() {

@@ -36,4 +36,8 @@ public class VBaseRow extends VReportRow {
   public int getLevel() {
     return 0;
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 1493773347534405802L;
 }

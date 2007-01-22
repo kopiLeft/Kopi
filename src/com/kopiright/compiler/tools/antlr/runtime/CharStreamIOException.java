@@ -25,10 +25,15 @@ import java.io.IOException;
  * Wrap an IOException in a CharStreamException
  */
 public class CharStreamIOException extends CharStreamException {
-  public IOException io;
+
+public IOException io;
 
   public CharStreamIOException(IOException io) {
     super(io.getMessage());
     this.io = io;
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -1936560987463500278L;
 }

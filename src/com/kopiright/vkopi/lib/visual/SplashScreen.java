@@ -29,7 +29,8 @@ import java.awt.event.MouseAdapter;
 
 public class SplashScreen extends Window {
 
-  /** Construct a new <code>SplashScreen</code>.
+  
+/** Construct a new <code>SplashScreen</code>.
    *
    * @param image The image to display in the splash screen.
    * @param caption A short text caption to display below the image (may be
@@ -116,4 +117,8 @@ public class SplashScreen extends Window {
 
   private Image		image;
   private String	caption;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -1902568707559950635L;
 }

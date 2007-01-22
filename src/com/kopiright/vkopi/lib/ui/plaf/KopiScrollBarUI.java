@@ -42,7 +42,8 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
   }
 
   static class KopiScrollButton extends MetalScrollButton {
-    public KopiScrollButton(int direction, int width, boolean freeStanding) {
+    
+	public KopiScrollButton(int direction, int width, boolean freeStanding) {
       super(direction, width, freeStanding);
 
       this.isFreeStanding = freeStanding;
@@ -267,6 +268,10 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
     private boolean     isFreeStanding;
     private Color       border_color = UIManager.getColor("ScrollBar.highlight");
     private Color       thumbColor = UIManager.getColor("ScrollBar.thumb");
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 7155986697007639719L;
   }
   
 

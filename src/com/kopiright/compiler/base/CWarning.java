@@ -31,7 +31,8 @@ public class CWarning extends PositionedError {
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
-  /**
+  
+/**
    * An error with a formatted message as argument
    * @param	where		the position in the source code
    * @param	message		the formatted message
@@ -94,4 +95,9 @@ public class CWarning extends PositionedError {
   public int getSeverityLevel() {
     return getFormattedMessage().getDescription().getLevel();
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 5284372577017854576L;
+
 }

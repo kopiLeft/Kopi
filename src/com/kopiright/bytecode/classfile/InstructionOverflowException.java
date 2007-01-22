@@ -25,7 +25,8 @@ package com.kopiright.bytecode.classfile;
  */
 public class InstructionOverflowException extends ClassFileFormatException {
 
-  /**
+  
+/**
    * Constructs a class file read exception
    */
   public InstructionOverflowException() {
@@ -51,4 +52,9 @@ public class InstructionOverflowException extends ClassFileFormatException {
   }
 
   private String        method;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3143345393219503389L;
+
 }

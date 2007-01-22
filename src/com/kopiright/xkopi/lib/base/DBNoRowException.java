@@ -25,7 +25,8 @@ public class DBNoRowException extends DBRuntimeException {
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructs an exception with a message.
    */
   public DBNoRowException() {
@@ -40,4 +41,9 @@ public class DBNoRowException extends DBRuntimeException {
   public DBNoRowException(String query) {
     super("No row : " + query);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -2263264864270351595L;
+
 }

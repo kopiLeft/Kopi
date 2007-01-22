@@ -27,7 +27,8 @@ public class DBConstraintException extends DBException {
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructor
    *
    * @param	original		the original SQLException
@@ -93,4 +94,8 @@ public class DBConstraintException extends DBException {
   // ----------------------------------------------------------------------
 
   private String constraintName;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 3729998951971315389L;
 }

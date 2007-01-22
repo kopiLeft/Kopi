@@ -21,10 +21,15 @@ package com.kopiright.compiler.tools.antlr.runtime;
 
 public class ANTLRException extends Exception {
 
-  public ANTLRException() {
+  
+public ANTLRException() {
     super();
   }
   public ANTLRException(String s) {
     super(s);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6741999937753160332L;
 }

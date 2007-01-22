@@ -24,6 +24,11 @@ import java.sql.SQLException;
 public class DBDuplicateIndexException extends DBConstraintException {
 
   /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -3814852539241442219L;
+
+/**
    * Constructor
    *
    * @param	original		the original SQLException

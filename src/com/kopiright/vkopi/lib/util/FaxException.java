@@ -23,8 +23,8 @@ package com.kopiright.vkopi.lib.util;
  * FaxException 
  */
 public class FaxException extends Exception {
-
-  /**
+  
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -51,4 +51,8 @@ public class FaxException extends Exception {
   public FaxException(Throwable cause) {
     super(cause);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 4346543450486392598L;
 }

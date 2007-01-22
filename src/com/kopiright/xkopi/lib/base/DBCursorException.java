@@ -24,8 +24,8 @@ public class DBCursorException extends DBRuntimeException {
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
-
-  /**
+  
+/**
    * Constructs an exception with a message.
    */
   public DBCursorException(String message) {
@@ -41,4 +41,8 @@ public class DBCursorException extends DBRuntimeException {
   public DBCursorException(String query, String message) {
     super(message + " : " + query);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6688435101441855356L;
 }

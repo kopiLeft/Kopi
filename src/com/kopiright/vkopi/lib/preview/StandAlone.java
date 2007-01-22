@@ -131,7 +131,12 @@ public class StandAlone {
     }
 
     new Application(new ApplicationDefaultsAdapter()) {
-        public DBContext login(String database, String driver, String username, String password) {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 4431252746433071286L;
+
+		public DBContext login(String database, String driver, String username, String password) {
           return null;
         }
       };

@@ -51,7 +51,8 @@ public class DMultiBlock extends DChartBlock {
    * ----------------------------------------------------------------------
    */
 
-  /**
+  
+/**
    * Constructor
    */
   public DMultiBlock(DForm form, VBlock model) {
@@ -66,7 +67,12 @@ public class DMultiBlock extends DChartBlock {
     final Box                   buttonBox = Box.createVerticalBox();
 
     layeredPane = new JLayeredPane() {
-        public Dimension getPreferredSize() {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -3239511954723094795L;
+		
+		public Dimension getPreferredSize() {
           Dimension dim1 = chartPane.getPreferredSize();
           Dimension dim2 = detailLayerPane.getPreferredSize();
           Dimension dim = new Dimension();
@@ -333,7 +339,8 @@ public class DMultiBlock extends DChartBlock {
 
   class MoveButton extends JButton {
 
-    public MoveButton(int type) {
+   
+	public MoveButton(int type) {
       this.type = type;
       setRolloverEnabled(true);
       setPreferredSize(new Dimension(19, 19));
@@ -387,11 +394,17 @@ public class DMultiBlock extends DChartBlock {
     static final int    NEXT    = 3;
     static final int    LAST    = 4;
     static final int    CHART   = 5;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 8191153295175831772L;
   }
 
   class DetailButton extends JButton implements BlockListener, ActionListener {
 
-    public DetailButton(int row) {
+   
+
+	public DetailButton(int row) {
       this.row = row;
       setRolloverEnabled(true);
       addActionListener(this);
@@ -429,6 +442,7 @@ public class DMultiBlock extends DChartBlock {
             switchView(row);
           }  
         });
+      
     }
 
     // -------------------------------------------------------------------
@@ -456,6 +470,10 @@ public class DMultiBlock extends DChartBlock {
     public Component getCurrentDisplay() { return null;}
 
     private int row;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -5697549910970340950L;
   }
 
 //   class PositionLabel extends JLabel implements BlockListener {
@@ -516,4 +534,8 @@ public class DMultiBlock extends DChartBlock {
   private static final Color    color_border_chart_active = UIManager.getColor("KopiField.ul.chart.active");
   private static final Color    color_back          = UIManager.getColor("KopiField.background.skipped.color");
   private static final Color    color_line  = UIManager.getColor("KopiField.ul.color");
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3830738652737328391L;
 }

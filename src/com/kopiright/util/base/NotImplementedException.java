@@ -24,8 +24,8 @@ package com.kopiright.util.base;
  * is requested.
  */
 public class NotImplementedException extends RuntimeException {
-
-  /**
+  
+/**
    * Constructs am NotImplementedException with no specified detail message.
    */
   public NotImplementedException() {
@@ -40,4 +40,9 @@ public class NotImplementedException extends RuntimeException {
   public NotImplementedException(String message) {
     super(message);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 6184712181770273038L;
+
 }

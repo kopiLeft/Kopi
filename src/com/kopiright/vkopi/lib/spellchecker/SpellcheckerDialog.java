@@ -47,7 +47,8 @@ import javax.swing.event.ListSelectionListener;
 import com.kopiright.vkopi.lib.util.Message;
 
 public class SpellcheckerDialog extends JDialog {
-  public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker) {
+  
+public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker) {
     super( owner );
     this.spellChecker = spellchecker;
     setModal(true);
@@ -169,17 +170,23 @@ public class SpellcheckerDialog extends JDialog {
   }
 
   private class CancelAction extends AbstractAction {
-    private CancelAction() {
+    
+	private CancelAction() {
       super(Message.getMessage("aspell-dialog-cancel"));
     }
 
     public void actionPerformed(ActionEvent event) {
       dispose();
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 9054956716054138769L;
   }
 
   private class ChangeAction extends AbstractAction {
-    private ChangeAction() {
+    
+	private ChangeAction() {
       super(Message.getMessage("aspell-dialog-change"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_C));
@@ -189,10 +196,15 @@ public class SpellcheckerDialog extends JDialog {
       spellChecker.change(getSelectedWord());
       checkNext();
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -9046898360749709345L;
   }
 
   private class ChangeAllAction extends AbstractAction {
-    private ChangeAllAction() {
+    
+	private ChangeAllAction() {
       super(Message.getMessage("aspell-dialog-change-all"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_L));
@@ -202,10 +214,15 @@ public class SpellcheckerDialog extends JDialog {
       spellChecker.changeAll(getSelectedWord());
       checkNext();
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 8492059401975099177L;  
   }
 
   private class IgnoreAction extends AbstractAction {
-    private IgnoreAction() {
+    
+	private IgnoreAction() {
       super(Message.getMessage("aspell-dialog-ignore"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_I));
@@ -215,10 +232,15 @@ public class SpellcheckerDialog extends JDialog {
       spellChecker.ignore(getSelectedWord());
       checkNext();
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -5969056223868591429L;
   }
 
   private class IgnoreAllAction extends AbstractAction {
-    private IgnoreAllAction() {
+    
+	private IgnoreAllAction() {
       super(Message.getMessage("aspell-dialog-ignore-all"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_G));
@@ -228,6 +250,10 @@ public class SpellcheckerDialog extends JDialog {
       spellChecker.ignoreAll(getSelectedWord());
       checkNext();
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3082583855533470939L;
   }
 
   private class CloseDialogActionListener implements ActionListener {
@@ -252,4 +278,8 @@ public class SpellcheckerDialog extends JDialog {
   private JTextField            changeTo;
   private JTextField            originalWordTextField;
   private JList                 suggestionsList;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -220369137180783262L;
 }

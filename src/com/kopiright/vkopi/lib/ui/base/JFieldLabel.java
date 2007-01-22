@@ -26,7 +26,8 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 public class JFieldLabel extends JLabel implements FieldStates {
-  /**
+  
+/**
    * Creates a <code>JFieldLabel</code> instance with the specified text.
    * The label is for fields in a form
    *
@@ -74,4 +75,8 @@ public class JFieldLabel extends JLabel implements FieldStates {
   private int           state;
   private static int    TXT_Y_SPACE = UIManager.getInt("FieldText.y.space");
   private static int    TXT_X_SPACE = UIManager.getInt("KopiLabel.x.space");
- }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8885234047322326209L; 
+}

@@ -118,8 +118,8 @@ public abstract class DObjectField extends DField {
    *
    */
   static class Navigator extends AbstractAction {
-
-    Navigator(int keyCode) {
+    	
+	Navigator(int keyCode) {
       super("navigation-key");
       this.keyCode = keyCode;
     }
@@ -195,6 +195,11 @@ public abstract class DObjectField extends DField {
     }
 
     private	int		keyCode;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -4243258834913065429L;
+
   }
 
   // ----------------------------------------------------------------------
@@ -208,4 +213,8 @@ public abstract class DObjectField extends DField {
   private static final int	KEY_REC_FIRST		= 4;
   private static final int	KEY_REC_LAST		= 5;
   private static final int	KEY_BLOCK		= 6;
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -4243258834913065429L;
 }

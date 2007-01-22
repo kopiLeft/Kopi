@@ -32,8 +32,8 @@ import com.kopiright.vkopi.lib.util.MultiLineToolTip;
  * !!! NEED COMMENTS
  */
 public class DLabel extends JFieldLabel {
-
-  /**
+  
+/**
    * Constructor
    */
   public DLabel(String text, String help) {
@@ -150,5 +150,8 @@ public class DLabel extends JFieldLabel {
       setFont(UIManager.getFont("snapshot.font.dialog"));
     }
   }
-
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -8806871660434906097L;
 }

@@ -124,7 +124,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   private void installKeyMapping() {
     // 'CNTL n' -> 'down'
     registerKeyboardAction(new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 5542024298880296191L;
+
+		public void actionPerformed(ActionEvent e) {
           ((Component) e.getSource()).dispatchEvent(new KeyEvent((Component) e.getSource(),
                                      KeyEvent.KEY_PRESSED,
                                      e.getWhen(),
@@ -137,7 +142,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
     // 'CNTL p' -> 'up'
     registerKeyboardAction(new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 7162561739019316550L;
+
+		public void actionPerformed(ActionEvent e) {
           ((Component) e.getSource()).dispatchEvent(new KeyEvent((Component) e.getSource(),
                                      KeyEvent.KEY_PRESSED,
                                      e.getWhen(),
@@ -150,7 +160,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
     // 'CNTL s' -> 'left'
     registerKeyboardAction(new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 156538846733910281L;
+
+		public void actionPerformed(ActionEvent e) {
           ((Component) e.getSource()).dispatchEvent(new KeyEvent((Component) e.getSource(),
                                      KeyEvent.KEY_PRESSED,
                                      e.getWhen(),
@@ -163,7 +178,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
     // 'CNTL e' -> 'right'
     registerKeyboardAction(new AbstractAction() {
-        public void actionPerformed(ActionEvent e) {
+        /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 6571246407660269667L;
+
+		public void actionPerformed(ActionEvent e) {
           ((Component) e.getSource()).dispatchEvent(new KeyEvent((Component) e.getSource(),
                                      KeyEvent.KEY_PRESSED,
                                      e.getWhen(),
@@ -571,7 +591,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   }
 
   public class UndoAction extends AbstractAction {
-    public UndoAction() {
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 4341094988092005822L;
+
+	public UndoAction() {
       super("Undo");
       this.setEnabled(false);
     }
@@ -598,7 +623,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   }
 
   public class RedoAction extends AbstractAction {
-    public RedoAction() {
+    
+	public RedoAction() {
       super("Redo");
       this.setEnabled(false);
     }
@@ -624,6 +650,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 	putValue(Action.NAME, Message.getMessage("item-redo"));
       }
     }
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -8042055084991466893L;
+
   }
 
   // This one listens for edits that can be undone.
@@ -1130,7 +1161,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
     closeOptionPaneWith = -1;
     pane.registerKeyboardAction(new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = 8837346594485054607L;
+
+	public void actionPerformed(ActionEvent e) {
 	closeOptionPaneWith = 0;
 	dialog.dispose();
       }},
@@ -1139,7 +1175,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       JComponent.WHEN_IN_FOCUSED_WINDOW);
 
     pane.registerKeyboardAction(new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
+      /**
+		 * Comment for <code>serialVersionUID</code>
+		 */
+		private static final long serialVersionUID = -2466568795023067881L;
+
+	public void actionPerformed(ActionEvent e) {
 	closeOptionPaneWith = 1;
 	dialog.dispose();
       }},
@@ -1361,7 +1402,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
   static class Bookmarks extends AbstractAction {
 
-    public Bookmarks(int i) {
+	public Bookmarks(int i) {
       item = i;
     }
 
@@ -1377,6 +1418,10 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     }
 
     int         item;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -836013840309056928L;
   }
 
   static Bookmarks[]      BOOKMARKS;
@@ -1387,6 +1432,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     for (int i=0; i < 10; i++) {
       BOOKMARKS[i] = new Bookmarks(i);
     }
+   
   }
 
   static class KopiFocusManager extends DefaultFocusManager {

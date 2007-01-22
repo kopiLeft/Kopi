@@ -27,7 +27,8 @@ public class DBRuntimeException extends RuntimeException {
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
 
-  /**
+  
+/**
    * Constructs an exception with a message.
    *
    * @param	message		the associated message
@@ -78,4 +79,9 @@ public class DBRuntimeException extends RuntimeException {
                      : ""),
           exc);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = -799443900280710097L;
+
 }

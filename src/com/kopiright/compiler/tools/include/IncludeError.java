@@ -31,8 +31,8 @@ public class IncludeError extends FormattedException {
   // --------------------------------------------------------------------
   // CONSTRUCTORS
   // --------------------------------------------------------------------
-
-  /**
+  
+/**
    * An exception with a formatted message as argument
    * @param	message		the formatted message
    */
@@ -75,4 +75,8 @@ public class IncludeError extends FormattedException {
   public IncludeError(MessageDescription description) {
     super(description);
   }
+  /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+  private static final long serialVersionUID = 7093266824818505170L;
 }
