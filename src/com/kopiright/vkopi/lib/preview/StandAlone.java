@@ -124,22 +124,22 @@ public class StandAlone {
     }
 
     try {
-      UIManager.setLookAndFeel(new com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel());//UIManager.getSystemLookAndFeelClassName());
+      UIManager.setLookAndFeel(new com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel());
     } catch (Exception e) {
       System.err.println("Undefined look and feel: Kopi Look & Feel must be installed!");
       System.exit(1);
     }
 
-    new Application(new ApplicationDefaultsAdapter()) {
-        /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = 4431252746433071286L;
-
-		public DBContext login(String database, String driver, String username, String password) {
-          return null;
-        }
-      };
+    new Application(new ApplicationDefaultsAdapter(), null) {
+      /**
+       * Comment for <code>serialVersionUID</code>
+       */
+      private static final long serialVersionUID = 4431252746433071286L;
+      
+      public DBContext login(String database, String driver, String username, String password) {
+        return null;
+      }
+    };
     new StandAlone(argv[0]);
   }
 
