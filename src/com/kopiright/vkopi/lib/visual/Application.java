@@ -57,13 +57,6 @@ public abstract class Application extends java.applet.Applet implements MessageL
     this.registry = registry;
   }
 
-  /**
-   * Constructor, show splashscreen
-   */
-  public Application(ApplicationDefaults defaults) {
-    this(defaults, null);
-  }
-
   // ---------------------------------------------------------------------
   // ACCESSORS
   // ---------------------------------------------------------------------
