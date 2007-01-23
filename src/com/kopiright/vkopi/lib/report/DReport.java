@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.report;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -337,7 +338,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 	int	mod = e.getModifiers();
 	int	column	= table.columnAtPoint(e.getPoint());
 
-        if ((mod & MouseEvent.BUTTON2_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) { 
+        if ((mod & InputEvent.BUTTON2_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) { 
           if (e.getClickCount() == 2) {
             if (currentModel.isRowLine(row)) {
               try {
@@ -359,7 +360,7 @@ public class DReport extends DWindow implements TableCellRenderer {
               }
             }
           }
-        } else if ((mod & MouseEvent.BUTTON1_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) { 
+        } else if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) { 
           setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
           int index = table.convertColumnIndexToModel(column);
           
@@ -369,7 +370,7 @@ public class DReport extends DWindow implements TableCellRenderer {
             currentModel.foldingColumn(index);
           }  
           setCursor(Cursor.getDefaultCursor());
-        } else if ((mod & MouseEvent.BUTTON1_MASK) == 0 && (mod & MouseEvent.BUTTON2_MASK) == 0) { 
+        } else if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON2_MASK) == 0) { 
           if (row >= 0) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int index = table.convertColumnIndexToModel(column);
@@ -388,15 +389,15 @@ public class DReport extends DWindow implements TableCellRenderer {
 	int	row	= table.rowAtPoint(e.getPoint());
 	int	column	= table.columnAtPoint(e.getPoint());
 
-	if ((mod & MouseEvent.BUTTON2_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) {
+	if ((mod & InputEvent.BUTTON2_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) {
 	  // button 1 pressed
-	  if ((mod & MouseEvent.CTRL_MASK) != 0 && (mod & MouseEvent.SHIFT_MASK) != 0) {
+	  if ((mod & InputEvent.CTRL_MASK) != 0 && (mod & InputEvent.SHIFT_MASK) != 0) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int index = table.convertColumnIndexToModel(column);
             
             currentModel.sortColumn(index);
             setCursor(Cursor.getDefaultCursor());
-	  } else if ((mod & MouseEvent.CTRL_MASK) != 0) {
+	  } else if ((mod & InputEvent.CTRL_MASK) != 0) {
 	    // CTRL key pressed
 	    if (row >= 0) {
 	      setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -408,7 +409,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 	      }
 	      setCursor(Cursor.getDefaultCursor());
 	    }
-	  } else if ((mod & MouseEvent.SHIFT_MASK) != 0) {
+	  } else if ((mod & InputEvent.SHIFT_MASK) != 0) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int index = table.convertColumnIndexToModel(column);
             
@@ -430,8 +431,8 @@ public class DReport extends DWindow implements TableCellRenderer {
 
 	columnMove = false;
 	fromIndex  = column;
-	if ((mod & MouseEvent.BUTTON2_MASK) == 0 && (mod & MouseEvent.BUTTON3_MASK) == 0) {
-	  if ((mod & MouseEvent.CTRL_MASK) != 0) {
+	if ((mod & InputEvent.BUTTON2_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) {
+	  if ((mod & InputEvent.CTRL_MASK) != 0) {
 	    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	    int index = table.convertColumnIndexToModel(column);
 	    if (currentModel.isColumnFold(index)) {
@@ -440,7 +441,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 	      currentModel.foldingColumn(index);
 	    }
 	    setCursor(Cursor.getDefaultCursor());
-	  } else if ((mod & MouseEvent.SHIFT_MASK) != 0) {
+	  } else if ((mod & InputEvent.SHIFT_MASK) != 0) {
 	    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	    currentModel.sortColumn(table.convertColumnIndexToModel(column));
 	    setCursor(Cursor.getDefaultCursor());

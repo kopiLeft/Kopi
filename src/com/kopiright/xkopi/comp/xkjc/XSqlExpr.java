@@ -52,7 +52,7 @@ public class XSqlExpr extends XExpression {
    * @return the type of this expression
    */
   public CType getType(TypeFactory factory) {
-    return factory.createReferenceType(XTypeFactory.RFT_STRING);
+    return factory.createReferenceType(TypeFactory.RFT_STRING);
   }
 
   /**

@@ -73,7 +73,7 @@ public class KopiPreconditionStatement extends JStatement {
 
     if ((!method.isStatic()) && (!method.isPrivate()) && (superMethods.length > 0)) {
       for(int idx=0; idx < superMethods.length; idx++) {
-        boolean         isInInterface = (superMethods[idx].getOwner().getIdent()).endsWith(LanguageExtensions.IDENT_CLASS_ASSERT);
+        boolean         isInInterface = (superMethods[idx].getOwner().getIdent()).endsWith(Constants.IDENT_CLASS_ASSERT);
 
         JExpression[]   params = new JExpression[parameters.length+1]; //((isInInterface)?1:0)];
         JExpression     prefix;

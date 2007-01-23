@@ -54,7 +54,7 @@ public final class CodeSequence extends com.kopiright.util.base.Utils implements
    */
   public static CodeSequence getCodeSequence() {
     CodeSequence	seq;
-    if (!Constants.ENV_USE_CACHE || stack.empty()) {
+    if (!com.kopiright.bytecode.classfile.Constants.ENV_USE_CACHE || stack.empty()) {
       seq = new CodeSequence();
     } else {
       seq = (CodeSequence)stack.pop();
@@ -70,7 +70,7 @@ public final class CodeSequence extends com.kopiright.util.base.Utils implements
    * Release a code sequence
    */
   public void release() {
-    if (Constants.ENV_USE_CACHE) {
+    if (com.kopiright.bytecode.classfile.Constants.ENV_USE_CACHE) {
       stack.push(this);
       handlers.clear();
       lines.clear();
@@ -434,7 +434,7 @@ public final class CodeSequence extends com.kopiright.util.base.Utils implements
     // if there is a label planted as last instruction, add a dummy
     // instruction at the end: it will never be reached
     if (labelAtEnd) {
-      plantNoArgInstruction(Constants.opc_nop);
+      plantNoArgInstruction(com.kopiright.bytecode.classfile.Constants.opc_nop);
     }
 
     try {

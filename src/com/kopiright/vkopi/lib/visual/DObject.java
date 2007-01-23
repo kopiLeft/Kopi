@@ -38,7 +38,7 @@ public class DObject {
   public static final Frame     phantom = new Frame();
 
   static {
-    ImageIcon		icon = Utils.getImage("window.gif");
+    ImageIcon		icon = com.kopiright.vkopi.lib.util.Utils.getImage("window.gif");
     windowIcon = icon.getImage();
     if (windowIcon.getHeight(null) <= 0) {
       windowIcon = null;

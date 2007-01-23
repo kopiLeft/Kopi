@@ -19,6 +19,7 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
+import com.kopiright.kopi.comp.kjc.Constants;
 import com.kopiright.kopi.comp.kjc.JDivideExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.CExpressionContext;
@@ -62,7 +63,7 @@ public class XDivideExpression extends JDivideExpression {
     try {
       return super.analyse(context);
     } catch (PositionedError e) {
-      return XUtils.fetchBinaryOverloadedOperator(XConstants.OPE_SLASH,
+      return XUtils.fetchBinaryOverloadedOperator(Constants.OPE_SLASH,
 						  context,
 						  left,
 						  right,

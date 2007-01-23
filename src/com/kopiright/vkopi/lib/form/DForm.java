@@ -59,8 +59,10 @@ import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullTime;
+import com.kopiright.xkopi.lib.type.Time;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -557,7 +559,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     File                        file;
     
     try {      
-      file = Utils.getTempFile("kopi", "srn");
+      file = com.kopiright.vkopi.lib.util.Utils.getTempFile("kopi", "srn");
 
       PdfWriter         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
             
@@ -578,7 +580,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
       PdfPTable       foot = new PdfPTable(2);
                 
       foot.addCell(createCell(((VForm)getModel()).getName(), 7, Color.black, Color.white, Element.ALIGN_LEFT, false));
-      foot.addCell(createCell(NotNullDate.now().format("dd.MM.yyyy") + " "+ NotNullTime.now().format("HH:mm"), 
+      foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"), 
                               7, Color.black, Color.white, Element.ALIGN_RIGHT, false));
       foot.setTotalWidth(pageSize.width() - document.leftMargin() - document.rightMargin());
       foot.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin()+foot.getTotalHeight(), cb);

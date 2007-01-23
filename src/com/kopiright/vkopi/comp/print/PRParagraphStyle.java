@@ -28,6 +28,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
+import com.kopiright.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents the definition of a style for a paragraph
@@ -91,24 +92,24 @@ public class PRParagraphStyle extends PRStyle {
       for (int i = 0; i < tabSet.length; i++) {
 	init[i] = tabSet[i].genCode();
       }
-      tabs = PRUtils.createArray(ref, TAB_STOP, init);
+      tabs = VKUtils.createArray(ref, TAB_STOP, init);
     } else {
-      tabs = PRUtils.toExpression(ref, (String)null);
+      tabs = VKUtils.toExpression(ref, (String)null);
     }
 
     JExpression		expr = new JUnqualifiedInstanceCreation(ref,
 							TYPE,
 							new JExpression[] {
-							  PRUtils.toExpression(ref, getIdent()),
-							  PRUtils.toExpression(ref, getParent()),
-							  PRUtils.toExpression(ref, align),
-							  PRUtils.toExpression(ref, indentLeft),
-							  PRUtils.toExpression(ref, borderMode),
-							  PRUtils.toExpression(ref, border),
-							  PRUtils.toExpression(ref, marginLeft),
-							  PRUtils.toExpression(ref, marginRight),
+							  VKUtils.toExpression(ref, getIdent()),
+							  VKUtils.toExpression(ref, getParent()),
+							  VKUtils.toExpression(ref, align),
+							  VKUtils.toExpression(ref, indentLeft),
+							  VKUtils.toExpression(ref, borderMode),
+							  VKUtils.toExpression(ref, border),
+							  VKUtils.toExpression(ref, marginLeft),
+							  VKUtils.toExpression(ref, marginRight),
 							  PRUtils.toExpression(ref, color),
-							  PRUtils.toExpression(ref, noBackground),
+							  VKUtils.toExpression(ref, noBackground),
 							  tabs
 							});
 

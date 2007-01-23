@@ -19,6 +19,7 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
+import com.kopiright.kopi.comp.kjc.Constants;
 import com.kopiright.kopi.comp.kjc.JMultExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.CExpressionContext;
@@ -62,7 +63,7 @@ public class XMultExpression extends JMultExpression {
     try {
       return super.analyse(context);
     } catch (PositionedError e) {
-      return XUtils.fetchBinaryOverloadedOperator(XConstants.OPE_STAR,
+      return XUtils.fetchBinaryOverloadedOperator(Constants.OPE_STAR,
 						  context,
 						  left,
 						  right,

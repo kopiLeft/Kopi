@@ -76,7 +76,7 @@ public class ListDialogCellRenderer implements TableCellRenderer {
         FontMetrics     fm = g.getFontMetrics();
         int             stringWidth = fm.stringWidth(str);
 
-        if (align == JLabel.RIGHT) {
+        if (align == SwingConstants.RIGHT) {
           left = size.width - stringWidth - 2;
           //} else if (align == VConstants.ALG_CENTER) {
             // left = (size.width - DObject.FNT_FIXED_WIDTH * str.length()) / 2 - 2;

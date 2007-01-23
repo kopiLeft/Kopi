@@ -111,7 +111,7 @@ public class VTimestampField extends VField {
     if (((String)o).equals("")) {
       setNull(record);
     } else {
-      setTimestamp(record, NotNullTimestamp.now()); // !!! laurent : TO MODIFY
+      setTimestamp(record, Timestamp.now()); // !!! laurent : TO MODIFY
     }
   }
 

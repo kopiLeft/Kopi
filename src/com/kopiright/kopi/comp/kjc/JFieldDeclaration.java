@@ -128,8 +128,8 @@ public class JFieldDeclaration extends JMemberDeclaration {
      */
     check(context,
           CModifier.getSubsetSize(modifiers,
-                                  Constants.ACC_VOLATILE
-                                  | Constants.ACC_FINAL) <= 1,
+                                  com.kopiright.bytecode.classfile.Constants.ACC_VOLATILE
+                                  | com.kopiright.bytecode.classfile.Constants.ACC_FINAL) <= 1,
           KjcMessages.FIELD_VOLATILE_FINAL,
           variable.getIdent());
 

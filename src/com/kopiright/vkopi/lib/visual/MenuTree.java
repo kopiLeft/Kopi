@@ -567,7 +567,7 @@ public class MenuTree extends DWindow {
       }
     }
 
-    array = (Module[])Utils.toArray(localModules, Module.class);
+    array = (Module[])com.kopiright.util.base.Utils.toArray(localModules, Module.class);
     return array;
   }
 

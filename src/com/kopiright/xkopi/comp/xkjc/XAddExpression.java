@@ -19,6 +19,7 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
+import com.kopiright.kopi.comp.kjc.Constants;
 import com.kopiright.kopi.comp.kjc.JAddExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.CExpressionContext;
@@ -62,7 +63,7 @@ public class XAddExpression extends JAddExpression {
     try {
       return super.analyse(context);
     } catch (PositionedError e) {
-      return XUtils.fetchBinaryOverloadedOperator(XConstants.OPE_PLUS,
+      return XUtils.fetchBinaryOverloadedOperator(Constants.OPE_PLUS,
 						  context,
 						  left,
 						  right,

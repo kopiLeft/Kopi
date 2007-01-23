@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.form;
 
 import java.awt.AWTEvent;
+import java.awt.Adjustable;
 import java.awt.Toolkit;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -58,7 +59,7 @@ public class DChartBlock extends DBlock {
   protected JScrollBar createScrollBar() {
     final JScrollBar          scrollBar;
 
-    scrollBar = new JScrollBar(JScrollBar.VERTICAL,
+    scrollBar = new JScrollBar(Adjustable.VERTICAL,
                                0,
                                getModel().getDisplaySize(),
                                0,

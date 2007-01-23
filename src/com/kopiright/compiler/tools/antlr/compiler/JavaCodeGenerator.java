@@ -928,7 +928,7 @@ public class JavaCodeGenerator {
 	generateNonGreedyExitPath = true;
 	nonGreedyExitDepth = blk.exitLookaheadDepth;
       } else if ( !blk.greedy &&
-		  blk.exitLookaheadDepth==LLkGrammarAnalyzer.NONDETERMINISTIC )
+		  blk.exitLookaheadDepth==GrammarAnalyzer.NONDETERMINISTIC )
 	{
 	  generateNonGreedyExitPath = true;
 	}
@@ -1261,7 +1261,7 @@ public class JavaCodeGenerator {
 	generateNonGreedyExitPath = true;
 	nonGreedyExitDepth = blk.exitLookaheadDepth;
       } else if ( !blk.greedy &&
-		  blk.exitLookaheadDepth==LLkGrammarAnalyzer.NONDETERMINISTIC )
+		  blk.exitLookaheadDepth==GrammarAnalyzer.NONDETERMINISTIC )
 	{
 	  generateNonGreedyExitPath = true;
 	}
@@ -1813,7 +1813,7 @@ public class JavaCodeGenerator {
    * Generate a header that is common to all Java files
    */
   private void genHeader() {
-    println("// $ANTLR "+tool.version+": "+
+    println("// $ANTLR "+Main.version+": "+
 	    "\""+Utils.fileMinusPath(tool.grammarFile)+"\""+
 	    " -> "+
 	    "\""+grammar.getClassName()+".java\"$");
@@ -2685,7 +2685,7 @@ public class JavaCodeGenerator {
    * @return A string representing the mangled literal, or null if not possible.
    */
   private String mangleLiteral(String s) {
-    String mangled = tool.literalsPrefix;
+    String mangled = Main.literalsPrefix;
     for (int i = 1; i < s.length()-1; i++) {
       if (!Character.isLetter(s.charAt(i)) &&
 	  s.charAt(i) != '_') {
@@ -2693,7 +2693,7 @@ public class JavaCodeGenerator {
       }
       mangled += s.charAt(i);
     }
-    if (tool.upperCaseMangledLiterals ) {
+    if (Main.upperCaseMangledLiterals ) {
       mangled = mangled.toUpperCase();
     }
     return mangled;

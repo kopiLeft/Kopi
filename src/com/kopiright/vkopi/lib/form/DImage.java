@@ -33,7 +33,7 @@ public class DImage extends JPanel {
    */
   public DImage(String name, int border) {
     setLayout(null);
-    image = Utils.getImage(name);
+    image = com.kopiright.vkopi.lib.util.Utils.getImage(name);
     label = new JLabel();
     label.setIcon(image);
     add(label);

@@ -26,6 +26,7 @@ import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.comp.base.VKContext;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
+import com.kopiright.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents the definition of a block in a page
@@ -95,10 +96,10 @@ public class PRTextStyle extends PRStyle {
     JExpression		expr = new JUnqualifiedInstanceCreation(ref,
 							TYPE,
 							new JExpression[] {
-							  PRUtils.toExpression(ref, getIdent()),
-							  PRUtils.toExpression(ref, font),
-							  PRUtils.toExpression(ref, face),
-							  PRUtils.toExpression(ref, size)
+							  VKUtils.toExpression(ref, getIdent()),
+							  VKUtils.toExpression(ref, font),
+							  VKUtils.toExpression(ref, face),
+							  VKUtils.toExpression(ref, size)
 							});
     expr = new JMethodCallExpression(ref, null, "addStyle", new JExpression[]{ expr });
 

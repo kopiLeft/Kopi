@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.ui.base;
 
 import java.awt.GridLayout;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 import javax.swing.*;
@@ -40,7 +41,7 @@ public JBookmarkPanel(String title) {
     JMenuItem	button = new JMenuItem(action);
 
     if (shortcuts.size() < 10) {
-      button.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+shortcuts.size(), KeyEvent.CTRL_DOWN_MASK));
+      button.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+shortcuts.size(), InputEvent.CTRL_DOWN_MASK));
     }
     buttons.add(button);
     shortcuts.put(action, button);
@@ -57,7 +58,7 @@ public JBookmarkPanel(String title) {
     int         countShortcut = shortcuts.size();
 
     for (int i=0; i < buttons.getComponentCount() && i <10; i++) {
-      ((JMenuItem) buttons.getComponent(i)).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+i, KeyEvent.CTRL_DOWN_MASK));
+      ((JMenuItem) buttons.getComponent(i)).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+i, InputEvent.CTRL_DOWN_MASK));
     }
 
     buttons.setLayout(new GridLayout(countShortcut, 1));

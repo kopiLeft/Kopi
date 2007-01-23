@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.form;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -70,16 +71,16 @@ public abstract class DObjectField extends DField {
   /*package*/ void addNavigationKey() {
     addKey(KEY_TAB, KeyEvent.VK_ENTER, 0);
     addKey(KEY_TAB, KeyEvent.VK_TAB, 0);
-    addKey(KEY_STAB, KeyEvent.VK_TAB, KeyEvent.SHIFT_MASK);
-    addKey(KEY_BLOCK, KeyEvent.VK_ENTER, KeyEvent.SHIFT_MASK);
+    addKey(KEY_STAB, KeyEvent.VK_TAB, InputEvent.SHIFT_MASK);
+    addKey(KEY_BLOCK, KeyEvent.VK_ENTER, InputEvent.SHIFT_MASK);
     addKey(KEY_REC_UP, KeyEvent.VK_PAGE_UP, 0);
     addKey(KEY_REC_DOWN, KeyEvent.VK_PAGE_DOWN, 0);
     addKey(KEY_REC_FIRST, KeyEvent.VK_HOME, 0);
     addKey(KEY_REC_LAST, KeyEvent.VK_END, 0);
-    addKey(KEY_STAB, KeyEvent.VK_LEFT, KeyEvent.CTRL_MASK);
-    addKey(KEY_TAB, KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK);
-    addKey(KEY_REC_UP, KeyEvent.VK_UP, KeyEvent.CTRL_MASK);
-    addKey(KEY_REC_DOWN, KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK);
+    addKey(KEY_STAB, KeyEvent.VK_LEFT, InputEvent.CTRL_MASK);
+    addKey(KEY_TAB, KeyEvent.VK_RIGHT, InputEvent.CTRL_MASK);
+    addKey(KEY_REC_UP, KeyEvent.VK_UP, InputEvent.CTRL_MASK);
+    addKey(KEY_REC_DOWN, KeyEvent.VK_DOWN, InputEvent.CTRL_MASK);
   }
 
   /**

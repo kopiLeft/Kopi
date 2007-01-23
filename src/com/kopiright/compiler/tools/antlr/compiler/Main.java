@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 
+import com.kopiright.compiler.base.CompilerMessages;
 import com.kopiright.compiler.tools.antlr.runtime.FileLineFormatter;
 import com.kopiright.compiler.tools.antlr.runtime.RecognitionException;
 import com.kopiright.compiler.tools.antlr.runtime.TokenBuffer;
@@ -96,7 +97,7 @@ public class Main {
     }
     if (options.nonOptions.length == 0) {
       options.usage();
-      inform(AntlrMessages.NO_INPUT_FILE);
+      inform(CompilerMessages.NO_INPUT_FILE);
       return false;
     }
     return true;

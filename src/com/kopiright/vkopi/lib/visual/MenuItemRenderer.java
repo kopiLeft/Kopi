@@ -130,19 +130,19 @@ class MenuItemRenderer extends JLabel implements TreeCellRenderer {
   private static Color          CLR_FOCUS_BACK;
 
   static {
-    collapsedIcon = Utils.getImage("collapsed.gif");
-    expandedIcon = Utils.getImage("expanded.gif");
-    formIcon = Utils.getImage("form.gif");
-    selectedFormIcon = Utils.getImage("forms.png");
-    collapsedIcon_F = Utils.getImage("collapsed_f.gif");
-    expandedIcon_F = Utils.getImage("expanded_f.gif");
-    formIcon_F = Utils.getImage("form_f.gif");
-    selectedFormIcon_F = Utils.getImage("forms_f.gif");
-    collapsedIcon_T = Utils.getImage("collapsed_t.gif");
-    expandedIcon_T = Utils.getImage("expanded_t.gif");
-    formIcon_T = Utils.getImage("form_t.gif");
-    selectedFormIcon_T = Utils.getImage("forms_t.gif");
-    rootIcon = Utils.getImage("desk.gif");
+    collapsedIcon = com.kopiright.vkopi.lib.util.Utils.getImage("collapsed.gif");
+    expandedIcon = com.kopiright.vkopi.lib.util.Utils.getImage("expanded.gif");
+    formIcon = com.kopiright.vkopi.lib.util.Utils.getImage("form.gif");
+    selectedFormIcon = com.kopiright.vkopi.lib.util.Utils.getImage("forms.png");
+    collapsedIcon_F = com.kopiright.vkopi.lib.util.Utils.getImage("collapsed_f.gif");
+    expandedIcon_F = com.kopiright.vkopi.lib.util.Utils.getImage("expanded_f.gif");
+    formIcon_F = com.kopiright.vkopi.lib.util.Utils.getImage("form_f.gif");
+    selectedFormIcon_F = com.kopiright.vkopi.lib.util.Utils.getImage("forms_f.gif");
+    collapsedIcon_T = com.kopiright.vkopi.lib.util.Utils.getImage("collapsed_t.gif");
+    expandedIcon_T = com.kopiright.vkopi.lib.util.Utils.getImage("expanded_t.gif");
+    formIcon_T = com.kopiright.vkopi.lib.util.Utils.getImage("form_t.gif");
+    selectedFormIcon_T = com.kopiright.vkopi.lib.util.Utils.getImage("forms_t.gif");
+    rootIcon = com.kopiright.vkopi.lib.util.Utils.getImage("desk.gif");
     if (rootIcon != null) {
       rootIcon = new ImageIcon(rootIcon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH));
     }

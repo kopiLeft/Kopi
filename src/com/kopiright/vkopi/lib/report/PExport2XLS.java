@@ -45,6 +45,7 @@ import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Month;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullTime;
+import com.kopiright.xkopi.lib.type.Time;
 import com.kopiright.xkopi.lib.type.Week;
 
 public class PExport2XLS extends PExport implements Constants {
@@ -110,7 +111,7 @@ public class PExport2XLS extends PExport implements Constants {
     header.setLeft(getTitle());
     
     footer.setLeft(getTitle() + " - Seite " + HSSFFooter.page() + " / " + HSSFFooter.numPages() );
-    footer.setRight(NotNullDate.now().format("dd.MM.yyyy") + " "+ NotNullTime.now().format("HH:mm"));
+    footer.setRight(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"));
     sheetIndex += 1;
 
     HSSFPrintSetup ps = sheet.getPrintSetup();

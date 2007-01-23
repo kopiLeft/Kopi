@@ -19,6 +19,8 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
+import java.awt.Color;
+
 import com.kopiright.vkopi.lib.util.PropertyManager;
 
 import javax.swing.UIDefaults;
@@ -65,7 +67,7 @@ public class KopiUserColors {
   public ColorUIResource getUserColor(String key, ColorUIResource def) {
     String               val = resources.getString(key);
     
-    return  (val == null)? def : new ColorUIResource(ColorUIResource.decode(val));
+    return  (val == null)? def : new ColorUIResource(Color.decode(val));
   }
 
   private PropertyManager       resources;

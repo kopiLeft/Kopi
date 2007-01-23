@@ -23,6 +23,7 @@ import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.vkopi.comp.base.VKContext;
+import com.kopiright.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents the definition of a block in a page
@@ -93,11 +94,11 @@ public class PRTextBlock extends PRBlock {
     superCall = new JConstructorCall(getTokenReference(),
 				     false,
 				     new JExpression[] {
-				       PRUtils.toExpression(getTokenReference(), getIdent()),
+				       VKUtils.toExpression(getTokenReference(), getIdent()),
 				       getPosition().genPosition(),
 				       getPosition().genSize(),
 				       getStyle() == null ? new JNullLiteral(getTokenReference()) : getStyle().getStyle(),
-				       PRUtils.toExpression(getTokenReference(), rec)
+				       VKUtils.toExpression(getTokenReference(), rec)
 				     });
 
     JConstructorDeclaration cstr = new JConstructorDeclaration(ref,

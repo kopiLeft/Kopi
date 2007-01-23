@@ -283,7 +283,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
     g.drawRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
     g.setColor(trackColor);
 
-    if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
+    if (scrollbar.getOrientation() == Adjustable.VERTICAL) {
       gp = new GradientPaint(trackBounds.x,
                              trackBounds.y,
                              trackColor,
@@ -310,7 +310,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
     boolean             leftToRight = c.getComponentOrientation().isLeftToRight();;
     
     g.translate( thumbBounds.x, thumbBounds.y );
-    if ( scrollbar.getOrientation() == JScrollBar.VERTICAL ) {
+    if ( scrollbar.getOrientation() == Adjustable.VERTICAL ) {
       if ( !isFreeStanding ) {
         if ( !leftToRight ) {
           thumbBounds.width += 1;
@@ -411,7 +411,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
   protected class KopiTrackListener extends BasicScrollBarUI.TrackListener
   {
     public void mousePressed(MouseEvent e) {
-      final Window  window = FocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+      final Window  window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
       
       window.addFocusListener(new FocusAdapter() {
           public void focusLost(FocusEvent e) {
@@ -431,7 +431,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
   }
   protected class ArrowButtonListener extends BasicScrollBarUI.ArrowButtonListener {		
     public void mousePressed(MouseEvent e) {
-      final Window  window = FocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+      final Window  window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
 
       window.addFocusListener(new FocusAdapter() {
           public void focusLost(FocusEvent e) {
@@ -460,7 +460,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
     }
 					
     public void actionPerformed(ActionEvent e) {
-      if (!isChildOf(FocusManager.getCurrentKeyboardFocusManager().getFocusedWindow())) {
+      if (!isChildOf(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow())) {
         /*
          * WORK AROUND: 20021126
          * 

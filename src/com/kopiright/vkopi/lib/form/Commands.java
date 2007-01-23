@@ -26,6 +26,7 @@ import com.kopiright.vkopi.lib.util.KnownBugs;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.vkopi.lib.visual.VWindow;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
 
@@ -65,7 +66,7 @@ public class Commands implements VConstants {
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur in form.close()
    */
   public static void quitForm(VForm form) {
-    quitForm(form, VForm.CDE_QUIT);
+    quitForm(form, VWindow.CDE_QUIT);
   }
 
   /*
@@ -487,7 +488,7 @@ public class Commands implements VConstants {
 
     if (form instanceof VDictionaryForm) {  // !!!until inheritence of commands
       if (((VDictionaryForm)form).isNewRecord()) {
-	form.close(VForm.CDE_VALIDATE);
+	form.close(VWindow.CDE_VALIDATE);
 	return;
       } else if (((VDictionaryForm)form).isRecursiveQuery() ||
 		 ((VDictionaryForm)form).isMenuQuery()) {

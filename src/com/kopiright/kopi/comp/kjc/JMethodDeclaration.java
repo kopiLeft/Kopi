@@ -285,7 +285,7 @@ public class JMethodDeclaration extends JMemberDeclaration {
         throw e.addPosition(getTokenReference());
       }
       bridgeParameter[i] = new JFormalParameter(getTokenReference(), 
-                                                JFormalParameter.DES_LOCAL_VAR, 
+                                                JLocalVariable.DES_LOCAL_VAR, 
                                                 btType,
                                                 parameters[i].getIdent(), 
                                                 parameters[i].isFinal());
@@ -322,7 +322,7 @@ public class JMethodDeclaration extends JMemberDeclaration {
                             null);
 
     JMethodDeclaration  bridgeMethod = new JMethodDeclaration(getTokenReference(),
-                                                              ((modifiers | Constants.ACC_ABSTRACT) ^ Constants.ACC_ABSTRACT),
+                                                              ((modifiers | com.kopiright.bytecode.classfile.Constants.ACC_ABSTRACT) ^ com.kopiright.bytecode.classfile.Constants.ACC_ABSTRACT),
                                                               CTypeVariable.EMPTY,
                                                               bridgeType, 
                                                               ident, 

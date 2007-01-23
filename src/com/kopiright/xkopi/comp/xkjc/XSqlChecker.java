@@ -152,7 +152,7 @@ public class XSqlChecker extends com.kopiright.xkopi.comp.sqlc.SqlChecker implem
     TypeFactory         factory = context.getTypeFactory();
 
     cond = cond.analyse(new CExpressionContext(context, context.getEnvironment()));
-    if (cond.getType(factory) != factory.getPrimitiveType(XTypeFactory.PRM_BOOLEAN)) {
+    if (cond.getType(factory) != factory.getPrimitiveType(TypeFactory.PRM_BOOLEAN)) {
       throw new PositionedError(left.getTokenReference(), KjcMessages.IF_COND_NOTBOOLEAN, cond.getType(factory));
     }
 

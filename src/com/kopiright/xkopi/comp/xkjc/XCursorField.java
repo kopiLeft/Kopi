@@ -136,7 +136,7 @@ public class XCursorField extends CSourceField {
 	break;
       }
 
-      if (type.equals(factory.createReferenceType(XTypeFactory.RFT_STRING))) {
+      if (type.equals(factory.createReferenceType(TypeFactory.RFT_STRING))) {
 	name = "String";
       } else if (type.equals(factory.createReferenceType(XTypeFactory.RFT_DATE))) {
 	name = "Date";

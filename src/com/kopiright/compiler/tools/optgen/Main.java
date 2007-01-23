@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import com.kopiright.compiler.base.CompilerMessages;
+
 /**
  * This class is the entry point for the Message generator.
  */
@@ -82,7 +84,7 @@ public class Main {
       return false;
     }
     if (options.nonOptions.length == 0) {
-      System.err.println(OptgenMessages.NO_INPUT_FILE.getFormat());
+      System.err.println(CompilerMessages.NO_INPUT_FILE.getFormat());
       options.usage();
       return false;
     }

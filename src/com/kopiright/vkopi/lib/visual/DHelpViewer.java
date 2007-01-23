@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.Document;
@@ -72,8 +73,8 @@ import javax.swing.text.Document;
     html.addHyperlinkListener(this);
 
     JScrollPane         scroller = new JScrollPane(html,
-                                                   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                                   JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                                                   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                                   ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     scroller.setPreferredSize(new Dimension(600, 500));
     getContentPanel().add(scroller, BorderLayout.CENTER);
   }

@@ -334,7 +334,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * Displays the splash screen.
    */
   private void displaySplashScreen() {
-    ImageIcon		img = Utils.getImage("splash.jpg");
+    ImageIcon		img = com.kopiright.vkopi.lib.util.Utils.getImage("splash.jpg");
 
     if (img != null) {
       splash = new SplashScreen(img.getImage(), null);

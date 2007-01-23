@@ -140,7 +140,7 @@ public class ApplicationDefaultsAdapter implements ApplicationDefaults {
     // 20020501 laurent : I have added to be sure backward compliant :
     // this temp file will not be deleted at the end of the application,
     // but perhaps it should be set to true.
-    return Utils.getTempFile(prefix, extension, false);
+    return com.kopiright.vkopi.lib.util.Utils.getTempFile(prefix, extension, false);
   }
 
   /**

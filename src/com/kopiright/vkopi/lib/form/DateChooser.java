@@ -66,7 +66,7 @@ public class DateChooser extends JPanel implements ActionListener {
     p1.setLayout(new FlowLayout(FlowLayout.LEFT));
     top.add(p1, BorderLayout.WEST);
 
-    prevMonthButton = new JButton(Utils.getImage("arrowleft.gif"));
+    prevMonthButton = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowleft.gif"));
     prevMonthButton.setRequestFocusEnabled(false);
     prevMonthButton.setMargin(emptyInsets);
     prevMonthButton.setFocusPainted(false);
@@ -74,7 +74,7 @@ public class DateChooser extends JPanel implements ActionListener {
     prevMonthButton.addActionListener(this);
     p1.add(prevMonthButton);
 
-    nextMonthButton = new JButton(Utils.getImage("arrowright.gif"));
+    nextMonthButton = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowright.gif"));
     nextMonthButton.setRequestFocusEnabled(false);
     nextMonthButton.setMargin(emptyInsets);
     nextMonthButton.setFocusPainted(false);
@@ -96,7 +96,7 @@ public class DateChooser extends JPanel implements ActionListener {
     yearLabel.setOpaque(false);
     p2.add(yearLabel);
 
-    prevYearButton = new JButton(Utils.getImage("arrowleft.gif"));
+    prevYearButton = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowleft.gif"));
     prevYearButton.setRequestFocusEnabled(false);
     prevYearButton.setMargin(emptyInsets);
     prevYearButton.setFocusPainted(false);
@@ -104,7 +104,7 @@ public class DateChooser extends JPanel implements ActionListener {
     prevYearButton.addActionListener(this);
     p2.add(prevYearButton);
 
-    nextYearButton = new JButton(Utils.getImage("arrowright.gif"));
+    nextYearButton = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowright.gif"));
     nextYearButton.setRequestFocusEnabled(false);
     nextYearButton.setMargin(emptyInsets);
     nextYearButton.setFocusPainted(false);

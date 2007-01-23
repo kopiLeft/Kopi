@@ -56,7 +56,7 @@ public class Module {
     //!!! graf 2006.01.30: end
     this.access = access;
     if (icon != null) {
-      this.icon = Utils.getImage(icon);
+      this.icon = com.kopiright.vkopi.lib.util.Utils.getImage(icon);
       smallIcon = (ImageIcon)icons.get(icon);
       if (smallIcon == null) {
  	icons.put(icon, smallIcon = new ImageIcon(this.icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH)));

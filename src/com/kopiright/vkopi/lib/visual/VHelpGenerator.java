@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 
@@ -99,7 +100,7 @@ public class VHelpGenerator {
 
     p.println("</TD><TD>");
     if (accMod != 0) {
-      if (accMod == KeyEvent.SHIFT_MASK) {
+      if (accMod == InputEvent.SHIFT_MASK) {
 	p.print("Shift-");
       }
     }

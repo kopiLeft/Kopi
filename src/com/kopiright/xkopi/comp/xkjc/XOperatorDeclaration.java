@@ -73,7 +73,7 @@ public class XOperatorDeclaration extends JMethodDeclaration {
 						      JFormalParameter[] parameters,
 						      CType returnType)
   {
-    if ((oper == XConstants.OPE_CAST) || (oper == XConstants.OPE_SIMPLE)) {
+    if ((oper == XConstants.OPE_CAST) || (oper == Constants.OPE_SIMPLE)) {
       JFormalParameter[] newParameters = new JFormalParameter[parameters.length + 1];
 
       System.arraycopy(parameters, 0, newParameters, 1, parameters.length);

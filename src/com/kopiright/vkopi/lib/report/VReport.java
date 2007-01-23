@@ -52,7 +52,7 @@ public abstract class VReport extends VWindow
   implements Constants, VConstants, Printable {
 
   static {
-    WindowController.getWindowController().registerUIBuilder(Constants.MDL_REPORT, new UIBuilder() {
+    WindowController.getWindowController().registerUIBuilder(com.kopiright.vkopi.lib.visual.Constants.MDL_REPORT, new UIBuilder() {
         public DWindow createView(VWindow model) {
           ((VReport) model).buildDisplay();
           return model.getDisplay();
@@ -61,7 +61,7 @@ public abstract class VReport extends VWindow
   }
 
   public int getType() {
-    return Constants.MDL_REPORT;
+    return com.kopiright.vkopi.lib.visual.Constants.MDL_REPORT;
   }
 
   // ----------------------------------------------------------------------

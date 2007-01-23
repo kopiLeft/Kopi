@@ -19,6 +19,7 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
+import com.kopiright.kopi.comp.kjc.Constants;
 import com.kopiright.kopi.comp.kjc.JBitwiseComplementExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.CExpressionContext;
@@ -57,7 +58,7 @@ public class XBitwiseComplementExpression extends JBitwiseComplementExpression {
     try {
       return super.analyse(context);
     } catch (PositionedError e) {
-      return XUtils.fetchUnaryOverloadedOperator(XConstants.OPE_BNOT,
+      return XUtils.fetchUnaryOverloadedOperator(Constants.OPE_BNOT,
 						 context,
 						 expr,
 						 getTokenReference(),

@@ -316,14 +316,14 @@ class PLayoutEngine {
       int               align;
 
       switch (alignment) {
-      case PBlockStyle.ALN_DEFAULT:
-      case PBlockStyle.ALN_LEFT:
+      case PStyle.ALN_DEFAULT:
+      case PStyle.ALN_LEFT:
         align = PdfContentByte.ALIGN_LEFT;
         break;
-      case PBlockStyle.ALN_RIGHT:
+      case PStyle.ALN_RIGHT:
         align = PdfContentByte.ALIGN_RIGHT;
         break;
-      case PBlockStyle.ALN_CENTER:
+      case PStyle.ALN_CENTER:
         align = PdfContentByte.ALIGN_CENTER;
         break;
 // not supported by PdfContentByte

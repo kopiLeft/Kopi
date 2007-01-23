@@ -122,7 +122,7 @@ public class XAssignmentExpression extends JAssignmentExpression {
 
       overload = new XOverloadedMethodCallExpression(getTokenReference(),
 						     null,
-						     "operator$" + XConstants.OPE_SIMPLE,
+						     "operator$" + Constants.OPE_SIMPLE,
 						     param != null ?
 						     new JExpression[]{ param, right } :
 						     new JExpression[]{ right }

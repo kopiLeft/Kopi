@@ -159,8 +159,8 @@ public class ImageFileChooser {
   // ----------------------------------------------------------------------
 
   private static class ImageFileView extends FileView {
-    javax.swing.ImageIcon jpgIcon = Utils.getImage("jpgIcon.gif");
-    javax.swing.ImageIcon gifIcon = Utils.getImage("gifIcon.gif");
+    javax.swing.ImageIcon jpgIcon = com.kopiright.vkopi.lib.util.Utils.getImage("jpgIcon.gif");
+    javax.swing.ImageIcon gifIcon = com.kopiright.vkopi.lib.util.Utils.getImage("gifIcon.gif");
 
     public String getName(File f) {
       return null; // let the L&F FileView figure this out

@@ -165,7 +165,7 @@ public class Main {
   private void genUtilFiles(String title) throws IOException {
     String              s;
 
-    BufferedReader      i = new BufferedReader(new InputStreamReader(Utils.getFile("titlepage.sty")));
+    BufferedReader      i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("titlepage.sty")));
     PrintWriter         pw = new PrintWriter(new BufferedWriter(new FileWriter("titlepage.sty")));
 
     while ( (s = i.readLine()) != null) {
@@ -173,28 +173,28 @@ public class Main {
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(Utils.getFile("top.tex")));
+    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("top.tex")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("top.tex")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(Utils.getFile("macros.tex")));
+    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("macros.tex")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("macros.tex")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(Utils.getFile("general.tex")));
+    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("general.tex")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("general.tex")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(Utils.getFile("german.ps")));
+    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("german.ps")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("german.ps")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);

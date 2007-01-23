@@ -75,7 +75,7 @@ public class KopiOldValueExpression extends JExpression {
       JFieldDeclaration         fieldDecl = 
         new JFieldDeclaration(getTokenReference(),
                               new JVariableDefinition(getTokenReference(),
-                                                      Constants.ACC_FINAL,
+                                                      com.kopiright.bytecode.classfile.Constants.ACC_FINAL,
                                                       expr.getType(factory),
                                                       fieldName,
                                                       expr),

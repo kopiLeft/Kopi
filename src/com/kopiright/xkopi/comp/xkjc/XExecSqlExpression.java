@@ -84,7 +84,7 @@ public class XExecSqlExpression extends XExpression {
     JExpression[]	exprs = this.expr.getBlobs();
     if (exprs.length > 0) {
       blobs = new JNewArrayExpression(ref,
-				      factory.createReferenceType(XTypeFactory.RFT_OBJECT),
+				      factory.createReferenceType(TypeFactory.RFT_OBJECT),
 				      new JExpression[]{ null },
 				      new JArrayInitializer(ref, exprs));
     } else {

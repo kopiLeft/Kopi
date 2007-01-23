@@ -26,6 +26,7 @@ import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.comp.base.VKPhylum;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
+import com.kopiright.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents the definition of a block in a page
@@ -54,9 +55,9 @@ public class PRTabStop extends VKPhylum {
     return new JUnqualifiedInstanceCreation(ref,
 				    TYPE,
 				    new JExpression[] {
-				      PRUtils.toExpression(ref, ident),
-				      PRUtils.toExpression(ref, pos),
-				      PRUtils.toExpression(ref, align)
+				      VKUtils.toExpression(ref, ident),
+				      VKUtils.toExpression(ref, pos),
+				      VKUtils.toExpression(ref, align)
 				    });
   }
 

@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.list;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
 
@@ -27,10 +28,10 @@ public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
   // ALIGNMENT
   // ---------------------------------------------------------------------
 
-  int ALG_DEFAULT			= JLabel.LEFT;
-  int ALG_LEFT				= JLabel.LEFT;
-  int ALG_CENTER			= JLabel.CENTER;
-  int ALG_RIGHT				= JLabel.RIGHT;
+  int ALG_DEFAULT			= SwingConstants.LEFT;
+  int ALG_LEFT				= SwingConstants.LEFT;
+  int ALG_CENTER			= SwingConstants.CENTER;
+  int ALG_RIGHT				= SwingConstants.RIGHT;
 
 
   String EMPTY_TEXT			= "";

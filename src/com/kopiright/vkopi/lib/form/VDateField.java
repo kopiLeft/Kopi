@@ -141,11 +141,11 @@ public class VDateField extends VField {
     }
 
     if (month == 0) {
-      NotNullDate	now = NotNullDate.now();
+      NotNullDate	now = Date.now();
       month = now.getMonth();
       year  = now.getYear();
     } else if (year == -2) {
-      NotNullDate	now = NotNullDate.now();
+      NotNullDate	now = Date.now();
       year  = now.getYear();
     } else if (year < 50) {
       year += 2000;

@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 
+import com.kopiright.compiler.base.CompilerMessages;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.tools.antlr.runtime.ParserException;
@@ -69,13 +70,13 @@ class DefinitionFile {
 
       return defs;
     } catch (FileNotFoundException e) {
-      throw new MsggenError(MsggenMessages.FILE_NOT_FOUND, sourceFile);
+      throw new MsggenError(CompilerMessages.FILE_NOT_FOUND, sourceFile);
     } catch (IOException e) {
-      throw new MsggenError(MsggenMessages.IO_EXCEPTION, sourceFile, e.getMessage());
+      throw new MsggenError(CompilerMessages.IO_EXCEPTION, sourceFile, e.getMessage());
     } catch (ParserException e) {
-      throw new MsggenError(MsggenMessages.FORMATTED_ERROR,
+      throw new MsggenError(CompilerMessages.FORMATTED_ERROR,
 			    new PositionedError(new TokenReference(sourceFile, e.getLine()),
-						MsggenMessages.SYNTAX_ERROR,
+						CompilerMessages.SYNTAX_ERROR,
 						e.getMessage()));
     }
   }

@@ -24,6 +24,7 @@ import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.PositionedError;
 
 import com.kopiright.vkopi.comp.base.VKContext;
+import com.kopiright.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents the definition of a block in a page
@@ -85,17 +86,17 @@ public class PRRecursiveBlock extends PRBlock {
 
     JExpression[] init = new JExpression[blocks.length];
     for (int i = 0; i < blocks.length; i++) {
-      init[i] = PRUtils.toExpression(ref, blocks[i].getLastIdent());
+      init[i] = VKUtils.toExpression(ref, blocks[i].getLastIdent());
     }
 
     return new JUnqualifiedInstanceCreation(ref,
 				    TYPE,
 				    new JExpression[] {
-				      PRUtils.toExpression(getTokenReference(), getIdent()),
+				      VKUtils.toExpression(getTokenReference(), getIdent()),
 				      getPosition().genPosition(),
 				      getPosition().genSize(),
 				      getStyle() == null ? new JNullLiteral(ref) : getStyle().getStyle(),
-				      PRUtils.createArray(ref, CStdType.String, init)
+				      VKUtils.createArray(ref, CStdType.String, init)
     });
   }
 

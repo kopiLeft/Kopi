@@ -258,9 +258,9 @@ public abstract class PTextBlock extends PBlock {
       float	pos = paragraphStyle.getIndentLeft();
       int	align = paragraphStyle.getAlignment();
 
-      if (align == PParagraphStyle.ALN_RIGHT) {
+      if (align == PStyle.ALN_RIGHT) {
 	pos = getBlockWidth() - pos;
-      } else if (align == PParagraphStyle.ALN_CENTER) {
+      } else if (align == PStyle.ALN_CENTER) {
 	pos = getBlockWidth() / 2;
       }
       engine.setPosition(pos);
@@ -310,9 +310,9 @@ public abstract class PTextBlock extends PBlock {
       newLine = false;
       float	pos = paragraphStyle.getIndentLeft();
       int	align = paragraphStyle.getAlignment();
-      if (align == PParagraphStyle.ALN_RIGHT) {
+      if (align == PStyle.ALN_RIGHT) {
 	pos = getBlockWidth() - pos;
-      } else if (align == PParagraphStyle.ALN_CENTER) {
+      } else if (align == PStyle.ALN_CENTER) {
 	pos = getBlockWidth() / 2;
       }
       engine.setPosition(pos);
@@ -489,7 +489,7 @@ public abstract class PTextBlock extends PBlock {
   private static final String           DEFAULT_FONT = "Courier";
   private static final int              DEFAULT_STYLE = 0;
   private static final int              DEFAULT_SIZE = 12;
-  private static final PParagraphStyle  DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PParagraphStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
+  private static final PParagraphStyle  DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
 
   private Thread                worker;
   private String                lastTab;

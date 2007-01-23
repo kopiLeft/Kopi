@@ -94,9 +94,9 @@ public class SActor {
   private static ImageIcon loadImage(String iconName) {
     ImageIcon   image;
 
-    image = Utils.getImage(iconName + ".png");
-    if (image == null || image == Utils.UKN_IMAGE) {
-      image = Utils.getImage(iconName + ".gif");
+    image = com.kopiright.vkopi.lib.util.Utils.getImage(iconName + ".png");
+    if (image == null || image == com.kopiright.vkopi.lib.util.Utils.UKN_IMAGE) {
+      image = com.kopiright.vkopi.lib.util.Utils.getImage(iconName + ".gif");
     }
     return image;
   }

@@ -47,6 +47,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
@@ -85,8 +86,8 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
       JComponent.WHEN_IN_FOCUSED_WINDOW);
     label = new JLabel(); // model.label;
     bodypane = new JScrollPane(label,
-                               JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                               JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                               ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                               ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     getContentPanel().setLayout(new BorderLayout());
     getContentPanel().add(bodypane, BorderLayout.CENTER);
     label.setIconTextGap(0);
@@ -172,7 +173,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     UserConfiguration   userConfig = ApplicationConfiguration.getConfiguration().getUserConfiguration();
 
     if (userConfig != null && userConfig.getPreviewScreen() == UserConfiguration.PRS_FULLSCREEN) {
-      frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+      frame.setExtendedState(Frame.MAXIMIZED_BOTH);
     } else {
       if (userConfig != null && userConfig.getPreviewMode() != UserConfiguration.PRM_OPT) {
         zoomFit(userConfig.getPreviewMode());

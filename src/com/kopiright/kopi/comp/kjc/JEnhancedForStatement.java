@@ -173,7 +173,7 @@ public class JEnhancedForStatement extends JForStatement {
                                                "iterator",
                                                JExpression.EMPTY);
       iterator = new JVariableDefinition(expr.getTokenReference(),  
-                                         Constants.ACC_FINAL, // never changed  
+                                         com.kopiright.bytecode.classfile.Constants.ACC_FINAL, // never changed  
                                          factory.createType("java/util/Iterator", 
                                                             new CReferenceType[][]{new CReferenceType[]{(CReferenceType) param.getType()}},
                                                             //CReferenceType.EMPTY_ARG,

@@ -59,7 +59,7 @@ public class DPositionPanel extends JPanel {
     recordRight.setLayout(new BorderLayout());
 
     // 'goto first' button
-    first = new JButton(Utils.getImage("arrowfirst.gif"));
+    first = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowfirst.gif"));
     first.setFocusable(false);
     first.setBorder(new EtchedBorder());
     first.setMargin(EMPTY_INSETS);
@@ -72,7 +72,7 @@ public class DPositionPanel extends JPanel {
     recordLeft.add(first, BorderLayout.WEST);
     
     // 'goto previous' button
-    left = new JButton(Utils.getImage("arrowleft.gif"));
+    left = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowleft.gif"));
     left.setFocusable(false);
     left.setBorder(new EtchedBorder());
     left.setMargin(EMPTY_INSETS);
@@ -104,7 +104,7 @@ public class DPositionPanel extends JPanel {
     record.add(info, BorderLayout.CENTER);
     
     // 'goto next' button
-    right = new JButton(Utils.getImage("arrowright.gif"));
+    right = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowright.gif"));
     right.setFocusable(false);
     right.setBorder(new EtchedBorder());
     right.setMargin(EMPTY_INSETS);
@@ -117,7 +117,7 @@ public class DPositionPanel extends JPanel {
     recordRight.add(right, BorderLayout.WEST);
 
     // 'goto next' last
-    last = new JButton(Utils.getImage("arrowlast.gif"));
+    last = new JButton(com.kopiright.vkopi.lib.util.Utils.getImage("arrowlast.gif"));
     last.setFocusable(false);
     last.setBorder(new EtchedBorder());
     last.setMargin(EMPTY_INSETS);

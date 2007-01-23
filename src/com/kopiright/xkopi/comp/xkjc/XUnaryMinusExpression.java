@@ -19,6 +19,7 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
+import com.kopiright.kopi.comp.kjc.Constants;
 import com.kopiright.kopi.comp.kjc.JUnaryMinusExpression;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.CExpressionContext;
@@ -57,7 +58,7 @@ public class XUnaryMinusExpression extends JUnaryMinusExpression {
     try {
       return super.analyse(context);
     } catch (PositionedError e) {
-      return XUtils.fetchUnaryOverloadedOperator(XConstants.OPE_MINUS,
+      return XUtils.fetchUnaryOverloadedOperator(Constants.OPE_MINUS,
 						 context,
 						 expr,
 						 getTokenReference(),

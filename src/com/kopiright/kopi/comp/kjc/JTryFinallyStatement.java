@@ -217,10 +217,10 @@ public class JTryFinallyStatement extends JStatement {
 
     if (ret != null && ret.getType(factory).getSize() > 0) {
       ret.store(context, returnVar);
-      code.plantJumpInstruction(Constants.opc_jsr, finallyLabel);
+      code.plantJumpInstruction(com.kopiright.bytecode.classfile.Constants.opc_jsr, finallyLabel);
       ret.load(context, returnVar);
     } else {
-      code.plantJumpInstruction(Constants.opc_jsr, finallyLabel);
+      code.plantJumpInstruction(com.kopiright.bytecode.classfile.Constants.opc_jsr, finallyLabel);
     }
   }
 

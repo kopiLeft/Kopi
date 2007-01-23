@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
@@ -40,28 +41,28 @@ public class Environment {
     addKeyAction(comp, KeyNavigator.KEY_NEXT_VAL);
     addKeyAction(comp, KeyNavigator.KEY_PRINTFORM);
 
-    addKey(comp, KeyNavigator.KEY_EMPTY_FIELD, KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_NEXT_BLOCK, KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_DIAMETER, KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_EMPTY_FIELD, KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_NEXT_BLOCK, KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_DIAMETER, KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK);
     addKey(comp, KeyNavigator.KEY_REC_DOWN, KeyEvent.VK_PAGE_DOWN, 0);
-    addKey(comp, KeyNavigator.KEY_REC_DOWN, KeyEvent.VK_PAGE_DOWN, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_REC_FIRST, KeyEvent.VK_HOME, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_REC_LAST, KeyEvent.VK_END, KeyEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_REC_DOWN, KeyEvent.VK_PAGE_DOWN, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_REC_FIRST, KeyEvent.VK_HOME, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_REC_LAST, KeyEvent.VK_END, InputEvent.SHIFT_DOWN_MASK);
     addKey(comp, KeyNavigator.KEY_REC_UP, KeyEvent.VK_PAGE_UP, 0);
-    addKey(comp, KeyNavigator.KEY_REC_UP, KeyEvent.VK_PAGE_UP, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_PREV_FIELD, KeyEvent.VK_LEFT, KeyEvent.CTRL_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_PREV_FIELD, KeyEvent.VK_TAB, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_PREV_FIELD, KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_RIGHT, KeyEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_REC_UP, KeyEvent.VK_PAGE_UP, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_PREV_FIELD, KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_PREV_FIELD, KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_PREV_FIELD, KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK);
     addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_TAB, 0);
-    addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_PRINTFORM, KeyEvent.VK_PRINTSCREEN, KeyEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_PRINTFORM, KeyEvent.VK_PRINTSCREEN, InputEvent.SHIFT_DOWN_MASK);
     // the magnet card reader sends a CNTR-J as last character
-    addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_NEXT_FIELD, KeyEvent.VK_J, InputEvent.CTRL_DOWN_MASK);
 
     addKey(comp, KeyNavigator.KEY_ESCAPE, KeyEvent.VK_ESCAPE, 0);
-    addKey(comp, KeyNavigator.KEY_NEXT_VAL, KeyEvent.VK_DOWN, KeyEvent.CTRL_DOWN_MASK);
-    addKey(comp, KeyNavigator.KEY_PREV_VAL, KeyEvent.VK_UP, KeyEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_NEXT_VAL, KeyEvent.VK_DOWN, InputEvent.CTRL_DOWN_MASK);
+    addKey(comp, KeyNavigator.KEY_PREV_VAL, KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK);
 
     if (!isMulti) {
       // In multiline fields these keys are used for other stuff

@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 
+import com.kopiright.compiler.base.CompilerMessages;
+
 /**
  * This class is the entry point for the Message generator.
  */
@@ -89,7 +91,7 @@ public class Main {
       return false;
     }
     if (options.nonOptions.length == 0) {
-      System.err.println(MsggenMessages.NO_INPUT_FILE.getFormat());
+      System.err.println(CompilerMessages.NO_INPUT_FILE.getFormat());
       return false;
     } else if (options.nonOptions.length > 1) {
       options.usage();

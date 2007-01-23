@@ -31,8 +31,10 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.PPaperType;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullTime;
+import com.kopiright.xkopi.lib.type.Time;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
@@ -187,7 +189,7 @@ public class  PExport2PDF extends PExport implements Constants {
     PdfPTable       foot = new PdfPTable(2);
                 
     foot.addCell(createCell(getTitle() + " - Seite " + page +"/"+allpages, 7, Color.black, Color.white, ALG_LEFT, false));
-    foot.addCell(createCell(NotNullDate.now().format("dd.MM.yyyy") + " " + NotNullTime.now().format("HH:mm"), 
+    foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " " + Time.now().format("HH:mm"), 
                             7,
                             Color.black,
                             Color.white,

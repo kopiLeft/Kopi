@@ -30,6 +30,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -56,6 +57,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
@@ -86,7 +88,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     for (int i=0; i<10; i++) {
       registerKeyboardAction(BOOKMARKS[i],
                              null,
-                             KeyStroke.getKeyStroke(KeyEvent.VK_0+i, KeyEvent.CTRL_DOWN_MASK),
+                             KeyStroke.getKeyStroke(KeyEvent.VK_0+i, InputEvent.CTRL_DOWN_MASK),
                              JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
@@ -138,7 +140,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                                      KeyEvent.CHAR_UNDEFINED));
         }},
                             null,
-                           KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK),
+                           KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK),
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
     // 'CNTL p' -> 'up'
     registerKeyboardAction(new AbstractAction() {
@@ -156,7 +158,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                                      KeyEvent.CHAR_UNDEFINED));
         }},
                             null,
-                           KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK),
+                           KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK),
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
     // 'CNTL s' -> 'left'
     registerKeyboardAction(new AbstractAction() {
@@ -174,7 +176,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                                      KeyEvent.CHAR_UNDEFINED));
         }},
                             null,
-                           KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK),
+                           KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK),
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
     // 'CNTL e' -> 'right'
     registerKeyboardAction(new AbstractAction() {
@@ -192,7 +194,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                                      KeyEvent.CHAR_UNDEFINED));
         }},
                             null,
-                           KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK),
+                           KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK),
                            JComponent.WHEN_IN_FOCUSED_WINDOW);
   }
   // ----------------------------------------------------------------------
@@ -533,7 +535,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
                                  Message.getMessage("Notice"),
                                  JOptionPane.DEFAULT_OPTION,
                                  JOptionPane.INFORMATION_MESSAGE,
-                                 Utils.getImage("info.gif"),
+                                 com.kopiright.vkopi.lib.util.Utils.getImage("info.gif"),
                                  options,
                                  options[0]);
    }
@@ -1030,7 +1032,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       f.getContentPane().setLayout(new BorderLayout());
       f.getContentPane().add(this, BorderLayout.CENTER);
 
-      f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+      f.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
       f.addWindowListener(new WindowAdapter() {
 	public void windowClosing(WindowEvent e) {
 	  closeWindow();
@@ -1333,10 +1335,10 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       }
     }
     public void windowIconified(WindowEvent e) {
-      client.setState(JFrame.ICONIFIED);
+      client.setState(Frame.ICONIFIED);
     }
     public void windowDeiconified(WindowEvent e) {
-      client.setState(JFrame.NORMAL);
+      client.setState(Frame.NORMAL);
       // window is activated too!
     }
 
@@ -1388,11 +1390,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
   private static Hashtable		actions = createActionTable(new JTextField());
 
-  public static final ImageIcon		ICN_WAIT = Utils.getImage("wait.gif");
-  public static final ImageIcon		ICN_ERROR = Utils.getImage("error.gif");
-  public static final ImageIcon		ICN_WARNING = Utils.getImage("warning.gif");
-  public static final ImageIcon		ICN_ASK = Utils.getImage("ask.gif");
-  public static final ImageIcon		ICN_NOTICE = Utils.getImage("notice.gif");
+  public static final ImageIcon		ICN_WAIT = com.kopiright.vkopi.lib.util.Utils.getImage("wait.gif");
+  public static final ImageIcon		ICN_ERROR = com.kopiright.vkopi.lib.util.Utils.getImage("error.gif");
+  public static final ImageIcon		ICN_WARNING = com.kopiright.vkopi.lib.util.Utils.getImage("warning.gif");
+  public static final ImageIcon		ICN_ASK = com.kopiright.vkopi.lib.util.Utils.getImage("ask.gif");
+  public static final ImageIcon		ICN_NOTICE = com.kopiright.vkopi.lib.util.Utils.getImage("notice.gif");
 
   public static final KopiFocusManager  focusManager;
 

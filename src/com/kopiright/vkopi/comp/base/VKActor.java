@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.comp.base;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import com.kopiright.kopi.comp.kjc.JExpression;
@@ -102,7 +103,7 @@ public class VKActor extends VKDefinition {
         keyModifier = 0;
       } else {
         baseKey = key.substring(key.indexOf("Shift-") + ("Shift-").length());
-        keyModifier = KeyEvent.SHIFT_MASK;
+        keyModifier = InputEvent.SHIFT_MASK;
       }
 
       if (baseKey.equals("F1")) {

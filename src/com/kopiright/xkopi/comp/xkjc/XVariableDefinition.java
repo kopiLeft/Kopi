@@ -108,7 +108,7 @@ public class XVariableDefinition extends JVariableDefinition {
 
 	overload = new XOverloadedMethodCallExpression(getTokenReference(),
 						       null,
-						       "operator$" + XConstants.OPE_SIMPLE,
+						       "operator$" + Constants.OPE_SIMPLE,
 						       new JExpression[]{ left, expr });
 
 	try {

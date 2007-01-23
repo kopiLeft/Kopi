@@ -70,7 +70,7 @@ public class CParseEnumContext extends CParseClassContext {
     }
         
     var = new JVariableDefinition(where,
-                                  Constants.ACC_PUBLIC | Constants.ACC_STATIC | Constants.ACC_FINAL,
+                                  com.kopiright.bytecode.classfile.Constants.ACC_PUBLIC | com.kopiright.bytecode.classfile.Constants.ACC_STATIC | com.kopiright.bytecode.classfile.Constants.ACC_FINAL,
                                   classType,
                                   ident,
                                   instance);
@@ -103,7 +103,7 @@ public class CParseEnumContext extends CParseClassContext {
     
     valuesField =  new JFieldDeclaration(classReference,
                                          new JVariableDefinition(classReference,
-                                                                 Constants.ACC_PRIVATE | Constants.ACC_STATIC | Constants.ACC_FINAL,
+                                                                 com.kopiright.bytecode.classfile.Constants.ACC_PRIVATE | com.kopiright.bytecode.classfile.Constants.ACC_STATIC | com.kopiright.bytecode.classfile.Constants.ACC_FINAL,
                                                                  new CArrayType(classType, 1),
                                                                  valuesIdent.toString(),
                                                                  init),

@@ -541,16 +541,16 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
    */
   public void setFileOption(Token key, Token value, String filename) {
     if (key.getText().equals("mangleLiteralPrefix")) {
-      if (value.getType() == ANTLRParser.STRING_LITERAL) {
-	tool.literalsPrefix = Utils.stripFrontBack(value.getText(), "\"","\"");
+      if (value.getType() == ANTLRTokenTypes.STRING_LITERAL) {
+	Main.literalsPrefix = Utils.stripFrontBack(value.getText(), "\"","\"");
       } else {
 	tool.error("mangleLiteralPrefix option must be string", filename, value.getLine());
       }
     } else if (key.getText().equals("upperCaseMangledLiterals")) {
       if (value.getText().equals("true")) {
-	tool.upperCaseMangledLiterals = true;
+	Main.upperCaseMangledLiterals = true;
       } else if (value.getText().equals("false")) {
-	tool.upperCaseMangledLiterals = false;
+	Main.upperCaseMangledLiterals = false;
       } else {
 	grammar.tool.error("Value for upperCaseMangledLiterals must be true or false", filename, key.getLine());
       }
@@ -568,13 +568,13 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
   public void setGrammarOption(Token key, Token value) {
     if (key.getText().equals("exportVocab")) {
       // Set the token manager associated with the parser
-      if (value.getType() == ANTLRParser.RULE_REF || value.getType() == ANTLRParser.TOKEN_REF) {
+      if (value.getType() == ANTLRTokenTypes.RULE_REF || value.getType() == ANTLRTokenTypes.TOKEN_REF) {
 	grammar.exportVocab = value.getText();
       } else {
 	tool.error("exportVocab must be an identifier", grammar.getFilename(), value.getLine());
       }
     } else if (key.getText().equals("importVocab")) {
-      if (value.getType() == ANTLRParser.RULE_REF || value.getType() == ANTLRParser.TOKEN_REF) {
+      if (value.getType() == ANTLRTokenTypes.RULE_REF || value.getType() == ANTLRTokenTypes.TOKEN_REF) {
 	grammar.importVocab = value.getText();
       } else {
 	tool.error("importVocab must be an identifier", grammar.getFilename(), value.getLine());

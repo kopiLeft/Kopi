@@ -29,6 +29,7 @@ import java.util.List;
 import gnu.hylafax.Job;
 import gnu.hylafax.HylaFAXClient;
 import gnu.hylafax.HylaFAXClientProtocol;
+import gnu.inet.ftp.FtpClientProtocol;
 import gnu.inet.ftp.ServerResponseException;
 
 import com.kopiright.util.base.InconsistencyException;
@@ -80,7 +81,7 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
       faxClient.open(faxHost);        // name of host
       faxClient.user(user);           // hyla fax user
       // necessary for pdf documents to keep the correct file size
-      faxClient.type(HylaFAXClient.TYPE_IMAGE);
+      faxClient.type(FtpClientProtocol.TYPE_IMAGE);
       faxClient.noop();	
       faxClient.tzone(HylaFAXClientProtocol.TZONE_LOCAL);
 

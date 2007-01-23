@@ -23,6 +23,7 @@ import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
+import com.kopiright.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents the definition of a block in a page
@@ -66,7 +67,7 @@ public class PRRectangleBlock extends PRBlock {
     JExpression	expr = new JUnqualifiedInstanceCreation(ref,
 						(CReferenceType)getType(),
 						new JExpression[] {
-						  PRUtils.toExpression(ref, getIdent()),
+						  VKUtils.toExpression(ref, getIdent()),
 						  getPosition().genPosition(),
 						  getPosition().genSize(),
 						  getStyle() == null ? new JNullLiteral(ref) : getStyle().getStyle()
