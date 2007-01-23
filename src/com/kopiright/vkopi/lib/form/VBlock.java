@@ -1530,8 +1530,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // don't update access
     ignoreAccessChange = true;
     for (int i = 0; i < fields.length; i++) {
-      fields[i].setSearchOperator(SOP_EQ);
-      fields[i].setNull(recno);
+      fields[i].clear(recno);
     }
 
     setRecordFetched(recno, false);

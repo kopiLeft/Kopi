@@ -893,12 +893,23 @@ public abstract class VField implements VConstants {
     }
   }
 
+
   /**
    * @return the search operator for the field
    * @see VConstants
    */
   public int getSearchOperator() {
     return searchOperator;
+  }
+
+  /**
+   * Clears the field.
+   *
+   * @param     r       the recorde number.
+   */
+  public void clear(int r) {
+    setSearchOperator(SOP_EQ);
+    setNull(r);
   }
 
   /**
@@ -1869,10 +1880,10 @@ public abstract class VField implements VConstants {
 	if (lineCount == 1 && ! SHOW_SINGLE_ENTRY) {
 	  selected = 0;
 	} else {
-          final ListDialog	list;
+          final ListDialog	ld;
 
-	  list = new ListDialog(columns, lines, lineCount, newForm);
-          selected = list.selectFromDialog(getForm(), getDisplay());
+	  ld = new ListDialog(columns, lines, lineCount, newForm);
+          selected = ld.selectFromDialog(getForm(), getDisplay());
 	}
       }
 
@@ -2119,9 +2130,9 @@ public abstract class VField implements VConstants {
   // ----------------------------------------------------------------------
 
   public void helpOnField(VHelpGenerator help) {
-    String	label = getLabel();
-    if (label != null) {
-      label = label.lastIndexOf(":") == -1 ? label.replace(' ', '_') : label.substring(0, label.lastIndexOf(":")).replace(' ', '_');
+    String	lab = getLabel();
+    if (lab != null) {
+      lab = lab.lastIndexOf(":") == -1 ? lab.replace(' ', '_') : lab.substring(0, lab.lastIndexOf(":")).replace(' ', '_');
 
 //       VFieldUI ui = getUI() == null ?
 // 	new VFieldUI(this, cmd, pos, align, list) :
@@ -2130,7 +2141,7 @@ public abstract class VField implements VConstants {
       help.helpOnField(getBlock().getTitle(),
 		       getBlock().getFieldPos(this),
 		       getLabel(),
-		       label == null ? getName() : label,
+		       lab == null ? getName() : lab,
 		       getToolTip());
       if (access[MOD_UPDATE] != ACS_SKIPPED
           || access[MOD_INSERT] != ACS_SKIPPED

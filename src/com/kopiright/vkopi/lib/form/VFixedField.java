@@ -42,14 +42,14 @@ public class VFixedField extends VField {
    * Constructor
    */
   public VFixedField(int width,
-		     int scale,
+		     int maxScale,
 		     String minval,
 		     String maxval,
 		     boolean fraction)
   {
     super(width, 1);
 
-    this.scale = scale;
+    this.maxScale = maxScale;
     this.minval = minval == null ? null : new NotNullFixed(minval);
     this.maxval = maxval == null ? null : new NotNullFixed(maxval);
     this.fraction = fraction;
@@ -59,14 +59,14 @@ public class VFixedField extends VField {
    * Constructor
    */
   public VFixedField(int width,
-		     int scale,
+		     int maxScale,
 		     boolean fraction,
 		     Fixed minval,
 		     Fixed maxval)
   {
     super(width, 1);
 
-    this.scale = scale;
+    this.maxScale = maxScale;
     this.minval = minval;
     this.maxval = maxval;
     this.fraction = fraction;
@@ -76,8 +76,14 @@ public class VFixedField extends VField {
    * just after loading, construct record
    */
   public void build() {
+    int         size = 2 * block.getBufferSize();
+
     super.build();
-    value = new Fixed[2 * block.getBufferSize()];
+    value = new Fixed[size];
+    currentScale = new int[size];
+    for (int i = 0; i < size; i++) {
+      currentScale[i] = maxScale;
+    }
   }
 
   /**
@@ -129,7 +135,7 @@ public class VFixedField extends VField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VFixedColumn(getHeader(), null, getAlign(), getWidth(), scale, getPriority() >= 0);
+    return new VFixedColumn(getHeader(), null, getAlign(), getWidth(), maxScale, getPriority() >= 0);
   }
 
   /**
@@ -154,7 +160,8 @@ public class VFixedField extends VField {
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised if text is bad
    */
   public void checkType(Object o) throws VException {
-    String s = (String)o;
+    String      s = (String)o;
+    int         scale = currentScale[block.getActiveRecord()];
 
     if (s.equals("")) {
       setNull(block.getActiveRecord());
@@ -245,6 +252,38 @@ public class VFixedField extends VField {
     return computeSum(false, coalesceValue);
   }
 
+
+  /**
+   * Returns the current scale for the active record.
+   *
+   * @return    the scale value.
+   */
+  public int getScale() {
+    return currentScale[block.getActiveRecord()];
+  }
+
+  /**
+   * Sets the scale value for the active record.
+   *
+   * @param     scale           the scale value.
+   */
+  public void setScale(int scale) throws VException {
+    currentScale[block.getActiveRecord()] = scale;
+  }
+
+  /**
+   * Clears the field.
+   *
+   * @param     r       the recorde number.
+   */
+  public void clear(int r) {
+    super.clear(r);
+    
+    for (int i = 0; i < currentScale.length; i++) {
+      currentScale[i] = maxScale;
+    }
+  }
+
   /*
    * ----------------------------------------------------------------------
    * Interface bd/Triggers
@@ -269,8 +308,8 @@ public class VFixedField extends VField {
       trail(r);
 
       if (v != null) {
-        if (v.getScale() != scale) {
-          v = v.setScale(scale);
+        if (v.getScale() != currentScale[r]) {
+          v = v.setScale(currentScale[r]);
         }
 
         if (minval != null && v.compareTo(minval) == -1) {
@@ -343,7 +382,22 @@ public class VFixedField extends VField {
    * Returns the display representation of field value of given record.
    */
   public String getTextImpl(int r) {
-    return value[r] == null ? "" : toText(value[r].setScale(scale));
+    String      res;
+    
+    if (value[r] == null) {
+      return "";
+    }
+
+    res = toText(value[r].setScale(currentScale[r]));
+           
+    // append spaces until the max scale is reached to make commas aligned.
+    // append an extra space to replace the missing comma if the current scale is zero.
+    if (block.isMulti()) {
+      for (int i = (currentScale[r] == 0)? -1 : currentScale[r]; i < maxScale; i++) {
+        res += " ";
+      }
+    }
+    return res;
   }
 
   /**
@@ -370,7 +424,7 @@ public class VFixedField extends VField {
    * Returns a string representation of a bigdecimal value wrt the field type.
    */
   protected String formatFixed(com.kopiright.xkopi.lib.type.Fixed value) {
-    return toText(value.setScale(scale));
+    return toText(value.setScale(currentScale[block.getActiveRecord()]));
   }
 
   /*
@@ -627,12 +681,13 @@ public class VFixedField extends VField {
 
   // static (compiled) data
 
-  private int			scale;		// number of digits after dot
-  private Fixed			minval;		// minimum value allowed
-  private Fixed			maxval;		// maximum value allowed
-  private boolean		fraction;	// display as fraction
+  private int                   maxScale;	// number of max digits after dot
+  private Fixed                 minval;		// minimum value allowed
+  private Fixed                 maxval;		// maximum value allowed
+  private boolean               fraction;	// display as fraction
 
   // dynamic data
 
-  private Fixed[]		value;
+  private Fixed[]               value;
+  private int[]                 currentScale;	// number of digits after dot
 }
