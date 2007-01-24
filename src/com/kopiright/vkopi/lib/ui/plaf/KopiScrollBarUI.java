@@ -307,7 +307,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
       return;
     }
 
-    boolean             leftToRight = c.getComponentOrientation().isLeftToRight();;
+    boolean             leftToRight = c.getComponentOrientation().isLeftToRight();
     
     g.translate( thumbBounds.x, thumbBounds.y );
     if ( scrollbar.getOrientation() == Adjustable.VERTICAL ) {

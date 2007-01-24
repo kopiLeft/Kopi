@@ -61,7 +61,7 @@ public class FileChooser {
   public static File openFile(Frame frame, FileFilter filter) {
     JFileChooser filechooser = new JFileChooser(new File(System.getProperty("user.home")));
 
-    filechooser.setFileFilter(filter);;
+    filechooser.setFileFilter(filter);
 
     int returnVal = filechooser.showOpenDialog(frame);
 

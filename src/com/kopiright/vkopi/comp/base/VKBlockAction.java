@@ -75,7 +75,7 @@ public class VKBlockAction extends VKAction implements com.kopiright.kopi.comp.k
     }
     this.isStatic = isStatic;
     this.hasMethod = true;
-    this.access = access;;
+    this.access = access;
     return new JMethodDeclaration(getTokenReference(),
 				  ACC_PUBLIC | ACC_FINAL | (isStatic ? ACC_STATIC : 0), 
                                   CTypeVariable.EMPTY,

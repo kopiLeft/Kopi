@@ -635,7 +635,7 @@ public abstract class VReport extends VWindow
 
   public String genHelp() {
     String              fileName;
-    StringBuffer        surl = new StringBuffer();;
+    StringBuffer        surl = new StringBuffer();
    
     fileName = new VHelpGenerator().helpOnReport(getTitle(),
                                                  commands,

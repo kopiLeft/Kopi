@@ -274,7 +274,7 @@ public class PExport2XLS extends PExport implements Constants {
   }
 
   protected void formatIntegerColumn(VReportColumn column, int index) {
-    dataformats[index] = format.getFormat("0");;
+    dataformats[index] = format.getFormat("0");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
     widths[index] = (short) (256 * column.getWidth());
   }

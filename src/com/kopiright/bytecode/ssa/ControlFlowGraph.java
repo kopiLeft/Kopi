@@ -509,7 +509,12 @@ public class ControlFlowGraph {
   private int getInstructionLine(Instruction[] insts,
                                  InstructionAccessor ins) {
     int i;
-    for(i=0; i<insts.length && ins != insts[i]; ++i) /* Nothing */;
+    for(i=0; i<insts.length ; ++i) { 
+     if(ins == insts[i]) {
+     return i;
+     } 
+    }
+    
     return i;
   }
 

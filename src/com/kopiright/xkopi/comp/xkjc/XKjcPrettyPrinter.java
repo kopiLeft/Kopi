@@ -62,8 +62,9 @@ public class XKjcPrettyPrinter extends KjcPrettyPrinter {
     int sql_pos = 2;
 
     // must be at n*8+4 from the beginning of the line.
-    for (;((pos + sql_pos) % 8) != 4; ++sql_pos) /*NOTHING*/;
-
+    while(((pos + sql_pos) % 8) == 4) {
+    	sql_pos++;	
+    }
     getSqlcPrettyPrinter(true);
 
     sql_pp.setPos(sql_pos);
@@ -313,7 +314,10 @@ public class XKjcPrettyPrinter extends KjcPrettyPrinter {
     body.accept(this);
     oldPos = pos;
     // find the same place of the SELECT
-    for (pos += 2;(pos % 8) != 4; ++pos) /*NOTHING*/;
+    pos += 2;
+    while((pos % 8) == 4){
+    pos++;	
+    }
     print("INTO        ");
     pos = oldPos;
     list.accept(this);

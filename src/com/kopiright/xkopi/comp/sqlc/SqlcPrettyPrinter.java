@@ -1508,7 +1508,10 @@ public class SqlcPrettyPrinter implements SqlVisitor {
    *
    */
   protected void posToQueryTab() {
-    for (;((p.getPos() + pos) % 8) != 4; ++pos) /*NOTHING*/;
+    
+    while( ((p.getPos() + pos) % 8) == 4 ){
+     pos++; 
+    } 
   }
 
   protected void print(String str) {

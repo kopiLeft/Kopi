@@ -979,7 +979,7 @@ public class AWTToPS extends Graphics {
       } catch (Throwable e) {
 	// ignore it
       }
-    };
+    }
 
     int                 imgWidth = img.getWidth(observer);
     int                 imgHeight = img.getHeight(observer);
@@ -1182,7 +1182,7 @@ public class AWTToPS extends Graphics {
       } catch (Throwable e) {
 	// ignore it
       }
-    };
+    }
 
     if (pc.getDimensions() == null) {
       return false;

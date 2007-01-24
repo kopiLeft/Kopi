@@ -293,11 +293,14 @@ public class MReport extends AbstractTableModel implements Constants {
       int	next;
 
       // get the interval of columns at this level
-      for (next = start + 1; displayLevels[next] == displayLevels[start]; next++);
-
+      next = start + 1 ;
+      while(displayLevels[next] != displayLevels[start]){
+    	  next ++;
+      }
+      
       while (!accessiblecolumns[start].isVisible()) {
-	// to get the first visible column of this level
-	start++;
+	  // to get the first visible column of this level
+	  start++;
       }
 
       do {

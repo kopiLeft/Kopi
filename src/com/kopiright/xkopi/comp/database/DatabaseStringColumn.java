@@ -47,7 +47,7 @@ public class DatabaseStringColumn extends DatabaseColumn {
   public DatabaseStringColumn(boolean isNullable, int width, int height) {
     super(isNullable, true);
     this.width = (width == -1) ? null : new Integer(width);
-    this.height = (height == -1) ? null : new Integer(height);;
+    this.height = (height == -1) ? null : new Integer(height);
   }
 
   /**
