@@ -34,7 +34,7 @@ class JavaBlockFinishingInfo {
 
   public JavaBlockFinishingInfo() {
     postscript=null;
-    generatedSwitch=generatedSwitch = false;
+    generatedSwitch = false;
     needAnErrorClause = true;
   }
   public JavaBlockFinishingInfo(String ps, boolean genS, boolean generatedAnIf, boolean n) {
