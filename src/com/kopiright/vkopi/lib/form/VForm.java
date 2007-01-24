@@ -634,28 +634,28 @@ public abstract class VForm extends VWindow implements VConstants {
    public void abortProtected(Error reason) {
     try {
       abortTrail();
+      throw reason;
     } finally {
       super.abortProtected(false);
-      throw reason;
     }
    }
 
    public void abortProtected(RuntimeException reason)  {
     try {
       abortTrail();
+      throw reason;
     } finally {
       super.abortProtected(false);
-      throw reason;
-    }
+     }
    }
 
    public void abortProtected(VException reason) throws VException {
     try {
       abortTrail();
+      throw reason;
     } finally {
       super.abortProtected(false);
-      throw reason;
-    }
+      }
    }
 
   /**
@@ -838,7 +838,7 @@ public abstract class VForm extends VWindow implements VConstants {
     String              description = getName();
     String              localHelp = "";
     Module              mod ;
-    StringBuffer        surl = new StringBuffer();;
+    StringBuffer        surl = new StringBuffer();
     VField              field;
 
     try {
