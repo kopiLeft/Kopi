@@ -86,7 +86,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * @exception	VException	an exception may be raised by triggers
    * @deprecated
    */
-  public boolean doModal(Frame f) throws VException {
+  public boolean doModal(Frame f) throws com.kopiright.vkopi.lib.visual.VException {
     return WindowController.getWindowController().doModal(this);
   }
 
@@ -96,7 +96,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * @exception	VException	an exception may be raised by triggers
    * @deprecated
    */
-  public boolean doModal(VWindow f) throws VException {
+  public boolean doModal(VWindow f) throws com.kopiright.vkopi.lib.visual.VException {
     return WindowController.getWindowController().doModal(this);
   }
 
@@ -106,7 +106,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * @exception	VException	an exception may be raised by triggers
    * @deprecated
    */
-  public boolean doModal() throws VException {
+  public boolean doModal() throws com.kopiright.vkopi.lib.visual.VException {
     return WindowController.getWindowController().doModal(this);
   }
 
@@ -135,7 +135,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * Resets form to initial state
    */
-  public void reset() throws VException {
+  public void reset() throws com.kopiright.vkopi.lib.visual.VException {
     //!!! graf 990818 make abstract
     // do nothing
   }

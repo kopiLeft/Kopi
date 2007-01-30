@@ -35,25 +35,25 @@ import com.kopiright.xkopi.lib.base.DBContextHandler;
 
 public abstract class VPrintSelectionForm extends VDictionaryForm implements Printable {
 
-  protected VPrintSelectionForm() throws VException {
+  protected VPrintSelectionForm() throws com.kopiright.vkopi.lib.visual.VException {
   }
 
-  protected VPrintSelectionForm(VForm caller) throws VException {
+  protected VPrintSelectionForm(VForm caller) throws com.kopiright.vkopi.lib.visual.VException {
     super(caller);
   }
 
-  protected VPrintSelectionForm(DBContextHandler context) throws VException {
+  protected VPrintSelectionForm(DBContextHandler context) throws com.kopiright.vkopi.lib.visual.VException {
     super(context);
   }
 
-  protected VPrintSelectionForm(DBContext context) throws VException {
+  protected VPrintSelectionForm(DBContext context) throws com.kopiright.vkopi.lib.visual.VException {
     super(context);
   }
 
   /**
    * Implements interface for COMMAND PRINT
    */
-  public void printForm(VBlock b) throws VException {
+  public void printForm(VBlock b) throws com.kopiright.vkopi.lib.visual.VException {
     b.validate();
 
     printable = null;
@@ -71,7 +71,7 @@ public abstract class VPrintSelectionForm extends VDictionaryForm implements Pri
   /**
    * Implements interface for COMMAND PREVIEW
    */
-  public void previewForm(VBlock b) throws VException {
+  public void previewForm(VBlock b) throws com.kopiright.vkopi.lib.visual.VException {
     b.validate();
 
     printable = null;
@@ -83,12 +83,12 @@ public abstract class VPrintSelectionForm extends VDictionaryForm implements Pri
   /**
    * Creates a report for this form
    */
-  protected abstract PProtectedPage createReport(DBContextHandler handler) throws VException;
+  protected abstract PProtectedPage createReport(DBContextHandler handler) throws com.kopiright.vkopi.lib.visual.VException;
 
   /**
    * Gets the PrintManager that will handle the report's printing.
    */
-  protected com.kopiright.vkopi.lib.print.PrintManager getPrintManager() throws VException {
+  protected com.kopiright.vkopi.lib.print.PrintManager getPrintManager() throws com.kopiright.vkopi.lib.visual.VException {
     return new DefaultPrintManager();
   }
 
@@ -133,7 +133,7 @@ public abstract class VPrintSelectionForm extends VDictionaryForm implements Pri
   /**
    * Print the object into the provided printer
    */
-  public PrintJob createPrintJob() throws PrintException, VException {
+  public PrintJob createPrintJob() throws PrintException, com.kopiright.vkopi.lib.visual.VException {
     if (printable == null) {
       printable = createReport(this);
     }

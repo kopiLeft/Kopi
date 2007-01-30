@@ -290,21 +290,21 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   public void executeProtectedVoidTrigger(final int VKT_Type)
-    throws VException, SQLException
+    throws com.kopiright.vkopi.lib.visual.VException, SQLException
   {
     // default: does nothing
   }
 
-  public Object executeObjectTrigger(final int VKT_Type) throws VException {
+  public Object executeObjectTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
     // default: does nothing
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
 
-  public boolean executeBooleanTrigger(final int VKT_Type) throws VException {
+  public boolean executeBooleanTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
 
-  public int executeIntegerTrigger(final int VKT_Type) throws VException {
+  public int executeIntegerTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
 
@@ -3745,7 +3745,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Checks if a foreign key is referenced in the view SYSTEMREFERENZEN
    */
   protected VExecFailedException convertForeignKeyException(String name)
-    throws VException
   {
     try {
       Query		query;
@@ -3757,7 +3756,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       query = new Query(form.getDBContext().getDefaultConnection());
       query.addString(name);
-      query.open("SELECT	tabelle, spalte, referenz " +
+      query.open("SELECT	 tabelle, spalte, referenz " +
 		 "FROM		SYSTEMREFERENZEN " +
 		 "WHERE		name = #1 ");
       assert query.next() : "no row";

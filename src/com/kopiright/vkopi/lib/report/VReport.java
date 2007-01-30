@@ -327,7 +327,7 @@ public abstract class VReport extends VWindow
     export(file, TYP_CSV);
   }
 
-  public void export(File file, int type) throws VException {
+  public void export(File file, int type) throws com.kopiright.vkopi.lib.visual.VException {
     setWaitInfo(Message.getMessage("export-message"));
 
     PExport     exporter;
@@ -651,7 +651,7 @@ public abstract class VReport extends VWindow
     return surl.toString();
   }
 
-  public void showHelp() throws VException {
+  public void showHelp() {
     new VHelpViewer().showHelp(genHelp());
   }
 

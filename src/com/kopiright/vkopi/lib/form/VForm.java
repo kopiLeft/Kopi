@@ -561,13 +561,13 @@ public abstract class VForm extends VWindow implements VConstants {
     return VKT_Triggers[event] != 0;
   }
 
-  public Object executeObjectTrigger(final int VKT_Type) throws VException {
+  public Object executeObjectTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
-  public boolean executeBooleanTrigger(final int VKT_Type) throws VException {
+  public boolean executeBooleanTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
-  public int executeIntegerTrigger(final int VKT_Type) throws VException {
+  public int executeIntegerTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
 
@@ -881,7 +881,7 @@ public abstract class VForm extends VWindow implements VConstants {
     return surl.toString();
   }
 
-  public void showHelp(VForm form) throws VException {
+  public void showHelp(VForm form) {
     new VHelpViewer().showHelp(genHelp());
   }
 
