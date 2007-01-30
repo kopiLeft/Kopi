@@ -267,7 +267,7 @@ public class VFixedField extends VField {
    *
    * @param     scale           the scale value.
    */
-  public void setScale(int scale) throws VException {
+  public void setScale(int scale) {
     currentScale[block.getActiveRecord()] = scale;
   }
 

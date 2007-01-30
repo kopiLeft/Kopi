@@ -66,11 +66,9 @@ public class XAssignmentExpression extends JAssignmentExpression {
 
     right = right.analyse(new CExpressionContext(context, context.getEnvironment(), false, false));
 
-    try {
+   
       left.setInitialized(context);
-    } catch (UnpositionedError e) {
-      throw e.addPosition(getTokenReference());
-    }
+    
 
     check(context,
 	  right.getType(factory).equals(left.getType(factory))

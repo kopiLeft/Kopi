@@ -115,11 +115,9 @@ public class JCompoundAssignmentExpression extends JAssignmentExpression {
     }
 
     // try to assign: check lhs is not final
-    try {
+
       left.setInitialized(context);
-    } catch (UnpositionedError e) {
-      throw e.addPosition(getTokenReference());
-    }
+ 
 
     right = right.analyse(new CExpressionContext(context, context.getEnvironment(), false, false));
     if (right instanceof JTypeNameExpression) {

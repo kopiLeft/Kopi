@@ -108,7 +108,7 @@ public abstract class VMultiPrintSelectionForm extends VDictionaryForm {
   /**
    * get the number of copies to print
    */
-  protected int[] getNumberOfCopies(boolean preview) throws VException {
+  protected int[] getNumberOfCopies(boolean preview) {
     return new int[] {1};
   }
 
@@ -116,7 +116,7 @@ public abstract class VMultiPrintSelectionForm extends VDictionaryForm {
    * create a report for this form
    * @param	number		report number
    */
-  protected PProtectedPage createReport(int number) throws VException {
+  protected PProtectedPage createReport(int number) {
     return null;
   }
 }

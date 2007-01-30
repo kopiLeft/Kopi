@@ -159,7 +159,7 @@ public class MenuTree extends DWindow {
       toolbar.toFront();
     }
 
-    try {
+   
       getModel().setDisplay(this);
       WindowController.getWindowController().doNotModal(this);
       if (tree.getRowCount() > 0) {
@@ -168,9 +168,7 @@ public class MenuTree extends DWindow {
       setMenu();
       setVisible(true);
       tree.requestFocusInWindow();
-    } catch (VException v) {
-      System.err.println("ERROR " + v.getMessage());
-    }
+    
   }
 
   /**

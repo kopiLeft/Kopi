@@ -302,7 +302,7 @@ public class VPreviewWindow extends VWindow {
    *
    * @param     posno           the page position number.
    */
-  public void gotoPosition(int posno) throws VException {
+  public void gotoPosition(int posno) {
     setWaitInfo(Message.getMessage("WAIT"));
     currentPage = posno;
     firePageChanged(currentPage);

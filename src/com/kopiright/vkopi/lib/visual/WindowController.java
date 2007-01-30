@@ -82,7 +82,7 @@ public class WindowController {
     private VWindow       model;
   }
 
-  public boolean doModal(final VWindow model) throws VException {
+  public boolean doModal(final VWindow model) {
     final ModalViewRunner     viewStarter = new ModalViewRunner(model);
 
     synchronized(model) {
@@ -132,7 +132,7 @@ public class WindowController {
     return (viewStarter.getView() == null) ? false : viewStarter.getView().getReturnCode() == VWindow.CDE_VALIDATE;
   }
 
-  public void doNotModal(final VWindow model) throws VException {
+  public void doNotModal(final VWindow model) {
     SwingThreadHandler.start(new Runnable() {
         public void run() {
           try {
@@ -165,7 +165,7 @@ public class WindowController {
     }
   }
 
-  public boolean doNotModal(DWindow view) throws VException {
+  public boolean doNotModal(DWindow view) {
     view.createFrame();
 
     SwingThreadHandler.start(view);
@@ -179,7 +179,7 @@ public class WindowController {
     return old;
   }
 
-  private UIBuilder getUIBuilder(VWindow model) throws VException {
+  private UIBuilder getUIBuilder(VWindow model) {
     if (model.getType() > builder.length || builder[model.getType()] == null) {
       // programm should never reach here.
       Thread.dumpStack();

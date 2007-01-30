@@ -52,11 +52,9 @@ public class Assembler {
     classInfo = parseInput(sourceFile);
 
     if (optimize > 0) {
-      try {
+     
 	com.kopiright.bytecode.optimize.Main.optimizeClass(classInfo, optimize, false);
-      } catch (com.kopiright.compiler.base.UnpositionedError e) {
-	throw new KsmError(null, e.getFormattedMessage());
-      }
+    
     }
 
     try {

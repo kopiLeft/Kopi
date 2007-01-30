@@ -543,9 +543,8 @@ public class ListDialog extends JPanel {
 
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by string formater
    */
-  public int selectFromDialog(VForm form, Component field) throws VException {
+  public int selectFromDialog(VForm form, Component field) {
     this.form = form;
     return selectFromDialogIn(field, true);
   }

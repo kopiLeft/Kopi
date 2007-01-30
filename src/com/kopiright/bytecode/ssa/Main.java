@@ -85,7 +85,7 @@ public class Main {
    * Reads, optimizes and writes a class file
    * @exception       UnpositionedError       an error occurred
    */
-  public static void optimizeClass(ClassInfo info, SSAOptions options) throws UnpositionedError {
+  public static void optimizeClass(ClassInfo info, SSAOptions options) {
     MethodInfo[]    methods;
     int                     length = 0;
     int                     totalUnoptimized = 0;

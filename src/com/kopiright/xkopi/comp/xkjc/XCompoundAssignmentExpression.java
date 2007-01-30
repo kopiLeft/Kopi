@@ -67,11 +67,9 @@ public class XCompoundAssignmentExpression extends JCompoundAssignmentExpression
     check(context, left.isLValue(context), KjcMessages.ASSIGNMENT_NOTLVALUE);
 
     // try to assign: check lhs is not final
-    try {
+   
       left.setInitialized(context);
-    } catch (UnpositionedError e) {
-      throw e.addPosition(getTokenReference());
-    }
+   
 
     right = right.analyse(new CExpressionContext(context, context.getEnvironment(), false, false));
 

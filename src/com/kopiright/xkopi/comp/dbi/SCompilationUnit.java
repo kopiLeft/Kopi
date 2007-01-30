@@ -93,7 +93,7 @@ public class SCompilationUnit extends Phylum {
                       String syntax,
 		      DBAccess access,
 		      PrintWriter out)
-    throws PositionedError, UnpositionedError
+    throws PositionedError
   {
     try {
       context.startWork();
@@ -134,7 +134,7 @@ public class SCompilationUnit extends Phylum {
                         String syntax,
 			DBAccess access,
 			PrintWriter out)
-    throws PositionedError, UnpositionedError
+    throws PositionedError
   {
     try {
       StringBuffer	buff = new StringBuffer();
@@ -172,7 +172,7 @@ public class SCompilationUnit extends Phylum {
    */
   public String checkSQL(int place,
                          String syntax)
-    throws UnpositionedError, PositionedError
+    throws PositionedError
   {
     SqlPhylum	elem = (SqlPhylum)elems.get(place);
     DbiChecker	checker = DbiChecker.create(syntax);
@@ -200,7 +200,7 @@ public class SCompilationUnit extends Phylum {
    * @param	left		the SQL expression to be built
    * @param	current		the current string literal to be added to left
    */
-  public void makeDBSchema(int place, DBAccess access) throws UnpositionedError, PositionedError, SQLException  {
+  public void makeDBSchema(int place, DBAccess access) throws SQLException  {
     SqlPhylum	elem = (SqlPhylum)elems.get(place);
 
     if (elem instanceof TableDefinition) {

@@ -42,7 +42,7 @@ public class CInterfaceContext extends CClassContext {
    * Verify all final fields are initialized
    * @exception	UnpositionedError	this error will be positioned soon
    */
-  public void close(JTypeDeclaration decl, CBodyContext virtual) throws UnpositionedError {
+  public void close(JTypeDeclaration decl, CBodyContext virtual)  {
   }
 
   /**

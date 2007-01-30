@@ -79,7 +79,7 @@ public class VHelpViewer extends VWindow {
   /**
    * The user want to show an help
    */
-  public void showHelp(String surl) throws VException {
+  public void showHelp(String surl) {
     setURL(surl);
     WindowController.getWindowController().doNotModal(this);
   }

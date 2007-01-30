@@ -233,7 +233,7 @@ public abstract class JExpression extends JPhylum {
    *		be assignated this may happen with final variables.
    */
   public void setInitialized(CExpressionContext context)
-    throws UnpositionedError
+    
   {
     throw new InconsistencyException(this + " is not an l-value");
   }

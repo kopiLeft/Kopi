@@ -172,9 +172,7 @@ public class Main extends Compiler implements Constants {
       }
     } catch (PositionedError e) {
       reportTrouble(e);
-    } catch (UnpositionedError e) {
-      e.printStackTrace();
-    }
+    } 
 
     out.flush();
 
@@ -437,7 +435,7 @@ public class Main extends Compiler implements Constants {
    */
   protected void genSQLCode(final String syntax,
                             final SCompilationUnit[] tree)
-    throws PositionedError, UnpositionedError
+    throws PositionedError
   {
     for (int count = 0; count < tree.length; count++) {
       genSQLCode(options.syntax, tree[count]);
@@ -449,7 +447,7 @@ public class Main extends Compiler implements Constants {
    */
   protected final void genSQLCode(final String syntax,
                                   final SCompilationUnit unit)
-    throws PositionedError, UnpositionedError
+    throws PositionedError
   {
     genSQLCode(DbiChecker.create(syntax), unit);
   }
@@ -460,7 +458,7 @@ public class Main extends Compiler implements Constants {
    */
   protected final void genSQLCode(final DbiChecker checker,
                                   final SCompilationUnit unit)
-    throws PositionedError, UnpositionedError
+    throws PositionedError
   {
     boolean	hasHead = unit.checkHead();
     List        elems = unit.getElems();

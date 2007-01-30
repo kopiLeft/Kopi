@@ -90,7 +90,7 @@ public class Main {
    * Reads, optimizes and writes a class file
    * @exception	UnpositionedError	an error occurred
    */
-  public static void optimizeClass(ClassInfo info, int level, boolean verbose) throws UnpositionedError {
+  public static void optimizeClass(ClassInfo info, int level, boolean verbose) {
     MethodInfo[]	methods;
     int			length = 0;
     int			totalUnoptimized = 0;

@@ -105,11 +105,9 @@ public class JAssignmentExpression extends JBinaryExpression {
     check(context, left.isLValue(context), KjcMessages.ASSIGNMENT_NOTLVALUE);
     check(context, !left.checkForLoop(context) || !left.isFinal(), KjcMessages.FINAL_IN_LOOP, left.getIdent());
 
-    try {
+    
       left.setInitialized(context);
-    } catch (UnpositionedError e) {
-      throw e.addPosition(getTokenReference());
-    }
+   
 
     check(context,
 	  right.isAssignableTo(context, left.getType(factory)),
