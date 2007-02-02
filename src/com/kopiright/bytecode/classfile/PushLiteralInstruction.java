@@ -343,7 +343,7 @@ public class PushLiteralInstruction extends Instruction {
 
   private class ByteOperand implements Operand {
     ByteOperand(byte value) {
-      this.value = value;
+      this.value1 = value;
     }
 
     public void resolveConstants(ConstantPool cp) {}
@@ -353,17 +353,17 @@ public class PushLiteralInstruction extends Instruction {
     }
 
     public void write(ConstantPool cp, DataOutput out) throws IOException {
-      out.writeByte(value);
+      out.writeByte(value1);
     }
 
-    private final byte		value;
+    private final byte		value1;
   }
 
   // --------------------------------------------------------------------
 
   private class ShortOperand implements Operand {
     ShortOperand(short value) {
-      this.value = value;
+      this.value1 = value;
     }
 
     public void resolveConstants(ConstantPool cp) {}
@@ -373,26 +373,26 @@ public class PushLiteralInstruction extends Instruction {
     }
 
     public void write(ConstantPool cp, DataOutput out) throws IOException {
-      out.writeShort(value);
+      out.writeShort(value1);
     }
 
-    private final short		value;
+    private final short		value1;
   }
 
   // --------------------------------------------------------------------
 
   private class ConstantOperand implements Operand {
     ConstantOperand(PooledConstant value, boolean wide) {
-      this.value = value;
+      this. value1 = value;
       this.wide = wide;
     }
 
     public void resolveConstants(ConstantPool cp) throws ClassFileFormatException  {
-      cp.addItem(value);
+      cp.addItem( value1);
     }
 
     public int getSize() {
-      wide = value.getIndex() > 255;
+      wide =  value1.getIndex() > 255;
 
       if (getOpcode() != opc_ldc2_w) {
 	if (wide) {
@@ -406,7 +406,7 @@ public class PushLiteralInstruction extends Instruction {
     }
 
     public void write(ConstantPool cp, DataOutput out) throws IOException {
-      int	idx = value.getIndex();
+      int	idx =  value1.getIndex();
 
       if (wide || getOpcode() == opc_ldc2_w) {
   	out.writeShort((short)idx);
@@ -415,7 +415,7 @@ public class PushLiteralInstruction extends Instruction {
       }
     }
 
-    private final PooledConstant	value;
+    private final PooledConstant	 value1;
     private boolean			wide;
   }
 

@@ -143,6 +143,6 @@ public abstract class DatabaseColumn extends DatabaseMember implements XDatabase
   private final boolean         isNullable;   
   private final boolean         restricted;
 
-  public static final CReferenceType TYPE = 
+  public static final CReferenceType TYPE1 = 
     CReferenceType.lookup(XDatabaseColumn.class.getName().replace('.','/'));
 }

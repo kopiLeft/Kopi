@@ -691,7 +691,7 @@ public class ListDialog extends JPanel {
 	skipFirstLine = false;
       }
       this.count = count - (skipFirstLine ? 1 : 0);
-      this.columns = columns;
+      this.columns1 = columns;
       this.data = data;
       this.lineID = lineID;
       tab = new int[lineID.length - (skipFirstLine ? 1 : 0)];
@@ -757,7 +757,7 @@ public class ListDialog extends JPanel {
     }
 
     public String getColumnName(int column) {
-      return columns[column];
+      return columns1[column];
     }
 
     /**
@@ -836,7 +836,7 @@ public class ListDialog extends JPanel {
     // DATA MEMBERS
     // ----------------------------------------------------------------------
 
-    private String[]		columns;
+    private String[]		columns1;
     private Object[][]		data;
     private int			count;
     private int[]		lineID;

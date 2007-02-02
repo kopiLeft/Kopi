@@ -517,8 +517,8 @@ public class CodeGeneratorBasicBlock extends CodeGenerator {
      * Construct a new list
      */
     public ListUseReuse() {
-      first = new UseReuse();
-      last = first;
+      first1 = new UseReuse();
+      last1 = first1;
     }
     /**
      * Insert a new pair use/reuse in the list
@@ -527,21 +527,21 @@ public class CodeGeneratorBasicBlock extends CodeGenerator {
      * @param reuse reuse instruction
      */
     public void insertUseReuse(Inst use, Inst reuse, int dist) {
-      UseReuse current = first;
+      UseReuse current = first1;
       while (current.dist < dist) {
         current = current.next;
       }
       UseReuse newUseReuse = new UseReuse(use, reuse, dist);
       current.insertBefore(newUseReuse);
-      if (current == first) {
-        first = newUseReuse;
+      if (current == first1) {
+        first1 = newUseReuse;
       }
     }
     /**
      * Get the first element of the list
      */
     public UseReuse getFirst() {
-      return first;
+      return first1;
     }
     /**
      * Get the last element of the list
@@ -549,10 +549,10 @@ public class CodeGeneratorBasicBlock extends CodeGenerator {
      *  of the list, this is not a real pair use/reuse.
      */
     public UseReuse getLast() {
-      return last;
+      return last1;
     }
-    protected UseReuse first;
-    protected UseReuse last;
+    protected UseReuse first1;
+    protected UseReuse last1;
   }
   /**
    * Represent a pair use/reuse

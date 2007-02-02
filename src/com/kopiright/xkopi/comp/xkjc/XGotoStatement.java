@@ -63,7 +63,7 @@ public class XGotoStatement extends JStatement {
 
     ((CSourceMethod)context.getMethodContext().getCMethod()).getBody().accept(visitor);
     
-    target = visitor.target;
+    target = visitor.target1;
 
     check(context, target != null, KjcMessages.LABEL_UNKNOWN, label);
     check(context,
@@ -115,11 +115,11 @@ public class XGotoStatement extends JStatement {
   // ----------------------------------------------------------------------
 
   class LabelVisitor implements com.kopiright.kopi.comp.kjc.KjcVisitor{
-    String              label;
-    JStatement          target;
+    String              label1;
+    JStatement          target1;
 
     public LabelVisitor(String label) {
-      this.label = label;
+      this.label1 = label;
     }
 
     /**
@@ -354,8 +354,8 @@ public class XGotoStatement extends JStatement {
                                       String label,
                                       JStatement stmt)
     {
-      if (label.equals(this.label)) {
-        this.target = self;
+      if (label.equals(this.label1)) {
+        this.target1 = self;
       }
     }
     

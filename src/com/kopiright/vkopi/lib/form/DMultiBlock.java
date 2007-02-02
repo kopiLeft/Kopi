@@ -61,7 +61,7 @@ public class DMultiBlock extends DChartBlock {
     button = new MoveButton(MoveButton.CHART);
     firstButton = new MoveButton(MoveButton.FIRST);
     prevButton = new MoveButton(MoveButton.PREV);
-    nextButton = new MoveButton(MoveButton.NEXT);
+    nextButton = new MoveButton(MoveButton.NEXT1);
     lastButton = new MoveButton(MoveButton.LAST);
 
     final Box                   buttonBox = Box.createVerticalBox();
@@ -377,7 +377,7 @@ public class DMultiBlock extends DChartBlock {
         g.drawLine(3, 10 + hOffest, 14, 10 + hOffest);           
         g.drawLine(3, 13 + hOffest, 14, 13 + hOffest);           
         break;
-      case NEXT:
+      case NEXT1:
         g.fillPolygon(new int[]{4, 10 , 15}, new int[]{6 , 12 , 6}, 3);           
         break;
       case LAST:
@@ -391,7 +391,7 @@ public class DMultiBlock extends DChartBlock {
 
     static final int    FIRST   = 1;
     static final int    PREV    = 2;
-    static final int    NEXT    = 3;
+    static final int    NEXT1    = 3;
     static final int    LAST    = 4;
     static final int    CHART   = 5;
     /**

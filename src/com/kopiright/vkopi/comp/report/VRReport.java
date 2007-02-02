@@ -178,11 +178,11 @@ class VRReport
     }
 
     // ADD TRIGGERS
-    if (getCommandable().countTriggers(TRG_VOID) > 0) {
-      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(null, ref, "executeVoidTrigger", TRG_VOID));
+    if (getCommandable().countTriggers(TRG_VOID1) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(null, ref, "executeVoidTrigger", TRG_VOID1));
     }
-    if (getCommandable().countTriggers(TRG_OBJECT) > 0) {
-      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(null, ref, "executeObjectTrigger", TRG_OBJECT));
+    if (getCommandable().countTriggers(TRG_OBJECT1) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(null, ref, "executeObjectTrigger", TRG_OBJECT1));
     }
 
     // BUILD THE CLASS
@@ -289,11 +289,11 @@ class VRReport
 							   CStdType.Integer,
 							   new JExpression[] {
 							     new JIntLiteral(ref, triggerArray.length),
-							     new JIntLiteral(ref, TRG_TYPES.length)
+							     new JIntLiteral(ref, TRG_TYPES1.length)
 							   },
 							   null)));
     for (int i = 0; i < triggerArray.length; i++) {
-      for (int j = 0; j < TRG_TYPES.length; j++) {
+      for (int j = 0; j < TRG_TYPES1.length; j++) {
 	if (triggerArray[i][j] != 0) {
 	  JExpression   expr = new JIntLiteral(ref, triggerArray[i][j]);
 	  JExpression	left = new JArrayAccessExpression(ref,
@@ -437,9 +437,9 @@ class VRReport
   // PRIVATE CONSTANTS
   // ----------------------------------------------------------------------
 
-  private static final int[]	TRG_TYPES = com.kopiright.vkopi.lib.report.Constants.TRG_TYPES;
-  private static final int	TRG_VOID = com.kopiright.vkopi.lib.form.VConstants.TRG_VOID;
-  private static final int	TRG_OBJECT = com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT;
+  private static final int[]	TRG_TYPES1 = com.kopiright.vkopi.lib.report.Constants.TRG_TYPES;
+  private static final int	TRG_VOID1 = com.kopiright.vkopi.lib.form.VConstants.TRG_VOID;
+  private static final int	TRG_OBJECT1 = com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT;
 
   private static final Vector	TRIGGER_ARRAY_DIM = new Vector(2);
 

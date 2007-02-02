@@ -22,7 +22,7 @@ package com.kopiright.compiler.tools.antlr.compiler;
 import com.kopiright.compiler.tools.antlr.runtime.*;
 
 class WildcardElement extends GrammarAtom {
-  protected String label;
+  protected String label1;
 
   public WildcardElement(Grammar g, Token t) {
     super(g, t);
@@ -32,18 +32,18 @@ class WildcardElement extends GrammarAtom {
     generator.gen(this);
   }
   public String getLabel() {
-    return label;
+    return label1;
   }
   public Lookahead look(int k) {
     return grammar.theLLkAnalyzer.look(k, this);
   }
   public void setLabel(String label_) {
-    label = label_;
+    label1 = label_;
   }
   public String toString() {
     String s = " ";
-    if (label!=null) {
-      s += label+":";
+    if (label1!=null) {
+      s += label1+":";
     }
     return s + ".";
   }

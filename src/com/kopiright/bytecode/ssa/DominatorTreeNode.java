@@ -39,7 +39,7 @@ public class DominatorTreeNode extends Node {
    */
   public DominatorTreeNode(int index, Node node) {
     super();
-    this.index = index;
+    this.index1 = index;
     this.graphNode = node;
   }
 
@@ -62,7 +62,7 @@ public class DominatorTreeNode extends Node {
    * @return index of the node
    */
   public int getIndex() {
-    return index;
+    return index1;
   }
 
   /**
@@ -85,6 +85,6 @@ public class DominatorTreeNode extends Node {
   // DATA MEMBERS
   // -------------------------------------------------------------------
 
-  protected int index;
+  protected int index1;
   protected Node graphNode;
 }

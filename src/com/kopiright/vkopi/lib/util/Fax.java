@@ -768,7 +768,7 @@ public class Fax {
   private abstract class BasicServ extends Thread {
 
     protected BasicServ(boolean debug) throws IOException {
-      this.debug = debug;
+      this.debug1 = debug;
       this.srv = new ServerSocket(0, TIMEOUT);
       // get next free port
       this.port = srv.getLocalPort();
@@ -777,7 +777,7 @@ public class Fax {
     }
 
     protected final void debug(String message) {
-      if (debug) {
+      if (debug1) {
         System.out.println(message);
       }
     }
@@ -792,7 +792,7 @@ public class Fax {
     // DATA MEMBERS
     // ----------------------------------------------------------------------
     
-    private final boolean               debug;
+    private final boolean               debug1;
 
     protected final int                 port;
     protected final ServerSocket        srv;

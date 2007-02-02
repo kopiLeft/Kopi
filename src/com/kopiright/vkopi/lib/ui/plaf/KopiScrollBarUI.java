@@ -62,11 +62,11 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
       int         arrowHeight = (height+1) / 4;
      
       if (!isEnabled) {
-        g.setColor(thumbColor);
+        g.setColor(thumbColor1);
       } else if (isPressed) {
         g.setColor(MetalLookAndFeel.getControlShadow());
       } else {
-        g.setColor(thumbColor);
+        g.setColor(thumbColor1);
       }
       g.fillRect(0, 0, width, height);
 
@@ -267,7 +267,7 @@ public class KopiScrollBarUI extends MetalScrollBarUI {
 
     private boolean     isFreeStanding;
     private Color       border_color = UIManager.getColor("ScrollBar.highlight");
-    private Color       thumbColor = UIManager.getColor("ScrollBar.thumb");
+    private Color       thumbColor1 = UIManager.getColor("ScrollBar.thumb");
     /**
 	 * Comment for <code>serialVersionUID</code>
 	 */
