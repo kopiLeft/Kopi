@@ -33,11 +33,11 @@ public class MReport extends AbstractTableModel implements Constants {
   // --------------------------------------------------------------------
 
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -7372702648334281245L;
-
-/**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = -7372702648334281245L;
+  
+  /**
    * Constructs a new report instance
    */
   public MReport() {
@@ -294,7 +294,7 @@ public class MReport extends AbstractTableModel implements Constants {
 
       // get the interval of columns at this level
       next = start + 1 ;
-      while(displayLevels[next] != displayLevels[start]){
+      while(displayLevels[next] == displayLevels[start]){
     	  next ++;
       }
       
