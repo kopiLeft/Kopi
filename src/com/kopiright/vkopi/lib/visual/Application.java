@@ -137,6 +137,14 @@ public abstract class Application extends java.applet.Applet implements MessageL
     return instance.registry;
   }
 
+  /**
+   * Retruns the default locale.
+   */
+  public static Locale getDefaultLocale() {
+    return instance.defaultLocale;
+  }
+
+
   // --------------------------------------------------------------------
 
   /**
@@ -235,6 +243,27 @@ public abstract class Application extends java.applet.Applet implements MessageL
       options.driver = defaults.getDefaultJDBCDriver();
     }
 
+    if (options.locale == null) {
+      System.err.println("Warning: a default locale was not specified!");
+      defaultLocale = null;
+    } else {
+      char[]    chars = options.locale.toCharArray();
+      
+      if(chars.length != 5
+         || chars[0] < 'a' || chars[0] > 'z'
+         || chars[1] < 'a' || chars[1] > 'z'
+         || chars[2] != '_'
+         || chars[3] < 'A' || chars[3] > 'Z'
+         || chars[4] < 'A' || chars[4] > 'Z'
+         ) {
+	System.err.println("Error: Wrong locale format.");
+	options.usage();
+        return false;
+      } else {
+        defaultLocale = new Locale(options.locale.substring(0,2),
+                                   options.locale.substring(3,5));
+      }
+    }
     return true;
   }
 
@@ -620,6 +649,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private SplashScreen                  splash;
   private boolean                       isStarted;
   private Registry                      registry;
+  private Locale                        defaultLocale;
 
   // ---------------------------------------------------------------------
   // Failure cause informations

@@ -688,7 +688,7 @@ public class MenuTree extends DWindow {
     public void localize(Locale locale) {
       LocalizationManager         manager;
       
-      manager = new LocalizationManager(locale);
+      manager = new LocalizationManager(locale, Application.getDefaultLocale());
       
       // localizes the actors in VWindow
       super.localizeActors(manager);
@@ -781,7 +781,7 @@ public class MenuTree extends DWindow {
     public void localize(Locale locale) {
       LocalizationManager         manager;
       
-      manager = new LocalizationManager(locale);
+      manager = new LocalizationManager(locale, Application.getDefaultLocale());
       
       // localizes the modules
       for (ListIterator i = items.listIterator(); i.hasNext(); ) {

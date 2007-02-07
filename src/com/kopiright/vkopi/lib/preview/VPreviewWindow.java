@@ -30,6 +30,7 @@ import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.SActor;
@@ -322,7 +323,7 @@ public class VPreviewWindow extends VWindow {
   public void localize(Locale locale) {
     LocalizationManager         manager;
       
-    manager = new LocalizationManager(locale);
+    manager = new LocalizationManager(locale, Application.getDefaultLocale());
     
     // localizes the actors in VWindow
     super.localizeActors(manager);

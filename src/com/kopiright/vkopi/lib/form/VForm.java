@@ -270,7 +270,7 @@ public abstract class VForm extends VWindow implements VConstants {
   public void localize(Locale locale) {
     LocalizationManager         manager;
     
-    manager = new LocalizationManager(locale);
+    manager = new LocalizationManager(locale, Application.getDefaultLocale());
 
     // localizes the actors in VWindow
     super.localizeActors(manager);

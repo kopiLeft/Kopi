@@ -35,6 +35,7 @@ import com.kopiright.vkopi.lib.print.Printable;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.FileChooser;
@@ -190,7 +191,7 @@ public abstract class VReport extends VWindow
   public void localize(Locale locale) {
     LocalizationManager         manager;
       
-    manager = new LocalizationManager(locale);
+    manager = new LocalizationManager(locale, Application.getDefaultLocale());
     
     // localizes the actors in VWindow
     super.localizeActors(manager);

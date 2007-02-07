@@ -31,3 +31,10 @@ longname		"form"
 	default		"null"
 	requireArgument
 	help		"The initial form to run"
+
+longname		"locale"
+	shortcut	"l"
+	type		String
+	default		"null"
+	requireArgument
+	help		"The localization to use when the user's locale is not supported"

@@ -96,7 +96,7 @@ public class VHelpViewer extends VWindow {
   public void localize(Locale locale) {
     LocalizationManager         manager;
       
-    manager = new LocalizationManager(locale);
+    manager = new LocalizationManager(locale, Application.getDefaultLocale());
     
     // localizes the actors in VWindow
     super.localizeActors(manager);

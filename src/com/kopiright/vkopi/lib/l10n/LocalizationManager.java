@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.l10n;
 
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -41,8 +42,9 @@ public class LocalizationManager {
    *
    * @param     locale          the locale used for localization management
    */
-  public LocalizationManager(Locale locale) {
+  public LocalizationManager(Locale locale, Locale defaultLocale) {
     this.locale = locale;
+    this.defaultLocale = defaultLocale;
   }
   
   // ----------------------------------------------------------------------
@@ -169,13 +171,23 @@ public class LocalizationManager {
     SAXBuilder          builder;
     Document            document;
 
-    //!!!FIX:taoufik locale.toString() will probably output 'de' instead of 'de_AT'
-    fileName = source.replace('.', '/') + "-" + locale.toString() + ".xml";
     builder = new SAXBuilder();
+    fileName = source.replace('.', '/') + "-" + locale.toString() + ".xml";
+
     try {
       document = builder.build(LocalizationManager.class.getClassLoader().getResourceAsStream(fileName));
-    } catch (Exception e) {
-      throw new InconsistencyException("Cannot load file " + fileName + ": " + e.getMessage());
+    } catch (Exception localeException) {
+      if (defaultLocale == null) {
+        throw new InconsistencyException("Cannot load file " + fileName + localeException.getMessage());
+      }
+      
+      System.err.println("Warning: Cannot load file " + fileName + ": " + localeException.getMessage());
+      try {
+        fileName = source.replace('.', '/') + "-" + defaultLocale.toString() + ".xml";
+        document = builder.build(LocalizationManager.class.getClassLoader().getResourceAsStream(fileName));
+      } catch (Exception defaultLocaleException) {
+        throw new InconsistencyException("Cannot load file " + fileName + ": " + defaultLocaleException.getMessage());
+      }
     }
     
     // the URI is used to report the file name when a child lookup fails
@@ -190,4 +202,5 @@ public class LocalizationManager {
   
   private final Hashtable               documents = new Hashtable();
   private final Locale                  locale;
+  private final Locale                  defaultLocale;
 }

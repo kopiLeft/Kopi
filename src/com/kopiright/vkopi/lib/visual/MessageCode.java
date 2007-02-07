@@ -103,7 +103,7 @@ public class MessageCode {
     try {
       String            format;
       
-      manager = new LocalizationManager(Locale.getDefault());
+      manager = new LocalizationManager(Locale.getDefault(), Application.getDefaultLocale());
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
