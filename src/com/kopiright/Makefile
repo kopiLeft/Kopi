@@ -27,7 +27,7 @@ SUBDIRS =	util/base compiler bytecode kopi xkopi util vkopi drivers
 PACKAGEDIR =	com/kopiright
 
 TEMPDIR =	/tmp
-VERSION =	2.2D
+VERSION =	2.3A
 
 JAVADOC =	javadoc -source 1.4 -J-Xmx128m
 JAVADOCFLAGS =	-package -use -windowtitle "Kopi Suite Version $(VERSION)"
