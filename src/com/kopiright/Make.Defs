@@ -38,7 +38,7 @@ classroot-bad:
 ## DEFINITIONS
 
 ifndef RELEASE
-RELEASE =	"Version 2.2D released 24 Aug 2006"
+RELEASE =	"Version 2.3A released 09 February 2007"
 endif
 
 ifndef JAVA
