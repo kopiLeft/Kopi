@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import com.kopiright.bytecode.classfile.ClassFileFormatException;
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.kopi.comp.kjc.BytecodeOptimizer;
 import com.kopiright.kopi.comp.kjc.CBinaryTypeContext;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CSourceClass;
 import com.kopiright.kopi.comp.kjc.CTypeVariable;
 import com.kopiright.kopi.comp.kjc.JBlock;
 import com.kopiright.kopi.comp.kjc.JClassBlock;
@@ -99,7 +101,7 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
     ArrayList                   methodList = new ArrayList();
 
     while (lengthDone < fields.length) {
-      for (int i=0; i < 1000 && lengthDone < fields.length; i++, lengthDone++) {
+      for (int i = 0; i < 1000 && lengthDone < fields.length; i++, lengthDone++) {
         initializerList.add(new JClassFieldDeclarator(TokenReference.NO_REF, fields[lengthDone]));
       }
         // put all statements into a static method, and call
@@ -161,21 +163,25 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
 						       new JClassImport[]{},
 						       new JTypeDeclaration[] {clazz});
 
+
     try {
       Vector	classes = new Vector();
+
       compilUnit.join(compiler);
       compilUnit.checkInterface(compiler);
       compilUnit.prepareInitializers(compiler, classes);
       compilUnit.checkInitializers(compiler, classes);
       compilUnit.checkBody(compiler, classes);
-      ((com.kopiright.kopi.comp.kjc.CSourceClass)classes.elementAt(0)).genCode(new BytecodeOptimizer(0),
-                                                              destination,
-                                                              env.getTypeFactory());
+      ((CSourceClass)classes.elementAt(0)).genCode(new BytecodeOptimizer(0),
+                                                   destination,
+                                                   env.getTypeFactory());
     } catch (PositionedError e) {
+      e.printStackTrace();
+      //!!! graf 20070210: no error reported! why?
       compiler.reportTrouble(e);
     } catch (java.io.IOException e) {
       e.printStackTrace();
-    } catch (com.kopiright.bytecode.classfile.ClassFileFormatException e) {
+    } catch (ClassFileFormatException e) {
       e.printStackTrace();
     }
   }
@@ -185,7 +191,6 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
   // ----------------------------------------------------------------------
 
   private static void init(Compiler compiler, KjcEnvironment env) {
-    //    com.kopiright.bytecode.classfile.ClassPath.init(System.getProperty("java.class.path"));
     com.kopiright.kopi.comp.kjc.CStdType.init(compiler, env);
     com.kopiright.xkopi.comp.xkjc.XStdType.init(compiler, new CBinaryTypeContext(env.getClassReader(),
                                                                env.getTypeFactory()));
