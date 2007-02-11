@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="LpQ" parent="LpdOptions"  package="com.kopiright.util.lpr"  usage="usage: com.kopiright.LpQ.Main [options]">
+<param longname="mine" shortname="m"  type="boolean"  default="false"  help="Shows only the jobs of the current user" />
+<param longname="longFormat" shortname="l"  type="boolean"  default="false"  help="Displays more informations about jobs" />
+</option>

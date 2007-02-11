@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="Mailer" parent="com.kopiright.util.base.Options"  package="com.kopiright.util.mailer"  usage="java com.kopiright.util.mailer.Mailer --host &lt;host> --from &lt;sender> --to &lt;recipient>">
+<param longname="host" shortname="m"  type="String"  default="localhost"  help="The mail host." />
+<param longname="from" shortname="f"  type="String"  default="null"  help="The email of the sender" />
+<param longname="to" shortname="t"  type="String"  default="null"  help="A comma separated list of email addresses which are the recipients" />
+<param longname="cc" shortname="c"  type="String"  default=""  help="A comma separated list of email addresses which are the cc (Carbon Copy) recipients" />
+<param longname="bcc" shortname="b"  type="String"  default=""  help="A comma separated list of email addresses which are the bcc (Blind Carbon Copy) recipients" />
+<param longname="subject" shortname="s"  type="String"  default=""  help="The subject of the message" />
+<param longname="body" shortname="o"  type="String"  default=""  help="The body of the message" />
+<param longname="attachments" shortname="a"  type="String"  default="null"  help="A comma separated list of files to attach" />
+</option>

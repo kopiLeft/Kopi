@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="Msggen" parent="com.kopiright.util.base.Options"  package="com.kopiright.compiler.tools.msggen"  usage="usage: com.kopiright.msggen &lt;file>">
+</option>

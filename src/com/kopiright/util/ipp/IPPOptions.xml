@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="IPP" parent="com.kopiright.util.base.Options"  package="com.kopiright.util.ipp"  usage="usage: com.kopiright.util.ipp.Main [options] &lt;files>">
+<param longname="host" shortname="H"  type="String"  default="null"  help="Sets the ipp host" />
+<param longname="port" shortname="p"  type="int"  default="631"  help="Sets the ipp port" />
+<param longname="printer" shortname="P"  type="String"  default="null"  help="Sets the printer name" />
+<param longname="user" shortname="u"  type="String"  default="null"  help="Sets the user name" />
+<param longname="nbcopies" shortname="n"  type="int"  default="1"  help="Sets the number of copies to print" />
+<param longname="tray" shortname="t"  type="String"  default="Default"  help="Sets the tray name of the printer" />
+</option>

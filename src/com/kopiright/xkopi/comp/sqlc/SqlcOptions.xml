@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="Sqlc" parent="com.kopiright.util.base.Options"  package="com.kopiright.xkopi.comp.sqlc"  usage="usage: com.kopiright.xkopi.comp.sqlc.Main [option]* [--help] &lt;sql-files>">
+<param longname="encoding" shortname="e"  type="String"  default="null"  help="Sets the character encoding for the source file(s)." />
+<param longname="warning" shortname="w"  type="boolean"  default="false"  help="Displays warning for misleading sql constructions" />
+</option>

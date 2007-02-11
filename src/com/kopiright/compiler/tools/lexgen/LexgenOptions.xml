@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="Lexgen" parent="com.kopiright.util.base.Options"  package="com.kopiright.compiler.tools.lexgen"  usage="usage: com.kopiright.lexgen.Main [option]* [--help] &lt;file>">
+<param longname="definition" shortname="d"  type="boolean"  default="false"  help="Generates a definition file" />
+<param longname="inter" shortname="i"  type="boolean"  default="false"  help="Generates an interface file" />
+<param longname="keywords" shortname="k"  type="boolean"  default="false"  help="Generates a keyword file" />
+<param longname="tokens" shortname="t"  type="boolean"  default="false"  help="Generates CToken entries in the interface file (implies --inter)" />
+<param longname="flexrules" shortname="f"  type="boolean"  default="false"  help="Generates JFlex rules for literals, keywords and operators" />
+</option>

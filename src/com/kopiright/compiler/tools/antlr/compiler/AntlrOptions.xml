@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="Antlr" parent="com.kopiright.util.base.Options"  package="com.kopiright.compiler.tools.antlr.compiler"  usage="usage: com.kopiright.compiler.tools.antlr.compiler.Main [option]* [--help] &lt;grammar-files>">
+<param longname="destination" shortname="d"  type="String"  default="."  help="Sets the directory where all output is generated" />
+</option>

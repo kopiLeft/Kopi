@@ -303,22 +303,22 @@
          ================================= -->
 	<target name="options" if="options" unless="buildtools" description="  Converting options files to java files">
 		<opt.def>
-			<arg value="${options}.opt" />
+			<arg value="${options}.xml" />
 		</opt.def>
 		<antcall target="options2" />
 		<antcall target="options3" />
 	</target>
 	<target name="options2" if="options2">
 		<opt.def>
-			<arg value="${options2}.opt" />
+			<arg value="${options2}.xml" />
 		</opt.def>
 	</target>
 	<target name="options3" if="options3">
 		<opt.def>
-			<arg value="${options3}.opt" />
+			<arg value="${options3}.xml" />
 		</opt.def>
 		<opt.def>
-			<arg value="${options4}.opt" />
+			<arg value="${options4}.xml" />
 		</opt.def>
 	</target>
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="VK" parent="com.kopiright.xkopi.comp.xkjc.XKjcOptions"  package="com.kopiright.vkopi.comp.base"  usage="usage: com.kopiright.vkopi.comp.main.Main [option]* [--help] &lt;kopi-files>">
+<param longname="insertDirectories" shortname="I"  type="String"  default="null"  help="A colon separated list of directories searched for insert files" />
+<param longname="sqlCase" shortname="S"  type="String"  default="null"  help="Change the case of SQL keywords. Only supported case: upper" />
+<param longname="sqlTrigger" shortname="U"  type="boolean"  default="false"  help="Allow SQL in ALL triggers" />
+<param longname="localizationDirectory" shortname="l"  type="String"  default="null"  help="Destination directory for XML localization files." />
+<param longname="localizationOnly" shortname="L"  type="boolean"  default="false"  help="Generate XML localization files only." />
+</option>

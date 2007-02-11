@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="Classfile" parent="com.kopiright.util.base.Options"  package="com.kopiright.bytecode.classfile"  usage="usage: com.kopiright.bytecode.classfile.Main [option]* [--help] &lt;class-files, zip-file, directory>">
+<param longname="inter" shortname="i"  type="boolean"  default="false"  help="Reads interface only" />
+<param longname="destination" shortname="d"  type="String"  default="null"  help="Selects the destination directory" />
+<param longname="repeat" shortname="R"  type="int"  default="1"  help="Repeats R times the read/write process" />
+</option>

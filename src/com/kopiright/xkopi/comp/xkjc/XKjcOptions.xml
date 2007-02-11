@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<option prefix="XKjc" parent="com.kopiright.kopi.comp.kjc.KjcOptions"  package="com.kopiright.xkopi.comp.xkjc"  usage="usage: com.kopiright.xkopi.comp.xkjc.Main [option]* [--help] &lt;java-files>">
+<param longname="xkjcpath" shortname="x"  type="String"  default="null"  help="Change overloaded operator path to oo" />
+<param longname="nooo" shortname="o"  type="boolean"  default="false"  help="Don''t perform any operator overloading" />
+<param longname="database" shortname="i"  type="String"  default="null"  help="Set the database definition class" />
+<param longname="allowGoto" shortname="a"  type="boolean"  default="false"  help="Allows goto in XKopi" />
+<param longname="ignoreUnreachableStatement" shortname="Y"  type="boolean"  default="false"  help="Allows blocks with unreachable statements in XKopi" />
+</option>

@@ -234,10 +234,10 @@ endif
 
 ifdef OPTIONS
 
-%.java:			%.opt
+%.java:			%.xml
 			$(OPTDEF) $<
-#$(OPTIONS:%=%.java):	$(OPTIONS:%=%.opt)
-#			$(OPTDEF) $(OPTIONS:%=%.opt)
+#$(OPTIONS:%=%.java):	$(OPTIONS:%=%.xml)
+#			$(OPTDEF) $(OPTIONS:%=%.xml)
 
 JAVAFILES +=		$(OPTIONS)
 GENFILES +=		$(OPTIONS:%=%.java)
