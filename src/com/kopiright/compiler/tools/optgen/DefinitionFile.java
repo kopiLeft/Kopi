@@ -51,7 +51,7 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
     this.fileHeader	= fileHeader;
     this.packageName	= packageName;
     this.parent		= parent;
-    this.version	= version == null ? null : version.substring(1, version.length() - 1);
+    this.version	    = version;
     this.usage		= usage;
     this.prefix		= prefix;
     this.definitions	= definitions;
@@ -67,10 +67,8 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
   public static DefinitionFile read(String sourceFile) throws OptgenError {
     try {
       InputStream	input = new BufferedInputStream(new FileInputStream(sourceFile));
-      OptgenLexer	scanner = new OptgenLexer(input);
-      OptgenParser	parser = new OptgenParser(scanner);
-      DefinitionFile	defs = parser.aCompilationUnit(sourceFile);
-
+      DefinitionFile 	defs = ReadOptDefinitionFile.read(sourceFile); 
+      
       input.close();
 
       return defs;
@@ -78,12 +76,7 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
       throw new OptgenError(CompilerMessages.FILE_NOT_FOUND, sourceFile);
     } catch (IOException e) {
       throw new OptgenError(CompilerMessages.IO_EXCEPTION, sourceFile, e.getMessage());
-    } catch (ParserException e) {
-      throw new OptgenError(CompilerMessages.FORMATTED_ERROR,
-			    new PositionedError(new TokenReference(sourceFile, e.getLine()),
-						CompilerMessages.SYNTAX_ERROR,
-						e.getMessage()));
-    }
+    } 
   }
 
   // --------------------------------------------------------------------
@@ -207,7 +200,7 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
     out.println("  public void usage() {");
     if (usage != null) {
       out.print("    System.err.println(");
-      out.print(usage);
+      out.print("\"" + usage + "\"");
       out.println(");");
     }
     out.println("  }");

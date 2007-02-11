@@ -34,12 +34,12 @@ class OptionDefinition {
 			  String argument,
 			  String help)
   {
-    this.longname = trail(longname);
-    this.shortname = trail(shortname);
+    this.longname = longname;
+    this.shortname = shortname;
     this.type = type;
-    this.defaultValue = trail(defaultValue);
-    this.argument = trail(argument);
-    this.help = trail(help);
+    this.defaultValue = defaultValue;
+    this.argument = argument;
+    this.help = help;
   }
 
   private static final String trail(String s) {
@@ -112,20 +112,20 @@ class OptionDefinition {
       out.print("!" + defaultValue);
       out.print(";");
     } else {
-      String	methodName;
-      String	argument = this.argument;
+      String	 methodName;
+      String	 arg = this.argument;
 
       if (type.equals("int")) {
 	methodName = "getInt";
-	if (argument == null || argument.equals("")) {
-	  argument = "0";
+	if (arg == null || arg.equals("")) {
+	  arg = "0";
 	}
       } else {
 	methodName = "getString";
-	argument = "\"" + argument + "\"";
+	arg = "\"" + arg + "\"";
       }
 
-      out.print(methodName + "(g, " + argument + ")");
+      out.print(methodName + "(g, " + arg + ")");
       out.print(";");
     }
     out.println(" return true;");

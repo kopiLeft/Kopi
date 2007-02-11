@@ -27,9 +27,9 @@ PACKAGE =	com/kopiright/compiler/tools/optgen
 ## ----------------------------------------------------------------------
 ## FILES
 
-GRAMMAR =	Optgen
 
-JAVAFILES +=	DefinitionFile OptgenError Main OptionDefinition
+
+JAVAFILES +=	DefinitionFile OptgenError Main OptionDefinition ReadOptDefinitionFile
 
 # optgen not available at this point in the build process
 ifndef TOOLS_BUILT

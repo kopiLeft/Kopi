@@ -14,21 +14,10 @@
   <property name="javafiles" 
             value="DefinitionFile.java OptgenError.java Main.java 
                    OptionDefinition.java OptgenMessages.java 
-                   OptgenOptions.java OptgenLexer.java OptgenParser.java 
-                   OptgenLexerTokenTypes.java OptgenTokenTypes.java" />
+                   OptgenOptions.java " />
 
   <property name="messages" value="OptgenMessages" />
   <property name="buildmessages" value="yes" />
-  
-  <property name="options" value="OptgenOptions" />
-  <property name="buildoptions" value="yes" />
-
-  <property name="grammar" value="Optgen" />
-
-  <target name="buildtools" >
-    <antcall target="grammar" />
-    <antcall target="classes" />
-  </target>
 
   <import file="${topdir}/defs.xml" />
 
