@@ -1,11 +1,5 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 
-<option prefix="Application" parent="com.kopiright.xkopi.lib.base.ConnectionOptions"  package="com.kopiright.vkopi.lib.visual" "usage="usage: Application [option]*">
-
-  <param longname="form" shortname="f" type="String" default="null" help="The initial form to run"/>
- 
+<option prefix="Application" parent="com.kopiright.xkopi.lib.base.ConnectionOptions"  package="com.kopiright.vkopi.lib.visual"  usage="usage: Application [option]*">
+<param longname="form" shortname="f"  type="String"  default="null"  help="The initial form to run" />
 </option>
-
-
-
