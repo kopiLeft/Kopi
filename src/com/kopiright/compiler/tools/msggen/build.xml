@@ -14,19 +14,15 @@
   <property name="javafiles" 
             value="DefinitionFile.java MsggenError.java Main.java 
                    MessageDefinition.java MsggenMessages.java 
-                   MsggenOptions.java MsggenLexer.java MsggenParser.java 
-                   MsggenLexerTokenTypes.java MsggenTokenTypes.java" />
+                   MsggenOptions.java" />
 
   <property name="messages" value="MsggenMessages" />
   <property name="buildmessages" value="yes" />
 
   <property name="options"  value="MsggenOptions" />
 
-  <property name="grammar"  value="Msggen" />
-
 
   <target name="buildtools">
-    <antcall target="grammar" />
     <antcall target="options" />
     <antcall target="classes" />
   </target>
