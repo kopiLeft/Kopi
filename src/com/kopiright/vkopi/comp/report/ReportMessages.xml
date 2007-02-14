@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Report"  package="com.kopiright.vkopi.comp.report">
+<msg identifier="GROUP_UNKNOWN_FIELD" format="Field \&quot;{0}\&quot; unknow (GROUP)" reference="REPORT" level="0"/>
+</messages>

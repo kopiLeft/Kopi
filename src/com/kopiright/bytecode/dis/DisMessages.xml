@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Dis" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.dis">
+<msg identifier="PROCESSING" format="Processing \&quot;{0}\&quot;." level="-1"/>
+<msg identifier="CLASS_NOT_FOUND" format="Class \&quot;{0}\&quot; not found" reference="DIS" level="0"/>
+</messages>

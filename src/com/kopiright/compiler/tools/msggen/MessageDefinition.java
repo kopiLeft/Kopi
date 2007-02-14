@@ -34,9 +34,8 @@ class MessageDefinition {
   public MessageDefinition(String identifier, String format, String reference, int level) {
     this.identifier = identifier;
 
-    // strip leading and trailing quotes
-    this.reference = reference == null ? null : reference.substring(1, reference.length() - 1);
-    this.format = format == null ? null : format.substring(1, format.length() - 1);
+    this.reference = reference;
+    this.format = format;
     this.level = level;
   }
 

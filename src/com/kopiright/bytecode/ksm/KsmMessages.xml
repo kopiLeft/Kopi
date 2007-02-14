@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Ksm" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.ksm">
+<msg identifier="PROCESSING" format="Processing \&quot;{0}\&quot;." level="-1"/>
+<msg identifier="GENERATED" format="Generated: \&quot;{0}\&quot;." level="-1"/>
+<msg identifier="ASM_ERROR" format="Assembler error on file {0}: {1}" reference="KSM" level="0"/>
+<msg identifier="SEMANTIC_ERROR" format="Semantic error on file {0}: {1}" reference="KSM" level="0"/>
+<msg identifier="UNDEFINED_LABEL" format="Label \&quot;{0}\&quot; is not defined" reference="KSM" level="0"/>
+<msg identifier="LABEL_REDEFINED" format="Label \&quot;{0}\&quot; is multiply defined" reference="KSM" level="0"/>
+<msg identifier="NO_CODE_AT_LABEL" format="Label \&quot;{0}\&quot; outside of code array" reference="KSM" level="0"/>
+<msg identifier="DOUBLE_ATTR_SOURCE" format="Source attribute (@source) is defined twice." reference="KSM" level="0"/>
+<msg identifier="DOUBLE_ATTR_SIGNATURE" format="Signature attribute (@signature) is defined twice." reference="KSM" level="0"/>
+<msg identifier="DOUBLE_ATTR_DEPRECATED" format="Deprecated attribute (@deprecated) is defined twice." reference="KSM" level="0"/>
+<msg identifier="DOUBLE_ATTR_SYNTHETIC" format="Synthetic attribute (@synthetic) is defined twice." reference="KSM" level="0"/>
+<msg identifier="UNEXPECTED_EXCEPTION" format="Internal error: caught unexpected exception \&quot;{0}\&quot;" level="0"/>
+</messages>

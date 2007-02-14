@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix='Msggen' parent='com.kopiright.compiler.base.CompilerMessages'  package='com.kopiright.compiler.tools.msggen'>
+<msg identifier="DUPLICATE_DEFINITION" format="Message \&quot;{0}\&quot; redefined in \&quot;{1}\&quot;: previous definition in \&quot;{2}\&quot;" level="0"/>
+</messages>

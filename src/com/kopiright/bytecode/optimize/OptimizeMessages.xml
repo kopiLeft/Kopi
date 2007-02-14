@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Optimize" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.optimize">
+<msg identifier="SEMANTIC_ERROR" format="Semantic error found on file \&quot;{0}\&quot;: {1}" reference="OPTIMIZE" level="0"/>
+</messages>

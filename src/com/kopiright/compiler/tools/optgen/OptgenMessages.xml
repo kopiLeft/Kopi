@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Optgen" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.compiler.tools.optgen">
+<msg identifier="DUPLICATE_DEFINITION" format="Option \&quot;{0}\&quot; redefined in \&quot;{1}\&quot;: previous definition in \&quot;{2}\&quot;" level="0"/>
+<msg identifier="DUPLICATE_SHORTCUT" format="Shortcut \&quot;{0}\&quot; redefined in \&quot;{1}\&quot;: previous definition in \&quot;{2}\&quot;" level="0"/>
+</messages>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Sqlc" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.xkopi.comp.sqlc">
+<msg identifier="INVALID_DATE_LITERAL" format="\&quot;{0}\&quot; is not a valid date literal." reference="JDBC" level="0"/>
+<msg identifier="INVALID_TIME_LITERAL" format="\&quot;{0}\&quot; is not a valid time literal." reference="JDBC" level="0"/>
+<msg identifier="INVALID_TIMESTAMP_LITERAL" format="\&quot;{0}\&quot; is not a valid timestamp literal." reference="JDBC" level="0"/>
+<msg identifier="INVALID_NULL_COMPARISON" format="\&quot;{0}\&quot; comparison with NULL is not allowed" reference="SQLC" level="0"/>
+<msg identifier="TABLE_NOT_FOUND" format="The table \&quot;{0}\&quot; doesn&apos;&apos;t exist." reference="SQLC" level="2"/>
+<msg identifier="ALIAS_NOT_FOUND" format="The alias \&quot;{0}\&quot; doesn&apos;&apos;t exist." reference="SQLC" level="2"/>
+<msg identifier="ALIAS_NOT_UNIQUE" format="The alias \&quot;{0}\&quot; is not unique." reference="SQLC" level="2"/>
+<msg identifier="COLUMN_NOT_IN_TABLE" format="Table \&quot;{1}\&quot; has no column \&quot;{0}\&quot;." reference="SQLC" level="2"/>
+<msg identifier="COLUMN_NOT_RESOLVABLE" format="The column \&quot;{0}\&quot; is not resolvable." reference="SQLC" level="2"/>
+<msg identifier="COLUMN_NOT_UNIQUE" format="The column \&quot;{0}\&quot; is not unique in the list." reference="SQLC" level="2"/>
+<msg identifier="IDENT_NOT_RESOLVABLE" format="The Ident \&quot;{0}\&quot; is not resolvable." reference="SQLC" level="2"/>
+<msg identifier="NUMBER_COLUMNS_NOT_CORRECT" format="The number of columns isn&apos;t correct." reference="SQLC" level="2"/>
+<msg identifier="NUMBER_COLUMNS_VALUES_NOT_EQUAL" format="The number of columns in the ORDER BY isn&apos;t correct." reference="SQLC" level="2"/>
+<msg identifier="SET_FUNCTION_IS_SQL" format="\&quot;{0}\&quot; is defined in the grammar: it should not be enclosed in fn-escapes" reference="SQLC" level="2"/>
+<msg identifier="BAD_DATABASE_TYPE" format="The column \&quot;{0}\&quot; is not compatible with \&quot;{1}\&quot;" reference="SQLC" level="2"/>
+<msg identifier="NOT_ANSI_SYNTAX" format="Not ANSI syntax, use a AS" reference="SQLC" level="2"/>
+<msg identifier="ASSIGN_NULL" format="Not ANSI syntax, use \&quot;IS NULL\&quot; instead of \&quot;= NULL\&quot;" reference="SQLC" level="2"/>
+<msg identifier="NE_NULL" format="Not ANSI syntax, use \&quot;IS NOT NULL\&quot; instead of \&quot;&lt;&gt; NULL\&quot;" reference="SQLC" level="2"/>
+<msg identifier="IF_EXPR" format="Not ANSI syntax, use \&quot;DECODE(&lt;cond&gt;, {&lt;search&gt;, &lt;result&gt;}, &lt;default&gt;)\&quot; instead of \&quot;IF &lt;cond&gt; THEN &lt;if-part&gt; ELSE &lt;else-part&gt; FI\&quot;" reference="SQLC" level="2"/>
+</messages>

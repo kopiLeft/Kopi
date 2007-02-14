@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="XSqlc"  package="com.kopiright.xkopi.comp.xkjc">
+<msg identifier="EXPRESSION_CANNOT_BE_REFERENCED" format="This SQL expression cannot be referenced; add a field reference using an AS clause" reference="XSQLC" level="0"/>
+</messages>

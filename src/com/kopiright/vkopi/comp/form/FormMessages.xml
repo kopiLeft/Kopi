@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Form"  package="com.kopiright.vkopi.comp.form">
+<msg identifier="UNDEFINED_INDEX" format="The index number {0} is not defined in this block" reference="FORM" level="0"/>
+<msg identifier="INDEX_OUT_OF_RANGE" format="The index number {0} is outside the allowed range (0 .. 32)" reference="FORM" level="0"/>
+<msg identifier="BLOCK_NOT_FOUND" format="Block \&quot;{0}\&quot; is not defined." reference="FORM" level="0"/>
+<msg identifier="BLOCK_ALIGN_BAD" format="only left-aligned blocks can be aligned together" reference="FORM" level="0"/>
+<msg identifier="BAD_COLUMN_ORDER" format="The column order should be increasing" reference="FORM" level="0"/>
+<msg identifier="UNDEFINED_TABLENUM" format="The table shortcut \&quot;{0}\&quot; is not defined in this block" reference="FORM" level="0"/>
+<msg identifier="BLOCK_NO_SHORTCUT" format="Block \&quot;{0}\&quot; should have a shortcut" reference="FORM" level="0"/>
+<msg identifier="INDEX_NOT_USED" format="Index number {0} is not used in this block" reference="FORM" level="0"/>
+<msg identifier="CHART_FIELD_POSITIONED" format="Fields in multi-line blocks should not be positioned" reference="FORM" level="0"/>
+<msg identifier="HIDDEN_FIELD_POSITIONED" format="Hidden fields should not be positioned" reference="FORM" level="0"/>
+<msg identifier="HIDDEN_FIELD_NOCHART" format="Hidden fields should not have the option NO CHART" reference="FORM" level="0"/>
+<msg identifier="HIDDEN_FIELD_NODETAIL" format="Hidden fields should not have the option NO DETAIL" reference="FORM" level="0"/>
+<msg identifier="ALIAS_FIELD_VISIBLE" format="Only hidden fields can be ALIAS" reference="FORM" level="0"/>
+<msg identifier="POSITION_NEGATIVE_LENGTH" format="The element is smaller than 0" reference="FORM" level="0"/>
+<msg identifier="FIELD_NOT_FOUND" format="Field \&quot;{0}\&quot; is not defined." reference="FORM" level="0"/>
+<msg identifier="FOLLOW_INTERNAL" format="This field follows the internal field \&quot;{0}\&quot;." reference="FORM" level="0"/>
+<msg identifier="MORE_VISIBLE_THAN_BUFFERED" format="This block has more record visible than buffered" reference="FORM" level="0"/>
+<msg identifier="SINGLE_NOCHART" format="The option NO CHART is not allowed for a single block" reference="FORM" level="0"/>
+<msg identifier="SINGLE_NODETAIL" format="The option NO DETAIL is not allowed for a single block" reference="FORM" level="0"/>
+<msg identifier="MULTI_NODETAIL_ALLUNPOSITIONED" format="All the fields in the block \&quot;{0}\&quot; have no position, you must disable the detailed view" reference="FORM" level="0"/>
+<msg identifier="FIELD_CANT_HAVE_NODETAIL" format="This field can&apos;t declare NO DETAIL because the block declares NO CHART" reference="FORM" level="0"/>
+<msg identifier="FIELD_CANT_HAVE_NOCHART" format="This field can&apos;t declare NO CHART because the block declares NO DETAIL" reference="FORM" level="0"/>
+<msg identifier="FIELD_NOCHART_NOPOSITION" format="A field with the option NO CHART must be positioned." reference="FORM" level="0"/>
+<msg identifier="FIELD_NODETAIL_POSITION" format="A field with the option NO DETAIL cannot have a position." reference="FORM" level="0"/>
+<msg identifier="FIELD_NOCHART_NODETAIL" format="The options NO CHART NO DETAIL are exclusive." reference="FORM" level="0"/>
+<msg identifier="FIELD_IN_DETAILED_BLOCK" format="A field in a block which has a detailed view must have either a position or declare NO DETAIL." reference="FORM" level="0"/>
+<msg identifier="MULTI_MULTI_DISPLAY_NOCHART" format="Option NO CHART cannot be set for multi-blocks with more than one line displayed." reference="FORM" level="0"/>
+<msg identifier="FIELD_MUST_HAVE_POSITION" format="This field must have a position" reference="FORM" level="0"/>
+<msg identifier="TRANSIENT_DATABASE_FIELD" format="A transient field must not be connected to a database column." reference="FORM" level="0"/>
+<msg identifier="TRIGGER_USED_TWICE" format="This trigger is defined twice." reference="FORM" level="0"/>
+<msg identifier="MISSING_PAGE" format="Blocks but no page defined before this page." reference="FORM" level="0"/>
+<msg identifier="BOTH_NOCHART" format="Redundant option NO CHART since the block already declared it" reference="FORM" level="2"/>
+<msg identifier="BOTH_NODETAIL" format="Redundant option NO DETAIL since the block already declared it" reference="FORM" level="2"/>
+<msg identifier="POSITION_USED" format="The position &lt;{0}, {1}&gt; of this field is already used by the field \&quot;{2}\&quot;" reference="FORM" level="2"/>
+<msg identifier="NO_REC_TRG_FOR_SINGLE_BLOCK" format="The single block \&quot;{0}\&quot; can not have a {1}REC trigger; use the trigger {1}BLK instead." reference="FORM" level="2"/>
+</messages>

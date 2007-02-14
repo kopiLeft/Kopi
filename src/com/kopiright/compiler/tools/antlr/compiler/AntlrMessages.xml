@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Antlr" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.compiler.tools.antlr.compiler">
+</messages>

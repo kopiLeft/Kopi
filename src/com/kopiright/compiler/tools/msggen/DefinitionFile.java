@@ -62,10 +62,7 @@ class DefinitionFile {
   public static DefinitionFile read(String sourceFile) throws MsggenError {
     try {
       InputStream	input = new BufferedInputStream(new FileInputStream(sourceFile));
-      MsggenLexer	scanner = new MsggenLexer(input);
-      MsggenParser	parser = new MsggenParser(scanner);
-      DefinitionFile	defs = parser.aCompilationUnit(sourceFile);
-
+      DefinitionFile	 defs =ReadMsgDefinitionFile.read(sourceFile);
       input.close();
 
       return defs;
@@ -73,12 +70,7 @@ class DefinitionFile {
       throw new MsggenError(CompilerMessages.FILE_NOT_FOUND, sourceFile);
     } catch (IOException e) {
       throw new MsggenError(CompilerMessages.IO_EXCEPTION, sourceFile, e.getMessage());
-    } catch (ParserException e) {
-      throw new MsggenError(CompilerMessages.FORMATTED_ERROR,
-			    new PositionedError(new TokenReference(sourceFile, e.getLine()),
-						CompilerMessages.SYNTAX_ERROR,
-						e.getMessage()));
-    }
+    } 
   }
 
   // --------------------------------------------------------------------
@@ -144,7 +136,13 @@ class DefinitionFile {
   public String getPrefix() {
     return prefix;
   }
-
+  public  MessageDefinition[] getDefinition(){
+	  return definitions;
+  }
+  public String getParent() {
+	    return prefix;
+	  }
+ 
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

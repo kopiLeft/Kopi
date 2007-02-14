@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Print"  package="com.kopiright.vkopi.comp.print">
+<msg identifier="UNDEFINDED_AUTOSIZE" format="This size is not known:\&quot;{0}\&quot;" reference="PRINT" level="0"/>
+<msg identifier="UNDEFINED_STYLE" format="This style is not defined:\&quot;{0}\&quot;" reference="PRINT" level="0"/>
+<msg identifier="BAD_FORMAT" format="This page format is not defined:\&quot;{0}\&quot;" reference="PRINT" level="0"/>
+<msg identifier="UNDEFINED_BLOCK" format="This block is not defined:\&quot;{0}\&quot;" reference="PRINT" level="0"/>
+<msg identifier="WRONG_PAGE_TRIGGER_NAME" format="This trigger is not supported \&quot;{0}\&quot;" reference="PRINT" level="0"/>
+</messages>

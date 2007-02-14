@@ -219,7 +219,7 @@ endif
 
 ifdef MESSAGES
 
-%.java:			%.msg
+%Messages.java:			%Messages.xml
 			$(MSGDEF) $<
 #$(MESSAGES:%=%.java):	$(MESSAGES:%=%.msg)
 #			$(MSGDEF) $(MESSAGES:%=%.msg)
@@ -234,7 +234,7 @@ endif
 
 ifdef OPTIONS
 
-%.java:			%.xml
+%Options.java:			%Options.xml
 			$(OPTDEF) $<
 #$(OPTIONS:%=%.java):	$(OPTIONS:%=%.xml)
 #			$(OPTDEF) $(OPTIONS:%=%.xml)

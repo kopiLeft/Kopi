@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Include" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.compiler.tools.include">
+<msg identifier="CANNOT_OPEN_FILE" format="Cannot open file \&quot;{0}\&quot;: {1}" reference="INCLUDE" level="0"/>
+</messages>

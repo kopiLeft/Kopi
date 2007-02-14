@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="Memcnt" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.memcnt">
+<msg identifier="SEMANTIC_ERROR" format="Semantic error on {0}:" reference="MEMCNT" level="0"/>
+</messages>

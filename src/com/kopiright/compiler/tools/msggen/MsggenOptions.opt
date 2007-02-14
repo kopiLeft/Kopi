@@ -17,13 +17,10 @@
  * $Id$
  */
 
-package com.kopiright.bytecode.ssa
+prefix Msggen
 
-prefix SSA
-parent com.kopiright.compiler.base.CompilerMessages
+parent com.kopiright.util.base.Options
 
-// BACKEND ERRORS
-error		SEMANTIC_ERROR
-		"Semantic error found on file \"{0}\""
-		"OPTIMIZE"
+usage		"usage: com.kopiright.msggen <file>"
 
+package com.kopiright.compiler.tools.msggen

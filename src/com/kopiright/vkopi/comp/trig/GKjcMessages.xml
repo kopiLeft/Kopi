@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="GKjc"  package="com.kopiright.vkopi.comp.trig">
+<msg identifier="EXEC_KOPI_INSERT_TABLE_BAD_TYPE" format="The type of the table parameter in an insert should be String" reference="GKJC" level="0"/>
+<msg identifier="BAD_DATE_FORMAT" format="This is not a valide date:\&quot;{0}\&quot;" reference="GKJC" level="0"/>
+<msg identifier="BAD_TIME_FORMAT" format="This is not a valide time:\&quot;{0}\&quot;" reference="GKJC" level="0"/>
+<msg identifier="BAD_MONTH_FORMAT" format="This is not a valide month:\&quot;{0}\&quot;" reference="GKJC" level="0"/>
+<msg identifier="ACCESS_NOT_FIELD" format="This is not a field, you can&apos;t use the &apos;@&apos; operator" reference="GKJC" level="0"/>
+<msg identifier="BAD_RECORD_ACCESS" format="The record number should be an int" reference="GKJC" level="0"/>
+<msg identifier="CANT_LOAD_CLASSES_ZIP" format="Some types are undefined (not in the class path)" reference="GKJC" level="0"/>
+<msg identifier="NO_FILES_GIVEN" format="Parameters should contain at least one file" reference="GKJC" level="0"/>
+<msg identifier="MISSING_NOTNULL_COLUMN" format="Not-null column \&quot;{0}\&quot; missing in #insert expression" reference="GKJC" level="2"/>
+</messages>

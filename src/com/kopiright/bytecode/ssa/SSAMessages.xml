@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<messages prefix="SSA" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.ssa">
+<msg identifier="SEMANTIC_ERROR" format="Semantic error found on file \&quot;{0}\&quot;" reference="OPTIMIZE" level="0"/>
+</messages>
