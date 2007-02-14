@@ -287,13 +287,13 @@
          ================================= -->
 	<target name="messages" if="messages" unless="buildtools" description="  Converting messages files to java files">
 		<msg.def>
-			<arg value="${messages}.msg" />
+			<arg value="${messages}.xml" />
 		</msg.def>
 		<antcall target="messages2" />
 	</target>
 	<target name="messages2" if="messages2">
 		<msg.def>
-			<arg value="${messages2}.msg" />
+			<arg value="${messages2}.xml" />
 		</msg.def>
 	</target>
 
