@@ -50,16 +50,16 @@ src
 	base		Utility classes shared by all compilers
 	resource	Contains a skeleton for JFlex based scanners
 	tools		Tools to build and run the compilers
-	antlr		A modified (and simplified) version of ANTLR 2.7.1
-	    runtime	Run-time support classes for generated parsers
-	    compiler	Parser (and lexer) generator
-	    extra	Extra run-time classes developed by kopiRight
+	  antlr	        A modified (and simplified) version of ANTLR 2.7.1
+	     runtime	Run-time support classes for generated parsers
+	     compiler	Parser (and lexer) generator
+	     extra	Extra run-time classes developed by kopiRight
 			(will be integrated in runtime)
-	jperf		A perfect hashcode generator (obsolete)
-	optgen		An option class generator based on GNU Getopt
-	msggen		A message class generator
-	lexgen		A keyword preprocessor for ANTLR and JFlex
-	include		A preprocessor to include files
+	  jperf	        A perfect hashcode generator (obsolete)
+	  optgen	An option class generator based on GNU Getopt
+	  msggen	A message class generator
+	  lexgen	A keyword preprocessor for ANTLR and JFlex
+	  include	A preprocessor to include files
 
 
       bytecode		Tools and libraries to manipulate JVM bytecode
@@ -78,13 +78,9 @@ src
 	   oper		Definitions of operators for XKOPI primitive types
 
 	comp
-	   mkjc		A tool to generate KJC syntax trees from source-like
-			specifications
-
 	   sqlc		A simple SQL parser
 	   xkjc		A compiler for Java with embedded SQL and operator
 			overloading
-
 	   database	A library to verify SQL statements
 	   dbi		A translator between SQL dialects
 	   dict		Generates class with database information
@@ -92,16 +88,21 @@ src
 
       vkopi		Compilers and run-time libraries for Visual Kopi, 4GL tool
 	lib		Run-time libraries for Visual Kopi
-	    util	Utility classes
-	    visual	Window handling classes
-	    form	The run-time library for Visual Kopi forms
-	    print	The run-time library for Visual Kopi printed reports
-	    report	The run-time library for Visual Kopi dynamic reports
-	    cross	Classes that use more than one module
-	    doc		A documentation generator for Visual Kopi programs
-	    resource	Predefined icons and skeletons
-
-	comp		Compilers for Visual Kopi
+	   util	        Utility classes
+	   visual	Window handling classes
+	   form	        The run-time library for Visual Kopi forms
+	   print	The run-time library for Visual Kopi printed reports
+	   report	The run-time library for Visual Kopi dynamic reports
+	   cross	Classes that use more than one module
+	   doc		A documentation generator for Visual Kopi programs
+	   resource	Predefined icons and skeletons
+           spellchecker 
+           ui
+           preview
+           list
+           l10n         Modules for forms,reports and messages localization        
+	
+        comp		Compilers for Visual Kopi
 	    trig	A sub-compiler for Java triggers embedded in forms
 			and reports
 	    base	Grammars and classes common to forms and reports
@@ -118,19 +119,31 @@ src
 OTHER PACKAGES YOU WILL NEED
 
     JDK 1.4 or higher
+    For KJC :
+       GNU GETOPT
+	   The parsing of the arguments of the command line is made with gnu.getopt :
+	   http://www.urbanophile.com/arenn/hacking/download.html
 
-    GNU GETOPT
-	The parsing of the arguments of the command line is made with gnu.getopt :
-	http://www.urbanophile.com/arenn/hacking/download.html
-
-    JFLEX
-	The lexical analysers are generated with JFlex :
-	http://www.jflex.de
-
-    IBM BIGDECIMAL CLASSES
-	An improved implementation of the java.math package (XKOPI only) :
-	http://www2.hursley.ibm.com/decimal
-
+       JFLEX
+	   The lexical analysers are generated with JFlex :
+	   http://www.jflex.de
+           Please note that Kopi currently works only with JFlex 1.4
+    For XKOPI :
+       IBM BIGDECIMAL CLASSES
+	   An improved implementation of the java.math package (XKOPI only) :
+	   http://www2.hursley.ibm.com/decimal
+    For VKOPI :
+       JavaBeans Activation Framework
+           JavaBeans Activation Framework can be downloaded from :
+           http://java.sun.com/products/javabeans/jaf/downloads/index.html
+       JavaMail API
+           JavaMail API can be downloaded from :
+           http://java.sun.com/products/javamail/downloads/index.html
+       Hylafax protocol for Java 
+           The gnu.hylafax package is a pure-Java implementation of the HylaFAX (FAX server) client protocol.
+           it can be downloaded from :
+           http://sourceforge.net/projects/gnu-hylafax
+        
 --------------------------------------------------------------------------------
 BUILDING FROM SOURCE
 
