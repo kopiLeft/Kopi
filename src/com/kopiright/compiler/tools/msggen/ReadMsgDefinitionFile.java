@@ -1,4 +1,21 @@
-
+/*
+ * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id$
+ */
 package com.kopiright.compiler.tools.msggen;
 import java.io.*;
 
@@ -13,6 +30,14 @@ import com.kopiright.util.base.InconsistencyException;
 
 public class ReadMsgDefinitionFile {
   
+  /**
+   * Reads and parses xml definition file
+   *
+   * @param     sourceFile              the name of the xml source file
+   * @return    a class info structure holding the information from the source
+   *
+   */
+
   public static DefinitionFile read(String sourceFile)  {
     DefinitionFile file = null;  
     SAXBuilder sxb = new SAXBuilder();
@@ -31,7 +56,15 @@ public class ReadMsgDefinitionFile {
     file = new DefinitionFile(sourceFile,fileHeader,packageName,prefix,parent,messages);
     return file;
   }
-    
+
+  /**
+   * Reads options from the xml definition file
+   *
+   * @param     e      the xml root element.
+   * @return    a MessageDefinition class holding the information from the source
+   *
+   */  
+
   public static MessageDefinition[] getMessages(Element e ){
     List msg = e.getChildren("msg");
     String identifier;
@@ -52,6 +85,8 @@ public class ReadMsgDefinitionFile {
     }
     return messages;
   }
-  
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------  
   static org.jdom.Document document;
 }
