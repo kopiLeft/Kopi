@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: ReadOptDefinitionFile.java 27828 2007-02-11 12:03:44Z wael $
+ * $Id$
  */
 
 package com.kopiright.compiler.tools.optgen;
