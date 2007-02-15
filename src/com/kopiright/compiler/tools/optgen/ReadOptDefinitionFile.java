@@ -1,9 +1,22 @@
 /*
- * Created on Feb 7, 2007
+ * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: ReadOptDefinitionFile.java 27828 2007-02-11 12:03:44Z wael $
  */
+
 package com.kopiright.compiler.tools.optgen;
 import java.io.*;
 
@@ -17,8 +30,14 @@ import java.util.List;
 import java.util.Iterator;
 public class ReadOptDefinitionFile {
 	
-  static org.jdom.Document document;
-  
+  /**
+   * Reads and parses xml definition file
+   *
+   * @param     sourceFile              the name of the source file
+   * @return    a class info structure holding the information from the source
+   *
+   */
+
   public static DefinitionFile read(String sourceFile)  {
     DefinitionFile file = null;  
     SAXBuilder sxb = new SAXBuilder();
@@ -40,7 +59,13 @@ public class ReadOptDefinitionFile {
     file = new DefinitionFile(sourceFile,fileHeader,packageName,parent,prefix,version,usage,options);
     return file;
   }
-
+  /**
+   * Reads options from the xml definition file
+   *
+   * @param     e      the xml root element
+   * @return    a class info structure holding the information from the source
+   *
+   */
   public static OptionDefinition[] getOptions(Element e ){
     String longname ;
     String shortname;
@@ -73,7 +98,10 @@ public class ReadOptDefinitionFile {
     }
     return options;
   }
-	 
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
+  static org.jdom.Document document;	 
 }
 
 
