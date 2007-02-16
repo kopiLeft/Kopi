@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2007 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -211,6 +211,6 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   private static final Insets   SCN_INSESTS = new Insets(22, 22, 22, 22);
   private static final String[] DEFAULT_VERSION = new String[] {
     "No version information available.",
-    "Copyright 1990-2006 kopiRight Managed Solutions GmbH. All rights reserved."
+    "Copyright 1990-2007 kopiRight Managed Solutions GmbH. All rights reserved."
   };
 }

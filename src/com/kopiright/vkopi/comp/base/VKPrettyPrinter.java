@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2007 kopiRight Managed Solutions GmbH
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2
@@ -822,7 +822,7 @@ public class VKPrettyPrinter {
   protected void printCopyright(String name) {
     print("///////////////////////////////////////////////////////////////////////////////");
     newLine();
-    print("/// Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH                ///");
+    print("/// Copyright (c) 1990-2007 kopiRight Managed Solutions GmbH                ///");
     newLine();
     print("/// All rights reserved.                                                    ///");
     newLine();
