@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Memcnt" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.memcnt">
 <msg identifier="SEMANTIC_ERROR" format="Semantic error on {0}:" reference="MEMCNT" level="0"/>
 </messages>

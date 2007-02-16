@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Kjc" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.kopi.comp.kjc">
 <msg identifier="FILTER_NOT_FOUND" format="Warning filter \&quot;{0}\&quot; not found" level="0"/>
 <msg identifier="INVALID_DOUBLE_LITERAL" format="\&quot;{0}\&quot; is not a double literal" reference="JLS 3.10.2" level="0"/>

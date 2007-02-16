@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Lexgen" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.compiler.tools.lexgen">
 <msg identifier="DUPLICATE_DEFINITION" format="Token \&quot;{0}\&quot; redefined in \&quot;{1}\&quot;: previous definition in \&quot;{2}\&quot;" reference="LEXGEN" level="0"/>
 </messages>

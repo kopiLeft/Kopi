@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="GKjc"  package="com.kopiright.vkopi.comp.trig">
 <msg identifier="EXEC_KOPI_INSERT_TABLE_BAD_TYPE" format="The type of the table parameter in an insert should be String" reference="GKJC" level="0"/>
 <msg identifier="BAD_DATE_FORMAT" format="This is not a valide date:\&quot;{0}\&quot;" reference="GKJC" level="0"/>

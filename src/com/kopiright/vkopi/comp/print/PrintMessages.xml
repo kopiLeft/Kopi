@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Print"  package="com.kopiright.vkopi.comp.print">
 <msg identifier="UNDEFINDED_AUTOSIZE" format="This size is not known:\&quot;{0}\&quot;" reference="PRINT" level="0"/>
 <msg identifier="UNDEFINED_STYLE" format="This style is not defined:\&quot;{0}\&quot;" reference="PRINT" level="0"/>

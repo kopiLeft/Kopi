@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Optimize" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.optimize">
 <msg identifier="SEMANTIC_ERROR" format="Semantic error found on file \&quot;{0}\&quot;: {1}" reference="OPTIMIZE" level="0"/>
 </messages>

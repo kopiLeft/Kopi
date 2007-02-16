@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Form"  package="com.kopiright.vkopi.comp.form">
 <msg identifier="UNDEFINED_INDEX" format="The index number {0} is not defined in this block" reference="FORM" level="0"/>
 <msg identifier="INDEX_OUT_OF_RANGE" format="The index number {0} is outside the allowed range (0 .. 32)" reference="FORM" level="0"/>

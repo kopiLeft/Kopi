@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Dbi" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.xkopi.comp.dbi">
 <msg identifier="CONNECTION_FAILED" format="Cannot connect to database: {0}" level="0"/>
 <msg identifier="COLUMN_IN_TABLE_NOT_CORRECT" format="The column \&quot;{0}\&quot; in the table \&quot;{1}\&quot; is not correct" reference="DBI" level="0"/>

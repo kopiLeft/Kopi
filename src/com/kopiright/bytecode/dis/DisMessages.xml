@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="Dis" parent="com.kopiright.compiler.base.CompilerMessages"  package="com.kopiright.bytecode.dis">
 <msg identifier="PROCESSING" format="Processing \&quot;{0}\&quot;." level="-1"/>
 <msg identifier="CLASS_NOT_FOUND" format="Class \&quot;{0}\&quot; not found" reference="DIS" level="0"/>

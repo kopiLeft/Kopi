@@ -13,8 +13,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
-
-
 <messages prefix="XSqlc"  package="com.kopiright.xkopi.comp.xkjc">
 <msg identifier="EXPRESSION_CANNOT_BE_REFERENCED" format="This SQL expression cannot be referenced; add a field reference using an AS clause" reference="XSQLC" level="0"/>
 </messages>
