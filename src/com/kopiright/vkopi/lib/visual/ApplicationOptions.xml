@@ -13,6 +13,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
+
 <option prefix="Application" parent="com.kopiright.xkopi.lib.base.ConnectionOptions"  package="com.kopiright.vkopi.lib.visual"  usage="usage: Application [option]*">
 <param longname="form" shortname="f"  type="String"  default="null"  help="The initial form to run" />
 <param longname="locale" shortname="l"  type="String"  default="null"  help="The localization to use when the user's locale is not supported" />

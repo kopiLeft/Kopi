@@ -13,6 +13,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   $Id$
 -->
+
 <option prefix="Connection" parent="com.kopiright.util.base.Options"  package="com.kopiright.xkopi.lib.base"  usage="usage: Main [option]*">
 <param longname="database" shortname="b"  type="String"  default="null"  help="The URL of the database" />
 <param longname="driver" shortname="d"  type="String"  default="null"  help="The JDBC driver to use to access the database" />
