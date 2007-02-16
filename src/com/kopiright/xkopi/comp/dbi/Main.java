@@ -107,10 +107,8 @@ public class Main extends Compiler implements Constants {
       return false;
     }
 
-    if (!initialize()) {
-      System.err.println("Can't initialize default DB connection "); 
-    }
-
+    initialize();
+    
     if (infiles.isEmpty() && (!options.stdin)) {
       options.usage();
       inform(DbiMessages.NO_INPUT_FILE);
