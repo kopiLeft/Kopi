@@ -22,7 +22,6 @@ package com.kopiright.vkopi.comp.base;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Stack;
 import org.jdom.Comment;
 import org.jdom.Document;
@@ -61,14 +60,8 @@ public class VKLocalizationWriter {
     XMLOutputter        writer;
     Format              format;
     String              fileName;
-    ArrayList                list;
     
-    list = new ArrayList();
-    
-    list.add(new Comment(LICENSE));
-    list.add(peekNode(null));
-    
-    doc = new Document(list);
+    doc = new Document(peekNode(null));
     format = Format.getPrettyFormat();
     format.setEncoding("UTF-8");
     format.setLineSeparator("\n");
@@ -227,19 +220,4 @@ public class VKLocalizationWriter {
   // -------------------------------------------------------------------
 
   private Stack                 currentHierarchy = new Stack();
-  public static final String    LICENSE = "\n"
-    + "  Copyright (c) 1990-2006 kopiRight Managed Solutions GmbH\n"
-    + "\n"
-    + "  This program is free software; you can redistribute it and/or modify\n"
-    + "  it under the terms of the GNU General Public License version 2\n"
-    + "  as published by the Free Software Foundation.\n"
-    + "\n"
-    + "  This program is distributed in the hope that it will be useful,\n"
-    + "  but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-    + "  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n"
-    + "  GNU General Public License for more details.\n"
-    + "\n"
-    + "  You should have received a copy of the GNU General Public License\n"
-    + "  along with this program; if not, write to the Free Software\n"
-    + "  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA\n";
 }
