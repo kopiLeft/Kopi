@@ -90,16 +90,16 @@ src
 	lib		Run-time libraries for Visual Kopi
 	   util	        Utility classes
 	   visual	Window handling classes
-	   form	        The run-time library for Visual Kopi forms
-	   print	The run-time library for Visual Kopi printed reports
-	   report	The run-time library for Visual Kopi dynamic reports
+	   form	        Run-time library for Visual Kopi forms
+	   print	Run-time library for Visual Kopi printed reports
+	   report	Run-time library for Visual Kopi dynamic reports
 	   cross	Classes that use more than one module
 	   doc		A documentation generator for Visual Kopi programs
 	   resource	Predefined icons and skeletons
-           spellchecker 
-           ui
-           preview
-           list
+           spellchecker Spellchecker interface
+           ui		Visual Kopi user interface foundation classes
+           preview	Run-time library for Visual Kopi document preview
+           list		Run-time library for Visual Kopi lists
            l10n         Modules for forms,reports and messages localization        
 	
         comp		Compilers for Visual Kopi
