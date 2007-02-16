@@ -108,7 +108,7 @@ public class Main extends Compiler implements Constants {
     }
 
     if (!initialize()) {
-      return false;
+      System.err.println("Can't initialize default DB connection "); 
     }
 
     if (infiles.isEmpty() && (!options.stdin)) {
@@ -221,7 +221,12 @@ public class Main extends Compiler implements Constants {
     }
 
     if (options.driver == null) {
-      options.driver = getProperty("driver");
+      if(getProperty("driver")!= null){
+        options.driver = getProperty("driver");
+      }
+      else{
+      return false;
+      }
     }
 
     if (options.url == null) {
@@ -234,7 +239,7 @@ public class Main extends Compiler implements Constants {
           return false;
         }
     } else if (options.url.indexOf("//") < 0) {
-      options.url = getProperty("url") + options.url;
+       options.url = getProperty("url") + options.url;
     }
 
     if (options.commit != null) {
@@ -338,7 +343,7 @@ public class Main extends Compiler implements Constants {
       // try next one
     }
 
-    return prop;
+    return null;
   }
 
   // ----------------------------------------------------------------------
