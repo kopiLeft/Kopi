@@ -19,21 +19,26 @@
 
 package com.kopiright.compiler.tools.msggen;
 
+
 import java.io.PrintWriter;
 import java.util.Hashtable;
+
 
 class MessageDefinition {
 
   /**
    * Constructs a message definition
-   * @param	identifier		the message identifier
-   * @param	format		the textual message format (with placeholders)
-   * @param	reference	the document describing the reason for this message
-   * @param	level		the severity level of this message
+   * @param     identifier      the message identifier
+   * @param     format          the textual message format (with placeholders)
+   * @param     reference       the document describing the reason for this message
+   * @param     level           the severity level of this message
    */
-  public MessageDefinition(String identifier, String format, String reference, int level) {
+  public MessageDefinition(String identifier,
+                           String format,
+                           String reference,
+                           int level)
+  {
     this.identifier = identifier;
-
     this.reference = reference;
     this.format = format;
     this.level = level;
@@ -45,29 +50,35 @@ class MessageDefinition {
 
   /**
    * Checks for duplicate identifiers.
-   * @param	identifiers	a table of all token identifiers
-   * @param	prefix		the literal prefix
-   * @param	id		the id of the token
-   * @param	sourceFile	the file where the token is defined
+   * @param     identifiers     a table of all token identifiers
+   * @param     prefix          the literal prefix
+   * @param     id              the id of the token
+   * @param     sourceFile      the file where the token is defined
    */
   public void checkIdentifiers(Hashtable identifiers, String sourceFile)
     throws MsggenError
   {
-    String		stored = (String)identifiers.get(identifier);
+
+    String      stored = (String)identifiers.get(identifier);
 
     if (stored != null) {
       throw new MsggenError(MsggenMessages.DUPLICATE_DEFINITION,
-			    new Object[] { identifier, sourceFile, stored });
+                            new Object[] {
+                              identifier,
+                              sourceFile,
+                              stored
+                            });
     }
     identifiers.put(identifier, sourceFile);
   }
 
   /**
    * Prints the token definition to interface file (java)
-   * @param	out		the output stream
-   * @param	prefix		the literal prefix
+   * @param     out          the output stream
+   * @param     prefix          the literal prefix
    */
   public void printInterface(PrintWriter out, String prefix) {
+
     out.print("  MessageDescription\t");
     out.print(identifier);
     out.print(" = new MessageDescription(\"");
@@ -79,12 +90,13 @@ class MessageDefinition {
     out.println(");");
   }
 
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private final String			identifier;
-  private final String			format;
-  private final String			reference;
-  private final int			level;
+  private final String          identifier;
+  private final String          format;
+  private final String          reference;
+  private final int             level;
 }

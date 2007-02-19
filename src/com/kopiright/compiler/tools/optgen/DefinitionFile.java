@@ -19,18 +19,27 @@
 
 package com.kopiright.compiler.tools.optgen;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Hashtable;
 
 import com.kopiright.compiler.base.CompilerMessages;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.tools.antlr.runtime.ParserException;
+import com.kopiright.util.base.InconsistencyException;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
 
 /*package*/ class DefinitionFile {
@@ -51,7 +60,7 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
     this.fileHeader	= fileHeader;
     this.packageName	= packageName;
     this.parent		= parent;
-    this.version	    = version;
+    this.version	= version;
     this.usage		= usage;
     this.prefix		= prefix;
     this.definitions	= definitions;
@@ -65,19 +74,30 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
    *
    */
   public static DefinitionFile read(String sourceFile) throws OptgenError {
-    try {
-      InputStream	input = new BufferedInputStream(new FileInputStream(sourceFile));
-      DefinitionFile 	defs = ReadOptDefinitionFile.read(sourceFile); 
-      
-      input.close();
 
-      return defs;
-    } catch (FileNotFoundException e) {
-      throw new OptgenError(CompilerMessages.FILE_NOT_FOUND, sourceFile);
-    } catch (IOException e) {
-      throw new OptgenError(CompilerMessages.IO_EXCEPTION, sourceFile, e.getMessage());
+    Document            document;
+    SAXBuilder          builder = new SAXBuilder();
+    Element             root;
+
+    try {
+      document = builder.build(new File(sourceFile));
     } 
+    catch (Exception e) {
+      throw new InconsistencyException("Cannot load file " + sourceFile + ": " + e.getMessage());
+    }
+
+    root = document.getRootElement();	
+    
+    return new DefinitionFile(sourceFile,
+                              root.getAttributeValue("fileHeader"),
+                              root.getAttributeValue("package"),
+                              root.getAttributeValue("parent"),
+                              root.getAttributeValue("prefix"),
+                              root.getAttributeValue("version"),
+                              root.getAttributeValue("usage"),
+                              getOptions(root));
   }
+
 
   // --------------------------------------------------------------------
   // ACCESSORS
@@ -251,6 +271,47 @@ import com.kopiright.compiler.tools.antlr.runtime.ParserException;
    */
   public String getPrefix() {
     return prefix;
+  }
+
+
+  /**
+   * Reads options from the xml definition file
+   *
+   * @param     element      the xml root element
+   * @return    a class info structure holding the information from the source
+   */
+  public static OptionDefinition[] getOptions(Element element) {
+
+    List                params;
+    OptionDefinition[]  options;
+    Iterator            iter;
+
+    params = element.getChildren("param");
+    options = new OptionDefinition[params.size()];
+    iter = params.iterator();
+
+    for (int i = 0; iter.hasNext(); i++) {
+      Element   current = (Element)iter.next();
+      String    type;
+      String    arg;
+
+      type = current.getAttributeValue("type");
+      arg = current.getAttributeValue("optionalDefault");
+             
+      if (arg == null && !type.equals("boolean")) {
+        arg = "";
+      }
+
+      options[i] = new OptionDefinition(current.getAttributeValue("longname"),
+                                        current.getAttributeValue("shortname"),
+                                        type,
+                                        current.getAttributeValue("default"),
+                                        arg,
+                                        current.getAttributeValue("help"));
+
+    }
+
+    return options;
   }
 
   // --------------------------------------------------------------------

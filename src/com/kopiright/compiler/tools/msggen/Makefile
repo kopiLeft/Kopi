@@ -27,7 +27,7 @@ PACKAGE =	com/kopiright/compiler/tools/msggen
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	DefinitionFile MsggenError Main MessageDefinition ReadMsgDefinitionFile
+JAVAFILES +=	DefinitionFile MsggenError Main MessageDefinition
 
 OPTIONS =	MsggenOptions
 
