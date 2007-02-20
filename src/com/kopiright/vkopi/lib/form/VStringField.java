@@ -136,7 +136,7 @@ public class VStringField extends VField {
 	break;
 
       case FDO_CONVERT_NAME:
-	s = s.toLowerCase();	// !!! add function
+	s = convertToName(s);
 	break;
 
       default:
@@ -150,6 +150,24 @@ public class VStringField extends VField {
       setString(block.getActiveRecord(), s);
     }
   }
+
+  /**
+   * Convert first letter of a string into upper case.
+   *
+   * @param	source		the source text. 
+   */
+  private String convertToName(String source) {
+    char[] chars	= source.trim().toLowerCase().toCharArray();
+    boolean found	= false;
+    for (int i=0; i<chars.length; i++) {
+      if (!found && Character.isLetter(chars[i])) {
+        chars[i]	= Character.toUpperCase(chars[i]);
+        found		= true;
+      }
+    }
+    return String.valueOf(chars);
+  }
+
 
   // ----------------------------------------------------------------------
   // INTERFACE BD/TRIGGERS
