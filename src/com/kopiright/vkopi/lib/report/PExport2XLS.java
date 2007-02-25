@@ -124,15 +124,15 @@ public class PExport2XLS extends PExport implements Constants {
   }
 
   protected void exportHeader(String[] data) {
-    HSSFRow titlerow = sheet.createRow((short)0);
-    int       cellPos = 0;
+    HSSFRow     titlerow = sheet.createRow((short)0);
+    int         cellPos = 0;
 
     for (int i = 0; i < data.length; i++) {
       titlerow.createCell((short)cellPos++).setCellValue(data[i]);
     }
   }
 
-  protected void exportRow(int level, String[] data,  Object[] orig, int[] alignments) {
+  protected void exportRow(int level, String[] data, Object[] orig, int[] alignments) {
     HSSFRow         row = sheet.createRow((short) (rowNumber+1));
     String[]	    strings = data;
     Color           color = getBackgroundForLevel(level);
@@ -140,7 +140,7 @@ public class PExport2XLS extends PExport implements Constants {
     int             cellPos;    
 
     if (rowCol == null) {
-      palette.setColorAtIndex( colorindex, (byte) color.getRed(), (byte) color.getGreen(),(byte) color.getBlue());
+      palette.setColorAtIndex(colorindex, (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue());
       rowCol = palette.getColor(colorindex);
       colorindex++;
       colorpalete.put(color, rowCol);
@@ -268,7 +268,7 @@ public class PExport2XLS extends PExport implements Constants {
   }
 
   protected void formatFixedColumn(VReportColumn column, int index) {
-    dataformats[index] = format.getFormat("#.##0,00");
+    dataformats[index] = format.getFormat("#,##0.00");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
     widths[index] = (short) (256 * column.getWidth());
   }
