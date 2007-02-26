@@ -52,7 +52,7 @@ public class DMultiBlock extends DChartBlock {
    */
 
   
-/**
+  /**
    * Constructor
    */
   public DMultiBlock(DForm form, VBlock model) {
@@ -67,27 +67,28 @@ public class DMultiBlock extends DChartBlock {
     final Box                   buttonBox = Box.createVerticalBox();
 
     layeredPane = new JLayeredPane() {
-        /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = -3239511954723094795L;
+      /**
+       * Comment for <code>serialVersionUID</code>
+       */
+      private static final long serialVersionUID = -3239511954723094795L;
 		
-		public Dimension getPreferredSize() {
-          Dimension dim1 = chartPane.getPreferredSize();
-          Dimension dim2 = detailLayerPane.getPreferredSize();
-          Dimension dim = new Dimension();
-
-          dim.width = Math.max(dim1.width, dim2.width);
-          dim.height = Math.max(dim1.height, dim2.height);
-          return dim;
-        }
-        public void setBounds(int x, int y, int w, int h) {
-          super.setBounds(x, y, w, h);
-          chartPane.setBounds(0, 0, w, h);
-          detailLayerPane.setBounds(0, 0, w, h);
-          //          positionLabel.setMaximumSize(new Dimension(19, h - 4*19));
-        }
-      };
+      public Dimension getPreferredSize() {
+        Dimension dim1 = chartPane.getPreferredSize();
+        Dimension dim2 = detailLayerPane.getPreferredSize();
+        Dimension dim = new Dimension();
+        
+        dim.width = Math.max(dim1.width, dim2.width);
+        dim.height = Math.max(dim1.height, dim2.height);
+        return dim;
+      }
+      
+      public void setBounds(int x, int y, int w, int h) {
+        super.setBounds(x, y, w, h);
+        chartPane.setBounds(0, 0, w, h);
+        detailLayerPane.setBounds(0, 0, w, h);
+        //          positionLabel.setMaximumSize(new Dimension(19, h - 4*19));
+      }
+    };
 
     //    positionLabel = new PositionLabel();
     //    getModel().addBlockListener(positionLabel);
