@@ -76,10 +76,13 @@ public DTextField(VFieldUI model,
     noEdit = (options & VConstants.FDO_NOEDIT) != 0;
     scanner = (options & VConstants.FDO_NOECHO) != 0 && getModel().getHeight() > 1;
 
-    if (getModel().getHeight() == 1 || (!scanner && ((getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0))) {
-      transformer = new DefaultTransformer(getModel().getWidth(), getModel().getHeight());
+    if (getModel().getHeight() == 1
+        || (!scanner && ((getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0))) {
+      transformer = new DefaultTransformer(getModel().getWidth(),
+                                           getModel().getHeight());
     } else if (!scanner) {
-      transformer = new NewlineTransformer(getModel().getWidth(), getModel().getHeight());
+      transformer = new NewlineTransformer(getModel().getWidth(),
+                                           getModel().getHeight());
     } else {
       transformer = new ScannerTransformer(this);
     }
@@ -562,6 +565,7 @@ public DTextField(VFieldUI model,
     int         col;
     int         row;
   }
+
   static class ScannerTransformer implements ModelTransformer {
     public ScannerTransformer(DTextField field) {
       this.field = field;
@@ -595,7 +599,7 @@ public DTextField(VFieldUI model,
     }
 
     public String toModel(String source) {
-      return convertToSingleLine(source, col, row);
+      return convertFixedTextToSingleLine(source, col, row);
     }
 
     public String toGui(String source) {
@@ -623,7 +627,7 @@ public DTextField(VFieldUI model,
           usedRows++;
         }
       }
-      return target.toString();    
+      return target.toString();
     }
 
     public boolean checkFormat(String source) {
@@ -675,61 +679,117 @@ public DTextField(VFieldUI model,
 
 
   public static String convertToSingleLine(String source, int col, int row) {
-      StringBuffer      target = new StringBuffer();
-      int               length = source.length();
-      int               start = 0;
-      int               lines = 0;
-
-      while (start < length) {
-        int             index = source.indexOf('\n', start);
-
-        if (index-start < col && index != -1) {
-          target.append(source.substring(start, index));
-          for (int j = index - start; j < col; j++) {
+    StringBuffer      target = new StringBuffer();
+    int               length = source.length();
+    int               start = 0;
+    int               lines = 0;
+    
+    while (start < length) {
+      int             index = source.indexOf('\n', start);
+        
+      if (index-start < col && index != -1) {
+        target.append(source.substring(start, index));
+        for (int j = index - start; j < col; j++) {
+          target.append(' ');
+        }
+        start = index+1;
+        if (start == length) {
+          // last line ends with a "new line" -> add an empty line
+          for (int j = 0; j < col; j++) {
             target.append(' ');
           }
-          start = index+1;
-          if (start == length) {
-            // last line ends with a "new line" -> add an empty line
-            for (int j = 0; j < col; j++) {
-              target.append(' ');
+        }
+      } else {
+        if (start+col >= length) {
+          target.append(source.substring(start, length));
+          for (int j = length; j < start+col; j++) {
+            target.append(' ');
+          }
+          start = length;          
+        } else {
+          // find white space to break line
+          int   i;
+            
+          for (i = start+col-1; i > start; i--) {
+            if (Character.isWhitespace(source.charAt(i))) {
+              break;
             }
           }
-        } else {
-          if (start+col >= length) {
-            target.append(source.substring(start, length));
-            for (int j = length; j < start+col; j++) {
-              target.append(' ');
-            }
-            start = length;          
+          if (i == start) {
+            index = start+col;
           } else {
-            // find white space to break line
-            int   i;
+            index = i+1;
+          }
             
-            for (i = start+col-1; i > start; i--) {
-              if (Character.isWhitespace(source.charAt(i))) {
-                break;
-              }
-            }
-            if (i == start) {
-              index = start+col;
-            } else {
-              index = i+1;
-            }
-            
-            target.append(source.substring(start, index));
-            for (int j = (index - start)%col; j != 0 && j < col; j++) {
-              target.append(' ');
-            }
-            start = index;
+          target.append(source.substring(start, index));
+          for (int j = (index - start)%col; j != 0 && j < col; j++) {
+            target.append(' ');
+          }
+          start = index;
+        }
+      }
+      lines++;
+    }
+    return target.toString();
+  }
+  
+  public static String convertFixedTextToSingleLine(String source, int col, int row) {
+    StringBuffer      target = new StringBuffer();
+    int               length = source.length();
+    int               start = 0;
+    int               lines = 0;
+    
+    while (start < length) {
+      int             index = source.indexOf('\n', start);
+
+      if (index-start < col && index != -1) {
+        target.append(source.substring(start, index));
+        for (int j = index - start; j < col; j++) {
+          target.append(' ');
+        }
+        start = index+1;
+        if (start == length) {
+          // last line ends with a "new line" -> add an empty line
+          for (int j = 0; j < col; j++) {
+            target.append(' ');
           }
         }
-        lines++;
+      } else {
+        if (start+col >= length) {
+          target.append(source.substring(start, length));
+          for (int j = length; j < start+col; j++) {
+            target.append(' ');
+          }
+          start = length;          
+        } else {
+          // find white space to break line
+          int   i;
+            
+          for (i = start+col; i > start; i--) {
+            if (Character.isWhitespace(source.charAt(i))) {
+              break;
+            }
+          }
+          if (i == start) {
+            index = start+col;
+          } else {
+            index = i;
+          }
+            
+          target.append(source.substring(start, index));
+          for (int j = (index - start); j < col; j++) {
+            target.append(' ');
+          }
+          start = index + 1;
+        }
       }
-      return target.toString();
+      lines++;
+    }
+    return target.toString();
   }
+
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -2367294538619200551L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = -2367294538619200551L;
 }
