@@ -168,25 +168,25 @@ public DTextField(VFieldUI model,
 
           spellCommand = dictionaryServer+" " + languages[i].options;
           spellChecker = new AbstractAction(Message.getMessage(languages[i].language)) {
-              /**
-			 * Comment for <code>serialVersionUID</code>
-			 */
-			private static final long serialVersionUID = 5656229829162013955L;
+            /**
+             * Comment for <code>serialVersionUID</code>
+             */
+            private static final long serialVersionUID = 5656229829162013955L;
 
-			public void actionPerformed(ActionEvent e) {
-                if (field.isEditable()) {
-                  SpellChecker  spellChecker = new SpellChecker(spellCommand,
+            public void actionPerformed(ActionEvent e) {
+              if (field.isEditable()) {
+                SpellChecker  spellChecker = new SpellChecker(spellCommand,
                                                                 Utils.getFrameAncestor(field),
                                                                 document);
                             
-                  try {
-                    spellChecker.check();
-                  } catch (SpellException se) {
-                    se.printStackTrace();
-                  }
+                try {
+                  spellChecker.check();
+                } catch (SpellException se) {
+                  se.printStackTrace();
                 }
               }
-            };
+            }
+          };
           menu.add(spellChecker);
         }
         popup.add(menu);
