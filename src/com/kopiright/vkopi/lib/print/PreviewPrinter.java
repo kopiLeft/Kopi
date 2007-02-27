@@ -57,7 +57,7 @@ public class PreviewPrinter extends AbstractPrinter {
         if (System.getProperty("os.name").startsWith("Linux")) {
           p = Runtime.getRuntime().exec("acroread " + data.getDataFile());
         } else if (System.getProperty("os.name").startsWith("Windows")) {
-          p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler ");
+          p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " +  data.getDataFile());
         }
       } catch (IOException e) {
         System.out.println("Acroread failed: " + e.getMessage());
