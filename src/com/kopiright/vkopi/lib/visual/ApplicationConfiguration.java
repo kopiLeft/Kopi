@@ -270,6 +270,15 @@ public class ApplicationConfiguration {
     return new File(System.getProperty("user.home"));
   }
 
+
+  // --------------------------------------------------------------
+  // Preview with acroread
+  // --------------------------------------------------------------
+
+  public boolean useAcroread() {
+    return false;
+  }
+
   // --------------------------------------------------------------
   // Database Encoding 
   // --------------------------------------------------------------
