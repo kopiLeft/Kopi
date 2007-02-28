@@ -40,7 +40,7 @@ import com.lowagie.text.Rectangle;
 public class PrintJob {
 
   public PrintJob(Rectangle format) throws IOException {
-    this(Utils.getTempFile("kopi", "prt"), true, format);
+    this(Utils.getTempFile("kopi", "pdf"), true, format);
   }
 
   public PrintJob(byte[] data, Rectangle format) throws IOException {    
@@ -66,7 +66,7 @@ public class PrintJob {
   }
 
   private static File writeToFile(InputStream dataStream) throws IOException {
-    File              tempFile = Utils.getTempFile("kopi", "prt");
+    File              tempFile = Utils.getTempFile("kopi", "pdf");
     
     writeToFile(dataStream, tempFile);
     return tempFile;

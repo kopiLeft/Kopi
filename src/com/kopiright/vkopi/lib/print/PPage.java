@@ -323,7 +323,7 @@ public abstract class PPage {
 
   protected PdfPrintJob printHeaderFooter(PdfPrintJob printJob) throws PSPrintException {
     try {
-      File              file = Utils.getTempFile("kopi", "prt");
+      File              file = Utils.getTempFile("kopi", "pdf");
       PdfReader         reader = new PdfReader(new FileInputStream(printJob.getDataFile()));
       PdfStamper        stamper = new PdfStamper(reader, new FileOutputStream(file));
 

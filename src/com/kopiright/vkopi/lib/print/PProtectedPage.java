@@ -189,7 +189,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
       printJob.close();
 
       try {
-        File              file = Utils.getTempFile("kopi", "prt");
+        File              file = Utils.getTempFile("kopi", "pdf");
         PdfReader         reader = new PdfReader(new FileInputStream(printJob.getDataFile()));
         PdfStamper        stamper = new PdfStamper(reader, new FileOutputStream(file));
         int               startpage = 1;

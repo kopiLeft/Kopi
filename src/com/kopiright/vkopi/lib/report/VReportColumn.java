@@ -223,8 +223,7 @@ public abstract class VReportColumn {
   }
 
   public void helpOnColumn(VHelpGenerator help) {
-    help.helpOnColumn(label,
-                      this.help);
+    help.helpOnColumn(label, this.help);
   }
 
   // ----------------------------------------------------------------------
@@ -257,7 +256,7 @@ public abstract class VReportColumn {
     // by default nothing to do
   }
 
-// --------------------------------------------------------------------
+  // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 

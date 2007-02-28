@@ -100,9 +100,9 @@ public class PParagraphStyle extends PBodyStyle {
     if (tabs == null && hasParentStyle()) {
       return getParentStyle().gotoNextTab(list, tab);
     }
-    PTabStop    stop = tabs == null || tab == null ? null : (PTabStop)tabs.get(tab);
+    PTabStop    stop = (tabs == null || tab == null || tabArray == null) ? null : (PTabStop)tabs.get(tab);
     if (stop == null) {
-      stop =  tabArray[0];
+      stop = tabArray[0];
     } else {
       for (int i = 0; i < tabArray.length; i++) {
         if (tabArray[i].getIdent().equals(tab)) {

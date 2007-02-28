@@ -73,7 +73,7 @@ public class  PExport2PDF extends PExport implements Constants {
     try {  
       PrintJob        printJob;
       Rectangle       page;
-      File            file = Utils.getTempFile("kopi", "prt");
+      File            file = Utils.getTempFile("kopi", "pdf");
 
       export(file);
 
