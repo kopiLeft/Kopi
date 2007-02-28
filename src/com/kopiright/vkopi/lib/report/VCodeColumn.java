@@ -100,8 +100,6 @@ public abstract class VCodeColumn extends VReportColumn {
   protected void localize(FieldLocalizer parent) {
     TypeLocalizer       loc;
     
-    System.err.println("... source: " + source + " type: " + type);
-    
     loc = parent.getManager().getTypeLocalizer(source, type);
     names = new String[idents.length];
     for (int i = 0; i < names.length; i++) {
