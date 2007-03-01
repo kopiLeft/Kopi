@@ -204,6 +204,7 @@ public class VKField
     type.checkCode(context, this, commandable);
 
     // LABEL
+    check(label == null || !isInternal(), FormMessages.HIDDEN_FIELD_LABEL);
     if ((label != null) && (block.getNbDisplay() == 1)) {
       label += ":";
     }
