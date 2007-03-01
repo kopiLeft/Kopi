@@ -652,10 +652,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 	putValue(Action.NAME, Message.getMessage("item-redo"));
       }
     }
+    
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -8042055084991466893L;
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = -8042055084991466893L;
 
   }
 
