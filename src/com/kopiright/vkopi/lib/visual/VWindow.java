@@ -347,7 +347,14 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   public String getTitle() {
-    return title;
+    return title + ((extraTitle != null)? " " + extraTitle : "***");
+  }
+
+  /**
+   * Sets a the text to be appended to the title.
+   */
+  public void appendToTitle(String text) {
+    this.extraTitle = text;
   }
 
   /**
@@ -356,7 +363,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void setTitle(String title) {
     this.title = title;
     if (display != null) {
-      display.setTitle(title);
+      display.setTitle(getTitle());
     }
   }
 
@@ -459,7 +466,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void setDisplay(DWindow display) {
     this.display = display;
-    setTitle(getTitle());
+    setTitle(title);
   }
 
   // ----------------------------------------------------------------------
@@ -752,21 +759,20 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  public static final int	CDE_QUIT	= 0;
-  public static final int	CDE_ESCAPED	= 1;
-  public static final int	CDE_VALIDATE	= 2;
-
+  public static final int       CDE_QUIT = 0;
+  public static final int       CDE_ESCAPED = 1;
+  public static final int       CDE_VALIDATE = 2;
   public static final String    WINDOW_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Window";
 
   private final Object          transactionMonitor = new Object(); 
-  protected     SActor          f12;
+  private EventListenerList     modelListener = new EventListenerList();
+  private String                extraTitle;
 
-  private       EventListenerList       modelListener = new EventListenerList();
-
-  protected     DWindow         display;
-  protected     DBContext       context;
-  protected     boolean         isProtected;
-  protected     SActor[]        actors;
-  protected     String          title;
-  protected     ImageIcon       smallIcon;
+  protected SActor              f12;
+  protected DWindow             display;
+  protected DBContext           context;
+  protected boolean             isProtected;
+  protected SActor[]            actors;
+  protected String              title;
+  protected ImageIcon           smallIcon;
 }
