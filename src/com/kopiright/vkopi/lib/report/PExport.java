@@ -168,7 +168,11 @@ public abstract class PExport {
     }
   }
 
-  private void exportRow (VReportRow row, boolean tail) {
+  protected void exportRow(VReportRow row, boolean tail) {
+    exportRow(row, tail, false);
+  }
+  
+  protected void exportRow(VReportRow row, boolean tail, boolean lineBreak) {
     int         index  = 0;
     String[]    newrow = new String[columnCount];
     Object[]    newrowOrig = new Object[columnCount];
@@ -186,7 +190,7 @@ public abstract class PExport {
           newrow[index] = null;
           newrowOrig[index] = null;
         } else {
-          newrow[index] = column.format(row.getValueAt(visibleColumn));
+          newrow[index] = lineBreak? column.formatWithLineBreaker(row.getValueAt(visibleColumn)) : column.format(row.getValueAt(visibleColumn));
           newrowOrig[index] = row.getValueAt(visibleColumn);
         }
         alignments[index] = column.getAlign();
@@ -215,7 +219,7 @@ public abstract class PExport {
               && (!pconfig.groupFormfeed || i != firstVisibleColumn)) {
             if (row.getLevel() < model.getDisplayLevels(model.getReverseOrder(visibleColumn)) &&
                 parent.getLevel() >= model.getDisplayLevels(model.getReverseOrder(visibleColumn))) {
-              newrow[index] = column.format(row.getValueAt(visibleColumn));
+              newrow[index] = lineBreak? column.formatWithLineBreaker(row.getValueAt(visibleColumn)) :  column.format(row.getValueAt(visibleColumn));
               newrowOrig[index] = row.getValueAt(visibleColumn);
             }
             index += 1;

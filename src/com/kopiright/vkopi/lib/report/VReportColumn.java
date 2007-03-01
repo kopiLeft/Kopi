@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.report;
 
 import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.l10n.ReportLocalizer;
+import com.kopiright.vkopi.lib.util.LineBreaker;
 
 public abstract class VReportColumn {
   /**
@@ -157,6 +158,10 @@ public abstract class VReportColumn {
     } else {
       return o.toString();
     }
+  }
+
+  public String formatWithLineBreaker(Object o) {
+    return LineBreaker.modelToText(format(o), width);
   }
 
   protected VCellFormat getFormat() {

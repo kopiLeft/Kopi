@@ -239,6 +239,11 @@ public class  PExport2PDF extends PExport implements Constants {
     datatable.setHeaderRows(1); 
   }
 
+
+  protected void exportRow(VReportRow row, boolean tail) {
+    exportRow(row, tail, true);
+  }
+
   protected void exportRow(int level, String[] strings, Object[] orig, int[] alignments) {
     int       cell = 0;
 
@@ -352,7 +357,7 @@ public class  PExport2PDF extends PExport implements Constants {
 
 
   protected void formatStringColumn(VReportColumn column, int index) {
-      // maximum of length of titel AND width of column 
+    // maximum of length of titel AND width of column 
     widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
 			     new Chunk("X", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
     widthSum += widths[index];
