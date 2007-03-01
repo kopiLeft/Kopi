@@ -236,20 +236,10 @@ public class Month extends Type {
     int			year = scalar / 12;
     int			month = scalar % 12 + 1;
 
-    if (locale == Locale.GERMAN ||
-	locale == Locale.FRENCH ||
-	locale == Locale.US ||
-	locale == Locale.ENGLISH) {
-      buffer.append(month / 10);
-      buffer.append(month % 10);
-      buffer.append('.');
-      buffer.append(year);
-    } else {
-      buffer.append(year);
-      buffer.append('.');
-      buffer.append(month / 10);
-      buffer.append(month % 10);
-    }
+    buffer.append(month / 10);
+    buffer.append(month % 10);
+    buffer.append('.');
+    buffer.append(year);
 
     return buffer.toString();
   }
