@@ -30,6 +30,7 @@
 <msg identifier="CHART_FIELD_POSITIONED" format="Fields in multi-line blocks should not be positioned" reference="FORM" level="0"/>
 <msg identifier="HIDDEN_FIELD_POSITIONED" format="Hidden fields should not be positioned" reference="FORM" level="0"/>
 <msg identifier="HIDDEN_FIELD_LABEL" format="Hidden fields must not have labels" reference="FORM" level="0"/>
+<msg identifier="HIDDEN_FIELD_HELP" format="Hidden fields must not have help messages" reference="FORM" level="0"/>
 <msg identifier="HIDDEN_FIELD_NOCHART" format="Hidden fields should not have the option NO CHART" reference="FORM" level="0"/>
 <msg identifier="HIDDEN_FIELD_NODETAIL" format="Hidden fields should not have the option NO DETAIL" reference="FORM" level="0"/>
 <msg identifier="ALIAS_FIELD_VISIBLE" format="Only hidden fields can be ALIAS" reference="FORM" level="0"/>

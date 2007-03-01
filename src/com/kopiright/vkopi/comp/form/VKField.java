@@ -209,6 +209,9 @@ public class VKField
       label += ":";
     }
 
+    // HELP
+    check(label == null || !isInternal(), FormMessages.HIDDEN_FIELD_HELP);
+
     // TRANSIENT MODE
     if (columns == null && (isSkipped() || isInternal())) {
       options |= FDO_TRANSIENT;
