@@ -256,8 +256,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    * @see #closeWindow()
    */
   protected void close(int code) {
-    VWindow     model = this.model; //destroyed in release()
-    Frame       frame = getFrame();
+    VWindow     tmpModel = this.model; //destroyed in release()
+    Frame       tmpFrame = getFrame();
 
     try {
       if (!SwingUtilities.isEventDispatchThread()) {
@@ -265,15 +265,15 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
         Thread.dumpStack();
       }
       release();
-      disposeAfterLostFocus(frame);
+      disposeAfterLostFocus(tmpFrame);
       // !! lackner 30.07.2003 why must the model be destroy
-      model.destroyModel();
+      tmpModel.destroyModel();
     } finally {
       synchronized (model) {
         // set the return code
         returnCode = code;
         // Inform all threads who wait for this panel
-        model.notifyAll();
+        tmpModel.notifyAll();
       }
     }
   }
@@ -578,14 +578,14 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   // The following two methods allow us to find an
   // action provided by the editor kit by its name.
   private static Hashtable createActionTable(JTextComponent textComponent) {
-    Hashtable actions = new Hashtable();
+    Hashtable tmpActions = new Hashtable();
     Action[] actionsArray = textComponent.getActions();
     for (int i = 0; i < actionsArray.length; i++) {
       Action a = actionsArray[i];
-      actions.put(a.getValue(Action.NAME), a);
+      tmpActions.put(a.getValue(Action.NAME), a);
     }
 
-    return actions;
+    return tmpActions;
   }
 
   protected Action getActionByName(String name) {

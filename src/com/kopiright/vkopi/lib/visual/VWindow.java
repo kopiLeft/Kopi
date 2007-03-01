@@ -347,7 +347,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   public String getTitle() {
-    return title + ((extraTitle != null)? " " + extraTitle : "***");
+    return title + ((extraTitle != null)? " " + extraTitle : "");
   }
 
   /**
