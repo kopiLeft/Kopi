@@ -128,6 +128,7 @@ public class MessageCode {
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
       return (withKey? (key + ": ") : "")+ MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
+      System.err.println("ERROR: " + e.getMessage());
       return key + ": " + "message for !" + key + "! not found!";
     }
   }
