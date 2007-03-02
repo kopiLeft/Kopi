@@ -43,8 +43,13 @@ public class MessageCode {
    * @param     key             the message key
    * @return    the requested message
    */
+
   public static String getMessage(String key) {
     return getMessage(key, null);
+  }
+
+  public static String getMessage(String key, boolean withKey) {
+    return getMessage(key, null, withKey);
   }
 
   /**
@@ -54,8 +59,13 @@ public class MessageCode {
    * @param     param           a message parameter
    * @return    the requested message
    */
+
   public static String getMessage(String key, Object param) {
     return getMessage(key, new Object[] {param});
+  }
+
+  public static String getMessage(String key, Object param, boolean withKey) {
+    return getMessage(key, new Object[] {param}, withKey);
   }
 
   /**
@@ -66,8 +76,17 @@ public class MessageCode {
    * @param     param1          the second message parameter
    * @return    the requested message
    */
+
   public static String getMessage(String key, Object param1, Object param2) {
     return getMessage(key, new Object[] {param1, param2});
+  }
+
+  public static String getMessage(String key, Object param1, Object param2, boolean withKey) {
+    return getMessage(key, new Object[] {param1, param2}, withKey);
+  }
+
+  public static String getMessage(String key, Object[] params) {
+    return getMessage(key, params, true);
   }
 
   /**
@@ -80,7 +99,7 @@ public class MessageCode {
    * @param     params          the array of message parameters
    * @return    the requested message
    */
-  public static String getMessage(String key, Object[] params) {
+  public static String getMessage(String key, Object[] params, boolean withKey) {
     LocalizationManager         manager;
     String                      domain;
     String                      ident;
@@ -107,7 +126,7 @@ public class MessageCode {
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
-      return key + ": " + MessageFormat.format(format, params);
+      return (withKey? (key + ": ") : "")+ MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
       return key + ": " + "message for !" + key + "! not found!";
     }
