@@ -108,12 +108,19 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
   }
 
   public static String addBreakForWidth(String source, int width) {
-    BreakIterator       boundary = BreakIterator.getLineInstance();
+    BreakIterator       boundary;
+    int                 start;
+    int                 length;
+    StringBuffer        buffer;
+
+    if (source == null) {
+      source = "";
+    }
+    boundary = BreakIterator.getLineInstance();
     boundary.setText(source);
-    
-    int                 start = boundary.first();
-    int                 length = 0;
-    StringBuffer        buffer = new StringBuffer(source.length());
+    start = boundary.first();
+    length = 0;
+    buffer = new StringBuffer(source.length());
     
     for (int end = boundary.next();
          end != BreakIterator.DONE;
