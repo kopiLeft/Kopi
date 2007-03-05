@@ -28,8 +28,19 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
    *
    * @param	source	the source text with carriage return
    * @param	col	the width of the text
+   * @param	fixed	is it a fixed text ?
    */
   public static String textToModel(String source, int col, int lin) {
+    return textToModel(source, col, lin, false);
+  }
+  /**
+   * Replaces new-lines by blanks
+   *
+   * @param	source	the source text with carriage return
+   * @param	col	the width of the text
+   * @param	fixed	is it a fixed text ?
+   */
+  public static String textToModel(String source, int col, int lin, boolean fixed) {
     StringBuffer        target = new StringBuffer();
     int                 length = source.length();
     int                 start = 0;
@@ -44,8 +55,14 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
         start = length;
       } else {
         target.append(source.substring(start, index));
-        for (int i = (index - start)%col; i != 0 && i < col; i++) {
-          target.append(' ');
+        if (fixed) {
+          for (int i = (index - start)%col; i < col; i++) {
+            target.append(' ');
+          }
+        } else {
+          for (int i = (index - start)%col; i != 0 && i < col; i++) {
+            target.append(' ');
+          }
         }
         start = index + 1;
         lines++;

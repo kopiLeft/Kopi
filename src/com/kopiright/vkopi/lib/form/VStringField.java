@@ -306,6 +306,16 @@ public class VStringField extends VField {
   }
 
   /**
+   * Replaces new-lines by blanks
+   *
+   * @param	source	the source text with carriage return
+   * @param	col	the width of the text
+   */
+  public static String fixtextToModel(String source, int col, int lin) {
+    return LineBreaker.textToModel(source, col, lin, true);
+  }
+
+  /**
    * Replaces blanks by new-lines
    *
    * @param	record		the index of the record
