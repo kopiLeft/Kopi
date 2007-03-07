@@ -106,11 +106,7 @@ public class VStringField extends VField {
     int		end   = 0;
 
     end = textToModel(s, getWidth(), Integer.MAX_VALUE).length();
-    if (end > width * height) {
-      return false;
-    }
-
-    return true;
+    return end <= width * height;
   }
 
   /**
