@@ -56,7 +56,7 @@ public class LineBreaker extends com.kopiright.util.base.Utils {
       } else {
         target.append(source.substring(start, index));
         if (fixed) {
-          for (int i = (index - start)%col; i < col; i++) {
+          for (int i = (index - start); i < col; i++) {
             target.append(' ');
           }
         } else {
