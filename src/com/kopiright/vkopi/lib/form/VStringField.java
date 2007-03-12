@@ -298,17 +298,9 @@ public class VStringField extends VField {
    * @param	col	the width of the text
    */
   public static String textToModel(String source, int col, int lin) {
+    // !!! graf 20070307: check whether different handling is needed
+    // depending on the value of FDO_DYNAMIC_NL (ie FIXED ON/OFF)
     return LineBreaker.textToModel(source, col, lin);
-  }
-
-  /**
-   * Replaces new-lines by blanks
-   *
-   * @param	source	the source text with carriage return
-   * @param	col	the width of the text
-   */
-  public static String fixtextToModel(String source, int col, int lin) {
-    return LineBreaker.textToModel(source, col, lin, true);
   }
 
   /**
@@ -327,6 +319,8 @@ public class VStringField extends VField {
    * @param	col		the width of the text area
    */
   public static String modelToText(String source, int col) {
+    // !!! graf 20070307: check whether different handling is needed
+    // depending on the value of FDO_DYNAMIC_NL (ie FIXED ON/OFF)
     return LineBreaker.modelToText(source, col);
   }
 
