@@ -26,9 +26,11 @@ import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VFixedColumn;
 import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
+
 
 public class VFixedField extends VField {
 
@@ -267,8 +269,13 @@ public class VFixedField extends VField {
    *
    * @param     scale           the scale value.
    */
-  public void setScale(int scale) {
-    currentScale[block.getActiveRecord()] = scale;
+  public void setScale(int scale) throws VExecFailedException {
+    if (scale <= maxScale) {
+      currentScale[block.getActiveRecord()] = scale;
+    } else {
+      throw new VExecFailedException("The scale " + scale + " is bigger than the"
+                                     + " maximum allowed " + maxScale);
+    }
   }
 
   /**
