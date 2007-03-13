@@ -160,7 +160,7 @@ public class LabelPrinter {
    * Creates a print task for the documentat the specified printer
    */
   public PrintJob createPrintJob() throws IOException, PrintException {
-    return new PrintJob(new StringBufferInputStream(buffer.toString()), PrintJob.FORMAT_ROW);
+    return new PrintJob(new StringBufferInputStream(buffer.toString()), PrintJob.FORMAT_RAW);
   }
 
   // ----------------------------------------------------------------------

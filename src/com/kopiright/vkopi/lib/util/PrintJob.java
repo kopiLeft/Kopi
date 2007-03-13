@@ -259,6 +259,6 @@ public class PrintJob {
   public static Rectangle       FORMAT_LETTER_R = new Rectangle(PageSize.LETTER.rotate().width(), PageSize.LETTER.rotate().height());
   public static Rectangle       FORMAT_LEGAL_R  = new Rectangle(PageSize.LEGAL.rotate().width(), PageSize.LEGAL.rotate().height());
 
-  // Row format (Used for label printers)
-  public static Rectangle       FORMAT_ROW = new Rectangle(-1, -1);
+  // Raw format (Used for label printers)
+  public static Rectangle       FORMAT_RAW = new Rectangle(-1, -1);
 }
