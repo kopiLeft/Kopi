@@ -79,5 +79,5 @@
   <message ident="00058" text="Opération annulée." />
 <!-- ERRORS-->
   <message ident="00059" text="Erreur de saisie: Periode incorrecte." />
-  <message ident="00060" text="La précision {0} est plus grande que la précision maximale permise {1}");
+  <message ident="00060" text="La précision {0} est plus grande que la précision maximale permise {1}" />
 </messages>

@@ -79,5 +79,5 @@
   <message ident="00058" text="Transaktion abgebrochen." />
 <!-- ERRORS-->
   <message ident="00059" text="Eingabefehler: falsche Periode." />
-  <message ident="00060" text="The scale {0} is bigger than the maximum allowed {1}");
+  <message ident="00060" text="The scale {0} is bigger than the maximum allowed {1}" />
 </messages>
