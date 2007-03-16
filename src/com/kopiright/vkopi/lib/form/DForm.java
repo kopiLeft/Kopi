@@ -47,7 +47,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultEditorKit;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.DPositionPanel;
 import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
@@ -226,11 +226,11 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     JMenu		edit;
 
     // there is always a file menu
-    edit = new JMenu(Message.getMessage("menu-file"));
+    edit = new JMenu(VlibProperties.getString("menu-file"));
     getDMenuBar().add(edit);
 
     // and also an edit menu
-    edit = new JMenu(Message.getMessage("menu-edit")) ;
+    edit = new JMenu(VlibProperties.getString("menu-edit")) ;
     getDMenuBar().add(edit);
 
     undoAction = new DWindow.UndoAction();
@@ -243,20 +243,20 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     //These actions come from the default editor kit.
     //We just get the ones we want and stick them in the menu.
     Action      action = getActionByName(DefaultEditorKit.cutAction);
-    JMenuItem   item = new JMenuItem(Message.getMessage("item-cut"));
+    JMenuItem   item = new JMenuItem(VlibProperties.getString("item-cut"));
 
     item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
     item.addActionListener(action);
     edit.add(item);
 
     action = getActionByName(DefaultEditorKit.copyAction);
-    item = new JMenuItem(Message.getMessage("item-copy"));
+    item = new JMenuItem(VlibProperties.getString("item-copy"));
     item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
     item.addActionListener(action);
     edit.add(item);
 
     action = getActionByName(DefaultEditorKit.pasteAction);
-    item = new JMenuItem(Message.getMessage("item-paste"));
+    item = new JMenuItem(VlibProperties.getString("item-paste"));
     item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
     item.addActionListener(action);
     edit.add(item);
@@ -264,7 +264,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     edit.addSeparator();
 
     action = getActionByName(DefaultEditorKit.selectAllAction);
-    action.putValue(Action.NAME, Message.getMessage("item-select-all"));
+    action.putValue(Action.NAME, VlibProperties.getString("item-select-all"));
     // prevents garbage collection
     // therefore commented out
     //    edit.add(action);

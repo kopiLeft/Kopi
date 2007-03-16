@@ -30,7 +30,9 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SActor;
@@ -573,7 +575,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (!isMulti()) {
       changeActiveRecord(-fetchPosition);
     } else if (noMove()) {
-      throw new VExecFailedException(Message.getMessage("actionInhibited"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
     } else {
       VField		act;
       int		i;
@@ -618,11 +620,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     if (!isMulti()) {
       if (fetchPosition >= fetchCount - 1) {
-        throw new VExecFailedException(Message.getMessage("no_more_data"));
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
       changeActiveRecord(fetchCount - fetchPosition - 1);
     } else if (noMove()) {
-      throw new VExecFailedException(Message.getMessage("actionInhibited"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
     } else {
       VField		act;
       int		i;
@@ -638,7 +640,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	}
       }
       if (i == 0 || !isRecordAccessible(i)) {
-	throw new VExecFailedException(Message.getMessage("no_more_data"));
+	throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
 
       leaveRecord(true);
@@ -694,7 +696,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       act = activeField;
 
       if (getMode() != MOD_UPDATE) {
-	throw new VExecFailedException(Message.getMessage("actionInhibited"));
+	throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
       }
 
       if (isChanged() && (! form.ask(Message.getMessage("confirm_discard_changes")))) {
@@ -722,7 +724,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	throw e;
       }
     } else if (noMove()) {
-      throw new VExecFailedException(Message.getMessage("actionInhibited"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
     } else {
       VField		act;
 //       int		currentRec = getActiveRecord();
@@ -740,7 +742,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 //       }
 
 //       if (i == -1) {
-// 	throw new VExecFailedException(Message.getMessage("no_more_data"));
+// 	throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
 //       }
       int       oldRecord = getActiveRecord();
 
@@ -788,13 +790,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
       }
       if (i == getBufferSize() || !isRecordAccessible(getDataPosition(i))) {
-        throw new VExecFailedException(Message.getMessage("no_more_data"));
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
       // get position in data of next record in sorted order
       changeActiveRecord(getDataPosition(i));
     } else {
       if (fetchPosition >= fetchCount - 1) {
-        throw new VExecFailedException(Message.getMessage("no_more_data"));
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
       changeActiveRecord(1);
     }
@@ -822,7 +824,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
 
       if (i == -1 || !isRecordAccessible(getDataPosition(i))) {
-        throw new VExecFailedException(Message.getMessage("no_more_data"));
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
       // get position in data of previous record in sorted order
       changeActiveRecord(getDataPosition(i));
@@ -1400,7 +1402,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (fld.getAccess(getActiveRecord()) == ACS_MUSTFILL && fld.isNull(getActiveRecord())) {
         // !!! lackner 04.10.2003 I don't know if it is realy necessary here 
         fireBlockChanged();
-	throw new VFieldException(fld, Message.getMessage("field_mustfill"));
+	throw new VFieldException(fld, MessageCode.getMessage("VIS-00023"));
       }
     }
   }
@@ -1694,7 +1696,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // !!! REMOVE setActiveRecord(0);
 
     if (!isMulti() && fetchCount == 0) {
-      throw new VQueryNoRowException(Message.getMessage("no_value"));
+      throw new VQueryNoRowException(MessageCode.getMessage("VIS-00022"));
     } else if (!isMulti()) {
       setMode(MOD_UPDATE);
     }
@@ -1797,9 +1799,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
             try {
               form.abortProtected(e);
             } catch(DBDeadLockException abortEx) {
-              throw new VExecFailedException(Message.getMessage("abort_transaction"));
+              throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
             } catch(DBInterruptionException abortEx) {
-              throw new VExecFailedException(Message.getMessage("abort_transaction"));
+              throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
             } catch(SQLException abortEx) {
               throw new VExecFailedException(abortEx);
             }
@@ -2267,7 +2269,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	if (! query.next()) {
 	  query.close();
 	  form.getDBContext().abortWork();	// !!! END_SYNC();
-	  throw new VExecFailedException(Message.getMessage("no_value_in",
+	  throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
 							    new Object[]{ tables[table] }));
 	} else {
 	  int	j = 0;
@@ -2284,7 +2286,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	  if (query.next()) {
 	    query.close();
 	    form.getDBContext().abortWork();	// !!! END_SYNC();
-	    throw new VExecFailedException(Message.getMessage("value_not_unique",
+	    throw new VExecFailedException(MessageCode.getMessage("VIS-00020",
 							      new Object[]{ tables[table] }));
 	  }
 	  query.close();
@@ -2337,9 +2339,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           try {
             form.abortProtected(e);
           } catch(DBDeadLockException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(DBInterruptionException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(SQLException abortEx) {
             throw new VExecFailedException(abortEx);
           }
@@ -2365,7 +2367,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
 
     if (dialog == null) {
-      getForm().error(Message.getMessage("no_value"));
+      getForm().error(MessageCode.getMessage("VIS-00022"));
       return -1;
     } else {
       // !! jdk 1.4.1 lackner 07.08.2003
@@ -3335,7 +3337,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query.close();
       form.getDBContext().abortWork();
       setActiveRecord(recno);
-      throw new VExecFailedException(Message.getMessage("no_value_in",
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
 							new Object[]{ tables[table] }));
     } else {
       for (int i = 0, j = 0; i < fields.length; i++) {
@@ -3351,7 +3353,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	query.close();
 	form.getDBContext().abortWork();
 	setActiveRecord(recno);
-	throw new VExecFailedException(Message.getMessage("value_not_unique",
+	throw new VExecFailedException(MessageCode.getMessage("VIS-00020",
 							  new Object[]{ tables[table] }));
       }
 
@@ -3413,7 +3415,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	  query.close();
 	  form.getDBContext().abortWork();
 	  setActiveRecord(recno);
-	  throw new VExecFailedException(Message.getMessage("index_violated",
+	  throw new VExecFailedException(MessageCode.getMessage("VIS-00014",
 							    new Object[]{ indices[idx] }));
 	}
 
@@ -3643,7 +3645,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (id == 0) {
 	form.getDBContext().abortWork();
 	setActiveRecord(recno);
-	throw new VExecFailedException(Message.getMessage("record_not_deleteable"));
+	throw new VExecFailedException(MessageCode.getMessage("VIS-00019"));
       }
 
       VDatabaseUtils.checkForeignKeys(form, id, tables[0]);
@@ -3705,13 +3707,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query.close();
       form.getDBContext().abortWork();
       setActiveRecord(recno);
-      throw new VExecFailedException(Message.getMessage("record_deleted"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00018"));
     } else if (isRecordUpdated(query, recno, ucfld, tsfld)) {
       // record has been updated
       query.close();
       form.getDBContext().abortWork();
       setActiveRecord(recno);		// also valid for single blocks
-      throw new VExecFailedException(Message.getMessage("record_changed"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00017"));
     } else {
       query.close();
     }
@@ -3765,7 +3767,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       referenz = query.getString(3);
       query.close();
       form.getDBContext().abortWork();
-      return new VExecFailedException(Message.getMessage("foreign_key_used",
+      return new VExecFailedException(MessageCode.getMessage("VIS-00021",
 							 new Object[] {
 							   tabelle + "." + spalte,
 							   referenz

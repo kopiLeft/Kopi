@@ -36,7 +36,7 @@ import java.util.Vector;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.form.LatexPrintWriter;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.visual.Application;
@@ -352,8 +352,8 @@ public class Main {
 
       root = new Module(0,
 			0,
-			Message.getMessage("PROGRAM"),
-			Message.getMessage("program"),
+			VlibProperties.getString("PROGRAM"),
+			VlibProperties.getString("program"),
 			null,
 			Module.ACS_TRUE,
 			null);

@@ -23,9 +23,10 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.l10n.TypeLocalizer;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public abstract class VCodeField extends VField {
 
@@ -65,14 +66,14 @@ public abstract class VCodeField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("code-type-field");
+    return VlibProperties.getString("code-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Code");
+    return VlibProperties.getString("Code");
   }
 
   /**
@@ -137,10 +138,10 @@ public abstract class VCodeField extends VField {
 
       switch (found) {
       case -1:	/* no match */
-	throw new VFieldException(this, Message.getMessage("no_match"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
 
       case -2:	/* two (or more) exact matches: cannot choose */
-	throw new VFieldException(this, Message.getMessage("multiple_choice"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00002"));
 
       default:
 	setCode(block.getActiveRecord(), found);

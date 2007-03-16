@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class VBooleanField extends VBooleanCodeField {
 
@@ -39,14 +39,14 @@ public class VBooleanField extends VBooleanCodeField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("boolean-type-field");
+    return VlibProperties.getString("boolean-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Boolean");
+    return VlibProperties.getString("Boolean");
   }
 
   /**

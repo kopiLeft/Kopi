@@ -17,7 +17,7 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.util;
+package com.kopiright.vkopi.lib.print;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +27,14 @@ import java.util.List;
 
 import com.kopiright.util.mailer.Attachment;
 import com.kopiright.util.mailer.Mailer;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.PrintException;
+
+import com.kopiright.vkopi.lib.util.AbstractPrinter;
+import com.kopiright.vkopi.lib.util.CachePrinter; 
+import com.kopiright.vkopi.lib.util.Utils;
 
 /**
  * Mail printer
@@ -113,7 +120,7 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
                          allattachments);
     } catch (Exception e) {
       e.printStackTrace();
-      throw new PrintException(Message.getMessage("mail_cant_send"), e, PrintException.EXC_UNKNOWN);
+      throw new PrintException(MessageCode.getMessage("VIS-00056"), e, PrintException.EXC_UNKNOWN);
     }
     return "NYI";
   }

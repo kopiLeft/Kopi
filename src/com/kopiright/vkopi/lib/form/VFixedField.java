@@ -24,8 +24,9 @@ import java.sql.SQLException;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VFixedColumn;
-import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Fixed;
@@ -117,14 +118,14 @@ public class VFixedField extends VField {
 
     max = max.compareTo(big) > 0 ? max : big;
     min = min.compareTo(mbig) < 0 ? min : mbig;
-    return Message.getMessage("fixed-type-field", new Object[] { min, max });
+    return VlibProperties.getString("fixed-type-field", new Object[] { min, max });
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Fixed");
+    return VlibProperties.getString("Fixed");
   }
 
   /*
@@ -173,21 +174,21 @@ public class VFixedField extends VField {
       try {
 	v = scanFixed(s);
       } catch (NumberFormatException e) {
-	throw new VFieldException(this, Message.getMessage("number_format"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00006"));
       }
 
       if (v!= null) {
 	if (v.getScale() > scale) {
-	  throw new VFieldException(this, Message.getMessage("too_long_decimal", new Object[]{ new Integer(scale) }));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00011", new Object[]{ new Integer(scale) }));
 	}
 	if (minval != null && v.compareTo(minval) == -1) {
-	  throw new VFieldException(this, Message.getMessage("too_small", new Object[]{ minval }));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00012", new Object[]{ minval }));
 	}
 	if (maxval != null && v.compareTo(maxval) == 1) {
-	  throw new VFieldException(this, Message.getMessage("too_large", new Object[]{ maxval }));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ maxval }));
 	}
 	if (toText(v.setScale(scale)).length() > getWidth()) {
-	  throw new VFieldException(this, Message.getMessage("too_long"));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
 	}
       }
 
@@ -273,8 +274,7 @@ public class VFixedField extends VField {
     if (scale <= maxScale) {
       currentScale[block.getActiveRecord()] = scale;
     } else {
-      throw new VExecFailedException("The scale " + scale + " is bigger than the"
-                                     + " maximum allowed " + maxScale);
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00006", scale, maxScale));
     }
   }
 

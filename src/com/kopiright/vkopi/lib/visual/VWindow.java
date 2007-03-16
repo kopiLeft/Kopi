@@ -29,7 +29,8 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
@@ -183,7 +184,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       reason.printStackTrace(System.err);
     } else {
       Application.reportTrouble("VWindow", line, (data != null) ? data.toString() : "<no info about>", reason);
-      error(com.kopiright.vkopi.lib.util.Message.getMessage("fatal-error"));
+      error(com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
     }
 
     close(1);
@@ -560,7 +561,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       try {
         Application.getMenu().gotoShortcuts();
       } catch (NullPointerException npe) {
-        throw new VExecFailedException(Message.getMessage("shortcuts-not-available"));
+        throw new VExecFailedException(VlibProperties.getString("shortcuts-not-available"));
       }
     }
   }
@@ -668,7 +669,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * @return true, if the transaction should be retried.
    */
   public boolean retryProtected() {
-    return ask(Message.getMessage("retry_transaction"));
+    return ask(MessageCode.getMessage("VIS-00039"));
   }
 
   /**

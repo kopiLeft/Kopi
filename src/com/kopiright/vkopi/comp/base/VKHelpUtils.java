@@ -62,7 +62,7 @@ public class VKHelpUtils {
    * Generate an mode field description
    */
   public static void genModeField(java.io.PrintWriter p, String name, String desc) {
-    //    p.println("{\\bf " + Message.getMessage("Mode")+ ":}");
+    //    p.println("{\\bf " + VlibProperties.getString("Mode")+ ":}");
     p.println(" {\\it " + name + "}");
     p.println(desc + "\n");
   }
@@ -71,7 +71,7 @@ public class VKHelpUtils {
    * Generate an mode field description
    */
   public static void genTypeField(java.io.PrintWriter p, String name, String desc) {
-    //    p.println("{\\bf " + Message.getMessage("Type")+ ":}");
+    //    p.println("{\\bf " + VlibProperties.getString("Type")+ ":}");
     p.println(" {\\it " + name + "}");
     p.println(desc + "\n");
   }

@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.report;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class VBooleanColumn extends VReportColumn {
 
@@ -44,7 +44,7 @@ public class VBooleanColumn extends VReportColumn {
 	  align,
 	  groups,
 	  function,
-	  Math.max(Message.getMessage("true").length(), Message.getMessage("false").length()),
+	  Math.max(VlibProperties.getString("true").length(), VlibProperties.getString("false").length()),
 	  1,
 	  format != null ? format : new VBooleanFormat());
   }
@@ -75,6 +75,6 @@ public class VBooleanColumn extends VReportColumn {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private static String trueRep = com.kopiright.vkopi.lib.util.Message.getMessage("true");
-  private static String falseRep = com.kopiright.vkopi.lib.util.Message.getMessage("false");
+  private static String trueRep = com.kopiright.vkopi.lib.visual.VlibProperties.getString("true");
+  private static String falseRep = com.kopiright.vkopi.lib.visual.VlibProperties.getString("false");
 }

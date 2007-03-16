@@ -24,7 +24,8 @@ import java.util.StringTokenizer;
 
 import com.kopiright.vkopi.lib.list.VDateColumn;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Date;
@@ -62,14 +63,14 @@ public class VDateField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("date-type-field");
+    return VlibProperties.getString("date-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Date");
+    return VlibProperties.getString("Date");
   }
 
   // ----------------------------------------------------------------------
@@ -127,7 +128,7 @@ public class VDateField extends VField {
     StringTokenizer     tokens = new StringTokenizer(s, "/.#");
 
     if (!tokens.hasMoreTokens()) {
-      throw new VFieldException(this, Message.getMessage("date_format"));
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));
     }
     day = stringToInt(tokens.nextToken());
     if (tokens.hasMoreTokens()) {
@@ -137,7 +138,7 @@ public class VDateField extends VField {
       year = stringToInt(tokens.nextToken());
     }
     if (tokens.hasMoreTokens() || day == -1 || month == -1 || year == -1) {
-      throw new VFieldException(this, Message.getMessage("date_format"));
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));
     }
 
     if (month == 0) {
@@ -154,11 +155,11 @@ public class VDateField extends VField {
     } else if (year < 1000) {
       // less than 4 digits cause an error in database while paring the 
       // sql statement
-      throw new VFieldException(this, Message.getMessage("date_format"));      
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));      
     }
 
     if (!isDate(day, month, year)) {
-      throw new VFieldException(this, Message.getMessage("date_format"));
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));
     }
 
     setDate(block.getActiveRecord(), new NotNullDate(year, month, day));

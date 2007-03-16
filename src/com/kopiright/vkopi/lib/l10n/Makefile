@@ -31,7 +31,7 @@ JAVAFILES +=	ActorLocalizer BlockLocalizer FieldLocalizer		\
 		FormLocalizer ListLocalizer LocalizationChecker		\
 		LocalizationManager Localizer MenuLocalizer		\
 		MessageLocalizer ModuleLocalizer ReportLocalizer	\
-		TypeLocalizer Utils
+		TypeLocalizer Utils PropertyLocalizer
 
 OPTIONS =	
 

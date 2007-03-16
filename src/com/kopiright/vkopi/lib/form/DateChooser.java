@@ -25,7 +25,7 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;
@@ -127,7 +127,7 @@ public class DateChooser extends JPanel implements ActionListener {
     button.setLayout(new FlowLayout(FlowLayout.CENTER));
     end.add(button, BorderLayout.NORTH);
 
-    todayButton = new JButton(Message.getMessage("today"));
+    todayButton = new JButton(VlibProperties.getString("today"));
     todayButton.setRequestFocusEnabled(false);
     todayButton.setMargin(emptyInsets);
     todayButton.setFocusPainted(false);
@@ -400,18 +400,18 @@ public class DateChooser extends JPanel implements ActionListener {
   // --------------------------------------------------------------------
 
   private static final String[]		MONTH_NAMES = {
-    Message.getMessage("Jan"),
-    Message.getMessage("Feb"),
-    Message.getMessage("Mar"),
-    Message.getMessage("Apr"),
-    Message.getMessage("May"),
-    Message.getMessage("Jun"),
-    Message.getMessage("Jul"),
-    Message.getMessage("Aug"),
-    Message.getMessage("Sep"),
-    Message.getMessage("Oct"),
-    Message.getMessage("Nov"),
-    Message.getMessage("Dec")
+    VlibProperties.getString("Jan"),
+    VlibProperties.getString("Feb"),
+    VlibProperties.getString("Mar"),
+    VlibProperties.getString("Apr"),
+    VlibProperties.getString("May"),
+    VlibProperties.getString("Jun"),
+    VlibProperties.getString("Jul"),
+    VlibProperties.getString("Aug"),
+    VlibProperties.getString("Sep"),
+    VlibProperties.getString("Oct"),
+    VlibProperties.getString("Nov"),
+    VlibProperties.getString("Dec")
   };
 
   private Date				selectedDate;
@@ -572,13 +572,13 @@ public class DateChooser extends JPanel implements ActionListener {
   private static final int		CELL_SIZE = 21;
 
   private static final String[]		WEEKDAY_NAMES = {
-    Message.getMessage("Monday"),
-    Message.getMessage("Tuesday"),
-    Message.getMessage("Wednesday"),
-    Message.getMessage("Thursday"),
-    Message.getMessage("Friday"),
-    Message.getMessage("Saturday"),
-    Message.getMessage("Sunday")
+    VlibProperties.getString("Monday"),
+    VlibProperties.getString("Tuesday"),
+    VlibProperties.getString("Wednesday"),
+    VlibProperties.getString("Thursday"),
+    VlibProperties.getString("Friday"),
+    VlibProperties.getString("Saturday"),
+    VlibProperties.getString("Sunday")
   };
 
   private int				dp;

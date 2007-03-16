@@ -58,7 +58,8 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.ui.base.ListDialogCellRenderer;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
@@ -259,11 +260,11 @@ public class ListDialog extends JPanel {
       }
 
       if (tooManyRows) {
-        Object[]    options = { Message.getMessage("CLOSE")};
+        Object[]    options = { VlibProperties.getString("CLOSE")};
 
         JOptionPane.showOptionDialog(focus,
-                                     Message.getMessage("too_many_rows"),
-                                     Message.getMessage("Notice"),
+                                     MessageCode.getMessage("VIS-00028"),
+                                     VlibProperties.getString("Notice"),
                                      JOptionPane.DEFAULT_OPTION,
                                      JOptionPane.INFORMATION_MESSAGE,
                                      DWindow.ICN_NOTICE,
@@ -286,7 +287,7 @@ public class ListDialog extends JPanel {
       panel.setLayout(new BorderLayout());
       panel.add(this, BorderLayout.CENTER);
       if (newForm != null || forceNew) {
-        JButton button = new JButton(Message.getMessage("new-record"));
+        JButton button = new JButton(VlibProperties.getString("new-record"));
         
         panel.add(button, BorderLayout.SOUTH);
         button.setFocusable(true); // !!! laurent 20020411
@@ -851,7 +852,7 @@ public class ListDialog extends JPanel {
   /*
   private static class DialogFactory {
     static JDialog getDialog(Frame frame) {
-      return new JDialog(frame, Message.getMessage("pick_in_list"));
+      return new JDialog(frame, VlibProperties.getString("pick_in_list"));
     }
   }
   */ 

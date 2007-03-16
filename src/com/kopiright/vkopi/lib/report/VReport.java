@@ -32,7 +32,8 @@ import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ReportLocalizer;
 import com.kopiright.vkopi.lib.print.Printable;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.Application;
@@ -329,7 +330,7 @@ public abstract class VReport extends VWindow
   }
 
   public void export(File file, int type) throws com.kopiright.vkopi.lib.visual.VException {
-    setWaitInfo(Message.getMessage("export-message"));
+    setWaitInfo(VlibProperties.getString("export-message"));
 
     PExport     exporter;
 

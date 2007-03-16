@@ -17,8 +17,8 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.util;
-
+package com.kopiright.vkopi.lib.print;
+import  com.kopiright.vkopi.lib.util.Filter;
 /**
  *
  */

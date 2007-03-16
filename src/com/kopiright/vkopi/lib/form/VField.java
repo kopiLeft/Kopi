@@ -31,7 +31,9 @@ import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.list.VColumn;
 import com.kopiright.vkopi.lib.list.VList;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.VCommand;
@@ -339,7 +341,7 @@ public abstract class VField implements VConstants {
       changedUI = false;
     }
     //if (getAccess() == ACS_MUSTFILL && isNull(block.getActiveRecord())) {
-    //  throw new VFieldException(this, Message.getMessage("field_mustfill"));
+    //  throw new VFieldException(this, MessageCode.getMessage("VIS-00023"));
     //}
   }
 
@@ -1653,7 +1655,7 @@ public abstract class VField implements VConstants {
       }
 
       if (! exists) {
-	throw new VFieldException(this, Message.getMessage("no_match"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
       }
 
       return;
@@ -1722,7 +1724,7 @@ public abstract class VField implements VConstants {
 
       switch (count) {
       case 0:
-	throw new VFieldException(this, Message.getMessage("no_match"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
 
       case 1:
 	if (! result.equals(getString(block.getActiveRecord()))) {
@@ -1811,7 +1813,7 @@ public abstract class VField implements VConstants {
     }
 
     if (id == -1) {
-      throw new VFieldException(this, Message.getMessage("no_match"));
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
     }
 
     return id;
@@ -1866,7 +1868,7 @@ public abstract class VField implements VConstants {
     }
 
     if (lineCount == 0 && (newForm == null || !isNull(block.getActiveRecord()))) {
-      throw new VFieldException(this, Message.getMessage("no_match"));
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
     } else {
       int     selected;
 
@@ -1874,7 +1876,7 @@ public abstract class VField implements VConstants {
 	selected = ((VDictionaryForm)Module.getKopiExecutable(newForm)).newRecord(getForm());
       } else {
 	if (lineCount == MAX_LINE_COUNT - 1) {
-	  getForm().notice(Message.getMessage("too_many_rows"));
+	  getForm().notice(MessageCode.getMessage("VIS-00028"));
 	}
 
 	if (lineCount == 1 && ! SHOW_SINGLE_ENTRY) {
@@ -2179,21 +2181,21 @@ public abstract class VField implements VConstants {
     if (access[MOD_UPDATE] == ACS_MUSTFILL
         || access[MOD_INSERT] == ACS_MUSTFILL
         || access[MOD_QUERY] == ACS_MUSTFILL) {
-      modeName = Message.getMessage("mustfill");
-      modeDesc = Message.getMessage("mustfill-long");
+      modeName = VlibProperties.getString("mustfill");
+      modeDesc = VlibProperties.getString("mustfill-long");
     } else if (access[MOD_UPDATE] == ACS_MUSTFILL
                || access[MOD_INSERT] == ACS_VISIT
                || access[MOD_QUERY] == ACS_VISIT) {
-      modeName = Message.getMessage("visit");
-      modeDesc = Message.getMessage("visit-long");
+      modeName = VlibProperties.getString("visit");
+      modeDesc = VlibProperties.getString("visit-long");
     } else if (access[MOD_UPDATE] == ACS_MUSTFILL
                || access[MOD_INSERT] == ACS_SKIPPED
                || access[MOD_QUERY] == ACS_SKIPPED) {
-      modeName = Message.getMessage("skipped");
-      modeDesc = Message.getMessage("skipped-long");
+      modeName = VlibProperties.getString("skipped");
+      modeDesc = VlibProperties.getString("skipped-long");
     } else {
-      modeName = Message.getMessage("skipped");
-      modeDesc = Message.getMessage("skipped-long");
+      modeName = VlibProperties.getString("skipped");
+      modeDesc = VlibProperties.getString("skipped-long");
     }
 
     help.helpOnType(modeName,

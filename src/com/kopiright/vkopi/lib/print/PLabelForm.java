@@ -21,7 +21,7 @@ package com.kopiright.vkopi.lib.print;
 
 import java.io.IOException;
 
-import com.kopiright.vkopi.lib.util.LabelPrinter;
+import com.kopiright.vkopi.lib.print.LabelPrinter;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.VException;

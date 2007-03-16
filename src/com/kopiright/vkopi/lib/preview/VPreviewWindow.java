@@ -27,7 +27,7 @@ import java.util.Locale;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.Application;
@@ -240,57 +240,57 @@ public class VPreviewWindow extends VWindow {
       getDisplay().closeWindow();
       break;
     case CMD_FIRST:
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       currentPage = 1;
       firePageChanged(currentPage);
       unsetWaitInfo();
       break;
     case CMD_LEFT:
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       currentPage -= 1;
       firePageChanged(currentPage);
       unsetWaitInfo();
       break;
     case CMD_RIGHT:
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       currentPage += 1;
       firePageChanged(currentPage);
       unsetWaitInfo();
       break;
     case CMD_LAST:
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       currentPage = numberOfPages;
       firePageChanged(currentPage);
       unsetWaitInfo();
       break;
     case CMD_ZOOM_PLUS:
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       zoom(DEF_ZOOM_RATIO);
       unsetWaitInfo();
       break;
     case CMD_ZOOM_MINUS:
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       zoom(1/DEF_ZOOM_RATIO);
       unsetWaitInfo();
       break;
     case CMD_ZOOM_FIT:
       // ask gui to calculate zoom
       // gui calls method zoom with the good value
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       fireZoomFit(PreviewListener.FIT_BOTH);
       unsetWaitInfo();
       break;
     case CMD_ZOOM_FIT_H:
       // ask gui to calculate zoom
       // gui calls method zoom with the good value
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       fireZoomFit(PreviewListener.FIT_HEIGHT);
       unsetWaitInfo();
       break;
     case CMD_ZOOM_FIT_W:
       // ask gui to calculate zoom
       // gui calls method zoom with the good value
-      setWaitInfo(Message.getMessage("WAIT"));
+      setWaitInfo(VlibProperties.getString("WAIT"));
       fireZoomFit(PreviewListener.FIT_WIDTH);
       unsetWaitInfo();
       break;
@@ -304,7 +304,7 @@ public class VPreviewWindow extends VWindow {
    * @param     posno           the page position number.
    */
   public void gotoPosition(int posno) {
-    setWaitInfo(Message.getMessage("WAIT"));
+    setWaitInfo(VlibProperties.getString("WAIT"));
     currentPage = posno;
     firePageChanged(currentPage);
     unsetWaitInfo();

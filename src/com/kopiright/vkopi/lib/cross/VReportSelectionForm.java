@@ -19,10 +19,11 @@
 
 package com.kopiright.vkopi.lib.cross;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.report.VNoRowException;
 import com.kopiright.vkopi.lib.report.VReport;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.xkopi.lib.base.DBContext;
@@ -60,7 +61,7 @@ public abstract class VReportSelectionForm extends VForm {
       unsetWaitInfo();
     } catch (VNoRowException e) {
       unsetWaitInfo();
-      error(Message.getMessage("report_no_data"));
+      error(MessageCode.getMessage("VIS-00057"));
     }
 
     b.setRecordChanged(0, false);

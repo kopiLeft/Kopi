@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.print;
 
-import com.kopiright.vkopi.lib.util.LabelPrinter;
+import com.kopiright.vkopi.lib.print.LabelPrinter;
 import com.kopiright.vkopi.lib.visual.VException;
 
 /**

@@ -25,7 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.VCommand;
 
@@ -184,7 +184,7 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
     p.println("<TABLE valign=\"top\">");
     p.println("<TR>");
     p.println("<TD><B>");
-    p.println(Message.getMessage("Mode"));
+    p.println(VlibProperties.getString("Mode"));
     p.println("</B></TD>");
     p.println("<TD><I>");
     p.println(modeName);
@@ -195,7 +195,7 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
     p.println("</TR>");
     p.println("<TR>");
     p.println("<TD><B>");
-    p.println(Message.getMessage("Type"));
+    p.println(VlibProperties.getString("Type"));
     p.println("</B></TD>");
     p.println("<TD><I>");
     p.println(typeName);

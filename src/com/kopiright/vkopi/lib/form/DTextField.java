@@ -50,7 +50,7 @@ import javax.swing.undo.UndoManager;
 import com.kopiright.vkopi.lib.spellchecker.SpellChecker;
 import com.kopiright.vkopi.lib.spellchecker.SpellException;
 import com.kopiright.vkopi.lib.ui.base.TextSelecter;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.KopiAction;
@@ -160,14 +160,14 @@ public DTextField(VFieldUI model,
       languages = appDefaults.getDictionaryLanguages();
 
       if (languages.length > 0) {
-        JMenu           menu = new JMenu(Message.getMessage("aspell-menu-title"));
+        JMenu           menu = new JMenu(VlibProperties.getString("aspell-menu-title"));
 
         for (int i=0; i < languages.length; i++) {
           final String  spellCommand;
           Action        spellChecker;
 
           spellCommand = dictionaryServer+" " + languages[i].options;
-          spellChecker = new AbstractAction(Message.getMessage(languages[i].language)) {
+          spellChecker = new AbstractAction(VlibProperties.getString(languages[i].language)) {
             /**
              * Comment for <code>serialVersionUID</code>
              */
@@ -199,7 +199,7 @@ public DTextField(VFieldUI model,
       if (bookmarks.length > 0) {
         popup.addSeparator();
       
-        JMenu           menu = new JMenu(Message.getMessage("toolbar-title"));
+        JMenu           menu = new JMenu(VlibProperties.getString("toolbar-title"));
 
         for (int i = 0; i < bookmarks.length; i++) {
           menu.add(bookmarks[i]);
@@ -379,7 +379,7 @@ public DTextField(VFieldUI model,
     
    
 	ListAction() {
-      super(Message.getMessage("item-index"));
+      super(VlibProperties.getString("item-index"));
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -573,11 +573,11 @@ public DTextField(VFieldUI model,
 
     public String toGui(String modelTxt) {
       if (modelTxt == null || "".equals(modelTxt)) {
-        return Message.getMessage("scan-ready");
+        return VlibProperties.getString("scan-ready");
       } else if (field.field.isEditable()) {
-        return Message.getMessage("scan-read") + " " + modelTxt;
+        return VlibProperties.getString("scan-read") + " " + modelTxt;
       } else {
-        return Message.getMessage("scan-finished");
+        return VlibProperties.getString("scan-finished");
       }
     }
 

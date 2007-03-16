@@ -44,7 +44,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class SpellcheckerDialog extends JDialog {
   
@@ -119,13 +119,13 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
     JPanel              buttonPanel = new JPanel();
 
     getContentPane().add(mainBox);
-    jLabel = new JLabel(Message.getMessage("aspell-dialog-not-in"));
+    jLabel = new JLabel(VlibProperties.getString("aspell-dialog-not-in"));
     addRow(mainBox, jLabel, originalWordTextField);
 
-    jLabel = new JLabel(Message.getMessage("aspell-dialog-change-to"));
+    jLabel = new JLabel(VlibProperties.getString("aspell-dialog-change-to"));
     addRow(mainBox, jLabel, changeTo );
 
-    jLabel = new JLabel(Message.getMessage("aspell-dialog-suggestions"));
+    jLabel = new JLabel(VlibProperties.getString("aspell-dialog-suggestions"));
     hBox = Box.createHorizontalBox();
 
     hBox.add(suggestionsPane);
@@ -172,7 +172,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   private class CancelAction extends AbstractAction {
     
 	private CancelAction() {
-      super(Message.getMessage("aspell-dialog-cancel"));
+      super(VlibProperties.getString("aspell-dialog-cancel"));
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -187,7 +187,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   private class ChangeAction extends AbstractAction {
     
 	private ChangeAction() {
-      super(Message.getMessage("aspell-dialog-change"));
+      super(VlibProperties.getString("aspell-dialog-change"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_C));
     }
@@ -205,7 +205,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   private class ChangeAllAction extends AbstractAction {
     
 	private ChangeAllAction() {
-      super(Message.getMessage("aspell-dialog-change-all"));
+      super(VlibProperties.getString("aspell-dialog-change-all"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_L));
     }
@@ -223,7 +223,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   private class IgnoreAction extends AbstractAction {
     
 	private IgnoreAction() {
-      super(Message.getMessage("aspell-dialog-ignore"));
+      super(VlibProperties.getString("aspell-dialog-ignore"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_I));
     }
@@ -241,7 +241,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   private class IgnoreAllAction extends AbstractAction {
     
 	private IgnoreAllAction() {
-      super(Message.getMessage("aspell-dialog-ignore-all"));
+      super(VlibProperties.getString("aspell-dialog-ignore-all"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
       putValue(ACCELERATOR_KEY, new Integer(KeyEvent.VK_G));
     }

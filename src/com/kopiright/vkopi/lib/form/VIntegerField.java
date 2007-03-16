@@ -23,7 +23,8 @@ import java.sql.SQLException;
 
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VIntegerColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.Query;
 
@@ -69,7 +70,7 @@ public class VIntegerField extends VField {
     max = Math.min(max, nines - 1);
     min = Math.max(min, - (nines / 10 - 1));
 
-    return Message.getMessage("integer-type-field",
+    return VlibProperties.getString("integer-type-field",
                               new Object[]{ new Integer(min),
                                             new Integer(max) });
   }
@@ -78,7 +79,7 @@ public class VIntegerField extends VField {
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Long");
+    return VlibProperties.getString("Long");
   }
 
   // ----------------------------------------------------------------------
@@ -129,14 +130,14 @@ public class VIntegerField extends VField {
       try {
 	v = Integer.parseInt(s);
       } catch (NumberFormatException e) {
-	throw new VFieldException(this, Message.getMessage("number_format"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00006"));
       }
 
       if (v < minval) {
-	throw new VFieldException(this, Message.getMessage("too_small", new Object[]{ new Integer(minval) }));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00012", new Object[]{ new Integer(minval) }));
       }
       if (v > maxval) {
-	throw new VFieldException(this, Message.getMessage("too_large", new Object[]{ new Integer(maxval) }));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ new Integer(maxval) }));
       }
 
       setInt(block.getActiveRecord(), new Integer(v));

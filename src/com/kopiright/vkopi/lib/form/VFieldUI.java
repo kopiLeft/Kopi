@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.Utils;
 import com.kopiright.xkopi.lib.base.KopiUtils;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.*;
 
 /**
@@ -444,7 +444,7 @@ public class VFieldUI implements VConstants, ActionHandler {
     // go to the correct block if necessary
     if (getBlock() != model.getForm().getActiveBlock()) {
       if (! getBlock().isAccessible()) {
-	throw new VExecFailedException(Message.getMessage("actionInhibited"));
+	throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
       }
       model.getForm().gotoBlock(getBlock());
     } 

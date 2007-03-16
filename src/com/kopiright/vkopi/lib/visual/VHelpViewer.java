@@ -50,18 +50,18 @@ public class VHelpViewer extends VWindow {
                  "quit",
 		 java.awt.event.KeyEvent.VK_ESCAPE,
 		 0)
-/*        new SActor(com.kopiright.vkopi.lib.util.Message.getMessage("menu-action"),
-		   com.kopiright.vkopi.lib.util.Message.getMessage("item-top"),
+/*        new SActor(com.kopiright.vkopi.lib.visual.VlibProperties.getString("menu-action"),
+		   com.kopiright.vkopi.lib.visual.VlibProperties.getString("item-top"),
 		   "top",
 		   -1,
 		   -1,
-		 com.kopiright.vkopi.lib.util.Message.getMessage("help-top-help")),
-        new SActor(com.kopiright.vkopi.lib.util.Message.getMessage("menu-action"),
-		   com.kopiright.vkopi.lib.util.Message.getMessage("item-index"),
+		 com.kopiright.vkopi.lib.visual.VlibProperties.getString("help-top-help")),
+        new SActor(com.kopiright.vkopi.lib.visual.VlibProperties.getString("menu-action"),
+		   com.kopiright.vkopi.lib.visual.VlibProperties.getString("item-index"),
 		   "index",
 		   -1,
 		   -1,
-		   com.kopiright.vkopi.lib.util.Message.getMessage("help-index-help"))
+		   com.kopiright.vkopi.lib.visual.VlibProperties.getString("help-index-help"))
 */
 	});
     

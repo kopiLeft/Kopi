@@ -25,7 +25,8 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.util.LineBreaker;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.Query;
@@ -61,9 +62,9 @@ public class VStringField extends VField {
    */
   public String getTypeInformation() {
     if (height > 1) {
-      return Message.getMessage("string-type-area", new Object[]{ new Integer(width), new Integer(height)});
+      return VlibProperties.getString("string-type-area", new Object[]{ new Integer(width), new Integer(height)});
     } else {
-      return Message.getMessage("string-type-field", new Object[]{ new Integer(width) });
+      return VlibProperties.getString("string-type-field", new Object[]{ new Integer(width) });
     }
   }
 
@@ -71,7 +72,7 @@ public class VStringField extends VField {
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage(getHeight() == 1 ? "String" : "StringArea");
+    return VlibProperties.getString(getHeight() == 1 ? "String" : "StringArea");
   }
 
   /**

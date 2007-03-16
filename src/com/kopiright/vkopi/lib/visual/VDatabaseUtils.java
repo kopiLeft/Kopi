@@ -23,7 +23,7 @@ import java.sql.SQLException;
 
 import com.kopiright.xkopi.lib.base.*;
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.Message;
 
 public class VDatabaseUtils {
 
@@ -52,7 +52,7 @@ public class VDatabaseUtils {
 	if (query2.next()) {
 	  query2.close();
 	  ctxt.getDBContext().abortWork();
-	  throw new VExecFailedException(Message.getMessage("foreign_key_used",
+	  throw new VExecFailedException(MessageCode.getMessage("VIS-00021",
 							    new Object[]{
                                                               query1.getString(2),
                                                               query1.getString(1)

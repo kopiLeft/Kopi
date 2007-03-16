@@ -70,7 +70,7 @@ import com.kopiright.vkopi.lib.ui.base.JButtonPanel;
 import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 import com.kopiright.vkopi.lib.util.KnownBugs;
 import com.kopiright.vkopi.lib.util.LineBreaker;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * This class displays a window with a menu, a tool bar, a content panel
@@ -351,11 +351,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   }
 
   public static void displayNotice(Component frame, String message) {
-    Object[]    options = { Message.getMessage("CLOSE")};
+    Object[]    options = { VlibProperties.getString("CLOSE")};
 
     JOptionPane.showOptionDialog(frame,
 				 message,
-				 Message.getMessage("Notice"),
+				 VlibProperties.getString("Notice"),
 				 JOptionPane.DEFAULT_OPTION,
 				 JOptionPane.INFORMATION_MESSAGE,
 				 ICN_NOTICE,
@@ -394,11 +394,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
 
   public static void displayError(Component parent, String message) {
-    Object[]    options = { Message.getMessage("CLOSE")};
+    Object[]    options = { VlibProperties.getString("CLOSE")};
 
     JOptionPane.showOptionDialog(parent,
 				 message,
-				 Message.getMessage("Error"),
+				 VlibProperties.getString("Error"),
 				 JOptionPane.DEFAULT_OPTION,
 				 JOptionPane.ERROR_MESSAGE,
 				 ICN_ERROR,
@@ -410,14 +410,14 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    * Asks a position number
    */
   public static int askPostition(Component parent, int current, int total) {
-    Object[]    options = { Message.getMessage("OK"), Message.getMessage("NO")};
+    Object[]    options = { VlibProperties.getString("OK"), VlibProperties.getString("NO")};
     int         userInput;
     String      s;
     JOptionPane pane;
     JDialog     dialog;
     Object      obj;
     
-    pane = new JOptionPane(Message.getMessage("position-number") + " :",
+    pane = new JOptionPane(VlibProperties.getString("position-number") + " :",
                            JOptionPane.QUESTION_MESSAGE,
                            JOptionPane.YES_NO_OPTION,
                            null,
@@ -426,7 +426,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     
     pane.setWantsInput(true);
     pane.setComponentOrientation(parent.getComponentOrientation());
-    dialog = pane.createDialog(parent, current +  " " + Message.getMessage("from") + " " + total);
+    dialog = pane.createDialog(parent, current +  " " + VlibProperties.getString("from") + " " + total);
 
     dialog.show();
     dialog.dispose();
@@ -463,11 +463,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       }
     }
 
-    Object[]    options = { Message.getMessage("CLOSE")};
+    Object[]    options = { VlibProperties.getString("CLOSE")};
 
     JOptionPane.showOptionDialog(frame,
 				 message,
-				 Message.getMessage("Warning"),
+				 VlibProperties.getString("Warning"),
 				 JOptionPane.DEFAULT_OPTION,
 				 JOptionPane.WARNING_MESSAGE,
 				 ICN_WARNING,
@@ -501,11 +501,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   public boolean askUserImpl(String message, boolean yesIsDefault) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow askUser");
 
-    Object[]    options = { Message.getMessage("OK"), Message.getMessage("NO")};
+    Object[]    options = { VlibProperties.getString("OK"), VlibProperties.getString("NO")};
 
     return 0 == showOptionDialog(self,
 				 message,
-				 Message.getMessage("Question"),
+				 VlibProperties.getString("Question"),
 				 JOptionPane.YES_NO_OPTION,
 				 JOptionPane.QUESTION_MESSAGE,
 				 ICN_ASK,
@@ -528,11 +528,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       }
     }
 
-    Object[] options = { Message.getMessage("CLOSE")};
+    Object[] options = { VlibProperties.getString("CLOSE")};
 
     JOptionPane.showOptionDialog(getFrame(),
                                  message,
-                                 Message.getMessage("Notice"),
+                                 VlibProperties.getString("Notice"),
                                  JOptionPane.DEFAULT_OPTION,
                                  JOptionPane.INFORMATION_MESSAGE,
                                  com.kopiright.vkopi.lib.util.Utils.getImage("info.gif"),
@@ -607,7 +607,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       try {
 	undo.undo();
       } catch (CannotUndoException ex) {
-	System.out.println(Message.getMessage("unable-to-undo") + ex);
+	System.out.println(MessageCode.getMessage("VIS-00029") + ex);
       }
       update();
       redoAction.update();
@@ -616,10 +616,10 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     protected void update() {
       if (undo != null && undo.canUndo()) {
 	this.setEnabled(true);
-	putValue(Action.NAME, Message.getMessage("item-undo"));
+	putValue(Action.NAME, VlibProperties.getString("item-undo"));
       } else {
 	this.setEnabled(false);
-	putValue(Action.NAME, Message.getMessage("item-undo"));
+	putValue(Action.NAME, VlibProperties.getString("item-undo"));
       }
     }
   }
@@ -635,7 +635,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       try {
 	undo.redo();
       } catch (CannotRedoException ex) {
-	System.out.println(Message.getMessage("unable-to-redo") + ex);
+	System.out.println(MessageCode.getMessage("VIS-00030") + ex);
 	ex.printStackTrace();
       }
       update();
@@ -645,11 +645,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     protected void update() {
       if (undo != null && undo.canRedo()) {
 	this.setEnabled(true);
-	putValue(Action.NAME, Message.getMessage("item-redo"));
+	putValue(Action.NAME, VlibProperties.getString("item-redo"));
 	//undo.getRedoPresentationName());
       } else {
 	this.setEnabled(false);
-	putValue(Action.NAME, Message.getMessage("item-redo"));
+	putValue(Action.NAME, VlibProperties.getString("item-redo"));
       }
     }
     

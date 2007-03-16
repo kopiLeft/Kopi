@@ -89,7 +89,7 @@ GIFFILES =	$(FREEGIFS) $(OLDGIFS)
 
 PSFILES =	StoneGerman german report
 
-LOCALIZATIONS =	General HelpViewer Preview Menu Window
+LOCALIZATIONS =	General HelpViewer Preview Menu Window Messages VKMessages VlibProperties
 
 OTHERFILES =	general.tex macros.tex splash.jpg			\
 		titlepage.sty top.tex					\

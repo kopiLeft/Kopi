@@ -36,7 +36,8 @@ public class Registry {
   protected Registry(String domain, Registry[] parents) {
     this.domain = domain;
     this.parents = parents;
-  }
+    dependencies.put(VISUAL_KOPI_DOMAIN,"com.kopiright.vkopi.lib.resource" + ".Messages");
+ }
   
   
   // ---------------------------------------------------------------------
@@ -89,4 +90,6 @@ public class Registry {
   private final String                  domain;
   private final Registry[]              parents;
   private Hashtable                     dependencies = new Hashtable();
+  
+  private static String                 VISUAL_KOPI_DOMAIN = "VIS";
 }

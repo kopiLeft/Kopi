@@ -29,7 +29,7 @@ import javax.swing.text.Document;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.Utils;
 
 public class SpellChecker {
@@ -52,16 +52,16 @@ public class SpellChecker {
 
     if (checkNext()) {
       SpellcheckerDialog  spellDialog = new SpellcheckerDialog(parent, 
-                                                               Message.getMessage("aspell-dialog-title"),
+                                                               VlibProperties.getString("aspell-dialog-title"),
                                                                this);
       spellDialog.show();
     }
 
-    Object[]    options = { Message.getMessage("CLOSE")};
+    Object[]    options = { VlibProperties.getString("CLOSE")};
 
     JOptionPane.showOptionDialog(parent,
-				 Message.getMessage("aspell-finished"),
-				 Message.getMessage("aspell-notice"),
+				 VlibProperties.getString("aspell-finished"),
+				 VlibProperties.getString("aspell-notice"),
 				 JOptionPane.DEFAULT_OPTION,
 				 JOptionPane.INFORMATION_MESSAGE,
 				 ICN_NOTICE,

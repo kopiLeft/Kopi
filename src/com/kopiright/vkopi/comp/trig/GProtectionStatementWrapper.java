@@ -33,7 +33,7 @@ import com.kopiright.kopi.comp.kjc.JStringLiteral;
 import com.kopiright.kopi.comp.kjc.JThrowStatement;
 import com.kopiright.kopi.comp.kjc.JTryCatchStatement;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.xkopi.comp.xkjc.XNameExpression;
 
 /**
@@ -151,7 +151,7 @@ public class GProtectionStatementWrapper extends JTryCatchStatement {
                                        null)); 
   }
 
-  // CREATES: new VExecFailedException(Message.getMessage("abort_transaction"))
+  // CREATES: new VExecFailedException(MessageCode.getMessage("VIS-00058"))
   private static JExpression buildMessageException(TokenReference sourceRef,
                                                    CReferenceType exceptionThrown) {
     JExpression         messageExpression;

@@ -48,7 +48,7 @@ import javax.swing.tree.TreePath;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.ui.base.JBookmarkPanel;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
 
@@ -142,7 +142,7 @@ public class MenuTree extends DWindow {
     sp.getViewport().add(tree);
     getContentPanel().setLayout(new BorderLayout());
     getContentPanel().add(sp, BorderLayout.CENTER);
-    toolbar = new JBookmarkPanel(Message.getMessage("toolbar-title"));
+    toolbar = new JBookmarkPanel(VlibProperties.getString("toolbar-title"));
 
 
     for (int i = 0; i < shortcutsID.size() ; i++) {
@@ -276,7 +276,7 @@ public class MenuTree extends DWindow {
 	private static final long serialVersionUID = -3982166081244304443L;
 
 	public void actionPerformed(ActionEvent e) {
-	  setWaitInfo(Message.getMessage("menu_form_started"));
+	  setWaitInfo(VlibProperties.getString("menu_form_started"));
 	  getModel().performAsyncAction(new KopiAction("menu_form_started") {
 	    public void execute() throws VException {
 	      module.run(getModel().getDBContext());
@@ -380,8 +380,8 @@ public class MenuTree extends DWindow {
 
       root = new Module(0,
 			0,
-			Message.getMessage("PROGRAM"),
-			Message.getMessage("program"),
+			VlibProperties.getString("PROGRAM"),
+			VlibProperties.getString("program"),
 			null,
 			Module.ACS_PARENT,
 			null);
@@ -389,7 +389,7 @@ public class MenuTree extends DWindow {
     }
 
     if (localTree == null) {
-      displayError(Message.getMessage("no_menu_available"));
+      displayError(MessageCode.getMessage("VIS-00042"));
       System.exit(0);
       throw new InconsistencyException();//never accessed
     }
@@ -580,7 +580,7 @@ public class MenuTree extends DWindow {
    * Sets the title of the frame
    */
   public void setTitle(String s) {
-    super.setTitle(s + " - " + Message.getMessage("program_menu"));
+    super.setTitle(s + " - " + VlibProperties.getString("program_menu"));
   }
 
   private void callSelectedForm() {
@@ -603,7 +603,7 @@ public class MenuTree extends DWindow {
 	module.setAccessibility((module.getAccessibility() + 1) % 3);
 	((DefaultTreeModel)tree.getModel()).nodeChanged(node);
       } else if (node.isLeaf()) {
-        setWaitInfo(Message.getMessage("menu_form_started"));
+        setWaitInfo(VlibProperties.getString("menu_form_started"));
 
         module.run(getModel().getDBContext());
         unsetWaitInfo();
@@ -642,7 +642,7 @@ public class MenuTree extends DWindow {
   private static class MenuTreeModel extends VWindow {
 
     public MenuTreeModel() {
-      super.setTitle(Message.getMessage("program_menu"));
+      super.setTitle(VlibProperties.getString("program_menu"));
 
       MenuTree.actors = new SActor[9];
 

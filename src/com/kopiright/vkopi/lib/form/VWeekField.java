@@ -23,7 +23,8 @@ import java.sql.SQLException;
 
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VWeekColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Week;
@@ -61,14 +62,14 @@ public class VWeekField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("week-type-field");
+    return VlibProperties.getString("week-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Week");
+    return VlibProperties.getString("Week");
   }
 
   // ----------------------------------------------------------------------
@@ -200,11 +201,11 @@ public class VWeekField extends VField {
 	}
 	break;
       default:
-	throw new VFieldException(this, Message.getMessage("week_format"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00008"));
       }
     }
     if (state == -1) {
-      throw new VFieldException(this, Message.getMessage("week_format"));
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00008"));
     }
 
     if (year == -1) {

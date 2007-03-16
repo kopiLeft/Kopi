@@ -25,8 +25,9 @@ import java.util.GregorianCalendar;
 
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VMonthColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Month;
 import com.kopiright.xkopi.lib.type.NotNullMonth;
@@ -70,14 +71,14 @@ public class VMonthField extends VField {
    * Returns the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("month-type-field");
+    return VlibProperties.getString("month-type-field");
   }
 
   /**
    * Return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Month");
+    return VlibProperties.getString("Month");
   }
 
   // ----------------------------------------------------------------------
@@ -132,10 +133,10 @@ public class VMonthField extends VField {
 	  if (isMonth(month, year)) {
 	    setMonth(record, new NotNullMonth(year, month));
 	  } else {
-	    throw new VFieldException(this, Message.getMessage("month_format"));
+	    throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
 	  }
 	} catch (Exception e) {
-	  throw new VFieldException(this, Message.getMessage("month_format"));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
 	}
       } else if (s.indexOf(".") == -1) {
 	// just the month, complete
@@ -146,13 +147,13 @@ public class VMonthField extends VField {
 	  if (isMonth(month, year)) {
 	    setMonth(record, new NotNullMonth(year, month));
 	  } else {
-	    throw new VFieldException(this, Message.getMessage("month_format"));
+	    throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
 	  }
 	} catch (Exception e) {
-	  throw new VFieldException(this, Message.getMessage("month_format"));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
 	}
       } else {
-	throw new VFieldException(this, Message.getMessage("month_format"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
       }
     }
   }

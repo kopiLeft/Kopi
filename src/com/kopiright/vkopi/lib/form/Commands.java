@@ -23,7 +23,9 @@ import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.KnownBugs;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VWindow;
@@ -153,9 +155,9 @@ public class Commands implements VConstants {
           try {
             form.abortProtected(e);
           } catch(DBDeadLockException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(DBInterruptionException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(SQLException abortEx) {
             throw new VExecFailedException(abortEx);
           }
@@ -213,9 +215,9 @@ public class Commands implements VConstants {
           try {
             form.abortProtected(e);
           } catch(DBDeadLockException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(DBInterruptionException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(SQLException abortEx) {
             throw new VExecFailedException(abortEx);
           }
@@ -345,9 +347,9 @@ public class Commands implements VConstants {
           try {
             form.abortProtected(e);
           } catch(DBDeadLockException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(DBInterruptionException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(SQLException abortEx) {
             throw new VExecFailedException(abortEx);
           }
@@ -441,9 +443,9 @@ public class Commands implements VConstants {
           try {
             form.abortProtected(e);
           } catch(DBDeadLockException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(DBInterruptionException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(SQLException abortEx) {
             throw new VExecFailedException(abortEx);
           }
@@ -557,9 +559,9 @@ public class Commands implements VConstants {
           try {
             form.abortProtected(e);
           } catch(DBDeadLockException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(DBInterruptionException abortEx) {
-            throw new VExecFailedException(Message.getMessage("abort_transaction"));
+            throw new VExecFailedException(MessageCode.getMessage("VIS-00058"));
           } catch(SQLException abortEx) {
             throw new VExecFailedException(abortEx);
           }
@@ -627,7 +629,7 @@ public class Commands implements VConstants {
     try {
       b.insertEmptyRecord(recno);
     } catch (VException e) {
-      throw new VExecFailedException(Message.getMessage("too_many_rows"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00028"));
     }
     finally {
       b.gotoRecord(recno);
@@ -649,14 +651,14 @@ public class Commands implements VConstants {
       return;
     }
 
-    int		v = new ListDialog(Message.getMessage("search_operator"),
+    int		v = new ListDialog(VlibProperties.getString("search_operator"),
 				   new String[] {
-				     Message.getMessage("operator_eq"),
-				       Message.getMessage("operator_lt"),
-				       Message.getMessage("operator_gt"),
-				       Message.getMessage("operator_le"),
-				       Message.getMessage("operator_ge"),
-				       Message.getMessage("operator_ne")
+				     VlibProperties.getString("operator_eq"),
+				       VlibProperties.getString("operator_lt"),
+				       VlibProperties.getString("operator_gt"),
+				       VlibProperties.getString("operator_le"),
+				       VlibProperties.getString("operator_ge"),
+				       VlibProperties.getString("operator_ne")
 				       }
 				   ).selectFromDialog(b.getForm().getDisplay(), f.getDisplay());
     if (v != -1) {
@@ -705,7 +707,7 @@ public class Commands implements VConstants {
       break;
 
     default:	// let user choose where to go
-      sel = new ListDialog(Message.getMessage("pick_in_list"),
+      sel = new ListDialog(VlibProperties.getString("pick_in_list"),
 			   titleTable,
 			   otherBlocks).selectFromDialog(b.getForm(), null);
     }

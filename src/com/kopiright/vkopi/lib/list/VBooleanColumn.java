@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.list;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class VBooleanColumn extends VListColumn {
 
@@ -47,6 +47,6 @@ public class VBooleanColumn extends VListColumn {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private static String		trueRep = Message.getMessage("true");
-  private static String		falseRep = Message.getMessage("false");
+  private static String		trueRep = VlibProperties.getString("true");
+  private static String		falseRep = VlibProperties.getString("false");
 }

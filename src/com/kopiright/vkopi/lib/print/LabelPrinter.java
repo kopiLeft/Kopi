@@ -17,10 +17,16 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.util;
+package com.kopiright.vkopi.lib.print;
 
 import java.io.IOException;
 import java.io.StringBufferInputStream;
+
+import com.kopiright.vkopi.lib.util.Printer;
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.PrintException;
+import com.kopiright.vkopi.lib.util.Filter;
+import com.kopiright.vkopi.lib.visual.VlibProperties; 
 
 /**
  * Create a new empty document to print with a label printer
@@ -160,7 +166,7 @@ public class LabelPrinter {
    * Creates a print task for the documentat the specified printer
    */
   public PrintJob createPrintJob() throws IOException, PrintException {
-    return new PrintJob(new StringBufferInputStream(buffer.toString()), PrintJob.FORMAT_RAW);
+    return new PrintJob(new StringBufferInputStream(buffer.toString()), PrintJob.FORMAT_ROW);
   }
 
   // ----------------------------------------------------------------------
@@ -278,5 +284,5 @@ public class LabelPrinter {
   protected int offsetX = 0;
   protected int offsetY = 0;
 
-  private static String[]	booleanNames = { Message.getMessage("true"), Message.getMessage("false") };
+  private static String[]	booleanNames = { VlibProperties.getString("true"), VlibProperties.getString("false") };
 }

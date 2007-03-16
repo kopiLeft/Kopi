@@ -20,7 +20,7 @@
 package com.kopiright.vkopi.lib.form;
 
 import com.kopiright.vkopi.lib.visual.VCommand;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * This class implements a Kopi pretty printer
@@ -209,14 +209,14 @@ public class VDocGenerator extends VHelpGenerator {
 			 String[] names) 
   {
     p.uncheckedPrint(" \\makebox[0.7in][l]{{\\bf ");
-    p.print(Message.getMessage("Mode"));
+    p.print(VlibProperties.getString("Mode"));
     p.uncheckedPrintln(":}}");
     p.uncheckedPrintln(" \\makebox[0.7in][l]{{\\it " + modeName + "}}");
     p.uncheckedPrintln(" \\parbox[t]{4in}{");
     p.print(modeDesc);
     p.uncheckedPrintln("}\n");
     p.uncheckedPrint(" \\makebox[0.7in][l]{{\\bf ");
-    p.print(Message.getMessage("Type"));
+    p.print(VlibProperties.getString("Type"));
     p.uncheckedPrintln(":}}");
     p.uncheckedPrintln(" \\makebox[0.7in][l]{{\\it " + typeName + "}}");
     p.uncheckedPrintln(" \\parbox[t]{4in}{");

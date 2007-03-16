@@ -22,7 +22,7 @@ package com.kopiright.vkopi.lib.visual;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class DMenuBar extends JMenuBar {
 
@@ -71,7 +71,7 @@ public class DMenuBar extends JMenuBar {
     JMenu		menu = null;
 
     //!!! NOT YET IMPLEMENTED IN SWING
-    if (menuName.equals(Message.getMessage("help-menu"))) {
+    if (menuName.equals(VlibProperties.getString("help-menu"))) {
       if ((menu = getHelpMenu())== null) {
 	menu = new JMenu(menuName);
 	setHelpMenu(menu);

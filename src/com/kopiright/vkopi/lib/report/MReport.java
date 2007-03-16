@@ -24,7 +24,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.event.TableModelEvent;
 
 import com.kopiright.util.base.Utils;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 
 public class MReport extends AbstractTableModel implements Constants {
 
@@ -58,7 +58,7 @@ public class MReport extends AbstractTableModel implements Constants {
     int		columnCount = columns.length;
     // build accessible columns
     if (userRows.size() == 0) {
-      throw new VNoRowException(Message.getMessage("no_more_data"));
+      throw new VNoRowException(MessageCode.getMessage("VIS-00015"));
     }
 
     createAccessibleTab();

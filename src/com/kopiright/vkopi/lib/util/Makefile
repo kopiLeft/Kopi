@@ -28,22 +28,20 @@ PACKAGE =	com/kopiright/vkopi/lib/util
 ## FILES
 
 JAVAFILES +=	AWTToPS AbstractPrinter CachePrinter Charset437		\
-		DBUtils EltronEPL2 EpsonLQ FPrinter Fax			\
+		DBUtils FPrinter Fax					\
 		FaxException FaxPrinter FaxStatus			\
 		Filter GroupHandler HylaFAXPrinter IPPPrinter		\
-		KnownBugs LPrinter LabelPrinter Laserjet		\
-		LpRPrinter MailPrinter PropertyManager Message		\
+		KnownBugs LPrinter 					\
+		LpRPrinter PropertyManager  		  		\
 		MultiLineToolTip MultiLineToolTipUI PPaperType		\
 		PixelConsumer PlatformFileWriter			\
 		PreviewPrinter PrintException				\
 		PrintInformation PrintJob Printer			\
 		RPrinter Rexec To437 ToLatin1				\
-		Utils HylaFAXUtils LineBreaker
+		Utils HylaFAXUtils LineBreaker 
 
 #		Label EPSLabel
 
-
-PROPERTIES =	vlib_messages_en vlib_messages_fr vlib_messages_de
 
 ## ----------------------------------------------------------------------
 ## GOALS

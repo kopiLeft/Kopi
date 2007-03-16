@@ -23,8 +23,9 @@ import java.sql.SQLException;
 
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VTimeColumn;
-import com.kopiright.vkopi.lib.util.Message;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.NotNullTime;
@@ -58,14 +59,14 @@ public class VTimeField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("time-type-field");
+    return VlibProperties.getString("time-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Time");
+    return VlibProperties.getString("Time");
   }
 
   /**
@@ -191,14 +192,14 @@ public class VTimeField extends VField {
       }
 
       if (state == -1) {
-	throw new VFieldException(this, Message.getMessage("time_format"));
+	throw new VFieldException(this, MessageCode.getMessage("VIS-00007"));
       }
 
       if (hours == -1) {
 	setNull(record);
       } else {
 	if (! isTime(hours, minutes)) {
-	  throw new VFieldException(this, Message.getMessage("time_format"));
+	  throw new VFieldException(this, MessageCode.getMessage("VIS-00007"));
 	}
 
 	setTime(record, new NotNullTime(hours, minutes));

@@ -46,7 +46,8 @@ JAVAFILES +=	ActionHandler Application ApplicationDefaults		\
 		UIBuilder WaitInfoListener MessageListener		\
 		VerifyConfiguration ApplicationConfiguration		\
 		PrinterManager PropertyException ModelCloseListener	\
-		UserConfiguration
+		UserConfiguration Message VlibProperties
+
 
 OPTIONS =	ApplicationOptions
 

@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VColorColumn;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.Query;
 
@@ -65,14 +65,14 @@ public class VColorField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("color-type-field");
+    return VlibProperties.getString("color-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Color");
+    return VlibProperties.getString("Color");
   }
 
   /*

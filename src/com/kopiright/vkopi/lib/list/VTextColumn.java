@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.list;
 
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.Message;
 
 public class VTextColumn extends VListColumn {
 

@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VImageColumn;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.xkopi.lib.base.Query;
@@ -70,14 +70,14 @@ public class VImageField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    return Message.getMessage("image-type-field");
+    return VlibProperties.getString("image-type-field");
   }
 
   /**
    * return the name of this field
    */
   public String getTypeName() {
-    return Message.getMessage("Image");
+    return VlibProperties.getString("Image");
   }
 
   /*

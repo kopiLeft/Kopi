@@ -35,7 +35,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.FormLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.AWTToPS;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.Constants;
@@ -386,7 +386,7 @@ public abstract class VForm extends VWindow implements VConstants {
     }
 
     if (block == null) {
-      throw new VExecFailedException(Message.getMessage("pageNotAccessible"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00024"));
     }
 
     gotoBlock(block);
@@ -430,7 +430,7 @@ public abstract class VForm extends VWindow implements VConstants {
     }
 
     if (target == null) {
-      throw new VExecFailedException(Message.getMessage("actionInhibited"));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
     }
 
     gotoBlock(target);

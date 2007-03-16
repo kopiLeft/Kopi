@@ -26,13 +26,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.Message;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
@@ -53,7 +54,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
     this.handler = handler;
   }
   public PProtectedPage(DBContextHandler handler) {
-    this(handler, Message.getMessage("printing"));
+    this(handler, VlibProperties.getString("printing"));
   }
   /**
    * @deprecated
@@ -84,7 +85,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
    * Starts a print session on a file
    */
   public PrintJob createPrintJob(DBContext context) {
-    return createPrintJob(context, Message.getMessage("printing"));
+    return createPrintJob(context, VlibProperties.getString("printing"));
   }
 
   /**
@@ -121,9 +122,9 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
 	try {
 	  abortProtected(e);
 	} catch (DBDeadLockException ignored) {
-          throw new VRuntimeException(Message.getMessage("abort_transaction"));
+          throw new VRuntimeException(MessageCode.getMessage("VIS-00058"));
 	} catch (DBInterruptionException ignored) {
-          throw new VRuntimeException(Message.getMessage("abort_transaction"));
+          throw new VRuntimeException(MessageCode.getMessage("VIS-00058"));
 	} catch (SQLException ignored) {
           throw new InconsistencyException(ignored);
 	}
