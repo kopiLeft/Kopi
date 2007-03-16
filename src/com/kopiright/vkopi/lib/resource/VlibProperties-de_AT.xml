@@ -18,212 +18,212 @@
 -->
 <properties>
 <!-- FIELD VALUES / LABELS-->
-<property key="info-autofill" value="STANDARD" />
-<property key="info-noecho" value="keine Wertanzeige" />
-<property key="info-noedit" value="keine Eingabemoeglichkeit" />
-<property key="new-record" value="Neuen [Leertaste]" />
-<property key="true" value="ja" />
-<property key="false" value="nein" />
-<property key="operator_eq" value="= : gleich" />
-<property key="operator_lt" value="&lt; : kleiner" />
-<property key="operator_gt" value="&gt; : größer" />
-<property key="operator_le" value="&lt;=: kleiner-gleich" />
-<property key="operator_ge" value="&gt;=: größer-gleich" />
-<property key="operator_ne" value="&lt;&gt;: ungleich" />
-<property key="scan-ready" value="Bereit" />
-<property key="scan-read" value="Lese" />
-<property key="scan-finished" value="Fertig" />
+  <property key="info-autofill" value="STANDARD" />
+  <property key="info-noecho" value="keine Wertanzeige" />
+  <property key="info-noedit" value="keine Eingabemoeglichkeit" />
+  <property key="new-record" value="Neuen [Leertaste]" />
+  <property key="true" value="ja" />
+  <property key="false" value="nein" />
+  <property key="operator_eq" value="= : gleich" />
+  <property key="operator_lt" value="&lt; : kleiner" />
+  <property key="operator_gt" value="&gt; : größer" />
+  <property key="operator_le" value="&lt;=: kleiner-gleich" />
+  <property key="operator_ge" value="&gt;=: größer-gleich" />
+  <property key="operator_ne" value="&lt;&gt;: ungleich" />
+  <property key="scan-ready" value="Bereit" />
+  <property key="scan-read" value="Lese" />
+  <property key="scan-finished" value="Fertig" />
 <!-- HEADERS-->
-<property key="value" value="Wert" />
+  <property key="value" value="Wert" />
 <!-- TITLES-->
-<property key="Warning" value="Warnung" />
-<property key="Error" value="Fehler" />
-<property key="Question" value="Frage" />
-<property key="Notice" value="Achtung" />
-<property key="Please_wait" value="Bitte warten ..." />
-<property key="pick_in_list" value="Wählen Sie aus" />
-<property key="search_operator" value="Suchoperator" />
-<property key="color_chooser" value="Color chooser" />
-<property key="toolbar-title" value="Favoriten" />
+  <property key="Warning" value="Warnung" />
+  <property key="Error" value="Fehler" />
+  <property key="Question" value="Frage" />
+  <property key="Notice" value="Achtung" />
+  <property key="Please_wait" value="Bitte warten ..." />
+  <property key="pick_in_list" value="Wählen Sie aus" />
+  <property key="search_operator" value="Suchoperator" />
+  <property key="color_chooser" value="Color chooser" />
+  <property key="toolbar-title" value="Favoriten" />
 <!-- MENUTREE-->
-<property key="program_menu" value="Programm-Auswahl" />
-<property key="PROGRAM" value="PROGRAMME" />
-<property key="program" value="Programme" />
-<property key="program_help" value="Die Programme." />
-<property key="menu-close-help" value="Programm beenden" />
-<property key="menu-open-help" value="Programm aufrufen" />
-<property key="menu-launch-help" value="Das ausgewählte Form aufrufen" />
-<property key="menu-fold-help" value="Das ausgewählte Verzeichniss schließen" />
-<property key="menu-unfold-help" value="Das ausgewählte Verzeichniss öffnen" />
-<property key="menu-help-help" value="Das Hilfefenster öffnen" />
-<property key="menu_form_started" value="Programm aufgerufen" />
-<property key="menu_cant_load" value="Derzeit kein Zugriff auf dieses Modul" />
+  <property key="program_menu" value="Programm-Auswahl" />
+  <property key="PROGRAM" value="PROGRAMME" />
+  <property key="program" value="Programme" />
+  <property key="program_help" value="Die Programme." />
+  <property key="menu-close-help" value="Programm beenden" />
+  <property key="menu-open-help" value="Programm aufrufen" />
+  <property key="menu-launch-help" value="Das ausgewählte Form aufrufen" />
+  <property key="menu-fold-help" value="Das ausgewählte Verzeichniss schließen" />
+  <property key="menu-unfold-help" value="Das ausgewählte Verzeichniss öffnen" />
+  <property key="menu-help-help" value="Das Hilfefenster öffnen" />
+  <property key="menu_form_started" value="Programm aufgerufen" />
+  <property key="menu_cant_load" value="Derzeit kein Zugriff auf dieses Modul" />
 <!-- MENUS-->
-<property key="menu-file" value="Datei" />
-<property key="menu-edit" value="Bearbeiten" />
-<property key="menu-show" value="Favoriten anzeigen" />
-<property key="menu-add" value="Favoriten hinzufügen" />
-<property key="menu-remove" value="Favoriten entfernen" />
-<property key="menu-action" value="Aktionen" />
-<property key="item-top" value="Inhalt" />
-<property key="item-index" value="Index" />
-<property key="item-cut" value="Ausschneiden" />
-<property key="item-copy" value="Kopieren" />
-<property key="item-paste" value="Einfügen" />
-<property key="item-select-all" value="Markieren" />
-<property key="item-undo" value="Zurück" />
-<property key="item-redo" value="Vorwärts" />
-<property key="item-save" value="Speichern" />
-<property key="item-page-left" value="Seite -" />
-<property key="item-page-right" value="Seite +" />
-<property key="item-page-first" value="Erste" />
-<property key="item-page-last" value="Vorherige" />
-<property key="item-preview-fit" value="Optimal" />
-<property key="item-preview-fit-width" value="Breite" />
-<property key="item-preview-fit-height" value="Höhe" />
-<property key="item-preview-plus" value="Zoom +" />
-<property key="item-preview-minus" value="Zoom -" />
-<property key="help-menu" value="Hilfe" />
-<property key="help-item" value="Information" />
-<property key="close" value="Beenden" />
-<property key="open" value="Aufrufen" />
-<property key="process" value="Bearbeiten" />
-<property key="print" value="Drucken" />
-<property key="standard" value="Standard" />
-<property key="launch" value="aufrufen" />
-<property key="fold" value="schließen" />
-<property key="unfold" value="öffnen" />
-<property key="goto-shortcuts" value="Favoriten anzeigen" />
-<property key="from" value="von" />
-<property key="position-number" value="Positionszahl" />
-<property key="shortcuts-not-available" value="Favoriten anzeigen nicht möglich" />
+  <property key="menu-file" value="Datei" />
+  <property key="menu-edit" value="Bearbeiten" />
+  <property key="menu-show" value="Favoriten anzeigen" />
+  <property key="menu-add" value="Favoriten hinzufügen" />
+  <property key="menu-remove" value="Favoriten entfernen" />
+  <property key="menu-action" value="Aktionen" />
+  <property key="item-top" value="Inhalt" />
+  <property key="item-index" value="Index" />
+  <property key="item-cut" value="Ausschneiden" />
+  <property key="item-copy" value="Kopieren" />
+  <property key="item-paste" value="Einfügen" />
+  <property key="item-select-all" value="Markieren" />
+  <property key="item-undo" value="Zurück" />
+  <property key="item-redo" value="Vorwärts" />
+  <property key="item-save" value="Speichern" />
+  <property key="item-page-left" value="Seite -" />
+  <property key="item-page-right" value="Seite +" />
+  <property key="item-page-first" value="Erste" />
+  <property key="item-page-last" value="Vorherige" />
+  <property key="item-preview-fit" value="Optimal" />
+  <property key="item-preview-fit-width" value="Breite" />
+  <property key="item-preview-fit-height" value="Höhe" />
+  <property key="item-preview-plus" value="Zoom +" />
+  <property key="item-preview-minus" value="Zoom -" />
+  <property key="help-menu" value="Hilfe" />
+  <property key="help-item" value="Information" />
+  <property key="close" value="Beenden" />
+  <property key="open" value="Aufrufen" />
+  <property key="process" value="Bearbeiten" />
+  <property key="print" value="Drucken" />
+  <property key="standard" value="Standard" />
+  <property key="launch" value="aufrufen" />
+  <property key="fold" value="schließen" />
+  <property key="unfold" value="öffnen" />
+  <property key="goto-shortcuts" value="Favoriten anzeigen" />
+  <property key="from" value="von" />
+  <property key="position-number" value="Positionszahl" />
+  <property key="shortcuts-not-available" value="Favoriten anzeigen nicht möglich" />
 <!-- BUTTONS-->
-<property key="OK" value="Ja" />
-<property key="CLOSE" value="Schließen" />
-<property key="CANCEL" value="Abbrechen" />
-<property key="NO" value="Nein" />
+  <property key="OK" value="Ja" />
+  <property key="CLOSE" value="Schließen" />
+  <property key="CANCEL" value="Abbrechen" />
+  <property key="NO" value="Nein" />
 <!-- INFO-->
-<property key="READY" value="Bereit" />
-<property key="WAIT" value="Warten" />
+  <property key="READY" value="Bereit" />
+  <property key="WAIT" value="Warten" />
 <!-- FIELD TYPE HELP-->
-<property key="string-type-area" value="Dieses Textfeld darf nicht mehr als {0} Zeichen enthalten und nicht mehr als {1} Zeilen umfassen." />
-<property key="print-pageLeft-help" value="Zurück zur vorangegangenen Seite." />
-<property key="print-pageRight-help" value="Zur nächsten Seite." />
-<property key="string-type-field" value="Diese Textzeile darf nicht mehr als {0} Zeichen enthalten." />
-<property key="date-type-field" value="Dieses Feld muß ein Datum im Format TT.MM.JJJJ enthalten." />
-<property key="month-type-field" value="Dieses Feld muß eine Monatsangabe im Format MM.JJJJ enthalten." />
-<property key="time-type-field" value="Dieses Feld muß eine Zeitangabe im Format HH:MM enthalten." />
-<property key="week-type-field" value="Dieses Feld muß eine Wochenangabe im Format WW.JJJJ enthalten." />
-<property key="boolean-type-field" value="Dieses Feld muß JA oder NEIN enthalten." />
-<property key="integer-type-field" value="Dieses Feld muß mit einem Ganzzahlenwert zwischen {0} und {1} gefüllt werden." />
-<property key="fixed-type-field" value="Dieses Feld muß mit einem Fixkommawert zwischen {0} und {1} gefüllt werden." />
-<property key="code-type-field" value="Dieses Feld kann nur mit einem der vorgeschlagenen Werte gefüllt werden." />
-<property key="image-type-field" value="Das ist ein Feld vom Typ Image mit einer Dimension von {0}x{1} Pixeln" />
-<property key="color-type-field" value="Das ist ein Feld vom Typ Farbe" />
+  <property key="string-type-area" value="Dieses Textfeld darf nicht mehr als {0} Zeichen enthalten und nicht mehr als {1} Zeilen umfassen." />
+  <property key="print-pageLeft-help" value="Zurück zur vorangegangenen Seite." />
+  <property key="print-pageRight-help" value="Zur nächsten Seite." />
+  <property key="string-type-field" value="Diese Textzeile darf nicht mehr als {0} Zeichen enthalten." />
+  <property key="date-type-field" value="Dieses Feld muß ein Datum im Format TT.MM.JJJJ enthalten." />
+  <property key="month-type-field" value="Dieses Feld muß eine Monatsangabe im Format MM.JJJJ enthalten." />
+  <property key="time-type-field" value="Dieses Feld muß eine Zeitangabe im Format HH:MM enthalten." />
+  <property key="week-type-field" value="Dieses Feld muß eine Wochenangabe im Format WW.JJJJ enthalten." />
+  <property key="boolean-type-field" value="Dieses Feld muß JA oder NEIN enthalten." />
+  <property key="integer-type-field" value="Dieses Feld muß mit einem Ganzzahlenwert zwischen {0} und {1} gefüllt werden." />
+  <property key="fixed-type-field" value="Dieses Feld muß mit einem Fixkommawert zwischen {0} und {1} gefüllt werden." />
+  <property key="code-type-field" value="Dieses Feld kann nur mit einem der vorgeschlagenen Werte gefüllt werden." />
+  <property key="image-type-field" value="Das ist ein Feld vom Typ Image mit einer Dimension von {0}x{1} Pixeln" />
+  <property key="color-type-field" value="Das ist ein Feld vom Typ Farbe" />
 <!-- DOC GENERATOR-->
-<property key="Type" value="Type" />
-<property key="Image" value="Image" />
-<property key="Color" value="Farbe" />
-<property key="String" value="Text" />
-<property key="StringArea" value="Text" />
-<property key="Text" value="Text" />
-<property key="Fixed" value="Zahl" />
-<property key="Long" value="Ganzzahl" />
-<property key="Date" value="Datum" />
-<property key="Month" value="Monat" />
-<property key="Time" value="Zeit" />
-<property key="Week" value="Woche" />
-<property key="Boolean" value="Boolean" />
-<property key="Code" value="Code" />
-<property key="Image-long" value="Das ist ein Feld vom Typ Image mit einer Dimension von {0}x{1} Pixeln" />
-<property key="Color-long" value="Das ist ein Feld vom Typ Farbe" />
-<property key="StringArea-long" value="Dieses Feld kann eine Zeichenkette enthalten, die nicht länger als {0} Zeichen und kürzer als {1} Zeile(n) ist." />
-<property key="String-long" value="Dieses Feld kann eine Zeichenkette enthalten, die nicht länger als {0} Zeichen ist" />
-<property key="Text-long" value="Dieses Feld kann eine beliebige Zeichenkette enthalten" />
-<property key="Fixed-long" value="Dieses Feld kann einen beliebigen Zahlenwert zwischen {0} und {1} enthalten" />
-<property key="Long-long" value="Dieses Feld kann einen beliebigen Ganzzahlenwert zwischen {0} und {1} enthalten" />
-<property key="Date-long" value="Dieses Feld kann ein Datum im Format TT.MM.JJJJ enthalten" />
-<property key="Month-long" value="Dieses Feld kann ein Monat im Format MM.JJJJ enthalten" />
-<property key="Time-long" value="Dieses Feld kann eine Uhrzeit im Format HH:MM enthalten" />
-<property key="Week-long" value="Dieses Feld kann eine Woche im Format WW.JJJJ enthalten" />
-<property key="Boolean-long" value="Dieses Feld kann einen logischen Ausdruck enthalten (ja/nein)" />
-<property key="Code-long" value="Dieses Feld kann nur einen der angegebenen Werte enthalten:" />
-<property key="Mode" value="Modus" />
-<property key="skipped" value="Skipped" />
-<property key="visit" value="Visit" />
-<property key="mustfill" value="Mustfill" />
-<property key="skipped-long" value="Dieser Feldinhalt kann nicht verändert werden und dient nur zur Information." />
-<property key="visit-long" value="Eine Eingabe in dieses Feld ist nicht unbedingt erforderlich." />
-<property key="mustfill-long" value="Dieses Feld muß einen Wert enthalten." />
+  <property key="Type" value="Type" />
+  <property key="Image" value="Image" />
+  <property key="Color" value="Farbe" />
+  <property key="String" value="Text" />
+  <property key="StringArea" value="Text" />
+  <property key="Text" value="Text" />
+  <property key="Fixed" value="Zahl" />
+  <property key="Long" value="Ganzzahl" />
+  <property key="Date" value="Datum" />
+  <property key="Month" value="Monat" />
+  <property key="Time" value="Zeit" />
+  <property key="Week" value="Woche" />
+  <property key="Boolean" value="Boolean" />
+  <property key="Code" value="Code" />
+  <property key="Image-long" value="Das ist ein Feld vom Typ Image mit einer Dimension von {0}x{1} Pixeln" />
+  <property key="Color-long" value="Das ist ein Feld vom Typ Farbe" />
+  <property key="StringArea-long" value="Dieses Feld kann eine Zeichenkette enthalten, die nicht länger als {0} Zeichen und kürzer als {1} Zeile(n) ist." />
+  <property key="String-long" value="Dieses Feld kann eine Zeichenkette enthalten, die nicht länger als {0} Zeichen ist" />
+  <property key="Text-long" value="Dieses Feld kann eine beliebige Zeichenkette enthalten" />
+  <property key="Fixed-long" value="Dieses Feld kann einen beliebigen Zahlenwert zwischen {0} und {1} enthalten" />
+  <property key="Long-long" value="Dieses Feld kann einen beliebigen Ganzzahlenwert zwischen {0} und {1} enthalten" />
+  <property key="Date-long" value="Dieses Feld kann ein Datum im Format TT.MM.JJJJ enthalten" />
+  <property key="Month-long" value="Dieses Feld kann ein Monat im Format MM.JJJJ enthalten" />
+  <property key="Time-long" value="Dieses Feld kann eine Uhrzeit im Format HH:MM enthalten" />
+  <property key="Week-long" value="Dieses Feld kann eine Woche im Format WW.JJJJ enthalten" />
+  <property key="Boolean-long" value="Dieses Feld kann einen logischen Ausdruck enthalten (ja/nein)" />
+  <property key="Code-long" value="Dieses Feld kann nur einen der angegebenen Werte enthalten:" />
+  <property key="Mode" value="Modus" />
+  <property key="skipped" value="Skipped" />
+  <property key="visit" value="Visit" />
+  <property key="mustfill" value="Mustfill" />
+  <property key="skipped-long" value="Dieser Feldinhalt kann nicht verändert werden und dient nur zur Information." />
+  <property key="visit-long" value="Eine Eingabe in dieses Feld ist nicht unbedingt erforderlich." />
+  <property key="mustfill-long" value="Dieses Feld muß einen Wert enthalten." />
 <!-- HELP MENU-->
-<property key="help-close-help" value="Das Hilfe-Fenster wird geschlossen" />
-<property key="help-top-help" value="Zeigt das Inhaltdsverzeichnis an" />
-<property key="help-index-help" value="Zeigt das Indexverzeichnis an" />
-<property key="help-goto-shortcuts" value="Favoriten anzeigen" />
+  <property key="help-close-help" value="Das Hilfe-Fenster wird geschlossen" />
+  <property key="help-top-help" value="Zeigt das Inhaltdsverzeichnis an" />
+  <property key="help-index-help" value="Zeigt das Indexverzeichnis an" />
+  <property key="help-goto-shortcuts" value="Favoriten anzeigen" />
 <!-- PRINT-->
-<property key="building_document" value="Dokument wird erstellt." />
-<property key="print-close-help" value="Editor schließen." />
-<property key="print-print-help" value="Seite wird am Standarddrucker ausgedruckt." />
-<property key="print-save-help" value="Seite wird im Postscript Format gespeichert." />
-<property key="show-blocks" value="Blöcke" />
-<property key="print-block-help" value="Blöcke werden mit einem Rahmen umrandet (wird nicht mitgedruckt)." />
-<property key="print-dialog" value="Drucken" />
-<property key="print-message" value="Das Dokument wird gedruckt." />
-<property key="export-message" value="Das Dokument wird gespeichert." />
-<property key="print-interupt" value="Druck abbrechen ..." />
-<property key="print-page" value="Seite" />
+  <property key="building_document" value="Dokument wird erstellt." />
+  <property key="print-close-help" value="Editor schließen." />
+  <property key="print-print-help" value="Seite wird am Standarddrucker ausgedruckt." />
+  <property key="print-save-help" value="Seite wird im Postscript Format gespeichert." />
+  <property key="show-blocks" value="Blöcke" />
+  <property key="print-block-help" value="Blöcke werden mit einem Rahmen umrandet (wird nicht mitgedruckt)." />
+  <property key="print-dialog" value="Drucken" />
+  <property key="print-message" value="Das Dokument wird gedruckt." />
+  <property key="export-message" value="Das Dokument wird gespeichert." />
+  <property key="print-interupt" value="Druck abbrechen ..." />
+  <property key="print-page" value="Seite" />
 <!-- REPORT-->
-<property key="separator" value="Alle Spalten rechts von dieser Spalte werden nicht gruppiert" />
+  <property key="separator" value="Alle Spalten rechts von dieser Spalte werden nicht gruppiert" />
 <!-- DateChooser-->
-<property key="Monday" value="Mo" />
-<property key="Tuesday" value="Di" />
-<property key="Wednesday" value="Mi" />
-<property key="Thursday" value="Do" />
-<property key="Friday" value="Fr" />
-<property key="Saturday" value="Sa" />
-<property key="Sunday" value="So" />
-<property key="Jan" value="Jan" />
-<property key="Feb" value="Feb" />
-<property key="Mar" value="Mar" />
-<property key="Apr" value="Apr" />
-<property key="May" value="Mai" />
-<property key="Jun" value="Jun" />
-<property key="Jul" value="Jul" />
-<property key="Aug" value="Aug" />
-<property key="Sep" value="Sep" />
-<property key="Oct" value="Okt" />
-<property key="Nov" value="Nov" />
-<property key="Dec" value="Dez" />
-<property key="today" value="Heute" />
-<property key="menu-format" value="Format" />
-<property key="menu-font-family" value="Schriftart" />
-<property key="menu-font-style" value="Schriftstil" />
-<property key="item-font-bold" value="fett" />
-<property key="item-font-italic" value="schräg" />
-<property key="item-font-underline" value="unterstrichen" />
-<property key="menu-font-size" value="Schriftgröße" />
-<property key="menu-alignment" value="Ausrichtung" />
-<property key="item-justify-left" value="linksbündig" />
-<property key="item-justify-right" value="rechtsbündig" />
-<property key="item-justify-center" value="zentriert" />
-<property key="editor-label-print" value="Drucken" />
-<property key="editor-help-print" value="Text ausdrucken" />
-<property key="editor-label-preview" value="Vorschau" />
-<property key="editor-help-preview" value="Eine Vorschau des Ausdruckes anzeigen" />
+  <property key="Monday" value="Mo" />
+  <property key="Tuesday" value="Di" />
+  <property key="Wednesday" value="Mi" />
+  <property key="Thursday" value="Do" />
+  <property key="Friday" value="Fr" />
+  <property key="Saturday" value="Sa" />
+  <property key="Sunday" value="So" />
+  <property key="Jan" value="Jan" />
+  <property key="Feb" value="Feb" />
+  <property key="Mar" value="Mar" />
+  <property key="Apr" value="Apr" />
+  <property key="May" value="Mai" />
+  <property key="Jun" value="Jun" />
+  <property key="Jul" value="Jul" />
+  <property key="Aug" value="Aug" />
+  <property key="Sep" value="Sep" />
+  <property key="Oct" value="Okt" />
+  <property key="Nov" value="Nov" />
+  <property key="Dec" value="Dez" />
+  <property key="today" value="Heute" />
+  <property key="menu-format" value="Format" />
+  <property key="menu-font-family" value="Schriftart" />
+  <property key="menu-font-style" value="Schriftstil" />
+  <property key="item-font-bold" value="fett" />
+  <property key="item-font-italic" value="schräg" />
+  <property key="item-font-underline" value="unterstrichen" />
+  <property key="menu-font-size" value="Schriftgröße" />
+  <property key="menu-alignment" value="Ausrichtung" />
+  <property key="item-justify-left" value="linksbündig" />
+  <property key="item-justify-right" value="rechtsbündig" />
+  <property key="item-justify-center" value="zentriert" />
+  <property key="editor-label-print" value="Drucken" />
+  <property key="editor-help-print" value="Text ausdrucken" />
+  <property key="editor-label-preview" value="Vorschau" />
+  <property key="editor-help-preview" value="Eine Vorschau des Ausdruckes anzeigen" />
 <!-- SPELL CHECKER-->
-<property key="aspell-dialog-title" value="Rechtschreibprüfung" />
-<property key="aspell-dialog-not-in" value="Nicht im Wörterbuch:" />
-<property key="aspell-dialog-change-to" value="Ändern in:" />
-<property key="aspell-dialog-suggestions" value="Vorschläge:" />
-<property key="aspell-dialog-ignore" value="Ignorieren" />
-<property key="aspell-dialog-ignore-all" value="Immer ignorieren" />
-<property key="aspell-dialog-change" value="Ändern" />
-<property key="aspell-dialog-change-all" value="Alle ändern" />
-<property key="aspell-dialog-cancel" value="Abbrechen" />
-<property key="aspell-finished" value="Rechtschreibprüfung beendet." />
-<property key="aspell-notice" value="Rechtschreibprüfung" />
-<property key="aspell-menu-title" value="Rechtschreibprüfung" />
-<property key="aspell-german" value="Deutsch" />
-<property key="aspell-english" value="Englisch" />
-<property key="aspell-french" value="Französisch" />
+  <property key="aspell-dialog-title" value="Rechtschreibprüfung" />
+  <property key="aspell-dialog-not-in" value="Nicht im Wörterbuch:" />
+  <property key="aspell-dialog-change-to" value="Ändern in:" />
+  <property key="aspell-dialog-suggestions" value="Vorschläge:" />
+  <property key="aspell-dialog-ignore" value="Ignorieren" />
+  <property key="aspell-dialog-ignore-all" value="Immer ignorieren" />
+  <property key="aspell-dialog-change" value="Ändern" />
+  <property key="aspell-dialog-change-all" value="Alle ändern" />
+  <property key="aspell-dialog-cancel" value="Abbrechen" />
+  <property key="aspell-finished" value="Rechtschreibprüfung beendet." />
+  <property key="aspell-notice" value="Rechtschreibprüfung" />
+  <property key="aspell-menu-title" value="Rechtschreibprüfung" />
+  <property key="aspell-german" value="Deutsch" />
+  <property key="aspell-english" value="Englisch" />
+  <property key="aspell-french" value="Französisch" />
 </properties>
