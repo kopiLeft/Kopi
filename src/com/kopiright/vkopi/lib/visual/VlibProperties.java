@@ -75,7 +75,8 @@ public class VlibProperties {
     String                      format;
 
     try {
-      manager = new LocalizationManager(Locale.getDefault(), Application.getDefaultLocale());
+      manager = new LocalizationManager(Locale.getDefault(),
+                                        (Application.getApplication() != null)? Application.getDefaultLocale() : null);
       //   Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getPropertyLocalizer(VLIB_PROPERTIES_RESOURCE_FILE, key).getValue().replaceAll("'", "''");
       return MessageFormat.format(format, params);
