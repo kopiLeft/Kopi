@@ -64,8 +64,6 @@ JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		TimestampType UniqueConstraintDefinition		\
 		ViewColumn ViewDefinition WeekType 
 
-PROPERTIES =	dbi
-
 OPTIONS =	DbiOptions  ConsoleOptions
 
 MESSAGES =	DbiMessages

@@ -48,7 +48,6 @@
                    DbiMessages.java DbiOptions.java  
                    ConsoleOptions.java" />
  
-  <property name="properties"  value="dbi.properties" />
   
   <property name="messages"    value="DbiMessages" />
   <property name="options"     value="DbiOptions" />

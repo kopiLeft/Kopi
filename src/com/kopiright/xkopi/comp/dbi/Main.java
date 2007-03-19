@@ -27,8 +27,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Vector;
 
 import com.kopiright.compiler.base.CWarning;
@@ -106,9 +104,9 @@ public class Main extends Compiler implements Constants {
     if (!parseArguments(args)) {
       return false;
     }
-
-    initialize();
     
+    initialize();
+        
     if (infiles.isEmpty() && (!options.stdin)) {
       options.usage();
       inform(DbiMessages.NO_INPUT_FILE);
@@ -212,21 +210,9 @@ public class Main extends Compiler implements Constants {
    * Initialize the compiler (read classpath, check classes.zip)
    */
   protected boolean initialize() {
-    try {
-      bundle = ResourceBundle.getBundle("dbi");
-    } catch (MissingResourceException e) {
-      //!!! signal error
-    }
-
     if (options.driver == null) {
-      if(getProperty("driver")!= null){
-        options.driver = getProperty("driver");
-      }
-      else{
       return false;
-      }
     }
-
     if (options.url == null) {
       if (options.commit == null
           && !options.stdout
@@ -236,23 +222,8 @@ public class Main extends Compiler implements Constants {
           inform(DbiMessages.NO_CONNECTION);
           return false;
         }
-    } else if (options.url.indexOf("//") < 0) {
-       options.url = getProperty("url") + options.url;
-    }
-
-    if (options.commit != null) {
-      if (options.commit.indexOf("//") < 0) {
-	options.commit = getProperty("url") + options.commit;
-      }
-    }
-
-    if (options.login == null) {
-      options.login = getProperty("login");
-    }
-    if (options.passwd == null) {
-      options.passwd = getProperty("passwd");
-    }
-
+    } 
+      
     try {
       com.kopiright.xkopi.lib.base.DBContext.registerDriver(options.driver);
       if (options.url != null) {
@@ -332,16 +303,6 @@ public class Main extends Compiler implements Constants {
    */
   public boolean verboseMode() {
     return false;
-  }
-
-  private static String getProperty(String prop) {
-    try {
-      return bundle.getString(prop);
-    } catch (MissingResourceException e) {
-      // try next one
-    }
-
-    return null;
   }
 
   // ----------------------------------------------------------------------
@@ -518,7 +479,6 @@ public class Main extends Compiler implements Constants {
   protected List		infiles;
 
   private static DbiOptions	options;
-  private static ResourceBundle bundle;
 
   private static DBContext	context;
   private static DBContext	dictContext;
