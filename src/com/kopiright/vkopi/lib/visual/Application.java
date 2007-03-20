@@ -36,8 +36,10 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import com.kopiright.util.mailer.Mailer;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
+
 
 public abstract class Application extends java.applet.Applet implements MessageListener {
 
@@ -144,6 +146,13 @@ public abstract class Application extends java.applet.Applet implements MessageL
     return instance.defaultLocale;
   }
 
+
+  /**
+   * Retruns the localization manager.
+   */
+  public static LocalizationManager getLocalizationManager() {
+    return instance.localizationManager;
+  }
 
   // --------------------------------------------------------------------
 
@@ -264,6 +273,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
                                    options.locale.substring(3,5));
       }
     }
+    localizationManager = new LocalizationManager(Locale.getDefault(), defaultLocale);
     return true;
   }
 
@@ -650,6 +660,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private boolean                       isStarted;
   private Registry                      registry;
   private Locale                        defaultLocale;
+  private LocalizationManager           localizationManager;
 
   // ---------------------------------------------------------------------
   // Failure cause informations

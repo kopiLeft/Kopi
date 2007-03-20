@@ -74,10 +74,14 @@ public class VlibProperties {
     LocalizationManager         manager;
     String                      format;
 
+    if (Application.getApplication() != null) {
+      manager = Application.getLocalizationManager();
+    } else {
+      manager = new LocalizationManager(Locale.getDefault(), null);
+    }
+    
     try {
-      manager = new LocalizationManager(Locale.getDefault(),
-                                        (Application.getApplication() != null)? Application.getDefaultLocale() : null);
-      //   Within a String, "''" represents a single quote in java.text.MessageFormat.
+      // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getPropertyLocalizer(VLIB_PROPERTIES_RESOURCE_FILE, key).getValue().replaceAll("'", "''");
       return MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
@@ -90,5 +94,5 @@ public class VlibProperties {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final static String VLIB_PROPERTIES_RESOURCE_FILE= "com/kopiright/vkopi/lib/resource/VlibProperties" ; 
+  private final static String VLIB_PROPERTIES_RESOURCE_FILE= "com/kopiright/vkopi/lib/resource/VlibProperties" ;
 }
