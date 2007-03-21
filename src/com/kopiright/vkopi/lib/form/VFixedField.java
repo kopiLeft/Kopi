@@ -280,7 +280,7 @@ public class VFixedField extends VField {
    * @param     scale           the scale value.
    * @param     record          the record value.   
    */  
-  public void setScale(int record, int scale)w throws VExecFailedException {
+  public void setScale(int record, int scale) throws VExecFailedException {
     if (scale <= maxScale) {
       currentScale[record] = scale;
     } else {
