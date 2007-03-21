@@ -284,7 +284,7 @@ public class VFixedField extends VField {
     if (scale <= maxScale) {
       currentScale[record] = scale;
     } else {
-      throw new VExecFailedException(MessageCode.getMessage("VIS-00006", String.valueOf(scale), String.valueOf(maxScale) ));
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale) ));
     }
   }
 
