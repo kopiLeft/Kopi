@@ -271,8 +271,18 @@ public class VFixedField extends VField {
    * @param     scale           the scale value.
    */
   public void setScale(int scale) throws VExecFailedException {
+    setScale(block.getActiveRecord(), scale);
+  }
+
+  /**
+   * Sets the scale value for the active record.
+   *
+   * @param     scale           the scale value.
+   * @param     record          the record value.   
+   */  
+  public void setScale(int record, int scale)w throws VExecFailedException {
     if (scale <= maxScale) {
-      currentScale[block.getActiveRecord()] = scale;
+      currentScale[record] = scale;
     } else {
       throw new VExecFailedException(MessageCode.getMessage("VIS-00006", String.valueOf(scale), String.valueOf(maxScale) ));
     }
