@@ -194,12 +194,12 @@ vkImageFieldType []
 vkFixedFieldType []
   returns [VKFixedType self]
 {
-  int			width;
-  int			scale = 0;
-  boolean		isFraction = false;
-  Fixed			min = null;
-  Fixed			max = null;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  int                   width;
+  int                   scale = 0;
+  boolean               isFraction = false;
+  Fixed                 min = null;
+  Fixed                 max = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -207,8 +207,8 @@ vkFixedFieldType []
   |
     "FRACTION" LPAREN width = vkInteger[] RPAREN
       {
-	isFraction = true;
-	scale = 6;
+        isFraction = true;
+        scale = 6;
       }
   )
   ( "MINVAL" min = vkFixedOrInteger[] )?
