@@ -22,10 +22,10 @@ package com.kopiright.vkopi.lib.form;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VFixedColumn;
-import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.Query;
@@ -45,10 +45,10 @@ public class VFixedField extends VField {
    * Constructor
    */
   public VFixedField(int width,
-		     int maxScale,
-		     String minval,
-		     String maxval,
-		     boolean fraction)
+                     int maxScale,
+                     String minval,
+                     String maxval,
+                     boolean fraction)
   {
     super(width, 1);
 
@@ -62,10 +62,10 @@ public class VFixedField extends VField {
    * Constructor
    */
   public VFixedField(int width,
-		     int maxScale,
-		     boolean fraction,
-		     Fixed minval,
-		     Fixed maxval)
+                     int maxScale,
+                     boolean fraction,
+                     Fixed minval,
+                     Fixed maxval)
   {
     super(width, 1);
 
@@ -93,9 +93,9 @@ public class VFixedField extends VField {
    * return the name of this field
    */
   public String getTypeInformation() {
-    Fixed	min = this.minval;
-    Fixed	max = this.maxval;
-    long	nines = 1;
+    Fixed       min = this.minval;
+    Fixed       max = this.maxval;
+    long        nines = 1;
 
     if (min == null) {
       min = new NotNullFixed(Integer.MIN_VALUE);
@@ -107,7 +107,7 @@ public class VFixedField extends VField {
     for (int i = width; i > 1; i--) {
       // comma
       if (i % 3 != 0) {
-	nines *= 10;
+        nines *= 10;
       }
     }
 
@@ -150,9 +150,9 @@ public class VFixedField extends VField {
     }
     for (int i = 0; i < s.length(); i++) {
       if (! ((s.charAt(i) >= '0' && s.charAt(i) <= '9')
-	     || s.charAt(i) == '.' || s.charAt(i) == '-' || s.charAt(i) == ' '
-	     || s.charAt(i) == ',' || s.charAt(i) == '/')) {
-	return false;
+             || s.charAt(i) == '.' || s.charAt(i) == '-' || s.charAt(i) == ' '
+             || s.charAt(i) == ',' || s.charAt(i) == '/')) {
+        return false;
       }
     }
     return true;
@@ -160,7 +160,7 @@ public class VFixedField extends VField {
 
   /**
    * verify that value is valid (on exit)
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised if text is bad
+   * @exception         com.kopiright.vkopi.lib.visual.VException       an exception may be raised if text is bad
    */
   public void checkType(Object o) throws VException {
     String      s = (String)o;
@@ -169,27 +169,27 @@ public class VFixedField extends VField {
     if (s.equals("")) {
       setNull(block.getActiveRecord());
     } else {
-      Fixed	v;
+      Fixed   v;
 
       try {
-	v = scanFixed(s);
+        v = scanFixed(s);
       } catch (NumberFormatException e) {
-	throw new VFieldException(this, MessageCode.getMessage("VIS-00006"));
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00006"));
       }
 
       if (v!= null) {
-	if (v.getScale() > scale) {
-	  throw new VFieldException(this, MessageCode.getMessage("VIS-00011", new Object[]{ new Integer(scale) }));
-	}
-	if (minval != null && v.compareTo(minval) == -1) {
-	  throw new VFieldException(this, MessageCode.getMessage("VIS-00012", new Object[]{ minval }));
-	}
-	if (maxval != null && v.compareTo(maxval) == 1) {
-	  throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ maxval }));
-	}
-	if (toText(v.setScale(scale)).length() > getWidth()) {
-	  throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
-	}
+        if (v.getScale() > scale) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00011", new Object[]{ new Integer(scale) }));
+        }
+        if (minval != null && v.compareTo(minval) == -1) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00012", new Object[]{ minval }));
+        }
+        if (maxval != null && v.compareTo(maxval) == 1) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ maxval }));
+        }
+        if (toText(v.setScale(scale)).length() > getWidth()) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
+        }
       }
 
       setFixed(block.getActiveRecord(), v);
@@ -347,8 +347,9 @@ public class VFixedField extends VField {
 
   /**
    * Sets the field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   *
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setObject(int r, Object v) {
     // !!! HACK for Oracle
@@ -361,8 +362,9 @@ public class VFixedField extends VField {
 
   /**
    * Returns the specified tuple column as object of correct type for the field.
-   * @param	query		the query holding the tuple
-   * @param	column		the index of the column in the tuple
+   *
+   * @param   query      the query holding the tuple
+   * @param   column      the index of the column in the tuple
    */
   public Object retrieveQuery(Query query, int column)
     throws SQLException
@@ -454,11 +456,12 @@ public class VFixedField extends VField {
    * Parses the string argument as a fixed number in human-readable format.
    */
   private static Fixed scanFixed(String str) {
-    int		state = 0;
-    boolean	negative = false;
-    long	value = 0;
-    int		scale = 0;
-    long	num = 0, den = 0;
+    boolean     negative = false;
+    int         state = 0;
+    int         scale = 0;
+    long        value = 0;
+    long        num = 0;
+    long        den = 0;
 
     if (str.equals("")) {
       return null;
@@ -467,168 +470,168 @@ public class VFixedField extends VField {
     for (int i = 0; i < str.length(); i++) {
       // skip dots
       if (str.charAt(i) == '.') {
-	continue;
+        continue;
       }
 
       switch (state) {
-      case 0:			// start state
-	if (str.charAt(i) == ' ') {
-	  state = 0;
-	} else if (str.charAt(i) == '+') {
-	  state = 1;
-	} else if (str.charAt(i) == '-') {
-	  negative = true;
-	  state = 1;
-	} else if (str.charAt(i) == ',') {
-	  state = 3;
-	} else if (Character.isDigit(str.charAt(i))) {
-	  value = Character.digit(str.charAt(i), 10);
-	  state = 2;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 0:         // start state
+        if (str.charAt(i) == ' ') {
+          state = 0;
+        } else if (str.charAt(i) == '+') {
+          state = 1;
+        } else if (str.charAt(i) == '-') {
+          negative = true;
+          state = 1;
+        } else if (str.charAt(i) == ',') {
+          state = 3;
+        } else if (Character.isDigit(str.charAt(i))) {
+          value = Character.digit(str.charAt(i), 10);
+          state = 2;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 1:			// after initial sign
-	if (str.charAt(i) == ' ') {
-	  state = 1;
-	} else if (str.charAt(i) == ',') {
-	  state = 3;
-	} else if (Character.isDigit(str.charAt(i))) {
-	  value = Character.digit(str.charAt(i), 10);
-	  state = 2;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 1:         // after initial sign
+        if (str.charAt(i) == ' ') {
+          state = 1;
+        } else if (str.charAt(i) == ',') {
+          state = 3;
+        } else if (Character.isDigit(str.charAt(i))) {
+          value = Character.digit(str.charAt(i), 10);
+          state = 2;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 2:			// after digit before comma
-	if (str.charAt(i) == ',') {
-	  state = 3;
-	} else if (str.charAt(i) == ' ') {
-	  state = 4;
-	} else if (str.charAt(i) == '/') {
-	  num = value;
-	  value = 0;
-	  state = 6;
-	} else if (Character.isDigit(str.charAt(i))) {
-	  value = 10 * value + Character.digit(str.charAt(i), 10);
-	  state = 2;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 2:         // after digit before comma
+        if (str.charAt(i) == ',') {
+          state = 3;
+        } else if (str.charAt(i) == ' ') {
+          state = 4;
+        } else if (str.charAt(i) == '/') {
+          num = value;
+          value = 0;
+          state = 6;
+        } else if (Character.isDigit(str.charAt(i))) {
+          value = 10 * value + Character.digit(str.charAt(i), 10);
+          state = 2;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 3:			// after comma
-	if (Character.isDigit(str.charAt(i))) {
-	  value = 10 * value + Character.digit(str.charAt(i), 10);
-	  scale += 1;
-	  state = 3;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 3:         // after comma
+        if (Character.isDigit(str.charAt(i))) {
+          value = 10 * value + Character.digit(str.charAt(i), 10);
+          scale += 1;
+          state = 3;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 4:			// before numerator of fractional part
-	if (str.charAt(i) == ' ') {
-	  state = 4;
-	} else if (Character.isDigit(str.charAt(i))) {
-	  num = Character.digit(str.charAt(i), 10);
-	  state = 5;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 4:         // before numerator of fractional part
+        if (str.charAt(i) == ' ') {
+          state = 4;
+        } else if (Character.isDigit(str.charAt(i))) {
+          num = Character.digit(str.charAt(i), 10);
+          state = 5;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 5:			// in numerator of fractional part
-	if (str.charAt(i) == '/') {
-	  state = 6;
-	} else if (Character.isDigit(str.charAt(i))) {
-	  num = 10 * num + Character.digit(str.charAt(i), 10);
-	  state = 5;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 5:         // in numerator of fractional part
+        if (str.charAt(i) == '/') {
+          state = 6;
+        } else if (Character.isDigit(str.charAt(i))) {
+          num = 10 * num + Character.digit(str.charAt(i), 10);
+          state = 5;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 6:			// before denominator of fractional part
-	if (str.charAt(i) == '0') {
-	  state = 6;
-	} else if (Character.isDigit(str.charAt(i))) {
-	  den = Character.digit(str.charAt(i), 10);
-	  state = 7;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 6:         // before denominator of fractional part
+        if (str.charAt(i) == '0') {
+          state = 6;
+        } else if (Character.isDigit(str.charAt(i))) {
+          den = Character.digit(str.charAt(i), 10);
+          state = 7;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
-      case 7:			// in denominator of fractional part
-	if (Character.isDigit(str.charAt(i))) {
-	  den = 10 * den + Character.digit(str.charAt(i), 10);
-	  state = 7;
-	} else {
-	  throw new NumberFormatException();
-	}
-	break;
+      case 7:         // in denominator of fractional part
+        if (Character.isDigit(str.charAt(i))) {
+          den = 10 * den + Character.digit(str.charAt(i), 10);
+          state = 7;
+        } else {
+          throw new NumberFormatException();
+        }
+        break;
 
       default:
-	throw new InconsistencyException();
+        throw new InconsistencyException();
       }
     }
 
     switch (state) {
-    case 0:			// start state
+    case 0:         // start state
       return null;
 
-    case 2:			// after digit before comma
+    case 2:         // after digit before comma
       break;
 
-    case 3:			// after comma
+    case 3:         // after comma
       // remove trailing zeroes after comma
       while (scale > 0 && value % 10 == 0) {
-	value /= 10;
-	scale -= 1;
+        value /= 10;
+        scale -= 1;
       }
       break;
 
-    case 7:			// in denominator of fractional part
+    case 7:         // in denominator of fractional part
       if (num > den || num % 2 == 0 || den > 64) {
-	throw new NumberFormatException();
+        throw new NumberFormatException();
       }
 
       switch ((int)den) {
       case 2:
-	value = 10 * value + 5 * num;
-	scale = 1;
-	break;
+        value = 10 * value + 5 * num;
+        scale = 1;
+        break;
 
       case 4:
-	value = 100 * value + 25 * num;
-	scale = 2;
-	break;
+        value = 100 * value + 25 * num;
+        scale = 2;
+        break;
 
       case 8:
-	value = 1000 * value + 125 * num;
-	scale = 3;
-	break;
+        value = 1000 * value + 125 * num;
+        scale = 3;
+        break;
 
       case 16:
-	value = 10000 * value + 625 * num;
-	scale = 4;
-	break;
+        value = 10000 * value + 625 * num;
+        scale = 4;
+        break;
 
       case 32:
-	value = 100000 * value + 3125 * num;
-	scale = 5;
-	break;
+        value = 100000 * value + 3125 * num;
+        scale = 5;
+        break;
 
       case 64:
-	value = 1000000 * value + 15625 * num;
-	scale = 6;
-	break;
+        value = 1000000 * value + 15625 * num;
+        scale = 6;
+        break;
 
       default:
-	throw new NumberFormatException();
+        throw new NumberFormatException();
       }
       break;
 
@@ -640,9 +643,80 @@ public class VFixedField extends VField {
       return Fixed.DEFAULT;
     } else {
       if (negative) {
-	value = -value;
+        value = -value;
       }
       return new NotNullFixed(value, scale);
+    }
+  }
+
+  /**
+   * Calculaes the upper bound of a fixnum field : FIXNUM(digits, scale)
+   *
+   * @param     digits          the number of total digits.
+   * @param     scale           the number of digits representing the fractional part.
+   */
+  public static NotNullFixed calculateUpperBound(int digits, int scale) {
+    char[]      asciiBound;
+    
+    if (scale == 0) {
+      asciiBound = new char[digits]; 
+      
+      for (int i = 0; i < digits; i++) {
+        asciiBound[i] = '9';
+      }
+    } else {
+      asciiBound = new char[digits+1];
+
+      for (int i = 0; i < digits+1; i++) {
+        asciiBound[i] = '9';
+      }
+      asciiBound[digits-scale] = '.';
+    }
+
+    return new NotNullFixed(new String(asciiBound));
+  }
+
+  /**
+   * Computes the the width of a fixnum field : FIXNUM(digits, scale)
+   *
+   * @param     digits          the number of total digits.
+   * @param     scale           the number of digits representing the fractional part.
+   * @param     minVal          the minimal value the fixnum field can get.
+   * @param     maxVal          the maximal value the fixnum field can get.
+   */
+  public static int computeWidth(int digits, int scale, Fixed minVal, Fixed maxVal) {
+    Fixed       upperBound;
+    Fixed       lowerBound;
+    int         width;
+
+    upperBound = calculateUpperBound(digits, scale);
+    lowerBound = upperBound.negate();
+
+    if (minVal != null && minVal.compareTo(lowerBound) > 0) {
+      lowerBound = minVal;
+    }
+    if (maxVal != null && maxVal.compareTo(upperBound) < 0) {
+      upperBound = maxVal;
+    }
+
+    return Math.max(upperBound.toString().length(), lowerBound.toString().length());
+  }
+
+  /**
+   * Computes the number of digits of a fixed field : FIXED(width, scale)
+   *
+   * @param     width           the width of the fixed field.
+   * @param     scale           the number of digits representing the fractional part.
+   */
+  static public int computeDigits(int width, int scale) {
+    if (scale == 0) {
+      return width - width/4;
+    } else if (width == scale || width == scale + 1) {
+      return scale;
+    } else {
+      // decimal = width - scale - 1
+      // digits = decimal - dicimal/4 + scale
+      return width - 1 - (width - scale - 1)/4;
     }
   }
 
@@ -658,7 +732,7 @@ public class VFixedField extends VField {
   }
 
   private String toFraction(String str) {
-    int dot;
+    int         dot;
 
     if ((dot = str.indexOf(',')) == -1) {
       return str;
@@ -677,13 +751,13 @@ public class VFixedField extends VField {
       num = (fract * den) / 1000000;
       while (num % 2 == 0) {
         num /= 2;
-	den /= 2;
+        den /= 2;
       }
 
       if (precomma.equals("0")) {
-	return "" + num + "/" + den;
+        return "" + num + "/" + den;
       } else if (precomma.equals("-0")) {
-	return "-" + num + "/" + den;
+        return "-" + num + "/" + den;
       } else {
         return precomma + " " + num + "/" + den;
       }
@@ -697,14 +771,12 @@ public class VFixedField extends VField {
    */
 
   // static (compiled) data
-
-  private int                   maxScale;	// number of max digits after dot
-  private Fixed                 minval;		// minimum value allowed
-  private Fixed                 maxval;		// maximum value allowed
-  private boolean               fraction;	// display as fraction
+  private int                   maxScale; // number of max digits after dot
+  private Fixed                 minval;   // minimum value allowed
+  private Fixed                 maxval;   // maximum value allowed
+  private boolean               fraction; // display as fraction
 
   // dynamic data
-
   private Fixed[]               value;
-  private int[]                 currentScale;	// number of digits after dot
+  private int[]                 currentScale; // number of digits after dot
 }
