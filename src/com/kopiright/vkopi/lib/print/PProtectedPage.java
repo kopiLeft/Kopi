@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
@@ -54,7 +54,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
     this.handler = handler;
   }
   public PProtectedPage(DBContextHandler handler) {
-    this(handler, VlibProperties.getString("printing"));
+    this(handler, Message.getMessage("printing"));
   }
   /**
    * @deprecated
@@ -85,7 +85,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
    * Starts a print session on a file
    */
   public PrintJob createPrintJob(DBContext context) {
-    return createPrintJob(context, VlibProperties.getString("printing"));
+    return createPrintJob(context, Message.getMessage("printing"));
   }
 
   /**
