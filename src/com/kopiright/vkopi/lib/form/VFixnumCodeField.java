@@ -23,12 +23,12 @@ import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.list.VFixedCodeColumn;
+import com.kopiright.vkopi.lib.list.VFixnumCodeColumn;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
-public class VFixedCodeField extends VCodeField {
+public class VFixnumCodeField extends VCodeField {
 
   /*
    * ----------------------------------------------------------------------
@@ -42,12 +42,15 @@ public class VFixedCodeField extends VCodeField {
    * @param     ident           the identifier of the type in the source file
    * @param     source          the qualified name of the source file defining the list
    */
-  public VFixedCodeField(String ident,
-                         String source,
-                         String[] names,
-                         Fixed[] codes)
+  public VFixnumCodeField(boolean newStyle,
+                          String ident,
+                          String source,
+                          String[] names,
+                          Fixed[] codes)
   {
     super(ident, source, names);
+
+    this.newStyle = newStyle;
     this.codes = codes;
   }
 
@@ -61,7 +64,7 @@ public class VFixedCodeField extends VCodeField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VFixedCodeColumn(getHeader(), null, getLabels(), codes, getPriority() >= 0);
+    return new VFixnumCodeColumn(newStyle, getHeader(), null, getLabels(), codes, getPriority() >= 0);
   }
 
   /**
@@ -220,6 +223,9 @@ public class VFixedCodeField extends VCodeField {
    * ----------------------------------------------------------------------
    */
 
+  // static (compiled) data
+  private boolean               newStyle; // are we using the FIXNUM syntax
+  
   // dynamic data
-  private Fixed[]		codes;		// code array
+  private Fixed[]               codes; // code array
 }

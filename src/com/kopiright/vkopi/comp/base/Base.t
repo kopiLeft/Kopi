@@ -17,6 +17,7 @@
 @literal	EXTERN
 @literal	FALSE
 @literal	FIXED
+@literal	FIXNUM
 @literal	FRACTION
 @literal	HELP
 @literal	ICON

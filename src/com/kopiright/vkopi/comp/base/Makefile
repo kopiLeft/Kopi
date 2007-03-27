@@ -46,7 +46,7 @@ JAVAFILES +=	Commandable						\
 		VKDateType VKDefaultCommand VKDefinition		\
 		VKDefinitionCollector VKStringCodeType			\
 		VKEnvironment VKExternAction VKFieldList		\
-		VKFixedCodeType VKFixedType				\
+		VKFixnumCodeType VKFixnumType				\
 		VKHelpUtils VKImageType VKInsert			\
 		VKInsertParser VKIntegerCodeType			\
 		VKIntegerType VKInternAction VKKjcTypeFactory		\

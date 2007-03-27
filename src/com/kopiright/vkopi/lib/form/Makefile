@@ -42,8 +42,8 @@ JAVAFILES +=	BlockAlignment Commands					\
 		VDateField VDictionaryForm				\
 		VDocGenerator						\
 		VField VFieldCommand VFieldException			\
-		VFieldUI VFixedCodeField				\
-		VFixedField VForm					\
+		VFieldUI VFixnumCodeField				\
+		VFixnumField VForm					\
 		VHelpGenerator VImageField				\
 		VImportedBlock VIntegerCodeField			\
 		VIntegerField						\

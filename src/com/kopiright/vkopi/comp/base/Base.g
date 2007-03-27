@@ -96,10 +96,10 @@ vkBool []
   "FALSE" { self = false; }
 ;
 
-vkPredefinedFieldType []
+vkPredefinedFieldType [boolean newStyle]
   returns [VKType self]
 :
-  self = vkFixedFieldType[]
+  self = vkFixnumFieldType[newStyle]
 |
   self = vkImageFieldType[]
 |
@@ -191,8 +191,8 @@ vkImageFieldType []
     { self = new VKImageType(sourceRef, w, h); }
 ;
 
-vkFixedFieldType []
-  returns [VKFixedType self]
+vkFixnumFieldType [boolean newStyle]
+  returns [VKFixnumType self]
 {
   int                   width;
   int                   scale = 0;
@@ -203,17 +203,23 @@ vkFixedFieldType []
 }
 :
   (
-    "FIXED" LPAREN width = vkInteger[] COMMA scale = vkInteger[] RPAREN
+    (
+      "FIXED" { newStyle = false; }
+    |
+      "FIXNUM" { newStyle = true; }
+    )
+    LPAREN width = vkInteger[] COMMA scale = vkInteger[] RPAREN
   |
     "FRACTION" LPAREN width = vkInteger[] RPAREN
       {
         isFraction = true;
+        newStyle = false;
         scale = 6;
       }
   )
   ( "MINVAL" min = vkFixedOrInteger[] )?
   ( "MAXVAL" max = vkFixedOrInteger[] )?
-    { self = new VKFixedType(sourceRef, width, scale, isFraction, min, max); }
+    { self = new VKFixnumType(newStyle, sourceRef, width, scale, isFraction, min, max); }
 ;
 
 vkIntegerFieldType []
@@ -231,7 +237,7 @@ vkIntegerFieldType []
     { self = new VKIntegerType(sourceRef, width, 1, min, max); }
 ;
 
-vkCodeFieldType [String pack, String type]
+vkCodeFieldType [boolean newStyle, String pack, String type]
   returns [VKCodeType self]
 {
   VKCodeDesc[]          codes;
@@ -253,8 +259,15 @@ vkCodeFieldType [String pack, String type]
     "BOOL" "IS" codes = vkBooleanCodeList[]
       { self = new VKBooleanCodeType(sourceRef, pack, type, codes); }
   |
-    "FIXED" "IS" codes = vkFixedCodeList[]
-      { self = new VKFixedCodeType(sourceRef, pack, type, codes); }
+    (
+      "FIXED"
+        { newStyle = false; }
+    |
+      "FIXNUM"
+        { newStyle = true; }
+    )
+    "IS" codes = vkFixnumCodeList[]
+      { self = new VKFixnumCodeType(newStyle, sourceRef, pack, type, codes); }
   |
     "LONG" "IS" codes = vkIntegerCodeList[]
       { self = new VKIntegerCodeType(sourceRef, pack, type, codes); }
@@ -303,7 +316,7 @@ vkBooleanCodeItem [int count]
     { self = new VKCodeDesc(sourceRef, ident, label, value ? Boolean.TRUE : Boolean.FALSE); }
 ;
 
-vkFixedCodeList []
+vkFixnumCodeList []
   returns [VKCodeDesc[] self = null]
 {
   ArrayList		vect = new ArrayList();
@@ -312,13 +325,13 @@ vkFixedCodeList []
 }
 :
   (
-    item = vkFixedCodeItem[vect.size()]
+    item = vkFixnumCodeItem[vect.size()]
       { vect.add(item); }
   )+
     { self = (VKCodeDesc[])vect.toArray(new VKCodeDesc[vect.size()]); }
 ;
 
-vkFixedCodeItem [int count]
+vkFixnumCodeItem [int count]
   returns [VKCodeDesc self]
 {
   String		label = null;
@@ -522,16 +535,23 @@ vkListDescs []
 vkListDesc []
   returns [VKListDesc self]
 {
-  String		title = null;
-  String		column;
-  VKType		type;
-  TokenReference	sourceRef = buildTokenReference();
+  String                title = null;
+  String                column;
+  VKType                type;
+  TokenReference        sourceRef = buildTokenReference();
+  boolean               newStyle = true;
 }
 :
   ( title = vkString[] ASSIGN )?
     { checkLocaleIsSpecifiedIff(title != null, "LIST DESC TITLE"); }
-  column = vkSimpleIdent[] COLON type = vkFieldType[null, null]
-    { self = new VKListDesc(sourceRef, title, column, type); }
+  column = vkSimpleIdent[] COLON type = vkFieldType[newStyle, null, null]
+    {
+      if (type instanceof VKFixnumType) {
+        self = new VKListDesc(newStyle, sourceRef, title, column, type);
+      } else {
+        self = new VKListDesc(sourceRef, title, column, type);
+      }
+    }
 ;
 
 vkDefinitions [VKDefinitionCollector coll, String pack]
@@ -613,11 +633,12 @@ vkActorDef [String pack]
 vkTypeDef [String pack]
   returns [VKTypeDefinition self]
 {
-  String		name;
-  VKType		type;
-  VKFieldList		list;
-  JFormalParameter[]	params = null;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                name;
+  VKType                type;
+  VKFieldList           list;
+  JFormalParameter[]    params = null;
+  TokenReference        sourceRef = buildTokenReference();
+  boolean               newStyle = true;
 }
 :
   "TYPE" name = vkSimpleIdent[]
@@ -627,19 +648,19 @@ vkTypeDef [String pack]
     // RPAREN
   )?
   "IS"
-  type = vkFieldType[pack, name] 
+  type = vkFieldType[newStyle, pack, name] 
   ( list = vkFieldList[pack, name] { type.addList(list); } )?
   "END" "TYPE"
     { self = new VKTypeDefinition(sourceRef, name, type, params); }
 ;
 
 
-vkFieldType[String pack, String name]
+vkFieldType[boolean newStyle, String pack, String name]
   returns [VKType self]
 :
-  self = vkPredefinedFieldType[]
+  self = vkPredefinedFieldType[newStyle]
 |
-  self = vkCodeFieldType[pack, name]
+  self = vkCodeFieldType[newStyle, pack, name]
 ;
 
 vkFieldList [String pack, String type]

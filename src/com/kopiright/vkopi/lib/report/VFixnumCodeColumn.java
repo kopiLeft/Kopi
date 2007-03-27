@@ -19,9 +19,10 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
-public class VFixedColumn extends VReportColumn {
+public class VFixnumCodeColumn extends VCodeColumn {
   /**
    * Constructs a report column description
    *
@@ -31,36 +32,36 @@ public class VFixedColumn extends VReportColumn {
    * @param     groups          The index of the column grouped by this one or -1
    * @param     function        An (optional) summation function
    */
-  public VFixedColumn(final String ident,
-		      final int options,
-		      final int align,
-		      final int groups,
-		      final VCalculateColumn function,
-		      final int width,
-		      final int scale,
-		      final VCellFormat format)
+  public VFixnumCodeColumn(boolean newStyle,
+                           String ident,
+                           String type,
+                           String source,
+                           int options,
+                           int align,
+                           int groups,
+                           VCalculateColumn function,
+                           int width,
+                           VCellFormat format,
+                           String[] names,
+                           NotNullFixed[] codes)
   {
-    super(ident,
-	  options,
-	  align,
-	  groups,
-	  function,
-	  width,
-	  1,
-	  format != null ? format : new VFixedFormat(scale));
+    super(ident, type, source, options, align, groups, function, width, format, names);
+
+    this.newStyle = newStyle;
+    this.codes = codes;
   }
 
   /**
-   * Compare two objects.
-   *
-   * @param	o1	the first operand of the comparison
-   * @param	o2	the second operand of the comparison
-   * @return	-1 if the first operand is smaller than the second
-   *		 1 if the second operand if smaller than the first
-   *		 0 if the two operands are equal
+   * Get the index of the value.
    */
-  public int compareTo(Object o1, Object o2) {
-    return ((NotNullFixed)o1).compareTo((NotNullFixed)o2);
+  public int getIndex(Object object) {
+    for (int i = 0; i < codes.length; i++) {
+      if (object.equals(codes[i])) {
+	return i;
+      }
+    }
+
+    throw new InconsistencyException(">>>>" + object);
   }
 
   /**
@@ -70,17 +71,13 @@ public class VFixedColumn extends VReportColumn {
     return getWidth() * 0.7;
   }
 
-  private static class VFixedFormat extends VCellFormat {
-    VFixedFormat(int scale) {
-      this.scale = scale;
-    }
-    public String format(Object value) {
-      return value == null ? "" : ((NotNullFixed)value).setScale(scale).toString();
-    }
-    int	scale;
-  }
-
   public void formatColumn(PExport exporter, int index) {
     exporter.formatFixedColumn(this, index);
   }
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
+
+  private boolean               newStyle; // are we using the FIXNUM syntax
+  private final NotNullFixed[]  codes;  // array of internal representations
 }

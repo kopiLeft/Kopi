@@ -809,13 +809,14 @@ vkFieldTriggers [VKParseFieldContext context]
 vfFieldType []
   returns [VKFieldType self = null]
 {
-  VKType		def;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
+  VKType                def;
+  TokenReference        sourceRef = buildTokenReference();
+  boolean               newStyle = true;
 }
 :
   self = vfFieldTypeName[]
 |
-  def = vkPredefinedFieldType[]
+  def = vkPredefinedFieldType[newStyle]
     { self = new VKDefinitionType(sourceRef, def); }
 ;
 

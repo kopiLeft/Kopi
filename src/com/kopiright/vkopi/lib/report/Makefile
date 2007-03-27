@@ -29,7 +29,7 @@ JAVAFILES +=	CellRenderer Constants DColumnStyle			\
 	        Triggers VBaseRow VBooleanCodeColumn			\
 		VBooleanColumn	VCCDepthFirstCircuitN			\
 		VCalculateColumn VCellFormat VCodeColumn		\
-		VDateColumn VFixedCodeColumn VFixedColumn		\
+		VDateColumn VFixnumCodeColumn VFixnumColumn		\
 		VGroupRow VIntegerCodeColumn VIntegerColumn		\
 		VMonthColumn VReport VReportColumn VReportRow		\
 		VStringCodeColumn VStringColumn				\

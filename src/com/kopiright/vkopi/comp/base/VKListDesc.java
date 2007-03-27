@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.comp.base;
 
+import com.kopiright.kopi.comp.kjc.JBooleanLiteral;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import com.kopiright.compiler.base.CWarning;
@@ -49,12 +50,34 @@ public class VKListDesc extends VKPhylum {
    * @param column		the column itself
    * @param type		the type of the column
    */
-  public VKListDesc(TokenReference where, String title, String column, VKType type) {
+  public VKListDesc(TokenReference where,
+                    String title,
+                    String column,
+                    VKType type) {
+    this(true, where, title, column, type);
+  }
+
+  /**
+   * This is a position given by x and y location
+   *
+   * @param newStyle            are we using the FIXNUM syntax
+   * @param where		the token reference of this node
+   * @param title		the title of the column
+   * @param column		the column itself
+   * @param type		the type of the column
+   */
+  public VKListDesc(boolean newStyle,
+                    TokenReference where,
+                    String title,
+                    String column,
+                    VKType type)
+  {
     super(where);
 
     this.title = title;
     this.column = column;
     this.type = type;
+    this.newStyle = newStyle;
   }
 
   // ----------------------------------------------------------------------
@@ -111,10 +134,11 @@ public class VKListDesc extends VKPhylum {
    */
   public JExpression genCode() {
     TokenReference	ref = getTokenReference();
-    if (type instanceof VKFixedType) {
+    if (type instanceof VKFixnumType) {
       return new JUnqualifiedInstanceCreation(ref,
                                               type.getListColumnType(),
                                               new JExpression[] {
+                                                new JBooleanLiteral(ref, newStyle),
                                                 VKUtils.toExpression(ref, title),
                                                 VKUtils.toExpression(ref, column),
                                                 VKUtils.toExpression(ref, type.getDefaultAlignment()),
@@ -161,7 +185,7 @@ public class VKListDesc extends VKPhylum {
    * Returns true if this list need additional infos
    */
   public static boolean hasSize(VKType type) {
-    if (type instanceof VKFixedType) {
+    if (type instanceof VKFixnumType) {
       // !!!! MOVE TO TYPE
       return true;
     }
@@ -207,4 +231,5 @@ public class VKListDesc extends VKPhylum {
   private String		title;
   private String		column;
   private VKType		type;
+  private final boolean         newStyle;
 }

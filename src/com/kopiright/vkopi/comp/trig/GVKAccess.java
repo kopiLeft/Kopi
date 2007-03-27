@@ -239,7 +239,7 @@ public class GVKAccess extends XExpression {
       return TYP_BOOLEAN;
     } else if (type.equals(GStdType.IntegerField)) {
       return TYP_INTEGER;
-    } else if (type.equals(GStdType.FixedField)) {
+    } else if (type.equals(GStdType.FixnumField)) {
       return TYP_FIXED;
     } else if (type.equals(GStdType.StringField)) {
       return TYP_STRING;
@@ -261,7 +261,7 @@ public class GVKAccess extends XExpression {
       return TYP_IMAGE;
     } else if (type.equals(GStdType.BooleanCodeField)) {
       return TYP_BOOLEAN_CODE;
-    } else if (type.equals(GStdType.FixedCodeField)) {
+    } else if (type.equals(GStdType.FixnumCodeField)) {
       return TYP_FIXED_CODE;
     } else if (type.equals(GStdType.IntegerCodeField)) {
       return TYP_INTEGER_CODE;

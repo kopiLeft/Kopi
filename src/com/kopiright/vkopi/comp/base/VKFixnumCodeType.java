@@ -27,7 +27,7 @@ import com.kopiright.kopi.comp.kjc.*;
 /**
  * This class represents the definition of a type
  */
-public class VKFixedCodeType extends VKCodeType {
+public class VKFixnumCodeType extends VKCodeType {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -40,15 +40,40 @@ public class VKFixedCodeType extends VKCodeType {
    * @param pack                the package name of the class defining the type
    * @param type		the identifier of the type definition
    * @param codes		a list of code value pairs
+   * @param newStyle            are we using the FIXNUM syntax
    */
-  public VKFixedCodeType(TokenReference where,
-                         String pack, 
-                         String type,
-                         VKCodeDesc[] codes)
+  public VKFixnumCodeType(boolean newStyle,
+                          TokenReference where,
+                          String pack, 
+                          String type,
+                          VKCodeDesc[] codes)
   {
     super(where, pack, type, codes);
+    this.newStyle = newStyle;
   }
 
+  // ----------------------------------------------------------------------
+  // CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Check expression and evaluate and alter context
+   * @exception	PositionedError	Error catched as soon as possible
+   */
+  public JExpression genConstructor() {
+    TokenReference      ref = getTokenReference();
+    
+    return new JUnqualifiedInstanceCreation(ref,
+                                            getType(),
+                                            new JExpression[]{
+                                              new JBooleanLiteral(ref, newStyle),
+                                              VKUtils.toExpression(ref, getCodeType()),
+                                              VKUtils.toExpression(ref, getSource()),
+                                              genIdents(),
+                                              genValues()
+                                            });
+  }
+  
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
@@ -57,7 +82,7 @@ public class VKFixedCodeType extends VKCodeType {
    * Returns the column viewer
    */
   public CReferenceType getListColumnType() {
-    return VKStdType.VFixedCodeColumn;
+    return VKStdType.VFixnumCodeColumn;
   }
 
   public JExpression genValues() {
@@ -75,7 +100,7 @@ public class VKFixedCodeType extends VKCodeType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.FixedCodeField;
+    return com.kopiright.vkopi.comp.trig.GStdType.FixnumCodeField;
   }
 
 
@@ -93,7 +118,7 @@ public class VKFixedCodeType extends VKCodeType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.FixedCodeColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.FixnumCodeColumn;
   }
 
   // ----------------------------------------------------------------------
@@ -107,6 +132,12 @@ public class VKFixedCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printCodeType("FIXED", codes);
+    p.printCodeType(newStyle? "FIXNUM" : "FIXED", codes);
   }
+
+  // ---------------------------------------------------------------------
+  // DATA MEMBERS
+  // ---------------------------------------------------------------------
+
+  private final boolean         newStyle;
 }

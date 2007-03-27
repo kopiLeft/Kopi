@@ -304,13 +304,14 @@ vrFieldLabel [String name]
 vrFieldType []
   returns [VRFieldType self = null]
 {
-  VKType		def;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comment
+  VKType                def;
+  TokenReference        sourceRef = buildTokenReference();
+  boolean               newStyle = true;
 }
 :
   self = vrFieldTypeName[]
 |
-  def = vkPredefinedFieldType[]
+  def = vkPredefinedFieldType[newStyle]
     { self = new VRDefinitionType(sourceRef, def); }
 ;
 

@@ -30,7 +30,7 @@ PACKAGE =	com/kopiright/vkopi/lib/list
 JAVAFILES +=	VBooleanCodeColumn VBooleanColumn			\
 		VCodeColumn VColorColumn VColumn			\
 		VConstants VDateColumn					\
-		VFixedCodeColumn VFixedColumn				\
+		VFixnumCodeColumn VFixnumColumn				\
 		VImageColumn VIntegerCodeColumn				\
 		VIntegerColumn VList VListColumn			\
 		VMonthColumn  VStringCodeColumn VStringColumn		\

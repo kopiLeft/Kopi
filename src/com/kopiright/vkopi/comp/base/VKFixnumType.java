@@ -20,19 +20,20 @@
 package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
-import com.kopiright.xkopi.comp.database.DatabaseFixedColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.JBooleanLiteral;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JIntLiteral;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.vkopi.lib.form.VFixnumField;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
+import com.kopiright.xkopi.comp.database.DatabaseFixedColumn;
 import com.kopiright.xkopi.lib.type.Fixed;
 
 /**
  * This class represents the definition of a fixed type
  */
-public class VKFixedType extends VKType {
+public class VKFixnumType extends VKType {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -41,6 +42,7 @@ public class VKFixedType extends VKType {
   /**
    * Constructs a new fixed type.
    *
+   * @param newStyle            are we using the FIXNUM syntax
    * @param where		the token reference of this node
    * @param width		the width in char of this field
    * @param scale		the number of digits after the period sign
@@ -48,18 +50,20 @@ public class VKFixedType extends VKType {
    * @param min			the min value
    * @param max			the max value
    */
-  public VKFixedType(TokenReference where,
-		     int width,
-		     int scale,
-		     boolean fraction,
-		     Fixed min,
-		     Fixed max)
+  public VKFixnumType(boolean newStyle,
+                      TokenReference where,
+                      int width,
+                      int scale,
+                      boolean fraction,
+                      Fixed min,
+                      Fixed max)
   {
     super(where, width, 1);
     this.scale = scale;
     this.fraction = fraction;
     this.min = min;
     this.max = max;
+    this.newStyle = newStyle;
   }
 
   // ----------------------------------------------------------------------
@@ -84,7 +88,7 @@ public class VKFixedType extends VKType {
    * Returns the column viewer
    */
   public CReferenceType getListColumnType() {
-    return VKStdType.VFixedColumn;
+    return VKStdType.VFixnumColumn;
   }
 
   /**
@@ -92,7 +96,7 @@ public class VKFixedType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.FixedField;
+    return com.kopiright.vkopi.comp.trig.GStdType.FixnumField;
   }
 
 
@@ -113,9 +117,15 @@ public class VKFixedType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.FixedColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.FixnumColumn;
   }
 
+  /**
+   *
+   */
+  public boolean isNewStyle() {
+    return newStyle;
+  }
   // ----------------------------------------------------------------------
   // CODE GENERATION
   // ----------------------------------------------------------------------
@@ -128,14 +138,15 @@ public class VKFixedType extends VKType {
     TokenReference	ref = getTokenReference();
 
     return new JUnqualifiedInstanceCreation(ref,
-				    getType(),
-				    new JExpression[] {
-				      new JIntLiteral(ref, getWidth()),
-				      new JIntLiteral(ref, scale),
-				      new JBooleanLiteral(ref, fraction),
-				      VKUtils.toExpression(getTokenReference(), min),
-				      VKUtils.toExpression(getTokenReference(), max)
-				    });
+                                            getType(),
+                                            new JExpression[] {
+                                              new JBooleanLiteral(ref, newStyle),
+                                              new JIntLiteral(ref, getWidth()),
+                                              new JIntLiteral(ref, scale),
+                                              new JBooleanLiteral(ref, fraction),
+                                              VKUtils.toExpression(getTokenReference(), min),
+                                              VKUtils.toExpression(getTokenReference(), max)
+                                            });
   }
 
   // ----------------------------------------------------------------------
@@ -156,8 +167,9 @@ public class VKFixedType extends VKType {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private final int		scale;
-  private final boolean		fraction;
-  private final Fixed		min;
-  private final Fixed		max;
+  private final int             scale;
+  private final boolean         fraction;
+  private final Fixed           min;
+  private final Fixed           max;
+  private final boolean         newStyle;
 }

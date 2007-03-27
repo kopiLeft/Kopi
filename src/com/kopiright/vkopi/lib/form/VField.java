@@ -112,7 +112,7 @@ public abstract class VField implements VConstants {
     this.indices = indices;
     this.priority = priority;
     this.align = align;
-    if (this instanceof VFixedField) {
+    if (this instanceof VFixnumField) {
       // move it to compiler !!!
       this.align = ALG_RIGHT;
     }

@@ -69,6 +69,20 @@ public abstract class VKCodeType extends VKType {
     return true;
   }
 
+  /**
+   *
+   */
+  public String getSource() {
+    return source;
+  }
+  
+  /**
+   *
+   */
+  public String getCodeType() {
+    return type;
+  }
+
   // ----------------------------------------------------------------------
   // CODE GENERATION
   // ----------------------------------------------------------------------

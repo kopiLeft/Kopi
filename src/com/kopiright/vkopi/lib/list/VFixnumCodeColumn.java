@@ -19,7 +19,10 @@
 
 package com.kopiright.vkopi.lib.list;
 
-public class VFixedColumn extends VListColumn {
+import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.xkopi.lib.type.Fixed;
+
+public class VFixnumCodeColumn extends VCodeColumn {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
@@ -28,7 +31,32 @@ public class VFixedColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VFixedColumn(String title, String column, int align, int width, int scale, boolean sortAscending) {
-    super(title, column, align, width, sortAscending);
+  public VFixnumCodeColumn(boolean newStyle,
+                           String title,
+                           String column,
+                           String[] names,
+                           Fixed[] codes,
+                           boolean sortAscending) {
+    super(title, column, names, sortAscending);
+    this.codes = codes;
   }
+
+  /*
+   * Returns the index.of given object
+   */
+  protected int getObjectIndex(Object value) {
+    for (int i = 0; i < codes.length; i++) {
+      if (value.equals(codes[i])) {
+	return i;
+      }
+    }
+
+    throw new InconsistencyException("bad code value " + ((Fixed)value));
+  }
+
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
+
+  private final Fixed[]	codes;
 }

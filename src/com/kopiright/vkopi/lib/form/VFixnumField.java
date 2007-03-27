@@ -22,7 +22,7 @@ package com.kopiright.vkopi.lib.form;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.list.VFixedColumn;
+import com.kopiright.vkopi.lib.list.VFixnumColumn;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -33,7 +33,7 @@ import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
 
-public class VFixedField extends VField {
+public class VFixnumField extends VField {
 
   /*
    * ----------------------------------------------------------------------
@@ -44,34 +44,37 @@ public class VFixedField extends VField {
   /**
    * Constructor
    */
-  public VFixedField(int width,
-                     int maxScale,
-                     String minval,
-                     String maxval,
-                     boolean fraction)
+  public VFixnumField(boolean newStyle,
+                      int digits, // width if newStyle is false
+                      int maxScale,
+                      String minval,
+                      String maxval,
+                      boolean fraction)
   {
-    super(width, 1);
-
-    this.maxScale = maxScale;
-    this.minval = minval == null ? null : new NotNullFixed(minval);
-    this.maxval = maxval == null ? null : new NotNullFixed(maxval);
-    this.fraction = fraction;
+    this(newStyle,
+         digits,
+         maxScale,
+         fraction,
+         minval == null ? null : new NotNullFixed(minval),
+         maxval == null ? null : new NotNullFixed(maxval));
   }
 
   /**
    * Constructor
    */
-  public VFixedField(int width,
-                     int maxScale,
-                     boolean fraction,
-                     Fixed minval,
-                     Fixed maxval)
+  public VFixnumField(boolean newStyle,
+                      int digits, // width if newStyle is false
+                      int maxScale,
+                      boolean fraction,
+                      Fixed minval,
+                      Fixed maxval)
   {
-    super(width, 1);
+    super(newStyle? computeWidth(digits, maxScale, minval, maxval) : digits, 1);
 
+    this.newStyle = newStyle;
     this.maxScale = maxScale;
-    this.minval = minval;
-    this.maxval = maxval;
+    this.minval = (newStyle && minval == null)? calculateUpperBound(digits, maxScale).negate() : minval;
+    this.maxval = (newStyle && maxval == null)? calculateUpperBound(digits, maxScale) : maxval;
     this.fraction = fraction;
   }
 
@@ -138,7 +141,7 @@ public class VFixedField extends VField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VFixedColumn(getHeader(), null, getAlign(), getWidth(), maxScale, getPriority() >= 0);
+    return new VFixnumColumn(newStyle, getHeader(), null, getAlign(), getWidth(), maxScale, getPriority() >= 0);
   }
 
   /**
@@ -187,7 +190,7 @@ public class VFixedField extends VField {
         if (maxval != null && v.compareTo(maxval) == 1) {
           throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ maxval }));
         }
-        if (toText(v.setScale(scale)).length() > getWidth()) {
+        if (toText(v.setScale(maxScale)).length() > getWidth()) {
           throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
         }
       }
@@ -771,6 +774,7 @@ public class VFixedField extends VField {
    */
 
   // static (compiled) data
+  private boolean               newStyle; // are we using the FIXNUM syntax
   private int                   maxScale; // number of max digits after dot
   private Fixed                 minval;   // minimum value allowed
   private Fixed                 maxval;   // maximum value allowed

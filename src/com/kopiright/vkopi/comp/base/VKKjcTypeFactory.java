@@ -56,7 +56,7 @@ public class VKKjcTypeFactory
     VColumnType = createType(com.kopiright.vkopi.lib.list.VColumn.class.getName().replace('.','/'), false);
     VListColumnType = createType(com.kopiright.vkopi.lib.list.VListColumn.class.getName().replace('.','/'), false);
     VStringColumnType = createType(com.kopiright.vkopi.lib.list.VStringColumn.class.getName().replace('.','/'), false);
-    VFixedColumnType = createType(com.kopiright.vkopi.lib.list.VFixedColumn.class.getName().replace('.','/'), false);
+    VFixnumColumnType = createType(com.kopiright.vkopi.lib.list.VFixnumColumn.class.getName().replace('.','/'), false);
     VIntegerColumnType = createType(com.kopiright.vkopi.lib.list.VIntegerColumn.class.getName().replace('.','/'), false);
     VDateColumnType = createType(com.kopiright.vkopi.lib.list.VDateColumn.class.getName().replace('.','/'), false);
     VMonthColumnType = createType(com.kopiright.vkopi.lib.list.VMonthColumn.class.getName().replace('.','/'), false);
@@ -65,7 +65,7 @@ public class VKKjcTypeFactory
     VTextColumnType = createType(com.kopiright.vkopi.lib.list.VTextColumn.class.getName().replace('.','/'), false);
     VBooleanColumnType = createType(com.kopiright.vkopi.lib.list.VBooleanColumn.class.getName().replace('.','/'), false);
     VBooleanCodeColumnType = createType(com.kopiright.vkopi.lib.list.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    VFixedCodeColumnType = createType(com.kopiright.vkopi.lib.list.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    VFixnumCodeColumnType = createType(com.kopiright.vkopi.lib.list.VFixnumCodeColumn.class.getName().replace('.','/'), false);
     VIntegerCodeColumnType = createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
     VStringCodeColumnType = createType(com.kopiright.vkopi.lib.list.VStringCodeColumn.class.getName().replace('.','/'), false);
     VColorColumnType = createType(com.kopiright.vkopi.lib.list.VColorColumn.class.getName().replace('.','/'), false);
@@ -91,7 +91,7 @@ public class VKKjcTypeFactory
       VColumnType = (CReferenceType) VColumnType.checkType(context);
       VListColumnType = (CReferenceType) VListColumnType.checkType(context);
       VStringColumnType = (CReferenceType) VStringColumnType.checkType(context);
-      VFixedColumnType = (CReferenceType) VFixedColumnType.checkType(context);
+      VFixnumColumnType = (CReferenceType) VFixnumColumnType.checkType(context);
       VIntegerColumnType = (CReferenceType) VIntegerColumnType.checkType(context);
       VDateColumnType = (CReferenceType) VDateColumnType.checkType(context);
       VMonthColumnType = (CReferenceType) VMonthColumnType.checkType(context);
@@ -100,7 +100,7 @@ public class VKKjcTypeFactory
       VTextColumnType = (CReferenceType) VTextColumnType.checkType(context);
       VBooleanColumnType = (CReferenceType) VBooleanColumnType.checkType(context);
       VBooleanCodeColumnType = (CReferenceType) VBooleanCodeColumnType.checkType(context);
-      VFixedCodeColumnType = (CReferenceType) VFixedCodeColumnType.checkType(context);
+      VFixnumCodeColumnType = (CReferenceType) VFixnumCodeColumnType.checkType(context);
       VIntegerCodeColumnType = (CReferenceType) VIntegerCodeColumnType.checkType(context);
       VStringCodeColumnType = (CReferenceType) VStringCodeColumnType.checkType(context);
       VColorColumnType = (CReferenceType) VColorColumnType.checkType(context);
@@ -154,7 +154,7 @@ public class VKKjcTypeFactory
     case RFT_VSTRINGCOLUMN:
       return VStringColumnType;
     case RFT_VFIXEDCOLUMN:
-      return VFixedColumnType;
+      return VFixnumColumnType;
     case RFT_VINTEGERCOLUMN:
       return VIntegerColumnType;
     case RFT_VDATECOLUMN:
@@ -174,7 +174,7 @@ public class VKKjcTypeFactory
     case RFT_VINTEGERCODECOLUMN:
       return VIntegerCodeColumnType;
     case RFT_VFIXEDCODECOLUMN:
-      return VFixedCodeColumnType;
+      return VFixnumCodeColumnType;
     case RFT_VCOLORCOLUMN:
       return VColorColumnType;
     case RFT_VIMAGECOLUMN:
@@ -211,7 +211,7 @@ public class VKKjcTypeFactory
   // ListColumn
   private CReferenceType         VListColumnType;
   private CReferenceType         VStringColumnType;
-  private CReferenceType         VFixedColumnType;
+  private CReferenceType         VFixnumColumnType;
   private CReferenceType         VIntegerColumnType;
   private CReferenceType         VDateColumnType;
   private CReferenceType         VMonthColumnType;
@@ -221,7 +221,7 @@ public class VKKjcTypeFactory
   private CReferenceType         VBooleanColumnType;
   private CReferenceType         VBooleanCodeColumnType;
   private CReferenceType         VIntegerCodeColumnType;
-  private CReferenceType         VFixedCodeColumnType;
+  private CReferenceType         VFixnumCodeColumnType;
   private CReferenceType         VColorColumnType;
   private CReferenceType         VImageColumnType;
   private CReferenceType         VStringCodeColumnType;

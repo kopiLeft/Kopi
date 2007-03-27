@@ -50,7 +50,7 @@ public class VKStdType {
   // ListColumn
   public static CReferenceType VListColumn;
   public static CReferenceType VStringColumn;
-  public static CReferenceType VFixedColumn;
+  public static CReferenceType VFixnumColumn;
   public static CReferenceType VIntegerColumn;
   public static CReferenceType VDateColumn;
   public static CReferenceType VMonthColumn;
@@ -60,7 +60,7 @@ public class VKStdType {
   public static CReferenceType VTextColumn;
   public static CReferenceType VBooleanColumn;
   public static CReferenceType VBooleanCodeColumn;
-  public static CReferenceType VFixedCodeColumn;
+  public static CReferenceType VFixnumCodeColumn;
   public static CReferenceType VIntegerCodeColumn;
   public static CReferenceType VStringCodeColumn;
   public static CReferenceType VColorColumn;
@@ -99,7 +99,7 @@ public class VKStdType {
     VColumn = tf.createType(com.kopiright.vkopi.lib.list.VColumn.class.getName().replace('.','/'), false);
     VListColumn = tf.createType(com.kopiright.vkopi.lib.list.VListColumn.class.getName().replace('.','/'), false);
     VStringColumn = tf.createType(com.kopiright.vkopi.lib.list.VStringColumn.class.getName().replace('.','/'), false);
-    VFixedColumn = tf.createType(com.kopiright.vkopi.lib.list.VFixedColumn.class.getName().replace('.','/'), false);
+    VFixnumColumn = tf.createType(com.kopiright.vkopi.lib.list.VFixnumColumn.class.getName().replace('.','/'), false);
     VIntegerColumn = tf.createType(com.kopiright.vkopi.lib.list.VIntegerColumn.class.getName().replace('.','/'), false);
     VDateColumn = tf.createType(com.kopiright.vkopi.lib.list.VDateColumn.class.getName().replace('.','/'), false);
     VMonthColumn = tf.createType(com.kopiright.vkopi.lib.list.VMonthColumn.class.getName().replace('.','/'), false);
@@ -109,7 +109,7 @@ public class VKStdType {
     VTextColumn = tf.createType(com.kopiright.vkopi.lib.list.VTextColumn.class.getName().replace('.','/'), false);
     VBooleanColumn = tf.createType(com.kopiright.vkopi.lib.list.VBooleanColumn.class.getName().replace('.','/'), false);
     VBooleanCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VBooleanCodeColumn.class.getName().replace('.','/'), false);
-    VFixedCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VFixedCodeColumn.class.getName().replace('.','/'), false);
+    VFixnumCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VFixnumCodeColumn.class.getName().replace('.','/'), false);
     VIntegerCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VIntegerCodeColumn.class.getName().replace('.','/'), false);
     VStringCodeColumn = tf.createType(com.kopiright.vkopi.lib.list.VStringCodeColumn.class.getName().replace('.','/'), false);
     VColorColumn = tf.createType(com.kopiright.vkopi.lib.list.VColorColumn.class.getName().replace('.','/'), false);
@@ -134,7 +134,7 @@ public class VKStdType {
       VColumn = (CReferenceType) VColumn.checkType(context);
       VListColumn = (CReferenceType) VListColumn.checkType(context);
       VStringColumn = (CReferenceType) VStringColumn.checkType(context);
-      VFixedColumn = (CReferenceType) VFixedColumn.checkType(context);
+      VFixnumColumn = (CReferenceType) VFixnumColumn.checkType(context);
       VIntegerColumn = (CReferenceType) VIntegerColumn.checkType(context);
       VDateColumn = (CReferenceType) VDateColumn.checkType(context);
       VMonthColumn = (CReferenceType) VMonthColumn.checkType(context);
@@ -143,7 +143,7 @@ public class VKStdType {
       VTextColumn = (CReferenceType) VTextColumn.checkType(context);
       VBooleanColumn = (CReferenceType) VBooleanColumn.checkType(context);
       VBooleanCodeColumn = (CReferenceType) VBooleanCodeColumn.checkType(context);
-      VFixedCodeColumn = (CReferenceType) VFixedCodeColumn.checkType(context);
+      VFixnumCodeColumn = (CReferenceType) VFixnumCodeColumn.checkType(context);
       VIntegerCodeColumn = (CReferenceType) VIntegerCodeColumn.checkType(context);
       VStringCodeColumn = (CReferenceType) VStringCodeColumn.checkType(context);
       VColorColumn = (CReferenceType) VColorColumn.checkType(context);

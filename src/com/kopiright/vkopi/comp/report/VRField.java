@@ -144,7 +144,7 @@ public class VRField
     parent = report;
     type.checkCode(context, this, commandable);
 
-    if (type.getDef() instanceof VKFixedType) {
+    if (type.getDef() instanceof VKFixnumType) {
       align = com.kopiright.vkopi.lib.report.Constants.ALG_RIGHT;
     }
     if (ident == null) {
@@ -215,6 +215,10 @@ public class VRField
   public JExpression genConstructorCall() {
     TokenReference	ref = getTokenReference();
     Vector		params = new Vector(14);
+
+    if (type.getDef() instanceof VKFixnumType) {
+      params.addElement(VKUtils.toExpression(ref, ((VKFixnumType)type.getDef()).isNewStyle()));
+    }
     params.addElement(VKUtils.toExpression(ref, ident));
     if (type.getDef() instanceof VKCodeType) {
       params.addElement(((VKCodeType)type.getDef()).genType());
@@ -228,9 +232,9 @@ public class VRField
     if (type.getDef() instanceof VKStringType) {
       params.addElement(VKUtils.toExpression(ref, type.getDef().getHeight()));
     }
-    if (type.getDef() instanceof VKFixedType) {
+    if (type.getDef() instanceof VKFixnumType) {
       // remove
-      params.addElement(VKUtils.toExpression(ref, ((VKFixedType)type.getDef()).getScale()));
+      params.addElement(VKUtils.toExpression(ref, ((VKFixnumType)type.getDef()).getScale()));
     }
     params.addElement(getFormat());
 

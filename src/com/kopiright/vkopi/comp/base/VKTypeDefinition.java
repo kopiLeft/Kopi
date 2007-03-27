@@ -24,8 +24,8 @@ import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.TokenReference;
 
 /**
-1 * This class represents an TypeDefinition, ie a menu element with a name and may be an icon, a shortcut
- * and a help
+ * This class represents an TypeDefinition, ie a menu element with a name
+ * and may be an icon, a shortcut and a help
  */
 public class VKTypeDefinition
   extends VKDefinition
