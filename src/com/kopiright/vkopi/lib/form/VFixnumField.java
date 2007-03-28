@@ -258,37 +258,46 @@ public class VFixnumField extends VField {
     return computeSum(false, coalesceValue);
   }
 
+  /**
+   * Returns the current scale for the specified record.
+   *
+   * @param     record          the record value.
+   * @return    the scale value.
+   */
+  public int getScale(int record) {
+    return currentScale[record];
+  }
 
   /**
-   * Returns the current scale for the active record.
+   * Returns the current scale for the current record.
    *
    * @return    the scale value.
    */
   public int getScale() {
-    return currentScale[block.getActiveRecord()];
+    return getScale(block.getActiveRecord());
   }
 
   /**
-   * Sets the scale value for the active record.
+   * Sets the scale value for the specified record.
+   *
+   * @param     scale           the scale value.
+   * @param     record          the record value.
+   */  
+  public void setScale(int record, int scale) throws VExecFailedException {
+    if (scale > maxScale) {
+      throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale)));
+    }
+
+    currentScale[record] = scale;
+  }
+
+  /**
+   * Sets the scale value for the current record.
    *
    * @param     scale           the scale value.
    */
   public void setScale(int scale) throws VExecFailedException {
-    setScale(block.getActiveRecord(), scale);
-  }
-
-  /**
-   * Sets the scale value for the active record.
-   *
-   * @param     scale           the scale value.
-   * @param     record          the record value.   
-   */  
-  public void setScale(int record, int scale) throws VExecFailedException {
-    if (scale <= maxScale) {
-      currentScale[record] = scale;
-    } else {
-      throw new VExecFailedException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale) ));
-    }
+    setScale(block.getCurrentRecord(), scale);
   }
 
   /**
