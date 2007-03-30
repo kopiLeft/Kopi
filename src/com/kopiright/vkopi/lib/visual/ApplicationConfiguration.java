@@ -22,22 +22,13 @@ package com.kopiright.vkopi.lib.visual;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.kopiright.vkopi.lib.util.PropertyManager;
+import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.Rexec;
 
 /**
  * Manages Applicatin configuration data
  */
-public class ApplicationConfiguration {
-
-  protected ApplicationConfiguration() {
-    // if you use this method 
-    // overload getStringFor
-  }
-
-  public ApplicationConfiguration(String file) {
-    resources = new PropertyManager(file);
-  }
+public abstract class ApplicationConfiguration {
 
   public static ApplicationConfiguration getConfiguration() {
     return configuration;
@@ -46,7 +37,6 @@ public class ApplicationConfiguration {
     assert conf != null : "configuration must not be null";
     configuration = conf;
   }
-
   // --------------------------------------------------------------
   //   Application Properties
   // --------------------------------------------------------------
@@ -55,62 +45,52 @@ public class ApplicationConfiguration {
    * Property app.version  
    * Returns the version of the application
    */
-  public String getVersion() throws PropertyException {
-    return getStringFor("app.version");
-  }
-
+  public abstract String getVersion() throws PropertyException;
+  
   /**
    * Property app.name
    * Returns the application name
    */
-  public String getApplicationName() throws PropertyException {
-    return getStringFor("app.name");
-  }
+  public abstract String getApplicationName() throws PropertyException;
 
   /**
    * Property app.comment  
    * Returns the information text about this application
    */
-  public String getInformationText() throws PropertyException {
-    return getStringFor("app.comment");
-  }
-
+  public abstract String getInformationText() throws PropertyException;
+  
   // --------------------------------------------------------------
   //   Application Debugging
   // --------------------------------------------------------------
-
+  
   /**
    * Property debug.logfile  
    * Returns the failure file to add errors
    */
-  public String getLogFile() throws PropertyException {
-    return getStringFor("debugging.logfile");
+  public abstract String getLogFile() throws PropertyException;
+    
+  /**
+   * Returns the debug mode (that you can change dynamically)
+   */
+  public boolean isDebugModeEnabled() {
+    return false;
   }
-
   /**
    * Property debug.mail.recipient
-   * Returns the nail recipient for failure messages
+   * Returns the mail recipient for failure messages
    *
    * For instance: failure.sys-admin@aHost.com
    */
-  public String getDebugMailRecipient() throws PropertyException {
-    return getStringFor("debugging.mail.recipient");
-  }
+  public abstract String getDebugMailRecipient() throws PropertyException;
 
-  public boolean mailErrors() throws PropertyException {
-    return getBooleanFor("debugging.report.mail");
-  }
-
-  public boolean logErrors() throws PropertyException {
-    return getBooleanFor("debugging.report.log");
-  }
+  public abstract boolean mailErrors() throws PropertyException;
+  
+  public abstract boolean logErrors() throws PropertyException;
 
   /**
    * Returns the debug mode (that you can change dynamically)
    */
-  public boolean debugMessageInTransaction() throws PropertyException {
-    return getBooleanFor("debug.report.messageInTransaction");
-  }
+  public abstract boolean debugMessageInTransaction() throws PropertyException;
 
   // --------------------------------------------------------------
   //   Application Properties
@@ -120,25 +100,35 @@ public class ApplicationConfiguration {
    * Property smtp.server  
    * Returns the name of the SMTP server to use
    */
-  public String getSMTPServer() throws PropertyException {
-    return getStringFor("smtp.server");
-  }
+  public abstract String getSMTPServer() throws PropertyException;
 
   /**
    * Property print.server  
    * Returns the name of the print server to use. for printing
    */
-  public String getPrintServer() throws PropertyException {
-    return getStringFor("print.server");    
-  }
+  public abstract String getPrintServer() throws PropertyException;
+
+  /**
+   * Returns the currently selected printer for current user
+   */
+  public abstract Printer getCurrentPrinter() throws PropertyException;
+  /**
+   * Returns the Preview printer
+   */
+  public abstract Printer getPreviewPrinter(); 
+    
+  public abstract Printer getEnvelopePrinter();
+  
+  /**
+   * Returns the specific printer for a form or the default one if none
+   */
+  public abstract Printer getSpecificPrinter(String formName) throws PropertyException;
 
   /**
    * Property fax.server 
    * Returns the name of the fax server to use.
    */
-  public String getFaxServer() throws PropertyException {
-    return getStringFor("fax.server");    
-  }
+  public abstract String getFaxServer() throws PropertyException;
 
   // --------------------------------------------------------------
   //  RExec
@@ -147,20 +137,7 @@ public class ApplicationConfiguration {
   /**
    * Returns a RExec command handler
    */
-  public Rexec getRExec() throws PropertyException {
-    String	user = getStringFor("rexec.user");
-    String	pass = getStringFor("rexec.password");
-    String      host = getStringFor("rexec.server");
-
-    if (pass == null || user == null || host == null) {
-      return null;
-    } else {
-      Rexec	rexec = new Rexec(host);
-
-      rexec.setUser(user, pass);
-      return rexec;
-    }
-  }
+  public abstract Rexec getRExec() throws PropertyException;
 
   // --------------------------------------------------------------
   //   Spell checking
@@ -169,15 +146,28 @@ public class ApplicationConfiguration {
   /**
    * Gets the url of the Dicionary Server e.g. c:/aspell
    */
-  public String getDictionaryServer() throws PropertyException {
-    return getStringFor("aspell.server"); // no dict
-  }
+  public abstract String getDictionaryServer() throws PropertyException;
+
+  // --------------------------------------------------------------
+  //   Basic Methods
+  // --------------------------------------------------------------
+
+  /**
+   * Reads the value of the property 
+   *
+   * @return the property
+   */
+  public abstract String getStringFor(String key) throws PropertyException;
+  
+  public abstract boolean getBooleanFor(String key) throws PropertyException;
+
+  public abstract int getIntFor(String key) throws PropertyException;
 
   /**
    * Gets options for a language
    */
   public Language[] getDictionaryLanguages() {
- // no languages
+    // no languages
     ArrayList   langs = new ArrayList();
     String      lang;
     int         i=0;
@@ -204,63 +194,6 @@ public class ApplicationConfiguration {
     public final String      options; // options
   }
 
-  // --------------------------------------------------------------
-  //   Basic Methods
-  // --------------------------------------------------------------
-
-  /**
-   * Reads the value of the property from a file
-   * Override this meht to read it from somewhere else 
-   * (e.g. a Database)
-   *
-   * @return the property
-   */
-  public String getStringFor(String key) throws PropertyException {
-    if (resources == null) {
-      return null;
-    } else {
-      String    value;
-
-      try {
-        value = resources.getString(key);
-      } catch (Exception e) {
-        value = null;
-      }
-      if (value == null) {
-        // operating system specific property ?
-        String  platform;
-
-        platform = System.getProperty("os.name").toLowerCase();
-        if (platform.startsWith("linux")) {
-          platform = "linux";
-        } else if (platform.startsWith("windows")) {
-          platform = "windows";
-        } else {
-          System.err.println("Unknown platform " + platform);
-          platform = null;
-        }
-
-        if (platform != null) {
-          try {
-            value = resources.getString(key + "." + platform);
-          } catch (Exception e) {
-            value = null;
-          }
-        }
-      }
-
-      return value;
-    }
-  }
-
-  public boolean getBooleanFor(String key) throws PropertyException {
-    return Boolean.valueOf(getStringFor(key)).booleanValue();
-  }
-
-  public int getIntFor(String key) throws PropertyException {
-    return Integer.parseInt(getStringFor(key));
-  }
-  
   /**
    * Returns a directory on the local machine for file generation
    * Use the user.home property because the path
@@ -299,6 +232,6 @@ public class ApplicationConfiguration {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private PropertyManager                       resources;
-  private static ApplicationConfiguration       configuration;
+  private static      ApplicationConfiguration       configuration;
+  public static final String                         STANDARD_PRINTER_NAME = "<Standard>";
 }

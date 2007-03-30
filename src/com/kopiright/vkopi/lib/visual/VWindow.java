@@ -694,9 +694,9 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   /**
-   * Returns the application default handler
+   * Returns the application default configuration 
    */
-  public ApplicationDefaults getDefaults() {
+  public ApplicationConfiguration getDefaults() {
     return Application.getDefaults();
   }
 

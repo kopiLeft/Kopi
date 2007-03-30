@@ -71,6 +71,7 @@ import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 import com.kopiright.vkopi.lib.util.KnownBugs;
 import com.kopiright.vkopi.lib.util.LineBreaker;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.PropertyException;
 
 /**
  * This class displays a window with a menu, a tool bar, a content panel
@@ -335,8 +336,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    */
   public void displayNotice(String message) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow displayNotice");
-
-    if (getModel().inTransaction() && Application.getDefaults().debugMessageInTransaction()) {
+    boolean debugMessageInTransaction;
+    try {
+      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+    } catch (PropertyException e) {
+      debugMessageInTransaction = false;
+    }
+    if (getModel().inTransaction() && debugMessageInTransaction) {
       try {
         Application.reportTrouble("DWindow",
                                   "DWindow.displayNotice("+message+") IN TRANSACTION ",
@@ -368,8 +374,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    */
   public void displayError(String message) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow displayError");
-
-    if (getModel().inTransaction() && Application.getDefaults().debugMessageInTransaction()) {
+    boolean debugMessageInTransaction;
+    try {
+      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+    } catch (PropertyException e) {
+      debugMessageInTransaction = false;
+    }
+    if (getModel().inTransaction() && debugMessageInTransaction) {
       try {
         Application.reportTrouble("DWindow",
                                   "DWindow.displayError("+message+") IN TRANSACTION ",
@@ -452,7 +463,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    * Displays a warning message.
    */
   public void displayWarning(String message) {
-    if (getModel().inTransaction() && Application.getDefaults().debugMessageInTransaction()) {
+    boolean debugMessageInTransaction;
+    try {
+      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+    } catch (PropertyException e) {
+      debugMessageInTransaction = false;
+    }
+    if (getModel().inTransaction() && debugMessageInTransaction) {
       try {
         Application.reportTrouble("DWindow",
                                   "DWindow.displayWarning("+message+") IN TRANSACTION ",
@@ -480,8 +497,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    */
   public boolean askUser(String message, boolean yesIsDefault) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow askUser");
-
-    if (getModel().inTransaction() && Application.getDefaults().debugMessageInTransaction()) {
+    boolean debugMessageInTransaction;
+    try {
+      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+    } catch (PropertyException e) {
+      debugMessageInTransaction = false;
+    }
+    if (getModel().inTransaction() && debugMessageInTransaction) {
       try {
         Application.reportTrouble("DWindow",
                                   "DWindow.askUser("+message+") IN TRANSACTION ",
@@ -517,7 +539,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    * Show Application Information
    */
   public void showApplicationInformation(String message) {
-    if (getModel().inTransaction() && Application.getDefaults().debugMessageInTransaction()) {
+    boolean debugMessageInTransaction;
+    try {
+      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+    } catch (PropertyException e) {
+      debugMessageInTransaction = false;
+    }
+    if (getModel().inTransaction() && debugMessageInTransaction) {
       try {
         Application.reportTrouble("DWindow",
                                   "DWindow.showApplicationInformation("+message+") IN TRANSACTION ",

@@ -49,6 +49,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.ui.base.JBookmarkPanel;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
 
@@ -737,7 +738,14 @@ public class MenuTree extends DWindow {
           for (int i=0; i<versionArray.length; i++) {
             version += "\n" + versionArray[i];
           }
-          getDisplay().showApplicationInformation(Application.getDefaults().getInformationText() + version);
+          String informationText;
+          try {
+            informationText = Application.getDefaults().getInformationText();
+          } catch (PropertyException e) {
+            e.printStackTrace();
+            informationText = "";
+          }
+          getDisplay().showApplicationInformation(informationText + version);
         }
 	break;
       case CMD_HELP:

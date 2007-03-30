@@ -51,11 +51,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * Constructor, show splashscreen
    *
    * @param     defaults        the application defaults.
-   * @param     register        the register to use for this appilcation.
+   * @param     register        the register to use for this application.
    */
-  public Application(ApplicationDefaults defaults, Registry registry) {
+  public Application( Registry registry) {
     Application.instance = this;
-    this.defaults = defaults;
     this.registry = registry;
   }
 
@@ -68,10 +67,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
   }
 
   /**
-   * Get the defaults application s of the Application
+   * Get the default configuration of the Application
    */
-  public static ApplicationDefaults getDefaults() {
-    return instance == null ? null : instance.defaults;
+  public static ApplicationConfiguration getDefaults() {
+    return instance == null ? null : ApplicationConfiguration.getConfiguration();
   }
 
   /**
@@ -214,13 +213,11 @@ public abstract class Application extends java.applet.Applet implements MessageL
     // do customer-sepcific initialisations
     initialize();
 
-    verifyConfiguration();
-
     if (! connectToDatabase()) {
       exitWithError(1);
       return false;
     }
-
+    
      try {
        UIManager.setLookAndFeel(new com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel());//UIManager.getSystemLookAndFeelClassName());
      } catch (Exception e) {
@@ -231,7 +228,6 @@ public abstract class Application extends java.applet.Applet implements MessageL
       //    }
 
     startApplication();
-
 
     isStarted = true;
 
@@ -246,10 +242,6 @@ public abstract class Application extends java.applet.Applet implements MessageL
 
     if (! options.parseCommandLine(args)) {
       return false;
-    }
-
-    if (options.driver == null) {
-      options.driver = defaults.getDefaultJDBCDriver();
     }
 
     if (options.locale == null) {
@@ -277,10 +269,13 @@ public abstract class Application extends java.applet.Applet implements MessageL
     return true;
   }
 
-  private void verifyConfiguration() {
+  public void verifyConfiguration() {
     VerifyConfiguration       verifyConfiguration = VerifyConfiguration.getVerifyConfiguration();
-
-    verifyConfiguration.verifyConfiguration(defaults.getSMTPServer(), defaults.getFailureHost(), defaults.getApplicationName());
+    try {
+      verifyConfiguration.verifyConfiguration(getDefaults().getSMTPServer(),getDefaults().getDebugMailRecipient(),getDefaults().getApplicationName());
+    } catch (PropertyException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -409,9 +404,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public static void reportTrouble(String module,
                                    String place,
                                    String data,
-                                   Throwable reason)
+                                   Throwable reason) 
   {
-    ApplicationConfiguration    defaults = ApplicationConfiguration.getConfiguration();
     String                      smtpServer;
     String                      applicationName;
     String                      version;
@@ -419,39 +413,39 @@ public abstract class Application extends java.applet.Applet implements MessageL
     boolean                     sendMail;
     boolean                     writeLog;
 
-    if (defaults == null) {
+    if (ApplicationConfiguration.getConfiguration() == null) {
       System.err.println("ERROR: No application configuration available");
       return;
     }
 
     try {
-      applicationName = defaults.getApplicationName();
+      applicationName = getDefaults().getApplicationName();
     } catch (PropertyException e) {
       applicationName = "application name not defined";
     }
     try {
-      version = defaults.getVersion();
+      version = getDefaults().getVersion();
     } catch (PropertyException e) {
       version = "version not defined";
     }
     try {
-      smtpServer = defaults.getSMTPServer();
+      smtpServer = getDefaults().getSMTPServer();
     } catch (PropertyException e) {
       smtpServer = null;
     }
     try {
-      logFile = defaults.getLogFile();
+      logFile = getDefaults().getLogFile();
     } catch (PropertyException e) {
       logFile = null;
     }
 
     try {
-      sendMail = defaults.mailErrors();
+      sendMail = getDefaults().mailErrors();
     } catch (PropertyException e) {
       sendMail = false;
     }
     try {
-      writeLog = defaults.logErrors();
+      writeLog = getDefaults().logErrors();
     } catch (PropertyException e) {
       writeLog = false;
     }
@@ -460,17 +454,17 @@ public abstract class Application extends java.applet.Applet implements MessageL
       String    recipient, cc, bcc; 
 
       try {
-        recipient = defaults.getDebugMailRecipient();
+        recipient = getDefaults().getDebugMailRecipient();
       } catch (PropertyException e) {
         recipient = "fehler@kopiright.com";
       }
       try {
-        cc = defaults.getStringFor("debugging.mail.cc");
+        cc = getDefaults().getStringFor("debugging.mail.cc");
       } catch (PropertyException e) {
         cc = null;
       }
       try {
-        bcc = defaults.getStringFor("debugging.mail.bcc");
+        bcc = getDefaults().getStringFor("debugging.mail.bcc");
       } catch (PropertyException e) {
         bcc = null;
       }
@@ -652,7 +646,6 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private static Application            instance;
 
   private ApplicationOptions            options;
-  private ApplicationDefaults           defaults;
   private MenuTree                      menuTree;
   private DBContext                     context;
   private boolean                       isGeneratingHelp;
@@ -661,7 +654,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private Registry                      registry;
   private Locale                        defaultLocale;
   private LocalizationManager           localizationManager;
-
+  
   // ---------------------------------------------------------------------
   // Failure cause informations
   // ---------------------------------------------------------------------

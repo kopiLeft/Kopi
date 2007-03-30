@@ -27,9 +27,7 @@ PACKAGE =	com/kopiright/vkopi/lib/visual
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	ActionHandler Application ApplicationDefaults		\
-		ApplicationDefaultsAdapter				\
-		ApplicationDefaultsProperties				\
+JAVAFILES +=	ActionHandler Application 				\
 		Constants DFootPanel DInfoPanel				\
 		DMenuBar DMenuItem DObject DPreferences DStatePanel	\
 		DWaitPanel DWindow ProgressWindow			\

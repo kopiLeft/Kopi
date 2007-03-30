@@ -34,7 +34,6 @@ import javax.swing.UIManager;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.Application;
-import com.kopiright.vkopi.lib.visual.ApplicationDefaultsAdapter;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.lowagie.text.Rectangle;
@@ -130,7 +129,7 @@ public class StandAlone {
       System.exit(1);
     }
 
-    new Application(new ApplicationDefaultsAdapter(), null) {
+    new Application(null) {
       /**
        * Comment for <code>serialVersionUID</code>
        */
