@@ -124,6 +124,7 @@ public abstract class ApplicationConfiguration {
    */
   public abstract Printer getSpecificPrinter(String formName) throws PropertyException;
 
+  public abstract Printer getPrinterMedia(final String media);
   /**
    * Property fax.server 
    * Returns the name of the fax server to use.
