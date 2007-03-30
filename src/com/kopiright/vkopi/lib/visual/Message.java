@@ -73,9 +73,13 @@ public class Message {
   public static String getMessage(String ident, Object[] params) {
     LocalizationManager         manager;
     String                      format;
-
+    
+    if (Application.getApplication() != null) {
+      manager = Application.getLocalizationManager();
+    } else {
+      manager = new LocalizationManager(Locale.getDefault(), null);
+    }
     try {
-      manager = new LocalizationManager(Locale.getDefault(), Application.getDefaultLocale());
       //   Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(VISUAL_KOPI_MESSAGES_LOCALIZATION_RESOURCE, ident).getText().replaceAll("'", "''");
       return MessageFormat.format(format, params);
