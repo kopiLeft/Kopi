@@ -40,8 +40,6 @@ public class PropertyLocalizer {
    * @param             ident           the identifier of the menu localization
    */
   public PropertyLocalizer(Document document, String ident) {
-    Element root;
-    
     root = document.getRootElement();
     if (! root.getName().equals("properties")) {
       throw new InconsistencyException("bad root element " + root.toString());
@@ -50,6 +48,19 @@ public class PropertyLocalizer {
     self = Utils.lookupChild(root, "property", "key", ident);
   }
   
+  /**
+   * Constructor
+   *
+   * @param             document        the document containing the properties localization
+   */
+  public PropertyLocalizer(Document document) {
+    root = document.getRootElement();
+    if (! root.getName().equals("properties")) {
+      throw new InconsistencyException("bad root element " + root.toString());
+    }
+  }
+
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
@@ -60,10 +71,18 @@ public class PropertyLocalizer {
   public String getValue() {
     return self.getAttributeValue("value");
   }
+  
+  /**
+   * Returns the value of the label attribute.
+   */
+  public String getValue(String ident) {
+    self = Utils.lookupChild(root, "property", "key", ident);
+    return self.getAttributeValue("value");
+  }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
-  private final Element                 self;
+  private  Element                 root;
+  private  Element                 self;
 }

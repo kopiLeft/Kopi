@@ -146,13 +146,22 @@ public class LocalizationManager {
     return new MessageLocalizer(getDocument(source), name);
   }
   /**
-   * Constructs a message localizer using the specified source.
+   * Constructs a property localizer using the specified source.
    *
    * @param     source          the source qualified name
    * @param     name            the property key.
    */
   public PropertyLocalizer getPropertyLocalizer(String source, String name) {
     return new PropertyLocalizer(getDocument(source), name);
+  }
+  /**
+   * Constructs a property localizer using the specified source.
+   *
+   * @param     source          the source qualified name
+   * @param     name            the property key.
+   */
+  public PropertyLocalizer getPropertyLocalizer(String source) {
+    return new PropertyLocalizer(getDocument(source));
   }
   
   // ----------------------------------------------------------------------
