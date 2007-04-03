@@ -155,16 +155,19 @@ public class Triggers {
 	public Object evalNode(VReportRow row, int column) {
 	  int			childCount = row.getChildCount();
 	  Object		value = ((VReportRow)row.getChildAt(0)).getValueAt(column);
+
 	  if (value == null) {
-	    return "";
-	  }
-	  for (int i = 1; i < childCount; i++) {
-	    VReportRow	child = (VReportRow)row.getChildAt(i);
-	    if (!value.equals(child.getValueAt(column))) {
-	      return "";
-	    }
-	  }
-	  return value;
+	    return null;
+	  } else {
+            for (int i = 1; i < childCount; i++) {
+              VReportRow	child = (VReportRow)row.getChildAt(i);
+
+              if (!value.equals(child.getValueAt(column))) {
+                return null;
+              }
+            }
+            return value;
+          }
 	}
       };
   }
