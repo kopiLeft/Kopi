@@ -40,9 +40,9 @@ public abstract class PrinterManager {
    */
   public Printer getPreviewPrinter() {
     try {
-      String	command;
+      String    command;
 
-      command= ApplicationConfiguration.getConfiguration().getStringFor("print.preview.command");
+      command = ApplicationConfiguration.getConfiguration().getStringFor("print.preview.command");
       return new PreviewPrinter("PreviewPrinter", command);
     } catch (PropertyException e) {
       return null;
@@ -69,5 +69,10 @@ public abstract class PrinterManager {
    */
   public abstract Printer getPrinterByDocumentType(String documentType);
 
-  private static PrinterManager printerManager;
+
+  // ---------------------------------------------------------------------
+  // DATA MEMBERS
+  // ---------------------------------------------------------------------
+  
+  private static PrinterManager         printerManager;
 }
