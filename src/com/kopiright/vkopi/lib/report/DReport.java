@@ -427,7 +427,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     table.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
       public void mousePressed(MouseEvent e) {
 	int	mod	= e.getModifiers();
-	int	column	= table.columnAtPoint(e.getPoint());
+	final int	column	= table.columnAtPoint(e.getPoint());
 
 	columnMove = false;
 	fromIndex  = column;
@@ -455,6 +455,28 @@ public class DReport extends DWindow implements TableCellRenderer {
 	    }
 	  }
 	}
+        if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON2_MASK) == 0) {
+          JPopupMenu labelPopupMenu = new JPopupMenu();
+          JMenuItem item = new JMenuItem("sort >>");
+          item.addActionListener(new  java.awt.event.ActionListener() {
+              public void actionPerformed(java.awt.event.ActionEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                currentModel.sortColumn(table.convertColumnIndexToModel(column),1);
+                setCursor(Cursor.getDefaultCursor());
+              }
+            });
+          labelPopupMenu.add(item);
+          item = new JMenuItem("sort <<");
+          item.addActionListener(new  java.awt.event.ActionListener() {
+              public void actionPerformed(java.awt.event.ActionEvent e) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                currentModel.sortColumn(table.convertColumnIndexToModel(column),-1);
+                setCursor(Cursor.getDefaultCursor());
+              }
+            });
+          labelPopupMenu.add(item);
+          labelPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+        }
       }
 
       public void mouseReleased(MouseEvent e) {
@@ -584,9 +606,9 @@ public class DReport extends DWindow implements TableCellRenderer {
       return this;
     }
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	 private static final long serialVersionUID = 565901305687203629L; 
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 565901305687203629L; 
   }
   
 
@@ -617,7 +639,7 @@ public class DReport extends DWindow implements TableCellRenderer {
   private int			toIndex;		// to index column
   private int			tableWidth;		// Table width
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
+   * Comment for <code>serialVersionUID</code>
+   */
   private static final long serialVersionUID = -6833408762223390823L;
 }

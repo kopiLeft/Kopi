@@ -430,6 +430,17 @@ public class MReport extends AbstractTableModel implements Constants {
     calculateColumns();
     updateTableModel();
   }
+  /**
+   * Sort the displayed tree wrt to a column
+   *
+   * @param     column          the model column index used for sorting in display order.
+   * @param     order           sort order.
+  */
+  public void sortColumn(int column, int order) {
+    sortTree(root, column, order);
+    calculateColumns();
+    updateTableModel();
+  }
 
   /**
    * Sort the display tree wrt to a column; if it is already sorted
