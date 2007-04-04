@@ -336,23 +336,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    */
   public void displayNotice(String message) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow displayNotice");
-    boolean debugMessageInTransaction;
-    try {
-      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
-    } catch (PropertyException e) {
-      debugMessageInTransaction = false;
-    }
-    if (getModel().inTransaction() && debugMessageInTransaction) {
-      try {
-        Application.reportTrouble("DWindow",
-                                  "DWindow.displayNotice("+message+") IN TRANSACTION ",
-                                  this.toString(),
-                                  new RuntimeException("displayNotice in Transaction"));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-
+    verifyNotInTransaction("DWindow.displayNotice(" + message + ")");
     displayNotice(frame, message);
   }
 
@@ -374,29 +358,14 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    */
   public void displayError(String message) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow displayError");
-    boolean debugMessageInTransaction;
-    try {
-      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
-    } catch (PropertyException e) {
-      debugMessageInTransaction = false;
-    }
-    if (getModel().inTransaction() && debugMessageInTransaction) {
-      try {
-        Application.reportTrouble("DWindow",
-                                  "DWindow.displayError("+message+") IN TRANSACTION ",
-                                  this.toString(),
-                                  new RuntimeException("displayError in Transaction"));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
+    verifyNotInTransaction("DWindow.displayError(" + message + ")");
 
     //!!!FIXME
     // wrap long text messages:
     // some SQL exceptions are too long and make the error window larger than
     // the screen width, this is a work around until a 'detail' option is added to
     // error windows. 
-    if (message.length() > 100 ) {
+    if (message.length() > 100) {
       message = LineBreaker.addBreakForWidth(message, 100);
     }
 
@@ -463,22 +432,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    * Displays a warning message.
    */
   public void displayWarning(String message) {
-    boolean debugMessageInTransaction;
-    try {
-      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
-    } catch (PropertyException e) {
-      debugMessageInTransaction = false;
-    }
-    if (getModel().inTransaction() && debugMessageInTransaction) {
-      try {
-        Application.reportTrouble("DWindow",
-                                  "DWindow.displayWarning("+message+") IN TRANSACTION ",
-                                  this.toString(),
-                                  new RuntimeException("displayWarning in Transaction"));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
+    SwingThreadHandler.verifyRunsInEventThread("DWindow displayWarning");
+    verifyNotInTransaction("DWindow.displayWarning(" + message + ")");
 
     Object[]    options = { VlibProperties.getString("CLOSE")};
 
@@ -497,22 +452,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    */
   public boolean askUser(String message, boolean yesIsDefault) {
     SwingThreadHandler.verifyRunsInEventThread("DWindow askUser");
-    boolean debugMessageInTransaction;
-    try {
-      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
-    } catch (PropertyException e) {
-      debugMessageInTransaction = false;
-    }
-    if (getModel().inTransaction() && debugMessageInTransaction) {
-      try {
-        Application.reportTrouble("DWindow",
-                                  "DWindow.askUser("+message+") IN TRANSACTION ",
-                                  this.toString(),
-                                  new RuntimeException("askUser in Transaction"));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
+    verifyNotInTransaction("DWindow.askUser(" + message + ")");
 
     return askUserImpl(message, yesIsDefault);
   }
@@ -539,22 +479,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
    * Show Application Information
    */
   public void showApplicationInformation(String message) {
-    boolean debugMessageInTransaction;
-    try {
-      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
-    } catch (PropertyException e) {
-      debugMessageInTransaction = false;
-    }
-    if (getModel().inTransaction() && debugMessageInTransaction) {
-      try {
-        Application.reportTrouble("DWindow",
-                                  "DWindow.showApplicationInformation("+message+") IN TRANSACTION ",
-                                  this.toString(),
-                                  new RuntimeException("showApplicationInformation in Transaction"));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
+    SwingThreadHandler.verifyRunsInEventThread("DWindow showApplicationInformation");
+    verifyNotInTransaction("DWindow.showApplicationInformation(" + message + ")");
 
     Object[] options = { VlibProperties.getString("CLOSE")};
 
@@ -1163,6 +1089,37 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     super.setVisible(b);
   }
 
+  /**
+   * Reports iff a message is shown while in a transaction.
+   */
+  private void verifyNotInTransaction(String message) {
+    if (getModel().inTransaction() && debugMessageInTransaction()) {
+      try {
+        Application.reportTrouble("DWindow",
+                                  message + " IN TRANSACTION",
+                                  this.toString(),
+                                  new RuntimeException("displayNotice in Transaction"));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * Returns true iff it should be checked whether a message is shown
+   * while in a transaction.
+   */
+  private boolean debugMessageInTransaction() {
+    boolean     debugMessageInTransaction;
+
+    try {
+      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+    } catch (PropertyException e) {
+      debugMessageInTransaction = false;
+    }
+    return debugMessageInTransaction;
+  }
+
   // ---------------------------------------------------------------------
   // ACTION LISTENER PANEL CLASS
   // ---------------------------------------------------------------------
@@ -1193,9 +1150,9 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     closeOptionPaneWith = -1;
     pane.registerKeyboardAction(new AbstractAction() {
       /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = 8837346594485054607L;
+       * Comment for <code>serialVersionUID</code>
+       */
+        private static final long serialVersionUID = 8837346594485054607L;
 
 	public void actionPerformed(ActionEvent e) {
 	closeOptionPaneWith = 0;
@@ -1433,7 +1390,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
   static class Bookmarks extends AbstractAction {
 
-	public Bookmarks(int i) {
+    public Bookmarks(int i) {
       item = i;
     }
 
