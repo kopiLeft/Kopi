@@ -4109,7 +4109,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  protected int[]                 sortedRecords;
+  protected int[]               sortedRecords;
   
   protected boolean             blockAccess;
   // prevent that the access of a field is updated

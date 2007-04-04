@@ -17,11 +17,10 @@
  * $Id$
  */
 
-// Import the necessary classes
 header { package com.kopiright.vkopi.comp.base; }
 {
-  import java.util.Vector;
   import java.util.ArrayList;
+  import java.util.Vector;
 
   import com.kopiright.compiler.base.Compiler;
   import com.kopiright.compiler.base.TokenReference;
@@ -43,14 +42,14 @@ header { package com.kopiright.vkopi.comp.base; }
 class BaseParser extends Parser;
 
 options {
-  k = 1;				// one token lookahead !
-  importVocab = Base;			// Call its vocabulary "VK"
-  exportVocab = Base;			// Call its vocabulary "VK"
-  codeGenMakeSwitchThreshold = 2;	// Some optimizations
+  k = 1;                // one token lookahead !
+  importVocab = Base;   // Call its vocabulary "VK"
+  exportVocab = Base;   // Call its vocabulary "VK"
+  codeGenMakeSwitchThreshold = 2; // Some optimizations
   codeGenBitsetTestThreshold = 3;
-  defaultErrorHandler = false;		// Don't generate parser error handlers
+  defaultErrorHandler = false;    // Don't generate parser error handlers
   superClass = "com.kopiright.vkopi.comp.base.Parser";
-  access = "private";			// Set default rule access
+  access = "private";   // Set default rule access
 }
 {
   public BaseParser(Compiler compiler, InputBuffer buffer, VKEnvironment environment) {
@@ -109,86 +108,86 @@ vkPredefinedFieldType [boolean newStyle]
 |
   self = vkTextFieldType[]
 |
-  "DATE"	{ self = new VKDateType(buildTokenReference()); }
+  "DATE"        { self = new VKDateType(buildTokenReference()); }
 |
-  "BOOL"	{ self = new VKBooleanType(buildTokenReference()); }
+  "BOOL"        { self = new VKBooleanType(buildTokenReference()); }
 |
-  "COLOR"	{ self = new VKColorType(buildTokenReference()); }
+  "COLOR"       { self = new VKColorType(buildTokenReference()); }
 |
-  "MONTH"	{ self = new VKMonthType(buildTokenReference()); }
+  "MONTH"       { self = new VKMonthType(buildTokenReference()); }
 |
-  "TIME"	{ self = new VKTimeType(buildTokenReference()); }
+  "TIME"        { self = new VKTimeType(buildTokenReference()); }
 |
-  "TIMESTAMP"	{ self = new VKTimestampType(buildTokenReference()); }
+  "TIMESTAMP"   { self = new VKTimestampType(buildTokenReference()); }
 |
-  "WEEK"	{ self = new VKWeekType(buildTokenReference()); }
+  "WEEK"        { self = new VKWeekType(buildTokenReference()); }
 ;
 
 vkStringFieldType []
   returns [VKStringType self]
 {
-  int			w;
-  int			h = 1;
-  int			vh = 0;
-  int                   x = 0;
-  int			c = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  int                   width;
+  int                   height = 1;
+  int                   visibleHeight = 0;
+  int                   fixed = 0;
+  int                   convert = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
-  "STRING" LPAREN w = vkInteger[] ( COMMA h = vkInteger[] ( COMMA vh = vkInteger[] )?)? RPAREN
+  "STRING" LPAREN width = vkInteger[] ( COMMA height = vkInteger[] ( COMMA visibleHeight = vkInteger[] )?)? RPAREN
    (
       "FIXED"
       (
-        "ON"    { x = com.kopiright.vkopi.lib.form.VConstants.FDO_FIX_NL; }
+        "ON"    { fixed = com.kopiright.vkopi.lib.form.VConstants.FDO_FIX_NL; }
       |
-        "OFF"   { x = com.kopiright.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
+        "OFF"   { fixed = com.kopiright.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
       )  
    )?
    (
       "CONVERT"
       (
-        "UPPER" { c = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_UPPER; }
+        "UPPER" { convert = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_UPPER; }
       |
-        "LOWER" { c = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_LOWER; }
+        "LOWER" { convert = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_LOWER; }
       |
-        "NAME"  { c = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_NAME; }
+        "NAME"  { convert = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_NAME; }
       )
    )?
-    { self = new VKStringType(sourceRef, w, h, vh, x | c); }
+    { self = new VKStringType(sourceRef, width, height, visibleHeight, fixed | convert); }
 ;
 
 vkTextFieldType []
   returns [VKTextType self]
 {
-  int			w;
-  int			h;
-  int			vh = 0;
-  int			x = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  int                   width;
+  int                   height;
+  int                   visibleHeight = 0;
+  int                   fixed = com.kopiright.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
-  "TEXT" LPAREN w = vkInteger[] COMMA h = vkInteger[] ( COMMA vh = vkInteger[] )? RPAREN
+  "TEXT" LPAREN width = vkInteger[] COMMA height = vkInteger[] ( COMMA visibleHeight = vkInteger[] )? RPAREN
   (
     "FIXED"
     (
-      "ON"    { x = com.kopiright.vkopi.lib.form.VConstants.FDO_FIX_NL; }
+      "ON"    { fixed = com.kopiright.vkopi.lib.form.VConstants.FDO_FIX_NL; }
     |
-      "OFF"   { x = com.kopiright.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
+      "OFF"   { fixed = com.kopiright.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
     )  
   )?
-    { self = new VKTextType(sourceRef, w, h, vh, x); }
+    { self = new VKTextType(sourceRef, width, height, visibleHeight, fixed); }
 ;
 
 vkImageFieldType []
   returns [VKImageType self]
 {
-  int			w;
-  int			h;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  int                   width;
+  int                   height;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
-  "IMAGE" LPAREN w = vkInteger[] COMMA h = vkInteger[] RPAREN
-    { self = new VKImageType(sourceRef, w, h); }
+  "IMAGE" LPAREN width = vkInteger[] COMMA height = vkInteger[] RPAREN
+    { self = new VKImageType(sourceRef, width, height); }
 ;
 
 vkFixnumFieldType [boolean newStyle]
@@ -225,10 +224,10 @@ vkFixnumFieldType [boolean newStyle]
 vkIntegerFieldType []
   returns [VKIntegerType self]
 {
-  int			width;
-  int			min = Integer.MIN_VALUE;
-  int			max = Integer.MAX_VALUE ;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  int                   width;
+  int                   min = Integer.MIN_VALUE;
+  int                   max = Integer.MAX_VALUE ;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "LONG" LPAREN width = vkInteger[] RPAREN
@@ -260,11 +259,9 @@ vkCodeFieldType [boolean newStyle, String pack, String type]
       { self = new VKBooleanCodeType(sourceRef, pack, type, codes); }
   |
     (
-      "FIXED"
-        { newStyle = false; }
+      "FIXED"   { newStyle = false; }
     |
-      "FIXNUM"
-        { newStyle = true; }
+      "FIXNUM"  { newStyle = true; }
     )
     "IS" codes = vkFixnumCodeList[]
       { self = new VKFixnumCodeType(newStyle, sourceRef, pack, type, codes); }
@@ -281,9 +278,9 @@ vkCodeFieldType [boolean newStyle, String pack, String type]
 vkBooleanCodeList []
   returns [VKCodeDesc[] self = null]
 {
-  ArrayList		vect = new ArrayList();
+  ArrayList             vect = new ArrayList();
   VKCodeDesc            item;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -296,10 +293,10 @@ vkBooleanCodeList []
 vkBooleanCodeItem [int count]
   returns [VKCodeDesc self]
 {
-  String		label = null;
-  String		ident = null;
-  boolean		value;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                label = null;
+  String                ident = null;
+  boolean               value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( label = vkString[] ASSIGN )?
@@ -319,9 +316,9 @@ vkBooleanCodeItem [int count]
 vkFixnumCodeList []
   returns [VKCodeDesc[] self = null]
 {
-  ArrayList		vect = new ArrayList();
+  ArrayList             vect = new ArrayList();
   VKCodeDesc            item;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -334,10 +331,10 @@ vkFixnumCodeList []
 vkFixnumCodeItem [int count]
   returns [VKCodeDesc self]
 {
-  String		label = null;
-  String		ident = null;
-  Fixed			value;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                label = null;
+  String                ident = null;
+  Fixed                 value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( label = vkString[] ASSIGN )?
@@ -357,9 +354,9 @@ vkFixnumCodeItem [int count]
 vkIntegerCodeList []
   returns [VKCodeDesc[] self = null]
 {
-  Vector		vect = new Vector();
+  Vector                vect = new Vector();
   VKCodeDesc            item;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -372,10 +369,10 @@ vkIntegerCodeList []
 vkIntegerCodeItem [int count]
   returns [VKCodeDesc self]
 {
-  String		label = null;
-  String		ident = null;
-  int			value;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                label = null;
+  String                ident = null;
+  int                   value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( label = vkString[] ASSIGN )?
@@ -395,9 +392,9 @@ vkIntegerCodeItem [int count]
 vkStringCodeList []
   returns [VKCodeDesc[] self = null]
 {
-  Vector		vect = new Vector();
+  Vector                vect = new Vector();
   VKCodeDesc            item;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -410,10 +407,10 @@ vkStringCodeList []
 vkStringCodeItem [int count]
   returns [VKCodeDesc self]
 {
-  String		label = null;
-  String		ident = null;
-  String		value;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                label = null;
+  String                ident = null;
+  String                value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( label = vkString[] ASSIGN )?
@@ -439,7 +436,7 @@ vkFixed []
 vkFixedOrInteger []
   returns [Fixed self]
 {
-  int                  i;
+  int   i;
 }
 :
   MINUS 
@@ -459,7 +456,7 @@ vkFixedOrInteger []
 vkHelp []
   returns [String self = null]
 {
-  String	line;
+  String        line;
 }
 :
   ( "HELP" line = vkString[] { self = self == null ? line : self + " " + line; } )*
@@ -475,7 +472,7 @@ vkInteger []
 vkSignedInteger []
   returns [int self]
 {
-  int minus = 1;
+  int   minus = 1;
 }
 :
   ( MINUS { minus = -1; } )? t:INTEGER_LITERAL
@@ -485,16 +482,16 @@ vkSignedInteger []
 vkCommand [int mode]
   returns [VKCommand self]
 {
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
-  String		name;
-  VKCommandBody		cmd;
+  String                name;
+  VKCommandBody         cmd;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "COMMAND"
   (
-    name = vkQualifiedIdent[] { self = new VKCommandName(sourceRef, name, mode); }
+    name = vkQualifiedIdent[]   { self = new VKCommandName(sourceRef, name, mode); }
   |
-    cmd = vkCommandIn[null] { self = new VKDefaultCommand(sourceRef, mode, cmd); }
+    cmd = vkCommandIn[null]     { self = new VKDefaultCommand(sourceRef, mode, cmd); }
     "END" "COMMAND"
   )
 ;
@@ -502,10 +499,10 @@ vkCommand [int mode]
 vkCommandIn [String cmd]
   returns [VKCommandBody self]
 {
-  String		name;
-  String		method;
-  VKAction		action;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                name;
+  String                method;
+  VKAction              action;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ITEM" name = vkSimpleIdent[]
@@ -524,11 +521,11 @@ vkCommandIn [String cmd]
 vkListDescs []
   returns [VKListDesc[] self = null]
 {
-  ArrayList	vect = new ArrayList();
-  VKListDesc	l;
+  ArrayList     vect = new ArrayList();
+  VKListDesc    list;
 }
 :
-  ( l = vkListDesc[] { vect.add(l); } )+
+  ( list = vkListDesc[] { vect.add(list); } )+
     { self = (VKListDesc[])vect.toArray(new VKListDesc[vect.size()]); }
 ;
 
@@ -538,8 +535,8 @@ vkListDesc []
   String                title = null;
   String                column;
   VKType                type;
-  TokenReference        sourceRef = buildTokenReference();
   boolean               newStyle = true;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( title = vkString[] ASSIGN )?
@@ -556,7 +553,7 @@ vkListDesc []
 
 vkDefinitions [VKDefinitionCollector coll, String pack]
 {
-  VKDefinition		def;
+  VKDefinition  def;
 }
 :
   (
@@ -578,7 +575,7 @@ vkDefinitions [VKDefinitionCollector coll, String pack]
 
 vkInsertDefinitions [VKDefinitionCollector coll]
 {
-  String			name;
+  String        name;
 }
 :
   "INSERT" name = vkString[]
@@ -612,11 +609,10 @@ vkActorDef [String pack]
   String                help;
   String                key = null;
   String                icon = null;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
-  "ACTOR"
-  ident = vkSimpleIdent[]
+  "ACTOR" ident = vkSimpleIdent[]
   "MENU" menu = vkSimpleIdent[]
   ( "LABEL" label = vkString[] )?
   help = vkHelp[]
@@ -637,8 +633,8 @@ vkTypeDef [String pack]
   VKType                type;
   VKFieldList           list;
   JFormalParameter[]    params = null;
-  TokenReference        sourceRef = buildTokenReference();
   boolean               newStyle = true;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "TYPE" name = vkSimpleIdent[]
@@ -667,10 +663,10 @@ vkFieldList [String pack, String type]
   returns [VKFieldList self]
 {
   TableReference        table;
-  boolean		access = false;
-  String		name = null;
-  VKListDesc[]		columns;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  boolean               access = false;
+  String                name = null;
+  VKListDesc[]          columns;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "LIST"
@@ -692,8 +688,8 @@ vkFieldList [String pack, String type]
 vkListTable[]
   returns [TableReference self]
 {
-  String		name;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                name;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   name = vkString[]
@@ -707,9 +703,9 @@ vkListTable[]
 vkCommandDef []
   returns [VKCommandDefinition self]
 {
-  VKCommandBody		cmd;
-  String		name;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  VKCommandBody         cmd;
+  String                name;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "COMMAND" name = vkSimpleIdent[]
@@ -750,12 +746,12 @@ vkString []
 vkStringList []
   returns [String[] self = null]
 {
-  String s;
-  ArrayList vect = new ArrayList();
+  String        str;
+  ArrayList     vect = new ArrayList();
 }
 :
-  s = vkString[] { vect.add(s); }
-  ( COMMA s = vkString[] { vect.add(s); } )*
+  str = vkString[] { vect.add(str); }
+  ( COMMA str = vkString[] { vect.add(str); } )*
     { self = (String[])vect.toArray(new String[vect.size()]); }
 ;
 
@@ -780,8 +776,8 @@ vkContextHeader[CParseCompilationUnitContext context]
 vkTriggerAction []
   returns [VKAction self]
 {
-  String	name;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  String                name;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
     self = vkAction[null]
@@ -793,35 +789,36 @@ vkTriggerAction []
 vkAction [String name]
   returns [VKAction self]
 {
-  JStatement[]	stmts;
-  String        method;
-  TokenReference	sourceRef = buildTokenReference();	// !!! add comments
+  JStatement[]          stmts;
+  String                method;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
     LPAREN
-    {
-      ArrayList	params = new ArrayList(1);
-      stmts = buildGKjcParser().gActionWithParameter(name, params);
-      if (params.size() == 1) {
-	self = new VKMethodAction(sourceRef,
-				  new JCompoundStatement(sourceRef, stmts),
-				  (JFormalParameter[])params.toArray(new JFormalParameter[params.size()]),
-				  name);
-      } else {
-	// OLD SYNTAX !!!
-        self = new VKBlockAction(sourceRef,
-	                 	 new JCompoundStatement(sourceRef,stmts),
-		  	         name);
+      {
+        ArrayList         params = new ArrayList(1);
+      
+        stmts = buildGKjcParser().gActionWithParameter(name, params);
+        if (params.size() == 1) {
+          self = new VKMethodAction(sourceRef,
+                                    new JCompoundStatement(sourceRef, stmts),
+                                    (JFormalParameter[])params.toArray(new JFormalParameter[params.size()]),
+                                    name);
+        } else {
+         // OLD SYNTAX !!!
+         self = new VKBlockAction(sourceRef,
+                                  new JCompoundStatement(sourceRef,stmts),
+                                  name);
+        }
       }
-    }
   |
     LCURLY
-    {
-      stmts = buildGKjcParser().gAction();
-      self = new VKBlockAction(sourceRef,
-	               	       new JCompoundStatement(sourceRef,stmts),
-			       name);
-    }
+      {
+        stmts = buildGKjcParser().gAction();
+        self = new VKBlockAction(sourceRef,
+                                 new JCompoundStatement(sourceRef,stmts),
+                                 name);
+      }
     // RCURLY
   |
     "EXTERN" method = vkQualifiedIdent[]
