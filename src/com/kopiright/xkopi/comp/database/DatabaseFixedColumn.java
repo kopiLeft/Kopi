@@ -30,7 +30,32 @@ import com.kopiright.xkopi.lib.type.Fixed;
 /**
  * The type of a field which represents a integer-column in Database.k. 
  */
-public class DatabaseFixedColumn extends DatabaseColumn{
+public class DatabaseFixedColumn extends DatabaseColumn {
+  
+  // ----------------------------------------------------------------------
+  // CONSTRUCTORS
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Creates a representation of a column with type integer. The values in 
+   * the column are restricted.
+   *
+   * @param nullable true if empty entries are allowed
+   * @param min the smallest value allowed in this column
+   * @param max the bigest value allowed in this column
+   */
+  public DatabaseFixedColumn(boolean isNullable,
+                             int digits,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
+  {
+    super(isNullable, (min != null) || (max !=null));
+    this.digits = digits;
+    this.scale = scale;
+    this.min = min;
+    this.max = max;
+  }
 
   /**
    * Creates a representation of a column with type integer. The values in 
@@ -40,20 +65,37 @@ public class DatabaseFixedColumn extends DatabaseColumn{
    * @param min the smallest value allowed in this column
    * @param max the bigest value allowed in this column
    */
-  public DatabaseFixedColumn(boolean isNullable, Fixed min, Fixed max) {
-    super(isNullable, true);
-    this.min = min;
-    this.max = max;
+  public DatabaseFixedColumn(boolean isNullable,
+                             Fixed min,
+                             Fixed max)
+  {
+    this(isNullable, -1, -1, min, max);
   }
-
+  
   /**
    * Creates a representation of a column with type integer. The values in 
    * the column are NOT restricted.
    */
   public DatabaseFixedColumn(boolean isNullable) {
-    super(isNullable, false);
-    min = null;
-    max = null;
+    this(isNullable, null, null);
+  }
+  
+  // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
+  
+  /**
+   *
+   */
+  private int getDigits() {
+    return digits;
+  }
+  
+  /**
+   *
+   */
+  private int getScale() {
+    return scale;
   }
 
   /**
@@ -71,24 +113,43 @@ public class DatabaseFixedColumn extends DatabaseColumn{
    * @return the expression
    */
   public JExpression getCreationExpression() {
+    CClassNameType      classNameType;
+    JExpression         minValExpression;
+    JExpression         maxValExpression;
+    
+    classNameType = new CClassNameType(TokenReference.NO_REF,
+                                       DatabaseFixedColumn.class.getName().replace('.','/'));
+    
+    if (min == null) {
+      minValExpression = new JNullLiteral(TokenReference.NO_REF);
+    } else {
+      minValExpression = new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
+                                                          XStdType.Fixed,
+                                                          new JExpression[] {
+                                                            new JDoubleLiteral(TokenReference.NO_REF,
+                                                                               min.doubleValue())
+                                                          });
+    }
+    if (max == null) {
+      maxValExpression = new JNullLiteral(TokenReference.NO_REF);
+    } else {
+      maxValExpression = new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
+                                                          XStdType.Fixed,
+                                                          new JExpression[] {
+                                                            new JDoubleLiteral(TokenReference.NO_REF,
+                                                                               max.doubleValue())
+                                                          });
+    }
+    
     return new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
-                            new CClassNameType(TokenReference.NO_REF, DatabaseFixedColumn.class.getName().replace('.','/')),
-                            isRestricted() ? 
-                              new JExpression[]{
-                                new JBooleanLiteral(TokenReference.NO_REF, isNullable()),
-                                new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
-                                  XStdType.Fixed,
-                                  new JExpression[] {
-                                    new JDoubleLiteral(TokenReference.NO_REF, min.doubleValue())
-                                      }),  
-                                new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
-                                  XStdType.Fixed,
-                                  new JExpression[] {
-                                    new JDoubleLiteral(TokenReference.NO_REF, max.doubleValue())
-                                      }) }: 
-                              new JExpression[]{
-                                new JBooleanLiteral(TokenReference.NO_REF, isNullable())}
-                            );
+                                            classNameType,
+                                            new JExpression[] {
+                                              new JBooleanLiteral(TokenReference.NO_REF, isNullable()),
+                                              new JIntLiteral(TokenReference.NO_REF, digits),
+                                              new JIntLiteral(TokenReference.NO_REF, scale),
+                                              minValExpression,
+                                              maxValExpression
+                                            });
   }
 
   /**
@@ -101,28 +162,45 @@ public class DatabaseFixedColumn extends DatabaseColumn{
     if (! (other instanceof DatabaseFixedColumn)) {
       return false;
     } else {
-      if (isRestricted() && ((check & CONSTRAINT_CHECK_NONE) == 0)) {
-        if (!other.isRestricted()) {
+      if ((check & CONSTRAINT_CHECK_NONE) == 0) {
+        DatabaseFixedColumn   fixedColumn = (DatabaseFixedColumn) other;
+        
+        if ((min != null)
+            && ((fixedColumn.min == null)
+                || (!min.equals(fixedColumn.min))))
+        {
           return false;
         }
-        DatabaseFixedColumn fixedColumn = (DatabaseFixedColumn) other;
-        if ((min != null) && ((fixedColumn.min == null) || (!min.equals(fixedColumn.min)))) {
+        if ((max != null)
+            && ((fixedColumn.max == null)
+                || (!max.equals(fixedColumn.max))))
+        {
           return false;
         }
-        if ((max != null) && ((fixedColumn.max == null) || (!max.equals(fixedColumn.max)))) {
+        if ((digits != fixedColumn.getDigits())
+            || (scale != fixedColumn.getScale()))
+        {
           return false;
         }
       }
-      return verifyNullable(other, check);
+      return (verifyNullable(other, check));
     }
-  }
 
+  }
+  
   public String toString() {
-    return getStandardType()+
-           ((isNullable())? "(nullable, " : "(not null, ")+
-           ((isRestricted())? ("min: "+min+" max:"+max+")") : "not rest.) ");
+    return getStandardType()
+           + ((isNullable())? "(nullable, " : "(not null, ")
+           + "digits: " + digits + ", scale:" + scale + ", "
+           + ((isRestricted())? ("min: " + min + " max:" + max + ")") : "not rest.)");
   }  
   
-  private final Fixed min;
-  private final Fixed max;
+  // ----------------------------------------------------------------------
+  // PRIVATE DATA
+  // ----------------------------------------------------------------------
+  
+  private final int     digits;
+  private final int     scale;
+  private final Fixed   min;
+  private final Fixed   max;
 }

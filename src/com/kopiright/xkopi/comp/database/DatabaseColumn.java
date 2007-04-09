@@ -133,8 +133,8 @@ public abstract class DatabaseColumn extends DatabaseMember implements XDatabase
   public String toString() {
     return getStandardType()
            + ((isNullable())? "(nullable, " : "(not null, ")
-           + ((isRestricted())? "restricted)" : "not rest.) ");
-  }  
+           + ((isRestricted())? "restricted) " : "not rest.) ");
+  }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

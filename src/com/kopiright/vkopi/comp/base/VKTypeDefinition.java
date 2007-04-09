@@ -82,16 +82,19 @@ public class VKTypeDefinition
 
   /**
    * Check expression and evaluate and alter context
-   * @param decl	the actual context of analyse
+   * @param decl        the actual context of analyse
    * @exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context) throws PositionedError {
     type.checkCode(context);
-
+    
     if (type.getList() != null && params != null) {
-     JExpression		access = context.getAccess(getTokenReference(), context.isInsertFile());
-     JMethodDeclaration	decl = genMethod(access, context.isInsertFile());
+      JExpression               access;
+      JMethodDeclaration        decl;
 
+      access = context.getAccess(getTokenReference(), context.isInsertFile());
+      decl = genMethod(access, context.isInsertFile());
+      
       if (decl != null) {
 	context.getClassContext().addMethodDeclaration(decl);
       }

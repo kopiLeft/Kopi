@@ -71,7 +71,15 @@ public class VKFixnumType extends VKType {
   // ----------------------------------------------------------------------
 
   /**
-   *
+   * Is this type defined using the FIXNUM syntax ?
+   */
+  public boolean isNewSyle() {
+    return newStyle;
+  }
+
+
+  /**
+   * Returns the scale of this fixnum type.
    */
   public int getScale() {
     return scale;
@@ -105,13 +113,10 @@ public class VKFixnumType extends VKType {
    *
    * @return the info
    */
-  public DatabaseColumn getColumnInfo(){
-    if ((min != null) || (max != null)) {
-      return new DatabaseFixedColumn(true, min, max);
-    }
-    return new DatabaseFixedColumn(true);
+  public DatabaseColumn getColumnInfo() {
+    return new DatabaseFixedColumn(true, getWidth(), scale, min, max);
   }
-
+  
   /**
    * Check expression and evaluate and alter context
    * @exception	PositionedError	Error catched as soon as possible

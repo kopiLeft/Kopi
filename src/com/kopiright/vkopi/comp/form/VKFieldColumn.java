@@ -75,21 +75,26 @@ public class VKFieldColumn extends VKPhylum {
 
   /**
    * Check expression and evaluate and alter context
-   * @param form	the actual context of analyse
-   * @exception	PositionedError	Error catched as soon as possible
+   * @param     form            the actual context of analyse
+   * @exception PositionedError Error catched as soon as possible
    */
-  public void checkCode(VKContext context, VKFieldColumns columns, VKField field) throws PositionedError {
-    VKBlockTable	table = field.getTable(corr);
-    num = field.getTableNum(table);
+  public void checkCode(VKContext context,
+                        VKFieldColumns columns,
+                        VKField field)
+    throws PositionedError
+  {
+    VKBlockTable        table = field.getTable(corr);
 
+    num = field.getTableNum(table);
     try {
-      //      XUtils.checkDatabaseType(GVKAccess.translate(field.getFieldType().getDef().getType()),
       XUtils.checkDatabaseType(field.getFieldType().getDef().getColumnInfo(),
-			       table.getName(),
-			       ident,
-			       XDatabaseColumn.TYPE_CHECK_NARROWING | XDatabaseColumn.NULL_CHECK_NONE);
+                               table.getName(),
+                               ident,
+                               XDatabaseColumn.TYPE_CHECK_NARROWING
+                               | XDatabaseColumn.NULL_CHECK_NONE);
     } catch (UnpositionedError e) {
-      context.reportTrouble(new CWarning(getTokenReference(), e.getFormattedMessage()));
+      context.reportTrouble(new CWarning(getTokenReference(),
+                                         e.getFormattedMessage()));
     }
   }
 

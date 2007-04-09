@@ -19,13 +19,14 @@
 
 package com.kopiright.vkopi.comp.base;
 
-import com.kopiright.kopi.comp.kjc.JBooleanLiteral;
-import com.kopiright.kopi.comp.kjc.JExpression;
-import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.UnpositionedError;
+
+import com.kopiright.kopi.comp.kjc.JBooleanLiteral;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 
 import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
 import com.kopiright.xkopi.comp.sqlc.TableName;
@@ -83,38 +84,37 @@ public class VKListDesc extends VKPhylum {
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
   // ----------------------------------------------------------------------
-
+  
   public void verifyColumnType(VKContext context, TableReference table) {
-
-    if (!table.hasColumn(column)) {
-      String name  = null;
-
+    String      tableName;
+    
+    if (! table.hasColumn(column)) {
+      tableName = null;
       if (table instanceof TableName) {
-        name = ((TableName) table).getTableName();
+        tableName = ((TableName) table).getTableName();
       } 
-      if (name == null) {
-        name = "";
+      context.reportTrouble(new CWarning(getTokenReference(),
+                                         SqlcMessages.COLUMN_NOT_IN_TABLE,
+                                         column,
+                                         (tableName == null)? "" : tableName));
+    } else {
+      tableName = table.getTableForColumn(column);
+      if (tableName != null) {
+        try {
+          XUtils.checkDatabaseType(type.getColumnInfo(),
+                                   tableName,
+                                   column,
+                                   XDatabaseColumn.NULL_CHECK_NONE
+                                   | XDatabaseColumn.TYPE_CHECK_NARROWING
+                                   | XDatabaseColumn.CONSTRAINT_CHECK_NONE);    
+        } catch (UnpositionedError e) {
+          context.reportTrouble(new CWarning(getTokenReference(),
+                                             e.getFormattedMessage()));
+        }
       }
-      context.reportTrouble(new CWarning(getTokenReference(), SqlcMessages.COLUMN_NOT_IN_TABLE, column, name));
-      return;
-    }
-
-    String      tableName = table.getTableForColumn(column);
-
-    if (tableName == null) {
-      return;
-    }
-
-    try {
-      XUtils.checkDatabaseType(type.getColumnInfo(),
-                               tableName,
-                               column,
-                               XDatabaseColumn.NULL_CHECK_NONE | XDatabaseColumn.TYPE_CHECK_NARROWING | XDatabaseColumn.CONSTRAINT_CHECK_NONE);    
-    } catch (UnpositionedError e) {
-      context.reportTrouble(new CWarning(getTokenReference(), e.getFormattedMessage()));
     }
   }
-
+  
   /**
    * Check expression and evaluate and alter context
    * @param block	the actual context of analyse

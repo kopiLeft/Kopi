@@ -83,7 +83,7 @@ public class CodeFixedType extends com.kopiright.xkopi.comp.sqlc.NumericType imp
    * @return the columninfo
    */
   public DatabaseColumn getColumnInfo(boolean nullable) {
-    return new DatabaseFixedColumn(nullable);
+    return new DatabaseFixedColumn(nullable, precision, scale, null, null);
   }  
 
   // ----------------------------------------------------------------------
@@ -141,7 +141,9 @@ public class CodeFixedType extends com.kopiright.xkopi.comp.sqlc.NumericType imp
    *
    * @param	visitor			the visitor
    */
-  public void accept(com.kopiright.xkopi.comp.sqlc.SqlVisitor visitor) throws PositionedError {
+  public void accept(com.kopiright.xkopi.comp.sqlc.SqlVisitor visitor)
+    throws PositionedError
+  {
     accept((DbiVisitor)visitor);
   }
 
@@ -149,7 +151,7 @@ public class CodeFixedType extends com.kopiright.xkopi.comp.sqlc.NumericType imp
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  int				precision;
-  int				scale;
-  private final ArrayList		list;
+  int                           precision;
+  int                           scale;
+  private final ArrayList       list;
 }

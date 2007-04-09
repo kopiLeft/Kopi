@@ -26,6 +26,7 @@ import java.util.Vector;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.compiler.base.UnpositionedError;
+
 import com.kopiright.kopi.comp.kjc.CBinaryTypeContext;
 import com.kopiright.kopi.comp.kjc.CExpressionContext;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
@@ -38,6 +39,7 @@ import com.kopiright.kopi.comp.kjc.JNullLiteral;
 import com.kopiright.kopi.comp.kjc.JTypeNameExpression;
 import com.kopiright.kopi.comp.kjc.KjcEnvironment;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
+
 import com.kopiright.util.base.Utils;
 import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
 
@@ -49,22 +51,12 @@ public class XUtils extends com.kopiright.util.base.Utils {
 
   /**
    * Sets database
-   *//*
-  public static void setDatabase(CClass database) {
-    if (XUtils.database == null) {
-      XUtils.database = new Vector();
-    }
-    XUtils.database.addElement(database);
-    }*/
-
-  /**
-   * Sets database
    */
   public static void setDatabase(String database) {
     if (database == null) {
       return;
     }
-    //    XUtils.database = null;
+
     XUtils.database = new Vector();
     StringTokenizer	token = new StringTokenizer(database, ": ");
     while (token.hasMoreTokens()) {
@@ -73,7 +65,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
           Class clazz = Class.forName(current);
           XUtils.database.addElement(clazz);
         } catch (ClassNotFoundException e) {
-          System.err.println("WARNING: "+current+" (Database.k-class) not found. ");
+          System.err.println("WARNING: " + current + " (Database.k-class) not found. ");
         } 
     }
     com.kopiright.xkopi.comp.sqlc.XUtils.setChecker(new com.kopiright.xkopi.comp.sqlc.DBChecker() {
@@ -269,7 +261,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
   }
  
   /**
-   * Returns the database type of a Table/column
+   * Checks the database type of a Table/column
    */
   public static void checkDatabaseType(XDatabaseColumn expected, 
                                        String table, 
@@ -279,14 +271,14 @@ public class XUtils extends com.kopiright.util.base.Utils {
   {
     if (checkDatabase()) {
       XDatabaseColumn   dc = getDatabaseColumn(table, column);    
-
+      
       if (dc != null) {
-        if (!dc.isEquivalentTo(expected,check)) {              
+        if (!dc.isEquivalentTo(expected, check)) {
  	  throw new UnpositionedError(SqlcMessages.BAD_DATABASE_TYPE,
                                       dc + " " + table + "." + column,
                                       expected);
         }
-      } else { //else failure 
+      } else { // else failure 
         if (!tableExists(table)) {
           throw new UnpositionedError(SqlcMessages.TABLE_NOT_FOUND, table);
         } else {
@@ -434,7 +426,10 @@ public class XUtils extends com.kopiright.util.base.Utils {
    * @param	context		the context to look at
    * @param	overload	the method call
    */
-  public static XOverloadedMethodCallExpression fetchOverloadedNewArray(TypeFactory factory, JExpression[] dims, CType type) {
+  public static XOverloadedMethodCallExpression fetchOverloadedNewArray(TypeFactory factory,
+                                                                        JExpression[] dims,
+                                                                        CType type)
+  {
     JExpression         param;
     JExpression         arrayParam;
 
@@ -443,14 +438,14 @@ public class XUtils extends com.kopiright.util.base.Utils {
                                 type);
 
     arrayParam = new JNewArrayExpression(TokenReference.NO_REF,
-                                                     factory.getPrimitiveType(TypeFactory.PRM_INT),
-                                                     new JExpression[] {null},
-                                                     new JArrayInitializer(TokenReference.NO_REF, dims));
+                                         factory.getPrimitiveType(TypeFactory.PRM_INT),
+                                         new JExpression[] { null },
+                                         new JArrayInitializer(TokenReference.NO_REF, dims));
 
     return new XOverloadedMethodCallExpression(TokenReference.NO_REF,
                                                null,
                                                "operator$array".intern(),
-                                               new JExpression[] {param, arrayParam});
+                                               new JExpression[] { param, arrayParam });
 
   }
 
@@ -468,7 +463,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
     return new XOverloadedMethodCallExpression(ref,
 					       null,
 					       ("operator$" + operator).intern(),
-					       new JExpression[]{ expr });
+					       new JExpression[] { expr });
   }
 
   /**
@@ -482,15 +477,15 @@ public class XUtils extends com.kopiright.util.base.Utils {
     return new XOverloadedMethodCallExpression(ref,
 					       null,
 					       ("operator$" + operator).intern(),
-					       new JExpression[]{ left, right });
+					       new JExpression[] { left, right });
   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private static JExpression[]	prefixes;
-  private static Vector		database;
+  private static JExpression[]  prefixes;
+  private static Vector         database;
   public static boolean         overloadEqual;
   public static boolean         sqlToUpper;
 }

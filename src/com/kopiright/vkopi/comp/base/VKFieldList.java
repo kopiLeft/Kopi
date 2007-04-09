@@ -53,7 +53,7 @@ public class VKFieldList extends VKPhylum {
 		     boolean access)
   {
     super(where);
-    this.source = pack == null ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
+    this.source = (pack == null) ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
     this.type = type;
     this.table = table;
     this.newForm = newForm;
@@ -109,7 +109,7 @@ public class VKFieldList extends VKPhylum {
 						  newForm));
       }
     }
-*/
+    */
     for (int i = 0; i < columns.length; i++) {
       columns[i].verifyColumnType(context, table);
       columns[i].checkCode(context);
@@ -133,6 +133,7 @@ public class VKFieldList extends VKPhylum {
       init[i] = columns[i].genCode();
     }
     ref = getTokenReference();
+
     return new JUnqualifiedInstanceCreation(ref,
                                             VKStdType.VList,
                                             new JExpression[] {
