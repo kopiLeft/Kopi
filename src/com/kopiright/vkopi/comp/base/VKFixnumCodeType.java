@@ -132,7 +132,7 @@ public class VKFixnumCodeType extends VKCodeType {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printCodeType(newStyle? "FIXNUM" : "FIXED", codes);
+    p.printCodeType("FIXNUM", codes);
   }
 
   // ---------------------------------------------------------------------

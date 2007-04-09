@@ -202,23 +202,20 @@ vkFixnumFieldType [boolean newStyle]
 }
 :
   (
-    (
-      "FIXED" { newStyle = false; }
-    |
-      "FIXNUM" { newStyle = true; }
-    )
-    LPAREN width = vkInteger[] COMMA scale = vkInteger[] RPAREN
+    "FIXNUM" LPAREN width = vkInteger[] COMMA scale = vkInteger[] RPAREN
   |
     "FRACTION" LPAREN width = vkInteger[] RPAREN
       {
         isFraction = true;
-        newStyle = false;
         scale = 6;
       }
   )
   ( "MINVAL" min = vkFixedOrInteger[] )?
   ( "MAXVAL" max = vkFixedOrInteger[] )?
-    { self = new VKFixnumType(newStyle, sourceRef, width, scale, isFraction, min, max); }
+    { 
+      newStyle = true;
+      self = new VKFixnumType(newStyle, sourceRef, width, scale, isFraction, min, max);
+    }
 ;
 
 vkIntegerFieldType []
@@ -258,13 +255,11 @@ vkCodeFieldType [boolean newStyle, String pack, String type]
     "BOOL" "IS" codes = vkBooleanCodeList[]
       { self = new VKBooleanCodeType(sourceRef, pack, type, codes); }
   |
-    (
-      "FIXED"   { newStyle = false; }
-    |
-      "FIXNUM"  { newStyle = true; }
-    )
-    "IS" codes = vkFixnumCodeList[]
-      { self = new VKFixnumCodeType(newStyle, sourceRef, pack, type, codes); }
+    "FIXED" "IS" codes = vkFixnumCodeList[]
+      {
+        newStyle = true;
+        self = new VKFixnumCodeType(newStyle, sourceRef, pack, type, codes);
+      }
   |
     "LONG" "IS" codes = vkIntegerCodeList[]
       { self = new VKIntegerCodeType(sourceRef, pack, type, codes); }
