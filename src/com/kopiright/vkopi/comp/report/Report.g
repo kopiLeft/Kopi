@@ -306,12 +306,11 @@ vrFieldType []
 {
   VKType                def;
   TokenReference        sourceRef = buildTokenReference();
-  boolean               newStyle = true;
 }
 :
   self = vrFieldTypeName[]
 |
-  def = vkPredefinedFieldType[newStyle]
+  def = vkPredefinedFieldType[]
     { self = new VRDefinitionType(sourceRef, def); }
 ;
 

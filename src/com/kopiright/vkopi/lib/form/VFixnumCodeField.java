@@ -42,15 +42,13 @@ public class VFixnumCodeField extends VCodeField {
    * @param     ident           the identifier of the type in the source file
    * @param     source          the qualified name of the source file defining the list
    */
-  public VFixnumCodeField(boolean newStyle,
-                          String ident,
+  public VFixnumCodeField(String ident,
                           String source,
                           String[] names,
                           Fixed[] codes)
   {
     super(ident, source, names);
 
-    this.newStyle = newStyle;
     this.codes = codes;
   }
 
@@ -64,7 +62,7 @@ public class VFixnumCodeField extends VCodeField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VFixnumCodeColumn(newStyle, getHeader(), null, getLabels(), codes, getPriority() >= 0);
+    return new VFixnumCodeColumn(getHeader(), null, getLabels(), codes, getPriority() >= 0);
   }
 
   /**
@@ -222,10 +220,6 @@ public class VFixnumCodeField extends VCodeField {
    * DATA MEMBERS
    * ----------------------------------------------------------------------
    */
-
-  // static (compiled) data
-  private boolean               newStyle; // are we using the FIXNUM syntax
   
-  // dynamic data
   private Fixed[]               codes; // code array
 }

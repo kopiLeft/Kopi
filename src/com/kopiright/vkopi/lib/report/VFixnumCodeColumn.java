@@ -32,8 +32,7 @@ public class VFixnumCodeColumn extends VCodeColumn {
    * @param     groups          The index of the column grouped by this one or -1
    * @param     function        An (optional) summation function
    */
-  public VFixnumCodeColumn(boolean newStyle,
-                           String ident,
+  public VFixnumCodeColumn(String ident,
                            String type,
                            String source,
                            int options,
@@ -47,7 +46,6 @@ public class VFixnumCodeColumn extends VCodeColumn {
   {
     super(ident, type, source, options, align, groups, function, width, format, names);
 
-    this.newStyle = newStyle;
     this.codes = codes;
   }
 
@@ -78,6 +76,5 @@ public class VFixnumCodeColumn extends VCodeColumn {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private boolean               newStyle; // are we using the FIXNUM syntax
   private final NotNullFixed[]  codes;  // array of internal representations
 }

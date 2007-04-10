@@ -28,8 +28,7 @@ public class VFixnumColumn extends VListColumn {
   /**
    * Constructs a list column.
    */
-  public VFixnumColumn(boolean newStyle,
-                       String title,
+  public VFixnumColumn(String title,
                        String column,
                        int align,
                        int width,

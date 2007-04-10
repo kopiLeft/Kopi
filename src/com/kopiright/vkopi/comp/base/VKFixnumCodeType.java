@@ -40,16 +40,13 @@ public class VKFixnumCodeType extends VKCodeType {
    * @param pack                the package name of the class defining the type
    * @param type		the identifier of the type definition
    * @param codes		a list of code value pairs
-   * @param newStyle            are we using the FIXNUM syntax
    */
-  public VKFixnumCodeType(boolean newStyle,
-                          TokenReference where,
+  public VKFixnumCodeType(TokenReference where,
                           String pack, 
                           String type,
                           VKCodeDesc[] codes)
   {
     super(where, pack, type, codes);
-    this.newStyle = newStyle;
   }
 
   // ----------------------------------------------------------------------
@@ -66,7 +63,6 @@ public class VKFixnumCodeType extends VKCodeType {
     return new JUnqualifiedInstanceCreation(ref,
                                             getType(),
                                             new JExpression[]{
-                                              new JBooleanLiteral(ref, newStyle),
                                               VKUtils.toExpression(ref, getCodeType()),
                                               VKUtils.toExpression(ref, getSource()),
                                               genIdents(),
@@ -134,10 +130,4 @@ public class VKFixnumCodeType extends VKCodeType {
     genComments(p);
     p.printCodeType("FIXNUM", codes);
   }
-
-  // ---------------------------------------------------------------------
-  // DATA MEMBERS
-  // ---------------------------------------------------------------------
-
-  private final boolean         newStyle;
 }

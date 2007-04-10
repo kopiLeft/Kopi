@@ -216,6 +216,14 @@ public abstract class VCodeField extends VField {
   // ----------------------------------------------------------------------
 
   /**
+   * return the soource file of this code field.
+   */
+  public String getSource() {
+    return source;
+  }
+
+
+  /**
    * return the name of this field
    */
   public String[] getLabels() {

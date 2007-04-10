@@ -216,9 +216,6 @@ public class VRField
     TokenReference	ref = getTokenReference();
     Vector		params = new Vector(14);
 
-    if (type.getDef() instanceof VKFixnumType) {
-      params.addElement(VKUtils.toExpression(ref, ((VKFixnumType)type.getDef()).isNewStyle()));
-    }
     params.addElement(VKUtils.toExpression(ref, ident));
     if (type.getDef() instanceof VKCodeType) {
       params.addElement(((VKCodeType)type.getDef()).genType());

@@ -31,8 +31,7 @@ public class VFixnumCodeColumn extends VCodeColumn {
   /**
    * Constructs a list column.
    */
-  public VFixnumCodeColumn(boolean newStyle,
-                           String title,
+  public VFixnumCodeColumn(String title,
                            String column,
                            String[] names,
                            Fixed[] codes,

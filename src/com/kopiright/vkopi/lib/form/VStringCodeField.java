@@ -90,14 +90,9 @@ public class VStringCodeField extends VCodeField {
 	}
       }
       if (code == -1) {
-//!!!TEST
-{
-  for (int i = 0; i < codes.length; i++) {
-    System.err.println(">>> " + i + ": " + codes[i]);
-  }
-}
-//!!!TEST
-	throw new InconsistencyException("bad code value " + v);
+	throw new InconsistencyException("bad code value " + v
+                                         + " for " + getType()
+                                         + " in " + getSource());
       }
 
       setCode(r, code);

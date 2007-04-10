@@ -42,7 +42,6 @@ public class VKFixnumType extends VKType {
   /**
    * Constructs a new fixed type.
    *
-   * @param newStyle            are we using the FIXNUM syntax
    * @param where		the token reference of this node
    * @param width		the width in char of this field
    * @param scale		the number of digits after the period sign
@@ -50,8 +49,7 @@ public class VKFixnumType extends VKType {
    * @param min			the min value
    * @param max			the max value
    */
-  public VKFixnumType(boolean newStyle,
-                      TokenReference where,
+  public VKFixnumType(TokenReference where,
                       int width,
                       int scale,
                       boolean fraction,
@@ -63,20 +61,11 @@ public class VKFixnumType extends VKType {
     this.fraction = fraction;
     this.min = min;
     this.max = max;
-    this.newStyle = newStyle;
   }
 
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
-
-  /**
-   * Is this type defined using the FIXNUM syntax ?
-   */
-  public boolean isNewSyle() {
-    return newStyle;
-  }
-
 
   /**
    * Returns the scale of this fixnum type.
@@ -125,12 +114,6 @@ public class VKFixnumType extends VKType {
     return com.kopiright.vkopi.comp.trig.GStdType.FixnumColumn;
   }
 
-  /**
-   *
-   */
-  public boolean isNewStyle() {
-    return newStyle;
-  }
   // ----------------------------------------------------------------------
   // CODE GENERATION
   // ----------------------------------------------------------------------
@@ -145,7 +128,6 @@ public class VKFixnumType extends VKType {
     return new JUnqualifiedInstanceCreation(ref,
                                             getType(),
                                             new JExpression[] {
-                                              new JBooleanLiteral(ref, newStyle),
                                               new JIntLiteral(ref, getWidth()),
                                               new JIntLiteral(ref, scale),
                                               new JBooleanLiteral(ref, fraction),
@@ -176,5 +158,4 @@ public class VKFixnumType extends VKType {
   private final boolean         fraction;
   private final Fixed           min;
   private final Fixed           max;
-  private final boolean         newStyle;
 }

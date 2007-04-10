@@ -811,12 +811,11 @@ vfFieldType []
 {
   VKType                def;
   TokenReference        sourceRef = buildTokenReference();
-  boolean               newStyle = true;
 }
 :
   self = vfFieldTypeName[]
 |
-  def = vkPredefinedFieldType[newStyle]
+  def = vkPredefinedFieldType[]
     { self = new VKDefinitionType(sourceRef, def); }
 ;
 

@@ -44,15 +44,13 @@ public class VFixnumField extends VField {
   /**
    * Constructor
    */
-  public VFixnumField(boolean newStyle,
-                      int digits, // width if newStyle is false
+  public VFixnumField(int digits,
                       int maxScale,
                       String minval,
                       String maxval,
                       boolean fraction)
   {
-    this(newStyle,
-         digits,
+    this(digits,
          maxScale,
          fraction,
          minval == null ? null : new NotNullFixed(minval),
@@ -62,19 +60,17 @@ public class VFixnumField extends VField {
   /**
    * Constructor
    */
-  public VFixnumField(boolean newStyle,
-                      int digits, // width if newStyle is false
+  public VFixnumField(int digits,
                       int maxScale,
                       boolean fraction,
                       Fixed minval,
                       Fixed maxval)
   {
-    super(newStyle? computeWidth(digits, maxScale, minval, maxval) : digits, 1);
+    super(computeWidth(digits, maxScale, minval, maxval), 1);
 
-    this.newStyle = newStyle;
     this.maxScale = maxScale;
-    this.minval = (newStyle && minval == null)? calculateUpperBound(digits, maxScale).negate() : minval;
-    this.maxval = (newStyle && maxval == null)? calculateUpperBound(digits, maxScale) : maxval;
+    this.minval = (minval == null)? calculateUpperBound(digits, maxScale).negate() : minval;
+    this.maxval = (maxval == null)? calculateUpperBound(digits, maxScale) : maxval;
     this.fraction = fraction;
   }
 
@@ -141,7 +137,12 @@ public class VFixnumField extends VField {
    * return a list column for list
    */
   protected VListColumn getListColumn() {
-    return new VFixnumColumn(newStyle, getHeader(), null, getAlign(), getWidth(), maxScale, getPriority() >= 0);
+    return new VFixnumColumn(getHeader(),
+                             null,
+                             getAlign(),
+                             getWidth(),
+                             maxScale,
+                             getPriority() >= 0);
   }
 
   /**
@@ -783,7 +784,6 @@ public class VFixnumField extends VField {
    */
 
   // static (compiled) data
-  private boolean               newStyle; // are we using the FIXNUM syntax
   private int                   maxScale; // number of max digits after dot
   private Fixed                 minval;   // minimum value allowed
   private Fixed                 maxval;   // maximum value allowed

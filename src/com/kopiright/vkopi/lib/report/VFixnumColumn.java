@@ -33,13 +33,12 @@ public class VFixnumColumn extends VReportColumn {
    * @param     groups          The index of the column grouped by this one or -1
    * @param     function        An (optional) summation function
    */
-  public VFixnumColumn(final boolean newStyle,
-                       final String ident,
+  public VFixnumColumn(final String ident,
                        final int options,
                        final int align,
                        final int groups,
                        final VCalculateColumn function,
-                       final int digits, // width if newStyle is false
+                       final int digits,
                        final int scale,
                        final VCellFormat format)
   {
@@ -48,11 +47,9 @@ public class VFixnumColumn extends VReportColumn {
 	  align,
 	  groups,
 	  function,
-	  newStyle? VFixnumField.computeWidth(digits, scale, null, null) : digits,
+	  VFixnumField.computeWidth(digits, scale, null, null),
 	  1,
 	  format != null ? format : new VFixedFormat(scale));
-    
-    this.newStyle = newStyle;
   }
 
   /**
@@ -88,12 +85,4 @@ public class VFixnumColumn extends VReportColumn {
   public void formatColumn(PExport exporter, int index) {
     exporter.formatFixedColumn(this, index);
   }
-
-  /*
-   * ----------------------------------------------------------------------
-   * DATA MEMBERS
-   * ----------------------------------------------------------------------
-   */
-
-  private boolean               newStyle; // are we using the FIXNUM syntax
 }
