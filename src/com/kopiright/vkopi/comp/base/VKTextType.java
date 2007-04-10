@@ -100,7 +100,6 @@ public class VKTextType extends VKType {
    *
    * @return the type
    */
-
   public DatabaseColumn getColumnInfo(){
     return new DatabaseTextColumn(false, getWidth(), getHeight());
   }

@@ -56,11 +56,12 @@ public class DatabaseBlobColumn extends DatabaseColumn{
    */
   public JExpression getCreationExpression() {
     return new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
-                            new CClassNameType(TokenReference.NO_REF, 
-                                DatabaseBlobColumn.class.getName().replace('.','/')),
-                            new JExpression[]{
-                                new JBooleanLiteral(TokenReference.NO_REF, isNullable())}
-                            );
+                                            new CClassNameType(TokenReference.NO_REF, 
+                                                               DatabaseBlobColumn.class.getName().replace('.','/')),
+                                            new JExpression[] {
+                                              new JBooleanLiteral(TokenReference.NO_REF,
+                                                                  isNullable())
+                                            });
   }
   
   /**
@@ -72,7 +73,7 @@ public class DatabaseBlobColumn extends DatabaseColumn{
   public boolean isEquivalentTo(DatabaseColumn other, int check) {
     if (other instanceof DatabaseBlobColumn) {
       return verifyNullable(other, check);
-    } {
+    } else {
       return false;
     }
   }

@@ -22,7 +22,7 @@ package com.kopiright.xkopi.comp.database;
 /**
  * The type of a field which represents a integer-column in Database.k. 
  */
-public class DatabaseTextColumn extends DatabaseStringColumn{
+public class DatabaseTextColumn extends DatabaseStringColumn {
 
   /**
    * Creates a representation of a column with type integer. The values in 
@@ -35,6 +35,7 @@ public class DatabaseTextColumn extends DatabaseStringColumn{
   public DatabaseTextColumn(boolean isNullable, Integer width, Integer height) {
     super(isNullable, width, height);
   }
+
   public DatabaseTextColumn(boolean isNullable, int width, int height) {
     super(isNullable, width, height);
   }
