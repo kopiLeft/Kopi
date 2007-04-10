@@ -59,11 +59,13 @@ public class DatabaseClobColumn extends DatabaseColumn{
     final JExpression[]         arguments;
 
     classNameType = DatabaseClobColumn.class.getName().replace('.','/');
-    arguments = new JExpression[]{ new JBooleanLiteral(TokenReference.NO_REF,
-                                                       isNullable())};
+    arguments = new JExpression[] {
+      new JBooleanLiteral(TokenReference.NO_REF, isNullable())
+    };
 
     return new JUnqualifiedInstanceCreation(TokenReference.NO_REF,
-                                            new CClassNameType(TokenReference.NO_REF, classNameType),
+                                            new CClassNameType(TokenReference.NO_REF,
+                                                               classNameType),
                                             arguments);
   }
   
@@ -74,7 +76,9 @@ public class DatabaseClobColumn extends DatabaseColumn{
    * @param check spezifies the check
    */
   public boolean isEquivalentTo(DatabaseColumn other, int check) {
-    if (other instanceof DatabaseClobColumn) {
+    if (other instanceof DatabaseClobColumn
+        || other instanceof DatabaseStringColumn)
+      {
       return verifyNullable(other, check);
     } else {
       return false;
