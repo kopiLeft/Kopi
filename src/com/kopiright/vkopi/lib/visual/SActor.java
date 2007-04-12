@@ -250,19 +250,19 @@ public class SActor {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private class SActorAction extends AbstractAction {
+  public class SActorAction extends AbstractAction {
     
-	SActorAction(String name, Icon icon) {
+    SActorAction(String name, Icon icon) {
       super(name, icon);
     }
-
+    
     public void actionPerformed(ActionEvent e) {
       SActor.this.performAction();
     }
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -6510825866215273279L;
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = -6510825866215273279L;
   }
 
   // --------------------------------------------------------------------
@@ -271,21 +271,21 @@ public class SActor {
 
 
 
-  public final String		iconName;
-  public final int		acceleratorKey;
-  public final int		acceleratorModifier;
+  protected final String		iconName;
+  protected final int		acceleratorKey;
+  protected final int		acceleratorModifier;
   
 
-  public String                 menuName;
-  public String                 menuItem;
-  public String                 help;
-  private String                menuSource;  // qualified name of menu's source file
-  private String                menuIdent;
-  private String                actorSource; // qualified name of actor's source file
-  private String                actorIdent;
+  protected String                 menuName;
+  protected String                 menuItem;
+  protected String                 help;
+  protected String                menuSource;  // qualified name of menu's source file
+  protected String                menuIdent;
+  protected String                actorSource; // qualified name of actor's source file
+  protected String                actorIdent;
 
   
-  private Action                action; // replaces dactor
+  protected Action                action; // replaces dactor
   private int                   number;
   private ActionHandler         handler;
   private boolean		synchronous;
