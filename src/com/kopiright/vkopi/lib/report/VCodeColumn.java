@@ -80,7 +80,8 @@ public abstract class VCodeColumn extends VReportColumn {
   public String format(Object o) {
     return isFolded() || o == null ?
       "" :
-      getFormat() != null ? getFormat().format(o) : names[getIndex(o)];
+      getFormat() != null ? getFormat().format(o) : 
+      names != null ? names[getIndex(o)] : idents[getIndex(o)];
   }
 
   /**

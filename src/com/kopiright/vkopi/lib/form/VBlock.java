@@ -2002,23 +2002,45 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Returns the database columns of block.
    */
-  public String getSearchColumns() {
-    String		result = null;
+  public String getReportSearchColumns() {
+    String              result = null;
 
     for (int i = 0; i < fields.length; i++) {
-      VField	fld = fields[i];
+      VField    fld = fields[i];
+      if(!fld.isInternal() ) {
+        if (fld.getColumnCount() > 0) {
+          if (result == null) {
+            result = "";
+          } else {
+            result += ", ";
+          }
 
-      if (fld.getColumnCount() > 0) {
-	if (result == null) {
-	  result = "";
-	} else {
-	  result += ", ";
-	}
-
-	result += fld.getColumn(0).getQualifiedName();
+          result += fld.getColumn(0).getQualifiedName();
+        }
       }
     }
+    return result;
+  }
 
+  /**
+   * Returns the database columns of block.
+   */
+  public String getSearchColumns() {
+    String		result = null;
+    
+    for (int i = 0; i < fields.length; i++) {
+      VField	fld = fields[i];
+      if (fld.getColumnCount() > 0) {
+        if (result == null) {
+          result = "";
+        } else {
+          result += ", ";
+        }
+        
+        result += fld.getColumn(0).getQualifiedName();
+      }
+    }
+    
     return result;
   }
 

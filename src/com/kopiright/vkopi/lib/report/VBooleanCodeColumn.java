@@ -51,6 +51,10 @@ public class VBooleanCodeColumn extends VCodeColumn {
     }
   }
 
+  public int compareTo(Object o1, Object o2) {
+    return o1.equals(o2) ? 0 : Boolean.TRUE.equals(o1) ? 1 : -1;
+  }
+
   /**
    * Get the index of the value.
    */

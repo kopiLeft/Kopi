@@ -233,7 +233,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns the array of codes.
    */
-  protected abstract Object[] getCodes();
+  public abstract Object[] getCodes();
 
   /*
    *

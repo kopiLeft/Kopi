@@ -65,7 +65,7 @@ public class VStringCodeField extends VCodeField {
   /**
    * Returns the array of codes.
    */
-  protected Object[] getCodes() {
+  public Object[] getCodes() {
     return codes;
   }
 
