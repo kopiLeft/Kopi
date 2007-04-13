@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: VReportSelectionForm.java 28901 2007-04-12 16:37:18Z wael $
+ * $Id$
  */
 
 package com.kopiright.vkopi.lib.cross;
@@ -73,7 +73,6 @@ public class VDynamicReportSelectionForm extends VForm {
    * Implements interface for COMMAND CreateDynamicReport
    */
   public void createDynamicReport(VBlock b) throws VException {
-    b.validate();
     VField[] fl = b.getFields();
     VField[] fields = new VField[fl.length];
     int size = 0;
