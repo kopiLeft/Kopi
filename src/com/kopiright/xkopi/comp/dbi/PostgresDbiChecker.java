@@ -82,8 +82,8 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits AddTableConstraintStatement
    */
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					       Expression tableName,
-					       TableConstraint tableConstraint)
+                                               Expression tableName,
+                                               TableConstraint tableConstraint)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -142,7 +142,10 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits CodeFixedType
    */
-  public void visitCodeFixedType(CodeFixedType self, int precision, int scale, ArrayList list)
+  public void visitCodeFixedType(CodeFixedType self,
+                                 int precision,
+                                 int scale,
+                                 ArrayList list)
     throws PositionedError
   {
     // !!! graf 990814: scale, precision missing
@@ -175,11 +178,11 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits Column
    */
   public void visitColumn(Column self,
-			  String ident,
-			  Type type,
-			  boolean nullable,
-			  String constraintName,
-			  JavaStyleComment[] comment)
+                          String ident,
+                          Type type,
+                          boolean nullable,
+                          String constraintName,
+                          JavaStyleComment[] comment)
     throws PositionedError
   {
 
@@ -217,10 +220,10 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits FixedType
    */
   public void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max)
+                             int precision,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
     throws PositionedError
   {
     current.append("NUMERIC(");
@@ -242,11 +245,11 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits IndexDefinition
    */
   public void visitIndexDefinition(IndexDefinition self,
-				   boolean hasUnique,
-				   String indexName,
-				   Expression tableName,
-				   ArrayList indexElemList,
-				   int type)
+                                   boolean hasUnique,
+                                   String indexName,
+                                   Expression tableName,
+                                   ArrayList indexElemList,
+                                   int type)
     throws PositionedError
   {
     current.append("CREATE ");
@@ -260,7 +263,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < indexElemList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((IndexElem)indexElemList.get(i)).accept(this);
     }
@@ -291,7 +294,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("PRIMARY KEY (");
     for (int i = 0; i < keyList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       current.append(keyList.get(i));
     }
@@ -300,9 +303,11 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     if (getContext() instanceof TableDefinition) {
       TableDefinition def = (TableDefinition)getContext();
       for (int i = 0; i < keyList.size(); i++) {
-	if (keyList.get(i) == null) {
-	  System.err.println("The number of keys in the table " + ((SimpleIdentExpression)def.getTableName()).getIdent() + " is not correct.");
-	}
+        if (keyList.get(i) == null) {
+          System.err.println("The number of keys in the table "
+                             + ((SimpleIdentExpression)def.getTableName()).getIdent()
+                             + " is not correct.");
+        }
       }
     }
   }
@@ -321,10 +326,10 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    */
   // coco 010329 : look at the documentation to see what produce
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-						   String name,
-						   FieldNameList field,
-						   ReferencedTableAndColumns reference,
-						   int type)
+                                                   String name,
+                                                   FieldNameList field,
+                                                   ReferencedTableAndColumns reference,
+                                                   int type)
     throws PositionedError
   {
     current.append(" FOREIGN KEY ");
@@ -338,13 +343,17 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits StringType
    */
-  public void visitStringType(StringType self, boolean fixed, int width, int height, int convert)
+  public void visitStringType(StringType self,
+                              boolean fixed,
+                              int width,
+                              int height,
+                              int convert)
     throws PositionedError
   {
-    int		size;
+    int size;
 
     if (width == -1) {
-      size = 256;	// arbitrary : we don't know the size
+      size = 256;       // arbitrary : we don't know the size
     } else {
       size = width * height;
     }
@@ -358,9 +367,10 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits TableDefinition
    */
   public void visitTableDefinition(TableDefinition self,
-				   Expression tableName,
-				   ArrayList columns,
-				   Key key)
+                                   Expression tableName,
+                                   ArrayList columns,
+                                   Key key,
+                                   Pragma pragma)
     throws PositionedError
   {
     current.append("CREATE TABLE ");
@@ -368,7 +378,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < columns.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((Column)columns.get(i)).accept(this);
     }
@@ -410,7 +420,9 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits UniqueConstraintDefinition
    */
-  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self, int type, FieldNameList field)
+  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
+                                              int type,
+                                              FieldNameList field)
     throws PositionedError
   {
     switch (type) {

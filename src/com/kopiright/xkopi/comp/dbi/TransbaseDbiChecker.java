@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.xkopi.comp.sqlc.*;
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.xkopi.comp.sqlc.*;
 import com.kopiright.xkopi.lib.base.DriverInterface;
 import com.kopiright.xkopi.lib.base.TbxDriverInterface;
 import com.kopiright.xkopi.lib.type.Date;
@@ -77,8 +77,8 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits AddTableConstraintStatement
    */
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					       Expression tableName,
-					       TableConstraint tableConstraint)
+                                               Expression tableName,
+                                               TableConstraint tableConstraint)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -150,7 +150,10 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits CodeFixedType
    */
-  public void visitCodeFixedType(CodeFixedType self, int precision, int scale, ArrayList list)
+  public void visitCodeFixedType(CodeFixedType self,
+                                 int precision,
+                                 int scale,
+                                 ArrayList list)
     throws PositionedError
   {
     // !!! graf 990814: scale, precision missing
@@ -200,10 +203,10 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits FixedType
    */
   public void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max)
+                             int precision,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
     throws PositionedError
   {
     current.append("NUMERIC(");
@@ -225,11 +228,11 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits IndexDefinition
    */
   public void visitIndexDefinition(IndexDefinition self,
-				   boolean hasUnique,
-				   String indexName,
-				   Expression tableName,
-				   ArrayList indexElemList,
-				   int type)
+                                   boolean hasUnique,
+                                   String indexName,
+                                   Expression tableName,
+                                   ArrayList indexElemList,
+                                   int type)
     throws PositionedError
   {
     current.append("CREATE ");
@@ -243,7 +246,7 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < indexElemList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((IndexElem)indexElemList.get(i)).accept(this);
     }
@@ -304,10 +307,10 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits ReferentialConstraintDefinition
    */
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-						   String name,
-						   FieldNameList field,
-						   ReferencedTableAndColumns reference,
-						   int type)
+                                                   String name,
+                                                   FieldNameList field,
+                                                   ReferencedTableAndColumns reference,
+                                                   int type)
     throws PositionedError
   {
     current.append(name);
@@ -335,7 +338,11 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits StringType
    */
-  public void visitStringType(StringType self, boolean fixed, int width, int height, int convert)
+  public void visitStringType(StringType self,
+                              boolean fixed,
+                              int width,
+                              int height,
+                              int convert)
     throws PositionedError
   {
     if (fixed) {
@@ -351,9 +358,10 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits TableDefinition
    */
   public void visitTableDefinition(TableDefinition self,
-				   Expression tableName,
-				   ArrayList columns,
-				   Key key)
+                                   Expression tableName,
+                                   ArrayList columns,
+                                   Key key,
+                                   Pragma pragma)
     throws PositionedError
   {
     current.append("CREATE TABLE ");
@@ -361,7 +369,7 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < columns.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((Column)columns.get(i)).accept(this);
     }
@@ -402,7 +410,9 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits UniqueConstraintDefinition
    */
-  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self, int type, FieldNameList field)
+  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
+                                              int type,
+                                              FieldNameList field)
     throws PositionedError
   {
     switch (type) {

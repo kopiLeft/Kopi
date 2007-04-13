@@ -120,7 +120,7 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
 
   /**
    * Visits JdbcDateLiteral
-   * @param	value	the JDBC date
+   * @param     value   the JDBC date
    */
   public abstract void visitJdbcDateLiteral(JdbcDateLiteral self, Date value)
     throws PositionedError;
@@ -130,8 +130,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits AlterDropDefaultColumnStatement
    */
   public void visitAlterDropDefaultColumnStatement(AlterDropDefaultColumnStatement self,
-						   Expression tableName,
-						   String columnName)
+                                                   Expression tableName,
+                                                   String columnName)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -145,9 +145,9 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits AlterSetDefaultColumnStatement
    */
   public void visitAlterSetDefaultColumnStatement(AlterSetDefaultColumnStatement self,
-						  Expression tableName,
-						  String columnName,
-						  Expression defaultValue)
+                                                  Expression tableName,
+                                                  String columnName,
+                                                  Expression defaultValue)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -173,8 +173,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits AddTableConstraintStatement
    */
   public abstract void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-							Expression tableName,
-							TableConstraint tableConstraint)
+                                                        Expression tableName,
+                                                        TableConstraint tableConstraint)
     throws PositionedError;
 
   /**
@@ -201,12 +201,17 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits ByteType
    */
-  public abstract void visitByteType(ByteType self, Integer min, Integer max) throws PositionedError;
+  public abstract void visitByteType(ByteType self,
+                                     Integer min,
+                                     Integer max)
+    throws PositionedError;
 
   /**
    * Visits CodeBoolType
    */
-  public abstract void visitCodeBoolType(CodeBoolType self, ArrayList list) throws PositionedError;
+  public abstract void visitCodeBoolType(CodeBoolType self,
+                                         ArrayList list)
+    throws PositionedError;
 
   /**
    * Visits CodeFixedDesc
@@ -244,12 +249,18 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits CodeFixedType
    */
-  public abstract void visitCodeFixedType(CodeFixedType self, int precision, int scale, ArrayList list) throws PositionedError;
+  public abstract void visitCodeFixedType(CodeFixedType self,
+                                          int precision,
+                                          int scale,
+                                          ArrayList list)
+    throws PositionedError;
 
   /**
    * Visits CodeLongType
    */
-  public abstract void visitCodeLongType(CodeLongType self, ArrayList list) throws PositionedError;
+  public abstract void visitCodeLongType(CodeLongType self,
+                                         ArrayList list)
+    throws PositionedError;
 
   /**
    * Visits ColorType
@@ -260,12 +271,12 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits Column
    */
   public void visitColumn(Column self,
-			  String ident,
-			  Type type,
-			  boolean nullable,
+                          String ident,
+                          Type type,
+                          boolean nullable,
                           Expression defaultValue,
-			  String constraintName,
-			  JavaStyleComment[] comment)
+                          String constraintName,
+                          JavaStyleComment[] comment)
     throws PositionedError
   {
     current.append(ident);
@@ -313,8 +324,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits DropTableConstraintStatement
    */
   public void visitDropTableConstraintStatement(DropTableConstraintStatement self,
-						Expression tableName,
-						String constraintName)
+                                                Expression tableName,
+                                                String constraintName)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -347,7 +358,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits DropSequenceStatement
    */
-  public void visitDropSequenceStatement(DropSequenceStatement self, Expression sequenceName)
+  public void visitDropSequenceStatement(DropSequenceStatement self,
+                                         Expression sequenceName)
     throws PositionedError
   {
     current.append("DROP SEQUENCE ");
@@ -357,31 +369,33 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits EnumType
    */
-  public abstract void visitEnumType(EnumType self, ArrayList list) throws PositionedError;
+  public abstract void visitEnumType(EnumType self,
+                                     ArrayList list)
+    throws PositionedError;
 
   /**
    * Visits FixedType
    */
   public abstract void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max) throws PositionedError;
+                                      int precision,
+                                      int scale,
+                                      Fixed min,
+                                      Fixed max) throws PositionedError;
 
   /**
    * Visits GrantPrivilegeStatement
    */
   public void visitGrantPrivilegeStatement(GrantPrivilegeStatement self,
-					   Expression tableName,
-					   ArrayList privileges,
-					   ArrayList userList,
-					   boolean grantOption)
+                                           Expression tableName,
+                                           ArrayList privileges,
+                                           ArrayList userList,
+                                           boolean grantOption)
     throws PositionedError
   {
     current.append("GRANT ");
     for (int i = 0; i < privileges.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((TablePrivilege)privileges.get(i)).accept(this);
     }
@@ -391,7 +405,7 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
     for (int i = 0; i < userList.size(); i++) {
       // !!! coco 050201 : on sapdb there is only one element on the user list
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       current.append(userList.get(i));
     }
@@ -402,8 +416,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    */
     // !!! coco 050201 : verify what it is an user class
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
-					   int userClass,
-					   String userName)
+                                           int userClass,
+                                           String userName)
     throws PositionedError
   {
     current.append("GRANT ");
@@ -426,17 +440,20 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits ImageType
    */
-  public abstract void visitImageType(ImageType self, int width, int height) throws PositionedError;
+  public abstract void visitImageType(ImageType self,
+                                      int width,
+                                      int height)
+    throws PositionedError;
 
   /**
    * Visits IndexDefinition
    */
   public abstract void visitIndexDefinition(IndexDefinition self,
-					    boolean hasUnique,
-					    String indexName,
-					    Expression tableName,
-					    ArrayList indexElemList,
-					    int type) throws PositionedError;
+                                            boolean hasUnique,
+                                            String indexName,
+                                            Expression tableName,
+                                            ArrayList indexElemList,
+                                            int type) throws PositionedError;
 
   /**
    * Visits IndexElem
@@ -455,7 +472,10 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits IntType
    */
-  public abstract void visitIntType(IntType self, Integer min, Integer max) throws PositionedError;
+  public abstract void visitIntType(IntType self,
+                                    Integer min,
+                                    Integer max)
+    throws PositionedError;
 
   /**
    * Visits Key
@@ -471,8 +491,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits NullDelimiterSpec
    */
   public void visitNullDelimiterSpec(NullDelimiterSpec self,
-				     NullSpec nullSpec,
-				     DelimSpec delimSpec)
+                                     NullSpec nullSpec,
+                                     DelimSpec delimSpec)
     throws PositionedError
   {
     if (nullSpec != null) {
@@ -480,7 +500,7 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
     }
     if (delimSpec != null) {
       if (nullSpec != null) {
-	current.append(" ");
+        current.append(" ");
       }
       delimSpec.accept(this);
     }
@@ -500,8 +520,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits ReferencedTableAndColumns
    */
   public void visitReferencedTableAndColumns(ReferencedTableAndColumns self,
-					     Expression tableName,
-					     FieldNameList field)
+                                             Expression tableName,
+                                             FieldNameList field)
     throws PositionedError
   {
     tableName.accept(this);
@@ -514,10 +534,10 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits ReferentialConstraintDefinition
    */
   public abstract void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-							    String name,
-							    FieldNameList field,
-							    ReferencedTableAndColumns reference,
-							    int type)
+                                                            String name,
+                                                            FieldNameList field,
+                                                            ReferencedTableAndColumns reference,
+                                                            int type)
     throws PositionedError;
 
   /**
@@ -541,9 +561,9 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits SpoolFileStatement
    */
   public void visitSpoolFileStatement(SpoolFileStatement self,
-				      String fileName,
-				      NullDelimiterSpec spec,
-				      SelectStatement select)
+                                      String fileName,
+                                      NullDelimiterSpec spec,
+                                      SelectStatement select)
     throws PositionedError
   {
     current.append("SPOOL INTO");
@@ -559,11 +579,11 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits SpoolTableStatement
    */
   public void visitSpoolTableStatement(SpoolTableStatement self,
-				       Expression tableName,
-				       boolean hasSorted,
-				       String fileName,
-				       boolean hasLocal,
-				       NullDelimiterSpec spec)
+                                       Expression tableName,
+                                       boolean hasSorted,
+                                       String fileName,
+                                       boolean hasLocal,
+                                       NullDelimiterSpec spec)
     throws PositionedError
   {
     current.append("SPOOL ");
@@ -583,7 +603,12 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits StringType
    */
-  public abstract void visitStringType(StringType self, boolean fixed, int width, int height, int convert) throws PositionedError;
+  public abstract void visitStringType(StringType self,
+                                       boolean fixed,
+                                       int width,
+                                       int height,
+                                       int convert)
+    throws PositionedError;
 
 
   /**
@@ -606,16 +631,18 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits TableDefinition
    */
   public abstract void visitTableDefinition(TableDefinition self,
-					    Expression tableName,
-					    ArrayList columns,
-					    Key key) throws PositionedError;
+                                            Expression tableName,
+                                            ArrayList columns,
+                                            Key key,
+                                            Pragma pragma)
+    throws PositionedError;
 
   /**
    * Visits TablePrivilege
    */
   public void visitTablePrivilege(TablePrivilege self,
-				  int privilege,
-				  FieldNameList fieldName)
+                                  int privilege,
+                                  FieldNameList fieldName)
     throws PositionedError
   {
     switch(privilege) {
@@ -634,8 +661,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
     case TablePrivilege.TYP_UPDATE:
       current.append("UPDATE");
       if (fieldName != null) {
-	current.append(" ");
-	fieldName.accept(this);
+        current.append(" ");
+        fieldName.accept(this);
       }
       break;
     default:
@@ -646,7 +673,10 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits TextType
    */
-  public abstract void visitTextType(TextType self, int width, int height) throws PositionedError;
+  public abstract void visitTextType(TextType self,
+                                     int width,
+                                     int height)
+    throws PositionedError;
 
   /**
    * Visits TimeType
@@ -670,16 +700,19 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits UniqueConstraintDefinition
    */
-  public abstract void visitUniqueConstraintDefinition(UniqueConstraintDefinition self, int type, FieldNameList field) throws PositionedError;
+  public abstract void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
+                                                       int type,
+                                                       FieldNameList field)
+    throws PositionedError;
 
   /**
    * Visits ViewColumn
    */
   public void visitViewColumn(ViewColumn self,
-			      String ident,
-			      Type type,
-			      boolean nullable,
-			      JavaStyleComment[] comment)
+                              String ident,
+                              Type type,
+                              boolean nullable,
+                              JavaStyleComment[] comment)
     throws PositionedError
   {
     current.append(ident);
@@ -689,22 +722,18 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
    * Visits ViewDefinition
    */
   public void visitViewDefinition(ViewDefinition self,
-				  Expression tableName,
-				  ArrayList columnNameList,
-				  TableReference reference)
+                                  Expression tableName,
+                                  ArrayList columnNameList,
+                                  TableReference reference)
     throws PositionedError
   {
-    // !!!if (!numberColumnEquals()) {
-    //  getContext().reportTrouble(new CWarning(getTokenReference(), "warning-view-column-count"));
-    //}
-
     current.append("CREATE ");
     current.append("VIEW ");
     tableName.accept(this);
     current.append(" (");
     for (int i = 0; i < columnNameList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((ViewColumn)columnNameList.get(i)).accept(this);
     }

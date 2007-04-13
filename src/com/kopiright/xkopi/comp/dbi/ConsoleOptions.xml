@@ -18,12 +18,43 @@
   $Id$
 -->
 
-<option prefix="Console" parent="com.kopiright.util.base.Options"  package="com.kopiright.xkopi.comp.dbi"  usage="usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource (tbx | sap | pg | ora) --host &lt;host> --dbname &lt;dbname> --login &lt;login> --password &lt;password> &lt;dbi-files>">
-<param longname="datasource" shortname="d"  type="String"  default="tbx"  help="Sets the source to connect to (tbx | sap | pg | ora)" />
-<param longname="host" shortname="H"  type="String"  default="localhost"  help="The host to connect to" />
-<param longname="dbname" shortname="b"  type="String"  default="null"  help="The name of the database" />
-<param longname="login" shortname="l"  type="String"  default="null"  help="The login for the database" />
-<param longname="password" shortname="p"  type="String"  default="null"  help="The password for the database" />
-<param longname="noprompt" shortname="N"  type="boolean"  default="false"  help="No console prompt" />
-<param longname="abortonerror" shortname="A"  type="boolean"  default="false"  help="Abort the transaction and exit on error" />
+<option prefix="Console"
+        parent="com.kopiright.util.base.Options"
+        package="com.kopiright.xkopi.comp.dbi"
+        usage="usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource (tbx | sap | pg | ora | ora10g) --host &lt;host> --dbname &lt;dbname> --login &lt;login> --password &lt;password> &lt;dbi-files>">
+  <param longname="datasource"
+         shortname="d"
+         type="String"
+         default="tbx"
+         help="Sets the source to connect to (tbx | sap | pg | ora | ora10g)" />
+  <param longname="host"
+         shortname="H"
+         type="String"
+         default="localhost"
+         help="The host to connect to" />
+  <param longname="dbname"
+         shortname="b"
+         type="String"
+	 default="null"
+	 help="The name of the database" />
+  <param longname="login"
+	 shortname="l"
+	 type="String"
+	 default="null"
+	 help="The login for the database" />
+  <param longname="password"
+	 shortname="p"
+	 type="String"
+	 default="null"
+	 help="The password for the database" />
+  <param longname="noprompt"
+	 shortname="N"
+	 type="boolean"
+	 default="false"
+	 help="No console prompt" />
+  <param longname="abortonerror"
+	 shortname="A"
+	 type="boolean"
+	 default="false"
+	 help="Abort the transaction and exit on error" />
 </option>

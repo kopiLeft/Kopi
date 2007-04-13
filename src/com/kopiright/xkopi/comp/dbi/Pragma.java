@@ -14,71 +14,66 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id$
+ * $Id: Key.java 27892 2007-02-16 16:09:48Z graf $
  */
 
 package com.kopiright.xkopi.comp.dbi;
-
-import java.util.List;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 
 /**
- * This class represents a table definition
+ * This class represents a pragma for extra satatements for a table
+ * definition
  */
-public class Key extends Constraint {
-
+public class Pragma extends Constraint {
+  
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
-
+  
   /**
    * Constructor
+   *
    * @param     ref             the token reference for this clause
-   * @param     keyList         the list of the keys
+   * @param     databaseType    in which the statement will be executed
    */
-  public Key(TokenReference ref, List keyList) {
+  public Pragma(TokenReference ref,
+                String databaseType,
+                String statement)
+  {
     super(ref);
-    this.keyList = keyList;
+    
+    this.databaseType = databaseType;
+    this.statement = statement;
   }
-
+  
   // ----------------------------------------------------------------------
   // ACCESSOR
   // ----------------------------------------------------------------------
-
+  
   /**
-   * @return    the list of the keys
+   * Test this pragma database type against the target 
+   *
+   * @param     type    the target database type
+   * @return    true if the type is a match
    */
-  public List getKeys() {
-    return keyList;
+  public boolean databaseIs(String type) {
+    return databaseType.equals(type);
+  }
+  
+  /**
+   * @return    the database type.
+   */
+  public String getDatabaseType() {
+    return databaseType;
   }
 
-  // ----------------------------------------------------------------------
-  // FUNCTION
-  // ----------------------------------------------------------------------
-
   /**
-   * Compare 2 keys.
-   *
-   * @return true if the keys are equals.
+   * @return    the statement of this pragma
    */
-  public boolean compareTo(Key otherKey) {
-    List        otherKeyList = otherKey.getKeys();
-
-    if (keyList.size() == otherKeyList.size()) {
-      for (int i = 0; i < keyList.size(); i++) {
-        if (!keyList.get(i).equals(otherKeyList.get(i))) {
-          DbCheck.addError(new PositionedError(getTokenReference(),
-                                               DbiMessages.KEY_NOT_CORRECT,
-                                               keyList.get(i)));
-          return false;
-        }
-      }
-      return true;
-    } else {
-      return false;
-    }
+  public String getStatement() {
+    return statement;
   }
   
   // --------------------------------------------------------------------
@@ -86,17 +81,18 @@ public class Key extends Constraint {
   // --------------------------------------------------------------------
   
   /**
-   * Accepts a visitor.
+   * Accepts a visitor.    
    *
    * @param     visitor                 the visitor
    */
   public void accept(DbiVisitor visitor) throws PositionedError {
-    visitor.visitKey(this, keyList);
+    
   }
   
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-  private List          keyList;
+  private String        databaseType;
+  private String        statement;
 }

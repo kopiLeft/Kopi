@@ -44,8 +44,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits AlterColumnStatement
    */
   public void visitAlterDropDefaultColumnStatement(AlterDropDefaultColumnStatement self,
-						   Expression tableName,
-						   String columnName)
+                                                   Expression tableName,
+                                                   String columnName)
     throws PositionedError
   {
     tableName.accept(this);
@@ -55,9 +55,9 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits AlterColumnStatement
    */
   public void visitAlterSetDefaultColumnStatement(AlterSetDefaultColumnStatement self,
-						  Expression tableName,
-						  String columnName,
-						  Expression defaultValue)
+                                                  Expression tableName,
+                                                  String columnName,
+                                                  Expression defaultValue)
     throws PositionedError
   {
     tableName.accept(this);
@@ -79,8 +79,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits AddTableConstraintStatement
    */
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					       Expression tableName,
-					       TableConstraint tableConstraint)
+                                               Expression tableName,
+                                               TableConstraint tableConstraint)
     throws PositionedError
   {
     tableName.accept(this);
@@ -166,7 +166,10 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
   /**
    * Visits CodeFixedType
    */
-  public void visitCodeFixedType(CodeFixedType self, int precision, int scale, ArrayList list)
+  public void visitCodeFixedType(CodeFixedType self,
+                                 int precision,
+                                 int scale,
+                                 ArrayList list)
     throws PositionedError
   {
   }
@@ -191,12 +194,12 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits Column
    */
   public void visitColumn(Column self,
-			  String ident,
-			  Type type,
-			  boolean nullable,
+                          String ident,
+                          Type type,
+                          boolean nullable,
                           Expression defaultValue,
-			  String constraintName,
-			  JavaStyleComment[] comment)
+                          String constraintName,
+                          JavaStyleComment[] comment)
     throws PositionedError
   {
     type.accept(this);
@@ -230,8 +233,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits DropTableConstraintStatement
    */
   public void visitDropTableConstraintStatement(DropTableConstraintStatement self,
-						Expression tableName,
-						String constraintName)
+                                                Expression tableName,
+                                                String constraintName)
     throws PositionedError
   {
     tableName.accept(this);
@@ -249,7 +252,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
   /**
    * Visits DropSequenceStatement
    */
-  public void visitDropSequenceStatement(DropSequenceStatement self, Expression sequenceName)
+  public void visitDropSequenceStatement(DropSequenceStatement self,
+                                         Expression sequenceName)
     throws PositionedError
   {
     sequenceName.accept(this);
@@ -276,10 +280,10 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits FixedType
    */
   public void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max)
+                             int precision,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
     throws PositionedError
   {
   }
@@ -288,10 +292,10 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits GrantPrivilegeStatement
    */
   public void visitGrantPrivilegeStatement(GrantPrivilegeStatement self,
-					   Expression tableName,
-					   ArrayList privileges,
-					   ArrayList userList,
-					   boolean grantOption)
+                                           Expression tableName,
+                                           ArrayList privileges,
+                                           ArrayList userList,
+                                           boolean grantOption)
     throws PositionedError
   {
     for (int i = 0; i < privileges.size(); i++) {
@@ -304,8 +308,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits GrantUserClassStatement
    */
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
-					   int userClass,
-					   String userName)
+                                           int userClass,
+                                           String userName)
     throws PositionedError
   {
   }
@@ -322,11 +326,11 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits IndexDefinition
    */
   public void visitIndexDefinition(IndexDefinition self,
-				   boolean hasUnique,
-				   String indexName,
-				   Expression tableName,
-				   ArrayList indexElemList,
-				   int type)
+                                   boolean hasUnique,
+                                   String indexName,
+                                   Expression tableName,
+                                   ArrayList indexElemList,
+                                   int type)
     throws PositionedError
   {
     tableName.accept(this);
@@ -371,8 +375,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits NullDelimiterSpec
    */
   public void visitNullDelimiterSpec(NullDelimiterSpec self,
-				     NullSpec nullSpec,
-				     DelimSpec delimSpec)
+                                     NullSpec nullSpec,
+                                     DelimSpec delimSpec)
     throws PositionedError
   {
     if (nullSpec != null) {
@@ -395,8 +399,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits ReferencedTableAndColumns
    */
   public void visitReferencedTableAndColumns(ReferencedTableAndColumns self,
-					     Expression tableName,
-					     FieldNameList field)
+                                             Expression tableName,
+                                             FieldNameList field)
     throws PositionedError
   {
     field.accept(this);
@@ -406,10 +410,10 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits ReferentialConstraintDefinition
    */
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-						   String name,
-						   FieldNameList field,
-						   ReferencedTableAndColumns reference,
-						   int type)
+                                                   String name,
+                                                   FieldNameList field,
+                                                   ReferencedTableAndColumns reference,
+                                                   int type)
     throws PositionedError
   {
     field.accept(this);
@@ -428,9 +432,9 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits CompilationUnit (root of the syntax abstract tree)
    */
   public void visitSCompilationUnit(SCompilationUnit self,
-				    String packageName,
-				    int version,
-				    ArrayList elems)
+                                    String packageName,
+                                    int version,
+                                    ArrayList elems)
     throws PositionedError {
     for(int i = 0; i < elems.size(); i++) {
       ((Statement)elems.get(i)).accept(this);
@@ -450,9 +454,9 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits SpoolFileStatement
    */
   public void visitSpoolFileStatement(SpoolFileStatement self,
-				      String fileName,
-				      NullDelimiterSpec spec,
-				      SelectStatement select)
+                                      String fileName,
+                                      NullDelimiterSpec spec,
+                                      SelectStatement select)
     throws PositionedError
   {
     spec.accept(this);
@@ -463,11 +467,11 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits SpoolTableStatement
    */
   public void visitSpoolTableStatement(SpoolTableStatement self,
-				       Expression tableName,
-				       boolean hasSorted,
-				       String fileName,
-				       boolean hasLocal,
-				       NullDelimiterSpec spec)
+                                       Expression tableName,
+                                       boolean hasSorted,
+                                       String fileName,
+                                       boolean hasLocal,
+                                       NullDelimiterSpec spec)
     throws PositionedError
   {
     tableName.accept(this);
@@ -501,9 +505,10 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits TableDefinition
    */
   public void visitTableDefinition(TableDefinition self,
-				   Expression tableName,
-				   ArrayList columns,
-				   Key key)
+                                   Expression tableName,
+                                   ArrayList columns,
+                                   Key key,
+                                   Pragma pragma)
     throws PositionedError
   {
     tableName.accept(this);
@@ -519,8 +524,8 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits TablePrivilege
    */
   public void visitTablePrivilege(TablePrivilege self,
-				  int privilege,
-				  FieldNameList fieldName)
+                                  int privilege,
+                                  FieldNameList fieldName)
     throws PositionedError
   {
     switch (privilege) {
@@ -534,7 +539,7 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
       break;
     case TablePrivilege.TYP_UPDATE:
       if (fieldName != null) {
-	fieldName.accept(this);
+        fieldName.accept(this);
       }
       break;
     default:
@@ -577,7 +582,9 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
   /**
    * Visits UniqueConstraintDefinition
    */
-  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self, int type, FieldNameList field)
+  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
+                                              int type,
+                                              FieldNameList field)
     throws PositionedError
   {
     field.accept(this);
@@ -587,10 +594,10 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits ViewColumn
    */
   public void visitViewColumn(ViewColumn self,
-			      String ident,
-			      Type type,
-			      boolean nullable,
-			      JavaStyleComment[] comment)
+                              String ident,
+                              Type type,
+                              boolean nullable,
+                              JavaStyleComment[] comment)
     throws PositionedError
   {
   }
@@ -599,9 +606,9 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
    * Visits ViewDefinition
    */
   public void visitViewDefinition(ViewDefinition self,
-				  Expression tableName,
-				  ArrayList columnNameList,
-				  TableReference reference)
+                                  Expression tableName,
+                                  ArrayList columnNameList,
+                                  TableReference reference)
     throws PositionedError
   {
     tableName.accept(this);

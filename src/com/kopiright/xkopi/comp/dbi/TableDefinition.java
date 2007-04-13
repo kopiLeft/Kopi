@@ -46,20 +46,39 @@ public class TableDefinition extends DbiStatement implements SqlContext {
 
   /**
    * Constructor
-   * @param	ref		the token reference for this clause
-   * @param	tableName	the name of the table
-   * @param	columns		the vector of columns
-   * @param	key		the primary key of the table
+   * @param     ref             the token reference for this clause
+   * @param     tableName       the name of the table
+   * @param     columns         the vector of columns
+   * @param     key             the primary key of the table
    */
   public TableDefinition(TokenReference ref,
-			 Expression tableName,
-			 ArrayList columns,
-			 Key key)
+                         Expression tableName,
+                         ArrayList columns,
+                         Key key)
+  {
+    this(ref, tableName, columns, key, null);
+  }
+
+  /**
+   * Constructor
+   * @param     ref             the token reference for this clause
+   * @param     tableName       the name of the table
+   * @param     columns         the vector of columns
+   * @param     key             the primary key of the table
+   * @param     pragma          the pragma
+   */
+  public TableDefinition(TokenReference ref,
+                         Expression tableName,
+                         ArrayList columns,
+                         Key key,
+                         Pragma pragma)
   {
     super(ref);
+
     this.tableName = tableName;
     this.columns = columns;
     this.key = key;
+    this.pragma = pragma;
   }
 
   // ----------------------------------------------------------------------
@@ -81,7 +100,7 @@ public class TableDefinition extends DbiStatement implements SqlContext {
   }
 
   /**
-   * getKey
+   *
    */
   public Key getKey() {
     return key;
@@ -94,7 +113,13 @@ public class TableDefinition extends DbiStatement implements SqlContext {
     return foreignKeys;
   }
  
-
+  /**
+   *
+   */
+  public Pragma getPragma() {
+    return pragma;
+  }
+  
   // ----------------------------------------------------------------------
   // GENERATE INSERT INTO THE DICTIONARY
   // ----------------------------------------------------------------------
@@ -102,9 +127,12 @@ public class TableDefinition extends DbiStatement implements SqlContext {
   /**
    * Generate the code in pure java form
    */
-  public void makeDBSchema(DBAccess a, String packageName)
-    throws SQLException {
-    int		table = a.addTable(((SimpleIdentExpression)this.getTableName()).getIdent(), packageName);
+  public void makeDBSchema(DBAccess a, String packageName) throws SQLException {
+    int         table;
+
+    table = a.addTable(((SimpleIdentExpression)this.getTableName()).getIdent(),
+                       packageName);
+    
     for (int i = 0; i < columns.size(); i++) {
       ((Column)columns.get(i)).makeDBSchema(a, table, (byte)i, key.getKeys());
     }
@@ -116,37 +144,42 @@ public class TableDefinition extends DbiStatement implements SqlContext {
 
   public boolean compareTo(TableDefinition otherTable) {
     // the expression tableName
-    Expression otherTableName = otherTable.getTableName();
-    if (tableName instanceof SimpleIdentExpression && otherTableName instanceof SimpleIdentExpression) {
+    Expression          otherTableName;
+    
+    otherTableName = otherTable.getTableName();
+    if (tableName instanceof SimpleIdentExpression
+        && otherTableName instanceof SimpleIdentExpression) {
       if (((SimpleIdentExpression)tableName).compareTo((SimpleIdentExpression)otherTableName)) {
-	// the vector of columns
-	ArrayList otherColumns = otherTable.getColumns();
-	if (columns.size() == otherColumns.size()) {
-	  for (int i = 0; i < columns.size(); i++) {
-	    if ( !((Column)columns.get(i)).compareTo((Column)otherColumns.get(i))) {
-	      DbCheck.addError(new PositionedError(getTokenReference(),
-						   DbiMessages.COLUMN_IN_TABLE_NOT_CORRECT,
-						   ((Column)columns.get(i)).getIdent(),
-						   ((SimpleIdentExpression)tableName).getIdent()));
-	      return false;
-	    }
-	 }
-	  // the key
-	  if (key != null && otherTable.getKey() != null) {
-	    return key.compareTo(otherTable.getKey());
-	  } else if (key == null && otherTable.getKey() == null) {
-	    return true;
-	  }
-	  DbCheck.addError(new PositionedError(getTokenReference(),
-					       DbiMessages.KEY_IN_TABLE_NOT_CORRECT,
-					       ((SimpleIdentExpression)tableName).getIdent()));
-	  return false;
-	} else {
-	  DbCheck.addError(new PositionedError(getTokenReference(),
-					       DbiMessages.TOO_MUCH_COLUMNS_IN_TABLE,
-					       ((SimpleIdentExpression)tableName).getIdent()));
-	  return false;
-	}
+        // the vector of columns
+        ArrayList       otherColumns;
+        
+        otherColumns = otherTable.getColumns();
+        if (columns.size() == otherColumns.size()) {
+          for (int i = 0; i < columns.size(); i++) {
+            if ( !((Column)columns.get(i)).compareTo((Column)otherColumns.get(i))) {
+              DbCheck.addError(new PositionedError(getTokenReference(),
+                                                   DbiMessages.COLUMN_IN_TABLE_NOT_CORRECT,
+                                                   ((Column)columns.get(i)).getIdent(),
+                                                   ((SimpleIdentExpression)tableName).getIdent()));
+              return false;
+            }
+          }
+          // the key
+          if (key != null && otherTable.getKey() != null) {
+            return key.compareTo(otherTable.getKey());
+          } else if (key == null && otherTable.getKey() == null) {
+            return true;
+          }
+          DbCheck.addError(new PositionedError(getTokenReference(),
+                                               DbiMessages.KEY_IN_TABLE_NOT_CORRECT,
+                                               ((SimpleIdentExpression)tableName).getIdent()));
+          return false;
+        } else {
+          DbCheck.addError(new PositionedError(getTokenReference(),
+                                               DbiMessages.TOO_MUCH_COLUMNS_IN_TABLE,
+                                               ((SimpleIdentExpression)tableName).getIdent()));
+          return false;
+        }
       }
       return true;
     }
@@ -156,26 +189,32 @@ public class TableDefinition extends DbiStatement implements SqlContext {
   /**
    * addForeignKey
    */
-  public void addForeignKey(String foreignKeyName, String tableReference, String type) {
-    ArrayList values = new ArrayList();
+  public void addForeignKey(String foreignKeyName,
+                            String tableReference,
+                            String type)
+  {
+    ArrayList   values = new ArrayList();
 
     values.add(new StringLiteral(getTokenReference(),
                                  "'" + ((SimpleIdentExpression)tableName).getIdent() + "'"));
-    values.add(new StringLiteral(getTokenReference(),  "'" + foreignKeyName + "'"));
+    values.add(new StringLiteral(getTokenReference(), "'" + foreignKeyName + "'"));
     values.add(new StringLiteral(getTokenReference(), "'" + tableReference + "'"));
     values.add(new StringLiteral(getTokenReference(), "'" + type + "'"));
+    
     if (foreignKeys == null) {
       foreignKeys = new ArrayList();
     }
+
     foreignKeys.add(new InsertStatement(getTokenReference(),
                                         "REFERENZEN",
                                         null,
                                         new ValueListInsertSource(getTokenReference(),
                                                                   new ValueList(getTokenReference(),
-                                                                                new ExpressionList(getTokenReference(), values)))));
+                                                                                new ExpressionList(getTokenReference(),
+                                                                                                   values)))));
   }
- 
-
+  
+  
   // --------------------------------------------------------------------
   // ACCEPT VISITORS
   // --------------------------------------------------------------------
@@ -183,12 +222,12 @@ public class TableDefinition extends DbiStatement implements SqlContext {
   /**
    * Accepts a visitor.
    *
-   * @param	visitor			the visitor
+   * @param     visitor                 the visitor
    */
   public void accept(DbiVisitor visitor) throws PositionedError {
     parent = visitor.getContext();
     visitor.enter(this);
-    visitor.visitTableDefinition(this, tableName, columns, key);
+    visitor.visitTableDefinition(this, tableName, columns, key, pragma);
     visitor.exit(this);
   }
 
@@ -202,42 +241,44 @@ public class TableDefinition extends DbiStatement implements SqlContext {
   public TableReference getTableFromAlias(String alias) {
     return null;
   }
-
+  
   /**
    * Returns all tables defined in current context
    */
   public ArrayList getTables() {
     return null;
   }
-
+  
   /**
    * Returns the parent context
    */
   public SqlContext getParentContext() {
     return parent;
   }
-
+  
   /**
    * Add an error into the list and eat it
    * This method should be called after a try catch block after catching exception
    * or directly without exception thrown
-   * @param	error		the error
+   * @param     error           the error
    */
   public void reportTrouble(PositionedError trouble) {
     parent.reportTrouble(trouble);
   }
-
+  
   public CTypeContext getTypeContext() {
     return getTypeContext();
   }
+  
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private SqlContext		parent;
+  private SqlContext    parent;
 
-  Expression			tableName;
-  ArrayList			columns;
-  ArrayList			foreignKeys;
-  Key				key;
+  Expression            tableName;
+  ArrayList             columns;
+  ArrayList             foreignKeys;
+  Key                   key;
+  Pragma                pragma;
 }

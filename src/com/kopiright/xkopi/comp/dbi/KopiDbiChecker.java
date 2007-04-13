@@ -74,8 +74,8 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits AddTableConstraintStatement
    */
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					       Expression tableName,
-					       TableConstraint tableConstraint)
+                                               Expression tableName,
+                                               TableConstraint tableConstraint)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -170,11 +170,11 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits Column
    */
   public void visitColumn(Column self,
-			  String ident,
-			  Type type,
-			  boolean nullable,
-			  String constraintName,
-			  JavaStyleComment[] comment)
+                          String ident,
+                          Type type,
+                          boolean nullable,
+                          String constraintName,
+                          JavaStyleComment[] comment)
     throws PositionedError
   {
 
@@ -208,7 +208,7 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("ENUM(");
     for (int i = 0; i < list.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       current.append(list.get(i));
     }
@@ -219,10 +219,10 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits FixedType
    */
   public void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max)
+                             int precision,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
     throws PositionedError
   {
     current.append("CODE ");
@@ -248,11 +248,11 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits IndexDefinition
    */
   public void visitIndexDefinition(IndexDefinition self,
-				   boolean hasUnique,
-				   String indexName,
-				   Expression tableName,
-				   ArrayList indexElemList,
-				   int type)
+                                   boolean hasUnique,
+                                   String indexName,
+                                   Expression tableName,
+                                   ArrayList indexElemList,
+                                   int type)
     throws PositionedError
   {
     current.append("CREATE ");
@@ -266,7 +266,7 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < indexElemList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((IndexElem)indexElemList.get(i)).accept(this);
     }
@@ -312,7 +312,7 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("KEY IS ");
     for (int i = 0; i < keyList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       current.append(keyList.get(i));
     }
@@ -320,9 +320,11 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
     if (getContext() instanceof TableDefinition) {
       TableDefinition def = (TableDefinition)getContext();
       for (int i = 0; i < keyList.size(); i++) {
-	if (keyList.get(i) == null) {
-	  System.err.println("The number of keys in the table " + ((SimpleIdentExpression)def.getTableName()).getIdent() + " is not correct.");
-	}
+        if (keyList.get(i) == null) {
+          System.err.println("The number of keys in the table "
+                             + ((SimpleIdentExpression)def.getTableName()).getIdent()
+                             + " is not correct.");
+        }
       }
     }
   }
@@ -340,10 +342,10 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits ReferentialConstraintDefinition
    */
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-						   String name,
-						   FieldNameList field,
-						   ReferencedTableAndColumns reference,
-						   int type)
+                                                   String name,
+                                                   FieldNameList field,
+                                                   ReferencedTableAndColumns reference,
+                                                   int type)
     throws PositionedError
   {
     current.append(name);
@@ -377,22 +379,22 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
     if (fixed) {
       current.append("CHAR");
       if (width != 1) {
-	current.append("(");
-	current.append("" + width);
-	if (height != 1) {
-	  current.append(", " + height);
-	}
-	current.append(")");
+        current.append("(");
+        current.append("" + width);
+        if (height != 1) {
+          current.append(", " + height);
+        }
+        current.append(")");
       }
     } else {
       current.append("STRING");
       if (width != -1) {
-	current.append("(");
-	current.append("" + width);
-	if (height != 1) {
-	  current.append(", " + height);
-	}
- 	current.append(")");
+        current.append("(");
+        current.append("" + width);
+        if (height != 1) {
+          current.append(", " + height);
+        }
+        current.append(")");
       }
     }
     switch(convert) {
@@ -416,9 +418,10 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits TableDefinition
    */
   public void visitTableDefinition(TableDefinition self,
-				   Expression tableName,
-				   ArrayList columns,
-				   Key key)
+                                   Expression tableName,
+                                   ArrayList columns,
+                                   Key key,
+                                   Pragma pragma)
     throws PositionedError
   {
     current.append("CREATE TABLE ");
@@ -426,7 +429,7 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < columns.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((Column)columns.get(i)).accept(this);
     }

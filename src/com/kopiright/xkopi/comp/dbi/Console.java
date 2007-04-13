@@ -71,43 +71,41 @@ public class Console extends Compiler implements Constants {
   /**
    * Runs a compilation session
    *
-   * @param	args		the arguments to the compiler
-   * @return	true iff the compilation succeeded
+   * @param     args            the arguments to the compiler
+   * @return    true iff the compilation succeeded
    */
   public boolean run(String[] args) {
     if (!parseArguments(args)) {
       return false;
-    }
-
-    output = new PrintWriter(new OutputStreamWriter(System.out));
-
-    if (infiles.isEmpty()) {
-      input = new BufferedReader(new InputStreamReader(System.in));
-
-      processInput();
     } else {
-      ListIterator      iterator = infiles.listIterator();
-
-      while (iterator.hasNext()) {
-        String  filename = (String)iterator.next();
-
-        try {
-          input = new BufferedReader(new FileReader(filename));
-
-          processInput();
-        } catch (FileNotFoundException e) {
-          reportTrouble(e);
+      output = new PrintWriter(new OutputStreamWriter(System.out));
+      
+      if (infiles.isEmpty()) {
+        input = new BufferedReader(new InputStreamReader(System.in));
+        processInput();
+      } else {
+        ListIterator      iterator = infiles.listIterator();
+        
+        while (iterator.hasNext()) {
+          String  filename = (String)iterator.next();
+          
+          try {
+            input = new BufferedReader(new FileReader(filename));
+            
+            processInput();
+          } catch (FileNotFoundException e) {
+            reportTrouble(e);
+          }
         }
       }
+      return true;
     }
-
-    return true;
   }
 
   /**
    * Reports a trouble (error or warning).
    *
-   * @param	trouble		a description of the trouble to report.
+   * @param     trouble         a description of the trouble to report.
    */
   public void reportTrouble(PositionedError trouble) {
     inform(trouble);
@@ -116,7 +114,7 @@ public class Console extends Compiler implements Constants {
   /**
    * Reports a trouble (error or warning).
    *
-   * @param	trouble		a description of the trouble to report.
+   * @param     trouble         a description of the trouble to report.
    */
   public void reportTrouble(Throwable trouble) {
     inform(CompilerMessages.FORMATTED_ERROR, trouble.getMessage());
@@ -163,7 +161,8 @@ public class Console extends Compiler implements Constants {
             && options.dbname != null
             && options.login != null)
           {
-            final String  url = datasource.startURL + "//" + options.host + "/" + options.dbname;
+            final String  url = datasource.startURL + "//" + options.host + "/"
+                                + options.dbname;
 
             connection = DriverManager.getConnection(url,
                                                      options.login,
@@ -206,8 +205,9 @@ public class Console extends Compiler implements Constants {
         } else if (statement.equals("HELP;")) {
           help();
         } else {
-          com.kopiright.xkopi.comp.sqlc.Statement     stmt = parseStatement(statement);
-
+          com.kopiright.xkopi.comp.sqlc.Statement     stmt;
+          
+          stmt = parseStatement(statement);
           if (stmt != null) {
             executeStatement(stmt);
           }
@@ -385,7 +385,8 @@ public class Console extends Compiler implements Constants {
         rset.close();
       } else if (statement instanceof com.kopiright.xkopi.comp.sqlc.DeleteStatement
                  || statement instanceof com.kopiright.xkopi.comp.sqlc.InsertStatement
-                 || statement instanceof com.kopiright.xkopi.comp.sqlc.UpdateStatement) {
+                 || statement instanceof com.kopiright.xkopi.comp.sqlc.UpdateStatement)
+      {
         int     count = -1;
 
         synchronized (this) {
@@ -396,7 +397,8 @@ public class Console extends Compiler implements Constants {
         // Print summary
         output.println();
         if (count < 0) {
-          output.println("There is a problem : return of executeUpdate is negative : " + count);
+          output.println("There is a problem : return of executeUpdate is negative : "
+                         + count);
         } else {
           switch (count) {
           case 0:
@@ -498,7 +500,7 @@ public class Console extends Compiler implements Constants {
    * Entry point
    */
   public static void main(String[] args) {
-    boolean	success;
+    boolean     success;
 
     try {
       success = new Console().run(args);
@@ -543,8 +545,11 @@ public class Console extends Compiler implements Constants {
         return new PostgresDataSource();
       } else if (name.equals("ora")) {
         return new OracleDataSource();
+      } else if (name.equals("ora10g")) {
+        return new Oracle10gDataSource();
       } else {
-        throw new IllegalArgumentException("No data source corresponding to " + name);
+        throw new IllegalArgumentException("No data source corresponding to '"
+                                           + name + "'");
       }
     }
   }
@@ -579,7 +584,7 @@ public class Console extends Compiler implements Constants {
         public TableReference getTableFromAlias(String alias) {
           return null;
         }
-
+        
         /**
          * Returns all tables defined in current context
          */
@@ -593,18 +598,18 @@ public class Console extends Compiler implements Constants {
         public SqlContext getParentContext() {
           return null;
         }
-
+        
         /**
          * Returns the type context
          */
         public CTypeContext getTypeContext() {
           return null;
         }
-
+        
         /**
          * Reports a trouble (error or warning).
          *
-         * @param	trouble		a description of the trouble to report.
+         * @param       trouble         a description of the trouble to report.
          */
         public void reportTrouble(PositionedError trouble) {
           System.err.println(trouble.getMessage());
@@ -640,6 +645,14 @@ public class Console extends Compiler implements Constants {
     }
   }
 
+  private static final class Oracle10gDataSource extends DbiDataSource {
+    Oracle10gDataSource() {
+      super("oracle.jdbc.driver.OracleDriver",
+            "jdbc:oracle:thin:@",
+            "ora");
+    }
+  }
+
   private static final class PostgresDataSource extends DbiDataSource {
     PostgresDataSource() {
       super("org.postgresql.Driver",
@@ -647,5 +660,4 @@ public class Console extends Compiler implements Constants {
             "pgsql");
     }
   }
-
 }

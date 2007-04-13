@@ -53,7 +53,7 @@ JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		KopiDbiChecker MonthType NullDelimiterSpec		\
 		NullSpec ReferencedTableAndColumns			\
 		OracleDbiChecker					\
-		PostgresDbiChecker					\
+		PostgresDbiChecker Pragma				\
 		ReferentialConstraintDefinition	SapdbDbiChecker		\
 		SCompilationUnit ScriptHeadStatement			\
 		SequenceDefinition DropSequenceStatement		\

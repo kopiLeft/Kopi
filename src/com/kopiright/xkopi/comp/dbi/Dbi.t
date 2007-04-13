@@ -36,6 +36,7 @@
 @literal	MONTH
 @literal	NAME
 @literal	OPTION
+@literal	PRAGMA
 @literal	PRIMARY
 @literal	PUBLIC
 @literal	REFERENCES

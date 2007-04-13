@@ -25,11 +25,11 @@ header { package com.kopiright.xkopi.comp.dbi; }
 
   import com.kopiright.compiler.base.CWarning;
   import com.kopiright.compiler.base.Compiler;
-  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.compiler.base.PositionedError;
   import com.kopiright.compiler.base.TokenReference;
-  import com.kopiright.xkopi.comp.sqlc.*;
+  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.util.base.Utils;
+  import com.kopiright.xkopi.comp.sqlc.*;
   import com.kopiright.xkopi.lib.type.Fixed;
   import com.kopiright.xkopi.lib.type.NotNullFixed;
 }
@@ -41,14 +41,14 @@ header { package com.kopiright.xkopi.comp.dbi; }
 class DbiParser extends SqlcParser;
 
 options {
-  k = 2;				// two token lookahead
-  importVocab = Dbi;			// Call its vocabulary Dbi
-  exportVocab = Dbi;			// Call its vocabulary Dbi
-  codeGenMakeSwitchThreshold = 2;	// Some optimizations
+  k = 2;                // two token lookahead
+  importVocab = Dbi;    // Call its vocabulary Dbi
+  exportVocab = Dbi;    // Call its vocabulary Dbi
+  codeGenMakeSwitchThreshold = 2; // Some optimizations
   codeGenBitsetTestThreshold = 3;
-  defaultErrorHandler = false;		// Don't generate parser error handlers
+  defaultErrorHandler = false;    // Don't generate parser error handlers
   superClass = "com.kopiright.compiler.tools.antlr.extra.Parser";
-  access = "private";			// Set default rule access
+  access = "private";   // Set default rule access
 }
 {
   public DbiParser(Compiler compiler, InputBuffer buffer) {
@@ -86,11 +86,11 @@ returns [com.kopiright.xkopi.comp.sqlc.Statement self = null]
 
 scriptHead [SCompilationUnit self]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  String		versionLiteral = null;
-  String		pack = null;
-  int			version = -1;
-  String		comment = null;
+  String                versionLiteral = null;
+  String                pack = null;
+  int                   version = -1;
+  String                comment = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "UPDATE" pack = sString[]
@@ -149,28 +149,35 @@ spoolStatement []
 spoolTableStatement []
   returns [SpoolTableStatement self = null]
 {
-  NullDelimiterSpec	spec;
-  boolean		hasSorted = false;
-  boolean		hasLocal = false;
-  String		fileName;
-  Expression		tableName;
-  TokenReference	sourceRef = buildTokenReference();
+  NullDelimiterSpec     spec;
+  boolean               hasSorted = false;
+  boolean               hasLocal = false;
+  String                fileName;
+  Expression            tableName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   tableName = sTableName[]
   "FROM" ("SORTED" { hasSorted = true; } )?
   fileName = fileName[] ("LOCAL" { hasLocal = true; } )?
   spec = nullDelimiterSpec[]
-    { self = new SpoolTableStatement(sourceRef, tableName, hasSorted, fileName, hasLocal, spec); }
+    {
+      self = new SpoolTableStatement(sourceRef,
+                                     tableName,
+                                     hasSorted,
+                                     fileName,
+                                     hasLocal,
+                                     spec);
+    }
 ;
 
 spoolFileStatement []
   returns [SpoolFileStatement self = null]
 {
-  NullDelimiterSpec	spec;
-  String		fileName;
-  SelectStatement	select;
-  TokenReference	sourceRef = buildTokenReference();
+  NullDelimiterSpec     spec;
+  String                fileName;
+  SelectStatement       select;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "INTO" fileName = fileName[]
@@ -182,9 +189,9 @@ spoolFileStatement []
 nullDelimiterSpec []
   returns [NullDelimiterSpec self = null]
 {
-  NullSpec		nullSpec = null;
-  DelimSpec		delimSpec = null;
-  TokenReference	sourceRef = buildTokenReference();
+  NullSpec    nullSpec = null;
+  DelimSpec             delimSpec = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -200,8 +207,8 @@ nullDelimiterSpec []
 nullSpec []
   returns [NullSpec self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  String		spec = null;
+  String                spec = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "NULL" ( "IS" )? spec = sString[]
@@ -211,8 +218,8 @@ nullSpec []
 delimSpec []
   returns [DelimSpec self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  String		spec = null;
+  String                spec = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DELIM" ( "IS" )?
@@ -246,9 +253,9 @@ grantStatement []
 grantUserClassStatement []
   returns [GrantUserClassStatement self = null;]
 {
-  int			userClass = GrantUserClassStatement.TYP_ACCESS;
-  String		userName;
-  TokenReference	sourceRef = buildTokenReference();
+  int                   userClass = GrantUserClassStatement.TYP_ACCESS;
+  String                userName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -265,26 +272,32 @@ grantUserClassStatement []
 grantPrivilegeStatement []
   returns [GrantPrivilegeStatement self = null]
 {
-  Expression		tableName;
-  ArrayList		privilege;
-  ArrayList		userList;
-  boolean		hasGrantOption = false;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            tableName;
+  ArrayList             privilege;
+  ArrayList             userList;
+  boolean               hasGrantOption = false;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   privilege = privileges[]
   "ON" tableName = sTableName[]
   "TO"  userList = userList[]
   ("WITH" "GRANT" "OPTION" { hasGrantOption = true; } )?
-  { self = new GrantPrivilegeStatement(sourceRef, tableName, privilege, userList, hasGrantOption); }
+    {
+      self = new GrantPrivilegeStatement(sourceRef,
+                                         tableName,
+                                         privilege,
+                                         userList,
+                                         hasGrantOption);
+    }
 ;
 
 privileges []
   returns [ArrayList self = null]
 {
   self = new ArrayList();
-  TablePrivilege	privilege;
-  TokenReference	sourceRef = buildTokenReference();
+  TablePrivilege        privilege;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ALL"
@@ -300,9 +313,9 @@ privileges []
 privilege []
   returns [TablePrivilege self = null]
 {
-  int			privilege = TablePrivilege.TYP_SELECT;;
-  FieldNameList		field = null;
-  TokenReference	sourceRef = buildTokenReference();
+  int                   privilege = TablePrivilege.TYP_SELECT;;
+  FieldNameList         field = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
 (
@@ -322,7 +335,7 @@ userList []
   returns [ArrayList self]
 {
   self = new ArrayList();
-  String	user;
+  String        user;
 }
 :
   user = userIdent[] { self.add(user); }
@@ -340,14 +353,14 @@ userIdent []
 alterTableStatement []
   returns [DbiStatement self = null]
 {
-  Expression		tableName;
-  Type			type;
-  String		columnName;
-  String		constraintName = null;
-  TableConstraint	tableConstraint;
-  TokenReference	sourceRef = buildTokenReference();
-  Expression		defaultValue;
-  Column        column = null;
+  Expression            tableName;
+  Type                  type;
+  String                columnName;
+  String                constraintName = null;
+  TableConstraint       tableConstraint;
+  Expression            defaultValue;
+  Column                column = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ALTER" "TABLE" tableName = sTableName[]
@@ -356,7 +369,12 @@ alterTableStatement []
     "ALTER" columnName = sIdentifier[]
     (
       "SET" "DEFAULT" defaultValue = sExpression[]
-        { self = new AlterSetDefaultColumnStatement(sourceRef, tableName, columnName, defaultValue); }
+        {
+          self = new AlterSetDefaultColumnStatement(sourceRef,
+                                                 tableName,
+                                                 columnName,
+                                                 defaultValue);
+        }
     |
       "DROP" "DEFAULT"
         { self = new  AlterDropDefaultColumnStatement(sourceRef, tableName, columnName); }
@@ -384,13 +402,13 @@ alterTableStatement []
 indexDefinition []
   returns [IndexDefinition self = null]
 {
-  ArrayList		indexElemList = new ArrayList();
-  IndexElem		indexElem;
-  boolean		hasUnique = false;
-  Expression		tableName;
-  String		indexName;
-  int			type = IndexDefinition.TYP_NONE;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayList             indexElemList = new ArrayList();
+  IndexElem             indexElem;
+  boolean               hasUnique = false;
+  Expression            tableName;
+  String                indexName;
+  int                   type = IndexDefinition.TYP_NONE;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "CREATE" ("UNIQUE" { hasUnique = true; } )? "INDEX" indexName = sIdentifier[]
@@ -413,15 +431,22 @@ indexDefinition []
       "IGNORE" "NULL" { type = IndexDefinition.TYP_IGNORE; }
     )
   )?
-    { self = new IndexDefinition(sourceRef, hasUnique, indexName, tableName, indexElemList, type); }
+    {
+      self = new IndexDefinition(sourceRef,
+                                 hasUnique,
+                                 indexName,
+                                 tableName,
+                                 indexElemList,
+                                 type);
+    }
 ;
 
 indexElem[]
   returns [IndexElem self = null]
 {
-  String		nameElem;
-  boolean		isDesc = false;
-  TokenReference	sourceRef = buildTokenReference();
+  String                nameElem;
+  boolean               isDesc = false;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   nameElem = sIdentifier[]
@@ -436,11 +461,11 @@ indexElem[]
 sequenceDefinition[]
   returns [SequenceDefinition self = null]
 {
-  Expression		tableName;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            tableName;
   Integer               startValue = null;
   int                   value;
-  Vector		comments = null;
+  Vector                comments = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "CREATE" "SEQUENCE" tableName = sTableName[] 
@@ -458,13 +483,16 @@ sequenceDefinition[]
 tableDefinition []
   returns [TableDefinition self = null]
 {
-  Expression		tableName;
-  ArrayList		columns;
-  String		keyName;
-  List		    keyList = new ArrayList();
-  Vector		comments = null;
-  Key			key = null;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            tableName;
+  ArrayList             columns;
+  String                keyName;
+  List                  keyList = new ArrayList();
+  Vector                comments = null;
+  Key                   key = null;
+  String                databaseType;
+  String                statement;
+  Pragma                pragma = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "CREATE" "TABLE" tableName = sTableName[]
@@ -477,8 +505,12 @@ tableDefinition []
     ( COMMA keyName = sIdentifier[] { keyList.add(keyName); } )*
       { key = new Key(sourceRef, keyList); }
   )?
+  (
+    "PRAGMA" databaseType = sIdentifier[] statement = sString[]
+      { pragma = new Pragma(sourceRef, databaseType, statement); }
+  )?
     {
-      self = new TableDefinition(sourceRef, tableName, columns, key);
+      self = new TableDefinition(sourceRef, tableName, columns, key, pragma);
       self.setComment(comments);
     }
 ;
@@ -486,12 +518,12 @@ tableDefinition []
 viewDefinition []
   returns [ViewDefinition self = null]
 {
-  Expression		tableName;
-  ViewColumn		viewColumn = null;
-  ArrayList		columns = new ArrayList();
-  Vector		comments = null;
-  TableReference	reference;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            tableName;
+  ViewColumn            viewColumn = null;
+  ArrayList             columns = new ArrayList();
+  Vector                comments = null;
+  TableReference        reference;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "CREATE" "VIEW" tableName = sTableName[]
@@ -515,10 +547,10 @@ viewDefinition []
 viewColumn []
   returns [ViewColumn self = null]
 {
-  String		name;
-  Type			type;
-  boolean		nullable = true;
-  TokenReference	sourceRef = buildTokenReference();
+  String                name;
+  Type                  type;
+  boolean               nullable = true;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   name = sIdentifier[] type = sDataType[] ("NOT" "NULL" { nullable = false; } )?
@@ -541,12 +573,12 @@ columnDefinitions []
 columnDefinition []
   returns [Column self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  String		name = null;
-  Type			type = null;
-  boolean		nullable = true;
-  Expression    defaultValue = null;
-  String		constraintName = null;
+  String                name = null;
+  Type                  type = null;
+  boolean               nullable = true;
+  Expression            defaultValue = null;
+  String                constraintName = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   name = sIdentifier[] type = sDataType[]
@@ -562,8 +594,8 @@ columnDefinition []
 dropViewStatement []
   returns [DropViewStatement self = null]
 {
-  Expression		tableName;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            tableName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DROP" "VIEW" tableName = sTableName[]
@@ -573,8 +605,8 @@ dropViewStatement []
 dropTableStatement []
   returns [DropTableStatement self = null]
 {
-  Expression		tableName;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            tableName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DROP" "TABLE" tableName = sTableName[]
@@ -584,8 +616,8 @@ dropTableStatement []
 dropSequenceStatement []
   returns [DropSequenceStatement self = null]
 {
-  Expression		sequenceName;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            sequenceName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DROP" "SEQUENCE" sequenceName = sTableName[]
@@ -595,8 +627,8 @@ dropSequenceStatement []
 dropIndexStatement []
   returns [DropIndexStatement self = null]
 {
-  String		indexName;
-  TokenReference	sourceRef = buildTokenReference();
+  String                indexName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DROP"  "INDEX" indexName = sIdentifier[]
@@ -607,9 +639,9 @@ columnConstraintDefinition []
 :
   constraintNameDefinition[]
   columnConstraint[]
-	{
-		// !!! 000911 coco warning at the compilation because return nothing
-	}
+    {
+      // !!! 000911 coco warning at the compilation because return nothing
+    }
 ;
 
 columnConstraint []
@@ -617,26 +649,26 @@ columnConstraint []
   uniqueSpecification[]
 |
   "REFERENCES" referencedTableAndColumns[]
-	{
-		// !!! 000911 coco warning at the compilation because return nothing
-	}
+    {
+      // !!! 000911 coco warning at the compilation because return nothing
+    }
 ;
 
 constraintNameDefinition []
 :
   "CONSTRAINT" sIdentifier[]
-	{
-		// !!! 000911 coco warning at the compilation because return nothing
-	}
+    {
+      // !!! 000911 coco warning at the compilation because return nothing
+    }
 ;
 
 tableConstraintDefinition []
 :
   constraintNameDefinition[]
   tableConstraint[]
-	{
-		// !!! 000911 coco warning at the compilation because return nothing
-	}
+    {
+      // !!! 000911 coco warning at the compilation because return nothing
+    }
 ;
 
 tableConstraint []
@@ -650,9 +682,9 @@ tableConstraint []
 uniqueConstraintDefinition []
   returns [UniqueConstraintDefinition self = null]
 {
-  int	type;
-  FieldNameList			field = null;
-  TokenReference		sourceRef = buildTokenReference();
+  int                   type;
+  FieldNameList         field = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   type = uniqueSpecification[] LPAREN field = sFieldNameList[] RPAREN
@@ -670,11 +702,11 @@ uniqueSpecification []
 referentialConstraintDefinition []
   returns [ReferentialConstraintDefinition self = null]
 {
-  FieldNameList			field;
-  String			name;
-  ReferencedTableAndColumns	reference;
-  TokenReference		sourceRef = buildTokenReference();
-  int				type = ReferentialConstraintDefinition.TYP_RESTRICT;
+  FieldNameList                 field;
+  String                        name;
+  ReferencedTableAndColumns     reference;
+  int                           type = ReferentialConstraintDefinition.TYP_RESTRICT;
+  TokenReference                sourceRef = buildTokenReference();
 }
 :
   name = sIdentifier[]
@@ -693,15 +725,21 @@ referentialConstraintDefinition []
     "SET" "DEFAULT"
     { type = ReferentialConstraintDefinition.TYP_DEFAULT; }
   )
-    { self = new ReferentialConstraintDefinition(sourceRef, name, field, reference, type); }
+    {
+      self = new ReferentialConstraintDefinition(sourceRef,
+                                                 name,
+                                                 field,
+                                                 reference,
+                                                 type);
+    }
 ;
 
 referencedTableAndColumns []
   returns [ReferencedTableAndColumns self = null]
 {
-  FieldNameList		field;
-  Expression		tableName;
-  TokenReference	sourceRef = buildTokenReference();
+  FieldNameList         field;
+  Expression            tableName;
+  TokenReference        sourceRef = buildTokenReference();
 }
 : tableName = sTableName[]
   LPAREN field  = sFieldNameList[] RPAREN
@@ -711,7 +749,7 @@ referencedTableAndColumns []
 sDataType []
  returns [Type self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = dImageType []
@@ -750,7 +788,7 @@ sDataType []
 dIntegerType []
   returns [Type self = null]
 {
-  int			size = -1;
+  int   size = -1;
 }
 :
   self = dIntType[]
@@ -763,130 +801,148 @@ dIntegerType []
 dIntType []
   returns [IntType self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  boolean		hasMin = false;
-  int			minVal = -1;
-  boolean		hasMax = false;
-  int			maxVal = -1;
+  boolean               hasMin = false;
+  int                   minVal = -1;
+  boolean               hasMax = false;
+  int                   maxVal = -1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "INT"
   (
     "MIN" minVal = dSignedInteger[]
       {
-	//!!! graf 000812 check that minVal >= Int.MIN
-	//!!! graf 000905 difficile de tester (type de minVal: int)
-	//!!!             mais pour short et byte, ca doit marcher
-	if (minVal >= Integer.MIN_VALUE) {
-	  reportTrouble(new CWarning(sourceRef, DbiMessages.INT_TOO_SMALL, new Integer(minVal), new Integer(Integer.MIN_VALUE)));
-	} else {
-	  hasMin = true;
-	}
+        //!!! graf 000812 check that minVal >= Int.MIN
+        //!!! graf 000905 difficile de tester (type de minVal: int)
+        //!!!             mais pour short et byte, ca doit marcher
+        if (minVal >= Integer.MIN_VALUE) {
+          reportTrouble(new CWarning(sourceRef,
+                                     DbiMessages.INT_TOO_SMALL,
+                                     new Integer(minVal),
+                                     new Integer(Integer.MIN_VALUE)));
+        } else {
+          hasMin = true;
+        }
       }
   )?
   (
     "MAX" maxVal = dSignedInteger[]
       {
-	//!!! graf 000812 check that maxVal <= Int.MAX
-	if (maxVal <= Integer.MAX_VALUE) {
-	  reportTrouble(new CWarning(sourceRef, DbiMessages.INT_TOO_BIG, new Integer(maxVal), new Integer(Integer.MIN_VALUE)));
-	} else {
-	  hasMax = true;
-	}
+        //!!! graf 000812 check that maxVal <= Int.MAX
+        if (maxVal <= Integer.MAX_VALUE) {
+          reportTrouble(new CWarning(sourceRef,
+                                     DbiMessages.INT_TOO_BIG,
+                                     new Integer(maxVal),
+                                     new Integer(Integer.MIN_VALUE)));
+        } else {
+          hasMax = true;
+        }
       }
   )?
     {
       self = new IntType(sourceRef,
-			 hasMin ? new Integer(minVal) : null,
-			 hasMax ? new Integer(maxVal) : null);
+                         hasMin ? new Integer(minVal) : null,
+                         hasMax ? new Integer(maxVal) : null);
     }
 ;
 
 dShortType []
   returns [ShortType self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  boolean		hasMin = false;
-  int			minVal = -1;
-  boolean		hasMax = false;
-  int			maxVal = -1;
+  boolean               hasMin = false;
+  int                   minVal = -1;
+  boolean               hasMax = false;
+  int                   maxVal = -1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "SHORT"
   (
     "MIN" minVal = dSignedInteger[]
       {
-	//!!! graf 000812 check that minVal >= Short.MIN
-	if (minVal >= Short.MIN_VALUE) {
-	  reportTrouble(new CWarning(sourceRef, DbiMessages.SHORT_TOO_SMALL, new Integer(minVal), new Integer(Short.MIN_VALUE)));
-	} else {
-	  hasMin = true;
-	}
+        //!!! graf 000812 check that minVal >= Short.MIN
+        if (minVal >= Short.MIN_VALUE) {
+          reportTrouble(new CWarning(sourceRef,
+                                     DbiMessages.SHORT_TOO_SMALL,
+                                     new Integer(minVal),
+                                     new Integer(Short.MIN_VALUE)));
+        } else {
+          hasMin = true;
+        }
       }
   )?
   (
     "MAX" maxVal = dSignedInteger[]
       {
-	//!!! graf 000812 check that maxVal <= Short.MAX
-	if (maxVal <= Short.MAX_VALUE) {
-	  reportTrouble(new CWarning(sourceRef, DbiMessages.SHORT_TOO_BIG, new Integer(maxVal), new Integer(Short.MAX_VALUE)));
-	} else {
-	  hasMax = true;
-	}
+        //!!! graf 000812 check that maxVal <= Short.MAX
+        if (maxVal <= Short.MAX_VALUE) {
+          reportTrouble(new CWarning(sourceRef,
+                                     DbiMessages.SHORT_TOO_BIG,
+                                     new Integer(maxVal),
+                                     new Integer(Short.MAX_VALUE)));
+        } else {
+          hasMax = true;
+        }
       }
   )?
     {
       self = new ShortType(sourceRef,
-			   hasMin ? new Integer(minVal) : null,
-			   hasMax ? new Integer(maxVal) : null);
+                           hasMin ? new Integer(minVal) : null,
+                           hasMax ? new Integer(maxVal) : null);
     }
 ;
 
 dByteType []
   returns [ByteType self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  boolean		hasMin = false;
-  int			minVal = -1;
-  boolean		hasMax = false;
-  int			maxVal = -1;
+  boolean               hasMin = false;
+  int                   minVal = -1;
+  boolean               hasMax = false;
+  int                   maxVal = -1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "BYTE"
   (
     "MIN" minVal = dSignedInteger[]
       {
-	//!!! graf 000812 check that minVal >= Byte.MIN
-	if (minVal >= Byte.MIN_VALUE) {
-	  reportTrouble(new CWarning(sourceRef, DbiMessages.BYTE_TOO_SMALL, new Integer(minVal), new Integer(Byte.MIN_VALUE)));
-	} else {
-	  hasMin = true;
-	}
+        //!!! graf 000812 check that minVal >= Byte.MIN
+        if (minVal >= Byte.MIN_VALUE) {
+          reportTrouble(new CWarning(sourceRef,
+                                     DbiMessages.BYTE_TOO_SMALL,
+                                     new Integer(minVal),
+                                     new Integer(Byte.MIN_VALUE)));
+        } else {
+          hasMin = true;
+        }
       }
   )?
   (
     "MAX" maxVal = dSignedInteger[]
       {
-	//!!! graf 000812 check that maxVal <= Byte.MAX
-	if (maxVal <= Byte.MAX_VALUE) {
-	  reportTrouble(new CWarning(sourceRef, DbiMessages.BYTE_TOO_BIG, new Integer(maxVal), new Integer(Byte.MAX_VALUE)));
-	} else {
-	  hasMax = true;
-	}
+        //!!! graf 000812 check that maxVal <= Byte.MAX
+        if (maxVal <= Byte.MAX_VALUE) {
+          reportTrouble(new CWarning(sourceRef,
+                                     DbiMessages.BYTE_TOO_BIG,
+                                     new Integer(maxVal),
+                                     new Integer(Byte.MAX_VALUE)));
+        } else {
+          hasMax = true;
+        }
       }
   )?
     {
       self = new ByteType(sourceRef,
-			  hasMin ? new Integer(minVal) : null,
-			  hasMax ? new Integer(maxVal) : null);
+                          hasMin ? new Integer(minVal) : null,
+                          hasMax ? new Integer(maxVal) : null);
     }
 ;
 
 dSignedInteger []
   returns [int self = -1]
 {
-  int	sign = 1;
-  int	value;
+  int   sign = 1;
+  int   value;
 }
 :
   ( MINUS { sign = -1; } )? value = sInteger[]
@@ -896,9 +952,9 @@ dSignedInteger []
 dImageType []
   returns [ImageType self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  int			l;
-  int			r;
+  TokenReference        sourceRef = buildTokenReference();
+  int                   l;
+  int                   r;
 }
 :
   "IMAGE" LPAREN l = sInteger[] COMMA r = sInteger[] RPAREN
@@ -908,11 +964,11 @@ dImageType []
 dStringType []
   returns [StringType self = null]
 {
-  boolean		fixed = false;
-  int			width = -1;
-  int			height = 1;
-  int			convert = StringType.TYP_NONE;
-  TokenReference	sourceRef = buildTokenReference();
+  boolean               fixed = false;
+  int                   width = -1;
+  int                   height = 1;
+  int                   convert = StringType.TYP_NONE;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -940,7 +996,7 @@ dStringType []
   )?
     {
       if (width == -1) {
-	reportTrouble(new CWarning(sourceRef, DbiMessages.STRING_SIZE));
+        reportTrouble(new CWarning(sourceRef, DbiMessages.STRING_SIZE));
       }
       self = new StringType(sourceRef, fixed, width, height, convert);
     }
@@ -949,9 +1005,9 @@ dStringType []
 dTextType []
   returns [TextType self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  int			width;
-  int			height;
+  int                   width;
+  int                   height;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "TEXT" LPAREN width = sInteger[] COMMA height = sInteger[] RPAREN
@@ -961,11 +1017,11 @@ dTextType []
 dFixedType []
   returns [FixedType self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  Fixed			min = null;
-  Fixed			max = null;
-  int			prec;
-  int			scale;
+  Fixed                 min = null;
+  Fixed                 max = null;
+  int                   prec;
+  int                   scale;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "FIXED" LPAREN prec = sInteger[] COMMA scale = sInteger[] RPAREN
@@ -977,8 +1033,8 @@ dFixedType []
 dEnumType []
   returns [EnumType self = null]
 {
-  ArrayList		stringList = null;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayList             stringList = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ENUM" LPAREN stringList = dStringList[] RPAREN
@@ -988,7 +1044,7 @@ dEnumType []
 dStringList []
   returns [ArrayList self = new ArrayList()]
 {
-  String	elem = null;
+  String        elem = null;
 }
 :
   elem = sString[]
@@ -1003,7 +1059,7 @@ dFixedOrInteger []
   returns [Fixed self = null]
 {
   //!!!! graf 000812 and as fixed ???
-  int		i;
+  int   i;
 }
 :
   i = dSignedInteger[]
@@ -1013,10 +1069,10 @@ dFixedOrInteger []
 dCodeType []
   returns [Type self = null]
 {
-  ArrayList		list = null;
-  TokenReference	sourceRef = buildTokenReference();
-  int	prec;
-  int	scale;
+  ArrayList             list = null;
+  int                   prec;
+  int                   scale;
+  TokenReference        sourceRef = buildTokenReference();
   //!!! graf 000812 split dCodeList wrt type
 }
 :
@@ -1026,7 +1082,9 @@ dCodeType []
   |
     "LONG" "IS" list = dCodeLongList[] { self = new CodeLongType(sourceRef, list); }
   |
-    "FIXED" LPAREN prec = sInteger[] COMMA scale = sInteger[] RPAREN "IS" list = dCodeFixedList[] { self = new CodeFixedType(sourceRef, prec, scale, list); }
+    "FIXED" LPAREN prec = sInteger[] COMMA scale = sInteger[] RPAREN
+    "IS" list = dCodeFixedList[]
+      { self = new CodeFixedType(sourceRef, prec, scale, list); }
   )
   "END" "CODE"
 ;
@@ -1034,9 +1092,9 @@ dCodeType []
 dCodeBoolList []
   returns [ArrayList self = new ArrayList()]
 {
-  String		name;
-  Boolean		value;
-  TokenReference	sourceRef = buildTokenReference();
+  String                name;
+  Boolean               value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -1048,9 +1106,9 @@ dCodeBoolList []
 dCodeLongList []
   returns [ArrayList self = new ArrayList()]
 {
-  String		name;
-  Integer		value;
-  TokenReference	sourceRef = buildTokenReference();
+  String                name;
+  Integer               value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -1062,9 +1120,9 @@ dCodeLongList []
 dCodeFixedList []
   returns [ArrayList self = new ArrayList()]
 {
-  String		name;
-  Fixed			value;
-  TokenReference	sourceRef = buildTokenReference();
+  String                name;
+  Fixed                 value;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -1082,7 +1140,7 @@ dCodeBoolValue []
 dCodeLongValue []
   returns [Integer self = null]
 {
-  int		i;
+  int   i;
 }
 :
   i = sInteger[] { self = new Integer(i); }

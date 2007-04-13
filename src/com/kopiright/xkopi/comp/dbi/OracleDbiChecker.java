@@ -51,8 +51,8 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits GrantUserClassStatement
    */
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
-					   int userClass,
-					   String userName)
+                                           int userClass,
+                                           String userName)
     throws PositionedError
   {
     switch(userClass) {
@@ -82,16 +82,16 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
 
 
   public void visitGrantPrivilegeStatement(GrantPrivilegeStatement self,
-					   Expression tableName,
-					   ArrayList privileges,
-					   ArrayList userList,
-					   boolean grantOption)
+                                           Expression tableName,
+                                           ArrayList privileges,
+                                           ArrayList userList,
+                                           boolean grantOption)
     throws PositionedError
   {
     current.append("GRANT ");
     for (int i = 0; i < privileges.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((TablePrivilege)privileges.get(i)).accept(this);
     }
@@ -100,7 +100,7 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" TO ");
     for (int i = 0; i < userList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       current.append(userList.get(i));
     }
@@ -153,8 +153,8 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits AddTableConstraintStatement
    */
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					       Expression tableName,
-					       TableConstraint tableConstraint)
+                                               Expression tableName,
+                                               TableConstraint tableConstraint)
     throws PositionedError
   {
     current.append("ALTER TABLE ");
@@ -240,7 +240,10 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits CodeFixedType
    */
-  public void visitCodeFixedType(CodeFixedType self, int precision, int scale, ArrayList list)
+  public void visitCodeFixedType(CodeFixedType self,
+                                 int precision,
+                                 int scale,
+                                 ArrayList list)
     throws PositionedError
   {
     current.append("NUMBER(");
@@ -290,10 +293,10 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits FixedType
    */
   public void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max)
+                             int precision,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
     throws PositionedError
   {
     current.append("NUMBER(");
@@ -315,11 +318,11 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits IndexDefinition
    */
   public void visitIndexDefinition(IndexDefinition self,
-				   boolean hasUnique,
-				   String indexName,
-				   Expression tableName,
-				   ArrayList indexElemList,
-				   int type)
+                                   boolean hasUnique,
+                                   String indexName,
+                                   Expression tableName,
+                                   ArrayList indexElemList,
+                                   int type)
     throws PositionedError
   {
     current.append("CREATE ");
@@ -333,7 +336,7 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < indexElemList.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((IndexElem)indexElemList.get(i)).accept(this);
     }
@@ -385,10 +388,10 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits ReferentialConstraintDefinition
    */
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-						   String name,
-						   FieldNameList field,
-						   ReferencedTableAndColumns reference,
-						   int type)
+                                                   String name,
+                                                   FieldNameList field,
+                                                   ReferencedTableAndColumns reference,
+                                                   int type)
     throws PositionedError
   {
     current.append(name);
@@ -412,13 +415,17 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits StringType
    */
-  public void visitStringType(StringType self, boolean fixed, int width, int height, int convert)
+  public void visitStringType(StringType self,
+                              boolean fixed,
+                              int width,
+                              int height,
+                              int convert)
     throws PositionedError
   {
-    int		size;
+    int size;
 
     if (width == -1) {
-      size = DEFAULT_STRING_SIZE;	// arbitrary : we don't know the size
+      size = DEFAULT_STRING_SIZE;       // arbitrary : we don't know the size
     } else {
       size = width * height;
     }
@@ -432,9 +439,10 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits TableDefinition
    */
   public void visitTableDefinition(TableDefinition self,
-				   Expression tableName,
-				   ArrayList columns,
-				   Key key)
+                                   Expression tableName,
+                                   ArrayList columns,
+                                   Key key,
+                                   Pragma pragma)
     throws PositionedError
   {
     current.append("CREATE TABLE ");
@@ -442,7 +450,7 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
     current.append(" (");
     for (int i = 0; i < columns.size(); i++) {
       if (i != 0) {
-	current.append(", ");
+        current.append(", ");
       }
       ((Column)columns.get(i)).accept(this);
     }
@@ -451,6 +459,9 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
       key.accept(this);
     }
     current.append(")");
+    if (pragma != null && pragma.databaseIs("ORACLE")) {
+      current.append(pragma.getStatement());
+    }
   }
 
   /**
@@ -483,7 +494,9 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits UniqueConstraintDefinition
    */
-  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self, int type, FieldNameList field)
+  public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
+                                              int type,
+                                              FieldNameList field)
     throws PositionedError
   {
     switch (type) {

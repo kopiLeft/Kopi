@@ -46,7 +46,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
 
   /**
    * construct a pretty printer object for java code
-   * @param	fileName		the file into the code is generated
+   * @param     fileName                the file into the code is generated
    */
   public DbiPrettyPrinter(String fileName) throws IOException {
     super(fileName, 20);
@@ -76,9 +76,10 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a table definition
    */
   public void visitTableDefinition(TableDefinition self,
-				   Expression tableName,
-				   ArrayList columns,
-				   Key key)
+                                   Expression tableName,
+                                   ArrayList columns,
+                                   Key key,
+                                   Pragma pragma)
     throws PositionedError
   {
     print("CREATE TABLE ");
@@ -87,7 +88,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     println("(");
     for (int i = 0; i < columns.size(); i++) {
       if (i != 0) {
-	println(", ");
+        println(", ");
       }
       ((Column)columns.get(i)).accept(this);
     }
@@ -96,6 +97,11 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     if (key != null) {
       println();
       key.accept(this);
+    }
+    if (pragma != null) {
+      println();
+      println("PRAGMA " + pragma.getDatabaseType()
+              + " '" + pragma.getStatement() + "'");
     }
   }
 
@@ -106,7 +112,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     print("KEY IS ");
     for (int i = 0; i < keyList.size(); i++) {
       if (i != 0) {
-	print(", ");
+        print(", ");
       }
       print(keyList.get(i));
     }
@@ -116,12 +122,12 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a column
    */
   public void visitColumn(Column self,
-			  String ident,
-			  Type type,
-			  boolean nullable,
+                          String ident,
+                          Type type,
+                          boolean nullable,
                           Expression defaultValue,
-			  String constraintName,
-			  JavaStyleComment[] comment)
+                          String constraintName,
+                          JavaStyleComment[] comment)
     throws PositionedError
   {
     pos += TAB_SIZE;
@@ -129,13 +135,13 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     // print the comment
     if (comment != null) {
       if (comment.length > 1) {
-	println();
+        println();
       }
       for (int j = 0; j < comment.length; j++) {
-	printComment(comment[j]);
+        printComment(comment[j]);
       }
       if (comment.length > 1) {
-	println();
+        println();
       }
     }
 
@@ -167,10 +173,10 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a view column
    */
   public void visitViewColumn(ViewColumn self,
-			      String ident,
-			      Type type,
-			      boolean nullable,
-			      JavaStyleComment[] comment)
+                              String ident,
+                              Type type,
+                              boolean nullable,
+                              JavaStyleComment[] comment)
     throws PositionedError
   {
     pos += TAB_SIZE;
@@ -178,13 +184,13 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     // print the comment
     if (comment != null) {
       if (comment.length > 1) {
-	println();
+        println();
       }
       for (int j = 0; j < comment.length; j++) {
-	printComment(comment[j]);
+        printComment(comment[j]);
       }
       if (comment.length > 1) {
-	println();
+        println();
       }
     }
 
@@ -260,11 +266,11 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a drop index definition
    */
   public void visitIndexDefinition(IndexDefinition self,
-				   boolean hasUnique,
-				   String indexName,
-				   Expression tableName,
-				   ArrayList indexElemList,
-				   int type)
+                                   boolean hasUnique,
+                                   String indexName,
+                                   Expression tableName,
+                                   ArrayList indexElemList,
+                                   int type)
     throws PositionedError
   {
 
@@ -279,7 +285,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     print(" (");
     for (int i = 0; i < indexElemList.size(); i++) {
       if (i != 0) {
-	print(", ");
+        print(", ");
       }
       ((IndexElem)indexElemList.get(i)).accept(this);
     }
@@ -305,8 +311,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a ReferencedTableAndColumns
    */
   public void visitReferencedTableAndColumns(ReferencedTableAndColumns self,
-					     Expression tableName,
-					     FieldNameList field)
+                                             Expression tableName,
+                                             FieldNameList field)
     throws PositionedError
   {
     print(tableName);
@@ -319,10 +325,10 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a ReferentialConstraintDefinition
    */
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-						   String name,
-						   FieldNameList field,
-						   ReferencedTableAndColumns reference,
-						   int type)
+                                                   String name,
+                                                   FieldNameList field,
+                                                   ReferencedTableAndColumns reference,
+                                                   int type)
     throws PositionedError
   {
     print(name);
@@ -352,8 +358,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a UniqueConstraintDefinition
    */
   public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
-					      int type,
-					      FieldNameList field)
+                                              int type,
+                                              FieldNameList field)
     throws PositionedError
   {
     switch(type) {
@@ -374,8 +380,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a drop constraint statement
    */
   public void visitDropTableConstraintStatement(DropTableConstraintStatement self,
-						Expression tableName,
-						String constraintName)
+                                                Expression tableName,
+                                                String constraintName)
     throws PositionedError
   {
     print("ALTER TABLE ");
@@ -388,8 +394,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a add constraint statement
    */
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					       Expression tableName,
-					       TableConstraint tableConstraint)
+                                               Expression tableName,
+                                               TableConstraint tableConstraint)
     throws PositionedError
   {
     print("ALTER TABLE ");
@@ -416,8 +422,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * Visits AlterDropDeafultColumnStatement
    */
   public void visitAlterDropDefaultColumnStatement(AlterDropDefaultColumnStatement self,
-						   Expression tableName,
-						   String columnName)
+                                                   Expression tableName,
+                                                   String columnName)
     throws PositionedError
   {
     print("ALTER TABLE ");
@@ -431,9 +437,9 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * Visits AlterSetDefaultColumnStatement
    */
   public void visitAlterSetDefaultColumnStatement(AlterSetDefaultColumnStatement self,
-						  Expression tableName,
-						  String columnName,
-						  Expression defaultValue)
+                                                  Expression tableName,
+                                                  String columnName,
+                                                  Expression defaultValue)
     throws PositionedError
   {
     print("ALTER TABLE ");
@@ -464,9 +470,9 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a view definition
    */
   public void visitViewDefinition(ViewDefinition self,
-				  Expression tableName,
-				  ArrayList columnNameList,
-				  TableReference reference)
+                                  Expression tableName,
+                                  ArrayList columnNameList,
+                                  TableReference reference)
     throws PositionedError
   {
     print("CREATE ");
@@ -476,10 +482,10 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     println("(");
     if (columnNameList != null) {
       for (int i = 0; i < columnNameList.size(); i++) {
-	if (i != 0) {
-	  println(", ");
-	}
-	((ViewColumn)columnNameList.get(i)).accept(this);
+        if (i != 0) {
+          println(", ");
+        }
+        ((ViewColumn)columnNameList.get(i)).accept(this);
       }
     }
     println();
@@ -498,16 +504,16 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a grant statement
    */
   public void visitGrantPrivilegeStatement(GrantPrivilegeStatement self,
-					   Expression tableName,
-					   ArrayList privileges,
-					   ArrayList userList,
-					   boolean grantOption)
+                                           Expression tableName,
+                                           ArrayList privileges,
+                                           ArrayList userList,
+                                           boolean grantOption)
     throws PositionedError
   {
     print("GRANT ");
     for (int i = 0; i < privileges.size(); i++) {
       if (i != 0) {
-	print(", ");
+        print(", ");
       }
       ((TablePrivilege)privileges.get(i)).accept(this);
     }
@@ -516,7 +522,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     print(" TO ");
     for (int i = 0; i < userList.size(); i++) {
       if (i != 0) {
-	print(", ");
+        print(", ");
       }
       print(userList.get(i));
     }
@@ -526,8 +532,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a table privilege
    */
   public void visitTablePrivilege(TablePrivilege self,
-				  int privilege,
-				  FieldNameList fieldName)
+                                  int privilege,
+                                  FieldNameList fieldName)
     throws PositionedError
   {
     switch(privilege) {
@@ -546,8 +552,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     case TablePrivilege.TYP_UPDATE:
       print("UPDATE");
       if (fieldName != null) {
-	print(" ");
-	fieldName.accept(this);
+        print(" ");
+        fieldName.accept(this);
       }
       break;
     default:
@@ -559,8 +565,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a table privilege
    */
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
-					   int userClass,
-					   String userName)
+                                           int userClass,
+                                           String userName)
     throws PositionedError
   {
     print("GRANT ");
@@ -604,8 +610,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a null delimiter spec
    */
   public void visitNullDelimiterSpec(NullDelimiterSpec self,
-				     NullSpec nullSpec,
-				     DelimSpec delimSpec)
+                                     NullSpec nullSpec,
+                                     DelimSpec delimSpec)
     throws PositionedError
   {
     if (nullSpec != null) {
@@ -613,7 +619,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     }
     if (delimSpec != null) {
       if (nullSpec != null) {
-	print(" ");
+        print(" ");
       }
       delimSpec.accept(this);
     }
@@ -623,9 +629,9 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a spool file statement
    */
   public void visitSpoolFileStatement(SpoolFileStatement self,
-				      String fileName,
-				      NullDelimiterSpec spec,
-				      SelectStatement select)
+                                      String fileName,
+                                      NullDelimiterSpec spec,
+                                      SelectStatement select)
     throws PositionedError
   {
     print("SPOOL INTO ");
@@ -640,11 +646,11 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a spool tabel statement
    */
   public void visitSpoolTableStatement(SpoolTableStatement self,
-				       Expression tableName,
-				       boolean hasSorted,
-				       String fileName,
-				       boolean hasLocal,
-				       NullDelimiterSpec spec)
+                                       Expression tableName,
+                                       boolean hasSorted,
+                                       String fileName,
+                                       boolean hasLocal,
+                                       NullDelimiterSpec spec)
     throws PositionedError
   {
     print("SPOOL ");
@@ -710,8 +716,8 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a int type
    */
   public void visitIntType(IntType self,
-			   Integer min,
-			   Integer max)
+                           Integer min,
+                           Integer max)
     throws PositionedError
   {
     print("INT");
@@ -727,9 +733,9 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * Visits CompilationUnit (root of the syntax abstract tree)
    */
   public void visitSCompilationUnit(SCompilationUnit self,
-				    String packageName,
-				    int version,
-				    ArrayList elems)
+                                    String packageName,
+                                    int version,
+                                    ArrayList elems)
     throws PositionedError
   {
     printCUnit(elems);
@@ -798,31 +804,31 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a string field type
    */
   public void visitStringType(StringType self,
-			      boolean fixed,
-			      int width,
-			      int height,
-			      int convert)
+                              boolean fixed,
+                              int width,
+                              int height,
+                              int convert)
     throws PositionedError
   {
     if (fixed) {
       print("CHAR");
       if (width != 1) {
-	print("(");
-	print("" + width);
-	if (height != 1) {
-	  print(", " + height);
-	}
-	print(")");
+        print("(");
+        print("" + width);
+        if (height != 1) {
+          print(", " + height);
+        }
+        print(")");
       }
     } else {
       print("STRING");
       if (width != -1) {
-	print("(");
-	print("" + width);
-	if (height != 1) {
-	  print(", " + height);
-	}
- 	print(")");
+        print("(");
+        print("" + width);
+        if (height != 1) {
+          print(", " + height);
+        }
+        print(")");
       }
     }
     switch(convert) {
@@ -858,10 +864,10 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
    * prints a fixed type
    */
   public void visitFixedType(FixedType self,
-			     int precision,
-			     int scale,
-			     Fixed min,
-			     Fixed max)
+                             int precision,
+                             int scale,
+                             Fixed min,
+                             Fixed max)
     throws PositionedError
   {
     print("FIXED(");
@@ -885,7 +891,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
     print("ENUM(");
     for (int i = 0; i < list.size(); i++) {
       if (i != 0) {
-	print(", ");
+        print(", ");
       }
       print(list.get(i));
     }
@@ -979,40 +985,41 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
   // ----------------------------------------------------------------------
 
   public void printComment(JavaStyleComment comment) {
-    StringTokenizer	tok = new StringTokenizer(comment.getText(), "\n");
+    StringTokenizer     tok;
 
+    tok = new StringTokenizer(comment.getText(), "\n");
     if (tok.countTokens() == 1) {
       print("// " + tok.nextToken().trim());
       println();
     } else if (tok.countTokens() <= 3) {
       println();
       while (tok.hasMoreTokens()) {
-	print("//");
-	String  comm = tok.nextToken().trim();
-	if (comm.startsWith("*")) {
-	  comm = comm.substring(1).trim();
-	}
-	if (comm.length() == 0) {
-	  continue;
-	}
-	print(" " + comm);
-	println();
+        print("//");
+        String  comm = tok.nextToken().trim();
+        if (comm.startsWith("*")) {
+          comm = comm.substring(1).trim();
+        }
+        if (comm.length() == 0) {
+          continue;
+        }
+        print(" " + comm);
+        println();
       }
     } else {
       if (line > 0) {
-	println();
+        println();
       }
       print("/*");
       while (tok.hasMoreTokens()) {
-	String comm = tok.nextToken().trim();
-	if (comm.startsWith("*")) {
-	  comm = comm.substring(1).trim();
-	}
-	if (comm.length() == 0) {
-	  continue;
-	}
-	println();
-	print(" * " + comm);
+        String comm = tok.nextToken().trim();
+        if (comm.startsWith("*")) {
+          comm = comm.substring(1).trim();
+        }
+        if (comm.length() == 0) {
+          continue;
+        }
+        println();
+        print(" * " + comm);
       }
       println();
       print(" */");

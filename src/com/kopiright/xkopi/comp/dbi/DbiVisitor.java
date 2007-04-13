@@ -21,6 +21,7 @@ package com.kopiright.xkopi.comp.dbi;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.xkopi.comp.sqlc.*;
@@ -34,7 +35,7 @@ public interface DbiVisitor extends SqlVisitor {
 
   /**
    * Visits JdbcDateLiteral
-   * @param	value	the JDBC date
+   * @param     value   the JDBC date
    */
   void visitJdbcDateLiteral(JdbcDateLiteral self, Date value)
     throws PositionedError;
@@ -43,17 +44,17 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a AlterDropDefaultColumnStatement.
    */
   void visitAlterDropDefaultColumnStatement(AlterDropDefaultColumnStatement self,
-					    Expression tableName,
-					    String columnName)
+                                            Expression tableName,
+                                            String columnName)
     throws PositionedError;
 
   /**
    * Visits a AlterSetDefaultColumnStatement.
    */
   void visitAlterSetDefaultColumnStatement(AlterSetDefaultColumnStatement self,
-					   Expression tableName,
-					   String columnName,
-					   Expression defaultValue)
+                                           Expression tableName,
+                                           String columnName,
+                                           Expression defaultValue)
     throws PositionedError;
 
   /**
@@ -68,8 +69,8 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a AddTableConstraintStatement.
    */
   void visitAddTableConstraintStatement(AddTableConstraintStatement self,
-					Expression tableName,
-					TableConstraint tableConstraint)
+                                        Expression tableName,
+                                        TableConstraint tableConstraint)
     throws PositionedError;
 
   /**
@@ -150,12 +151,12 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a Column.
    */
   void visitColumn(Column self,
-		   String ident,
-		   Type type,
-		   boolean nullable,
+                   String ident,
+                   Type type,
+                   boolean nullable,
                    Expression defaultValue,
-		   String constraintName,
-		   JavaStyleComment[] comment)
+                   String constraintName,
+                   JavaStyleComment[] comment)
     throws PositionedError;
 
   /**
@@ -186,22 +187,22 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a DropTableConstraintStatement.
    */
   void visitDropTableConstraintStatement(DropTableConstraintStatement self,
-					 Expression tableName,
-					 String constraintName)
+                                         Expression tableName,
+                                         String constraintName)
     throws PositionedError;
 
   /**
    * Visits a DropViewStatement.
    */
   void visitDropViewStatement(DropViewStatement self,
-			      Expression tableName)
+                              Expression tableName)
     throws PositionedError;
 
   /**
    * Visits a DropTableStatement.
    */
   void visitDropTableStatement(DropTableStatement self,
-			       Expression tableName)
+                               Expression tableName)
     throws PositionedError;
 
   /**
@@ -214,28 +215,28 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a FixedType.
    */
   void visitFixedType(FixedType self,
-		      int precision,
-		      int scale,
-		      Fixed min,
-		      Fixed max)
+                      int precision,
+                      int scale,
+                      Fixed min,
+                      Fixed max)
     throws PositionedError;
 
   /**
    * Visits a GrantPrivilegeStatement.
    */
   void visitGrantPrivilegeStatement(GrantPrivilegeStatement self,
-				    Expression tableName,
-				    ArrayList privileges,
-				    ArrayList userList,
-				    boolean grantOption)
+                                    Expression tableName,
+                                    ArrayList privileges,
+                                    ArrayList userList,
+                                    boolean grantOption)
     throws PositionedError;
 
   /**
    * Visits a GrantUserClassStatement.
    */
   void visitGrantUserClassStatement(GrantUserClassStatement self,
-				    int userClass,
-				    String userName)
+                                    int userClass,
+                                    String userName)
     throws PositionedError;
 
   /**
@@ -248,11 +249,11 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a IndexDefinition.
    */
   void visitIndexDefinition(IndexDefinition self,
-			    boolean hasUnique,
-			    String indexName,
-			    Expression tableName,
-			    ArrayList indexElemList,
-			    int type)
+                            boolean hasUnique,
+                            String indexName,
+                            Expression tableName,
+                            ArrayList indexElemList,
+                            int type)
     throws PositionedError;
 
   /**
@@ -283,41 +284,40 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a NullDelimiterSpec.
    */
   void visitNullDelimiterSpec(NullDelimiterSpec self,
-			      NullSpec nullSpec,
-			      DelimSpec delimSpec)
+                              NullSpec nullSpec,
+                              DelimSpec delimSpec)
     throws PositionedError;
 
   /**
    * Visits a NullSpec.
    */
-  void visitNullSpec(NullSpec self, String literal)
-    throws PositionedError;
+  void visitNullSpec(NullSpec self, String literal) throws PositionedError;
 
   /**
    * Visits a ReferencedTableAndColumns.
    */
   void visitReferencedTableAndColumns(ReferencedTableAndColumns self,
-				      Expression tableName,
-				      FieldNameList field)
+                                      Expression tableName,
+                                      FieldNameList field)
     throws PositionedError;
 
   /**
    * Visits a ReferentialConstraintDefinition.
    */
   void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
-					    String name,
-					    FieldNameList field,
-					    ReferencedTableAndColumns reference,
-					    int type)
+                                            String name,
+                                            FieldNameList field,
+                                            ReferencedTableAndColumns reference,
+                                            int type)
     throws PositionedError;
 
   /**
    * Visits CompilationUnit (root of the syntax abstract tree)
    */
   void visitSCompilationUnit(SCompilationUnit self,
-			     String packageName,
-			     int version,
-			     ArrayList elems)
+                             String packageName,
+                             int version,
+                             ArrayList elems)
     throws PositionedError;
 
   /**
@@ -330,30 +330,30 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a SpoolFileStatement.
    */
   void visitSpoolFileStatement(SpoolFileStatement self,
-			       String fileName,
-			       NullDelimiterSpec spec,
-			       SelectStatement select)
+                               String fileName,
+                               NullDelimiterSpec spec,
+                               SelectStatement select)
     throws PositionedError;
 
   /**
    * Visits a SpoolTableStatement.
    */
   void visitSpoolTableStatement(SpoolTableStatement self,
-				Expression tableName,
-				boolean hasSorted,
-				String fileName,
-				boolean hasLocal,
-				NullDelimiterSpec spec)
+                                Expression tableName,
+                                boolean hasSorted,
+                                String fileName,
+                                boolean hasLocal,
+                                NullDelimiterSpec spec)
     throws PositionedError;
 
   /**
    * Visits a StringType.
    */
   void visitStringType(StringType self,
-		       boolean fixed,
-		       int width,
-		       int height,
-		       int convert)
+                       boolean fixed,
+                       int width,
+                       int height,
+                       int convert)
     throws PositionedError;
   
   /**
@@ -368,17 +368,18 @@ public interface DbiVisitor extends SqlVisitor {
    * Visits a TableDefinition.
    */
   void visitTableDefinition(TableDefinition self,
-			    Expression tableName,
-			    ArrayList columns,
-			    Key key)
+                            Expression tableName,
+                            ArrayList columns,
+                            Key key,
+                            Pragma pragma)
     throws PositionedError;
 
   /**
    * Visits a TablePrivilege.
    */
   void visitTablePrivilege(TablePrivilege self,
-			   int privilege,
-			   FieldNameList fieldName)
+                           int privilege,
+                           FieldNameList fieldName)
     throws PositionedError;
 
   /**
@@ -390,45 +391,42 @@ public interface DbiVisitor extends SqlVisitor {
   /**
    * Visits a TimeType.
    */
-  void visitTimeType(TimeType self)
-    throws PositionedError;
+  void visitTimeType(TimeType self) throws PositionedError;
 
   /**
    * Visits a TimestampType.
    */
-  void visitTimestampType(TimestampType self)
-    throws PositionedError;
+  void visitTimestampType(TimestampType self) throws PositionedError;
 
   /**
    * Visits a UniqueConstraintDefinition.
    */
   void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
-				       int type,
-				       FieldNameList field)
+                                       int type,
+                                       FieldNameList field)
     throws PositionedError;
 
   /**
    * Visits a ViewColumn.
    */
   void visitViewColumn(ViewColumn self,
-		       String ident,
-		       Type type,
-		       boolean nullable,
-		       JavaStyleComment[] comment)
+                       String ident,
+                       Type type,
+                       boolean nullable,
+                       JavaStyleComment[] comment)
     throws PositionedError;
 
   /**
    * Visits a ViewDefinition.
    */
   void visitViewDefinition(ViewDefinition self,
-			   Expression tableName,
-			   ArrayList columnNameList,
-			   TableReference reference)
+                           Expression tableName,
+                           ArrayList columnNameList,
+                           TableReference reference)
     throws PositionedError;
 
   /**
    * Visits a WeekType.
    */
-  void visitWeekType(WeekType self)
-    throws PositionedError;
+  void visitWeekType(WeekType self) throws PositionedError;
 }
