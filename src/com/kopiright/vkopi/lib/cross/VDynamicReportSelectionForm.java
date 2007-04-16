@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 import java.sql.SQLException;
 
-public class VDynamicReportSelectionForm extends VForm {
+public class VDynamicReportSelectionForm extends VDictionaryForm {
 
   protected VDynamicReportSelectionForm() throws VException {
   }
