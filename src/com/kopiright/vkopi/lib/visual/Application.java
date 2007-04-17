@@ -408,6 +408,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
   {
     if (options.nobugreport) {
       System.out.println("notice: reporting trouble is disabled, no mail will be sent.");
+      System.err.println(reason.getMessage());
+      reason.printStackTrace(System.err);
     } else {
       String                      smtpServer;
       String                      applicationName;
