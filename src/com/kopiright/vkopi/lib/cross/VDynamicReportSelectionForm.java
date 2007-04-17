@@ -25,7 +25,10 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VCommand;
+import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.form.*;
+import com.kopiright.vkopi.lib.report.Constants;
 import com.kopiright.vkopi.lib.report.VNoRowException;
 import com.kopiright.vkopi.lib.report.VReport;
 import com.kopiright.vkopi.lib.report.VReportColumn;
@@ -46,11 +49,16 @@ import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 import com.kopiright.xkopi.lib.base.Query;
+
+import com.kopiright.vkopi.lib.report.VReportCommand;
+import com.kopiright.vkopi.lib.report.SDefaultReportActor;
+
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.List;
 import java.util.Locale;
 import java.sql.SQLException;
+import java.awt.event.KeyEvent;
 
 public class VDynamicReportSelectionForm extends VDictionaryForm {
 
@@ -111,42 +119,56 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
   }
   
   /**
-   *
+   * create a dynamic report.
    */
   public class DynamicReport extends VReport {
+    
     public DynamicReport (VField[] fl) throws VException {
-      VReportColumn[] columns = new VReportColumn[fl.length];
-
+      this.columns = new VReportColumn[fl.length];
       this.block = fl[0].getBlock();
-
+      this.fl = fl;
+      setPageTitle(block.getTitle());
+      initDefaultActors();
+      initDefaultCommands();
+      initColumns();
+    }
+    
+    
+    public  void add() {}
+    protected void init() throws VException {}
+    
+    /**
+     * create columns and fill them with data.
+     */
+    protected void initColumns() throws VException {
       for(int i = 0 ; i < fl.length ; i++ ) {
         if (fl[i] instanceof com.kopiright.vkopi.lib.form.VStringField) {
           columns[i] = new VStringColumn(null, 0, 0, -1, null, fl[i].getWidth(), 1, null);
-
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VBooleanField) {
           columns[i] = new VBooleanColumn(null, 0, 0, -1, null, 1, null);
-        
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VDateField){
           columns[i] = new VDateColumn(null, 0, 0, -1, null, 1, null);
-        
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VFixnumField){
           columns[i] = new VFixnumColumn(null, 0, 0, -1, null, fl[i].getWidth(), 
                                          ((VFixnumField)fl[i]).getScale(0), null
                                          );
-
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VIntegerField) {
           columns[i] = new VIntegerColumn(null, 0, 0, -1, null, fl[i].getWidth(), null);
-
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VMonthField) {
           columns[i] = new VMonthColumn(null, 0, 0, -1, null, fl[i].getWidth(), null);
 
 
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VTimeField){
           columns[i] = new VTimeColumn(null, 0, 0, -1, null, fl[i].getWidth(), null);
-
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VTimestampField){
           columns[i] = new VTimestampColumn(null, 0, 0, -1, null, fl[i].getWidth(), null);
-
+          
         } else if (fl[i] instanceof com.kopiright.vkopi.lib.form.VWeekField){
           columns[i] = new VWeekColumn(fl[i].getName(), 0, 0, -1, null, fl[i].getWidth(), null);
           
@@ -179,9 +201,9 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
       }
       
       model.columns = columns ;
-
+      
       boolean alreadyProtected = getForm().inTransaction();
-
+      
       try {
         while (true) {
           try {
@@ -193,9 +215,9 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
             String searchCondition = block.getSearchConditions() == null ? "" : block.getSearchConditions(); 
             String searchColumns = block.getReportSearchColumns(); 
             String searchTables = block.getSearchTables(); 
-
+            
             query.open("SELECT " + searchColumns + "   " + searchTables  + "     " + searchCondition);
-
+            
             while (query.next()) {
               List result = new ArrayList();
               for (int i=0 ; i< fl.length ; i++ ) {
@@ -232,10 +254,8 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
       } catch (Throwable e) {
         throw new VExecFailedException(e);
       }
+      
     }
-    
-    public  void add() {}
-    protected void init() throws VException {}
     
     // ----------------------------------------------------------------------
     // LOCALIZATION
@@ -244,16 +264,79 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
     public void localize(Locale locale) {
       // don't localize this dynamic report.
     }
-    
-    
+        
     public void initReport() throws VException {
       build();
     }
-
-    //
-    //
-    //
     
+    public void destroyModel() {
+      //
+    }
+
+    // ----------------------------------------------------------------------
+    // Default Actors
+    // ----------------------------------------------------------------------
+
+    private void initDefaultActors() {
+      actorsDef = new SActor[11];
+
+      createActor("File", "Quit", "quit-icon", KeyEvent.VK_ESCAPE, 0, Constants.CMD_QUIT);
+
+      createActor("File", "Print", "print-icon", KeyEvent.VK_F6, 0, Constants.CMD_PRINT);
+
+//    createActor("File", "Preview", null, KeyEvent.SHIFT_MASK + KeyEvent.VK_F6, 0, Constants.CMD_PREVIEW);
+//    createActor("File", "PrintOptions", "border", KeyEvent.VK_F7, KeyEvent.SHIFT_MASK, Constants.CMD_PRINT_OPTIONS);
+
+      createActor("File", "Export", "export-icon", KeyEvent.VK_F8, 0, Constants.CMD_EXPORT);
+
+      createActor("File", "ExportXLS", "export-icon", KeyEvent.VK_F8, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORTXLS);
+
+      createActor("File", "ExportPDF", "export-icon",KeyEvent.VK_F9, 0, Constants.CMD_EXPORTPDF);
+
+      createActor("Action", "Fold", "fold-icon", KeyEvent.VK_F2, 0, Constants.CMD_FOLD);
+
+      createActor("Action","Unfold", "unfold-icon", KeyEvent.VK_F3, 0, Constants.CMD_UNFOLD);
+                  
+      createActor("Action", "FoldColumn", "foldColumn-icon", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_FOLD_COLUMN);
+
+      createActor("Action", "UnfoldColumn", "unfoldColumn-icon", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_UNFOLD_COLUMN);
+
+//    createActor("Action", "ColumnInfo", "options", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_COLUMN_INFO);
+
+      createActor("Action", "Sort", "serialquery-icon", KeyEvent.VK_F4 , 0, Constants.CMD_SORT);
+
+//    createActor("Action", "OpenLine", "edit", KeyEvent.VK_UNDEFINED, 0, CMD_OPEN_LINE);
+//    createActor("Settings", "RemoveConfiguration", null, KeyEvent.VK_UNDEFINED, 0, Constants.CMD_REMOVE_CONFIGURATION);
+//    createActor("Settings", "LoadConfiguration", "save", KeyEvent.VK_UNDEFINED, 0, Constants.CMD_LOAD_CONFIGURATION);
+
+      createActor("Help", "Help", "help-icon", KeyEvent.VK_F1, 0, Constants.CMD_HELP);
+      
+      setActors(actorsDef);
+
+    }
+    // ----------------------------------------------------------------------
+    // Default Actors
+    // ----------------------------------------------------------------------
+
+    private void createActor(String menuIdent,String actorIdent,String iconIdent,int key,int modifier,int trigger) {
+      actorsDef[number] = new SDefaultReportActor(menuIdent, actorIdent, iconIdent, key, modifier);
+      actorsDef[number].setNumber(trigger);
+      number ++;
+    }
+
+    // ----------------------------------------------------------------------
+    // Default Commands
+    // ----------------------------------------------------------------------
+
+    private void initDefaultCommands() {
+      commands = new VCommand[actorsDef.length];
+      for (int i = 0 ; i < 11 ; i++ ) {
+        commands[i] = new VReportCommand(this, actorsDef[i]);  
+      }
+    }
+    // ----------------------------------------------------------------------
+    //  useful Methods.
+    // ----------------------------------------------------------------------
     private boolean[] getBoolArray(Boolean[] codes) {
       boolean[] result  = new boolean[codes.length];
       for(int i = 0; i< codes.length; i++) {
@@ -263,17 +346,21 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
     }
     
     public int[] getIntArray(Integer[] codes) {
-        int[] result = new int[codes.length];
+      int[] result = new int[codes.length];
         for (int j = 0 ; j< codes.length ; j++ ) {
           result[j] = codes[j].intValue();
         }
         return result;
     }
-    
-    //
-    //
-    //
-    
-    private VBlock block;    
+
+    // ----------------------------------------------------------------------
+    // Data Members
+    // ----------------------------------------------------------------------
+
+    private VReportColumn[]          columns;
+    private VField[]                 fl;
+    private VBlock                   block;    
+    private SActor[]                 actorsDef;
+    private int                      number = 0;
   }
 }

@@ -226,4 +226,58 @@
   <property key="aspell-german" value="Deutsch" />
   <property key="aspell-english" value="Englisch" />
   <property key="aspell-french" value="Französisch" />
+<!-- Report Menus and actors (used in Dynamic reports)-->
+  <property key="File" value="Datei" />
+  <property key="Edit" value="Bearbeiten" />
+  <property key="Action" value="Aktionen" />
+  <property key="Settings" value="Einstellungen" />
+  <property key="Help" value="Hilfe" />
+  <property key="Quit" value="Beenden" />
+  <property key="Quit-help" value="Bericht verlassen" />
+  <property key="Print" value="Drucken" />
+  <property key="Print-help" value="Bericht drucken" />
+  <property key="Preview" value="Druck Vorschau" />
+  <property key="Preview-help" value="Hier können Sie eine Vorschau des Ausdruckes anzeigen." />
+  <property key="PrintOptions" value="Seite einrichten ..." />
+  <property key="PrintOptions-help" value="Druckereinstellungen festlegen" />
+  <property key="Export" value="Exportieren" />
+  <property key="Export-help" value="Bericht wird in eine Datei abgelegt" />
+  <property key="ExportXLS" value="XLS" />
+  <property key="ExportXLS-help" value="Bericht wird in eine Datei abgelegt" />
+  <property key="ExportPDF" value="PDF" />
+  <property key="ExportPDF-help" value="Bericht wird in eine Datei abgelegt" />
+  <property key="Fold" value="Schliessen" />
+  <property key="Fold-help" value="Zuklappen der Spalte, um Details auszublenden" />
+  <property key="Unfold" value="öffnen" />
+  <property key="Unfold-help" value="Aufklappen der Spalte, um Details anzuzeigen" />
+  <property key="FoldColumn" value="Ausblenden" />
+  <property key="FoldColumn-help" value="Ausblenden der Spalte" />
+  <property key="UnfoldColumn" value="Einblenden" />
+  <property key="UnfoldColumn-help" value="Einblenden der Spalte" />
+  <property key="ColumnInfo" value="Darstellung" />
+  <property key="ColumnInfo-help" value="Darstellungseinstellungen der einzelnen Felder abhängig vom Feldinhalt" />
+  <property key="Sort" value="Sortieren" />
+  <property key="Sort-help" value="Sortieren einer Spalte" />
+  <property key="OpenLine" value="Bearbeiten" />
+  <property key="OpenLine-help" value="Entsprechendes Formular öffnen" />
+  <property key="RemoveConfiguration" value="Löschen" />
+  <property key="RemoveConfiguration-help" value="Eine gespeicherte Konfiguration löschen" />
+  <property key="AddConfiguration" value="Speichern" />
+  <property key="AddConfiguration-help" value="Eine neue Konfiguration abspeichern" />
+  <property key="LoadConfiguration" value="Laden" />
+  <property key="LoadConfiguration-help" value="Eine gespeicherte Konfiguration laden" />
+  <property key="Options" value="Optionen" />
+  <property key="Options-help" value="Änderung der Darstellungsoptionen" />
+  <property key="Help" value="Hilfe" />
+  <property key="Help-help" value="Hilfe zum Bericht" />
+<!-- icons -->  
+  <property key="export-icon" value="export" />
+  <property key="fold-icon" value="fold" />
+  <property key="unfold-icon" value="unfold" />
+  <property key="foldColumn-icon" value="foldColumn" />
+  <property key="unfoldColumn-icon" value="unfoldColumn" />  
+  <property key="serialquery-icon" value="serialquery" />
+  <property key="help-icon" value="help" />
+  <property key="quit-icon" value="quit" />
+  <property key="print-icon" value="print" />
 </properties>

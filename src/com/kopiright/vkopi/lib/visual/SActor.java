@@ -110,6 +110,10 @@ public class SActor {
     return menuIdent;
   }
 
+  public String getActorIdent() {
+    return actorIdent;
+  }
+
   /**
    * Checks whether the atcor is enabled.
    */
@@ -137,6 +141,15 @@ public class SActor {
   public void setHandler(ActionHandler handler) {
     this.handler = handler;
   }
+  
+  /**
+   * get the number for the actor.
+   */
+  public int getNumber() {
+    return this.number;
+  }
+
+
 
   public void performAction() {
     handler.performAction(new KopiAction(menuItem + " in " + menuName) {
@@ -173,7 +186,7 @@ public class SActor {
   /**
    *
    */
-  private void initAction() {
+  public void initAction() {
     action = new SActorAction(menuItem,
                               (iconName != null) ?
                               loadImage(iconName) :
@@ -270,22 +283,22 @@ public class SActor {
   // --------------------------------------------------------------------
 
 
-  public final String		iconName;
+
   public final int		acceleratorKey;
   public final int		acceleratorModifier;
-  
-
+    
   public String                 menuName;
   public String                 menuItem;
-  public String                 help;
+    
   private String                menuSource;  // qualified name of menu's source file
-  private String                menuIdent;
   private String                actorSource; // qualified name of actor's source file
-  private String                actorIdent;
-
-  
   private Action                action; // replaces dactor
   private int                   number;
   private ActionHandler         handler;
   private boolean		synchronous;
+
+  protected String		iconName;
+  protected String              menuIdent;
+  protected String              actorIdent;
+  protected String              help;
 }

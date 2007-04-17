@@ -226,4 +226,57 @@
   <property key="aspell-german" value="Deutsch" />
   <property key="aspell-english" value="Englisch" />
   <property key="aspell-french" value="Französisch" />
+
+  <property key="File" value="Fichier" />
+  <property key="Edit" value="Procédure" />
+  <property key="Action" value="Action" />
+  <property key="Settings" value="Préférences" />
+  <property key="Help" value="Aide" />
+  <property key="Help-help" value="Aide" />
+  <property key="Quit" value="Quitter" />
+  <property key="Quit-help" value="Quitter le rapport." />
+  <property key="Print" value="Imprimer" />
+  <property key="Print-help" value="Imprimer le rapport" />
+  <property key="Preview" value="Afficher" />
+  <property key="Preview-help" value="Afficher le rapport sur l'écran" />
+  <property key="PrintOptions" value="Options" />
+  <property key="PrintOptions-help" value="Changer les options d'impression" />
+  <property key="Export" value="Exporter" />
+  <property key="Export-help" value="Enregistrer les données dans un fichier" />
+  <property key="ExportXLS" value="XLS" />
+  <property key="ExportXLS-help" value="Enregistrer les données dans un fichier" />
+  <property key="ExportPDF" value="PDF" />
+  <property key="ExportPDF-help" value="Enregistrer les données dans un fichier" />
+  <property key="Fold" value="Plier" />
+  <property key="Fold-help" value="Plie la colonne pour synthétiser les données" />
+  <property key="Unfold" value="Deplier" />
+  <property key="Unfold-help" value="Deplie la colonne pour approfondir la vision " />  
+  <property key="FoldColumn" value="Cacher" />
+  <property key="FoldColumn-help" value="Cacher la colonne" />
+  <property key="UnfoldColumn" value="Einblenden" />
+  <property key="UnfoldColumn-help" value="Montrer la colonne" />
+  <property key="ColumnInfo" value="Options" />
+  <property key="ColumnInfo-help" value="Changer l'affichage des champs en fonction de leur valeur" />
+  <property key="Sort" value="Trier" />
+  <property key="Sort-help" value="Trier les données de la colonne." />
+  <property key="OpenLine" value="Editer" />
+  <property key="OpenLine-help" value="Ouvre le formulaire d'édition." />
+  <property key="RemoveConfiguration" value="Effacer" />
+  <property key="RemoveConfiguration-help" value="Effacer une configuration enregistrée." />
+  <property key="AddConfiguration" value="Enregister" />
+  <property key="AddConfiguration-help" value="Enregister une nouvelle configuration." />
+  <property key="LoadConfiguration" value="Charger" />
+  <property key="LoadConfiguration" value="Charger une configuration enregistrée." />
+  <property key="Options" value="Change les options d'affichages" />
+  <property key="Options-help" value="Change les options d'affichages" />
+  <!-- icons -->
+  <property key="export-icon" value="export" />
+  <property key="fold-icon" value="fold" />
+  <property key="unfold-icon" value="unfold" />
+  <property key="foldColumn-icon" value="foldColumn" />
+  <property key="unfoldColumn-icon" value="unfoldColumn" />
+  <property key="serialquery-icon" value="serialquery" />
+  <property key="help-icon" value="help" />
+  <property key="quit-icon" value="quit" />
+  <property key="print-icon" value="print" />
 </properties>
