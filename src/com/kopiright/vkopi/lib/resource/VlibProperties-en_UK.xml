@@ -226,4 +226,57 @@
   <property key="aspell-german" value="German" />
   <property key="aspell-english" value="Englisch" />
   <property key="aspell-french" value="French" />
+
+  <property key="File" value="File" />
+  <property key="Edit" value="Edit" />
+  <property key="Action" value="Action" />
+  <property key="Settings" value="Settings" />
+  <property key="Help" value="Help" />
+  <property key="Help-help" value="Help" />
+  <property key="Quit" value="Quit" />
+  <property key="Quit-help" value="Quit the report." />
+  <property key="Print" value="Print" />
+  <property key="Print-help" value="Print the report." />
+  <property key="Preview" value="Preview" />
+  <property key="Preview-help" value="Report Preview."/>
+  <property key="PrintOptions" value="Options" />
+  <property key="PrintOptions-help" value="Change print options." />
+  <property key="Export" value="Export" />
+  <property key="Export-help" value="save data in a file." />
+  <property key="ExportXLS" value="XLS" />
+  <property key="ExportXLS-help" value="save data in a file." />
+  <property key="ExportPDF" value="PDF" />
+  <property key="ExportPDF-help" value="save data in a file." />
+  <property key="Fold" value="Fold" />
+  <property key="Fold-help" value="Fold selection." />
+  <property key="Unfold" value="unfold" />
+  <property key="Unfold-help" value="unfold selection." />
+  <property key="FoldColumn" value="Fold" />
+  <property key="FoldColumn-help" value="Fold Column." />
+  <property key="UnfoldColumn" value="UnfoldColumn" />
+  <property key="UnfoldColumn-help" value="unfold column" />
+  <property key="ColumnInfo" value="Options" />
+  <property key="ColumnInfo-help" value="Changes the display of rows in function of rows values." />
+  <property key="Sort" value="Sort" />
+  <property key="Sort-help" value="Sort data in the selected column." />
+  <property key="OpenLine" value="Edit" />
+  <property key="OpenLine-help" value="Open a form to edit item." />
+  <property key="RemoveConfiguration" value="Remove" />
+  <property key="RemoveConfiguration-help" value="remove a saved configuration." />
+  <property key="AddConfiguration" value="Save" />
+  <property key="AddConfiguration-help" value="save a new configuration." />
+  <property key="LoadConfiguration" value="Load" />
+  <property key="LoadConfiguration" value="Load saved configuration." />
+  <property key="Options" value="options" />
+  <property key="Options-help" value="Change display options." />
+  <!-- icons -->
+  <property key="export-icon" value="export" />
+  <property key="fold-icon" value="fold" />
+  <property key="unfold-icon" value="unfold" />
+  <property key="foldColumn-icon" value="foldColumn" />
+  <property key="unfoldColumn-icon" value="unfoldColumn" />
+  <property key="serialquery-icon" value="serialquery" />
+  <property key="help-icon" value="help" />
+  <property key="quit-icon" value="quit" />
+  <property key="print-icon" value="print" />
 </properties>
