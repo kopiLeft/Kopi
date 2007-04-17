@@ -58,14 +58,14 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.ui.base.ListDialogCellRenderer;
-import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.DWindow;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.type.Date;
 
 /**
@@ -73,13 +73,6 @@ import com.kopiright.xkopi.lib.type.Date;
  */
 public class ListDialog extends JPanel {
 
-
-/**
-   * returned value if a user click on a forced new button and there
-
-   * is no form to create a record
-   */
-  public static int	NEW_CLICKED		 = -2;
 
   /**
    * Creates a dialog with specified data
@@ -103,8 +96,8 @@ public class ListDialog extends JPanel {
   {
     if (list.length != data.length) {
       throw new InconsistencyException("WRONG NUMBER OF COLUMN OR TITLES: " +
-    		                            "list.length = " + list.length +
-    		                            " does not match data.length = " + data.length);
+                                       "list.length = " + list.length +
+                                       " does not match data.length = " + data.length);
     }
 
     this.skipFirstLine = skipFirstLine;
@@ -206,7 +199,7 @@ public class ListDialog extends JPanel {
   */
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by string formater
+   * @exception com.kopiright.vkopi.lib.visual.VException       an exception may be raised by string formater
    */
   private int selectFromDialogIn(final Component field,
                                  final boolean showSingleEntry)
@@ -281,7 +274,7 @@ public class ListDialog extends JPanel {
       popup = new JDialog(focus, true);
       popup.setUndecorated(true);
 
-      JPanel	panel = new JPanel();
+      JPanel    panel = new JPanel();
       panel.setBorder(new EtchedBorder());
 
       popup.getContentPane().add(panel);
@@ -325,7 +318,7 @@ public class ListDialog extends JPanel {
     popup.setFocusCycleRoot(true);
     popup.show();
 
-    VForm	temp = form;
+    VForm       temp = form;
 
     form = null;
     if (escaped) {
@@ -362,7 +355,7 @@ public class ListDialog extends JPanel {
 
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by string formater
+   * @exception com.kopiright.vkopi.lib.visual.VException       an exception may be raised by string formater
    */
   private int selectFromJDialog(Frame frame, boolean showSingleEntry) throws VException {
     if (!showSingleEntry && model.getRowCount() == 1) {
@@ -380,7 +373,7 @@ public class ListDialog extends JPanel {
     table.requestFocusInWindow();
     dialog.show();
 
-    VForm	temp = form;
+    VForm       temp = form;
     form = null;
     if (escaped) {
       return -1;
@@ -401,9 +394,9 @@ public class ListDialog extends JPanel {
    */
   private void addKeyListener() { //DWindow parent) {
     listener = new KeyAdapter() {
-        String		current = "";
+        String  current = "";
         public void keyPressed(KeyEvent k) {
-          int		key = k.getKeyCode();
+          int   key = k.getKeyCode();
           switch (key) {
           case KeyEvent.VK_SPACE:
             if (newForm != null || forceNew) {
@@ -415,7 +408,7 @@ public class ListDialog extends JPanel {
             dispose();
             break;
           case KeyEvent.VK_PAGE_UP:
-            int	select = table.getSelectedRow();
+            int select = table.getSelectedRow();
             select = Math.max(0, select - 20);
             ensureSelectionIsVisible(select);
             current = "";
@@ -451,8 +444,8 @@ public class ListDialog extends JPanel {
             current += ("" + aKey).toLowerCase().charAt(0);
 
             for (i = 0; i < model.getRowCount(); i++) {
-              String	text2 = model.getDisplayedValueAt(i).toString();
-              int		comp = Math.min(text2.length(), current.length());
+              String    text2 = model.getDisplayedValueAt(i).toString();
+              int       comp = Math.min(text2.length(), current.length());
               if (current.equalsIgnoreCase(text2.substring(0, comp))) {
                 ensureSelectionIsVisible(i);
                 break;
@@ -477,11 +470,11 @@ public class ListDialog extends JPanel {
   }
 
   private void ensureSelectionIsVisible(final int select) {
-    BoundedRangeModel	brm = scrollpane.getVerticalScrollBar().getModel();
-    int			oldSel = -1;
-    int			size = table.getRowHeight(); // border
-    int			min = brm.getValue() / size;
-    int			max = (brm.getValue() + brm.getExtent()) / size;
+    BoundedRangeModel   brm = scrollpane.getVerticalScrollBar().getModel();
+    int                 oldSel = -1;
+    int                 size = table.getRowHeight(); // border
+    int                 min = brm.getValue() / size;
+    int                 max = (brm.getValue() + brm.getExtent()) / size;
 
     if (select < min) {
       brm.setValue((select + 1) * size - brm.getExtent());
@@ -493,8 +486,8 @@ public class ListDialog extends JPanel {
     table.setRowSelectionInterval(select, select);
 
     if ((brm.getValue() / size != min)) {
-      int			min2 = brm.getValue() / size;
-      int			max2 = (brm.getValue() + brm.getExtent()) / size;
+      int       min2 = brm.getValue() / size;
+      int       max2 = (brm.getValue() + brm.getExtent()) / size;
       if (oldSel >= min2 && oldSel <= max2) {
         // oldSel visible => redisplay after that
         final int oldSelFinal = oldSel;
@@ -522,12 +515,12 @@ public class ListDialog extends JPanel {
    * Displays a dialog box returning position of selected element.
    */
   public static int selectFromDialog(DWindow window, String[] str) {
-       int	size = 0;
+    int      size = 0;
       for (int i = 0; i < str.length; i++) {
         size = Math.max(size, str[i].length());
       }
       return new ListDialog(new VListColumn[] {new VStringColumn("Auswahl", null, 0, size, true)},
-			    new Object[][] {str}). selectFromDialogIn(null, true);
+                            new Object[][] {str}). selectFromDialogIn(null, true);
    }
 
   /**
@@ -554,7 +547,7 @@ public class ListDialog extends JPanel {
 
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by string formater
+   * @exception com.kopiright.vkopi.lib.visual.VException       an exception may be raised by string formater
    */
   public int selectFromDialog(Frame frame, boolean showSingleEntry) {
     try {
@@ -611,9 +604,9 @@ public class ListDialog extends JPanel {
 //    table.getTableHeader().setFont(DObject.FNT_FIXED);
 
     // set columns width and table width = sum columns width
-    Dimension	screen	= java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-    int 	width 	= 0;
-    int 	height 	= 0;
+    Dimension   screen  = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    int         width   = 0;
+    int         height  = 0;
 
     for (int i = 0; i < model.getColumnCount(); i++) {
       int columnWidth = Toolkit.getDefaultToolkit().getFontMetrics(table.getFont()).stringWidth("W") * sizes[i];
@@ -660,7 +653,7 @@ public class ListDialog extends JPanel {
    *
    */
   private static int[] makeIdentArray(int rows) {
-    int[]	idents = new int[rows];
+    int[]       idents = new int[rows];
 
     for (int i = 0; i < rows; i++) {
       idents[i] = i;
@@ -672,11 +665,11 @@ public class ListDialog extends JPanel {
    *
    */
   private static int getMaxLength(String[] values) {
-    int	result = 0;
+    int result = 0;
 
     for (int i = 0; i < values.length; i++) {
       if (values[i] != null) {
-	result = Math.max(result, values[i].length());
+        result = Math.max(result, values[i].length());
       }
     }
 
@@ -689,9 +682,9 @@ public class ListDialog extends JPanel {
 
   private class KopiTableModel extends AbstractTableModel implements TableColumnModelListener {
 
-	public KopiTableModel(String[] columns, Object[][] data, int[] lineID, int count) {
+    public KopiTableModel(String[] columns, Object[][] data, int[] lineID, int count) {
       if (lineID[0] != 0) {// maintain compatiblility
-	skipFirstLine = false;
+        skipFirstLine = false;
       }
       this.count = count - (skipFirstLine ? 1 : 0);
       this.columns1 = columns;
@@ -699,16 +692,16 @@ public class ListDialog extends JPanel {
       this.lineID = lineID;
       tab = new int[lineID.length - (skipFirstLine ? 1 : 0)];
       for (int i = 0; i < tab.length; i ++) {
-	tab[i] = i + (skipFirstLine ? 1 : 0);
+        tab[i] = i + (skipFirstLine ? 1 : 0);
       }
       if (data.length != 0 && count > data[0].length) {
-	throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECTi DIALOG");
+        throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECTi DIALOG");
       }
       if (columns == null) {
       } else {
-	if (data.length > columns.length) {
-	  throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECT DIALOG");
-	}
+        if (data.length > columns.length) {
+          throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECT DIALOG");
+        }
       }
     }
 
@@ -767,71 +760,71 @@ public class ListDialog extends JPanel {
      * Bubble sort the columns from right to left
      */
     private void sort() {
-      int	left = 0;
-      int	sel = -1;
+      int       left = 0;
+      int       sel = -1;
 
       if (table != null) {
-	sel = getSelectedElement();
-	left = table.convertColumnIndexToModel(0);
+        sel = getSelectedElement();
+        left = table.convertColumnIndexToModel(0);
       }
 
       if (data.length == 0) { // one element
-	return;
+        return;
       }
 
       for (int i = 0; i < count; i++) {
-	tab[i] = i + (skipFirstLine ? 1 : 0); // reinit
+        tab[i] = i + (skipFirstLine ? 1 : 0); // reinit
       }
 
       for (int i = count; --i >= 0; ) {
-	for (int j = 0; j < i; j++) {
-	  Object	value1 = data[left][tab[j]];
-	  Object	value2 = data[left][tab[j+1]];
-	  boolean	swap;
+        for (int j = 0; j < i; j++) {
+          Object        value1 = data[left][tab[j]];
+          Object        value2 = data[left][tab[j+1]];
+          boolean       swap;
 
-	  if ((value1 != null) && (value2 != null)) {
-	    if (value1 instanceof String) {
-	      swap = (((String)value1).compareTo((String)value2) > 0);
-	    } else if (value1 instanceof Number) {
-	      swap = (((Number)value1).doubleValue() > ((Number)value2).doubleValue());
-	    } else if (value1 instanceof Boolean) {
-	      swap = (((Boolean)value1).booleanValue() && !((Boolean)value2).booleanValue());
-	    } else if (value1 instanceof Date) {
-	      swap = (((Date)value1).compareTo((Date)value2) > 0);
-	    } else {
-	      //!!! graf 010125 can we ever come her ? throw InconsistencyException()
-	      swap = false;
-	    }
-	  } else {
-	    swap = (value1 == null) && (value2 != null);
-	  }
+          if ((value1 != null) && (value2 != null)) {
+            if (value1 instanceof String) {
+              swap = (((String)value1).compareTo((String)value2) > 0);
+            } else if (value1 instanceof Number) {
+              swap = (((Number)value1).doubleValue() > ((Number)value2).doubleValue());
+            } else if (value1 instanceof Boolean) {
+              swap = (((Boolean)value1).booleanValue() && !((Boolean)value2).booleanValue());
+            } else if (value1 instanceof Date) {
+              swap = (((Date)value1).compareTo((Date)value2) > 0);
+            } else {
+              //!!! graf 010125 can we ever come her ? throw InconsistencyException()
+              swap = false;
+            }
+          } else {
+            swap = (value1 == null) && (value2 != null);
+          }
 
-	  if (swap) {
-	    int		tmp = tab[j];
+          if (swap) {
+            int tmp = tab[j];
 
-	    tab[j] = tab[j+1];
-	    tab[j+1] = tmp;
-	  }
-	}
+            tab[j] = tab[j+1];
+            tab[j+1] = tmp;
+          }
+        }
       }
 
       if (!ListDialog.this.columns[left].isSortAscending()) {
-	// reverse sorting
-	for (int i = 0; i < count / 2; i++) {
-	  int tmp = tab[i];
-	  tab[i] = tab[count - 1 - i];
-	  tab[count - 1 - i] = tmp;
-	}
+        // reverse sorting
+        for (int i = 0; i < count / 2; i++) {
+          int tmp = tab[i];
+          tab[i] = tab[count - 1 - i];
+          tab[count - 1 - i] = tmp;
+        }
       }
 
       if (table != null) {
-	for (int i = 0; i < count; i++) {
-	  if (lineID[tab[i]] == sel) {
-	    table.setRowSelectionInterval(i, i);
-	  }
-	}
+        for (int i = 0; i < count; i++) {
+          if (lineID[tab[i]] == sel) {
+            table.setRowSelectionInterval(i, i);
+          }
+        }
 
-	table.tableChanged(new TableModelEvent(this));
+        table.tableChanged(new TableModelEvent(this));
       }
     }
 
@@ -839,15 +832,15 @@ public class ListDialog extends JPanel {
     // DATA MEMBERS
     // ----------------------------------------------------------------------
 
-    private String[]		columns1;
-    private Object[][]		data;
-    private int			count;
-    private int[]		lineID;
-    private int[]		tab;
+    private String[]    columns1;
+    private Object[][]  data;
+    private int count;
+    private int[]       lineID;
+    private int[]       tab;
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 1956519774210966774L;
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 1956519774210966774L;
   }
 
    // class DialogFactory is never read locally.
@@ -862,27 +855,31 @@ public class ListDialog extends JPanel {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private VForm			form;
-  private JTable		table;
-  private JDialog		popup;
-  private JDialog		dialog;
-  private KeyListener		listener;
-  private Component		listenerOwner;
-  private JScrollPane		scrollpane;
-  private String		newForm;
-  private boolean		forceNew;
-  private boolean		tooManyRows;
-
-  private int[]			sizes;
-  private KopiTableModel	model;
-  private VListColumn[]		columns;
-  private boolean		skipFirstLine = true;
-  private boolean		escaped = true;
-  private boolean		doNewForm;
+  private VForm                 form;
+  private JTable                table;
+  private JDialog               popup;
+  private JDialog               dialog;
+  private KeyListener           listener;
+  private Component             listenerOwner;
+  private JScrollPane           scrollpane;
+  private String                newForm;
+  private boolean               forceNew;
+  private boolean               tooManyRows;
+  private int[]                 sizes;
+  private KopiTableModel        model;
+  private VListColumn[]         columns;
+  private boolean               skipFirstLine = true;
+  private boolean               escaped = true;
+  private boolean               doNewForm;
 
   private static final int      rowHeight = UIManager.getInt("ListDialog.row.height");
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-  private static final long serialVersionUID = -7531584148431229270L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long     serialVersionUID = -7531584148431229270L;
+
+  // returned value if a user click on a forced new button and there
+  // is no form to create a record
+  public static int             NEW_CLICKED     = -2;
+
 }
