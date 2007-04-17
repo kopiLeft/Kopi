@@ -71,9 +71,9 @@ import com.kopiright.xkopi.lib.type.Date;
 /**
  * A simple dialog with a table
  */
-public class ListDialog extends JPanel {  
+public class ListDialog extends JPanel {
 
-  
+
 /**
    * returned value if a user click on a forced new button and there
 
@@ -84,9 +84,9 @@ public class ListDialog extends JPanel {
   /**
    * Creates a dialog with specified data
    */
-  public ListDialog(VListColumn[] list, 
+  public ListDialog(VListColumn[] list,
                     Object[][] data,
-                    int[] idents, 
+                    int[] idents,
                     int rows)
   {
     this(list, data, idents, rows, true);
@@ -102,7 +102,9 @@ public class ListDialog extends JPanel {
                     boolean skipFirstLine)
   {
     if (list.length != data.length) {
-      throw new InconsistencyException("WRONG NUMBER OF COLUMN OR TITLES");
+      throw new InconsistencyException("WRONG NUMBER OF COLUMN OR TITLES: " +
+    		                            "list.length = " + list.length +
+    		                            " does not match data.length = " + data.length);
     }
 
     this.skipFirstLine = skipFirstLine;
@@ -125,7 +127,7 @@ public class ListDialog extends JPanel {
   public ListDialog(VListColumn[] list,
                     Object[][] data,
                     int rows,
-                    String newForm) 
+                    String newForm)
   {
     this(list, data, makeIdentArray(rows), rows, false);
     this.newForm = newForm;
@@ -159,7 +161,7 @@ public class ListDialog extends JPanel {
   {
     this(new VListColumn[]{ new VStringColumn(title,
                                               null,
-                                              VConstants.ALG_LEFT, 
+                                              VConstants.ALG_LEFT,
                                               getMaxLength(data),
                                               true) },
          new String[][]{ data },
@@ -207,13 +209,13 @@ public class ListDialog extends JPanel {
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by string formater
    */
   private int selectFromDialogIn(final Component field,
-                                 final boolean showSingleEntry) 
+                                 final boolean showSingleEntry)
   {
     DisplayHandler      handler = new DisplayHandler(field, showSingleEntry);
 
     SwingThreadHandler.startAndWait(handler);
     return handler.getReturnValue();
-  } 
+  }
 
   private class DisplayHandler implements Runnable {
     public DisplayHandler(final Component field,
@@ -234,10 +236,10 @@ public class ListDialog extends JPanel {
     private int         retVal;
     private Component   field;
     private boolean     showSingleEntry;
-  } 
+  }
 
   private int selectFromDialogAWT(Component field,
-                                  boolean showSingleEntry) { 
+                                  boolean showSingleEntry) {
     try {
       Frame      focus;
 
@@ -247,10 +249,10 @@ public class ListDialog extends JPanel {
         Window  window;
 
         window = FocusManager.getCurrentManager().getFocusedWindow();
-      
+
         while (!(window instanceof Frame) && window != null) {
           window = window.getOwner();
-        } 
+        }
 
         if (window instanceof Frame) {
           focus = (Frame) window;
@@ -275,7 +277,7 @@ public class ListDialog extends JPanel {
       if (!showSingleEntry && model.getRowCount() == 1) {
         return model.convert(0);
       }
-      
+
       popup = new JDialog(focus, true);
       popup.setUndecorated(true);
 
@@ -288,7 +290,7 @@ public class ListDialog extends JPanel {
       panel.add(this, BorderLayout.CENTER);
       if (newForm != null || forceNew) {
         JButton button = new JButton(VlibProperties.getString("new-record"));
-        
+
         panel.add(button, BorderLayout.SOUTH);
         button.setFocusable(true); // !!! laurent 20020411
         //      button.setFont(DObject.FNT_DIALOG);
@@ -309,9 +311,9 @@ public class ListDialog extends JPanel {
             }
         });
       }
-      
+
       addKeyListener(); //parent);
-    
+
     popup.pack();
 
     positionPopup(focus, field, panel);
@@ -441,13 +443,13 @@ public class ListDialog extends JPanel {
           default:
             char aKey = k.getKeyChar();
             int i;
-            
+
             if (!Character.isLetterOrDigit(aKey)) {
               return;
             }
-            
+
             current += ("" + aKey).toLowerCase().charAt(0);
-            
+
             for (i = 0; i < model.getRowCount(); i++) {
               String	text2 = model.getDisplayedValueAt(i).toString();
               int		comp = Math.min(text2.length(), current.length());
@@ -686,7 +688,7 @@ public class ListDialog extends JPanel {
   // ----------------------------------------------------------------------
 
   private class KopiTableModel extends AbstractTableModel implements TableColumnModelListener {
-        
+
 	public KopiTableModel(String[] columns, Object[][] data, int[] lineID, int count) {
       if (lineID[0] != 0) {// maintain compatiblility
 	skipFirstLine = false;
@@ -855,7 +857,7 @@ public class ListDialog extends JPanel {
       return new JDialog(frame, VlibProperties.getString("pick_in_list"));
     }
   }
-  */ 
+  */
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
