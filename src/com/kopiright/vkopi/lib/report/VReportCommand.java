@@ -86,17 +86,17 @@ public class VReportCommand extends VCommand implements ActionHandler {
       report.close();
       break;
     case Constants.CMD_PRINT:
-      PrintManager pm = new com.kopiright.apps.common.PrintCopies();
-      try {
-        pm.print(report,
-                 report,
-                 1,
-                 ApplicationConfiguration.getConfiguration().getCurrentPrinter(),
-                 null,
-                 null);
-      } catch (Exception e){
-        e.printStackTrace();
-      }
+//       PrintManager pm = new com.kopiright.apps.common.PrintCopies();
+//       try {
+//         pm.print(report,
+//                  report,
+//                  1,
+//                  ApplicationConfiguration.getConfiguration().getCurrentPrinter(),
+//                  null,
+//                  null);
+//       } catch (Exception e){
+//         e.printStackTrace();
+//       }
       break;
 //  case Constants.CMD_PREVIEW:
 //    break;
