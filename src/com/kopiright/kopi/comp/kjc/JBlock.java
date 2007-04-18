@@ -37,13 +37,13 @@ public class JBlock extends JStatement {
 
   /**
    * Construct a node in the parsing tree
-   * @param	where		the line of this node in the source code
-   * @param	body		the statements contained in the block
-   * @param	comment		other comments in the source code
+   * @param     where           the line of this node in the source code
+   * @param     body            the statements contained in the block
+   * @param     comment         other comments in the source code
    */
   public JBlock(TokenReference where,
-		JStatement[] body,
-		JavaStyleComment[] comments)
+                JStatement[] body,
+                JavaStyleComment[] comments)
   {
     super(where, comments);
 
@@ -57,7 +57,7 @@ public class JBlock extends JStatement {
   /**
    * Tests whether the block is empty.
    *
-   * @return	true iff the block is empty.
+   * @return    true iff the block is empty.
    */
   public boolean isEmpty() {
     return body.length == 0;
@@ -66,19 +66,20 @@ public class JBlock extends JStatement {
   public JStatement[] getBody() {
     return body;
   }
+
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
   // ----------------------------------------------------------------------
 
   /**
    * Analyses the statement (semantically).
-   * @param	context		the analysis context
-   * @exception	PositionedError	the analysis detected an error
+   * @param     context         the analysis context
+   * @exception PositionedError the analysis detected an error
    */
   public void analyse(CBodyContext context) throws PositionedError {
      
     // if change: don't forget KopiImplicitReturnBlock
-    CBlockContext	self = new CBlockContext(context, context.getEnvironment());
+    CBlockContext       self = new CBlockContext(context, context.getEnvironment());
 
     for (int i = 0; i < body.length; i++) {
       if (!self.isReachable() && 
@@ -87,9 +88,9 @@ public class JBlock extends JStatement {
       }
       try {
         if (body[i] instanceof JClassFieldDeclarator) {
-          // here, if elements of the body are fiel declaration
+          // here, if elements of the body are field declarations,
           // the context is already set in an earlier step,
-          // if not we set it.
+          // otherwise we set it.
           if (!((JClassFieldDeclarator) body[i]).hasBodyContext()) {
             ((JClassFieldDeclarator) body[i]).analyse(self);
           }
@@ -111,7 +112,7 @@ public class JBlock extends JStatement {
 
   /**
    * Accepts the specified visitor
-   * @param	p		the visitor
+   * @param     p               the visitor
    */
   public void accept(KjcVisitor p) {
     p.visitBlockStatement(this, body, getComments());
@@ -119,7 +120,7 @@ public class JBlock extends JStatement {
 
   /**
    * Generates a sequence of bytescodes
-   * @param	code		the code list
+   * @param     code            the code list
    */
   public void genCode(GenerationContext context) {
     CodeSequence code = context.getCodeSequence();
@@ -130,10 +131,10 @@ public class JBlock extends JStatement {
       body[i].genCode(context);
     }
   }
-
- // ----------------------------------------------------------------------
+  
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
-  protected final JStatement[]		body;
+  
+  protected final JStatement[]  body;
 }

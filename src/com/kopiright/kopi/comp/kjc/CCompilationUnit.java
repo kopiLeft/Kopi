@@ -37,9 +37,9 @@ public class CCompilationUnit {
    */
   public CCompilationUnit(KjcEnvironment environment,
                           String packageName,
-			  JClassImport[] importedClasses,
-			  JPackageImport[] importedPackages,
-			  Hashtable loadedClasses) {
+                          JClassImport[] importedClasses,
+                          JPackageImport[] importedPackages,
+                          Hashtable loadedClasses) {
     this.packageName = packageName;
     this.importedClasses = importedClasses;
     this.importedPackages = importedPackages;
@@ -52,9 +52,9 @@ public class CCompilationUnit {
   // ----------------------------------------------------------------------
 
   /**
-   * @param	caller		the class of the caller
-   * @return	a class according to imports or null if error occur
-   * @exception UnpositionedError	this error will be positioned soon
+   * @param     caller          the class of the caller
+   * @return    a class according to imports or null if an error occurs
+   * @exception UnpositionedError       this error will be positioned soon
    */
   public CClass lookupClass(CClass caller, String name) throws UnpositionedError {
       ClassReader classReader = environment.getClassReader();
@@ -67,41 +67,40 @@ public class CCompilationUnit {
 
       // First look for a type declared by a single-type-import of by a type declaration
       if ((cl = (CClass)loadedClasses.get(name)) != null) {
-	// If type is declared by a single-type-import, mark it as used (max. 1)
-	for (int i = 0; i < importedClasses.length; i++) {
-	  if (name == importedClasses[i].getSimpleName()) {
-	    importedClasses[i].setUsed();
-	    break;
-	  }
-	}
+        // If type is declared by a single-type-import, mark it as used (max. 1)
+        for (int i = 0; i < importedClasses.length; i++) {
+          if (name == importedClasses[i].getSimpleName()) {
+            importedClasses[i].setUsed();
+            break;
+          }
+        }
 
-	return cl;
+        return cl;
       }
 
       // Otherwise, look for a type declared in another compilation unit of this package
       if (packageName.length() == 0) {
-	cl = classReader.hasClassFile(name) ? classReader.loadClass(typeFactory, name) : null;
+        cl = classReader.hasClassFile(name) ? classReader.loadClass(typeFactory, name) : null;
       } else {
-	String		temp = packageName + '/' + name;
+        String  temp = packageName + '/' + name;
 
-	cl = classReader.hasClassFile(temp) ?  classReader.loadClass(typeFactory, temp) : null;
+        cl = classReader.hasClassFile(temp) ?  classReader.loadClass(typeFactory, temp) : null;
       }
 
       if (cl != null) {
-	loadedClasses.put(name, cl);
+        loadedClasses.put(name, cl);
       } else {
-	// Otherwise, look for a type declared by EXACTLY ONE import-on-demand declaration
-	for (int i = 0; i < importedPackages.length; i++) {
-	  String	qualifiedName;
-          
+        // Otherwise, look for a type declared by EXACTLY ONE import-on-demand declaration
+        for (int i = 0; i < importedPackages.length; i++) {
+          String        qualifiedName;
           if (classReader.hasClassFile(importedPackages[i].getName())) {
             // import on demand of enclosed classes!
             qualifiedName = (importedPackages[i].getName() + '$' + name).intern();
           } else {
             qualifiedName = (importedPackages[i].getName() + '/' + name).intern();
           }
-	  if (classReader.hasClassFile(qualifiedName)) {
-	    CClass	lastClass = (CClass)loadedClasses.get(name);
+          if (classReader.hasClassFile(qualifiedName)) {
+            CClass      lastClass = (CClass)loadedClasses.get(name);
 
             // 7.5.2 Type-Import-on-Demand Declaration
             // A type-import-on-demand declaration allows all accessible (§6.6) types 
@@ -111,26 +110,26 @@ public class CCompilationUnit {
               lastClass = null; // not accessible -> not imported
             }
 
-	    if (lastClass != null && !lastClass.getQualifiedName().equals(qualifiedName)) {
-	      // Oops, the name is ambiguous (declared by more than one import-on-demand declaration)
-	      throw new UnpositionedError(KjcMessages.CUNIT_RENAME2, name);
-	    }
-	    loadedClasses.put(name, classReader.loadClass(typeFactory, qualifiedName));
-	    importedPackages[i].setClassUsed(name);
-	  }
-	}
+            if (lastClass != null && !lastClass.getQualifiedName().equals(qualifiedName)) {
+              // Oops, the name is ambiguous (declared by more than one import-on-demand declaration)
+              throw new UnpositionedError(KjcMessages.CUNIT_RENAME2, name);
+            }
+            loadedClasses.put(name, classReader.loadClass(typeFactory, qualifiedName));
+            importedPackages[i].setClassUsed(name);
+          }
+        }
       }
 
       // now the name must be unique and found
       if ((cl = (CClass)loadedClasses.get(name)) == null) {
-	throw new UnpositionedError(KjcMessages.CLASS_UNKNOWN, name);
+        throw new UnpositionedError(KjcMessages.CLASS_UNKNOWN, name);
       }
 
       return cl.getCClass();
     } else {
       // 6.5.4.2 Qualified Type Names: look directly at top
       if (!environment.getClassReader().hasClassFile(name)) {
-	throw new UnpositionedError(KjcMessages.CLASS_UNKNOWN, name);
+        throw new UnpositionedError(KjcMessages.CLASS_UNKNOWN, name);
       }
 
       return classReader.loadClass(typeFactory, name); 
@@ -141,11 +140,9 @@ public class CCompilationUnit {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final String			packageName;
-
-  private final JClassImport[]		importedClasses;
-  private final JPackageImport[]	importedPackages;
-
-  private final Hashtable		loadedClasses;
+  private final String                  packageName;
+  private final JClassImport[]          importedClasses;
+  private final JPackageImport[]        importedPackages;
+  private final Hashtable               loadedClasses;
   private final KjcEnvironment          environment;
 }
