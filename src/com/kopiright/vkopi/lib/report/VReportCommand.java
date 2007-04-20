@@ -86,6 +86,11 @@ public class VReportCommand extends VCommand implements ActionHandler {
       report.close();
       break;
     case Constants.CMD_PRINT:
+      
+      // !!! wael 20070418: cannot reference apps from within kopi
+      // we must find a way how to access PrintCopies, may be using
+      // an interface/plug-in
+
 //       PrintManager pm = new com.kopiright.apps.common.PrintCopies();
 //       try {
 //         pm.print(report,
