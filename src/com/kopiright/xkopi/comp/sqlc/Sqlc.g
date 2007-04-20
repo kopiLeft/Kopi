@@ -24,9 +24,9 @@ header { package com.kopiright.xkopi.comp.sqlc; }
 
   import com.kopiright.compiler.base.CWarning;
   import com.kopiright.compiler.base.Compiler;
-  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.compiler.base.PositionedError;
   import com.kopiright.compiler.base.TokenReference;
+  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.util.base.Utils;
   import com.kopiright.xkopi.lib.type.NotNullFixed;
 }
@@ -38,14 +38,14 @@ header { package com.kopiright.xkopi.comp.sqlc; }
 class SqlcParser extends Parser;
 
 options {
-  k = 2;				// two token lookahead
-  importVocab = Sqlc;			// Call its vocabulary "Sqlc"
-  exportVocab = Sqlc;			// Call its vocabulary "Sqlc"
-  codeGenMakeSwitchThreshold = 2;	// Some optimizations
+  k = 2;                                // two token lookahead
+  importVocab = Sqlc;                   // Call its vocabulary "Sqlc"
+  exportVocab = Sqlc;                   // Call its vocabulary "Sqlc"
+  codeGenMakeSwitchThreshold = 2;       // Some optimizations
   codeGenBitsetTestThreshold = 3;
-  defaultErrorHandler = false;		// Don't generate parser error handlers
+  defaultErrorHandler = false;          // Don't generate parser error handlers
+  access = "private";                   // Set default rule access
   superClass = "com.kopiright.compiler.tools.antlr.extra.Parser";
-  access = "private";			// Set default rule access
 }
 {
   public SqlcParser(Compiler compiler, InputBuffer buffer) {
@@ -61,7 +61,7 @@ public sCompilationUnit []
 {
   self = new SCompilationUnit(buildTokenReference());
 
-  Statement	stmt;
+  Statement     stmt;
 }
 :
   (
@@ -95,15 +95,15 @@ dataManipulationLanguageStatement []
 sSelectStatement []
   returns [SelectStatement self = null]
 {
-  String		type = null;
-  ArrayList		selectList;
-  FromClause		fromClause;
-  WhereClause		whereClause = null;
-  GroupByClause		groupByClause = null;
-  HavingClause		havingClause = null;
-  SortSpec		sortSpec = null;
-  UpdSpec		updateSpec = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                type = null;
+  ArrayList             selectList;
+  FromClause            fromClause;
+  WhereClause           whereClause = null;
+  GroupByClause         groupByClause = null;
+  HavingClause          havingClause = null;
+  SortSpec              sortSpec = null;
+  UpdSpec               updateSpec = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "SELECT"
@@ -120,22 +120,22 @@ sSelectStatement []
   )?
   {
     self = new SelectStatement(sourceRef,
-			       type,
-			       selectList,
-			       fromClause,
-			       whereClause,
-			       groupByClause,
-			       havingClause,
-			       sortSpec,
-			       updateSpec);
+                               type,
+                               selectList,
+                               fromClause,
+                               whereClause,
+                               groupByClause,
+                               havingClause,
+                               sortSpec,
+                               updateSpec);
   }
 ;
 
 sArrayPrecision []
   returns [ArrayPrecision self = null]
 {
-  IntegerLiteral	p = null;
-  TokenReference	sourceRef = buildTokenReference();
+  IntegerLiteral        p = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   LPAREN ( p = sIntegerLiteral[] | STAR ) RPAREN
@@ -145,7 +145,7 @@ sArrayPrecision []
 sAssignList []
   returns [ArrayList self = new ArrayList()]
 {
-  Assignment	p;
+  Assignment    p;
 }
 :
   (
@@ -168,9 +168,9 @@ sAssignList []
 sAssignment []
   returns [Assignment self = null]
 {
-  FieldReference	lhs;
-  Expression		rhs;
-  TokenReference	sourceRef = buildTokenReference();
+  FieldReference        lhs;
+  Expression            rhs;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   lhs = sFieldReference[] ASSIGN rhs = sExpression[]
@@ -180,11 +180,11 @@ sAssignment []
 sBetweenPredicate []
   returns [BetweenPredicate self = null]
 {
-  Expression		p1;
-  String		p2 = null;
-  Expression		p3;
-  String		p4 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            p1;
+  String                p2 = null;
+  Expression            p3;
+  String                p4 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "BETWEEN"
@@ -207,8 +207,8 @@ sBetweenQualifier []
 sCaseExpression []
   returns [CaseExpression self = null]
 {
-  AbstractCaseExpression	p1;
-  TokenReference		sourceRef = buildTokenReference();
+  AbstractCaseExpression        p1;
+  TokenReference                sourceRef = buildTokenReference();
 }
 :
   "CASE"
@@ -225,7 +225,7 @@ sCorrespondingSpec []
   returns [CorrespondingSpec self = null]
 {
   FieldNameList p1 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "CORRESPONDING"
@@ -236,10 +236,10 @@ sCorrespondingSpec []
 sDataType []
   returns [Type self = null]
 {
-  ArrayPrecision	prec = null;
-  IntegerLiteral	exp1 = null;
-  IntegerLiteral	exp2 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayPrecision        prec = null;
+  IntegerLiteral        exp1 = null;
+  IntegerLiteral        exp2 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "TINYINT" { self = new TinyIntType(sourceRef); }
@@ -275,8 +275,8 @@ sDataType []
 sDataTypeSpec []
   returns [Type self = null]
 {
-  String		p1;
-  TokenReference	sourceRef = buildTokenReference();
+  String                p1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sDataType[]
@@ -288,9 +288,9 @@ sDataTypeSpec []
 sDeleteStatement []
   returns [DeleteStatement self = null]
 {
-  TableName		table;
-  SearchCondition	cond = null;
-  TokenReference	sourceRef = buildTokenReference();
+  TableName             table;
+  SearchCondition       cond = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DELETE" "FROM" table = sSimpleTableName[]
@@ -301,8 +301,8 @@ sDeleteStatement []
 sExistsPredicate []
   returns [ExistsPredicate self = null]
 {
-  SubTableExpression	p1;
-  TokenReference	sourceRef = buildTokenReference();
+  SubTableExpression    p1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "EXISTS" p1 = sSubTableExpression[]
@@ -312,8 +312,8 @@ sExistsPredicate []
 sExpression []
   returns [Expression self = null]
 {
-  Expression		right = null;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            right = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sFactor[]
@@ -338,7 +338,7 @@ sExpression []
 sFactor []
   returns [Expression self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   PLUS self = sPrimary[]
@@ -353,9 +353,9 @@ sFactor []
 sExpressionList []
   returns [ExpressionList self = null]
 {
-  ArrayList		exprs = new ArrayList();
-  Expression		p;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayList             exprs = new ArrayList();
+  Expression            p;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   p = sExpression[] { exprs.add(p); }
@@ -366,9 +366,9 @@ sExpressionList []
 sFieldNameList []
   returns [FieldNameList self = null]
 {
-  ArrayList		fields = new ArrayList();
-  String		p;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayList             fields = new ArrayList();
+  String                p;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   p = sIdentifier[] { fields.add(p); }
@@ -379,11 +379,11 @@ sFieldNameList []
 sFieldReference []
   returns [FieldReference self = null]
 {
-  String		p1;
-  String		p2 = null;
-  String		p3 = null;
-  TokenReference	sourceRef = buildTokenReference();
-  boolean		hasPlus = false;
+  String                p1;
+  String                p2 = null;
+  String                p3 = null;
+  TokenReference        sourceRef = buildTokenReference();
+  boolean               hasPlus = false;
 }
 :
   p1 = sIdentifier[]
@@ -398,9 +398,9 @@ sFieldReference []
 sFromClause []
   returns [FromClause self = null]
 {
-  ArrayList		v = new ArrayList();
-  SimpleTableReference	p;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayList             v = new ArrayList();
+  SimpleTableReference  p;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "FROM" p = sSimpleTableReference[] { v.add(p); }
@@ -413,9 +413,9 @@ sFromClause []
 sGroupByClause []
   returns [GroupByClause self = null]
 {
-  ArrayList		v = new ArrayList();
-  FieldReference	p;
-  TokenReference	sourceRef = buildTokenReference();
+  ArrayList             v = new ArrayList();
+  FieldReference        p;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "GROUP" "BY" p = sFieldReference[] { v.add(p); }
@@ -429,8 +429,8 @@ sGroupByClause []
 sHavingClause []
   returns [HavingClause self = null]
 {
-  SearchCondition	p;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       p;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "HAVING" p = sSearchCondition[]
@@ -456,7 +456,7 @@ sDecodeExpression []
   Vector                container = new Vector();
   Expression            p1;
   Expression            p2;
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "DECODE" LPAREN
@@ -497,10 +497,10 @@ sDecodeExpression []
 sIfExpression []
   returns [IfExpression self = null]
 {
-  SearchCondition	p1;
+  SearchCondition       p1;
   Expression            p2;
   Expression            p3;
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "IF" p1 = sSearchCondition[]
@@ -516,10 +516,10 @@ sIfExpression []
 sInsertSource []
   returns [InsertSource self = null]
 {
-  ValueList		value;
-  ArrayList		list = new ArrayList();
-  TableReference	table;
-  TokenReference	sourceRef = buildTokenReference();
+  ValueList             value;
+  ArrayList             list = new ArrayList();
+  TableReference        table;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "VALUES" value = sValueList[]
@@ -540,10 +540,10 @@ sInsertSource []
 sInsertStatement []
   returns [InsertStatement self = null]
 {
-  String		p1;
-  FieldNameList		p2 = null;
-  InsertSource		p3;
-  TokenReference	sourceRef = buildTokenReference();
+  String                p1;
+  FieldNameList         p2 = null;
+  InsertSource          p3;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "INSERT" "INTO" p1 = sIdentifier[]
@@ -557,8 +557,8 @@ sInsertStatement []
 sIntegerLiteral []
   returns [IntegerLiteral self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  int			value;
+  TokenReference        sourceRef = buildTokenReference();
+  int                   value;
 }
 :
   value = sInteger[]
@@ -568,8 +568,8 @@ sIntegerLiteral []
 sIntersectSpec []
   returns [IntersectSpec self = null]
 {
-  CorrespondingSpec	p1 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  CorrespondingSpec     p1 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "INTERSECT" ( p1 = sCorrespondingSpec[] )?
@@ -579,9 +579,9 @@ sIntersectSpec []
 sJoinPred []
   returns [JoinPred self = null]
 {
-  SearchCondition	condition;
-  FieldNameList		list;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       condition;
+  FieldNameList         list;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ON" condition = sSearchCondition[]
@@ -604,10 +604,10 @@ sJoinType []
 sLikePredicate []
   returns [LikePredicate self = null]
 {
-  String		p1 = null;
-  Expression		p2;
-  JdbcEscape		p3 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                p1 = null;
+  Expression            p2;
+  JdbcEscape            p3 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "LIKE"
@@ -642,7 +642,7 @@ sLiteral []
 sNumericLiteral []
   returns [NumericLiteral self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   t2:NUMERIC_LIT
@@ -652,8 +652,8 @@ sNumericLiteral []
 sStringLiteral []
   returns [StringLiteral self = null]
 {
-  String		text = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                text = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   text = sString[]
@@ -663,7 +663,7 @@ sStringLiteral []
 sBooleanLiteral []
   returns [BooleanLiteral self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "FALSE"
@@ -676,7 +676,7 @@ sBooleanLiteral []
 sNullLiteral []
   returns [NullLiteral self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "NULL"
@@ -686,18 +686,18 @@ sNullLiteral []
 sDateLiteral []
   returns [JdbcDateLiteral self = null]
 {
-  String		text = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                text = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   JDBC_DATE text = sString[] RCURLY
     {
       try {
-	self = new JdbcDateLiteral(sourceRef, text);
+        self = new JdbcDateLiteral(sourceRef, text);
       } catch (PositionedError e) {
-	reportTrouble(e);
-	// allow parsing to continue
-	self = JdbcDateLiteral.DEFAULT;
+        reportTrouble(e);
+        // allow parsing to continue
+        self = JdbcDateLiteral.DEFAULT;
       }
     }
 ;
@@ -705,18 +705,18 @@ sDateLiteral []
 sTimeLiteral []
   returns [JdbcTimeLiteral self = null]
 {
-  String		text = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                text = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   JDBC_TIME text = sString[] RCURLY
     {
       try {
-	self = new JdbcTimeLiteral(sourceRef, text);
+        self = new JdbcTimeLiteral(sourceRef, text);
       } catch (PositionedError e) {
-	reportTrouble(e);
-	// allow parsing to continue
-	self = JdbcTimeLiteral.DEFAULT;
+        reportTrouble(e);
+        // allow parsing to continue
+        self = JdbcTimeLiteral.DEFAULT;
       }
     }
 ;
@@ -724,18 +724,18 @@ sTimeLiteral []
 sTimestampLiteral []
   returns [JdbcTimeStampLiteral self = null]
 {
-  String		text = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                text = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   JDBC_TIMESTAMP text = sString[] RCURLY
     {
       try {
-	self = new JdbcTimeStampLiteral(sourceRef, text);
+        self = new JdbcTimeStampLiteral(sourceRef, text);
       } catch (PositionedError e) {
-	reportTrouble(e);
-	// allow parsing to continue
-	self = JdbcTimeStampLiteral.DEFAULT;
+        reportTrouble(e);
+        // allow parsing to continue
+        self = JdbcTimeStampLiteral.DEFAULT;
       }
     }
 ;
@@ -743,10 +743,10 @@ sTimestampLiteral []
 sMatchesPredicate []
   returns [MatchesPredicate self = null]
 {
-  String		p1 = null;
-  Expression		p2;
-  Expression		p3 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                p1 = null;
+  Expression            p2;
+  Expression            p3 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "MATCHES" ( p1 = sSensSpec[] )? p2 = sExpression[]
@@ -757,10 +757,10 @@ sMatchesPredicate []
 sPredicate []
   returns [Predicate self = null]
 {
-  Expression		expr;
-  String		s = null;
-  Predicate		right = null;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            expr;
+  String                s = null;
+  Predicate             right = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sTupleInPredicate[]
@@ -804,8 +804,8 @@ sPredicate []
 sPrimary []
   returns [Expression self = null]
 {
-  Type			right = null;
-  TokenReference	sourceRef = buildTokenReference();
+  Type                  right = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sSimplePrimary[]
@@ -818,8 +818,8 @@ sQuantifiedPredicate []
   returns [QuantifiedPredicate self = null]
 {
   SubTableExpression    p1;
-  String		s = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                s = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -836,8 +836,8 @@ sQuantifiedPredicate []
 sSearchCondition []
   returns [SearchCondition self = null]
 {
-  SearchCondition	right = null;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       right = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sBooleanTerm[]
@@ -850,8 +850,8 @@ sSearchCondition []
 sBooleanTerm []
   returns [SearchCondition self = null]
 {
-  SearchCondition	right = null;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       right = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sBooleanFactor[]
@@ -864,8 +864,8 @@ sBooleanTerm []
 sBooleanFactor []
   returns [SearchCondition self = null]
 {
-  Predicate		pred;
-  TokenReference	sourceRef = buildTokenReference();
+  Predicate             pred;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "NOT" pred = sPredicate[]
@@ -878,10 +878,10 @@ sBooleanFactor []
 sSearchedCaseExpression []
   returns [SearchedCaseExpression self = null]
 {
-  Expression	        p = null;
-  ArrayList                conditions = new ArrayList();
+  Expression            p = null;
+  ArrayList             conditions = new ArrayList();
   SearchedWhenClause    condition = null;
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( condition = sSearchedWhenClause[] { conditions.add(condition); } )+
@@ -892,9 +892,9 @@ sSearchedCaseExpression []
 sSearchedWhenClause []
   returns [SearchedWhenClause self = null]
 {
-  SearchCondition	p1;
-  Expression		p2;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       p1;
+  Expression            p2;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "WHEN" p1 = sSearchCondition[]
@@ -905,10 +905,10 @@ sSearchedWhenClause []
 sSelectElem []
   returns [SelectElem self = null]
 {
-  String		s = null;
-  Expression		p1;
-  String		s2;
-  TokenReference	sourceRef = buildTokenReference();
+  String                s = null;
+  Expression            p1;
+  String                s2;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   STAR
@@ -929,13 +929,13 @@ sSelectElem []
 sSelectExpression []
   returns [SelectExpression self = null]
 {
-  String	type =	null;
-  FromClause	fromClause;
-  WhereClause   whereClause = null;
-  GroupByClause groupByClause = null;
-  HavingClause  havingClause = null;
-  ArrayList	selectList;
-  TokenReference	sourceRef = buildTokenReference();
+  String                type =  null;
+  FromClause            fromClause;
+  WhereClause           whereClause = null;
+  GroupByClause         groupByClause = null;
+  HavingClause          havingClause = null;
+  ArrayList             selectList;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "SELECT"
@@ -953,7 +953,7 @@ sSelectExpression []
 sSelectList []
   returns [ArrayList self = new ArrayList()]
 {
-  SelectElem	p;
+  SelectElem    p;
 }
 :
   p = sSelectElem[] { self.add(p); }
@@ -974,11 +974,11 @@ sSensSpec []
 sSimpleCaseExpression []
   returns [SimpleCaseExpression self = null]
 {
-  Expression	     p;
+  Expression            p;
   ArrayList             conditions = new ArrayList();
-  SimpleWhenClause   condition = null;
-  Expression	     elseExpr = null;
-  TokenReference	sourceRef = buildTokenReference();
+  SimpleWhenClause      condition = null;
+  Expression            elseExpr = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   p = sExpression[]
@@ -1016,10 +1016,10 @@ sSimplePrimary []
 sSimpleTableReference []
   returns [SimpleTableReference self = null]
 {
-  TableReference	columns;
-  Expression		name;
-  TableAlias		alias;
-  TokenReference	sourceRef = buildTokenReference();
+  TableReference        columns;
+  Expression            name;
+  TableAlias            alias;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   LPAREN columns = sTableExpression[] RPAREN
@@ -1037,9 +1037,9 @@ sSimpleTableReference []
 sSimpleWhenClause []
   returns [SimpleWhenClause self = null]
 {
-  Expression   p1;
-  Expression   p2;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            p1;
+  Expression            p2;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "WHEN" p1 = sExpression[] "THEN" p2 = sExpression[]
@@ -1049,10 +1049,10 @@ sSimpleWhenClause []
 sSortElem []
   returns [SortElem self = null]
 {
-  Expression		p1 = null;
-  String		ident = null;
-  boolean		isDesc = false;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            p1 = null;
+  String                ident = null;
+  boolean               isDesc = false;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   (
@@ -1067,9 +1067,9 @@ sSortElem []
 sSortSpec []
   returns [SortSpec self = null]
 {
-  SortElem	p;
-  ArrayList        v = new ArrayList();
-  TokenReference	sourceRef = buildTokenReference();
+  SortElem              p;
+  ArrayList             v = new ArrayList();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "ORDER" "BY" p = sSortElem[] { v.add(p); }
@@ -1080,10 +1080,10 @@ sSortSpec []
 sSubTableExpression []
   returns [SubTableExpression self = null]
 {
-  SubTable       left;
-  UnidiffSpec	 spec;
-  SubTable       right;
-  TokenReference	sourceRef = buildTokenReference();
+  SubTable              left;
+  UnidiffSpec           spec;
+  SubTable              right;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   LPAREN
@@ -1099,8 +1099,8 @@ sSubTableExpression []
 sSubTableReference []
   returns [SubTable self = null]
 {
-  SearchCondition   p1;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       p1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   p1 = sSearchCondition[]
@@ -1112,9 +1112,9 @@ sSubTableReference []
 sSubTableTerm []
   returns [SubTable self = null]
 {
-  IntersectSpec   spec;
-  SubTable        right;
-  TokenReference	sourceRef = buildTokenReference();
+  IntersectSpec         spec;
+  SubTable              right;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sSubTableReference[]
@@ -1127,9 +1127,9 @@ sSubTableTerm []
 sTableAlias []
   returns [TableAlias self = null]
 {
-  String		ident = null;
-  FieldNameList		list = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                ident = null;
+  FieldNameList         list = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ( ident = sIdentifier[] )?
@@ -1143,9 +1143,9 @@ sTableAlias []
 sTableName []
   returns [Expression self = null]
 {
-  String		ident = null;
-  String		ident2 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                ident = null;
+  String                ident2 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   ident = sIdentifier[] (DOT ident2 = sIdentifier[] {ident += "." + ident2;})?
@@ -1168,10 +1168,10 @@ sTupleAssignment []
 sTupleInPredicate []
   returns [TupleInPredicate self = null]
 {
-  boolean		hasNot = false;
-  ExpressionList	p1;
-  SubTableExpression	p2;
-  TokenReference	sourceRef = buildTokenReference();
+  boolean               hasNot = false;
+  ExpressionList        p1;
+  SubTableExpression    p2;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   LBRACKET p1 = sExpressionList[] RBRACKET
@@ -1197,9 +1197,9 @@ sUnidiffOp []
 sUnidiffSpec []
   returns [UnidiffSpec self = null]
 {
-  String		oper;
+  String                oper;
   CorrespondingSpec     corr = null;
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   oper = sUnidiffOp[]
@@ -1210,7 +1210,7 @@ sUnidiffSpec []
 sUpdSpec []
   returns [UpdSpec self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "FOR" "UPDATE"
@@ -1220,10 +1220,10 @@ sUpdSpec []
 sUpdateStatement []
   returns [UpdateStatement self = null]
 {
-  TableName		table;
-  ArrayList		list = null;
-  SearchCondition	cond = null;
-  TokenReference	sourceRef = buildTokenReference();
+  TableName             table;
+  ArrayList             list = null;
+  SearchCondition       cond = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "UPDATE" table = sSimpleTableName[]
@@ -1246,9 +1246,9 @@ sUpdateStatement []
 sSimpleTableName []
   returns [TableName self = null]
 {
-  Expression		name;
-  String		alias = null;
-  TokenReference	sourceRef = buildTokenReference();
+  Expression            name;
+  String                alias = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   name = sTableName[] ( alias = sIdentifier[] )?
@@ -1258,8 +1258,8 @@ sSimpleTableName []
 sValueInPredicate []
   returns [ValueInPredicate self = null]
 {
-  ExpressionList	p1;
-  TokenReference	sourceRef = buildTokenReference();
+  ExpressionList        p1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "IN" LPAREN p1 = sExpressionList[] RPAREN
@@ -1269,8 +1269,8 @@ sValueInPredicate []
 sValueList []
   returns [ValueList self = null]
 {
-  ExpressionList	p1;
-  TokenReference	sourceRef = buildTokenReference();
+  ExpressionList        p1;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   LPAREN p1 = sExpressionList[] RPAREN
@@ -1280,11 +1280,11 @@ sValueList []
 sWithCompPredicate[Predicate predicate]
   returns [Predicate self = null]
 {
-  String		s = null;
-  Expression		p = null;
-  boolean		hasNot = false;
-  Predicate		right = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                s = null;
+  Expression            p = null;
+  boolean               hasNot = false;
+  Predicate             right = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "IS"
@@ -1340,11 +1340,11 @@ sWithNotPredicate []
 sOuterJoin []
   returns [OuterJoin self = null]
 {
-  TableReference p1;
-  String	 p2;
-  TableReference p3;
-  JoinPred	 p4 = null;
-  TokenReference	sourceRef = buildTokenReference();
+  TableReference        p1;
+  String                p2;
+  TableReference        p3;
+  JoinPred              p4 = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   JDBC_OUTERJOIN
@@ -1359,9 +1359,9 @@ sOuterJoin []
 sCountExpression []
   returns [CountExpression self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  Expression		expr = null;
-  boolean		hasDistinct = false;
+  Expression            expr = null;
+  boolean               hasDistinct = false;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "COUNT" LPAREN
@@ -1377,10 +1377,10 @@ sCountExpression []
 sSetFunction []
   returns [SetFunction self = null]
 {
-  String		oper = null;
-  Expression		expr = null;
-  int			type = SetFunction.TYP_NONE;
-  TokenReference	sourceRef = buildTokenReference();
+  String                oper = null;
+  Expression            expr = null;
+  int                   type = SetFunction.TYP_NONE;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   oper = sSetFunctionName []
@@ -1411,9 +1411,9 @@ sSetFunctionName []
 sJdbcFunction []
   returns [JdbcFunction self = null]
 {
-  String		name = null;
-  ExpressionList	params = null;
-  TokenReference	sourceRef = buildTokenReference();
+  String                name = null;
+  ExpressionList        params = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   JDBC_FUNCTION
@@ -1432,8 +1432,8 @@ sJdbcFunction []
 sEscapeExpression []
   returns [JdbcEscape self = null]
 {
-  TokenReference	sourceRef = buildTokenReference();
-  String		text = null;
+  String                text = null;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   JDBC_ESCAPE text = sString[] RCURLY
@@ -1443,9 +1443,9 @@ sEscapeExpression []
 sTableExpression []
   returns [TableReference self = null]
 {
-  UnidiffSpec	spec;
-  TableReference      right;
-  TokenReference	sourceRef = buildTokenReference();
+  UnidiffSpec           spec;
+  TableReference        right;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sTableTerm[]
@@ -1458,9 +1458,9 @@ sTableExpression []
 sTableTerm []
   returns [TableReference self]
 {
-  IntersectSpec    spec;
-  TableReference   right;
-  TokenReference	sourceRef = buildTokenReference();
+  IntersectSpec         spec;
+  TableReference        right;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   self = sTableReference[]
@@ -1473,9 +1473,9 @@ sTableTerm []
 sTableReference []
   returns [TableReference self = null]
 {
-  SelectExpression   p1;
-  TableReference sub;
-  TokenReference	sourceRef = buildTokenReference();
+  SelectExpression      p1;
+  TableReference        sub;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   LPAREN sub = sTableExpression[] RPAREN
@@ -1488,8 +1488,8 @@ sTableReference []
 sWhereClause []
   returns [WhereClause self = null]
 {
-  SearchCondition	p;
-  TokenReference	sourceRef = buildTokenReference();
+  SearchCondition       p;
+  TokenReference        sourceRef = buildTokenReference();
 }
 :
   "WHERE" p = sSearchCondition[]
