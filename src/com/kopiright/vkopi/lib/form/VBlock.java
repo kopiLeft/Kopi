@@ -2004,10 +2004,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public String getReportSearchColumns() {
     String              result = null;
-
+    VField              fieldID = null;
+    
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
-      if(!fld.isInternal() ) {
+      
+      if(fld.isInternal() && fld.getName().equals("ID") && fld.getColumnCount() > 0) {
+        fieldID = fld;
+      }
+      if(!fld.isInternal()) {
         if (fld.getColumnCount() > 0) {
           if (result == null) {
             result = "";
@@ -2018,6 +2023,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           result += fld.getColumn(0).getQualifiedName();
         }
       }
+    }
+    if(fieldID != null) {
+      if (result == null) {
+        result = "";
+      } else {
+        result += ", ";
+      }
+      result += fieldID.getColumn(0).getQualifiedName();
     }
     return result;
   }
