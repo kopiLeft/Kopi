@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: SActor.java 27892 2007-02-16 16:09:48Z graf $
+ * $Id$
  */
 
 package com.kopiright.vkopi.lib.report;
