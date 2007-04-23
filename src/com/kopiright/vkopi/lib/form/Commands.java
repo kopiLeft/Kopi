@@ -314,9 +314,6 @@ public class Commands implements VConstants {
 
     KnownBugs.freeMemory();
 
-    // !!! laurent : there is a bug with serialQuery : if you run a
-    // serialQuery and no row can be fetched the transaction is not
-    // correctly aborted. I will enumerate the different fixes.
     try {
       for (;;) {
 	try {
@@ -328,13 +325,7 @@ public class Commands implements VConstants {
 	  } catch (VQueryOverflowException e) {
 	    // !!! HANDLE OVERFLOW WARNING
 	  }
-          /*
-          // FIX #1 :
-           catch (VQueryNoRowException nre) {
-            // DBNoRowException is more suitable but it does not extends SQLException
-            throw new SQLException("No Row");
-          }
-          */
+
 	  form.commitProtected();
 	  break;
         } catch (VException e) {
@@ -368,8 +359,7 @@ public class Commands implements VConstants {
 	}
       }
     } catch (VException e) {
-      // FIX #2
-      /* form.abortProtected(true); // The form's fields have to be reset */
+      gotoFieldIfNoActive(b);
       throw e;
     }
   }
