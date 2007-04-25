@@ -399,9 +399,7 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
           boolean currentTableFound = false;
           for (int j=0 ; j < fld[i].getColumnCount() ; j++) {
             if(fld[i].getColumn(j).getTable() == table) {
-              if (fld[i].getColumn(j).getName().equals("ID")) {
                 currentTableFound = true;
-              }
             } else if(fld[i].getColumn(j).getTable() == block.getIdField().getColumn(0).getTable() ) {
               mainTableFound = true;
             }
@@ -427,10 +425,8 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
           int currentTableColumnPos = -1;
           for (int j=0 ; j < fld[i].getColumnCount() ; j++) {
             if(fld[i].getColumn(j).getTable() == table) { 
-              if (fld[i].getColumn(j).getName().equals("ID")) {
-                currentTableFound = true;
-                currentTableColumnPos = j;
-              }
+              currentTableFound = true;
+              currentTableColumnPos = j;
             } else if(fld[i].getColumn(j).getTable() == block.getIdField().getColumn(0).getTable() ) {
               mainTableFound = true;
             }
