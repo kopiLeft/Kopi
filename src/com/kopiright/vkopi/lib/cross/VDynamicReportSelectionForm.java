@@ -144,8 +144,6 @@ public class VDynamicReportSelectionForm extends VDictionaryForm {
       int col = 0;
 
       for(int i = 0 ; i < fl.length ; i++ ) {
-
-        System.out.println( fl[i].getName() );
         
         if (fl[i] instanceof com.kopiright.vkopi.lib.form.VStringField) {
           columns[col] = new VStringColumn(null, 0, 0, getColumnGroups(fl[i]), null, fl[i].getWidth(), 1, null);
