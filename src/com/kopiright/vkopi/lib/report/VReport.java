@@ -23,6 +23,7 @@ import java.awt.Point;
 import java.io.File;
 import java.util.Locale;
 import java.util.Vector;
+import java.text.MessageFormat;
 
 import javax.swing.SwingUtilities;
 
@@ -380,6 +381,18 @@ public abstract class VReport extends VWindow
   public void setPageTitle(String title) {
     this.pageTitle = title;
     setTitle(title);
+  }
+
+  public void setPageTitleParams(Object param) {
+    setPageTitleParams(new Object[] {param});
+  }
+
+  public void setPageTitleParams(Object param1, Object param2) {
+    setPageTitleParams(new Object[] {param1, param2});
+  }
+
+  public void setPageTitleParams(Object[] params) {
+    setPageTitle(MessageFormat.format(pageTitle, params));
   }
 
   public VReportColumn getColumn(int i) {
