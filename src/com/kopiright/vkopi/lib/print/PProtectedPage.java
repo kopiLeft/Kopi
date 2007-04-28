@@ -38,6 +38,8 @@ import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
+import com.kopiright.xkopi.lib.type.Fixed;
+
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
@@ -350,6 +352,22 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
       return inTransaction;
     }
   }
+
+
+
+
+  public  String formatFixed(Fixed f,int maxScale) {
+    StringBuffer buffer = new StringBuffer(f.toString());
+    // !!! 28042007 wael , to be implemented.     
+//     for(int i = f.getScale() ; i < maxScale ; i++) {
+//       buffer.append(" ");
+//     }
+    return buffer.toString();
+  }
+
+
+
+
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
