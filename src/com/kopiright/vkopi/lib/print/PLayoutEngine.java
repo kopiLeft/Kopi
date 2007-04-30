@@ -158,6 +158,13 @@ class PLayoutEngine {
     currentPhrase = null;
     currentPos = x;
   }
+  
+  /**
+   * Gets the current x position. 
+   */
+  public float getPosition() {
+    return currentPos;
+  }
 
   /**
    * Gets the dimension (height) of buffers
@@ -268,8 +275,15 @@ class PLayoutEngine {
   }
 
   /**
-  * Accessors to current styles for style toggling
-  */
+   * gets the length of a string in pixels
+   */
+  public float getStringWidth(String str) {
+    return currentFont.getBaseFont().getWidthPoint(str,currentFont.size());
+  }
+
+  /**
+   * Accessors to current styles for style toggling
+   */
   public int getStyle() {
     return style;
   }

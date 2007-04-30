@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.print;
 import java.util.Vector;
 
 import com.kopiright.vkopi.lib.form.VBooleanField;
+import com.kopiright.xkopi.lib.type.Fixed;
 
 /**
  * A block of data to print
@@ -195,15 +196,26 @@ public abstract class PTextBlock extends PBlock {
     if (o == null) {
       return;
     }
-
+    
     if (o instanceof Boolean) {
       addText(VBooleanField.toText((Boolean)o));
     } else if (o instanceof javax.swing.ImageIcon) {
       addImage((javax.swing.ImageIcon)o);
-    } else {
+    } else if (o instanceof Fixed) {
+      Fixed f = (Fixed) o;
+      if(f.getMaxScale() != -1) {
+        if (f.getScale() > 0) {
+          engine.setPosition(engine.getPosition() - engine.getStringWidth("0") * (f.getMaxScale() - f.getScale()));
+        } else {
+          engine.setPosition(engine.getPosition() - engine.getStringWidth("0") * (f.getMaxScale() - f.getScale()) - engine.getStringWidth(","));
+        }
+      }
+      addText(o.toString());
+    } else {      
       addText(o.toString());
     }
   }
+  
 
   /**
    *
@@ -259,7 +271,7 @@ public abstract class PTextBlock extends PBlock {
       int	align = paragraphStyle.getAlignment();
 
       if (align == PStyle.ALN_RIGHT) {
-	pos = getBlockWidth() - pos;
+        pos = getBlockWidth() - pos;
       } else if (align == PStyle.ALN_CENTER) {
 	pos = getBlockWidth() / 2;
       }
@@ -403,7 +415,7 @@ public abstract class PTextBlock extends PBlock {
     engine.setAlignment(align);
     newLine = false;
   }
-
+  
   // ---------------------------------------------------------------------
   // LAYOUT ENGINE
   // ---------------------------------------------------------------------

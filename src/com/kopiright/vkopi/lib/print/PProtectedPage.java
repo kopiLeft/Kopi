@@ -355,19 +355,14 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
 
 
 
-
-  public  String formatFixed(Fixed f,int maxScale) {
-    StringBuffer buffer = new StringBuffer(f.toString());
-    // !!! 28042007 wael , to be implemented.     
-//     for(int i = f.getScale() ; i < maxScale ; i++) {
-//       buffer.append(" ");
-//     }
-    return buffer.toString();
+  public  Fixed formatFixed(Fixed f,int currentScale , int maxScale) {
+    if (f == null) {
+      return null;
+    }
+    f = f.setScale(currentScale, java.math.BigDecimal.ROUND_HALF_UP);
+    f.setMaxScale(maxScale);
+    return f;
   }
-
-
-
-
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
