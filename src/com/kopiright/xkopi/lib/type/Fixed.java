@@ -124,12 +124,22 @@ public class Fixed extends Number implements Comparable {
     return new NotNullFixed(value.setScale(v, d));
   }
 
+ 
   /**
    * getScale
    */
   public int getScale() {
     return value.scale();
   }
+
+  public void setMaxScale(int maxScale) {
+    this.maxScale = maxScale;
+  }
+  
+  public int getMaxScale() {
+    return maxScale;
+  }
+
 
   /**
    * Returns the fixed as a double
@@ -262,7 +272,7 @@ public class Fixed extends Number implements Comparable {
   private static MathContext	DIV_CONTEXT	= new MathContext(30, MathContext.SCIENTIFIC, false, MathContext.ROUND_HALF_UP);
 
   private BigDecimal		value;
-
+  private int                   maxScale = -1;
   // ----------------------------------------------------------------------
   // CONSTANTS
   // ----------------------------------------------------------------------
