@@ -69,8 +69,8 @@ public class VFixnumField extends VField {
     super(computeWidth(digits, maxScale, minval, maxval), 1);
 
     this.maxScale = maxScale;
-    this.minval = (minval == null)? calculateUpperBound(digits, maxScale).negate() : minval;
-    this.maxval = (maxval == null)? calculateUpperBound(digits, maxScale) : maxval;
+    this.minval = minval == null ? calculateUpperBound(digits, maxScale).negate() : minval.setScale(maxScale);
+    this.maxval = maxval == null ? calculateUpperBound(digits, maxScale) : maxval.setScale(maxScale);
     this.fraction = fraction;
   }
 
@@ -706,12 +706,19 @@ public class VFixnumField extends VField {
     lowerBound = upperBound.negate();
 
     if (minVal != null && minVal.compareTo(lowerBound) > 0) {
-      lowerBound = minVal;
+      lowerBound = minVal.setScale(scale);
     }
     if (maxVal != null && maxVal.compareTo(upperBound) < 0) {
-      upperBound = maxVal;
+      upperBound = maxVal.setScale(scale);
     }
 
+//!!!TEST
+    {
+      if (digits == 5 && scale == 2) {
+        System.err.println("**** " + lowerBound + " " + upperBound);
+      }
+    }
+//!!!TEST
     return Math.max(upperBound.toString().length(), lowerBound.toString().length());
   }
 
@@ -784,10 +791,10 @@ public class VFixnumField extends VField {
    */
 
   // static (compiled) data
-  private int                   maxScale; // number of max digits after dot
-  private Fixed                 minval;   // minimum value allowed
-  private Fixed                 maxval;   // maximum value allowed
-  private boolean               fraction; // display as fraction
+  private final int             maxScale; // number of max digits after dot
+  private final Fixed           minval;   // minimum value allowed
+  private final Fixed           maxval;   // maximum value allowed
+  private final boolean         fraction; // display as fraction
 
   // dynamic data
   private Fixed[]               value;
