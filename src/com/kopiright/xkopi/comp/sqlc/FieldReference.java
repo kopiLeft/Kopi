@@ -33,16 +33,18 @@ public class FieldReference extends Expression {
 
   /**
    * Constructor
-   * @param	ref		   the token reference for this statement
-   * @param	table	           the table name if any
-   * @param	field	           the field ident
-   * @param	hasPlus		   has an Oracle (+) outer join
+   * @param     ref                the token reference for this statement
+   * @param     table              the table name if any
+   * @param     field              the field ident
+   * @param     hasPlus            has an Oracle (+) outer join
    */
   public FieldReference(TokenReference ref, 
-			String table, 
-			String field,
-			boolean hasPlus) {
+                        String table, 
+                        String field,
+                        boolean hasPlus)
+  {
     super(ref);
+    
     this.table = table;
     this.field = field;
     this.hasPlus = hasPlus;
@@ -55,7 +57,7 @@ public class FieldReference extends Expression {
   /**
    * Accepts a visitor.
    *
-   * @param	visitor			the visitor
+   * @param     visitor                 the visitor
    */
   public void accept(SqlVisitor visitor) throws PositionedError {
     visitor.visitFieldReference(this, table, field, hasPlus);
@@ -68,29 +70,39 @@ public class FieldReference extends Expression {
   /**
    * test if the alias exists // la table a la colonne ident ?
    */
-  public static String checkColumnExists(TokenReference ref, SqlContext context, String table, String field) {
+  public static String checkColumnExists(TokenReference ref,
+                                         SqlContext context,
+                                         String table,
+                                         String field)
+  {
     if (table != null) {
-      TableReference  tableReference = context.getTableFromAlias(table);
+      TableReference    tableReference = context.getTableFromAlias(table);
+
       if (tableReference != null) {
-	if (!tableReference.hasColumn(field)) {
-	  context.reportTrouble(new CWarning(ref, SqlcMessages.COLUMN_NOT_IN_TABLE, field, table));
-	}
-	return tableReference.getTableForColumn(field);
+        if (!tableReference.hasColumn(field)) {
+          context.reportTrouble(new CWarning(ref,
+                                             SqlcMessages.COLUMN_NOT_IN_TABLE,
+                                             field,
+                                             table));
+        }
+        return tableReference.getTableForColumn(field);
       } else {
-	  context.reportTrouble(new CWarning(ref, SqlcMessages.ALIAS_NOT_FOUND, table));
-	  return null;
+        context.reportTrouble(new CWarning(ref, SqlcMessages.ALIAS_NOT_FOUND, table));
+        return null;
       }
     } else {
       ListIterator      iter = context.getTables().listIterator();
 
       while (iter.hasNext()) {
-	TableReference newTable = (TableReference)iter.next();
+        TableReference newTable = (TableReference)iter.next();
 
-	if (newTable.hasColumn(field)) {
+        if (newTable.hasColumn(field)) {
           return newTable.getTableForColumn(field);
         }
       }
-      context.reportTrouble(new CWarning(ref, SqlcMessages.IDENT_NOT_RESOLVABLE, field));
+      context.reportTrouble(new CWarning(ref,
+                                         SqlcMessages.IDENT_NOT_RESOLVABLE,
+                                         field));
       return null;
     }
   }
@@ -111,11 +123,11 @@ public class FieldReference extends Expression {
       ArrayList         tableList = context.getTables();
 
       if (tableList.size() == 1) {
-	tableReference = (TableReference) tableList.get(0);
+        tableReference = (TableReference) tableList.get(0);
 
-	if (!(tableReference.hasColumn(field))) {
-	  return null;
-	}
+        if (!(tableReference.hasColumn(field))) {
+          return null;
+        }
       } else {
         return null;
       }
@@ -130,7 +142,7 @@ public class FieldReference extends Expression {
   }
 
   public String toString() {
-    return (table == null ?"" : table +".") + field + 
+    return (table == null ? "" : table + ".") + field + 
       (hasPlus ? "(+)" : "");
   }
 
@@ -138,7 +150,7 @@ public class FieldReference extends Expression {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private String	table;
-  private String	field;
-  private boolean	hasPlus;
+  private String        table;
+  private String        field;
+  private boolean       hasPlus;
 }

@@ -51,14 +51,14 @@ import com.kopiright.util.base.InconsistencyException;
 
   /**
    * Returns:
-   *	1 ... a select statement
-   *	2 ... a positioned update statement
-   *	3 ... a positioned delete statement
-   *	0 ... otherwise
+   *    1 ... a select statement
+   *    2 ... a positioned update statement
+   *    3 ... a positioned delete statement
+   *    0 ... otherwise
    */
   public int getType() throws SQLException {
-    String	keyword;
-    int		beg;
+    String      keyword;
+    int         beg;
 
     if (parsed == null) {
       parsed = parse();
@@ -79,7 +79,7 @@ import com.kopiright.util.base.InconsistencyException;
     } else if (keyword.equals("DELETE")) {
       return 3;
     } else {
-      return 0;		// !!! throw an exception
+      return 0; // !!! throw an exception
     }
   }
 
@@ -95,70 +95,70 @@ import com.kopiright.util.base.InconsistencyException;
    * Returns the position of the first occurrence of {, ', " or WHERE
    */
   private int getEscape(int start) {
-    int		state = -1;
+    int state = -1;
 
     while (start < length) {
       if (Character.isSpaceChar(input.charAt(start))) {
-	if (state == 5) {
-	  return start - 5;
-	} else if (state == 8) {
-	  return start - 3;
+        if (state == 5) {
+          return start - 5;
+        } else if (state == 8) {
+          return start - 3;
         } else {
-	  state = 0;
-	  start += 1;
-	}
+          state = 0;
+          start += 1;
+        }
       } else {
-	switch (input.charAt(start)) {
-	case '{':
-	case '\'':
-	case '"':
-	  return start;
-	case 'w':
-	case 'W':
-	  state = state == 0 ? 1 : -1;
-	  start += 1;
-	  break;
-	case 'h':
-	case 'H':
-	  state = state == 1 ? 2 : -1;
-	  start += 1;
-	  break;
-	case 'e':
-	case 'E':
-	  if (state == 2) {
-	    state = 3;
-	  } else if (state == 4) {
-	    state = 5;
-	  } else {
-	    state = -1;
-	  }
-	  start += 1;
-	  break;
-	case 'r':
-	case 'R':
+        switch (input.charAt(start)) {
+        case '{':
+        case '\'':
+        case '"':
+          return start;
+        case 'w':
+        case 'W':
+          state = state == 0 ? 1 : -1;
+          start += 1;
+          break;
+        case 'h':
+        case 'H':
+          state = state == 1 ? 2 : -1;
+          start += 1;
+          break;
+        case 'e':
+        case 'E':
+          if (state == 2) {
+            state = 3;
+          } else if (state == 4) {
+            state = 5;
+          } else {
+            state = -1;
+          }
+          start += 1;
+          break;
+        case 'r':
+        case 'R':
           if (state == 3) {
             state = 4;
           } else if (state == 7) {
             state = 8;
           } else {
-	    state = -1;
-	  }
-	  start += 1;
-	  break;
-	case 'f':
-	case 'F':
-	  state = state == 0 ? 6 : -1;
-	  start += 1;
-	  break;
-	case 'o':
-	case 'O':
-	  state = state == 6 ? 7 : -1;
-	  start += 1;
-	  break;
-	default:
-	  state = -1;
-	  start += 1;
-	}
+            state = -1;
+          }
+          start += 1;
+          break;
+        case 'f':
+        case 'F':
+          state = state == 0 ? 6 : -1;
+          start += 1;
+          break;
+        case 'o':
+        case 'O':
+          state = state == 6 ? 7 : -1;
+          start += 1;
+          break;
+        default:
+          state = -1;
+          start += 1;
+        }
       }
     }
 
@@ -170,53 +170,53 @@ import com.kopiright.util.base.InconsistencyException;
    * Top-Level
    */
   private String parse() throws SQLException {
-    StringBuffer	result = new StringBuffer(length);
+    StringBuffer        result = new StringBuffer(length);
 
     while (position < length) {
-      int	escape = getEscape(position);
+      int       escape = getEscape(position);
 
       if (escape == -1) {
-	result.append(input.substring(position, length));
-	position = length;
+        result.append(input.substring(position, length));
+        position = length;
       } else {
-	result.append(input.substring(position, escape));
-	position = escape;
+        result.append(input.substring(position, escape));
+        position = escape;
 
-	switch (input.charAt(position)) {
-	case '{':
-	  result.append(parseBrace());
-	  break;
+        switch (input.charAt(position)) {
+        case '{':
+          result.append(parseBrace());
+          break;
 
-	case '\'':
-	case '"':
-	  result.append(parseQuote());
-	  break;
+        case '\'':
+        case '"':
+          result.append(parseQuote());
+          break;
 
-	case 'w':
-	case 'W':
-	  {
-	    String	sub = parseWhereCurrent();
+        case 'w':
+        case 'W':
+          {
+            String      sub = parseWhereCurrent();
 
-	    if (sub != null) {
-	      result.append(sub);
-	    }
-	  }
-	  break;
+            if (sub != null) {
+              result.append(sub);
+            }
+          }
+          break;
 
-	case 'f':
-	case 'F':
-	  {
-	    String	sub = parseForUpdate();
+        case 'f':
+        case 'F':
+          {
+            String      sub = parseForUpdate();
 
-	    if (sub != null) {
-	      result.append(sub);
-	    }
-	  }
-	  break;
+            if (sub != null) {
+              result.append(sub);
+            }
+          }
+          break;
 
-	default:
-	  throw new InconsistencyException();
-	}
+        default:
+          throw new InconsistencyException();
+        }
       }
     }
 
@@ -224,10 +224,10 @@ import com.kopiright.util.base.InconsistencyException;
   }
 
   private String parseBrace() throws SQLException {
-    position += 1;	// skip opening brace
+    position += 1;      // skip opening brace
 
     if (input.indexOf("}", position) == -1) {
-      throw new SQLException("Brace fermante non trouvee");
+      throw new SQLException("Closing brace not found");
     }
 
     position = skipBlanks(position);
@@ -241,52 +241,54 @@ import com.kopiright.util.base.InconsistencyException;
     } else if (input.indexOf("fn ", position) == position) {
       return parseFunction();
     } else if (input.indexOf("escape ", position) == position) {
-      return parseEscape();
+      return parseEscape(7); // length of "escape "
+    } else if (input.indexOf("oj ", position) == position) {
+      return parseEscape(3); // length of  "oj "
     } else {
       throw new SQLException("bad escape syntax: " + input.substring(position));
     }
   }
 
   private String parseParenthesis() throws SQLException {
-    StringBuffer	result = new StringBuffer(length - position);
-    int			start = position;
+    StringBuffer        result = new StringBuffer(length - position);
+    int start = position;
 
-    position += 1;	// skip opening parseParenthesis
+    position += 1;      // skip opening parseParenthesis
 
     while (position < length) {
       switch (input.charAt(position)) {
       case '{':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	}
-	result.append(parseBrace());
-	start = position;
-	break;
+        if (start < position) {
+          result.append(input.substring(start, position));
+        }
+        result.append(parseBrace());
+        start = position;
+        break;
 
       case '\'':
       case '"':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	}
-	result.append(parseQuote());
-	start = position;
-	break;
+        if (start < position) {
+          result.append(input.substring(start, position));
+        }
+        result.append(parseQuote());
+        start = position;
+        break;
 
       case '(':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	}
-	result.append(parseParenthesis());
-	start = position;
-	break;
+        if (start < position) {
+          result.append(input.substring(start, position));
+        }
+        result.append(parseParenthesis());
+        start = position;
+        break;
 
       case ')':
-	position += 1;
-	result.append(input.substring(start, position));
-	return result.toString();
+        position += 1;
+        result.append(input.substring(start, position));
+        return result.toString();
 
       default:
-	position += 1;
+        position += 1;
       }
     }
 
@@ -298,32 +300,32 @@ import com.kopiright.util.base.InconsistencyException;
    * Copies input up to matching quote/double quote
    */
   private String parseQuote() throws SQLException {
-    char	quoteType = input.charAt(position);
-    int		start = position;
+    char        quoteType = input.charAt(position);
+    int start = position;
 
     position += 1;
 
 loop:
     while (true) {
       if (position == length) {
-	throw new SQLException("unexpected end-of-string");
+        throw new SQLException("unexpected end-of-string");
       }
 
       if (input.charAt(position) != quoteType) {
-	position += 1;
+        position += 1;
       } else {
-	position += 1;	// move behind quote
+        position += 1;  // move behind quote
 
-	if (position == length) {
-	  // last character is a quote: end of quoted string found
-	  break loop;
-	} else if (input.charAt(position) != quoteType) {
-	  // not a quote: end of quoted string found
-	  break loop;
-	} else {
-	  // quote repeated => escaped
-	  position += 1;
-	}
+        if (position == length) {
+          // last character is a quote: end of quoted string found
+          break loop;
+        } else if (input.charAt(position) != quoteType) {
+          // not a quote: end of quoted string found
+          break loop;
+        } else {
+          // quote repeated => escaped
+          position += 1;
+        }
       }
     }
 
@@ -336,7 +338,7 @@ loop:
    *
    */
   protected String parseWhereCurrent() throws SQLException {
-    int		index = position + 6;		// WHERE + SPACE = 5 + 1
+    int index = position + 6;   // WHERE + SPACE = 5 + 1
 
     index = skipBlanks(index);
 
@@ -346,14 +348,14 @@ loop:
       position = index + 7;
       position = skipBlanks(position);
       if (input.indexOf("OF ", position) != position) {
-	throw new SQLException("Syntax error in WHERE CURRENT");
+        throw new SQLException("Syntax error in WHERE CURRENT");
       }
       position += 3;
       position = skipBlanks(position);
       cursorName = parseIdentifier();
       position = skipBlanks(position);
       if (position != length) {
-	throw new SQLException("Trailing garbage after WHERE CURRENT");
+        throw new SQLException("Trailing garbage after WHERE CURRENT");
       }
 
       return " WHERE CURRENT";
@@ -364,7 +366,7 @@ loop:
    * Parses FOR UPDATE
    */
   protected String parseForUpdate() throws SQLException {
-    int		index = position + 4;		// FOR + SPACE = 4 + 1
+    int index = position + 4;   // FOR + SPACE = 4 + 1
 
     index = skipBlanks(index);
     if (input.indexOf("UPDATE", index) != index) {
@@ -377,10 +379,10 @@ loop:
   }
 
   private String parseDate() throws SQLException {
-    position += 2;	// length("d ")
+    position += 2;      // length("d ")
     position = skipBlanks(position);
 
-    int		yy, mo, dd;
+    int yy, mo, dd;
 
     scanCharacter('\'');
     yy = scanInteger(4, 4, 0, 9999);
@@ -396,10 +398,10 @@ loop:
   }
 
   private String parseTime() throws SQLException {
-    position += 2;	// length("t ")
+    position += 2;      // length("t ")
     position = skipBlanks(position);
 
-    int		hh, mi, ss;
+    int hh, mi, ss;
 
     scanCharacter('\'');
     hh = scanInteger(1, 2, 0, 23);
@@ -415,10 +417,10 @@ loop:
   }
 
   private String parseTimestamp() throws SQLException {
-    position += 3;	// length("ts ")
+    position += 3;      // length("ts ")
     position = skipBlanks(position);
 
-    int		yy, mo, dd, hh, mi, ss, ns;
+    int yy, mo, dd, hh, mi, ss, ns;
 
     scanCharacter('\'');
     yy = scanInteger(4, 4, 0, 9999);
@@ -447,28 +449,28 @@ loop:
     return " " + convertTimestamp(yy, mo, dd, hh, mi, ss, ns);
   }
 
-  private String parseEscape() throws SQLException {
-    position += 7;	// length("escape ")
+  private String parseEscape(int escape) throws SQLException {
+    position += escape;
     position = skipBlanks(position);
 
-    int		start = position;
+    int start = position;
 
     position = input.indexOf('}', position);
+
     if (position == -1) {
       throw new SQLException("closing brace missing");
     }
-    position += 1;
 
-    return " " + input.substring(start, position);
+    return " " + input.substring(start, position++);
   }
 
   private String parseFunction() throws SQLException {
-    position += 3;	// length("fn ")
+    position += 3;      // length("fn ")
     position = skipBlanks(position);
 
-    String	functor;
-    Vector	arguments = new Vector();
-    String	result;
+    String      functor;
+    Vector      arguments = new Vector();
+    String      result;
 
     // parse function name
     functor = parseIdentifier();
@@ -478,27 +480,27 @@ loop:
     if (input.charAt(position) != '(') {
       // if the function has no arguments, we found a }, else there is an error
       if (input.charAt(position) != '}') {
-	throw new SQLException("opening parenthesis expected");
+        throw new SQLException("opening parenthesis expected");
       }
     } else if (input.charAt(position) != '}') {
       // the function has arguments
 
       do {
-	String	arg = parseArgument();
+        String  arg = parseArgument();
 
-	if (! arg.equals("")) {
-	  arguments.addElement(arg);
-	}
+        if (! arg.equals("")) {
+          arguments.addElement(arg);
+        }
       } while (input.charAt(position) != ')');
 
-      position += 1;	// skip closing parenthesis
+      position += 1;    // skip closing parenthesis
       position = skipBlanks(position);
       if (position == length || input.charAt(position) != '}') {
-	throw new SQLException("closing brace expected");
+        throw new SQLException("closing brace expected");
       }
     }
 
-    position += 1;	// skip closing brace
+    position += 1;      // skip closing brace
 
     result = convertFunctionCall(functor, arguments);
     if (result != null) {
@@ -506,15 +508,15 @@ loop:
     } else if (arguments.size() == 0) {
       return " " + functor;
     } else {
-      StringBuffer	buffer = new StringBuffer(" ");
+      StringBuffer      buffer = new StringBuffer(" ");
 
       buffer.append(functor);
       buffer.append('(');
       for (int i = 0; i < arguments.size(); i++) {
-	if (i != 0) {
-	  buffer.append(", ");
-	}
-	buffer.append((String)arguments.elementAt(i));
+        if (i != 0) {
+          buffer.append(", ");
+        }
+        buffer.append((String)arguments.elementAt(i));
       }
       buffer.append(')');
 
@@ -523,7 +525,7 @@ loop:
   }
 
   private String parseIdentifier() throws SQLException {
-    int		start = position;
+    int start = position;
 
     if (position == length) {
       throw new SQLException("unexpected end-of-string");
@@ -535,7 +537,8 @@ loop:
     position += 1;
 
     while (position < length &&
-	   (Character.isLetterOrDigit(input.charAt(position)) || input.charAt(position) == '_')) {
+           (Character.isLetterOrDigit(input.charAt(position))
+            || input.charAt(position) == '_')) {
       position += 1;
     }
 
@@ -543,57 +546,57 @@ loop:
   }
 
   private String parseArgument() throws SQLException {
-    position += 1;	// skip opening parenthesis or comma
+    position += 1;      // skip opening parenthesis or comma
 
     position = skipBlanks(position);
 
-    StringBuffer	result = new StringBuffer(length - position);
-    int			start = position;
+    StringBuffer        result = new StringBuffer(length - position);
+    int start = position;
 
     while (position < length) {
       switch (input.charAt(position)) {
       case '{':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	}
-	result.append(parseBrace());
-	start = position;
-	break;
+        if (start < position) {
+          result.append(input.substring(start, position));
+        }
+        result.append(parseBrace());
+        start = position;
+        break;
 
       case '\'':
       case '"':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	}
-	result.append(parseQuote());
-	start = position;
-	break;
+        if (start < position) {
+          result.append(input.substring(start, position));
+        }
+        result.append(parseQuote());
+        start = position;
+        break;
 
       case '(':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	}
-	result.append(parseParenthesis());
-	start = position;
-	break;
+        if (start < position) {
+          result.append(input.substring(start, position));
+        }
+        result.append(parseParenthesis());
+        start = position;
+        break;
 
       case ',':
       case ')':
-	if (start < position) {
-	  result.append(input.substring(start, position));
-	  start = position;
-	}
-	// remove trailing blanks
-	for (int i = result.length() - 1; i >= 0; i--) {
-	  if (! Character.isSpaceChar(result.charAt(i))) {
-	    break;
-	  }
-	  result.setLength(i);
-	}
-	return result.toString();
+        if (start < position) {
+          result.append(input.substring(start, position));
+          start = position;
+        }
+        // remove trailing blanks
+        for (int i = result.length() - 1; i >= 0; i--) {
+          if (! Character.isSpaceChar(result.charAt(i))) {
+            break;
+          }
+          result.setLength(i);
+        }
+        return result.toString();
 
       default:
-	position += 1;
+        position += 1;
       }
     }
 
@@ -614,10 +617,12 @@ loop:
   private int scanInteger(int minDigits, int maxDigits, int minValue, int maxValue)
     throws SQLException
   {
-    int		value = 0;
-    int		digits = 0;
+    int value = 0;
+    int digits = 0;
 
-    while (position < length && input.charAt(position) >= '0' && input.charAt(position) <= '9') {
+    while (position < length
+           && input.charAt(position) >= '0'
+           && input.charAt(position) <= '9') {
       value = 10*value + input.charAt(position) - '0';
       digits += 1;
       position += 1;
@@ -649,10 +654,10 @@ loop:
 
   /**
    * Converts a date into native syntax
-   * @param	yy	year
-   * @param	mo	month
-   * @param	dd	day
-   * @return	a string representing the date in native syntax
+   * @param     yy      year
+   * @param     mo      month
+   * @param     dd      day
+   * @return    a string representing the date in native syntax
    */
   protected String convertDate(int yy, int mo, int dd) {
     return "{d '" + format(yy, 4) + "-" + format(mo, 2) + "-" + format(dd, 2) + "'}";
@@ -660,10 +665,10 @@ loop:
 
   /**
    * Converts a time into native syntax
-   * @param	hh	hour
-   * @param	mi	minute
-   * @param	ss	second
-   * @return	a string representing the time in native syntax
+   * @param     hh      hour
+   * @param     mi      minute
+   * @param     ss      second
+   * @return    a string representing the time in native syntax
    */
   protected String convertTime(int hh, int mi, int ss) {
     return "{t '" + format(hh, 2) + ":" + format(mi, 2) + ":" + format(ss, 2) + "'}";
@@ -672,16 +677,23 @@ loop:
 
   /**
    * Converts a date into native syntax
-   * @param	yy	year
-   * @param	mo	month
-   * @param	dd	day
-   * @param	hh	hour
-   * @param	mi	minute
-   * @param	ss	second
-   * @param	ns	nanosecond
-   * @return	a string representing the date in native syntax
+   * @param     yy      year
+   * @param     mo      month
+   * @param     dd      day
+   * @param     hh      hour
+   * @param     mi      minute
+   * @param     ss      second
+   * @param     ns      nanosecond
+   * @return    a string representing the date in native syntax
    */
-  protected String convertTimestamp(int yy, int mo, int dd, int hh, int mi, int ss, int ns) {
+  protected String convertTimestamp(int yy,
+                                    int mo,
+                                    int dd,
+                                    int hh,
+                                    int mi,
+                                    int ss,
+                                    int ns)
+  {
     return "{ts '"
       + format(yy, 4) + "-" + format(mo, 2) + "-" + format(dd, 2)
       + " "
@@ -693,22 +705,25 @@ loop:
   /**
    * Converts a function call in JDBC syntax to native syntax
    *
-   * @param	function	the name of the function
-   * @param	arguments	the arguments to the function
-   * @return	a string representing the function call in native syntax
-   *		or null no specific translation is defined for the function
+   * @param     function        the name of the function
+   * @param     arguments       the arguments to the function
+   * @return    a string representing the function call in native syntax
+   *            or null no specific translation is defined for the function
    */
-  protected abstract String convertFunctionCall(String functor, Vector arguments) throws SQLException;
+  protected abstract String convertFunctionCall(String functor,
+                                                Vector arguments)
+    throws SQLException;
 
   // ----------------------------------------------------------------------
   // IMPLEMENTATION
   // ----------------------------------------------------------------------
 
   /**
-   * Creates a string representation for an integer with specified number of digits (using leading 0s)
+   * Creates a string representation for an integer
+   * with specified number of digits (using leading 0s)
    */
   public static String format(int value, int digits) {
-    char[]	buffer = new char[digits];
+    char[]      buffer = new char[digits];
 
     while (digits > 0) {
       buffer[digits - 1] = (char)('0' + (value % 10));
@@ -720,10 +735,11 @@ loop:
   }
 
   /**
-   * Creates a string representation for a long with specified number of digits (using leading 0s)
+   * Creates a string representation for a long
+   * with specified number of digits (using leading 0s)
    */
   public static String format(long value, int digits) {
-    char[]	buffer = new char[digits];
+    char[]      buffer = new char[digits];
 
     while (digits > 0) {
       buffer[digits - 1] = (char)('0' + (value % 10));
@@ -738,10 +754,10 @@ loop:
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private String		input;			// the string to parse
-  private int			length;			// its length
-  private int			position;		// the current position
+  private String        input;          // the string to parse
+  private int           length;         // its length
+  private int           position;       // the current position
 
-  private String		parsed;			// the result of parsing.
-  private String		cursorName;
+  private String        parsed;         // the result of parsing.
+  private String        cursorName;
 }

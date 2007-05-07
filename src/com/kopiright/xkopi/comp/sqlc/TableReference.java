@@ -54,9 +54,10 @@ public abstract class TableReference extends SqlPhylum {
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-// a une colonne qui correspond a ce nom
+  // a une colonne qui correspond a ce nom
   public abstract boolean hasColumn(String ident);
 
-// return the name of the table for a column
+  // return the name of the table for a column
   public abstract String getTableForColumn(String column);
+
 }

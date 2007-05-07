@@ -784,7 +784,9 @@ sPredicate []
     { // NULL on the left side of a comparison expression
       if (expr instanceof NullLiteral) {
         if (self instanceof IsPredicate) {
-          reportTrouble(new PositionedError(sourceRef, SqlcMessages.INVALID_NULL_COMPARISON, "IS (NOT) NULL"));
+          reportTrouble(new PositionedError(sourceRef,
+                                            SqlcMessages.INVALID_NULL_COMPARISON,
+                                            "IS (NOT) NULL"));
         } else {
           ComparisonPredicate   cp = (ComparisonPredicate) self;
 
@@ -793,7 +795,9 @@ sPredicate []
           } else if (cp.getOperator().equals("<>")) {
             reportTrouble(new CWarning(sourceRef, SqlcMessages.NE_NULL)); 
           } else {
-            reportTrouble(new PositionedError(sourceRef, SqlcMessages.INVALID_NULL_COMPARISON, cp.getOperator()));
+            reportTrouble(new PositionedError(sourceRef,
+                                              SqlcMessages.INVALID_NULL_COMPARISON,
+                                              cp.getOperator()));
           }
         }
       }
@@ -1316,7 +1320,9 @@ sWithCompPredicate[Predicate predicate]
         } else if (s.equals("<>")){
           reportTrouble(new CWarning(sourceRef, SqlcMessages.NE_NULL)); 
         } else {
-          reportTrouble(new PositionedError(sourceRef, SqlcMessages.INVALID_NULL_COMPARISON, s));
+          reportTrouble(new PositionedError(sourceRef,
+                                            SqlcMessages.INVALID_NULL_COMPARISON,
+                                            s));
         }
       }
       right = new ExpressionPredicate(sourceRef, p);
@@ -1340,9 +1346,9 @@ sWithNotPredicate []
 sOuterJoin []
   returns [OuterJoin self = null]
 {
-  TableReference        p1;
+  SimpleTableReference  p1;
   String                p2;
-  TableReference        p3;
+  SimpleTableReference  p3;
   JoinPred              p4 = null;
   TokenReference        sourceRef = buildTokenReference();
 }

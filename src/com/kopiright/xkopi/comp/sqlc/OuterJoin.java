@@ -33,18 +33,20 @@ public class OuterJoin extends SimpleTableReference {
 
   /**
    * Constructor
-   * @param	ref		the token reference for this clause
-   * @param	leftTable	the left table reference
-   * @param	type		the join type
-   * @param	rightTable	the right table reference
-   * @param	joinPred	the join pred.
+   * @param     ref             the token reference for this clause
+   * @param     leftTable       the left table reference
+   * @param     type            the join type
+   * @param     rightTable      the right table reference
+   * @param     joinPred        the join pred.
    */
   public OuterJoin(TokenReference ref,
-		   TableReference leftTable,
-		   String type,
-		   TableReference rightTable,
-		   JoinPred joinPred) {
+                   SimpleTableReference leftTable,
+                   String type,
+                   SimpleTableReference rightTable,
+                   JoinPred joinPred)
+  {
     super(ref);
+
     this.leftTable = leftTable;
     this.type = type;
     this.rightTable = rightTable;
@@ -55,7 +57,9 @@ public class OuterJoin extends SimpleTableReference {
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-  // a une colonne qui correspond a ce nom
+  /**
+   * Returns true if it on of the join tables has this column.
+   */
   public boolean hasColumn(String ident) {
     return leftTable.hasColumn(ident) ^ rightTable.hasColumn(ident);
   }
@@ -69,14 +73,43 @@ public class OuterJoin extends SimpleTableReference {
   // ----------------------------------------------------------------------
 
   /**
-   * Returns true if the table reference has an alias
+   * Returns the Alias of the table reference.
    */
   public String getAlias() {
     return null;
   }
 
+  public SimpleTableReference getLeftTable() {
+    return leftTable;
+  }
+
+  public SimpleTableReference getRightTable() {
+    return rightTable;
+  }
+
+  private String getTableAliasOrTableName(SimpleTableReference table) {
+    String      alias;
+    
+    alias = table.getAlias();
+    
+    if (alias == null &&
+        (table instanceof TableName)) {
+      alias = ((TableName)table).getTableName();
+    }
+    
+    return alias;
+  }
+
+  public String  getLeftTableAliasOrTableName() {
+    return getTableAliasOrTableName(leftTable);
+  }
+  
+  public String  getRightTableAliasOrTableName() {
+    return getTableAliasOrTableName(rightTable);
+  }
+
   /**
-   * Returns a table name from an alias name or null
+   * Returns the current instance.
    */
   public TableReference getTable() {
     return this;
@@ -89,7 +122,7 @@ public class OuterJoin extends SimpleTableReference {
   /**
    * Accepts a visitor.
    *
-   * @param	visitor			the visitor
+   * @param     visitor                 the visitor
    */
   public void accept(SqlVisitor visitor) throws PositionedError {
     visitor.visitOuterJoin(this, leftTable, type, rightTable, joinPred);
@@ -99,8 +132,8 @@ public class OuterJoin extends SimpleTableReference {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private TableReference	leftTable;
-  private String		type;
-  private TableReference	rightTable;
-  private JoinPred		joinPred;
+  private SimpleTableReference          leftTable;
+  private String                        type;
+  private SimpleTableReference          rightTable;
+  private JoinPred                      joinPred;
 }

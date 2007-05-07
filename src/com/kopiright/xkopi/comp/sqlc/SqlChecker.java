@@ -997,9 +997,7 @@ public class SqlChecker implements SqlVisitor {
       updateSpec.accept(this);
     }
 
-
-    // !!!if (!fromClause.checkAliasAreUnique(this)) {
-    //}
+    fromClause.checkAliasAreUnique(getContext());
 
     if (sortSpec != null) {
       // check if the idents are unique

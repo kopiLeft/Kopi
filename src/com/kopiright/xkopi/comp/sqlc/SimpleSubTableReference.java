@@ -37,8 +37,12 @@ public class SimpleSubTableReference extends SimpleTableReference {
    * @param	table		the table expression
    * @param	alias		the alias for this reference
   */
-  public SimpleSubTableReference(TokenReference ref, TableReference table, TableAlias alias) {
+  public SimpleSubTableReference(TokenReference ref,
+                                 TableReference table,
+                                 TableAlias alias)
+  {
     super(ref);
+    
     this.alias = alias;
     this.table = table;
   }
@@ -47,7 +51,7 @@ public class SimpleSubTableReference extends SimpleTableReference {
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-// a une colonne qui correspond a ce nom
+  // a une colonne qui correspond a ce nom
   public boolean hasColumn(String ident) {
     return alias.getFieldNameList() == null ?
       table.hasColumn(ident):
