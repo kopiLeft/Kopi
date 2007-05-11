@@ -50,12 +50,14 @@ public class VKFieldColumn extends VKPhylum {
   public VKFieldColumn(TokenReference where,
 		       String corr,
 		       String ident,
-		       boolean isKey) {
+		       boolean isKey,
+                       boolean nullable) {
     super(where);
 
     this.corr = corr;
     this.ident = ident;
     this.isKey = isKey;
+    this.nullable = nullable;
   }
 
   // ----------------------------------------------------------------------
@@ -66,7 +68,7 @@ public class VKFieldColumn extends VKPhylum {
    * Sets the position in an array of fields
    */
   public VKFieldColumn cloneToPos(int pos) {
-    return new VKFieldColumn(getTokenReference(), corr, ident + pos, isKey);
+    return new VKFieldColumn(getTokenReference(), corr, ident + pos, isKey, nullable);
   }
 
   // ----------------------------------------------------------------------
@@ -115,6 +117,7 @@ public class VKFieldColumn extends VKPhylum {
 				      VKUtils.toExpression(ref, num),
 				      VKUtils.toExpression(ref, ident),
 				      VKUtils.toExpression(ref, isKey),
+				      VKUtils.toExpression(ref, nullable)
 				    });
   }
 
@@ -129,7 +132,7 @@ public class VKFieldColumn extends VKPhylum {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printFieldColumn(corr, ident, isKey);
+    p.printFieldColumn(corr, ident, isKey, nullable);
   }
 
   // ----------------------------------------------------------------------
@@ -140,4 +143,5 @@ public class VKFieldColumn extends VKPhylum {
   private int		num;
   private String	ident;
   private boolean	isKey;
+  private boolean       nullable;
 }

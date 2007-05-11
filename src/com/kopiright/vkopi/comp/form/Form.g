@@ -610,19 +610,21 @@ vkFieldColumn []
   returns [VKFieldColumn self]
 {
   boolean	isKey = false;
+  boolean   nullable = false;
   String	name;
   String	ident;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
   ( "KEY" { isKey = true; } )?
+  ("NULLABLE" { nullable = true; } )?
   name = vkSQLIdent[] 
   DOT ident = vkSQLIdent[]
   ( DOT 
     { name += "." + ident; }
     ident = vkSQLIdent[] 
   )? 
-    { self = new VKFieldColumn(sourceRef, name, ident, isKey); }
+    { self = new VKFieldColumn(sourceRef, name, ident, isKey, nullable); }
 ;
 
 vkFieldColumnList []

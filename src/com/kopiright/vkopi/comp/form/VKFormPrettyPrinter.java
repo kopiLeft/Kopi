@@ -615,8 +615,9 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
    */
   public void printFieldColumn(String table,
 			       String column,
-			       boolean isKey) {
-    print((isKey ? "KEY " : "") + table + "." + column);
+			       boolean isKey,
+                               boolean nullable) {
+    print((nullable ? "NULLABLE" : "") + (isKey ? "KEY " : "") + table + "." + column);
   }
 
   // ----------------------------------------------------------------------

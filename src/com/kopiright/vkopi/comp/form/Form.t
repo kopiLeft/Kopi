@@ -68,6 +68,7 @@
 @literal	VALREC
 @literal	VALUE
 @literal	VISIT
+@literal	NULLABLE
 
 @operator	GT	">"
 @operator	LT	"<"

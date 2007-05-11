@@ -109,9 +109,10 @@ public class VKPrettyPrinter {
    */
   public void printFieldColumn(String table,
 			       String column,
-			       boolean isKey)
+			       boolean isKey,
+                               boolean nullable)
   {
-    print((isKey ? "KEY " : "") + table + "." + column);
+    print((nullable ? "NULLABLE " : "") +(isKey ? "KEY " : "") + table + "." + column);
   }
 
   /**
