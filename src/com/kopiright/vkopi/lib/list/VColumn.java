@@ -24,10 +24,11 @@ public class VColumn {
   /**
    * Constructor
    */
-  public VColumn(int pos, String name, boolean key) {
+  public VColumn(int pos, String name, boolean key, boolean nullable) {
     this.pos	= pos;
     this.name	= name;
     this.key	= key;
+    this.nullable = nullable;
   }
 
   /**
@@ -59,6 +60,13 @@ public class VColumn {
     return key;
   }
 
+  /**
+   * Returns wether ther column is a key 
+   */
+  public boolean isNullable() {
+    return nullable;
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -66,4 +74,5 @@ public class VColumn {
   private int		pos;		// position of associated table
   private String	name;		// column name
   private boolean	key;		// column key of table ?
+  private boolean	nullable;	// is this column nullable ?
 }
