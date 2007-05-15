@@ -150,6 +150,16 @@ public abstract class VField implements VConstants {
     return label;
   }
 
+  public int fetchColumn(int table) {
+    for (int i = 0; i < columns.length; i++) {
+      if(columns[i].getTable() == table) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+
   /**
    * The name displayed on the left of this field
    */
@@ -273,6 +283,15 @@ public abstract class VField implements VConstants {
 
   public VPosition getPosition() {
     return pos;
+  }
+
+  public boolean hasNullableCols() {
+    for(int i = 0; i < columns.length; i++) {
+      if(columns[i].isNullable()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // ----------------------------------------------------------------------
