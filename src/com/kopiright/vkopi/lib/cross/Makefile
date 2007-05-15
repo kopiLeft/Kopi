@@ -28,7 +28,7 @@ PACKAGE =	com/kopiright/vkopi/lib/cross
 ## FILES
 
 JAVAFILES +=	VReportSelectionForm VPrintSelectionForm		\
-		VMultiPrintSelectionForm VDynamicReportSelectionForm
+		VMultiPrintSelectionForm VDynamicReport
 
 ## ----------------------------------------------------------------------
 ## GOALS
