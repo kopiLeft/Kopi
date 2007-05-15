@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.form.VBooleanCodeField;
 import com.kopiright.vkopi.lib.form.VBooleanField;
@@ -33,11 +34,11 @@ import com.kopiright.vkopi.lib.form.VCodeField;
 import com.kopiright.vkopi.lib.form.VColorField;
 import com.kopiright.vkopi.lib.form.VDateField;
 import com.kopiright.vkopi.lib.form.VField;
-import com.kopiright.vkopi.lib.form.VFixnumField;
 import com.kopiright.vkopi.lib.form.VFixnumCodeField;
+import com.kopiright.vkopi.lib.form.VFixnumField;
 import com.kopiright.vkopi.lib.form.VImageField;
-import com.kopiright.vkopi.lib.form.VIntegerField;
 import com.kopiright.vkopi.lib.form.VIntegerCodeField;
+import com.kopiright.vkopi.lib.form.VIntegerField;
 import com.kopiright.vkopi.lib.form.VMonthField;
 import com.kopiright.vkopi.lib.form.VStringCodeField;
 import com.kopiright.vkopi.lib.form.VStringField;
@@ -45,7 +46,6 @@ import com.kopiright.vkopi.lib.form.VTextField;
 import com.kopiright.vkopi.lib.form.VTimeField;
 import com.kopiright.vkopi.lib.form.VTimestampField;
 import com.kopiright.vkopi.lib.form.VWeekField;
-
 import com.kopiright.vkopi.lib.report.Constants;
 import com.kopiright.vkopi.lib.report.DColumnStyle;
 import com.kopiright.vkopi.lib.report.SDefaultReportActor;
@@ -54,8 +54,8 @@ import com.kopiright.vkopi.lib.report.VBooleanColumn;
 import com.kopiright.vkopi.lib.report.VDateColumn;
 import com.kopiright.vkopi.lib.report.VFixnumCodeColumn;
 import com.kopiright.vkopi.lib.report.VFixnumColumn;
-import com.kopiright.vkopi.lib.report.VIntegerColumn;
 import com.kopiright.vkopi.lib.report.VIntegerCodeColumn;
+import com.kopiright.vkopi.lib.report.VIntegerColumn;
 import com.kopiright.vkopi.lib.report.VMonthColumn;
 import com.kopiright.vkopi.lib.report.VNoRowException;
 import com.kopiright.vkopi.lib.report.VReport;
@@ -66,21 +66,17 @@ import com.kopiright.vkopi.lib.report.VStringColumn;
 import com.kopiright.vkopi.lib.report.VTimeColumn;
 import com.kopiright.vkopi.lib.report.VTimestampColumn;
 import com.kopiright.vkopi.lib.report.VWeekColumn;
-
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.SActor;
 import com.kopiright.vkopi.lib.visual.VCommand;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-
-import com.kopiright.util.base.InconsistencyException;
-
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
-import com.kopiright.xkopi.lib.type.NotNullFixed;
 import com.kopiright.xkopi.lib.base.Query;
+import com.kopiright.xkopi.lib.type.NotNullFixed;
 
 public class VDynamicReport extends VReport {
 
@@ -99,14 +95,15 @@ public class VDynamicReport extends VReport {
    */
   public static void createDynamicReport(VBlock block) throws VException {
     try {
-      block.getForm().setWaitInfo(Message.getMessage("report_generation"));
-      VReport report = new VDynamicReport(block);
+      VReport   report;
 
+      block.getForm().setWaitInfo(Message.getMessage("report_generation"));
+      report = new VDynamicReport(block);
       report.doNotModal();
-      block.getForm().unsetWaitInfo();
     } catch (VNoRowException e) {
-      block.getForm().unsetWaitInfo();
       block.getForm().error(MessageCode.getMessage("VIS-00057"));
+    } finally {
+      block.getForm().unsetWaitInfo();
     }
     block.setRecordChanged(0, false);
   }  
@@ -142,7 +139,7 @@ public class VDynamicReport extends VReport {
    * create report columns and fill them with data.
    */
   protected void initColumns() throws VException {
-    int col = 0;
+    int         col = 0;
     
     for (int i = 0; i < fields.length; i++) {
       if (fields[i] instanceof VStringField) {
@@ -291,9 +288,9 @@ public class VDynamicReport extends VReport {
       }
       // add labels for columns.
       if (!fields[i].getName().equals("ID")) { 
-        String columnLabel;
+        String  columnLabel;
         
-        if (fields[i].getLabel() != null ) {
+        if (fields[i].getLabel() != null) {
           columnLabel = fields[i].getLabel().endsWith(":") ?
             fields[i].getLabel().trim().substring(0, fields[i].getLabel().length() - 1) : 
             fields[i].getLabel().trim();
@@ -366,8 +363,8 @@ public class VDynamicReport extends VReport {
     } catch (Throwable e) {
       throw new VExecFailedException(e);
     }
-    
   }
+
   // methods overriden from VReport
   
   public void localize(Locale locale) {
@@ -375,7 +372,7 @@ public class VDynamicReport extends VReport {
     // actors are localized with VlibProperties.
   }
 
-  public  void add() {}
+  public void add() {}
 
   protected void init() throws VException {}
   
@@ -507,17 +504,19 @@ public class VDynamicReport extends VReport {
   // ----------------------------------------------------------------------
   
   private boolean[] getBoolArray(Boolean[] codes) {
-    boolean[] result = new boolean[codes.length];
-    for(int i = 0; i < codes.length; i++) {
+    boolean[]   result = new boolean[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
       result[i] = codes[i].booleanValue();
     }
     return result;
   }
   
-  public int[] getIntArray(Integer[] codes) {
-    int[] result = new int[codes.length];
-    for (int j = 0; j< codes.length; j++) {
-      result[j] = codes[j].intValue();
+  private int[] getIntArray(Integer[] codes) {
+    int[]       result = new int[codes.length];
+
+    for (int i = 0; i < codes.length; i++) {
+      result[i] = codes[i].intValue();
     }
     return result;
   }
