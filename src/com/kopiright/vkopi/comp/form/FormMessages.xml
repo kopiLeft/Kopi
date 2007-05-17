@@ -56,4 +56,5 @@
 <msg identifier="BOTH_NODETAIL" format="Redundant option NO DETAIL since the block already declared it" reference="FORM" level="2"/>
 <msg identifier="POSITION_USED" format="The position &lt;{0}, {1}&gt; of this field is already used by the field \&quot;{2}\&quot;" reference="FORM" level="2"/>
 <msg identifier="NO_REC_TRG_FOR_SINGLE_BLOCK" format="The single block \&quot;{0}\&quot; can not have a {1}REC trigger; use the trigger {1}BLK instead." reference="FORM" level="2"/>
+<msg identifier="FIRST_COLUMN_NULLABLE" format="First column in a field with multi columns must not be nullable." reference="FORM" level="0" />
 </messages>

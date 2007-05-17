@@ -632,11 +632,20 @@ vkFieldColumnList []
 {
   VKFieldColumn		c;
 }
+
 :
   LPAREN
   c = vkFieldColumn[] { self.add(c); }
   ( COMMA c = vkFieldColumn[] { self.add(c); } )*
   RPAREN
+{
+  if (self.size() == 2) {
+    if (((VKFieldColumn)(self.get(0))).isNullable()) {
+                    reportTrouble(new PositionedError(buildTokenReference(),
+                            FormMessages.FIRST_COLUMN_NULLABLE));
+    } 
+  } 
+}
 ;
 
 vkFieldColumns []
@@ -709,7 +718,7 @@ vkFieldIndices []
         if (x < 0 || x >= 32) {
           reportTrouble(new PositionedError(buildTokenReference(),
                                             FormMessages.INDEX_OUT_OF_RANGE));
-	}
+        }
         self |= (1 << x);
       }
   )+

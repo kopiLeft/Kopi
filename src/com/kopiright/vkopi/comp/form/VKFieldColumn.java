@@ -135,6 +135,10 @@ public class VKFieldColumn extends VKPhylum {
     p.printFieldColumn(corr, ident, isKey, nullable);
   }
 
+  public boolean isNullable() {
+    return nullable;
+  }
+  
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------
