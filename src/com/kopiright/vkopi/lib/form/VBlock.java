@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
@@ -1709,25 +1710,35 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception	VException	an exception may be raised by triggers
    */
   public void fetchRecord(int id) throws VException, SQLException {
-    String	headbuf, tailbuf, frombuf;
+    String	headbuf, frombuf, tailbuf;
     Query	query;
 
     headbuf = getSearchColumns();
     frombuf = getSearchTables();
-
     tailbuf = "";
     for (int i = 0; i < fields.length; i++) {
-      VField	fld = fields[i];
+      VField   fld = fields[i];
 
-      for (int j = 1; j < fld.getColumnCount(); j++) {
-	tailbuf +=
-	  " AND " +
-	  fld.getColumn(j).getQualifiedName() +
-	  " = " +
-	  fld.getColumn(j - 1).getQualifiedName();
+      if (fld.hasNullableCols()) {
+        for (int j = 1; j < fld.getColumnCount(); j++) {
+          if (!fld.getColumn(j).isNullable()) {
+            tailbuf +=
+              " AND " +
+              fld.getColumn(j).getQualifiedName() +
+              " = " +
+              fld.getColumn(0).getQualifiedName();
+          }
+        }
+      } else {
+        for (int j = 1; j < fld.getColumnCount(); j++) {
+          tailbuf +=
+            " AND " +
+            fld.getColumn(j).getQualifiedName() +
+            " = " +
+            fld.getColumn(j - 1).getQualifiedName();
+        }
       }
     }
-
     query = new Query(form.getDBContext().getDefaultConnection());
     query.addString(headbuf);
     query.addString(frombuf);
@@ -2019,7 +2030,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           } else {
             result += ", ";
           }
-
           result += fld.getColumn(0).getQualifiedName();
         }
       }
@@ -2049,7 +2059,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         } else {
           result += ", ";
         }
-        
         result += fld.getColumn(0).getQualifiedName();
       }
     }
@@ -2058,48 +2067,112 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
-   * Returns the tables for database query.
+   * test whether this table has nullable columns.
+   */
+  public boolean hasNullableColumns(int table) {
+    for (int i = 0; i < fields.length; i++) {
+      VField	fld = fields[i];
+            
+      if (fld.fetchColumn(table) != -1 & fld.isInternal() && (fld.getColumn(fld.fetchColumn(table))).isNullable()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns the tables for database query, with outer joins conditions.
    */
   public String getSearchTables() {
-    String		result = null;
-
+    StringBuffer        buffer = null;
+    
     if (tables == null) {
       return null;
     }
-
-    for (int i = 0; i < tables.length; i++) {
-      if (i == 0) {
-	result = " FROM ";
-      } else {
-	result += ", ";
+    buffer = new StringBuffer(" FROM ");
+    // first search join condition with block main table.
+    buffer.append(getJoinCondition(0, 0, null, null));
+    // search join condition for lookup tables.
+    for (int i = 1 ; i < tables.length; i++) {
+      if (!joinedTables.contains(Integer.toString(i))) {
+        if (hasNullableColumns(i)) {
+          buffer.append(", " + getJoinCondition(i, i, null, null));
+        } 
       }
-
-      result += tables[i] + " T" + i;
+    }
+    for (int i = 1 ; i < tables.length; i++) {
+      if (!joinedTables.contains(Integer.toString(i))) {
+        buffer.append("," + tables[i]  + " T" + i);
+      }
     }
 
-    return result;
+    // initialize joinedTables list.
+    joinedTables = new ArrayList();
+    return buffer.toString();
   }
 
+  /**
+   * Returns Outer join conditions for database query.
+   */
+  public String getJoinCondition(int ref, int table, ArrayList processedFields, ArrayList processedTables) {
+    StringBuffer        joinBuffer = new StringBuffer("");
+    VField              field;
+
+    if (table == ref) {
+      joinBuffer.append(tables[table] + " T" + table);
+      processedTables = new ArrayList();
+      processedFields = new ArrayList();
+    }
+    for (int i = 0; i < fields.length; i++) {
+      if (processedFields.contains(Integer.toString(i))) {
+        continue;
+      }
+      field = fields[i];
+      if (field.getColumnCount() > 1) {
+        int     tableColumn = field.fetchColumn(table);
+        
+        if(tableColumn != -1) {
+          processedTables.add(Integer.toString(table));
+          joinedTables.add((Integer.toString(table)));
+          processedFields.add(Integer.toString(i));
+          for (int j = 0; j < field.getColumnCount(); j++) {
+            if (j != tableColumn && (field.getColumn(tableColumn).isNullable() || field.getColumn(j).isNullable())) {
+              if(processedTables.contains(Integer.toString(field.getColumn(j).getTable()))) {
+                joinBuffer.append(" AND " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
+              } else if (field.getColumn(tableColumn).isNullable()) {
+                joinedTables.add(Integer.toString(field.getColumn(j).getTable()));
+                // !!! wael 20070517: outer join syntax is not jdbc 3.0 compliant.
+                joinBuffer.append(" LEFT OUTER JOIN " + tables[field.getColumn(j).getTable()] + " T" + field.getColumn(j).getTable());
+                joinBuffer.append(" ON " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
+                joinBuffer.append(getJoinCondition(ref, field.getColumn(j).getTable(), processedFields, processedTables));              
+              }
+            }
+          } 
+        } 
+      }
+    }
+    return joinBuffer.toString();
+  }
+  
   /**
    * Returns the search conditions for database query.
    */
   public String getSearchConditions() {
     StringBuffer	buffer = null;
-
+    
     for (int i = 0; i < fields.length; i++) {
       VField		fld = fields[i];
-
+      
       if (fld.getColumnCount() > 0) {
 	String	cond = fld.getSearchCondition();
-
+        
 	if (cond != null) {
 	  if (buffer == null) {
 	    buffer = new StringBuffer(" WHERE ");
 	  } else {
 	    buffer.append(" AND ");
 	  }
-
-	  switch (fld.getOptions() & FDO_SEARCH_MASK) {
+    	  switch (fld.getOptions() & FDO_SEARCH_MASK) {
 	  case FDO_SEARCH_NONE:
 	    buffer.append(fld.getColumn(0).getQualifiedName());
 	    break;
@@ -2120,20 +2193,32 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	  buffer.append(cond);
 	}
       }
-
-      for (int j = 1; j < fld.getColumnCount(); j++) {
-	if (buffer == null) {
-	  buffer = new StringBuffer(" WHERE ");
-	} else {
-	  buffer.append(" AND ");
-	}
-
-	buffer.append(fld.getColumn(j).getQualifiedName());
-	buffer.append(" = ");
-	buffer.append(fld.getColumn(j - 1).getQualifiedName());
+      if (fld.hasNullableCols()) {
+        for(int j = 1; j < fld.getColumnCount(); j++) {
+          if (!fld.getColumn(j).isNullable()) {
+            if (buffer == null) {
+              buffer = new StringBuffer(" WHERE ");
+            } else {
+              buffer.append(" AND ");
+            }
+            buffer.append(fld.getColumn(j).getQualifiedName());
+            buffer.append(" = ");
+            buffer.append(fld.getColumn(0).getQualifiedName());
+          }
+        }
+      } else {
+        for (int j = 1; j < fld.getColumnCount(); j++) {
+          if (buffer == null) {
+            buffer = new StringBuffer(" WHERE ");
+          } else {
+            buffer.append(" AND ");
+          }
+          buffer.append(fld.getColumn(j).getQualifiedName());
+          buffer.append(" = ");
+          buffer.append(fld.getColumn(j - 1).getQualifiedName());
+        }
       }
     }
-
     return buffer == null ? null : buffer.toString();
   }
 
@@ -3319,83 +3404,119 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   protected void selectLookup(int table, int recno) throws SQLException, VException {
     String	headbuff, tailbuff;
+    boolean     nullRef = true;
     Query	query;
-
-  
+    
     headbuff = "";
     tailbuff = "";
-
-    for (int i = 0; i < fields.length; i++) {
+    
+    // check if all lookup fields for this table are null.
+    for (int i = 0; i < fields.length; i++) {    
       VField	fld = fields[i];
-      String	col = fld.lookupColumn(table);
-
-      if (col != null) {
-	if (! headbuff.equals("")) {
-	  headbuff += ", ";
-	}
-	headbuff += col;
-
-
-	if (!fld.isInternal() || !fld.isNull(recno)) {
-	  String  sql = fld.getSql(recno);
-	  if (!sql.equals("?")) { // dont lookup for blobs...
-	    if (! tailbuff.equals("")) {
-	      tailbuff += " AND ";
-	    }
-
-	    tailbuff += col;
-            if (fld.getSql(recno).equals(com.kopiright.xkopi.lib.base.KopiUtils.NULL_LITERAL)) {
-              tailbuff += " IS ";
-            } else {
-              tailbuff += " = ";
+      
+      if (fld.fetchColumn(table) != -1 && !fld.isInternal()) {
+        if (!fld.isNull(recno)) {
+          nullRef = false;
+          break;
+        }
+      }
+    }
+    
+    // this test is useful since we use outer join only for nullable columns.
+    if (nullRef) {
+      for (int i = 0; i < fields.length; i++) {    
+        VField	fld = fields[i];
+        
+        if (fld.isInternal()) {
+          if (fld.fetchColumn(0) != -1 && fld.fetchColumn(table) != -1) {
+            if (!fld.getColumn(fld.fetchColumn(0)).isNullable()) {
+              nullRef = false;
+              break;
             }
-            tailbuff += fld.getSql(recno);
-	  }
-	}
+          }
+        }
       }
     }
-
-    // lackner 7.11.2005 useless check, but prevents work with oracle (not ID) tables
-//     if (idfld == null) {
-//       throw new InconsistencyException("no ID field for table " + tables[table]);
-//     }
-    if (tailbuff.equals("")) {
-      throw new InconsistencyException("no conditions for table " + tables[table]);
-    }
-
-    query = new Query(form.getDBContext().getDefaultConnection());
-    query.addString(headbuff);
-    query.addString(tables[table]);
-    query.addString(tailbuff);
-    query.open("SELECT $1 FROM $2 WHERE $3");
-    if (! query.next()) {
-      query.close();
-      form.getDBContext().abortWork();
-      setActiveRecord(recno);
-      throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
-							new Object[]{ tables[table] }));
+    // set internal fields to null (null reference)
+    if (nullRef) {
+      for (int i = 0; i < fields.length; i++) {
+        VField  fld = fields[i];
+        
+        if (fld.isInternal() && fld.lookupColumn(table) != null) {
+          fld.setNull(recno);
+        }
+      }
     } else {
-      for (int i = 0, j = 0; i < fields.length; i++) {
-	VField		fld = fields[i];
-
-	if (fld.lookupColumn(table) != null) {
-	  fld.setQuery(recno, query, 1+j);
-	  j += 1;
-	}
+      for (int i = 0; i < fields.length; i++) {
+        VField	fld = fields[i];
+        String  col = fld.lookupColumn(table);
+        
+        if (col != null) {
+          if (! headbuff.equals("")) {
+            headbuff += ", ";
+          }
+          headbuff += col;
+          if (!fld.isInternal() || !fld.isNull(recno)) {
+            String  sql = fld.getSql(recno);
+            if (!sql.equals("?") ) { // dont lookup for blobs...
+              if (! tailbuff.equals("")) {
+                tailbuff += " AND ";
+              }
+              tailbuff += col;
+              if (fld.getSql(recno).equals(com.kopiright.xkopi.lib.base.KopiUtils.NULL_LITERAL)) {
+                tailbuff += " IS ";
+              } else {
+                tailbuff += " = ";
+              }
+              tailbuff += fld.getSql(recno);
+            }
+          }
+        }
       }
-
-      if (query.next()) {
-	query.close();
-	form.getDBContext().abortWork();
-	setActiveRecord(recno);
-	throw new VExecFailedException(MessageCode.getMessage("VIS-00020",
-							  new Object[]{ tables[table] }));
+      
+      // lackner 7.11.2005 useless check, but prevents work with oracle (not ID) tables
+      //     if (idfld == null) {
+      //       throw new InconsistencyException("no ID field for table " + tables[table]);
+      //     }
+      if (tailbuff.equals("")) {
+        throw new InconsistencyException("no conditions for table " + tables[table]);
       }
-
-      query.close();
+      
+      query = new Query(form.getDBContext().getDefaultConnection());
+      query.addString(headbuff);
+      query.addString(tables[table]);
+      query.addString(tailbuff);
+      
+      query.open("SELECT $1 FROM $2 WHERE $3");
+      if (! query.next()) {
+        query.close(); 
+        form.getDBContext().abortWork();
+        setActiveRecord(recno);
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
+                                                              new Object[]{ tables[table] }));
+      } else {
+        for (int i = 0, j = 0; i < fields.length; i++) {
+          VField		fld = fields[i];
+          
+          if (fld.lookupColumn(table) != null) {
+            fld.setQuery(recno, query, 1+j);
+            j += 1;
+          }
+        }
+        
+        if (query.next()) {
+          query.close();
+          form.getDBContext().abortWork();
+          setActiveRecord(recno);
+          throw new VExecFailedException(MessageCode.getMessage("VIS-00020",
+                                                                new Object[]{ tables[table] }));
+        }
+        query.close();
+      }
     }
   }
-
+  //}
+  
   /*
    * Checks unique index constraints
    * @exception	VException	an exception may be raised by triggers
@@ -4143,7 +4264,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
   protected int[]               sortedRecords;
   
   protected boolean             blockAccess;
@@ -4203,4 +4323,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected int                 maxRowPos;
   protected int                 maxColumnPos;
   protected int                 displayedFields;
+
+  private ArrayList             joinedTables = new ArrayList();
 }
