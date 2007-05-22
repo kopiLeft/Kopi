@@ -2014,37 +2014,37 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Returns the database columns of block.
    */
   public String getReportSearchColumns() {
-    String              result = null;
-    VField              fieldID = null;
+    String       result;
     
+    result = null;
+    for (int i = 0; i < fields.length; i++) {
+      VField    fld = fields[i];
+      
+      if (!fld.isInternal() && fld.getColumnCount() > 0) {
+        if (result == null) {
+          result = "";
+        } else {
+          result += ", ";
+        }
+        result += fld.getColumn(0).getQualifiedName();
+      }
+    }
+    // add ID field to the end , of search column list.
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
       
       if(fld.isInternal() && fld.getName().equals("ID") && fld.getColumnCount() > 0) {
-        fieldID = fld;
-      }
-      if(!fld.isInternal()) {
-        if (fld.getColumnCount() > 0) {
-          if (result == null) {
-            result = "";
-          } else {
-            result += ", ";
-          }
-          result += fld.getColumn(0).getQualifiedName();
+        if (result == null) {
+          result = "";
+        } else {
+          result += ", ";
         }
+        result += fld.getColumn(0).getQualifiedName();
+        break;
       }
-    }
-    if(fieldID != null) {
-      if (result == null) {
-        result = "";
-      } else {
-        result += ", ";
-      }
-      result += fieldID.getColumn(0).getQualifiedName();
     }
     return result;
   }
-
   /**
    * Returns the database columns of block.
    */
@@ -2072,11 +2072,26 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public boolean hasNullableColumns(int table) {
     for (int i = 0; i < fields.length; i++) {
       VField	fld = fields[i];
+      
+      if (fld.fetchColumn(table) != -1 && fld.isInternal()) {
+        if (fld.getColumn(fld.fetchColumn(table)).isNullable()) {
+          return true;
+        }
+      }
+    }    
+    return false;
+  }
+  
+  /**
+   * check whether this table has Only Internal fields.
+   */
+  public boolean hasOnlyInternalFields(int table) {
+    for (int i = 0; i < fields.length; i++) {
+      VField	fld = fields[i];
             
-      if (fld.fetchColumn(table) != -1 & fld.isInternal() && (fld.getColumn(fld.fetchColumn(table))).isNullable()) {
+      if (fld.fetchColumn(table) != - 1 && !fld.isInternal())
         return true;
       }
-    }
     return false;
   }
 
@@ -3403,25 +3418,32 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    *
    */
   protected void selectLookup(int table, int recno) throws SQLException, VException {
-    String	headbuff, tailbuff;
-    boolean     nullRef = true;
+    String      headbuff;
+    String      tailbuff;
+    boolean     nullRef; 
     Query	query;
     
     headbuff = "";
     tailbuff = "";
+    nullRef = true;
     
-    // check if all lookup fields for this table are null.
-    for (int i = 0; i < fields.length; i++) {    
-      VField	fld = fields[i];
-      
-      if (fld.fetchColumn(table) != -1 && !fld.isInternal()) {
-        if (!fld.isNull(recno)) {
-          nullRef = false;
-          break;
+    // check if this lookup table has not only internal fields
+    // 
+    if(!hasOnlyInternalFields(table)) {
+      nullRef = false;
+    } else { 
+      // check if all lookup fields for this table are null.
+      for (int i = 0; i < fields.length; i++) {    
+        VField	fld = fields[i];
+        
+        if (fld.fetchColumn(table) != -1 && !fld.isInternal()) {
+          if (!fld.isNull(recno)) {
+            nullRef = false;
+            break;
+          }
         }
       }
     }
-    
     // this test is useful since we use outer join only for nullable columns.
     if (nullRef) {
       for (int i = 0; i < fields.length; i++) {    
