@@ -101,7 +101,7 @@ FILES =		$(PNGFILES:%=%.png)					\
 		$(PSFILES:%=%.ps)					\
 		$(LOCALIZATIONS:%=%-de_AT.xml)				\
 		$(LOCALIZATIONS:%=%-fr_FR.xml)				\
-		$(LOCALIZATIONS:%=%-en_UK.xml)				\
+		$(LOCALIZATIONS:%=%-en_GB.xml)				\
 		$(OTHERFILES)
 
 ## ----------------------------------------------------------------------
