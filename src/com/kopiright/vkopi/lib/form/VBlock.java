@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.Vector;
-import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
@@ -1710,8 +1709,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception	VException	an exception may be raised by triggers
    */
   public void fetchRecord(int id) throws VException, SQLException {
-    String	headbuf, frombuf, tailbuf;
-    Query	query;
+    String       headbuf;
+    String       frombuf;
+    String       tailbuf;
+    Query        query;
 
     headbuf = getSearchColumns();
     frombuf = getSearchTables();
@@ -2088,87 +2089,21 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public boolean hasOnlyInternalFields(int table) {
     for (int i = 0; i < fields.length; i++) {
       VField	fld = fields[i];
-            
-      if (fld.fetchColumn(table) != - 1 && !fld.isInternal())
-        return true;
+      
+      if (fld.fetchColumn(table) != - 1 && !fld.isInternal()) {
+        return false;
       }
-    return false;
+    }
+    return true;
   }
 
   /**
    * Returns the tables for database query, with outer joins conditions.
    */
   public String getSearchTables() {
-    StringBuffer        buffer = null;
-    
-    if (tables == null) {
-      return null;
-    }
-    buffer = new StringBuffer(" FROM ");
-    // first search join condition with block main table.
-    buffer.append(getJoinCondition(0, 0, null, null));
-    // search join condition for lookup tables.
-    for (int i = 1 ; i < tables.length; i++) {
-      if (!joinedTables.contains(Integer.toString(i))) {
-        if (hasNullableColumns(i)) {
-          buffer.append(", " + getJoinCondition(i, i, null, null));
-        } 
-      }
-    }
-    for (int i = 1 ; i < tables.length; i++) {
-      if (!joinedTables.contains(Integer.toString(i))) {
-        buffer.append("," + tables[i]  + " T" + i);
-      }
-    }
-
-    // initialize joinedTables list.
-    joinedTables = new ArrayList();
-    return buffer.toString();
+    return VBlockOuterJoinTree.getSearchTables(this);
   }
 
-  /**
-   * Returns Outer join conditions for database query.
-   */
-  public String getJoinCondition(int ref, int table, ArrayList processedFields, ArrayList processedTables) {
-    StringBuffer        joinBuffer = new StringBuffer("");
-    VField              field;
-
-    if (table == ref) {
-      joinBuffer.append(tables[table] + " T" + table);
-      processedTables = new ArrayList();
-      processedFields = new ArrayList();
-    }
-    for (int i = 0; i < fields.length; i++) {
-      if (processedFields.contains(Integer.toString(i))) {
-        continue;
-      }
-      field = fields[i];
-      if (field.getColumnCount() > 1) {
-        int     tableColumn = field.fetchColumn(table);
-        
-        if(tableColumn != -1) {
-          processedTables.add(Integer.toString(table));
-          joinedTables.add((Integer.toString(table)));
-          processedFields.add(Integer.toString(i));
-          for (int j = 0; j < field.getColumnCount(); j++) {
-            if (j != tableColumn && (field.getColumn(tableColumn).isNullable() || field.getColumn(j).isNullable())) {
-              if(processedTables.contains(Integer.toString(field.getColumn(j).getTable()))) {
-                joinBuffer.append(" AND " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
-              } else if (field.getColumn(tableColumn).isNullable()) {
-                joinedTables.add(Integer.toString(field.getColumn(j).getTable()));
-                // !!! wael 20070517: outer join syntax is not jdbc 3.0 compliant.
-                joinBuffer.append(" LEFT OUTER JOIN " + tables[field.getColumn(j).getTable()] + " T" + field.getColumn(j).getTable());
-                joinBuffer.append(" ON " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
-                joinBuffer.append(getJoinCondition(ref, field.getColumn(j).getTable(), processedFields, processedTables));              
-              }
-            }
-          } 
-        } 
-      }
-    }
-    return joinBuffer.toString();
-  }
-  
   /**
    * Returns the search conditions for database query.
    */
@@ -3414,23 +3349,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
   }
 
-  /*
-   *
-   */
-  protected void selectLookup(int table, int recno) throws SQLException, VException {
-    String      headbuff;
-    String      tailbuff;
-    boolean     nullRef; 
-    Query	query;
-    
-    headbuff = "";
-    tailbuff = "";
-    nullRef = true;
+  private boolean isNullReference(int table, int recno) {
+    boolean     nullReference; 
+
+    nullReference = true;
     
     // check if this lookup table has not only internal fields
     // 
-    if(!hasOnlyInternalFields(table)) {
-      nullRef = false;
+    if(hasOnlyInternalFields(table)) {
+      nullReference = false;
     } else { 
       // check if all lookup fields for this table are null.
       for (int i = 0; i < fields.length; i++) {    
@@ -3438,29 +3365,42 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         
         if (fld.fetchColumn(table) != -1 && !fld.isInternal()) {
           if (!fld.isNull(recno)) {
-            nullRef = false;
+            nullReference = false;
             break;
           }
         }
       }
     }
     // this test is useful since we use outer join only for nullable columns.
-    if (nullRef) {
+    if (nullReference) {
       for (int i = 0; i < fields.length; i++) {    
         VField	fld = fields[i];
         
         if (fld.isInternal()) {
           if (fld.fetchColumn(0) != -1 && fld.fetchColumn(table) != -1) {
             if (!fld.getColumn(fld.fetchColumn(0)).isNullable()) {
-              nullRef = false;
+              nullReference = false;
               break;
             }
           }
         }
       }
     }
+    return nullReference;
+  }
+
+  /*
+   *
+   */
+  protected void selectLookup(int table, int recno) throws SQLException, VException {
+    String      headbuff;
+    String      tailbuff;
+    Query	query;
+    
+    headbuff = "";
+    tailbuff = "";
     // set internal fields to null (null reference)
-    if (nullRef) {
+    if (isNullReference(table, recno)) {
       for (int i = 0; i < fields.length; i++) {
         VField  fld = fields[i];
         
@@ -4193,6 +4133,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return 0;
   }
 
+  public String[] getBlockTables() {
+    return tables;
+  }
+
   // ----------------------------------------------------------------------
   // SNAPSHOT PRINTING
   // ----------------------------------------------------------------------
@@ -4263,7 +4207,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 //       information.append(toprec);
       information.append("\n");
 
-       information.append("CURREND RECORD:\n");
+       information.append("CURRENT RECORD:\n");
       if (fields != null) {
         for (int i=0; i < fields.length; i++) {
           if (fields[i] != null) {
@@ -4345,6 +4289,4 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected int                 maxRowPos;
   protected int                 maxColumnPos;
   protected int                 displayedFields;
-
-  private ArrayList             joinedTables = new ArrayList();
 }

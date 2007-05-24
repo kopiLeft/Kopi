@@ -56,7 +56,8 @@ JAVAFILES +=	BlockAlignment Commands					\
 		FieldListener FieldChangeListener			\
 		BlockListener ViewBlockAlignment FormListener		\
 		PredefinedValueHandler GUIPredefinedValueHandler	\
-		KeyNavigator Environment Accessor ModelTransformer
+		KeyNavigator Environment Accessor ModelTransformer	\
+		VBlockOuterJoinTree
 
 ## ----------------------------------------------------------------------
 ## GOALS
