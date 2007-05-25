@@ -151,9 +151,11 @@ public abstract class VField implements VConstants {
   }
 
   public int fetchColumn(int table) {
-    for (int i = 0; i < columns.length; i++) {
-      if(columns[i].getTable() == table) {
-        return i;
+    if (columns != null) {
+      for (int i = 0; i < columns.length; i++) {
+        if(columns[i].getTable() == table) {
+          return i;
+        }
       }
     }
     return -1;
