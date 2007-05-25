@@ -46,6 +46,7 @@ public class VKFieldColumn extends VKPhylum {
    * @param corr		the name of the table in database
    * @param ident		the name of the column
    * @param isKey		true if thiscolumn is a key in the database
+   * @param nullable		true if thiscolumn is nullable.
    */
   public VKFieldColumn(TokenReference where,
 		       String corr,
@@ -139,6 +140,9 @@ public class VKFieldColumn extends VKPhylum {
     return nullable;
   }
   
+  public String getCorr() {
+    return corr;
+  }
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------

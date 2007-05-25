@@ -449,7 +449,19 @@ public class VKField
   /*package*/ boolean hasOption(int option) {
     return (options & option) == option;
   }
-
+  
+  /*package*/ int fetchColumn(VKBlockTable table) {
+    if (columns != null) {
+      VKFieldColumn[] cols = columns.getColumns();
+      for (int i = 0; i < cols.length; i++) {
+        if(cols[i].getCorr().equals(table.getCorr())) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+  
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

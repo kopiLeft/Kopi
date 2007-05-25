@@ -131,6 +131,9 @@ public class VKFieldColumns extends VKPhylum {
     */
   }
 
+  public VKFieldColumn[] getColumns() {
+    return columns;
+  }
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

@@ -256,7 +256,6 @@ public class VKBlock
 
     return null;
   }
-
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
   // ----------------------------------------------------------------------
@@ -275,13 +274,42 @@ public class VKBlock
                             this.context,
                             context.getFullName() + "/" + getIdent());
     this.window = window;
-
+    
     check(isSingle() || visible <= buffer, FormMessages.MORE_VISIBLE_THAN_BUFFERED);
     check(getShortcut() != null, FormMessages.BLOCK_NO_SHORTCUT, getIdent());
-
+    
+    // check that defined lookup tables are used.
+    for (int i = 1; i < tables.length; i++) {
+      if (!isUsedTable(tables[i])) {
+        context.reportTrouble(new CWarning(getTokenReference(),
+                                           FormMessages.NOT_USED_TABLE,
+                                           new Object[] {tables[i].getName(),
+                                                         tables[i].getCorr(),
+                                                         getIdent()}));
+      } else {
+        // check that lookup tables has not only internal fields.
+        boolean  hasOnlyInternalFields;
+        
+        hasOnlyInternalFields = true;
+        for (int j = 0; j < fields.length; j++) {
+          if (fields[j].fetchColumn(tables[i]) != -1 && !fields[j].isInternal()) {
+            hasOnlyInternalFields = false;
+            break;
+          }
+        }
+        if (hasOnlyInternalFields) {
+          context.reportTrouble(new CWarning(getTokenReference(),
+                                             FormMessages.LOOKUP_TABLE_HAS_ONLY_INTERNAL_FIELDS,
+                                             new Object[] {tables[i].getName(),
+                                                           tables[i].getCorr(),
+                                                           getIdent()}));
+        }
+      }
+    }
+    
     //check that each trigger is used only once
     int         usedTriggers = 0;
-
+    
     for (int i = 0; i < triggers.length; i++) {
       if ((triggers[i].getEvents() & usedTriggers) > 0) {
         throw new PositionedError(triggers[i].getTokenReference(), FormMessages.TRIGGER_USED_TWICE);
@@ -711,6 +739,18 @@ public class VKBlock
     return (this.options & option) == option;
   }
 
+  private boolean isUsedTable(VKBlockTable table) {
+    boolean usedTable;
+    
+    usedTable = false;
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i].fetchColumn(table) != -1) {
+        usedTable = true;
+        break;
+      }
+    }
+    return usedTable;
+  }
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
