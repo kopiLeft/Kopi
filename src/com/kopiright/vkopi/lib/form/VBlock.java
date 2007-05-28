@@ -107,8 +107,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     Component           view = null;
     Object[]            listeners = blockListener.getListenerList();
 
-    for (int i = listeners.length-2; i>=0 && view == null; i-=2) {
-      if (listeners[i]== BlockListener.class) {
+    for (int i = listeners.length - 2; i >= 0 && view == null; i -= 2) {
+      if (listeners[i] == BlockListener.class) {
         view = ((BlockListener)listeners[i+1]).getCurrentDisplay();
       }
     }
@@ -206,7 +206,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
+
   /**
    * Localizes this block
    *
@@ -214,7 +214,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void localize(LocalizationManager manager) {
     BlockLocalizer      loc;
-    
+
     loc = manager.getBlockLocalizer(source, name);
     title = loc.getTitle();
     help = loc.getHelp();
@@ -231,8 +231,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  
-  
+
   // ----------------------------------------------------------------------
   // Navigation
   // ----------------------------------------------------------------------
@@ -379,7 +378,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void sort(int column, int order) {
     if (column == -1) {
-      for (int i = 0; i < sortedRecords.length; i++) { 
+      for (int i = 0; i < sortedRecords.length; i++) {
         sortedRecords[i] = i;
       }
     } else {
@@ -416,9 +415,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       int	t_hi = mid+1;
 
       for (int k = lo; k <= hi; k++) {
-	if (t_lo > mid || (t_hi <= hi 
-                           && field.getObject(array[t_hi]) != null 
-                           && (field.getObject(array[t_lo]) == null 
+	if (t_lo > mid || (t_hi <= hi
+                           && field.getObject(array[t_hi]) != null
+                           && (field.getObject(array[t_lo]) == null
                                || order * (compareIt(field.getObject(array[t_hi]),field.getObject(array[t_lo]))) < 0))) {
 	  scratch[k] = array[t_hi++];
 	} else {
@@ -673,18 +672,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public boolean isRecordAccessible(int rec) {
     if (rec < 0 || rec >= getBufferSize()) {
       return false;
-    }
-
-    if (!isAccessible()) {
+    } else if (!isAccessible()) {
       return false;
+    } else {
+      return isRecordInsertAllowed(rec);
     }
-
-    // do it by hand:
-//for (int j = 0; j < fields.length; j++)
-//    if (!fields[j].isNull(rec))
-// return true; BUG WITH LINKS
-
-    return isRecordInsertAllowed(rec);
   }
 
   protected void changeActiveRecord(int record) throws VException  {
@@ -726,25 +718,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     } else if (noMove()) {
       throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
     } else {
-      VField		act;
-//       int		currentRec = getActiveRecord();
-//       int		i;
+      VField	act;
+      int       oldRecord;
 
-//       assert getActiveRecord() != -1 : " current record " + getActiveRecord();
-//       assert activeField != null : "current field "+activeField;
       act = activeField;
-
-//       /* search target record !!!!!!!!!!!!!!!!!!!!!!!!!! */
-//       for (i = getActiveRecord() - 1; i >= 0; i -= 1) {
-// 	if (!isRecordDeleted(i)) {
-// 	  break;
-// 	}
-//       }
-
-//       if (i == -1) {
-// 	throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
-//       }
-      int       oldRecord = getActiveRecord();
+      oldRecord = getActiveRecord();
 
       if (oldRecord != -1) {
         leaveRecord(true);
@@ -782,7 +760,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       // get position in sorted order
       currentRec = getSortedPosition(currentRec);
-      
+
       /* search target record*/
       for (i =  currentRec + 1; i < getBufferSize(); i += 1) {
         if (!isSortedRecordDeleted(i)) {
@@ -840,11 +818,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception	VException	an exception may occur in record.leave()
    */
   public void gotoRecord(int recno) throws VException {
-    
     assert this == form.getActiveBlock() :
            this.getName() + " != "
            + (form.getActiveBlock() == null ? "null" : form.getActiveBlock().getName());
-    
 
     if (!isMulti()) {
       changeActiveRecord(recno - fetchPosition);
@@ -857,7 +833,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (recno >= getBufferSize()) {
       throw new VExecFailedException();
     }
-    
+
     if (noInsert() && !isRecordFetched(recno) && !isRecordChanged(recno)) {
       throw new VExecFailedException();
     }
@@ -1190,7 +1166,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // lackner 2003.07.31 setMode only if check is true
     if (check) {
       setMode(mode);
-    } 
+    }
     return true;
   }
 
@@ -1400,7 +1376,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       VField 	fld = fields[i];
 
       if (fld.getAccess(getActiveRecord()) == ACS_MUSTFILL && fld.isNull(getActiveRecord())) {
-        // !!! lackner 04.10.2003 I don't know if it is realy necessary here 
+        // !!! lackner 04.10.2003 I don't know if it is really necessary here
         fireBlockChanged();
 	throw new VFieldException(fld, MessageCode.getMessage("VIS-00023"));
       }
@@ -1717,8 +1693,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     headbuf = getSearchColumns();
     frombuf = getSearchTables();
     tailbuf = "";
+
     for (int i = 0; i < fields.length; i++) {
-      VField   fld = fields[i];
+      VField    fld = fields[i];
 
       if (fld.hasNullableCols()) {
         for (int j = 1; j < fld.getColumnCount(); j++) {
@@ -1740,6 +1717,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
       }
     }
+
     query = new Query(form.getDBContext().getDefaultConnection());
     query.addString(headbuf);
     query.addString(frombuf);
@@ -2016,11 +1994,12 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public String getReportSearchColumns() {
     String       result;
-    
+
     result = null;
+    // take all visible fields with database access
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
-      
+
       if (!fld.isInternal() && fld.getColumnCount() > 0) {
         if (result == null) {
           result = "";
@@ -2030,11 +2009,12 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         result += fld.getColumn(0).getQualifiedName();
       }
     }
-    // add ID field to the end , of search column list.
+
+    // add ID field AT END if it exists and not already taken
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
-      
-      if(fld.isInternal() && fld.getName().equals("ID") && fld.getColumnCount() > 0) {
+
+      if (fld.isInternal() && fld.getName().equals("ID") && fld.getColumnCount() > 0) {
         if (result == null) {
           result = "";
         } else {
@@ -2046,14 +2026,16 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
     return result;
   }
+
   /**
    * Returns the database columns of block.
    */
   public String getSearchColumns() {
     String		result = null;
-    
+
     for (int i = 0; i < fields.length; i++) {
       VField	fld = fields[i];
+
       if (fld.getColumnCount() > 0) {
         if (result == null) {
           result = "";
@@ -2063,34 +2045,34 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         result += fld.getColumn(0).getQualifiedName();
       }
     }
-    
+
     return result;
   }
 
   /**
-   * test whether this table has nullable columns.
+   * Tests whether the specified table has nullable columns.
    */
   public boolean hasNullableColumns(int table) {
     for (int i = 0; i < fields.length; i++) {
       VField	fld = fields[i];
-      
-      if (fld.fetchColumn(table) != -1 && fld.isInternal()) {
-        if (fld.getColumn(fld.fetchColumn(table)).isNullable()) {
-          return true;
-        }
+
+      if (fld.fetchColumn(table) != -1
+          && fld.isInternal()
+          && fld.getColumn(fld.fetchColumn(table)).isNullable()) {
+        return true;
       }
-    }    
+    }
     return false;
   }
-  
+
   /**
-   * check whether this table has Only Internal fields.
+   * Tests whether this table has only internal fields.
    */
   public boolean hasOnlyInternalFields(int table) {
     for (int i = 0; i < fields.length; i++) {
-      VField	fld = fields[i];
-      
-      if (fld.fetchColumn(table) != - 1 && !fld.isInternal()) {
+      VField    fld = fields[i];
+
+      if (fld.fetchColumn(table) != -1 && !fld.isInternal()) {
         return false;
       }
     }
@@ -2109,13 +2091,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public String getSearchConditions() {
     StringBuffer	buffer = null;
-    
+
     for (int i = 0; i < fields.length; i++) {
       VField		fld = fields[i];
-      
+
       if (fld.getColumnCount() > 0) {
 	String	cond = fld.getSearchCondition();
-        
+
 	if (cond != null) {
 	  if (buffer == null) {
 	    buffer = new StringBuffer(" WHERE ");
@@ -2268,7 +2250,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void fetchLookupFirst(VField fld) throws VException {
     int		table = -1;
-    
+
     assert fld != null : "fld = " + fld;
     assert this == form.getActiveBlock() :
            this.getName() + " != "
@@ -2785,7 +2767,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       trailRecord(rec);
       // set record info
       recordInfo[rec] = newValue;
-    
+
       if (!ignoreAccessChange) {
         updateAccess(rec);
       }
@@ -3297,7 +3279,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         throw new InconsistencyException("BAD TYPE" + TRG_TYPES[event]);
       }
     } finally {
-      // Triggers like ACCESS or VALUE trigger can be called anywhere 
+      // Triggers like ACCESS or VALUE trigger can be called anywhere
       // but should not change the currentRecord for further calculations.
       setCurrentRecord(oldCurrentRecord);
     }
@@ -3350,40 +3332,35 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   private boolean isNullReference(int table, int recno) {
-    boolean     nullReference; 
+    boolean     nullReference;
 
-    nullReference = true;
-    
     // check if this lookup table has not only internal fields
-    // 
-    if(hasOnlyInternalFields(table)) {
+    if (hasOnlyInternalFields(table)) {
       nullReference = false;
-    } else { 
+    } else {
       // check if all lookup fields for this table are null.
-      for (int i = 0; i < fields.length; i++) {    
+      nullReference = true;
+
+      for (int i = 0; nullReference && i < fields.length; i++) {
         VField	fld = fields[i];
-        
-        if (fld.fetchColumn(table) != -1 && !fld.isInternal()) {
-          if (!fld.isNull(recno)) {
-            nullReference = false;
-            break;
-          }
+
+        if (fld.fetchColumn(table) != -1
+            && !fld.isInternal()
+            && !fld.isNull(recno)) {
+          nullReference = false;
         }
       }
     }
+
     // this test is useful since we use outer join only for nullable columns.
-    if (nullReference) {
-      for (int i = 0; i < fields.length; i++) {    
-        VField	fld = fields[i];
-        
-        if (fld.isInternal()) {
-          if (fld.fetchColumn(0) != -1 && fld.fetchColumn(table) != -1) {
-            if (!fld.getColumn(fld.fetchColumn(0)).isNullable()) {
-              nullReference = false;
-              break;
-            }
-          }
-        }
+    for (int i = 0; nullReference && i < fields.length; i++) {
+      VField    fld = fields[i];
+
+      if (fld.isInternal()
+          && fld.fetchColumn(0) != -1
+          && fld.fetchColumn(table) != -1
+          && !fld.getColumn(fld.fetchColumn(0)).isNullable()) {
+        nullReference = false;
       }
     }
     return nullReference;
@@ -3396,14 +3373,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     String      headbuff;
     String      tailbuff;
     Query	query;
-    
+
     headbuff = "";
     tailbuff = "";
+
     // set internal fields to null (null reference)
     if (isNullReference(table, recno)) {
       for (int i = 0; i < fields.length; i++) {
         VField  fld = fields[i];
-        
+
         if (fld.isInternal() && fld.lookupColumn(table) != null) {
           fld.setNull(recno);
         }
@@ -3412,7 +3390,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       for (int i = 0; i < fields.length; i++) {
         VField	fld = fields[i];
         String  col = fld.lookupColumn(table);
-        
+
         if (col != null) {
           if (! headbuff.equals("")) {
             headbuff += ", ";
@@ -3435,23 +3413,19 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           }
         }
       }
-      
-      // lackner 7.11.2005 useless check, but prevents work with oracle (not ID) tables
-      //     if (idfld == null) {
-      //       throw new InconsistencyException("no ID field for table " + tables[table]);
-      //     }
+
       if (tailbuff.equals("")) {
         throw new InconsistencyException("no conditions for table " + tables[table]);
       }
-      
+
       query = new Query(form.getDBContext().getDefaultConnection());
       query.addString(headbuff);
       query.addString(tables[table]);
       query.addString(tailbuff);
-      
+
       query.open("SELECT $1 FROM $2 WHERE $3");
       if (! query.next()) {
-        query.close(); 
+        query.close();
         form.getDBContext().abortWork();
         setActiveRecord(recno);
         throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
@@ -3459,13 +3433,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       } else {
         for (int i = 0, j = 0; i < fields.length; i++) {
           VField		fld = fields[i];
-          
+
           if (fld.lookupColumn(table) != null) {
             fld.setQuery(recno, query, 1+j);
             j += 1;
           }
         }
-        
+
         if (query.next()) {
           query.close();
           form.getDBContext().abortWork();
@@ -3477,8 +3451,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  //}
-  
+
   /*
    * Checks unique index constraints
    * @exception	VException	an exception may be raised by triggers
@@ -3585,7 +3558,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       final VField      tsFld = getTsField();
       final VField      ucFld = getUcField();
 
-      assert ucFld != null || tsFld != null 
+      assert ucFld != null || tsFld != null
         : "TS or UC field must exist (Block = " + getName() + ").";
 
       idFld.setInt(recno, new Integer(id));
@@ -3808,7 +3781,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     query.addString(tables[0]);
     query.addInt(idfld.getInt(recno).intValue());
 
-    assert ucfld != null || tsfld != null 
+    assert ucfld != null || tsfld != null
       : "TS or UC field must exist (Block = " + getName() + ").";
 
     // if there is a field UC in the form there must be a field UC
@@ -4092,7 +4065,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     public void addSortingListener(OrderListener sl) {
       orderListener.add(OrderListener.class, sl);
-    }     
+    }
 
     private int         sortedColumnIndex;
     private int         state;
@@ -4231,7 +4204,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   protected int[]               sortedRecords;
-  
+
   protected boolean             blockAccess;
   // prevent that the access of a field is updated
   // (performance in big charts)
