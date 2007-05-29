@@ -780,19 +780,30 @@ public interface SqlVisitor {
     throws PositionedError;
 
   /**
-   * Visits OuterJoin
+   * Visits JdbcOuterJoin
    * @param	leftTable	the left table reference
    * @param	type		the join type
    * @param	rightTable	the right table reference
    * @param	joinPred	the join pred.
    */
-  void visitOuterJoin(OuterJoin self,
-		      TableReference leftTable,
-		      String type,
-		      TableReference rightTable,
-		      JoinPred joinPred)
-    throws PositionedError;
 
+  void visitJdbcOuterJoin(JdbcOuterJoin self,
+                          TableReference leftTable,
+                          String type,
+                          TableReference rightTable,
+                          JoinPred joinPred)
+    throws PositionedError;
+  
+  /**
+   * Visits OuterJoin
+   * @param	table	        reference to the root table in the outer join tree
+   * @param	subOuterJoins   subOuterJoins expressions.
+   */
+  void visitOuterJoin(OuterJoin self,
+		      TableReference table,
+                      SubOuterJoin[] subOuterJoins)
+    throws PositionedError;
+  
   /**
    * Visits CastPrimary
    */

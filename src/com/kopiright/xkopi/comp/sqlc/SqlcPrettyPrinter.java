@@ -815,15 +815,15 @@ public class SqlcPrettyPrinter implements SqlVisitor {
     pos += TAB_AND_HALF;
     right.accept(this);
   }
-
+  
   /**
-   * Visits a OuterJoin node.
+   * Visits a JdbcOuterJoin node.
    */
-  public void visitOuterJoin(OuterJoin self,
-			     TableReference leftTable,
-			     String type,
-			     TableReference rightTable,
-			     JoinPred joinPred)
+  public void visitJdbcOuterJoin(JdbcOuterJoin self,
+                                 TableReference leftTable,
+                                 String type,
+                                 TableReference rightTable,
+                                 JoinPred joinPred)
     throws PositionedError
   {
     print("{oj ");
@@ -834,6 +834,25 @@ public class SqlcPrettyPrinter implements SqlVisitor {
     rightTable.accept(this);
     joinPred.accept(this);
     print("}");
+  }
+
+  /**
+   * Visits a OuterJoin node.
+   */
+  public void visitOuterJoin(OuterJoin self,
+			     TableReference leftTable,
+                             SubOuterJoin[] subOuterJoins
+                             )
+    throws PositionedError
+  {
+    leftTable.accept(this);
+    for (int i = 0; i < subOuterJoins.length; i++) {
+      print(" ");
+      print(subOuterJoins[i].getType());
+      print(" OUTER JOIN ");
+      subOuterJoins[i].getTable().accept(this);
+      subOuterJoins[i].getJoinPred().accept(this);
+    }
   }
 
   /**

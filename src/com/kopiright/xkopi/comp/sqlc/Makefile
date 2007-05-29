@@ -80,7 +80,8 @@ JAVAFILES +=	AbstractCaseExpression AndCondition ArrayPrecision	\
 		UpdSpec UpdateStatement UsingJoinPred			\
 		ValueInPredicate ValueList				\
 		ValueListInsertSource WhereClause			\
-		FieldNameListTableReference XUtils
+		FieldNameListTableReference XUtils 			\
+		SubOuterJoin JdbcOuterJoin	
 
 # Creates dynamically a dbSchema
 JAVAFILES +=	DbSchemaVisitor

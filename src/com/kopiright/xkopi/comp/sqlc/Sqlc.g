@@ -1036,6 +1036,8 @@ sSimpleTableReference []
     { self = new TableName(sourceRef, name, alias); }
 |
   self = sOuterJoin[]
+|
+  self = sJdbcOuterJoin[]
 ;
 
 sSimpleWhenClause []
@@ -1097,7 +1099,7 @@ sSubTableExpression []
       { left = new UnidiffTableTerm(sourceRef, spec, left, right); }
   )*
   RPAREN
-    { self = new SubTableExpression(sourceRef, left); }
+  { self = new SubTableExpression(sourceRef, left); }
 ;
 
 sSubTableReference []
@@ -1343,8 +1345,8 @@ sWithNotPredicate []
   self = sMatchesPredicate[]
 ;
 
-sOuterJoin []
-  returns [OuterJoin self = null]
+sJdbcOuterJoin []
+  returns [JdbcOuterJoin self = null]
 {
   SimpleTableReference  p1;
   String                p2;
@@ -1359,7 +1361,30 @@ sOuterJoin []
   p3 = sSimpleTableReference[]
   ( p4 = sJoinPred[] )?
   RCURLY
-   { self = new OuterJoin(sourceRef, p1, p2, p3, p4); }
+   { self = new JdbcOuterJoin(sourceRef, p1, p2, p3, p4); }
+;
+
+sOuterJoin []
+  returns [OuterJoin self = null]
+{
+  SimpleTableReference  p1;
+  String                p2;
+  SimpleTableReference  p3;
+  JoinPred              p4 = null;
+  TokenReference        sourceRef = buildTokenReference();
+  ArrayList             list = new ArrayList();
+}
+:
+  LCURLY
+  p1 = sSimpleTableReference[]
+  { self = new OuterJoin(sourceRef, p1);}
+  (p2 = sJoinType[] "OUTER" "JOIN"
+  p3 = sSimpleTableReference[]
+  ( p4 = sJoinPred[] )?
+   { list.add(new SubOuterJoin(p2, p3, p4)); }
+  )*
+  RCURLY
+  {((OuterJoin)self).setSubOuterJoins((SubOuterJoin[])list.toArray(new SubOuterJoin[list.size()]));}        
 ;
 
 sCountExpression []

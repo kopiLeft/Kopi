@@ -747,11 +747,24 @@ public class DbSchemaVisitor implements SqlVisitor {
   /**
    * Visits a OuterJoin node.
    */
+  public void visitJdbcOuterJoin(JdbcOuterJoin self,
+                                 TableReference leftTable,
+                                 String type,
+                                 TableReference rightTable,
+                                 JoinPred joinPred)
+    throws PositionedError
+  {
+    leftTable.accept(this);
+    rightTable.accept(this);
+    joinPred.accept(this);
+  }
+
+  /**
+   * Visits a OuterJoin node.
+   */
   public void visitOuterJoin(OuterJoin self,
 			     TableReference leftTable,
-			     String type,
-			     TableReference rightTable,
-			     JoinPred joinPred)
+                             SubOuterJoin[] subOuterJoins)
     throws PositionedError
   {
 //     print("{oj ");
@@ -759,8 +772,10 @@ public class DbSchemaVisitor implements SqlVisitor {
 //     print(" ");
 //     print(type);
 //     print(" OUTER JOIN ");
-    rightTable.accept(this);
-    joinPred.accept(this);
+    for (int i = 0; i < subOuterJoins.length; i++) {
+      subOuterJoins[i].getTable().accept(this);
+      subOuterJoins[i].getJoinPred().accept(this);
+    }
 //     print("}");
   }
 

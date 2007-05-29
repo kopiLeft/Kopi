@@ -73,19 +73,35 @@ public class FromClause extends SqlPhylum {
         return elem.getTable();
       }
 
-      // if it's an OUTER JOIN table reference we check both used table
+      // if it's an OUTER JOIN table reference we check all used tables
       if (elem instanceof OuterJoin) {
         OuterJoin       oj = (OuterJoin) elem;
+
+        if (alias.equals(oj.getTableAliasOrTableName())) {
+          return oj.getTable();
+        }
+        SubOuterJoin[] subOj = oj.getSubOuterJoin();
+        
+        for (int j = 0; j < subOj.length ; j++) {
+          if (alias.equals(subOj[j].getTable().getAlias())) {
+            return subOj[j].getTable();
+          }  
+        }
+        
+      }
+
+      // if it's an Jdbc OUTER JOIN table reference we check both used table
+      if (elem instanceof JdbcOuterJoin) {
+        JdbcOuterJoin       oj = (JdbcOuterJoin) elem;
 
         if (alias.equals(oj.getLeftTableAliasOrTableName())) {
           return oj.getLeftTable();
         }
-        
+
         if (alias.equals(oj.getRightTableAliasOrTableName())) {
           return oj.getRightTable();
         }
       }
-      
     }
     return null;
   }
@@ -100,14 +116,20 @@ public class FromClause extends SqlPhylum {
     // replace it with the left and right tables withi it
     for (Iterator i = tableRefs.iterator(); i.hasNext(); ) {
       SimpleTableReference      elem = (SimpleTableReference)i.next();
-
-      if (elem instanceof OuterJoin) {
-        tables.add(((OuterJoin)elem).getLeftTable());
-        tables.add(((OuterJoin)elem).getRightTable());
+      if (elem instanceof JdbcOuterJoin) {
+        tables.add(((JdbcOuterJoin)elem).getLeftTable());
+        tables.add(((JdbcOuterJoin)elem).getRightTable());
         tables.remove(elem);
-      }
+      } else if (elem instanceof OuterJoin) {
+        tables.add(((OuterJoin)elem).getTable());
+        SubOuterJoin[] subOj = ((OuterJoin)elem).getSubOuterJoin();
+        for (int j = 0; j < subOj.length; j++) {
+          tables.add(subOj[j].getTable());
+        }
+        tables.remove(elem);
+      }        
     }
-
+    
     for (int i = 0; i < tables.size(); i++) {
       SimpleTableReference      elem = (SimpleTableReference)tables.get(i);
       String                    alias = elem.getAlias();

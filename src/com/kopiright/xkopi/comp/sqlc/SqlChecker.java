@@ -790,14 +790,16 @@ public class SqlChecker implements SqlVisitor {
     right.accept(this);
   }
 
+
+
   /*
-   * Visits OuterJoin
+   * Visits JdbcOuterJoin
    */
-  public void visitOuterJoin(OuterJoin self,
-			     TableReference leftTable,
-			     String type,
-			     TableReference rightTable,
-			     JoinPred joinPred)
+  public void visitJdbcOuterJoin(JdbcOuterJoin self,
+                                 TableReference leftTable,
+                                 String type,
+                                 TableReference rightTable,
+                                 JoinPred joinPred)
     throws PositionedError
   {
     current.append("{oj ");
@@ -811,6 +813,26 @@ public class SqlChecker implements SqlVisitor {
       joinPred.accept(this);
     }
     current.append("}");
+  }
+  /*
+   * Visits OuterJoin
+   */
+  public void visitOuterJoin(OuterJoin self,
+			     TableReference table,
+                             SubOuterJoin[] subOuterJoins) 
+    throws PositionedError
+  {
+    table.accept(this);
+    for (int i = 0; i < subOuterJoins.length; i++) {
+      current.append(" ");
+      current.append(subOuterJoins[i].getType());
+      current.append(" OUTER JOIN ");
+      subOuterJoins[i].getTable().accept(this);
+      current.append(" ");
+      if (subOuterJoins[i].getJoinPred() != null) {
+        subOuterJoins[i].getJoinPred().accept(this);
+      }
+    }
   }
 
   /*

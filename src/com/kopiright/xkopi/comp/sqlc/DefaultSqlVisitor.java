@@ -545,18 +545,33 @@ public class DefaultSqlVisitor implements SqlVisitor {
   }
 
   /**
-   * Visits a OuterJoin node.
+   * Visits a JdbcOuterJoin node.
    */
-  public void visitOuterJoin(OuterJoin self,
-			     TableReference leftTable,
-			     String type,
-			     TableReference rightTable,
-			     JoinPred joinPred)
+  public void visitJdbcOuterJoin(JdbcOuterJoin self,
+                                 TableReference leftTable,
+                                 String type,
+                                 TableReference rightTable, 
+                                 JoinPred joinPred)
     throws PositionedError
   {
     leftTable.accept(this);
     rightTable.accept(this);
     joinPred.accept(this);
+  }
+
+  /**
+   * Visits a OuterJoin node.
+   */
+  public void visitOuterJoin(OuterJoin self,
+			     TableReference leftTable,
+                             SubOuterJoin[] subOuterJoins)
+    throws PositionedError
+  {
+    leftTable.accept(this);
+    for (int i = 0; i < subOuterJoins.length; i++) {
+      subOuterJoins[i].getTable().accept(this);
+      subOuterJoins[i].getJoinPred().accept(this);
+    }
   }
 
   /**

@@ -25,7 +25,7 @@ import com.kopiright.compiler.base.TokenReference;
 /**
  * This class represents a reference to an outer join
  */
-public class OuterJoin extends SimpleTableReference {
+public class JdbcOuterJoin extends SimpleTableReference {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -34,13 +34,23 @@ public class OuterJoin extends SimpleTableReference {
   /**
    * Constructor
    * @param     ref             the token reference for this clause
-   * @param     table           the table reference
+   * @param     leftTable       the left table reference
+   * @param     type            the join type
+   * @param     rightTable      the right table reference
+   * @param     joinPred        the join pred.
    */
-  public OuterJoin(TokenReference ref,
-                   SimpleTableReference table)
+  public JdbcOuterJoin(TokenReference ref,
+                   SimpleTableReference leftTable,
+                   String type,
+                   SimpleTableReference rightTable,
+                   JoinPred joinPred)
   {
     super(ref);
-    this.table = table;
+
+    this.leftTable = leftTable;
+    this.type = type;
+    this.rightTable = rightTable;
+    this.joinPred = joinPred;
   }
 
   // ----------------------------------------------------------------------
@@ -50,14 +60,9 @@ public class OuterJoin extends SimpleTableReference {
   /**
    * Returns true if it on of the join tables has this column.
    */
-   public boolean hasColumn(String ident) {
-     for (int i = 0; i < subOuterJoins.length; i++) {
-       if (subOuterJoins[i].getTable().hasColumn(ident)) {
-         return true;
-       } 
-     }
-     return table.hasColumn(ident);
-   }
+  public boolean hasColumn(String ident) {
+    return leftTable.hasColumn(ident) ^ rightTable.hasColumn(ident);
+  }
 
   public String getTableForColumn(String column) {
     return null;
@@ -74,32 +79,42 @@ public class OuterJoin extends SimpleTableReference {
     return null;
   }
 
-  public String getTableAliasOrTableName() {
+  public SimpleTableReference getLeftTable() {
+    return leftTable;
+  }
+
+  public SimpleTableReference getRightTable() {
+    return rightTable;
+  }
+
+  private String getTableAliasOrTableName(SimpleTableReference table) {
     String      alias;
     
     alias = table.getAlias();
+    
     if (alias == null &&
         (table instanceof TableName)) {
       alias = ((TableName)table).getTableName();
     }
+    
     return alias;
   }
+
+  public String  getLeftTableAliasOrTableName() {
+    return getTableAliasOrTableName(leftTable);
+  }
   
+  public String  getRightTableAliasOrTableName() {
+    return getTableAliasOrTableName(rightTable);
+  }
+
   /**
    * Returns the current instance.
    */
   public TableReference getTable() {
-    return table;
+    return this;
   }
 
-  public SubOuterJoin[] getSubOuterJoin() {
-    return subOuterJoins;
-  }
-
-  
-  public void  setSubOuterJoins(SubOuterJoin[] subOuterJoins) {
-    this.subOuterJoins = subOuterJoins;
-  }
   // --------------------------------------------------------------------
   // ACCEPT VISITORS
   // --------------------------------------------------------------------
@@ -110,13 +125,15 @@ public class OuterJoin extends SimpleTableReference {
    * @param     visitor                 the visitor
    */
   public void accept(SqlVisitor visitor) throws PositionedError {
-    visitor.visitOuterJoin(this, table, subOuterJoins);
+    visitor.visitJdbcOuterJoin(this, leftTable, type, rightTable, joinPred);
   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private SimpleTableReference          table;
-  private SubOuterJoin[]                subOuterJoins;                  
+  private SimpleTableReference          leftTable;
+  private String                        type;
+  private SimpleTableReference          rightTable;
+  private JoinPred                      joinPred;
 }
