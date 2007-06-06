@@ -59,25 +59,25 @@ public class KconnectDriverInterface extends DriverInterface {
   /**
    * Give an access to an user or create an user
    *
-   *
    * @param	conn		the connection
    * @param	user		the login of the user
    */
   public void grantAccess(Connection conn, String user) throws SQLException {
-    // !!! coco 050102 : verify the syntax
-    executeSQL(conn, "GRANT ACCESS TO '" + user + "'");
+    executeSQL(conn,
+               "GRANT CONNECT TO " + user + " IDENTIFIED BY \"2change\"", // Oracle
+               "GRANT ACCESS TO '" + user + "'"); // Transbase
   }
 
   /**
    * Removed an access to an user or delete an user
    *
-   *
    * @param	conn		the connection
    * @param	user		the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
-    // !!! coco 050102 : verify the syntax
-    executeSQL(conn, "REVOKE ACCESS FROM '" + user + "'");
+    executeSQL(conn,
+               "DROP USER '" + user + "'", // Oracle
+               "REVOKE ACCESS FROM '" + user + "'"); // Transbase
   }
 
   /**
@@ -89,8 +89,9 @@ public class KconnectDriverInterface extends DriverInterface {
                              String newPassword)
     throws SQLException
   {
-    // !!! laurent 20020801 : verify the syntax
-    executeSQL(conn, "ALTER PASSWORD FROM '" + oldPassword + "' TO '" + newPassword + "'");
+    executeSQL(conn,
+               "ALTER USER " + user + " IDENTIFIED BY \"" + newPassword + "\"", // Oracle
+               "ALTER PASSWORD FROM '" + oldPassword + "' TO '" + newPassword + "'"); // Transbase
   }
 
   /**
@@ -198,6 +199,19 @@ public class KconnectDriverInterface extends DriverInterface {
   // ----------------------------------------------------------------------
   // PRIVATE UTILITY METHODS
   // ----------------------------------------------------------------------
+
+  private void executeSQL(Connection conn, String oraSQL, String tbSQL)
+    throws SQLException
+  {
+    if (conn instanceof com.kopiright.kconnect.ora.Connection) {
+      executeSQL(conn, oraSQL);
+    } else if (conn instanceof com.kopiright.kconnect.tb.Connection) {
+      executeSQL(conn, tbSQL);
+    } else {
+      throw new RuntimeException("Unsupported connection class: " + conn.getClass());
+    }
+  }
+
 
   /**
    * Parses a foreign key violation exception
