@@ -75,9 +75,8 @@ public class KconnectDriverInterface extends DriverInterface {
    * @param	user		the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
-    executeSQL(conn,
-               "DROP USER '" + user + "'", // Oracle
-               "REVOKE ACCESS FROM '" + user + "'"); // Transbase
+     executeSQL(conn, "DROP USER " + user, // Oracle
+                "REVOKE ACCESS FROM '" + user + "'"); // Transbase
   }
 
   /**
@@ -90,7 +89,7 @@ public class KconnectDriverInterface extends DriverInterface {
     throws SQLException
   {
     executeSQL(conn,
-               "ALTER USER " + user + " IDENTIFIED BY \"" + newPassword + "\"", // Oracle
+               "ALTER USER " + user + " IDENTIFIED BY " + newPassword, // Oracle
                "ALTER PASSWORD FROM '" + oldPassword + "' TO '" + newPassword + "'"); // Transbase
   }
 
