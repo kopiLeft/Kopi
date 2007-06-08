@@ -44,7 +44,7 @@ public class SapdbDriverInterface extends DriverInterface {
    * Count the maximum size for an ORDER BY clause on the
    * driver (data base)
    *
-   * @return	the maximum number of characters in the ORDER BY of the driver
+   * @return    the maximum number of characters in the ORDER BY of the driver
    */
   public int getMaximumCharactersCountInOrderBy() {
       return 250;
@@ -56,7 +56,7 @@ public class SapdbDriverInterface extends DriverInterface {
    * NOTE : A function exist for it :
    * java.sql.DatabaseMetaData.getMaximumColumnsInOrderBy()
    *
-   * @return	the maximum number of columns in an ORDER BY clause
+   * @return    the maximum number of columns in an ORDER BY clause
    */
   public int getMaximumColumnsInOrderBy() {
     return 16;
@@ -66,8 +66,8 @@ public class SapdbDriverInterface extends DriverInterface {
    * Give an access to an user or create an user
    *
    *
-   * @param	conn		the connection
-   * @param	user		the login of the user
+   * @param     conn            the connection
+   * @param     user            the login of the user
    */
   public void grantAccess(Connection conn, String user) throws SQLException {
     executeSQL(conn, "CREATE USER " + user + " PASSWORD 2change NOT EXCLUSIVE");
@@ -77,8 +77,8 @@ public class SapdbDriverInterface extends DriverInterface {
    * Removed an access to an user or delete an user
    *
    *
-   * @param	conn		the connection
-   * @param	user		the login of the user
+   * @param     conn            the connection
+   * @param     user            the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
     executeSQL(conn, "DROP USER " + user);
@@ -99,7 +99,7 @@ public class SapdbDriverInterface extends DriverInterface {
   /**
    * Locks a table in exclusive mode.
    *
-   * @param	conn		the connection
+   * @param     conn            the connection
    * @param     tableName       the name of the table to lock
    */
   public void lockTable(Connection conn, String tableName)
@@ -112,14 +112,14 @@ public class SapdbDriverInterface extends DriverInterface {
    * Transforms a SQL query string from KOPI syntax to the syntax
    * accepted by the corresponding driver
    *
-   * @param	from		the SQL query string in KOPI syntax
-   * @return	the string in the syntax of the driver
+   * @param     from            the SQL query string in KOPI syntax
+   * @return    the string in the syntax of the driver
    */
   public String convertSql(String from) {
     try {
-      SapdbParser	parser = new SapdbParser(from);
+      SapdbParser       parser = new SapdbParser(from);
       String            nativeSql = parser.getText().trim();
-      
+
       // trace if system-property maxdb.tacer is set
       if (tracer != null) {
         try {
@@ -144,23 +144,23 @@ public class SapdbDriverInterface extends DriverInterface {
    */
   public DBException convertException(String query, SQLException from) {
     switch (from.getErrorCode()) {
-    case -50:	// Lock request timeout1
-    case -51:	// Lock request timeout2
-    case 500:	// Lock request timeout3
-    case -307:	// Connection down, session released
-    case 700:	// Session inactivity timeout (work rolled back)
+    case -50:   // Lock request timeout1
+    case -51:   // Lock request timeout2
+    case 500:   // Lock request timeout3
+    case -307:  // Connection down, session released
+    case 700:   // Session inactivity timeout (work rolled back)
     case 600:   //  Work rolled back,DEADLOCK DETECTED
       return new DBDeadLockException(query, from);
 
-    case 250:	// Duplicate secondary key
-    case -6008:	// Duplicate index name
-    case -8018:	// Index name must be unique
+    case 250:   // Duplicate secondary key
+    case -6008: // Duplicate index name
+    case -8018: // Index name must be unique
       return parseDuplicateIndex(query, from);
 
-    case -32:	// Integrity violation
+    case -32:   // Integrity violation
       return parseIntegrityViolation(query, from);
 
-    case -1402:	// Integrity violation2
+    case -1402: // Integrity violation2
       return new DBConstraintException(query, from);
 
     default:
@@ -187,8 +187,8 @@ public class SapdbDriverInterface extends DriverInterface {
    * Parses a transbase duplicate index exception
    */
   private static DBDuplicateIndexException parseDuplicateIndex(String query, SQLException from) {
-    String	mesg = from.getMessage();
-    int		index = mesg.lastIndexOf("index ");
+    String      mesg = from.getMessage();
+    int         index = mesg.lastIndexOf("index ");
 
     return new DBDuplicateIndexException(query, from, mesg.substring(index + 6, mesg.length() - 2));
   }
@@ -197,18 +197,18 @@ public class SapdbDriverInterface extends DriverInterface {
    * Parses a transbase integrity violation exception
    */
   private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
-    String	mesg = from.getMessage();
-    int		index1 = mesg.indexOf("'");
-    int		index2 = mesg.lastIndexOf("'");
+    String      mesg = from.getMessage();
+    int         index1 = mesg.indexOf("'");
+    int         index2 = mesg.lastIndexOf("'");
 
     return new DBForeignKeyException(query, from, mesg.substring(index1 + 1, index2));
   }
 
   /**
-   * with java -Dmaxdb.trace=FILENAME it is possible to log every 
+   * with java -Dmaxdb.trace=FILENAME it is possible to log every
    * sql-statement
    */
-  static { 
+  static {
     if (System.getProperty("maxdb.trace") != null) {
       try {
         tracer = new PrintStream(new FileOutputStream(System.getProperty("maxdb.trace"), true), true);
@@ -263,9 +263,9 @@ public class SapdbDriverInterface extends DriverInterface {
 
   /**
    * Extract the data of the date
-   * @param	type	type of data to extract ('YY', 'MO', ...)
-   * @param	date	date
-   * @return	a string representing the data extracted
+   * @param     type    type of data to extract ('YY', 'MO', ...)
+   * @param     date    date
+   * @return    a string representing the data extracted
    *
    * !!! fix problem with ns (ms and leading 0s)
    */
@@ -293,10 +293,10 @@ public class SapdbDriverInterface extends DriverInterface {
 
   /**
    * Converts a date into native syntax
-   * @param	yy	year
-   * @param	mo	month
-   * @param	dd	day
-   * @return	a string representing the date in native syntax
+   * @param     yy      year
+   * @param     mo      month
+   * @param     dd      day
+   * @return    a string representing the date in native syntax
    */
   protected String convertDate(int yy, int mo, int dd) {
     return "'" + formatInteger(yy, 4) +  "-" + formatInteger(mo, 2) +  "-" + formatInteger(dd, 2) + "'"; // ISO
@@ -304,10 +304,10 @@ public class SapdbDriverInterface extends DriverInterface {
 
   /**
    * Converts a time into native syntax
-   * @param	hh	hour
-   * @param	mi	minute
-   * @param	ss	second
-   * @return	a string representing the time in native syntax
+   * @param     hh      hour
+   * @param     mi      minute
+   * @param     ss      second
+   * @return    a string representing the time in native syntax
    */
   protected String convertTime(int hh, int mi, int ss) {
     return "'" + hh + ":" + mi + ":" + ss + "'"; // ISO
@@ -315,25 +315,25 @@ public class SapdbDriverInterface extends DriverInterface {
 
   /**
    * Converts a timestamp into native syntax
-   * @param	yy	year
-   * @param	mo	month
-   * @param	dd	day
-   * @param	hh	hour
-   * @param	mi	minute
-   * @param	ss	second
-   * @param	ns	nanosecond
-   * @return	a string representing the timestamp in native syntax
+   * @param     yy      year
+   * @param     mo      month
+   * @param     dd      day
+   * @param     hh      hour
+   * @param     mi      minute
+   * @param     ss      second
+   * @param     ns      nanosecond
+   * @return    a string representing the timestamp in native syntax
    */
   protected String convertTimestamp(int yy, int mo, int dd, int hh, int mi, int ss, int ns) {
     return "'"
       + formatInteger(yy, 4) + "-" + formatInteger(mo, 2) + "-" + formatInteger(dd, 2)
-      + " " + formatInteger(hh, 2) + ":" + formatInteger(mi, 2) + ":" + formatInteger(ss, 2) 
-      + "." + formatInteger(ns/1000, 6)    
+      + " " + formatInteger(hh, 2) + ":" + formatInteger(mi, 2) + ":" + formatInteger(ss, 2)
+      + "." + formatInteger(ns/1000, 6)
       + "'"; // ISO
   }
 
   private static String formatInteger(int value, int length) {
-    StringBuffer	buffer = new StringBuffer(length);
+    StringBuffer        buffer = new StringBuffer(length);
 
     for (int i = length - ("" + value).length(); i > 0; i--) {
       buffer.append("0");
@@ -346,15 +346,15 @@ public class SapdbDriverInterface extends DriverInterface {
   /**
    * Converts a function call in JDBC syntax to native syntax
    *
-   * @param	function	the name of the function
-   * @param	arguments	the arguments to the function
-   * @return	a string representing the function call in native syntax
-   *		or null no specific translation is defined for the function
+   * @param     function        the name of the function
+   * @param     arguments       the arguments to the function
+   * @return    a string representing the function call in native syntax
+   *            or null no specific translation is defined for the function
    */
   public String convertFunctionCall(String functor, Vector arguments)
     throws SQLException
   {
-    Object	function = functions.get(functor.toUpperCase() + "/" + arguments.size());
+    Object      function = functions.get(functor.toUpperCase() + "/" + arguments.size());
 
     if (function == null) {
       return null;
@@ -362,114 +362,114 @@ public class SapdbDriverInterface extends DriverInterface {
       // ugly, but more efficient than creating a command class for each functor
 
       switch (((Integer)function).intValue()) {
-      case 0:	// function has same syntax in native SQL
-	{
-	  StringBuffer		buffer = new StringBuffer();
+      case 0:   // function has same syntax in native SQL
+        {
+          StringBuffer  buffer = new StringBuffer();
 
-	  buffer.append(functor.toUpperCase());
-	  if (arguments.size() != 0) {
-	    buffer.append("(");
-	    for (int i = 0; i < arguments.size(); i++) {
-	      if (i != 0) {
-		buffer.append(", ");
-	      }
-	      buffer.append(arguments.elementAt(i));
-	    }
-	    buffer.append(")");
-	  }
+          buffer.append(functor.toUpperCase());
+          if (arguments.size() != 0) {
+            buffer.append("(");
+            for (int i = 0; i < arguments.size(); i++) {
+              if (i != 0) {
+                buffer.append(", ");
+              }
+              buffer.append(arguments.elementAt(i));
+            }
+            buffer.append(")");
+          }
 
-	  return buffer.toString();
-	}
+          return buffer.toString();
+        }
 
-      case 1:	// TOMONTH/1
-	return "(YEAR(" +  arguments.elementAt(0) + ") * 100 + MONTH(" + arguments.elementAt(0) + "))";
+      case 1:   // TOMONTH/1
+        return "(YEAR(" +  arguments.elementAt(0) + ") * 100 + MONTH(" + arguments.elementAt(0) + "))";
 
-      case 2:	// ADD_DAYS/2
-	return "(ADDDATE(" +  arguments.elementAt(0) + ","+ arguments.elementAt(1) + "))";
+      case 2:   // ADD_DAYS/2
+        return "(ADDDATE(" +  arguments.elementAt(0) + ","+ arguments.elementAt(1) + "))";
 
-      case 4:	// MONTH/2
-	return "((" + arguments.elementAt(0) + ") * 100 + (" + arguments.elementAt(1) + "))";
+      case 4:   // MONTH/2
+        return "((" + arguments.elementAt(0) + ") * 100 + (" + arguments.elementAt(1) + "))";
 
-      case 5:	// EXTRACT/2
-	{
-	  String	arg1 = (String)arguments.elementAt(1);
+      case 5:   // EXTRACT/2
+        {
+          String        arg1 = (String)arguments.elementAt(1);
 
-	  if (arg1.length() != 4 || arg1.charAt(0) != '\'' || arg1.charAt(3) != '\'') {
-	    throw new SQLException("invalid argument to EXTRACT/2: " + arg1);
-	  }
+          if (arg1.length() != 4 || arg1.charAt(0) != '\'' || arg1.charAt(3) != '\'') {
+            throw new SQLException("invalid argument to EXTRACT/2: " + arg1);
+          }
 
-	  return "(" + extract(arg1.substring(1, 3), arguments.elementAt(0)) + ")";
-	}
+          return "(" + extract(arg1.substring(1, 3), arguments.elementAt(0)) + ")";
+        }
 
-      case 7:	// POSITION/2
-	return "INDEX(" + arguments.elementAt(1) + "," + arguments.elementAt(0) + ")";
+      case 7:   // POSITION/2
+        return "INDEX(" + arguments.elementAt(1) + "," + arguments.elementAt(0) + ")";
 
-      case 8:	// SUBSTRING/2
-	return "SUBSTRING(" + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
+      case 8:   // SUBSTRING/2
+        return "SUBSTRING(" + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
 
-      case 9:	// SUBSTRING/3
-	return "SUBSTRING(" + arguments.elementAt(0) + "," + arguments.elementAt(1)  + "," + arguments.elementAt(2) + ")";
+      case 9:   // SUBSTRING/3
+        return "SUBSTRING(" + arguments.elementAt(0) + "," + arguments.elementAt(1)  + "," + arguments.elementAt(2) + ")";
 
-      case 10:	// SIZE_OF/1
-	return "LENGTH(" + arguments.elementAt(0) + ")";
+      case 10:  // SIZE_OF/1
+        return "LENGTH(" + arguments.elementAt(0) + ")";
 
-      case 11:	// UPPER/1
-	return "UPPER(" + arguments.elementAt(0) + ")";
+      case 11:  // UPPER/1
+        return "UPPER(" + arguments.elementAt(0) + ")";
 
-      case 12:	// LOWER/1
-	return "LOWER(" + arguments.elementAt(0) + ")";
+      case 12:  // LOWER/1
+        return "LOWER(" + arguments.elementAt(0) + ")";
 
-      case 13:	// LTRIM/1
-	return "LTRIM(" + arguments.elementAt(0) + ")";
+      case 13:  // LTRIM/1
+        return "LTRIM(" + arguments.elementAt(0) + ")";
 
-      case 14:	// RTRIM/1
-	return "RTRIM(" + arguments.elementAt(0) + ")";
+      case 14:  // RTRIM/1
+        return "RTRIM(" + arguments.elementAt(0) + ")";
 
-      case 15:	// REPLACE/3
-	return "REPLACE(" + arguments.elementAt(2) + "," + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
+      case 15:  // REPLACE/3
+        return "REPLACE(" + arguments.elementAt(2) + "," + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
 
-      case 16:	// REPEAT/2
-	return "LFILL('','" + arguments.elementAt(0) + "'," + arguments.elementAt(1) + ")";
+      case 16:  // REPEAT/2
+        return "LFILL('','" + arguments.elementAt(0) + "'," + arguments.elementAt(1) + ")";
 
-      case 17:	// CURRENTDATE
-	return "DATE";
+      case 17:  // CURRENTDATE
+        return "DATE";
 
-      case 18:	// USER
-	return "USER";
+      case 18:  // USER
+        return "USER";
 
-      case 19:	// SPACE
-	return "LFILL('',' '," + arguments.elementAt(1) + ")";
+      case 19:  // SPACE
+        return "LFILL('',' '," + arguments.elementAt(1) + ")";
 
-      case 20:	// RIGHT
-	return "RFILL(" + arguments.elementAt(0) + ",' '," + arguments.elementAt(1) + ")";
+      case 20:  // RIGHT
+        return "RFILL(" + arguments.elementAt(0) + ",' '," + arguments.elementAt(1) + ")";
 
       case 21: // LEFT
         return "LFILL(" + arguments.elementAt(0) + ",' '," + arguments.elementAt(1) + ")";
 
       case 22: // CONCAT
-	// !!! coco 010201 : looks to be like it but we have to test it
-	return arguments.elementAt(0) + "||" + arguments.elementAt(1);
+        // !!! coco 010201 : looks to be like it but we have to test it
+        return arguments.elementAt(0) + "||" + arguments.elementAt(1);
 
       case 23: // LOCATE
         return "INDEX(" + arguments.elementAt(1) + "," + arguments.elementAt(0) + ")";
 
-      case 24:	// TRUE
-	return "TRUE";
+      case 24:  // TRUE
+        return "TRUE";
 
-      case 25:	// FALSE
-	return "FALSE";
+      case 25:  // FALSE
+        return "FALSE";
 
       case 26: // LENGTH
-	return "LENGTH(" + arguments.elementAt(0) + ")";
+        return "LENGTH(" + arguments.elementAt(0) + ")";
 
-      case 27:	// CURRENTTIME
-	return "TIME";
+      case 27:  // CURRENTTIME
+        return "TIME";
 
-      case 28:	// CURRENTTIMESTAMP
-	return "TIMESTAMP";
+      case 28:  // CURRENTTIMESTAMP
+        return "TIMESTAMP";
 
-      case 29:	// WEEK/2
-	return "((" + arguments.elementAt(0) + ") * 100 + (" + arguments.elementAt(1) + "))";
+      case 29:  // WEEK/2
+        return "((" + arguments.elementAt(0) + ") * 100 + (" + arguments.elementAt(1) + "))";
 
       case 30: // DATEDIFF/2
         {
@@ -487,17 +487,17 @@ public class SapdbDriverInterface extends DriverInterface {
           return buffer.toString();
         }
       case 31: // COALESCE/2
-	return "VALUE(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
+        return "VALUE(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
 
       case 32: // ROWNO/0
-	return "ROWNO";
+        return "ROWNO";
 
       case 33: // STRING2INT/1
-	return "(0 + NUM(" + arguments.elementAt(0) + "))";
+        return "(0 + NUM(" + arguments.elementAt(0) + "))";
 
       default:
-	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
-				   "/" + arguments.size());
+        throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
+                                         "/" + arguments.size());
       }
     }
   }
@@ -506,7 +506,7 @@ public class SapdbDriverInterface extends DriverInterface {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private static Hashtable	functions;
+  private static Hashtable      functions;
 
   static {
     functions = new Hashtable();
@@ -544,5 +544,5 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("COALESCE/2", new Integer(31));
     functions.put("ROWNO/0", new Integer(32));
     functions.put("STRING2INT/1", new Integer(33));
-  } 
+  }
 }
