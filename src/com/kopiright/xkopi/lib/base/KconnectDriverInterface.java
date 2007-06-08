@@ -64,7 +64,7 @@ public class KconnectDriverInterface extends DriverInterface {
    */
   public void grantAccess(Connection conn, String user) throws SQLException {
     executeSQL(conn,
-               "GRANT CONNECT TO " + user + " IDENTIFIED BY \"2change\"", // Oracle
+               "GRANT CONNECT TO " + user + " IDENTIFIED BY 2change", // Oracle
                "GRANT ACCESS TO '" + user + "'"); // Transbase
   }
 
@@ -75,7 +75,8 @@ public class KconnectDriverInterface extends DriverInterface {
    * @param	user		the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
-     executeSQL(conn, "DROP USER " + user, // Oracle
+     executeSQL(conn,
+                "DROP USER " + user, // Oracle
                 "REVOKE ACCESS FROM '" + user + "'"); // Transbase
   }
 
