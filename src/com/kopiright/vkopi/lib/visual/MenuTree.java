@@ -48,15 +48,14 @@ import javax.swing.tree.TreePath;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.ui.base.JBookmarkPanel;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.PropertyException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
 
 public class MenuTree extends DWindow {
 
-  
-/**
+  /**
    * Constructs a new instance of MenuTree.
    * @param ctxt the context where to look for application
    */
@@ -69,14 +68,28 @@ public class MenuTree extends DWindow {
    * @param ctxt the context where to look for application
    */
   public MenuTree(DBContext ctxt,
-		  boolean isSuperUser,
-		  String userName,
-		  final boolean loadFavorites)
+                  boolean isSuperUser,
+                  String userName,
+                  final boolean loadFavorites)
+  {
+    this(ctxt, isSuperUser, userName, null, loadFavorites);
+  }
+
+  /**
+   * Constructs a new instance of MenuTree.
+   * @param ctxt the context where to look for application
+   */
+  public MenuTree(DBContext ctxt,
+                  boolean isSuperUser,
+                  String userName,
+                  String groupName,
+                  final boolean loadFavorites)
   {
     super(new MenuTreeModel());
 
     setSuperUser(isSuperUser);
     this.userName = userName;
+    this.groupName = groupName;
     shortcuts = new Hashtable();
     orderdShorts = new ArrayList();
     modules = new ArrayList();
@@ -92,21 +105,21 @@ public class MenuTree extends DWindow {
       private long lastClick;
 
       public void mouseClicked(MouseEvent e) {
-	if (e.getClickCount() == 2 && !isSuperUser()) {
-	  callSelectedForm();
-	} else {
-	  if (e.getWhen() - lastClick < 400) {
-	    // for slow NT users
-	    callSelectedForm();
-	  }
-	}
-	lastClick = e.getWhen();
+        if (e.getClickCount() == 2 && !isSuperUser()) {
+          callSelectedForm();
+        } else {
+          if (e.getWhen() - lastClick < 400) {
+            // for slow NT users
+            callSelectedForm();
+          }
+        }
+        lastClick = e.getWhen();
       }
     });
 
     tree.addKeyListener(new KeyAdapter() {
       public void keyPressed(KeyEvent e) {
-	if (e.getKeyCode() == KeyEvent.VK_SPACE
+        if (e.getKeyCode() == KeyEvent.VK_SPACE
             || (e.getKeyCode() == KeyEvent.VK_ENTER
                 && getSelectedNode().isLeaf())) {
           e.consume();
@@ -116,17 +129,19 @@ public class MenuTree extends DWindow {
     });
 
     tree.addTreeExpansionListener(new TreeExpansionListener() {
+
       public void treeExpanded(TreeExpansionEvent event) {
-	setMenu();
+        setMenu();
       }
+
       public void treeCollapsed(TreeExpansionEvent event) {
-	setMenu();
+        setMenu();
       }
     });
 
     tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
       public void valueChanged(TreeSelectionEvent e) {
-	setMenu();
+        setMenu();
       }
     });
 
@@ -137,7 +152,7 @@ public class MenuTree extends DWindow {
     tree.setRowHeight(-1);
     tree.setBackground(UIManager.getColor("menu.background"));
 
-    JScrollPane	sp = new JScrollPane();
+    JScrollPane sp = new JScrollPane();
 
     sp.setBorder(null);
     sp.getViewport().add(tree);
@@ -147,12 +162,12 @@ public class MenuTree extends DWindow {
 
 
     for (int i = 0; i < shortcutsID.size() ; i++) {
-      int	id = ((Integer)shortcutsID.get(i)).intValue();
+      int       id = ((Integer)shortcutsID.get(i)).intValue();
 
       for (int j = 0; j < array.length; j++) {
-	if (array[j].getId() == id) {
-	  addShortcut(array[j]);
-	}
+        if (array[j].getId() == id) {
+          addShortcut(array[j]);
+        }
       }
     }
     if (!shortcutsID.isEmpty()) {
@@ -160,16 +175,14 @@ public class MenuTree extends DWindow {
       toolbar.toFront();
     }
 
-   
-      getModel().setDisplay(this);
-      WindowController.getWindowController().doNotModal(this);
-      if (tree.getRowCount() > 0) {
-	tree.setSelectionInterval(0, 0);
-      }
-      setMenu();
-      setVisible(true);
-      tree.requestFocusInWindow();
-    
+    getModel().setDisplay(this);
+    WindowController.getWindowController().doNotModal(this);
+    if (tree.getRowCount() > 0) {
+      tree.setSelectionInterval(0, 0);
+    }
+    setMenu();
+    setVisible(true);
+    tree.requestFocusInWindow();
   }
 
   /**
@@ -213,30 +226,30 @@ public class MenuTree extends DWindow {
    *
    */
   public void setMenu() {
-    DefaultMutableTreeNode	node = getSelectedNode();
+    DefaultMutableTreeNode      node = getSelectedNode();
 
     setActorEnabled(CMD_QUIT, !isSuperUser());
     setActorEnabled(CMD_INFORMATION, true);
     setActorEnabled(CMD_HELP, true);
 
     if (node != null) {
-      Module	module = (Module)node.getUserObject();
+      Module    module = (Module)node.getUserObject();
 
       setToolTip(module.getHelp());
       setActorEnabled(CMD_SHOW, shortcuts.size() > 0);
       if (node.isLeaf()) {
-	setActorEnabled(CMD_OPEN, true);
-	setActorEnabled(CMD_ADD, !shortcuts.containsKey(module));
-	setActorEnabled(CMD_REMOVE, shortcuts.containsKey(module));
-	setActorEnabled(CMD_FOLD, false);
-	setActorEnabled(CMD_UNFOLD, false);
+        setActorEnabled(CMD_OPEN, true);
+        setActorEnabled(CMD_ADD, !shortcuts.containsKey(module));
+        setActorEnabled(CMD_REMOVE, shortcuts.containsKey(module));
+        setActorEnabled(CMD_FOLD, false);
+        setActorEnabled(CMD_UNFOLD, false);
       } else {
-	setActorEnabled(CMD_OPEN, isSuperUser());
-	setActorEnabled(CMD_ADD, false);
-	if (node == null) {
-	  setActorEnabled(CMD_FOLD, false);
-	  setActorEnabled(CMD_UNFOLD, false);
-	} else if (tree.isExpanded(tree.getSelectionPath())) {
+        setActorEnabled(CMD_OPEN, isSuperUser());
+        setActorEnabled(CMD_ADD, false);
+        if (node == null) {
+          setActorEnabled(CMD_FOLD, false);
+          setActorEnabled(CMD_UNFOLD, false);
+        } else if (tree.isExpanded(tree.getSelectionPath())) {
           setActorEnabled(CMD_FOLD, true);
           setActorEnabled(CMD_UNFOLD, false);
         } else {
@@ -248,7 +261,7 @@ public class MenuTree extends DWindow {
   }
 
   public void addSelectedElement() {
-    DefaultMutableTreeNode	node = getSelectedNode();
+    DefaultMutableTreeNode      node = getSelectedNode();
 
     if (node != null && node.isLeaf()) {
       addShortcut((Module)node.getUserObject());
@@ -257,7 +270,7 @@ public class MenuTree extends DWindow {
   }
 
   public void removeSelectedElement() {
-    DefaultMutableTreeNode	node = getSelectedNode();
+    DefaultMutableTreeNode      node = getSelectedNode();
 
     if (node != null && node.isLeaf()) {
       removeShortcut((Module)node.getUserObject());
@@ -271,20 +284,20 @@ public class MenuTree extends DWindow {
     if (!shortcuts.containsKey(module)) {
       AbstractAction    action = new AbstractAction(module.getDescription(),
                                                     module.getIcon()) {
-	/**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -3982166081244304443L;
+          /**
+           * Comment for <code>serialVersionUID</code>
+           */
+          private static final long serialVersionUID = -3982166081244304443L;
 
-	public void actionPerformed(ActionEvent e) {
-	  setWaitInfo(VlibProperties.getString("menu_form_started"));
-	  getModel().performAsyncAction(new KopiAction("menu_form_started") {
-	    public void execute() throws VException {
-	      module.run(getModel().getDBContext());
-	      unsetWaitInfo();
-	    }
-	  });
-	}
+          public void actionPerformed(ActionEvent e) {
+            setWaitInfo(VlibProperties.getString("menu_form_started"));
+            getModel().performAsyncAction(new KopiAction("menu_form_started") {
+                public void execute() throws VException {
+                  module.run(getModel().getDBContext());
+                  unsetWaitInfo();
+                }
+              });
+          }
         };
 
       toolbar.addShortcut(action);
@@ -310,27 +323,27 @@ public class MenuTree extends DWindow {
 
   public void resetShortcutsInDatabase() {
     try {
-      getModel().getDBContext().startWork();	// !!! BEGIN_SYNC
+      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
 
       new Query(getModel()).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getUserID());
 
       for (int i = 0; i < modules.size(); i++) {
-	Module	module = (Module)modules.get(i);
+        Module  module = (Module)modules.get(i);
 
-	new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-				  + "(SELECT FAVORITENId.NEXTVAL FROM DUMMY)" + ", "
-				  + (int)(System.currentTimeMillis()/1000) + ", "
-				  + getUserID() + ", "
-				  + module.getId()
-				  + ")");
+        new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
+                                  + "(SELECT FAVORITENId.NEXTVAL FROM DUMMY)" + ", "
+                                  + (int)(System.currentTimeMillis()/1000) + ", "
+                                  + getUserID() + ", "
+                                  + module.getId()
+                                  + ")");
       }
 
       getModel().getDBContext().commitWork();
     } catch (SQLException e) {
       try {
-	getModel().getDBContext().abortWork();
+        getModel().getDBContext().abortWork();
       } catch (SQLException ef) {
-	//!!!
+        //!!!
       }
       e.printStackTrace();
     }
@@ -339,7 +352,7 @@ public class MenuTree extends DWindow {
   public void gotoShortcuts() {
     try {
       if (toolbar.isVisible()) {
-	toolbar.setVisible(false);
+        toolbar.setVisible(false);
       }
       toolbar.setVisible(true);
       toolbar.toFront();
@@ -370,22 +383,22 @@ public class MenuTree extends DWindow {
    * Builds the module tree.
    */
   private DefaultMutableTreeNode createTree(boolean loadFavorites) {
-    Module[]            	localModules;
+    Module[]                    localModules;
     DefaultMutableTreeNode      localTree;
 
     localModules = loadModules(loadFavorites);
     if (localModules.length == 0) {
       localTree = null;
     } else {
-      Module            	root;
+      Module                    root;
 
       root = new Module(0,
-			0,
-			VlibProperties.getString("PROGRAM"),
-			VlibProperties.getString("program"),
-			null,
-			Module.ACS_PARENT,
-			null);
+                        0,
+                        VlibProperties.getString("PROGRAM"),
+                        VlibProperties.getString("program"),
+                        null,
+                        Module.ACS_PARENT,
+                        null);
       localTree = createTree(localModules, root, false);
     }
 
@@ -401,8 +414,8 @@ public class MenuTree extends DWindow {
    * Builds the module tree.
    */
   private DefaultMutableTreeNode createTree(Module[] modules,
-					    Module root,
-					    boolean force)
+                                            Module root,
+                                            boolean force)
   {
     if (root.getAccessibility() == Module.ACS_TRUE || isSuperUser()) {
       force = true;
@@ -411,21 +424,21 @@ public class MenuTree extends DWindow {
     if (root.getObject() != null) {
       return force ? new DefaultMutableTreeNode(root) : null;
     } else {
-      DefaultMutableTreeNode	self = null;
+      DefaultMutableTreeNode    self = null;
 
       for (int i = 0; i < modules.length; i++) {
-	if (modules[i].getParent() == root.getId()) {
-	  DefaultMutableTreeNode	node;
+        if (modules[i].getParent() == root.getId()) {
+          DefaultMutableTreeNode        node;
 
-	  node = createTree(modules, modules[i], force);
-	  if (node != null) {
-	    if (self == null) {
-	      self = new DefaultMutableTreeNode(root);
-	    }
+          node = createTree(modules, modules[i], force);
+          if (node != null) {
+            if (self == null) {
+              self = new DefaultMutableTreeNode(root);
+            }
 
-	    self.add(node);
-	  }
-	}
+            self.add(node);
+          }
+        }
       }
       return self;
     }
@@ -436,32 +449,32 @@ public class MenuTree extends DWindow {
    * Fetches the modules from the database.
    */
   private List fetchModules(boolean isUnicode) throws SQLException {
-    Query	getModules = new Query(getModel().getDBContext().getDefaultConnection());
-    List	localModules = new ArrayList();
+    Query       getModules = new Query(getModel().getDBContext().getDefaultConnection());
+    List        localModules = new ArrayList();
 
     getModules.open(SELECT_MODULES);
     while (getModules.next()) {
-      Query	getIcons = new Query(getModel().getDBContext().getDefaultConnection());
-      String	icon = null;
+      Query     getIcons = new Query(getModel().getDBContext().getDefaultConnection());
+      String    icon = null;
 
       try {
-	if (getModules.getNullableInt(7) != null
+        if (getModules.getNullableInt(7) != null
             && getModules.getInt(7) != 0) {
-	  getIcons.open("SELECT Objekt FROM SYMBOLE WHERE ID = " + getModules.getInt(7));
-	  icon = getIcons.next() ? getIcons.getString(1) : null;
-	  getIcons.close();
-	}
+          getIcons.open("SELECT Objekt FROM SYMBOLE WHERE ID = " + getModules.getInt(7));
+          icon = getIcons.next() ? getIcons.getString(1) : null;
+          getIcons.close();
+        }
       } catch (Exception e) {
-	e.printStackTrace();
+        e.printStackTrace();
       }
 
       Module module = new Module(getModules.getInt(1),
-				 getModules.getInt(2),
-				 getModules.getString(3, isUnicode),
-				 getModules.getString(4, isUnicode),
-				 getModules.getString(5, isUnicode),
-				 Module.ACS_PARENT,
-				 icon);
+                                 getModules.getInt(2),
+                                 getModules.getString(3, isUnicode),
+                                 getModules.getString(4, isUnicode),
+                                 getModules.getString(5, isUnicode),
+                                 Module.ACS_PARENT,
+                                 icon);
       localModules.add(module);
       items.add(module);
     }
@@ -470,8 +483,12 @@ public class MenuTree extends DWindow {
     return localModules;
   }
 
-  private void fetchGroupRights(List modules) throws SQLException {
-    fetchRights(modules, SELECT_GROUP_RIGHTS);
+  private void fetchGroupRightsByUserId(List modules) throws SQLException {
+    fetchRights(modules, SELECT_GROUP_RIGHTS_BY_USERID);
+  }
+
+  private void fetchGroupRightsByGroupId(List modules) throws SQLException {
+    fetchRights(modules, SELECT_GROUP_RIGHTS_BY_GROUPID);
   }
 
   private void fetchUserRights(List modules) throws SQLException {
@@ -479,19 +496,22 @@ public class MenuTree extends DWindow {
   }
 
   private void fetchRights(List modules, String queryText) throws SQLException {
-    Query	getRights = new Query(getModel().getDBContext().getDefaultConnection());
+    Query       getRights = new Query(getModel().getDBContext().getDefaultConnection());
 
-    if (userName != null) {
+    if (groupName != null) {
+      getRights.addString("(SELECT ID FROM GRUPPEN WHERE Kurzname = \'" + groupName + "\')");
+    } else if (userName != null) {
       getRights.addString("(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + userName + "\')");
     } else {
       getRights.addInt(getUserID());
     }
     getRights.open(queryText);
+
     while (getRights.next()) {
-      Module		module = findModuleById(modules, getRights.getInt(1));
+      Module    module = findModuleById(modules, getRights.getInt(1));
 
       if (module != null) {
-	module.setAccessibility(getRights.getBoolean(2) ? Module.ACS_TRUE : Module.ACS_FALSE);
+        module.setAccessibility(getRights.getBoolean(2) ? Module.ACS_TRUE : Module.ACS_FALSE);
       }
     }
     getRights.close();
@@ -499,10 +519,10 @@ public class MenuTree extends DWindow {
 
   private Module findModuleById(List modules, int id) {
     for (int i = 0; i < modules.size(); i++) {
-      Module	module = (Module)modules.get(i);
+      Module    module = (Module)modules.get(i);
 
       if (module.getId() == id) {
-	return module;
+        return module;
       }
     }
 
@@ -513,14 +533,14 @@ public class MenuTree extends DWindow {
    * Fetches the favorites from the database.
    */
   private void fetchFavorites() throws SQLException {
-    Query	getFavorites = new Query(getModel().getDBContext().getDefaultConnection());
+    Query       getFavorites = new Query(getModel().getDBContext().getDefaultConnection());
 
     getFavorites.open("SELECT F.Modul, F.ID FROM FAVORITEN F WHERE F.Benutzer = " + getUserID() + " ORDER BY 2");
     while (getFavorites.next()) {
-      int		id = getFavorites.getInt(1);
+      int       id = getFavorites.getInt(1);
 
       if (id != 0) {
-	shortcutsID.add(new Integer(id));
+        shortcutsID.add(new Integer(id));
       }
     }
     getFavorites.close();
@@ -530,24 +550,30 @@ public class MenuTree extends DWindow {
    * Loads the accessible modules.
    */
   private Module[] loadModules(boolean loadFavorites) {
-    List	localModules = new ArrayList();
+    List        localModules = new ArrayList();
 
     try {
-      getModel().getDBContext().startWork();	// !!! BEGIN_SYNC
+      getModel().getDBContext().startWork(); // !!! BEGIN_SYNC
 
       localModules = fetchModules(ApplicationConfiguration.getConfiguration().isUnicodeDatabase());
-      fetchGroupRights(localModules);
-      fetchUserRights(localModules);
+
+      if (groupName != null) {
+        fetchGroupRightsByGroupId(localModules);
+      } else {
+        fetchGroupRightsByUserId(localModules);
+        fetchUserRights(localModules);
+      }
+
       if (loadFavorites) {
-	fetchFavorites();
+        fetchFavorites();
       }
 
       getModel().getDBContext().commitWork();
     } catch (SQLException e) {
       try {
-	getModel().getDBContext().abortWork();
+        getModel().getDBContext().abortWork();
       } catch (SQLException ef) {
-	//!!!
+        //!!!
       }
       e.printStackTrace();
     }
@@ -560,9 +586,9 @@ public class MenuTree extends DWindow {
         Module  module = (Module)iterator.previous();
 
         // remove all modules where access is explicitly denied
-	if (module.getAccessibility() == Module.ACS_FALSE) {
-	  iterator.remove();
-	}
+        if (module.getAccessibility() == Module.ACS_FALSE) {
+          iterator.remove();
+        }
       }
     }
 
@@ -595,14 +621,14 @@ public class MenuTree extends DWindow {
    *
    */
   private void launchSelectedForm() throws VException {
-    DefaultMutableTreeNode	node = getSelectedNode();
+    DefaultMutableTreeNode      node = getSelectedNode();
 
     if (node != null) {
       final Module      module = (Module)node.getUserObject();
 
       if (isSuperUser()) {
-	module.setAccessibility((module.getAccessibility() + 1) % 3);
-	((DefaultTreeModel)tree.getModel()).nodeChanged(node);
+        module.setAccessibility((module.getAccessibility() + 1) % 3);
+        ((DefaultTreeModel)tree.getModel()).nodeChanged(node);
       } else if (node.isLeaf()) {
         setWaitInfo(VlibProperties.getString("menu_form_started"));
 
@@ -631,7 +657,7 @@ public class MenuTree extends DWindow {
               && askUser(Message.getMessage("confirm_quit"), false))
             {
               Application.quit();
-            } 
+            }
         }
       });
   }
@@ -680,7 +706,7 @@ public class MenuTree extends DWindow {
                                            modifier);
       MenuTree.actors[number].setNumber(number);
     }
-    
+
     /**
      * Localize this menu tree
      * 
@@ -688,49 +714,46 @@ public class MenuTree extends DWindow {
      */
     public void localize(Locale locale) {
       LocalizationManager         manager;
-      
+
       manager = new LocalizationManager(locale, Application.getDefaultLocale());
-      
-      // localizes the actors in VWindow
-      super.localizeActors(manager);
-      
+      super.localizeActors(manager); // localizes the actors in VWindow
       manager = null;
     }
-    
+
     /**
      * Performs the appropriate action.
      *
-     * @param	actor		the number of the actor.
-     * @return	true iff an action was found for the specified number
+     * @param   actor           the number of the actor.
+     * @return  true iff an action was found for the specified number
      */
     public void executeVoidTrigger(final int key) throws VException {
-      MenuTree	currentDisplay = (MenuTree)getDisplay();
+      MenuTree  currentDisplay = (MenuTree)getDisplay();
 
       switch (key) {
       case CMD_QUIT:
-	currentDisplay.closeWindow();
-	break;
+        currentDisplay.closeWindow();
+        break;
       case CMD_OPEN:
-	currentDisplay.launchSelectedForm();
-	break;
+        currentDisplay.launchSelectedForm();
+        break;
       case CMD_SHOW:
-	currentDisplay.toolbar.show();
-	currentDisplay.toolbar.toFront();
-	break;
+        currentDisplay.toolbar.show();
+        currentDisplay.toolbar.toFront();
+        break;
       case CMD_ADD:
-	currentDisplay.addSelectedElement();
-	currentDisplay.setMenu();
-	break;
+        currentDisplay.addSelectedElement();
+        currentDisplay.setMenu();
+        break;
       case CMD_REMOVE:
-	currentDisplay.removeSelectedElement();
-	currentDisplay.setMenu();
-	break;
+        currentDisplay.removeSelectedElement();
+        currentDisplay.setMenu();
+        break;
       case CMD_FOLD:
-	currentDisplay.tree.collapseRow(currentDisplay.tree.getSelectionRows()[0]);
-	break;
+        currentDisplay.tree.collapseRow(currentDisplay.tree.getSelectionRows()[0]);
+        break;
       case CMD_UNFOLD:
-	currentDisplay.tree.expandRow(currentDisplay.tree.getSelectionRows()[0]);
-	break;
+        currentDisplay.tree.expandRow(currentDisplay.tree.getSelectionRows()[0]);
+        break;
       case CMD_INFORMATION:
         {
           String[]      versionArray = Utils.getVersion();
@@ -747,14 +770,14 @@ public class MenuTree extends DWindow {
           }
           getDisplay().showApplicationInformation(informationText + version);
         }
-	break;
+        break;
       case CMD_HELP:
         //try {
         // !!!!!! KopiWindowFactory.getHelpWindow().doNotModal();
-	//} catch (Exception e) {}
-	break;
+        //} catch (Exception e) {}
+        break;
       default:
-	super.executeVoidTrigger(key);
+        super.executeVoidTrigger(key);
       }
     }
 
@@ -788,9 +811,9 @@ public class MenuTree extends DWindow {
      */
     public void localize(Locale locale) {
       LocalizationManager         manager;
-      
+
       manager = new LocalizationManager(locale, Application.getDefaultLocale());
-      
+
       // localizes the modules
       for (ListIterator i = items.listIterator(); i.hasNext(); ) {
         Module          item;
@@ -798,7 +821,6 @@ public class MenuTree extends DWindow {
         item = (Module)i.next();
         item.localize(manager);
       }
-      
       manager = null;
     }
 
@@ -806,53 +828,62 @@ public class MenuTree extends DWindow {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private static final String	SELECT_MODULES =
+  private static final String   SELECT_MODULES =
     " SELECT    M.ID, M.Vater, M.Kurzname, M.Quelle, M.Objekt, M.Prioritaet, M.Symbol" +
     " FROM      MODULE M" +
     " ORDER BY  6 DESC, 1";
 
-  private static final String	SELECT_USER_RIGHTS =
-    " SELECT	M.ID, B.Zugriff, M.Prioritaet" +
-    " FROM	MODULE M, BENUTZERRECHTE B" +
-    " WHERE	M.ID = B.Modul" +
-    " AND	B.Benutzer = $1" +
-    " ORDER BY	3, 1";
+  private static final String   SELECT_USER_RIGHTS =
+    " SELECT    M.ID, B.Zugriff, M.Prioritaet" +
+    " FROM      MODULE M, BENUTZERRECHTE B" +
+    " WHERE     M.ID = B.Modul" +
+    " AND       B.Benutzer = $1" +
+    " ORDER BY  3, 1";
 
-  private static final String	SELECT_GROUP_RIGHTS =
-    " SELECT	DISTINCT M.ID, G.Zugriff, M.Prioritaet" +
-    " FROM	MODULE M, GRUPPENRECHTE G, GRUPPENZUGEHOERIGKEITEN Z" +
-    " WHERE	M.ID = G.Modul" +
-    " AND	G.Gruppe = Z.Gruppe" +
-    " AND	Z.Benutzer = $1" +
-    " ORDER BY	3, 1";
+  private static final String   SELECT_GROUP_RIGHTS_BY_USERID =
+    " SELECT    DISTINCT M.ID, G.Zugriff, M.Prioritaet" +
+    " FROM      MODULE M, GRUPPENRECHTE G, GRUPPENZUGEHOERIGKEITEN Z" +
+    " WHERE     M.ID = G.Modul" +
+    " AND       G.Gruppe = Z.Gruppe" +
+    " AND       Z.Benutzer = $1" +
+    " ORDER BY  3, 1";
 
-  private static final int	CMD_QUIT	= 0;
-  private static final int	CMD_OPEN	= 1;
-  private static final int	CMD_SHOW	= 2;
-  private static final int	CMD_ADD		= 3;
-  private static final int	CMD_REMOVE	= 4;
-  private static final int	CMD_FOLD	= 5;
-  private static final int	CMD_UNFOLD	= 6;
-  private static final int	CMD_INFORMATION = 7;
-  private static final int	CMD_HELP	= 8;
+  private static final String   SELECT_GROUP_RIGHTS_BY_GROUPID =
+    " SELECT    DISTINCT M.ID, G.Zugriff, M.Prioritaet" +
+    " FROM      MODULE M, GRUPPENRECHTE G" +
+    " WHERE     M.ID = G.Modul" +
+    " AND       G.Gruppe = $1" +
+    " ORDER BY  3, 1";
+
+  private static final int      CMD_QUIT        = 0;
+  private static final int      CMD_OPEN        = 1;
+  private static final int      CMD_SHOW        = 2;
+  private static final int      CMD_ADD         = 3;
+  private static final int      CMD_REMOVE      = 4;
+  private static final int      CMD_FOLD        = 5;
+  private static final int      CMD_UNFOLD      = 6;
+  private static final int      CMD_INFORMATION = 7;
+  private static final int      CMD_HELP        = 8;
 
   private static final String   MENU_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Menu";
 
-  private static SActor[]	actors;
+  private static SActor[]       actors;
 
   private JTree                 tree;
-  private List  		items;
-  private JBookmarkPanel	toolbar;
-  private Hashtable		shortcuts;
-  private ArrayList		orderdShorts;
+  private List                  items;
+  private JBookmarkPanel        toolbar;
+  private Hashtable             shortcuts;
+  private ArrayList             orderdShorts;
   private List                  modules;
 
-  private String		userName;
-  private boolean		isSuperUser;
+  private String                userName;
+  private String                groupName;
+  private boolean               isSuperUser;
   private List                  shortcutsID;
-  private Module[]		array;
+  private Module[]              array;
+
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
+   * Comment for <code>serialVersionUID</code>
+   */
   private static final long serialVersionUID = 3362913896589388495L;
 }
