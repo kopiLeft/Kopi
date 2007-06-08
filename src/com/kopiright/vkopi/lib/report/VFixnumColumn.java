@@ -39,7 +39,7 @@ public class VFixnumColumn extends VReportColumn {
                        final int groups,
                        final VCalculateColumn function,
                        final int digits,
-                       final int scale,
+                       final int maxScale,
                        final VCellFormat format)
   {
     super(ident,
@@ -47,9 +47,9 @@ public class VFixnumColumn extends VReportColumn {
 	  align,
 	  groups,
 	  function,
-	  VFixnumField.computeWidth(digits, scale, null, null),
+	  VFixnumField.computeWidth(digits, maxScale, null, null),
 	  1,
-	  format != null ? format : new VFixedFormat(scale));
+	  format != null ? format : new VFixedFormat(maxScale));
   }
 
   /**
@@ -73,13 +73,17 @@ public class VFixnumColumn extends VReportColumn {
   }
 
   private static class VFixedFormat extends VCellFormat {
-    VFixedFormat(int scale) {
-      this.scale = scale;
+    VFixedFormat(int maxScale) {
+      this.maxScale = maxScale;
     }
     public String format(Object value) {
-      return value == null ? "" : ((NotNullFixed)value).setScale(scale).toString();
+      return value == null ? 
+        "" :
+        ((NotNullFixed)value).getScale() > maxScale ? 
+        ((NotNullFixed)value).setScale(maxScale).toString() :
+        value.toString();
     }
-    int	scale;
+    int	maxScale;
   }
 
   public void formatColumn(PExport exporter, int index) {
