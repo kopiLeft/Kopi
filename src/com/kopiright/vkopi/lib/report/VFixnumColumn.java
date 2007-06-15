@@ -19,9 +19,10 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VFixnumField;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
-
 
 public class VFixnumColumn extends VReportColumn {
   /**
@@ -50,6 +51,7 @@ public class VFixnumColumn extends VReportColumn {
 	  VFixnumField.computeWidth(digits, maxScale, null, null),
 	  1,
 	  format != null ? format : new VFixedFormat(maxScale));
+    this.maxScale = maxScale;
   }
 
   /**
@@ -89,4 +91,18 @@ public class VFixnumColumn extends VReportColumn {
   public void formatColumn(PExport exporter, int index) {
     exporter.formatFixedColumn(this, index);
   }
+
+  public int getMaxScale() {
+    return maxScale;
+  }
+  
+  public void setMaxScale(int scale) {
+    if (scale > maxScale) {
+      throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale)));
+    }
+    setFormat(new VFixedFormat(scale));
+    this.maxScale = scale;
+  }
+
+  private int maxScale;
 }
