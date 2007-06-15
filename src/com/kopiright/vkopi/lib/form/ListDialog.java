@@ -703,6 +703,8 @@ public class ListDialog extends JPanel {
           throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECT DIALOG");
         }
       }
+      // sort table with column 0.
+      sort();
     }
 
     // sort with colon 0
