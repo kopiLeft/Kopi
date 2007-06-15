@@ -167,7 +167,10 @@ public abstract class VReportColumn {
   protected VCellFormat getFormat() {
     return format;
   }
-
+  
+  protected void setFormat(VCellFormat format) {
+    this.format = format;
+  }
   /**
    * Sets the visibility of the column
    */
