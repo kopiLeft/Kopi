@@ -188,7 +188,7 @@ public class VStringField extends VField {
     String      modelVal =  v == null || v.equals("") ? null : v;
 
     if (isChangedUI() 
-        || (value[r] == null && modelVal != null)
+        || value[r] == null
         || (value[r] != null && !value[r].equals(modelVal))) {
       // trails (backup) the record if necessary
       trail(r);

@@ -333,7 +333,7 @@ public class VFixnumField extends VField {
   public void setFixed(int r, Fixed v) {
     // trails (backup) the record if necessary
     if (isChangedUI() 
-        || (value[r] == null && v != null)
+        || value[r] == null
         || (value[r] != null && !value[r].equals(v))) {
       trail(r);
 

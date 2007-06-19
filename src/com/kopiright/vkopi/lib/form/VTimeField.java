@@ -223,7 +223,7 @@ public class VTimeField extends VField {
    */
   public void setTime(int r, Time v) {
     if (isChangedUI() 
-        || (value[r] == null && v != null)
+        || value[r] == null 
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
