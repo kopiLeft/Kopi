@@ -171,6 +171,13 @@ public class ListDialog extends JPanel {
   }
 
   /**
+   * sort model with column 0
+   */
+  public void sort() {
+    model.sort();
+  }
+
+  /**
    * Sets that a new buton must appear even if there is no newForm availabale
    * In this case NEW_CLICKED is returned as form ID
    */
@@ -703,8 +710,6 @@ public class ListDialog extends JPanel {
           throw new InconsistencyException("UNEXPECTED DIFFERENT SIZE IN SELECT DIALOG");
         }
       }
-      // sort table with column 0.
-      sort();
     }
 
     // sort with colon 0
