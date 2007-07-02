@@ -54,5 +54,5 @@ public class XUtils extends com.kopiright.util.base.Utils {
   // PRIVATE DATA
   // ----------------------------------------------------------------------
 
-  private static DBChecker	checker;
+  private static DBChecker      checker;
 }

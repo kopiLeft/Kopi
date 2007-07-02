@@ -1295,10 +1295,10 @@ public class SqlChecker implements SqlVisitor {
     throws PositionedError
   {
     if (name instanceof SimpleIdentExpression) {
-      String	table = ((SimpleIdentExpression)name).getIdent();
+      String    table = ((SimpleIdentExpression)name).getIdent();
 
       if (!XUtils.tableExists(table)) {
-	reportTrouble(new CWarning(self.getTokenReference(),
+        reportTrouble(new CWarning(self.getTokenReference(),
                                    SqlcMessages.TABLE_NOT_FOUND,
                                    table));
       }
