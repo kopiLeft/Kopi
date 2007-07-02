@@ -58,30 +58,33 @@ public class XUtils extends com.kopiright.util.base.Utils {
     }
 
     XUtils.database = new Vector();
-    StringTokenizer	token = new StringTokenizer(database, ": ");
+
+    StringTokenizer     token = new StringTokenizer(database, ": ");
+
     while (token.hasMoreTokens()) {
-      String	current = token.nextToken();
+      String    current = token.nextToken();
         try {
           Class clazz = Class.forName(current);
           XUtils.database.addElement(clazz);
         } catch (ClassNotFoundException e) {
           System.err.println("WARNING: " + current + " (Database.k-class) not found. ");
-        } 
+        }
     }
-    com.kopiright.xkopi.comp.sqlc.XUtils.setChecker(new com.kopiright.xkopi.comp.sqlc.DBChecker() {
-	/**
-	 * Checks if table exists
-	 */
-	public boolean tableExists(String table) {
-	  return XUtils.tableExists(table);
-	}
 
-	/**
-	 * Checks if a column exists in a table
-	 */
-	public boolean columnExists(String table, String column) {
-	  return XUtils.columnExists(table, column);
-	}
+    com.kopiright.xkopi.comp.sqlc.XUtils.setChecker(new com.kopiright.xkopi.comp.sqlc.DBChecker() {
+        /**
+         * Checks if table exists
+         */
+        public boolean tableExists(String table) {
+          return XUtils.tableExists(table);
+        }
+
+        /**
+         * Checks if a column exists in a table
+         */
+        public boolean columnExists(String table, String column) {
+          return XUtils.columnExists(table, column);
+        }
       });
   }
 
@@ -92,24 +95,24 @@ public class XUtils extends com.kopiright.util.base.Utils {
   /**
    * Returns a method that overload an operator or null if there is no method
    *
-   * @param	operator	the id of the operator
-   * @param	context		the context to look at
-   * @param	left		the left expression
-   * @param	right		the right expression
-   * @param	ref		the location in source code
-   * @param	typeError	the type error between the two operands
-   * @exception	PositionedError the typeError is rethrown if there is no method
+   * @param     operator        the id of the operator
+   * @param     context         the context to look at
+   * @param     left            the left expression
+   * @param     right           the right expression
+   * @param     ref             the location in source code
+   * @param     typeError       the type error between the two operands
+   * @exception PositionedError the typeError is rethrown if there is no method
    */
   public static JExpression fetchBinaryOverloadedOperator(int operator,
-							  CExpressionContext context,
-							  JExpression left,
-							  JExpression right,
-							  TokenReference ref,
-							  PositionedError typeError)
+                                                          CExpressionContext context,
+                                                          JExpression left,
+                                                          JExpression right,
+                                                          TokenReference ref,
+                                                          PositionedError typeError)
     throws PositionedError
   {
     if (typeError.hasDescription(com.kopiright.kopi.comp.kjc.KjcMessages.TYPE_UNKNOWN)
-	|| typeError.hasDescription(com.kopiright.kopi.comp.kjc.KjcMessages.VAR_UNKNOWN)) {
+        || typeError.hasDescription(com.kopiright.kopi.comp.kjc.KjcMessages.VAR_UNKNOWN)) {
       throw typeError;
     }
 
@@ -125,19 +128,19 @@ public class XUtils extends com.kopiright.util.base.Utils {
   /**
    * Returns a method that overload an operator or null if there is no method
    *
-   * @param	operator	the id of the operator
-   * @param	context		the context to look at
-   * @param	expr		the left expression
-   * @param	ref		the location in source code
-   * @param	typeError	the type error between the two operands
-   * @exception	PositionedError the typeError is rethrow if there is
-   *		no method
+   * @param     operator        the id of the operator
+   * @param     context         the context to look at
+   * @param     expr            the left expression
+   * @param     ref             the location in source code
+   * @param     typeError       the type error between the two operands
+   * @exception PositionedError the typeError is rethrow if there is
+   *            no method
    */
   public static JExpression fetchUnaryOverloadedOperator(int operator,
-							 CExpressionContext context,
-							 JExpression expr,
-							 TokenReference ref,
-							 PositionedError typeError)
+                                                         CExpressionContext context,
+                                                         JExpression expr,
+                                                         TokenReference ref,
+                                                         PositionedError typeError)
     throws PositionedError
   {
     JExpression ret = fetchOverloadedOperator(context,  buildUnary(ref, operator, expr));
@@ -206,13 +209,13 @@ public class XUtils extends com.kopiright.util.base.Utils {
    */
   public static boolean tableExists(String table) {
     if (!checkDatabase()) {
-      return true;    
+      return true;
     } else {
       if (sqlToUpper) {
         table = table.toUpperCase();
       }
       for (int i = 0; i < database.size(); i++) {
-	try {
+        try {
           Field                 field;
           XDatabaseMember       dm;
 
@@ -221,8 +224,8 @@ public class XUtils extends com.kopiright.util.base.Utils {
 
           if (dm != null) {
             return dm.isTable();
-          } 
-	  return false;
+          }
+          return false;
         } catch (NoSuchFieldException e) {
         } catch (IllegalAccessException e) {
         }
@@ -252,33 +255,33 @@ public class XUtils extends com.kopiright.util.base.Utils {
   /**
    * Returns the database type of a Table/column
    */
-  public static void checkDatabaseType(XDatabaseColumn expected, 
+  public static void checkDatabaseType(XDatabaseColumn expected,
                                        String table,
                                        String column)
     throws UnpositionedError
   {
     checkDatabaseType(expected, table, column, 0);
   }
- 
+
   /**
    * Checks the database type of a Table/column
    */
-  public static void checkDatabaseType(XDatabaseColumn expected, 
-                                       String table, 
-                                       String column, 
+  public static void checkDatabaseType(XDatabaseColumn expected,
+                                       String table,
+                                       String column,
                                        int check)
     throws UnpositionedError
   {
     if (checkDatabase()) {
-      XDatabaseColumn   dc = getDatabaseColumn(table, column);    
-      
+      XDatabaseColumn   dc = getDatabaseColumn(table, column);
+
       if (dc != null) {
         if (!dc.isEquivalentTo(expected, check)) {
- 	  throw new UnpositionedError(SqlcMessages.BAD_DATABASE_TYPE,
+          throw new UnpositionedError(SqlcMessages.BAD_DATABASE_TYPE,
                                       dc + " " + table + "." + column,
                                       expected);
         }
-      } else { // else failure 
+      } else { // else failure
         if (!tableExists(table)) {
           throw new UnpositionedError(SqlcMessages.TABLE_NOT_FOUND, table);
         } else {
@@ -296,9 +299,9 @@ public class XUtils extends com.kopiright.util.base.Utils {
   {
     if (checkDatabase() && getDatabaseColumn(table, column) == null) {
       if (!tableExists(table)) {
-	throw new UnpositionedError(SqlcMessages.TABLE_NOT_FOUND, table);
+        throw new UnpositionedError(SqlcMessages.TABLE_NOT_FOUND, table);
       } else {
-	throw new UnpositionedError(SqlcMessages.COLUMN_NOT_IN_TABLE, column, table);
+        throw new UnpositionedError(SqlcMessages.COLUMN_NOT_IN_TABLE, column, table);
       }
     }
   }
@@ -306,7 +309,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
   // ----------------------------------------------------------------------
   // PRIVATE METHODS
   // ----------------------------------------------------------------------
-  
+
   /**
    *
    */
@@ -333,7 +336,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
       // com.kopiright.xkopi.lib.oper.XFixed.class.getName() because the XFixed.x
       // needs xkjc to compile.
       initialize(env, new String[] {
-	"com/kopiright/xkopi/lib/oper/XFixed",
+          "com/kopiright/xkopi/lib/oper/XFixed",
         "com/kopiright/xkopi/lib/oper/XByte",
         "com/kopiright/xkopi/lib/oper/XShort",
         "com/kopiright/xkopi/lib/oper/XInteger",
@@ -346,7 +349,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
         "com/kopiright/xkopi/lib/oper/XWeek",
         "com/kopiright/xkopi/lib/oper/XCharacter",
         "com/kopiright/xkopi/lib/oper/XString"
-	  });
+        });
     } else {
       // !!! USE USER PATH
       prefixes = new JExpression[0];
@@ -359,21 +362,21 @@ public class XUtils extends com.kopiright.util.base.Utils {
    *
    */
   private static void initialize(KjcEnvironment env, String[] xkjcPath) {
-    Vector		container = new Vector();
+    Vector      container = new Vector();
     TypeFactory factory = env.getTypeFactory();
-    
+
     CBinaryTypeContext  context = new CBinaryTypeContext(env.getClassReader(),
                                                          factory);
 
     try {
       for (int i = 0; i < xkjcPath.length; i++) {
-	JTypeNameExpression     expr;
+        JTypeNameExpression     expr;
         CReferenceType          type;
 
         type = factory.createType(xkjcPath[i], false);
         expr = new JTypeNameExpression(TokenReference.NO_REF, type);
 
-	container.addElement(expr.analyse(context));
+        container.addElement(expr.analyse(context));
       }
     } catch (PositionedError e) {
       e.printStackTrace();
@@ -386,14 +389,14 @@ public class XUtils extends com.kopiright.util.base.Utils {
   /**
    * Returns a method that overload an operator or null if there is no method
    *
-   * @param	context		the context to look at
-   * @param	overload	the method call
+   * @param     context         the context to look at
+   * @param     overload        the method call
    */
   public static JExpression fetchOverloadedOperator(CExpressionContext context,
-						    XOverloadedMethodCallExpression overload)
+                                                    XOverloadedMethodCallExpression overload)
   {
-    JExpression	ret = null;
-    boolean	found = true;
+    JExpression ret = null;
+    boolean     found = true;
 
     try {
       overload.preCheckExpression(context);
@@ -409,11 +412,11 @@ public class XUtils extends com.kopiright.util.base.Utils {
 
     for (int i = 0; !found && i < prefixes.length; i++) {
       try {
-	found = true;
-	overload.setPrefix(prefixes[i]);
-	ret = overload.analyse(context);
+        found = true;
+        overload.setPrefix(prefixes[i]);
+        ret = overload.analyse(context);
       } catch (PositionedError error) {
-	found = false;
+        found = false;
       }
     }
 
@@ -423,8 +426,8 @@ public class XUtils extends com.kopiright.util.base.Utils {
   /**
    * Returns a method that overload an operator or null if there is no method
    *
-   * @param	context		the context to look at
-   * @param	overload	the method call
+   * @param     context         the context to look at
+   * @param     overload        the method call
    */
   public static XOverloadedMethodCallExpression fetchOverloadedNewArray(TypeFactory factory,
                                                                         JExpression[] dims,
@@ -457,27 +460,27 @@ public class XUtils extends com.kopiright.util.base.Utils {
    * buildUnary
    */
   private static XOverloadedMethodCallExpression buildUnary(TokenReference ref,
-							    int operator,
-							    JExpression expr)
+                                                            int operator,
+                                                            JExpression expr)
   {
     return new XOverloadedMethodCallExpression(ref,
-					       null,
-					       ("operator$" + operator).intern(),
-					       new JExpression[] { expr });
+                                               null,
+                                               ("operator$" + operator).intern(),
+                                               new JExpression[] { expr });
   }
 
   /**
    * buildBinary
    */
   private static XOverloadedMethodCallExpression buildBinary(TokenReference ref,
-							     int operator,
-							     JExpression left,
-							     JExpression right)
+                                                             int operator,
+                                                             JExpression left,
+                                                             JExpression right)
   {
     return new XOverloadedMethodCallExpression(ref,
-					       null,
-					       ("operator$" + operator).intern(),
-					       new JExpression[] { left, right });
+                                               null,
+                                               ("operator$" + operator).intern(),
+                                               new JExpression[] { left, right });
   }
 
   // ----------------------------------------------------------------------
