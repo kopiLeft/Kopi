@@ -36,7 +36,7 @@ public class Main extends com.kopiright.xkopi.comp.dbi.Main {
    * Entry point
    */
   public static void main(String[] args) {
-    boolean	success;
+    boolean     success;
 
     try {
       success = new Main(null, null).run(args);
@@ -52,16 +52,16 @@ public class Main extends com.kopiright.xkopi.comp.dbi.Main {
   /**
    * Creates a new compiler instance.
    *
-   * @param	workingDirectory	the working directory
-   * @param	diagnosticOutput	the diagnostic output stream
+   * @param     workingDirectory        the working directory
+   * @param     diagnosticOutput        the diagnostic output stream
    */
   public Main(String workingDirectory, PrintWriter diagnosticOutput) {
     super(workingDirectory, diagnosticOutput);
   }
 
   public void generateDatabase(SCompilationUnit[] cunit,
-			       String packageName,
-			       String destination,
+                               String packageName,
+                               String destination,
                                String classname,
                                boolean toUpperCase)
   {
