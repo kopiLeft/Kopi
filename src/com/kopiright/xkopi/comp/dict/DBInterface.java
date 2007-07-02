@@ -75,9 +75,9 @@ import com.kopiright.xkopi.comp.xkjc.XKjcTypeFactory;
 public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
 
   public static void generateDatabase(Compiler compiler,
-				      SCompilationUnit[] cunit,
-				      String packageName,
-				      String destination,
+                                      SCompilationUnit[] cunit,
+                                      String packageName,
+                                      String destination,
                                       String className,
                                       boolean toUpperCase)
   {
@@ -156,16 +156,16 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
 
     JCompilationUnit compilUnit = new JCompilationUnit(TokenReference.NO_REF,
                                                        env,
-						       new JPackageName(TokenReference.build(filename, new File(filename), 0),
-									packageName,
-									null),
-						       new JPackageImport[]{},
-						       new JClassImport[]{},
-						       new JTypeDeclaration[] {clazz});
+                                                       new JPackageName(TokenReference.build(filename, new File(filename), 0),
+                                                                        packageName,
+                                                                        null),
+                                                       new JPackageImport[]{},
+                                                       new JClassImport[]{},
+                                                       new JTypeDeclaration[] {clazz});
 
 
     try {
-      Vector	classes = new Vector();
+      Vector    classes = new Vector();
 
       compilUnit.join(compiler);
       compilUnit.checkInterface(compiler);
@@ -208,8 +208,8 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
   }
 
   private static JFieldDeclaration genColumnFieldDeclaration(String name,
-							     Type type,
-							     boolean isNullable)
+                                                             Type type,
+                                                             boolean isNullable)
   {
     JExpression         initializer;
 
@@ -232,7 +232,7 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
   private static JFieldDeclaration[] getFieldsDeclarations(SCompilationUnit[] cunit,
                                                            boolean toUpperCase)
   {
-    ArrayList		fieldDeclarations = new ArrayList();
+    ArrayList   fieldDeclarations = new ArrayList();
 
     for (int c = 0; c < cunit.length; c++) {
       addFieldDeclarations(fieldDeclarations, cunit[c], toUpperCase);
@@ -248,10 +248,10 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
     ListIterator      iterator = cunit.getElems().listIterator();
 
     while (iterator.hasNext()) {
-      Statement	stmt = (Statement)iterator.next();
+      Statement stmt = (Statement)iterator.next();
 
       if (stmt instanceof TableDefinition) {
-        TableDefinition	def = (TableDefinition)stmt;
+        TableDefinition def = (TableDefinition)stmt;
         ArrayList       columns = def.getColumns();
         String          tableName = ((SimpleIdentExpression)def.getTableName()).getIdent();
         String[]        names = new String[columns.size()];
@@ -261,7 +261,7 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
         }
 
         for (int j = 0; j < columns.size(); j++) {
-          Column	column = (Column)columns.get(j);
+          Column        column = (Column)columns.get(j);
           String        columnName = column.getIdent();
 
           if (toUpperCase) {
@@ -276,13 +276,17 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
 
         fieldDeclarations.add(genTableFieldDeclaration(tableName, names));
       } else if (stmt instanceof ViewDefinition) {
-        ViewDefinition	def = (ViewDefinition)stmt;
+        ViewDefinition  def = (ViewDefinition)stmt;
         ArrayList       columns = def.getColumns();
         String          tableName = ((SimpleIdentExpression)def.getTableName()).getIdent();
         String[]        names = new String[columns.size()];
 
+        if (toUpperCase) {
+          tableName = tableName.toUpperCase();
+        }
+
         for (int j = 0; j < columns.size(); j++) {
-          ViewColumn	column = (ViewColumn)columns.get(j);
+          ViewColumn    column = (ViewColumn)columns.get(j);
           String        columnName = column.getIdent();
 
           if (toUpperCase) {
