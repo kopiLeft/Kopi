@@ -141,12 +141,21 @@ public class OracleDbiChecker extends DbiChecker implements DbiVisitor {
     throws PositionedError
   {
     current.append("TO_DATE('");
+    if (value.getYear() < 10) {
+      current.append("0");
+    }
     current.append(value.getYear());
     current.append("-");
+    if (value.getMonth() < 10) {
+      current.append("0");
+    }
     current.append(value.getMonth());
     current.append("-");
+    if (value.getDay() < 10) {
+      current.append("0");
+    }
     current.append(value.getDay());
-    current.append(", 'YYYY-MM-DD')");
+    current.append("', 'YYYY-MM-DD')");
   }
 
   /**

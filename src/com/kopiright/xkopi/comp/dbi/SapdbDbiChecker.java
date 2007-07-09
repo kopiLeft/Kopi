@@ -64,17 +64,18 @@ public class SapdbDbiChecker extends DbiChecker implements DbiVisitor {
 
   /*
    * Visits JdbcDateLiteral
-   * !!! coco 310202 : verify the syntax
    */
   public void visitJdbcDateLiteral(JdbcDateLiteral self, Date value)
     throws PositionedError
   {
     current.append("'");
     current.append(value.getYear());
+    current.append("-");
     if (value.getMonth() < 10) {
       current.append("0");
     }
     current.append(value.getMonth());
+    current.append("-");
     if (value.getDay() < 10) {
       current.append("0");
     }

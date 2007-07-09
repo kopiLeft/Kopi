@@ -67,8 +67,14 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("DATETIME(");
     current.append(value.getYear());
     current.append("-");
+    if (value.getMonth() < 10) {
+      current.append("0");
+    }
     current.append(value.getMonth());
     current.append("-");
+    if (value.getDay() < 10) {
+      current.append("0");
+    }
     current.append(value.getDay());
     current.append(")");
   }
