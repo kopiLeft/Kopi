@@ -80,4 +80,8 @@
 <!-- ERRORS-->
   <message ident="00059" text="Data entry error: Incorrect period" />
   <message ident="00060" text="The scale {0} is bigger than the maximum allowed {1}" />
+  <message ident="00061" text="Wrong parameter {0} this is the list of possible parameters : {1} where x is the column number." />
+  <message ident="00062" text="{0} is not a number" />
+  <message ident="00063" text="Wrong column number,{0} choose from column list"/>
+  <message ident="00064" text="Exception occured during parsing of expression : {0} {1}"/>
 </messages>

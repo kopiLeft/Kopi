@@ -280,4 +280,16 @@
   <property key="help-icon" value="help" />
   <property key="quit-icon" value="quit" />
   <property key="print-icon" value="print" />
+
+  <property key="choose_column" value="Select a column from this list:" />
+  <property key="validate" value="Validate" />
+  <property key="enter_new_label" value="enter a new label for this column" />
+  <property key="add_data_for_column" value="Add data for this column" />
+<!-- report column popup menu -->
+  <property key="set_column_data" value="set Column data" />
+  <property key="add_column" value="add a new Column" />
+  <property key="sort_DSC" value="sort &lt;&lt;" />
+  <property key="sort_ASC" value="sort &gt;&gt;" />
+  <property key="set_column_info" value="set column info" />
+  <property key="remove_column" value="remove column" />
 </properties>
