@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.PreparedStatement;
@@ -662,17 +663,25 @@ public class Query {
     if (obj == null) {
       return null;
     } else if (obj instanceof java.math.BigDecimal) {
-      // graf 2004.01.24: breaks list fixed(14, 0)
       // !!! A HACK FOR ORACLE
       // if the scale is -1, the scale is not precised.
       // else we use integer when the scale is 0 and the precision is less or equal to 10.
-      if (rset.getMetaData().getScale(pos) != 0 || rset.getMetaData().getPrecision(pos) > 10) {
-        return new NotNullFixed((java.math.BigDecimal)obj);
+
+      BigDecimal        value = (java.math.BigDecimal)obj;
+
+      if (rset.getMetaData().getScale(pos) != 0 || rset.getMetaData().getPrecision(pos) > 11) {
+        return new NotNullFixed(value);
+      } else if (rset.getMetaData().getPrecision(pos) == 11) {
+        // graf 2007.07.12 - Terrible hack
+        // Check whether the content fits into an integer
+        if ((long)value.intValue() == value.longValue()) {
+          return new Integer(value.intValue());
+        } else {
+          return new NotNullFixed(value);
+        }
       } else {
-        return new Integer(((java.math.BigDecimal)obj).intValue());
+        return new Integer(value.intValue());
       }
-      // graf 2004.01.24: breaks list fixed(14, 0)
-      //      return new NotNullFixed((java.math.BigDecimal)obj);
     } else if (obj instanceof java.sql.Date) {
       return new NotNullDate((java.sql.Date)obj);
     } else if (obj instanceof java.sql.Time) {
