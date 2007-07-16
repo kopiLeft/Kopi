@@ -32,18 +32,19 @@ public abstract class PExport {
   /**
    * Constructor
    */
-  public PExport(JTable table, MReport model, PConfig pconfig, String title) {
-    this(table, model, pconfig, title, false);
+  public PExport(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader) {
+    this(table, model, pconfig, title, firstPageHeader, false);
   }
 
   /**
    * Constructor
    */
-  public PExport(JTable table, MReport model, PConfig pconfig, String title, boolean tonerSaveMode) {
+  public PExport(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader, boolean tonerSaveMode) {
     this.model = model;
     this.table = table;
     this.pconfig = pconfig;
     this.title = title;
+    this.firstPageHeader = firstPageHeader;
     this.tonerSaveMode = tonerSaveMode;
 
     this.parameters = new DParameters(Color.blue);
@@ -267,6 +268,10 @@ public abstract class PExport {
     return title;
   }
 
+  public String getFirstPageHeader() {
+    return firstPageHeader;
+  }
+
   public String getColumnLabel(int column) {
     return model.getAccessibleColumn(table.convertColumnIndexToModel(column)).getLabel();    
   }
@@ -292,7 +297,9 @@ public abstract class PExport {
   private JTable		table;
   protected PConfig		pconfig;
   private String                title;
+  private String                firstPageHeader;
   
+
   private int                   columnCount;      
   private int                   firstVisibleColumn;
   private int                   maxLevel;

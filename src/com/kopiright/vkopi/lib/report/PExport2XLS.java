@@ -52,8 +52,8 @@ public class PExport2XLS extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2XLS(JTable table, MReport model, PConfig pconfig, String title) {
-    super(table, model, pconfig, title);
+  public PExport2XLS(JTable table, MReport model, PConfig pconfig, String firstPageHeader, String title) {
+    super(table, model, pconfig, firstPageHeader, title);
 
     datatype = new int[getColumnCount()];
     dataformats = new short[getColumnCount()];

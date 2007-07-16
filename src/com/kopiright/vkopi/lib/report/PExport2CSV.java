@@ -27,16 +27,14 @@ public class  PExport2CSV extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2CSV(JTable table, MReport model, PConfig pconfig, String title) {
-    super(table, model, pconfig, title);
-
+  public PExport2CSV(JTable table, MReport model, PConfig pconfig, String firstPageHeader, String title) {
+    super(table, model, pconfig, firstPageHeader, title);
   }
 
   public void export(OutputStream out) {
     outStream = out;
-
-
     try {
+      writeFirstPageHeader();
       exportData();
       outStream.close();
     } catch (Exception e) {
@@ -47,14 +45,23 @@ public class  PExport2CSV extends PExport implements Constants {
   protected void startGroup(String subTitle) {
   }
 
+  protected void writeFirstPageHeader() {
+    try {
+      outStream.write(getFirstPageHeader().getBytes());
+      outStream.write("\n".getBytes());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   protected void exportHeader(String[] data) {
     writeData(data);
   }
-
+  
   protected void exportRow(int level, String[] data,  Object[] orig, int[] alignments) {
-    writeData(data);    
+    writeData(data); 
   }
-
+    
   private void writeData(String[] data) {
     try {
       boolean first = true;

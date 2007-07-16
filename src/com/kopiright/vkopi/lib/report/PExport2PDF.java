@@ -56,15 +56,15 @@ public class  PExport2PDF extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title) {
-    this(table, model, pconfig, title, false);
+  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader) {
+    this(table, model, pconfig, title, firstPageHeader, false);
   }
   
   /**
    * Constructor
    */
-  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, boolean tonerSaveMode) {
-    super(table, model, pconfig, title, tonerSaveMode);
+  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader, boolean tonerSaveMode) {
+    super(table, model, pconfig, title, firstPageHeader, tonerSaveMode);
 
     widths = new float[getColumnCount()];
   }
@@ -85,7 +85,7 @@ public class  PExport2PDF extends PExport implements Constants {
 
       return printJob;
     } catch (Exception e) {
-	throw new InconsistencyException(e);
+      throw new InconsistencyException(e);
     } 
   }
 
@@ -103,12 +103,16 @@ public class  PExport2PDF extends PExport implements Constants {
       firstPage = true;
 
       PdfPTable       head = createHeader(); 
+      PdfPTable       firstPageHead = createFirstPageHeader();
       PdfPTable       foot = createFooter(0, 0);
-
+      if (getFirstPageHeader() != null && !getFirstPageHeader().equals("")) {
+        firstPageHead.setTotalWidth((paperSize.width() - pconfig.leftmargin - pconfig.rightmargin));
+      }
+      head.setTotalWidth((paperSize.width() - pconfig.leftmargin - pconfig.rightmargin));
       document = new Document(paperSize, 
                               pconfig.leftmargin, 
                               pconfig.rightmargin, 
-                              pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin, 
+                              pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin + firstPageHead.getTotalHeight(), 
                               pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin+2); 
                               // 2 to be sure to print the border
 
@@ -117,15 +121,15 @@ public class  PExport2PDF extends PExport implements Constants {
       File      tempFile = Utils.getTempFile("kopiexport", "pdf");
       PdfWriter writer = PdfWriter.getInstance(document,
                                                new FileOutputStream(tempFile));
-
+      
+      
       writer.setPageEvent(new PdfPageEventHelper() {
           public void onEndPage(PdfWriter writer, Document document) {
             try {
-              
               Rectangle       page = document.getPageSize();
               PdfPTable       head = createHeader(); 
-
-              head.setTotalWidth(page.width() - document.leftMargin() - document.rightMargin());
+              
+              head.setTotalWidth((page.width() - document.leftMargin() - document.rightMargin()));
               head.writeSelectedRows(0,
                                      -1,
                                      document.leftMargin(),
@@ -136,16 +140,29 @@ public class  PExport2PDF extends PExport implements Constants {
             }
           }
         });
-
-      document.open();
       
+      document.open();
+      if (getFirstPageHeader() != null && !getFirstPageHeader().equals("")) {
+        try {
+          Rectangle       page = document.getPageSize();
+          firstPageHead.writeSelectedRows(0,
+                                          -1,
+                                          document.leftMargin(),
+                                          page.height() - document.topMargin() + head.getTotalHeight() + 
+                                          getPrintConfig().headermargin +  firstPageHead.getTotalHeight(),
+                                          writer.getDirectContent());
+          document.setMargins(document.leftMargin(),
+                              document.rightMargin(),
+                              document.topMargin() - firstPageHead.getTotalHeight(),
+                              document.bottomMargin());
+        } catch (Exception e) {
+          throw new ExceptionConverter(e);
+        }
+      }
       exportData();
       document.add(datatable);
- 
       document.close();
-
       addFooter(tempFile, out);
-
     } catch (Exception e) {
       throw new InconsistencyException(e);
     } 
@@ -171,12 +188,23 @@ public class  PExport2PDF extends PExport implements Constants {
       throw new InconsistencyException(e);
     } 
   }
-
-
+  
+  private PdfPTable createFirstPageHeader() {
+    PdfPTable       head = new PdfPTable(1);
+    
+    head.addCell(createCell(getFirstPageHeader(),
+                              14,
+                              Color.black,
+                              Color.white,
+                              ALG_LEFT,
+                              false));
+    return head;
+  }
+  
   private PdfPTable createHeader() {
     PdfPTable       head = new PdfPTable(1);
-              
-    head.addCell(createCell((currentSubtitle == null) ? getTitle() : getTitle() + "  " + getColumnLabel(0) + " : " + currentSubtitle, 
+    
+    head.addCell(createCell((currentSubtitle == null) ? getTitle() : getTitle() + "  " + getColumnLabel(0) + " : " + currentSubtitle,
                             14,
                             Color.black,
                             Color.white,
