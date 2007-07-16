@@ -341,8 +341,7 @@ public abstract class VReport extends VWindow
       exporter = new PExport2CSV(((DReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
-                                 pageTitle,
-                                 firstPageHeader);
+                                 pageTitle);
       break;
     case TYP_PDF:
       exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
@@ -355,8 +354,7 @@ public abstract class VReport extends VWindow
       exporter = new PExport2XLS(((DReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
-                                 pageTitle,
-                                 firstPageHeader);
+                                 pageTitle);
       break;
     default:
       throw new InconsistencyException("Export type unkown");

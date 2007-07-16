@@ -64,8 +64,8 @@ public class  PExport2PDF extends PExport implements Constants {
    * Constructor
    */
   public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader, boolean tonerSaveMode) {
-    super(table, model, pconfig, title, firstPageHeader, tonerSaveMode);
-
+    super(table, model, pconfig, title, tonerSaveMode);
+    this.firstPageHeader = firstPageHeader;
     widths = new float[getColumnCount()];
   }
 
@@ -105,7 +105,7 @@ public class  PExport2PDF extends PExport implements Constants {
       PdfPTable       head = createHeader(); 
       PdfPTable       firstPageHead = createFirstPageHeader();
       PdfPTable       foot = createFooter(0, 0);
-      if (getFirstPageHeader() != null && !getFirstPageHeader().equals("")) {
+      if (firstPageHeader != null && !firstPageHeader.equals("")) {
         firstPageHead.setTotalWidth((paperSize.width() - pconfig.leftmargin - pconfig.rightmargin));
       }
       head.setTotalWidth((paperSize.width() - pconfig.leftmargin - pconfig.rightmargin));
@@ -142,7 +142,7 @@ public class  PExport2PDF extends PExport implements Constants {
         });
       
       document.open();
-      if (getFirstPageHeader() != null && !getFirstPageHeader().equals("")) {
+      if (firstPageHeader != null && !firstPageHeader.equals("")) {
         try {
           Rectangle       page = document.getPageSize();
           firstPageHead.writeSelectedRows(0,
@@ -192,7 +192,7 @@ public class  PExport2PDF extends PExport implements Constants {
   private PdfPTable createFirstPageHeader() {
     PdfPTable       head = new PdfPTable(1);
     
-    head.addCell(createCell(getFirstPageHeader(),
+    head.addCell(createCell(firstPageHeader,
                               14,
                               Color.black,
                               Color.white,
@@ -435,6 +435,7 @@ public class  PExport2PDF extends PExport implements Constants {
   private int                   pages;
   private Document              document;
   private String                currentSubtitle;
+  private String                firstPageHeader;
   private boolean               firstPage;
 
   private double                scale;
