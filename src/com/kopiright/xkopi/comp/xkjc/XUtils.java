@@ -336,7 +336,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
       // com.kopiright.xkopi.lib.oper.XFixed.class.getName() because the XFixed.x
       // needs xkjc to compile.
       initialize(env, new String[] {
-          "com/kopiright/xkopi/lib/oper/XFixed",
+        "com/kopiright/xkopi/lib/oper/XFixed",
         "com/kopiright/xkopi/lib/oper/XByte",
         "com/kopiright/xkopi/lib/oper/XShort",
         "com/kopiright/xkopi/lib/oper/XInteger",

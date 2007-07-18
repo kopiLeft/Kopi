@@ -36,7 +36,7 @@ public class CClassOrInterfaceType extends CReferenceType {
 
   /**
    * Construct a class type
-   * @param	clazz		the class that will represent this type
+   * @param     clazz           the class that will represent this type
    */
   public CClassOrInterfaceType(TokenReference ref, CClass clazz) {
     this(ref, clazz, CReferenceType.EMPTY_ARG);
@@ -44,7 +44,7 @@ public class CClassOrInterfaceType extends CReferenceType {
 
   /**
    * Construct a class type
-   * @param	clazz		the class that will represent this type
+   * @param     clazz           the class that will represent this type
    */
   public CClassOrInterfaceType(TokenReference ref, CClass clazz, CReferenceType[][] arguments) {
     super(clazz);
@@ -85,26 +85,25 @@ public class CClassOrInterfaceType extends CReferenceType {
   /**
    * check that type is valid
    * necessary to resolve String into java/lang/String
-   * @param	context		the context (may be be null)
-   * @exception UnpositionedError	this error will be positioned soon
+   * @param     context         the context (may be be null)
+   * @exception UnpositionedError       this error will be positioned soon
    */
   public CType checkType(CTypeContext context) throws UnpositionedError {
     CClass              clazz = getCClass();
 
     if (arguments.length == 0) {
       arguments = EMPTY_ARG;
-      if (clazz.isGenericClass()) {
-	context.reportTrouble(new CWarning(sourceRef,
-                                           KjcMessages.ERASURE_USED,
-                                           getQualifiedName()));
-        
-      }
+//       if (clazz.isGenericClass()) {
+//         context.reportTrouble(new CWarning(sourceRef,
+//                                            KjcMessages.ERASURE_USED,
+//                                            getQualifiedName()));
+//       }
     }
 
     for (int k = arguments.length-1; k  >= 0 ; k--) {
       if (clazz == null && arguments[k] != null && arguments[k].length > 0) {
         // e.g. com.kopiright<T>.Main<S>
-        throw new UnpositionedError(KjcMessages.UNUSED_TYPEARG, getCClass()); 
+        throw new UnpositionedError(KjcMessages.UNUSED_TYPEARG, getCClass());
       } else if (clazz == null &&  (arguments[k] == null || arguments[k].length  == 0)) {
         continue;
       } else {
@@ -138,47 +137,47 @@ public class CClassOrInterfaceType extends CReferenceType {
 
   /**
    * Can this type be converted to the specified type by casting conversion (JLS 5.5) ?
-   * @param	dest		the destination type
-   * @return	true iff the conversion is valid
+   * @param     dest            the destination type
+   * @return    true iff the conversion is valid
    */
   public boolean isCastableTo(CTypeContext context, CType dest) {
     // test for array first because array types are classes
 
     if (getCClass().isInterface()) {
       if (! dest.isClassType()) {
-	return false;
+        return false;
       } else if (dest.getCClass().isInterface()) {
-	// if T is an interface type and if T and S contain methods
-	// with the same signature but different return types,
-	// then a compile-time error occurs.
-	return getCClass().testAbstractMethodReturnTypes(context, dest.getCClass());
+        // if T is an interface type and if T and S contain methods
+        // with the same signature but different return types,
+        // then a compile-time error occurs.
+        return getCClass().testAbstractMethodReturnTypes(context, dest.getCClass());
       } else if (dest.isArrayType()) {
-        if (getQualifiedName() == JAV_CLONEABLE 
+        if (getQualifiedName() == JAV_CLONEABLE
             || getQualifiedName() == JAV_SERIALIZABLE) {
           return true;
         } else {
           return false;
         }
       } else if (! dest.getCClass().isFinal()) {
-	return true;
+        return true;
       } else {
-	return dest.getCClass().descendsFrom(getCClass());
+        return dest.getCClass().descendsFrom(getCClass());
       }
     } else {
       // this is a class type
       if (dest.isArrayType()) {
-	return equals(CStdType.Object);
+        return equals(CStdType.Object);
       } else if (! dest.isClassType()) {
-	return false;
+        return false;
       } else if (dest.getCClass().isInterface()) {
-	if (! getCClass().isFinal()) {
-	  return true;
-	} else {
-	  return getCClass().descendsFrom(dest.getCClass());
-	}
+        if (! getCClass().isFinal()) {
+          return true;
+        } else {
+          return getCClass().descendsFrom(dest.getCClass());
+        }
       } else {
-	return getCClass().descendsFrom(dest.getCClass())
-	  || dest.getCClass().descendsFrom(getCClass());
+        return getCClass().descendsFrom(dest.getCClass())
+          || dest.getCClass().descendsFrom(getCClass());
       }
     }
   }

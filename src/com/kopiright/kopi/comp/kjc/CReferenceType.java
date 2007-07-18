@@ -37,7 +37,7 @@ public abstract class CReferenceType extends CType {
 
   /**
    * Construct a class type
-   * @param	clazz		the class that will represent this type
+   * @param     clazz           the class that will represent this type
    */
   protected CReferenceType() {
     super(TID_CLASS);
@@ -48,7 +48,7 @@ public abstract class CReferenceType extends CType {
 
   /**
    * Construct a class type
-   * @param	clazz		the class that will represent this type
+   * @param     clazz           the class that will represent this type
    */
   public CReferenceType(CClass clazz) {
     super(TID_CLASS);
@@ -62,15 +62,15 @@ public abstract class CReferenceType extends CType {
   }
 
   /**
-   * @deprecated 
+   * @deprecated
    */
   public static CReferenceType lookup(String qualifiedName) {
     if (qualifiedName.indexOf('/') >= 0) {
-      CReferenceType	type = (CReferenceType)allCReferenceType.get(qualifiedName);
+      CReferenceType    type = (CReferenceType)allCReferenceType.get(qualifiedName);
 
       if (type == null) {
-	type = new CClassNameType(TokenReference.NO_REF, qualifiedName, false);
-	allCReferenceType.put(qualifiedName, type);
+        type = new CClassNameType(TokenReference.NO_REF, qualifiedName, false);
+        allCReferenceType.put(qualifiedName, type);
       }
 
       return type;
@@ -164,7 +164,7 @@ public abstract class CReferenceType extends CType {
 
   /**
    * Check if a type is a reference
-   * @return	is it a type that accept null value
+   * @return    is it a type that accept null value
    */
   public boolean isReference() {
     return true;
@@ -172,7 +172,7 @@ public abstract class CReferenceType extends CType {
 
   /**
    * Check if a type is a class type
-   * @return	is it a subtype of ClassType ?
+   * @return    is it a subtype of ClassType ?
    */
   public boolean isClassType() {
     return true;
@@ -193,7 +193,7 @@ public abstract class CReferenceType extends CType {
     // !!! graf 000213
     if (clazz == null) {
       if (this == CStdType.Object) {
-	throw new InconsistencyException("java.lang.Object is not in the classpath !!!");
+        throw new InconsistencyException("java.lang.Object is not in the classpath !!!");
       }
       clazz = CStdType.Object.getCClass();
     }
@@ -211,14 +211,14 @@ public abstract class CReferenceType extends CType {
   /**
    * check that type is valid
    * necessary to resolve String into java/lang/String
-   * @param	context		the context (may be be null)
-   * @exception UnpositionedError	this error will be positioned soon
+   * @param     context         the context (may be be null)
+   * @exception UnpositionedError       this error will be positioned soon
    */
   public CType checkType(CTypeContext context) throws UnpositionedError {
     return this;
   }
   public CType findType(CTypeContext context) throws UnpositionedError {
-  	return checkType(context);
+    return checkType(context);
   }
   // ----------------------------------------------------------------------
   // BODY CHECKING
@@ -226,16 +226,16 @@ public abstract class CReferenceType extends CType {
 
   /**
    * Can this type be converted to the specified type by assignment conversion (JLS 5.2) ?
-   * @param	dest		the destination type
-   * @return	true iff the conversion is valid
+   * @param     dest            the destination type
+   * @return    true iff the conversion is valid
    */
   public boolean isAssignableTo(CTypeContext context, CType dest) {
     return isAssignableTo(context, dest, false);
   }
   /**
    * Can this type be converted to the specified type by assignment conversion (JLS 5.2) ?
-   * @param	dest		the destination type
-   * @return	true iff the conversion is valid
+   * @param     dest            the destination type
+   * @return    true iff the conversion is valid
    */
   public boolean isAssignableTo(CTypeContext context, CType dest, boolean inst) {
     if (!(dest.isClassType() && !dest.isArrayType())) {
@@ -252,12 +252,12 @@ public abstract class CReferenceType extends CType {
         return false;
       } else {
         CReferenceType[] destBounds = ((CTypeVariable)dest).getBounds();
-        
+
         if (destBounds.length == 0) {
           return true; // bound = java.lang.Object
         }
         for (int i = 0; i < destBounds.length; i++) {
-        	if (!isAssignableTo(context, destBounds[i], substitution)) {
+          if (!isAssignableTo(context, destBounds[i], substitution)) {
         return false;
           }
         }
@@ -276,16 +276,16 @@ public abstract class CReferenceType extends CType {
 
   public boolean isAssignableTo(CTypeContext context, CType dest, CReferenceType[] substitution) {
     if (!(dest.isClassType() && !dest.isArrayType())) {
-    	return false;
+      return false;
     }
     if (dest.isTypeVariable()) {
-    	dest = substitution[((CTypeVariable)dest).getIndex()];
+      dest = substitution[((CTypeVariable)dest).getIndex()];
     }
     if (dest.isTypeVariable()) {
-    	return false;
+      return false;
     } else {
          //   return getCClass().descendsFrom(((CReferenceType)dest), CReferenceType.EMPTY_ARG, substitution)
-    	return getCClass().descendsFrom(((CReferenceType)dest).getCClass());
+      return getCClass().descendsFrom(((CReferenceType)dest).getCClass());
     }
     //  return true;
   }
@@ -295,14 +295,14 @@ public abstract class CReferenceType extends CType {
     if (other == this) {
       return true;
     }
-    if (!other.isClassType() 
+    if (!other.isClassType()
         || other.isArrayType()
-        || other.isTypeVariable()
-        || ((CReferenceType)other).getCClass() != getCClass()
-        || other.isGenericType() != isGenericType()) {
+        // || other.isTypeVariable()
+        || ((CReferenceType)other).getCClass() != getCClass()) {
+      // || other.isGenericType() != isGenericType()) {
       return false;
     }
-    
+
     if (arguments.length == 0) {
       // non generic or erasure
     } else {
@@ -328,7 +328,7 @@ public abstract class CReferenceType extends CType {
     if (other == this) {
       return true;
     }
-    if (!other.isClassType() 
+    if (!other.isClassType()
         || other.isArrayType()
         || other.isTypeVariable()
         || (other.isGenericType() != isGenericType())
@@ -343,7 +343,7 @@ public abstract class CReferenceType extends CType {
       }
       for (int i = 0; i < arguments[arguments.length-1].length; i++) {
         CReferenceType    arg = arguments[arguments.length-1][i];
-        
+
         if (arg.isTypeVariable()) {
           arg = substitution[((CTypeVariable)arg).getIndex()];
         }
@@ -356,7 +356,7 @@ public abstract class CReferenceType extends CType {
   }
 
   /**
-   * returns the arguments for this class without the type 
+   * returns the arguments for this class without the type
    * arguments for the outer classes.
    */
   public CReferenceType[] getArguments() {
@@ -372,41 +372,41 @@ public abstract class CReferenceType extends CType {
 
   /**
    * Can this type be converted to the specified type by casting conversion (JLS 5.5) ?
-   * @param	dest		the destination type
-   * @return	true iff the conversion is valid
+   * @param     dest            the destination type
+   * @return    true iff the conversion is valid
    */
   public boolean isCastableTo(CTypeContext context, CType dest) {
     // test for array first because array types are classes
 
     if (getCClass().isInterface()) {
       if (! dest.isClassType()) {
-	return false;
+        return false;
       } else if (dest.getCClass().isInterface()) {
-	// if T is an interface type and if T and S contain methods
-	// with the same signature but different return types,
-	// then a compile-time error occurs.
-	//!!! graf 000512: FIXME: implement this test
-	return true;
+        // if T is an interface type and if T and S contain methods
+        // with the same signature but different return types,
+        // then a compile-time error occurs.
+        //!!! graf 000512: FIXME: implement this test
+        return true;
       } else if (! dest.getCClass().isFinal()) {
-	return true;
+        return true;
       } else {
-	return dest.getCClass().descendsFrom(getCClass());
+        return dest.getCClass().descendsFrom(getCClass());
       }
     } else {
       // this is a class type
       if (dest.isArrayType()) {
-	return equals(CStdType.Object);
+        return equals(CStdType.Object);
       } else if (! dest.isClassType()) {
-	return false;
+        return false;
       } else if (dest.getCClass().isInterface()) {
-	if (! getCClass().isFinal()) {
-	  return true;
-	} else {
-	  return getCClass().descendsFrom(dest.getCClass());
-	}
+        if (! getCClass().isFinal()) {
+          return true;
+        } else {
+          return getCClass().descendsFrom(dest.getCClass());
+        }
       } else {
-	return getCClass().descendsFrom(dest.getCClass())
-	  || dest.getCClass().descendsFrom(getCClass());
+        return getCClass().descendsFrom(dest.getCClass())
+          || dest.getCClass().descendsFrom(getCClass());
       }
     }
   }
@@ -415,7 +415,7 @@ public abstract class CReferenceType extends CType {
    *
    */
   public boolean isCheckedException(CTypeContext context) {
-    return !isAssignableTo(context, context.getTypeFactory().createReferenceType(TypeFactory.RFT_RUNTIMEEXCEPTION)) 
+    return !isAssignableTo(context, context.getTypeFactory().createReferenceType(TypeFactory.RFT_RUNTIMEEXCEPTION))
       && !isAssignableTo(context, context.getTypeFactory().createReferenceType(TypeFactory.RFT_ERROR));
   }
 
@@ -427,7 +427,7 @@ public abstract class CReferenceType extends CType {
       if (getArguments().length == 0) {
         arguments = CReferenceType.EMPTY_ARG;
       } else {
-        arguments = new CReferenceType[][]{getArguments()};      
+        arguments = new CReferenceType[][]{getArguments()};
       }
     } else {
       arguments = new CReferenceType[prefixArgs.length+1][];
@@ -445,7 +445,7 @@ public abstract class CReferenceType extends CType {
 
       for (int i=0; i < arguments[index].length; i++) {
         CReferenceType          type = arguments[index][i];
-        
+
         if (type.isTypeVariable()) {
          subArgs[i] = local.getSubstitution((CTypeVariable)type, substitution);
         } else if (type.isGenericType()) {
@@ -475,12 +475,12 @@ public abstract class CReferenceType extends CType {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  public static final CReferenceType[]		EMPTY = new CReferenceType[0];
-  public static final CReferenceType[][]	EMPTY_ARG = new CReferenceType[0][];
+  public static final CReferenceType[]  EMPTY = new CReferenceType[0];
+  public static final CReferenceType[][]        EMPTY_ARG = new CReferenceType[0][];
 
-  private static Hashtable	allCReferenceType = new Hashtable(2000);
-  private static final CClass	BAC_CLASS = new CBadClass("<NOT YET DEFINED>");
+  private static Hashtable      allCReferenceType = new Hashtable(2000);
+  private static final CClass   BAC_CLASS = new CBadClass("<NOT YET DEFINED>");
 
-  private CClass		clazz;
+  private CClass                clazz;
   protected CReferenceType[][]  arguments;
 }

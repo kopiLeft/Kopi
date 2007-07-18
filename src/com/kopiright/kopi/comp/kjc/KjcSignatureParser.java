@@ -28,10 +28,10 @@ public class KjcSignatureParser implements SignatureParser {
   /**
    * Parses a VM-standard type signature.
    *
-   * @param	signature	the type signature
-   * @param	from		the start index
-   * @param	to		the end index
-   * @return	the type represented by the signature
+   * @param     signature       the type signature
+   * @param     from            the start index
+   * @param     to              the end index
+   * @return    the type represented by the signature
    */
   public final CType parseSignature(TypeFactory factory, String signature) {
     return parseSignature(factory, signature, 0, signature.length());
@@ -40,14 +40,14 @@ public class KjcSignatureParser implements SignatureParser {
   /**
    * Parses a VM-standard type signature within a signature string.
    *
-   * @param	signature	the type signature
-   * @param	from		the start index
-   * @param	to		the end index
-   * @return	the type represented by the signature 
+   * @param     signature       the type signature
+   * @param     from            the start index
+   * @param     to              the end index
+   * @return    the type represented by the signature
    */
   protected CType parseSignature(TypeFactory factory,  String signature, int from, int to) {
-    CType	type;
-    int		bounds;
+    CType       type;
+    int         bounds;
 
     bounds = 0;
     for (; signature.charAt(from) == '['; from++) {
@@ -56,19 +56,19 @@ public class KjcSignatureParser implements SignatureParser {
 
     switch (signature.charAt(from)) {
     case 'V':
-      type = factory.getVoidType(); 
+      type = factory.getVoidType();
       break;
     case 'B':
-      type = factory.getPrimitiveType(TypeFactory.PRM_BYTE); 
+      type = factory.getPrimitiveType(TypeFactory.PRM_BYTE);
       break;
     case 'C':
-      type = factory.getPrimitiveType(TypeFactory.PRM_CHAR); 
+      type = factory.getPrimitiveType(TypeFactory.PRM_CHAR);
       break;
     case 'D':
-      type = factory.getPrimitiveType(TypeFactory.PRM_DOUBLE); 
+      type = factory.getPrimitiveType(TypeFactory.PRM_DOUBLE);
       break;
     case 'F':
-      type = factory.getPrimitiveType(TypeFactory.PRM_FLOAT); 
+      type = factory.getPrimitiveType(TypeFactory.PRM_FLOAT);
       break;
     case 'I':
       type = factory.getPrimitiveType(TypeFactory.PRM_INT);
@@ -89,7 +89,7 @@ public class KjcSignatureParser implements SignatureParser {
       type = new CTypeVariableAlias(signature.substring(from + 1, to - 1));
       break;
     default:
-      throw new InconsistencyException("Unknown signature: " + signature.charAt(from));
+      throw new InconsistencyException("Unknown signature: " + signature.charAt(from) + " in " + signature);
     }
 
     return bounds > 0 ? new CArrayType(type, bounds) : type;
@@ -117,7 +117,7 @@ public class KjcSignatureParser implements SignatureParser {
       type = parseSignature(factory, signature, from, current);
     } else {
       String            ident = String.valueOf(sig, from+1, current - from-2);
-      CReferenceType[]      types = parseTypeArgumentSignature(factory, signature, sig);
+      CReferenceType[]  types = parseTypeArgumentSignature(factory, signature, sig);
 
       type = factory.createType(ident, new CReferenceType[][]{ types}, true);
     }
@@ -131,20 +131,25 @@ public class KjcSignatureParser implements SignatureParser {
       vect.add(parseGenericTypeSignature(factory, signature, sig));
     }
     current++;
+    if (sig[current] == '.')  {
+      while (sig[++current] != ';') {
+        // skip
+      }
+    }
     // verify(sig[current] == ';');
     current++;
 
-    return (CReferenceType[])vect.toArray(new CReferenceType[vect.size()]); 
+    return (CReferenceType[])vect.toArray(new CReferenceType[vect.size()]);
   }
 
   protected CTypeVariable[] parseTypeParameter(TypeFactory factory, String signature, char[] sig) {
     // '<' TypeVarName1 ':' bound1 ':' bound2 [...] TypeVarName2 : ... '>'
     if (sig[current] == '<') {
       ArrayList    tvVect = new ArrayList(10);
-      
+
       current++;
       while (sig[current] != '>') {
-        int             end = current; 
+        int             end = current;
         String          ident; // type var name
 
         while (sig[end] != ':') {
@@ -172,6 +177,7 @@ public class KjcSignatureParser implements SignatureParser {
         typeVariable[i].setIndex(i);
       }
       current++;
+
       return typeVariable;
     } else {
       return CTypeVariable.EMPTY;
@@ -185,15 +191,17 @@ public class KjcSignatureParser implements SignatureParser {
    */
  public ClassSignature parseClassSignature(TypeFactory factory, String signature) {
    CTypeVariable[]      tvs;
-   CReferenceType           superType;
-   CReferenceType[]         inter;
+   CReferenceType       superType;
+   CReferenceType[]     inter;
    char[]               sig = signature.toCharArray();
 
    current = 0;
    // typeVariable
    tvs = parseTypeParameter(factory, signature, sig);
    // supertype
+
    superType = (CReferenceType) parseGenericTypeSignature(factory, signature, sig);
+
 
    // interfaces
    ArrayList               interfaces = new ArrayList(10);
@@ -202,7 +210,7 @@ public class KjcSignatureParser implements SignatureParser {
      interfaces.add(parseGenericTypeSignature(factory, signature, sig));
    }
    inter = (CReferenceType[])interfaces.toArray(new CReferenceType[interfaces.size()]);
-   
+
    return new ClassSignature(superType, inter, tvs);
  }
 
@@ -211,7 +219,7 @@ public class KjcSignatureParser implements SignatureParser {
    * For methods, the return type is the last element of the array
    */
   public MethodSignature parseMethodSignature(TypeFactory factory, String signature) {
-    CTypeVariable[]     typeVariables; 
+    CTypeVariable[]     typeVariables;
     CType[]             parameter;
     CType               returnType;
     CReferenceType[]    exceptions;
@@ -222,19 +230,19 @@ public class KjcSignatureParser implements SignatureParser {
     typeVariables = parseTypeParameter(factory, signature, sig);
 
     // parameter
-    ArrayList	paramVec = new ArrayList();
+    ArrayList   paramVec = new ArrayList();
 
     // verify(sig.charAt(0) == '(');
     current++;
     while (sig[current] != ')') {
       paramVec.add(parseGenericTypeSignature(factory, signature, sig));
     }
-    parameter = (CType[])paramVec.toArray(new CType[paramVec.size()]); 
+    parameter = (CType[])paramVec.toArray(new CType[paramVec.size()]);
     // return type
     current++; // ')'
     returnType = parseGenericTypeSignature(factory, signature, sig);
     // exceptions
-    ArrayList 	exVec = paramVec;
+    ArrayList   exVec = paramVec;
 
     exVec.clear();
     if ((sig.length > current) && (sig[current] =='^')) {
@@ -243,7 +251,7 @@ public class KjcSignatureParser implements SignatureParser {
         exVec.add(parseGenericTypeSignature(factory, signature, sig));
       }
 
-      exceptions = (CReferenceType[])exVec.toArray(new CReferenceType[exVec.size()]); 
+      exceptions = (CReferenceType[])exVec.toArray(new CReferenceType[exVec.size()]);
     } else {
       exceptions = CReferenceType.EMPTY;
     }

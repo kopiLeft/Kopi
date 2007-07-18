@@ -15,8 +15,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * $Id$
- */ 
- 
+ */
+
 package com.kopiright.kopi.comp.kjc;
 
 import com.kopiright.compiler.base.PositionedError;
@@ -36,7 +36,7 @@ public abstract class JExpression extends JPhylum {
 
   /**
    * Construct a node in the parsing tree
-   * @param	where		the line of this node in the source code
+   * @param     where           the line of this node in the source code
    */
   public JExpression(TokenReference where) {
     super(where);
@@ -54,7 +54,7 @@ public abstract class JExpression extends JPhylum {
   /**
    * Tests whether this expression denotes a compile-time constant (JLS 15.28).
    *
-   * @return	true iff this expression is constant
+   * @return    true iff this expression is constant
    */
   public boolean isConstant() {
     return false;
@@ -63,13 +63,13 @@ public abstract class JExpression extends JPhylum {
   /**
    * Tests whether this expression depends on the given field.
    *
-   * @param	field	the filed to check dependency on it
-   * @return		true if the local field dependes on the given one
+   * @param     field   the filed to check dependency on it
+   * @return            true if the local field dependes on the given one
    */
   public boolean dependsOn(CField field) {
     return false;
   }
-  
+
   /**
    * Returns true iff this expression can be used as a statement (JLS 14.8)
    */
@@ -78,7 +78,7 @@ public abstract class JExpression extends JPhylum {
   }
 
   /**
-   * Returns true iff this expression is an enum expression 
+   * Returns true iff this expression is an enum expression
    */
   public boolean isEnumExpression(TypeFactory factory) {
     if (!this.getType(factory).isReference()) {
@@ -93,16 +93,16 @@ public abstract class JExpression extends JPhylum {
     //      (this.getType(factory).getCClass().getSuperType().getQualifiedName() == JAV_ENUM);
   }
 
-  
+
   /**
-   * Returns true iff this expression require an accessor. (e.g. Setting in an inner 
+   * Returns true iff this expression require an accessor. (e.g. Setting in an inner
    * class the value of a private field of the enclosing class)
    */
   public boolean requiresAccessor() {
     return false;
   }
   /**
-   * Returns an accessor which can be used to set this member. 
+   * Returns an accessor which can be used to set this member.
    * @param expr the value used to set the member
    * @param oper the operation (=, +=, ...)
    */
@@ -202,17 +202,17 @@ public abstract class JExpression extends JPhylum {
    *
    * Note : a final variable is an l-value until it is initialized.
    *
-   * @return	true iff this expression is an l-value
+   * @return    true iff this expression is an l-value
    */
   public boolean isLValue(CExpressionContext context) {
     return false;
   }
 
   /**
-   * Tests whether this expression is final, like a variable, which is 
+   * Tests whether this expression is final, like a variable, which is
    * final. Used in loops to intentify assignments to final vaiables.
    *
-   * @return	true iff this expression is final
+   * @return    true iff this expression is final
    */
   public boolean isFinal() {
     return false;
@@ -220,7 +220,7 @@ public abstract class JExpression extends JPhylum {
   /**
    * Used in field access expressions, local variable expression ...
    *
-   * @return	the intentifier
+   * @return    the intentifier
    */
   public String getIdent() {
     throw new InconsistencyException(this + " is not an l-value");
@@ -229,24 +229,24 @@ public abstract class JExpression extends JPhylum {
   /**
    * Declares this variable to be initialized.
    *
-   * @exception	UnpositionedError an error if this object can't actually
-   *		be assignated this may happen with final variables.
+   * @exception UnpositionedError an error if this object can't actually
+   *            be assignated this may happen with final variables.
    */
   public void setInitialized(CExpressionContext context)
-    
+
   {
     throw new InconsistencyException(this + " is not an l-value");
   }
 
   /**
-   * @return	true if this expression is a variable already valued
+   * @return    true if this expression is a variable already valued
    */
   public boolean isInitialized(CExpressionContext context) {
     throw new InconsistencyException(this + " is not an l-value");
   }
 
   /**
-   * Return true iff the node is itself a Expression 
+   * Return true iff the node is itself a Expression
    * (not only a part like JTypeName)
    */
   public boolean isExpression() {
@@ -260,8 +260,8 @@ public abstract class JExpression extends JPhylum {
   /**
    * used to check, if a final variable/field is assigned
    * in a loop.
-   * returns true, if it has to go through a loop to find the 
-   * definition. 
+   * returns true, if it has to go through a loop to find the
+   * definition.
    * @param     context context to start search
    */
   public boolean checkForLoop(CContext context) {
@@ -270,18 +270,18 @@ public abstract class JExpression extends JPhylum {
 
   /**
    * Analyses the expression (semantically).
-   * @param	context		the analysis context
-   * @return	an equivalent, analysed expression
-   * @exception	PositionedError	the analysis detected an error
+   * @param     context         the analysis context
+   * @return    an equivalent, analysed expression
+   * @exception PositionedError the analysis detected an error
    */
   public abstract JExpression analyse(CExpressionContext context)
     throws PositionedError;
 
   /**
    * Adds a compiler error.
-   * @param	context		the context in which the error occurred
-   * @param	key		the message ident to be displayed
-   * @param	params		the array of parameters
+   * @param     context         the context in which the error occurred
+   * @param     key             the message ident to be displayed
+   * @param     params          the array of parameters
    *
    */
   protected void fail(CContext context, MessageDescription key, Object[] params)
@@ -310,8 +310,8 @@ public abstract class JExpression extends JPhylum {
   /**
    * Can this expression be converted to the specified type by
    * assignment conversion (JLS 5.2) ?
-   * @param	dest		the destination type
-   * @return	true iff the conversion is valid
+   * @param     dest            the destination type
+   * @return    true iff the conversion is valid
    */
   public boolean isAssignableTo(CTypeContext context, CType dest) {
     TypeFactory factory = context.getTypeFactory();
@@ -325,15 +325,15 @@ public abstract class JExpression extends JPhylum {
 
   /**
    * Accepts the specified visitor
-   * @param	p		the visitor
+   * @param     p               the visitor
    */
   public abstract void accept(KjcVisitor p);
 
   /**
    * Generates JVM bytecode to evaluate this expression.
    *
-   * @param	context		the information about where to store the generated code
-   * @param	discardValue	discard the result of the evaluation ?
+   * @param     context         the information about where to store the generated code
+   * @param     discardValue    discard the result of the evaluation ?
    */
   public abstract void genCode(GenerationContext context, boolean discardValue);
 
@@ -341,7 +341,7 @@ public abstract class JExpression extends JPhylum {
    * Generates a sequence of bytescodes to branch on a label
    * This method helps to handle heavy optimizable conditions.
    *
-   * @param	context		the information about where to store the generated code
+   * @param     context         the information about where to store the generated code
    */
   public void genBranch(boolean cond, GenerationContext context, CodeLabel label) {
     CodeSequence code = context.getCodeSequence();
@@ -356,7 +356,7 @@ public abstract class JExpression extends JPhylum {
    * string buffer is on top of stack; after the operation, the
    * reference will again be on top of stack.
    *
-   * @param	context		the information about where to store the generated code
+   * @param     context         the information about where to store the generated code
    */
   public void genAppendToStringBuffer(GenerationContext context) {
     TypeFactory         factory = context.getTypeFactory();
@@ -392,17 +392,17 @@ public abstract class JExpression extends JPhylum {
    * - code to determine the value to store,
    * - suffix code for the storage location.
    *
-   * @param	code		the code list
+   * @param     code            the code list
    */
   public void genStartStoreCode(GenerationContext context) {
     throw new InconsistencyException(this + " is not an l-value");
   }
 
   /**
-   * Generates JVM bytecode to for compound assignment, pre- and 
+   * Generates JVM bytecode to for compound assignment, pre- and
    * postfix expressions.
    *
-   * @param	code		the code list
+   * @param     code            the code list
    */
   public void genStartAndLoadStoreCode(GenerationContext context, boolean discardValue) {
     throw new InconsistencyException(this + " is not an l-value");
@@ -417,8 +417,8 @@ public abstract class JExpression extends JPhylum {
    * - code to determine the value to store,
    * - suffix code for the storage location.
    *
-   * @param	code		the code list
-   * @param	discardValue	discard the result of the evaluation ?
+   * @param     code            the code list
+   * @param     discardValue    discard the result of the evaluation ?
    */
   public void genEndStoreCode(GenerationContext context, boolean discardValue) {
     throw new InconsistencyException(this + " is not an l-value");
@@ -428,5 +428,5 @@ public abstract class JExpression extends JPhylum {
   // PUBLIC CONSTANTS
   // ----------------------------------------------------------------------
 
-  public static final JExpression[]		EMPTY = new JExpression[0];
+  public static final JExpression[]     EMPTY = new JExpression[0];
 }

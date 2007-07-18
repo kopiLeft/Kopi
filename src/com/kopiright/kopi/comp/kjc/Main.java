@@ -356,7 +356,6 @@ public class Main extends Compiler {
       reportTrouble(parser.beautifyParseError(e));
       unit = null;
     } catch (Exception e) {
-      //err.println("{" + file.getPath() + ":" + scanner.getLine() + "} " + e.getMessage());
       e.printStackTrace();
       errorFound = true;
       unit = null;

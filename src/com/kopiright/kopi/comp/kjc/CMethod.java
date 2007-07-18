@@ -37,13 +37,13 @@ public abstract class CMethod extends CMember {
 
   /**
    * Constructs a method member.
-   * @param	owner		the owner of this method
-   * @param	modifiers	the modifiers on this method
-   * @param	ident		the ident of this method
-   * @param	returnType	the return type of this method
-   * @param	parameters	the parameters type of this method
-   * @param	exceptions	a list of all exceptions of the throws list
-   * @param	deprecated	is this method deprecated
+   * @param     owner           the owner of this method
+   * @param     modifiers       the modifiers on this method
+   * @param     ident           the ident of this method
+   * @param     returnType      the return type of this method
+   * @param     parameters      the parameters type of this method
+   * @param     exceptions      a list of all exceptions of the throws list
+   * @param     deprecated      is this method deprecated
    */
   public CMethod(CClass owner,
                  int modifiers,
@@ -71,16 +71,16 @@ public abstract class CMethod extends CMember {
   /**
    * Checks whether this type is accessible from the specified class (JLS 6.6).
    *
-   * @return	true iff this member is accessible
+   * @return    true iff this member is accessible
    */
   public boolean isAccessible(CType primary, CClass from) {
     if (!super.isAccessible(from)) {
       return false;
     } else {
-    // JLS 6.6.2.1 
+    // JLS 6.6.2.1
     // Access to a protected Member
-      if (isProtected() 
-          && !isStatic() 
+      if (isProtected()
+          && !isStatic()
           && !(getOwner().getPackage() == from.getPackage())
           && !(primary == null)) {
           // special case with clone of arrays JLS 10.7
@@ -98,7 +98,7 @@ public abstract class CMethod extends CMember {
     }
   }
   /**
-   * @return	the interface
+   * @return    the interface
    */
   public CMethod getMethod() {
     return this;
@@ -131,7 +131,7 @@ public abstract class CMethod extends CMember {
     return typeVariables.length > 0;
   }
   /**
-   * change the parameters of the method. Only allowed 
+   * change the parameters of the method. Only allowed
    * for postconditions.
    * @see #isPostconditon()
    */
@@ -148,7 +148,7 @@ public abstract class CMethod extends CMember {
   public abstract String getSignature();
 
   /**
-   * @return	the exceptions that can be thrown by this method
+   * @return    the exceptions that can be thrown by this method
    */
   public CReferenceType[] getThrowables() {
     return exceptions;
@@ -157,15 +157,15 @@ public abstract class CMethod extends CMember {
   /**
    * This method is used by initializers that knows throwables exceptions only
    * after body was checked.
-   * @param	throwables	the exceptions that can be thrown by this method
+   * @param     throwables      the exceptions that can be thrown by this method
    */
   public void setThrowables(Hashtable throwables) {
     if (throwables != null) {
-      int		count = 0;
+      int       count = 0;
 
       exceptions = new CReferenceType[throwables.size()];
       for (Enumeration elems = throwables.elements(); elems.hasMoreElements(); ) {
-	exceptions[count++] = ((CThrowableInfo)elems.nextElement()).getThrowable();
+        exceptions[count++] = ((CThrowableInfo)elems.nextElement()).getThrowable();
       }
     }
   }
@@ -173,7 +173,7 @@ public abstract class CMethod extends CMember {
   public void setThrowables(CReferenceType[] exceptions) {
     this.exceptions = exceptions;
   }
-   
+
   CSourceMethod getAccessor(TypeFactory factory, CSourceClass target, boolean isSuper) {
     CSourceMethod       accessor;
 
@@ -184,11 +184,11 @@ public abstract class CMethod extends CMember {
       accessor = (CSourceMethod) accessors.get(target);
     }
     if (accessor == null) {
-      JAccessorMethod ac = new JAccessorMethod(factory, target, this, false, isSuper, -1);      
+      JAccessorMethod ac = new JAccessorMethod(factory, target, this, false, isSuper, -1);
       accessor = (CSourceMethod) ac.getMethod();
       accessors.put(target, accessor);
     }
-    return accessor; 
+    return accessor;
   }
 
   public CTypeVariable lookupTypeVariable(String ident) {
@@ -232,7 +232,7 @@ public abstract class CMethod extends CMember {
   // ----------------------------------------------------------------------
   // ACCESSORS (Extended)
   // ----------------------------------------------------------------------
-  
+
   public abstract boolean isInvariant();
   public abstract boolean isPrecondition();
   public abstract boolean isPostcondition();
@@ -241,7 +241,7 @@ public abstract class CMethod extends CMember {
   public abstract CReferenceType getOldValueStore();
 
   /**
-   * Find out that pre/postcondition of supermethod is already checked by 
+   * Find out that pre/postcondition of supermethod is already checked by
    * pre/postcondition of another method.
    */
   public boolean includesSuperMethod(CMethod m) {
@@ -254,7 +254,7 @@ public abstract class CMethod extends CMember {
   /**
    * equals
    * search if two methods have same signature
-   * @param	other		the other method
+   * @param     other           the other method
    */
   public boolean equals(CMethod other) {
     if (!getOwner().equals(other.getOwner())) {
@@ -265,9 +265,9 @@ public abstract class CMethod extends CMember {
       return false;
     } else {
       for (int i = 0; i < parameters.length; i++) {
-	if (!parameters[i].equals(other.parameters[i])) {
-	  return false;
-	}
+        if (!parameters[i].equals(other.parameters[i])) {
+          return false;
+        }
       }
       return true;
     }
@@ -275,8 +275,8 @@ public abstract class CMethod extends CMember {
 
   /**
    * Is this method applicable to the specified invocation (JLS 15.12.2.1) ?
-   * @param	ident		method invocation name
-   * @param	actuals		method invocation arguments
+   * @param     ident           method invocation name
+   * @param     actuals         method invocation arguments
    */
   public boolean isApplicableTo(CTypeContext context, String ident, CType[] actuals, CReferenceType[] substitution) {
     if (ident != getIdent()) {
@@ -285,11 +285,11 @@ public abstract class CMethod extends CMember {
       return false;
     } else {
       for (int i = 0; i < actuals.length; i++) {
-	// method invocation conversion = assigment conversion without literal narrowing
-	// we just look at the type and do not consider literal special case
-	if (!actuals[i].isAssignableTo(context, parameters[i], substitution)) {
-	  return false;
-	}
+        // method invocation conversion = assigment conversion without literal narrowing
+        // we just look at the type and do not consider literal special case
+        if (!actuals[i].isAssignableTo(context, parameters[i], substitution)) {
+          return false;
+        }
       }
       return true;
     }
@@ -297,7 +297,7 @@ public abstract class CMethod extends CMember {
 
   /**
    * Is this method more specific than the one given as argument (JLS 15.12.2.2) ?
-   * @param	other		the method to compare to
+   * @param     other           the method to compare to
    */
   public boolean isMoreSpecificThan(CTypeContext context, CMethod other, CReferenceType[] substitution) throws UnpositionedError{
     //    if (!getOwnerType().isAssignableTo(context,other.getOwnerType(), substitution)) {
@@ -307,11 +307,11 @@ public abstract class CMethod extends CMember {
       return false;
     } else {
       for (int i = 0; i < other.parameters.length; i++) {
-	// method invocation conversion = assigment conversion without literal narrowing
-	// we just look at the type and do not consider literal special case
-	if (!parameters[i].getErasure(context).isAssignableTo(context, other.parameters[i].getErasure(context))) {
-	  return false;
-	}
+        // method invocation conversion = assigment conversion without literal narrowing
+        // we just look at the type and do not consider literal special case
+        if (!parameters[i].getErasure(context).isAssignableTo(context, other.parameters[i].getErasure(context))) {
+          return false;
+        }
       }
 
       return true;
@@ -321,33 +321,34 @@ public abstract class CMethod extends CMember {
   /**
    * Has this method the same signature as the one given as argument ?
    * NOTE: return type not considered
-   * @param	other		the method to compare to
+   * @param     other           the method to compare to
    */
   public boolean hasSameSignature(CMethod other, CReferenceType[] substitution) {
     if (parameters.length != other.parameters.length) {
       return false;
     } else {
       for (int i = 0; i < parameters.length; i++) {
-	if (!parameters[i].equals(other.parameters[i], substitution)) {
-	  return false;
-	}
+        if (!parameters[i].equals(other.parameters[i], substitution)) {
+          return false;
+        }
       }
       return true;
     }
   }
+
   /**
    * Has this method the same signature as the one given as argument ?
    * NOTE: return type not considered
-   * @param	other		the method to compare to
+   * @param     other           the method to compare to
    */
   public boolean hasSameSignature(CTypeContext context, CMethod other) throws UnpositionedError{
     if (parameters.length != other.parameters.length) {
       return false;
     } else {
       for (int i = 0; i < parameters.length; i++) {
-	if (!other.parameters[i].getErasure(context).equals(parameters[i].getErasure(context))) {
-	  return false;
-	}
+        if (!other.parameters[i].getErasure(context).equals(parameters[i].getErasure(context))) {
+          return false;
+        }
       }
       return true;
     }
@@ -356,17 +357,17 @@ public abstract class CMethod extends CMember {
   /**
    * Checks that the inheritence of this two methods is allowed.
    *
-   * @param	superMethod		method which it overrides
-   * @exception	UnositionedError	the analysis detected an error
+   * @param     superMethod             method which it overrides
+   * @exception UnositionedError        the analysis detected an error
    */
-  public void checkInheritence(CTypeContext context, CMethod superMethod, CReferenceType[] substitution) 
+  public void checkInheritence(CTypeContext context, CMethod superMethod, CReferenceType[] substitution)
     throws UnpositionedError {
     // JLS 8.4.6.1 :
     // A compile-time error occurs if an instance method overrides a
     // static method.
     if (!this.isStatic() && superMethod.isStatic()) {
       throw new UnpositionedError(KjcMessages.METHOD_INSTANCE_OVERRIDES_STATIC,
-                                  this, 
+                                  this,
                                   superMethod.getOwner());
     }
 
@@ -374,7 +375,7 @@ public abstract class CMethod extends CMember {
     // A compile-time error occurs if a static method hides an instance method.
     if (this.isStatic() && !superMethod.isStatic()) {
       throw new UnpositionedError(KjcMessages.METHOD_STATIC_HIDES_INSTANCE,
-                                  this, 
+                                  this,
                                   superMethod.getOwner());
     }
 
@@ -390,19 +391,26 @@ public abstract class CMethod extends CMember {
       // JSR 41 3.2
       if (returnType.isClassType()) {
         if (!returnType.isAssignableTo(context, superMethod.getReturnType(), substitution)) {
-          throw new UnpositionedError(KjcMessages.METHOD_RETURN_NOT_SUBTYPE, new Object[] {this, superMethod, superMethod.getOwner(), returnType, superMethod.getReturnType()});
-        }      
+          throw new UnpositionedError(KjcMessages.METHOD_RETURN_NOT_SUBTYPE,
+                                      new Object[] {
+                                        this,
+                                        superMethod,
+                                        superMethod.getOwner(),
+                                        returnType,
+                                        superMethod.getReturnType()
+                                      });
+        }
       } else {
         if (! returnType.equals(superMethod.getReturnType())) {
           throw new UnpositionedError(KjcMessages.METHOD_RETURN_DIFFERENT, this);
-        }        
+        }
       }
     }
 
     // JLS 8.4.6.3 :
     // The access modifier of an overriding or hiding method must provide at
     // least as much access as the overridden or hidden method.
-    boolean	moreRestrictive;
+    boolean     moreRestrictive;
 
     if (superMethod.isPublic()) {
       moreRestrictive = !this.isPublic();
@@ -416,20 +424,20 @@ public abstract class CMethod extends CMember {
       throw new InconsistencyException("bad access: " + superMethod.getModifiers());
     }
 
-    if (moreRestrictive) { 
+    if (moreRestrictive) {
       throw new UnpositionedError(KjcMessages.METHOD_ACCESS_DIFFERENT,
-                                  this, 
+                                  this,
                                   superMethod.getOwner());
     }
   }
   /**
    * Checks that overriding/hiding is correct.
    *
-   * @param	superMethod		method which it overrides
-   * @exception	UnositionedError	the analysis detected an error
+   * @param     superMethod             method which it overrides
+   * @exception UnositionedError        the analysis detected an error
    */
-  public void checkOverriding(CTypeContext context, CMethod superMethod, CReferenceType[] substitution) 
-    throws UnpositionedError 
+  public void checkOverriding(CTypeContext context, CMethod superMethod, CReferenceType[] substitution)
+    throws UnpositionedError
   {
     // JLS 8.4.3.3 :
     // A method can be declared final to prevent subclasses from overriding
@@ -444,7 +452,7 @@ public abstract class CMethod extends CMember {
     // static method.
     if (!this.isStatic() && superMethod.isStatic()) {
       throw new UnpositionedError(KjcMessages.METHOD_INSTANCE_OVERRIDES_STATIC,
-                                  this, 
+                                  this,
                                   superMethod.getOwner());
     }
 
@@ -452,7 +460,7 @@ public abstract class CMethod extends CMember {
     // A compile-time error occurs if a static method hides an instance method.
     if (this.isStatic() && !superMethod.isStatic()) {
       throw new UnpositionedError(KjcMessages.METHOD_STATIC_HIDES_INSTANCE,
-                                  this, 
+                                  this,
                                   superMethod.getOwner());
     }
 
@@ -468,19 +476,26 @@ public abstract class CMethod extends CMember {
       // JSR 41 3.2
       if (returnType.isClassType()) {
         if (!returnType.isAssignableTo(context, superMethod.getReturnType(), substitution)) {
-          throw new UnpositionedError(KjcMessages.METHOD_RETURN_NOT_SUBTYPE, new Object[] {this, superMethod, superMethod.getOwner(), returnType, superMethod.getReturnType()});
-        }      
+          throw new UnpositionedError(KjcMessages.METHOD_RETURN_NOT_SUBTYPE,
+                                      new Object[] {
+                                        this,
+                                        superMethod,
+                                        superMethod.getOwner(),
+                                        returnType,
+                                        superMethod.getReturnType()
+                                      });
+        }
       } else {
         if (! returnType.equals(superMethod.getReturnType())) {
           throw new UnpositionedError(KjcMessages.METHOD_RETURN_DIFFERENT, this);
-        }        
+        }
       }
     }
 
     // JLS 8.4.6.3 :
     // The access modifier of an overriding or hiding method must provide at
     // least as much access as the overridden or hidden method.
-    boolean	moreRestrictive;
+    boolean     moreRestrictive;
 
     if (superMethod.isPublic()) {
       moreRestrictive = !this.isPublic();
@@ -494,9 +509,9 @@ public abstract class CMethod extends CMember {
       throw new InconsistencyException("bad access: " + superMethod.getModifiers());
     }
 
-    if (moreRestrictive) { 
+    if (moreRestrictive) {
       throw new UnpositionedError(KjcMessages.METHOD_ACCESS_DIFFERENT,
-                                  this, 
+                                  this,
                                   superMethod.getOwner());
     }
 
@@ -504,18 +519,18 @@ public abstract class CMethod extends CMember {
     // A method that overrides or hides another method, including methods that
     // implement abstract methods defined in interfaces, may not be declared to
     // throw more CHECKED exceptions than the overridden or hidden method.
-    CReferenceType[]	exc = superMethod.getThrowables();
+    CReferenceType[]    exc = superMethod.getThrowables();
 
   _loop_:
     for (int i = 0; i < exceptions.length; i++) {
       if (exceptions[i].isCheckedException(context)) {
-	for (int j = 0; j < exc.length; j++) {
-	  if (exceptions[i].isAssignableTo(context, exc[j], substitution)) {
-	    continue _loop_;
-	  }
-	}
-	throw new UnpositionedError(KjcMessages.METHOD_THROWS_DIFFERENT, 
-                                    this, 
+        for (int j = 0; j < exc.length; j++) {
+          if (exceptions[i].isAssignableTo(context, exc[j], substitution)) {
+            continue _loop_;
+          }
+        }
+        throw new UnpositionedError(KjcMessages.METHOD_THROWS_DIFFERENT,
+                                    this,
                                     exceptions[i]);
       }
     }
@@ -526,7 +541,7 @@ public abstract class CMethod extends CMember {
    * Returns a string representation of this method.
    */
   public String toString() {
-    StringBuffer	buffer = new StringBuffer();
+    StringBuffer        buffer = new StringBuffer();
 
     buffer.append(returnType);
     buffer.append(" ");
@@ -536,7 +551,7 @@ public abstract class CMethod extends CMember {
     buffer.append("(");
     for (int i = 0; i < parameters.length; i++) {
       if (i != 0) {
-	buffer.append(", ");
+        buffer.append(", ");
       }
       buffer.append(parameters[i]);
     }
@@ -551,26 +566,26 @@ public abstract class CMethod extends CMember {
 
   /**
    * Generates a sequence of bytecode
-   * @param	code		the code sequence
-   * @param	nonVirtual	force non-virtual dispatching
+   * @param     code            the code sequence
+   * @param     nonVirtual      force non-virtual dispatching
    */
   public void genCode(GenerationContext context, boolean nonVirtual) {
     genCode(context, getOwner(), nonVirtual);
   }
   /**
    * Generates a sequence of bytecode
-   * @param	code		the code sequence
-   * @param	nonVirtual	force non-virtual dispatching
+   * @param     code            the code sequence
+   * @param     nonVirtual      force non-virtual dispatching
    */
   public void genCode(GenerationContext context, CClass prefixClass, boolean nonVirtual) {
     CodeSequence        code = context.getCodeSequence();
     String              prefixName;
 
     if (getOwner().getQualifiedName() == JAV_OBJECT) {
-      // java.lang.Object: 
-      // JLS 13.1 * Given a method invocation expression in a class or 
-      // interface C referencing a method named m declared in a (possibly 
-      // distinct) class or interface D, we define the qualifying type of 
+      // java.lang.Object:
+      // JLS 13.1 * Given a method invocation expression in a class or
+      // interface C referencing a method named m declared in a (possibly
+      // distinct) class or interface D, we define the qualifying type of
       // the method invocation as follows:
       // If D is Object then the qualifying type of the expression is Object
       prefixName = JAV_OBJECT;
@@ -579,32 +594,32 @@ public abstract class CMethod extends CMember {
     }
 
     if (prefixClass.isInterface() && !(prefixName == JAV_OBJECT)) {
-      int		size = 0;
+      int       size = 0;
 
       for (int i = 0; i < parameters.length; i++) {
-	size += parameters[i].getSize();
+        size += parameters[i].getSize();
       }
 
       code.plantInstruction(new InvokeinterfaceInstruction(prefixName,
-							   getIdent(),
-							   getSignature(),
-							   size + 1)); // this
+                                                           getIdent(),
+                                                           getSignature(),
+                                                           size + 1)); // this
     } else {
-      int	opcode;
+      int       opcode;
 
       if (isStatic()) {
-	opcode = opc_invokestatic;
+        opcode = opc_invokestatic;
       } else if (nonVirtual || isPrivate()) {
-	// JDK1.2 does not like ...|| isPrivate() || isFinal()
-	opcode = opc_invokespecial;
+        // JDK1.2 does not like ...|| isPrivate() || isFinal()
+        opcode = opc_invokespecial;
       } else {
-	opcode = opc_invokevirtual;
+        opcode = opc_invokevirtual;
       }
 
       code.plantMethodRefInstruction(opcode,
-				     prefixName,
-				     getIdent(),
-				     getSignature());
+                                     prefixName,
+                                     getIdent(),
+                                     getSignature());
     }
   }
 
@@ -631,5 +646,5 @@ public abstract class CMethod extends CMember {
   private CTypeVariable[]       typeVariables;
   private Hashtable             accessors;
 
-  public static final CMethod[] EMPTY = new CMethod[0];    
+  public static final CMethod[] EMPTY = new CMethod[0];
 }

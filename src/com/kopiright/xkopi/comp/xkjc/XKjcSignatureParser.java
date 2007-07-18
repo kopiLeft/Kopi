@@ -19,22 +19,25 @@
 
 package com.kopiright.xkopi.comp.xkjc;
 
-import com.kopiright.kopi.comp.kjc.CType; 
 import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.CTypeVariableAlias;
 import com.kopiright.kopi.comp.kjc.KjcSignatureParser;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
 
 public class XKjcSignatureParser extends KjcSignatureParser {
-	// USE THE OPTIMIZED WAYU !!! $$$
-	/**
-	 * Parse a java type signature
-	 *  Description : Attempts to parse the provided string as if it started with
-	 *    the Java VM-standard signature for a type.
-	 */
+  // USE THE OPTIMIZED WAY !!! $$$
+  /**
+   * Parse a java type signature
+   *  Description : Attempts to parse the provided string as if it started with
+   *    the Java VM-standard signature for a type.
+   */
   public CType parseSignature(TypeFactory factory, String signature, int from, int to) {
-    CType	type = super.parseSignature(factory, signature, from, to);
+    CType       type = super.parseSignature(factory, signature, from, to);
 
-    if (type instanceof CReferenceType) {
+    if (type instanceof CTypeVariableAlias) {
+      return type;
+    } else if (type instanceof CReferenceType) {
       if (((CReferenceType)type).getQualifiedName() == com.kopiright.xkopi.lib.type.NotNullDate.class.getName().replace('.','/')) {
         return XStdType.PDate;
       } else if (((CReferenceType)type).getQualifiedName() == com.kopiright.xkopi.lib.type.NotNullFixed.class.getName().replace('.','/')) {
@@ -45,9 +48,11 @@ public class XKjcSignatureParser extends KjcSignatureParser {
         return XStdType.PTime;
       } else if (((CReferenceType)type).getQualifiedName() == com.kopiright.xkopi.lib.type.NotNullWeek.class.getName().replace('.','/')) {
         return XStdType.PWeek;
+      } else {
+        return type;
       }
+    } else {
+      return type;
     }
-    
-    return type;
   }
 }

@@ -265,7 +265,6 @@ public class Main extends com.kopiright.xkopi.comp.xkjc.Main {
       errorFound = true;
       unit = null;
     } catch (Exception e) {
-      //err.println("{" + file.getPath() + ":" + scanner.getLine() + "} " + e.getMessage());
       e.printStackTrace();
       errorFound = true;
       unit = null;

@@ -58,10 +58,10 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * Entry point
    *
-   * @param	args		the command line arguments
+   * @param     args            the command line arguments
    */
   public static void main(String[] args) {
-    boolean	success;
+    boolean     success;
 
     success = new Main(null, null).run(args);
     System.exit(success ? 0 : 1);
@@ -70,8 +70,8 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * Creates a new compiler instance.
    *
-   * @param	workingDirectory	the working directory
-   * @param	diagnosticOutput	the diagnostic output stream
+   * @param     workingDirectory        the working directory
+   * @param     diagnosticOutput        the diagnostic output stream
    */
   public Main(String workingDirectory, PrintWriter diagnosticOutput) {
     super(workingDirectory, diagnosticOutput);
@@ -91,6 +91,7 @@ public class Main extends Compiler implements VKInsertParser {
   public int getSourceVersion() {
     return  1;
   }
+
   // ----------------------------------------------------------------------
   // RUN FROM COMMAND LINE
   // ----------------------------------------------------------------------
@@ -98,7 +99,7 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * Runs the compiler
    *
-   * @param	args		the command line arguments
+   * @param     args            the command line arguments
    */
   public boolean run(String[] args) {
     if (!parseArguments(args)) {
@@ -113,7 +114,7 @@ public class Main extends Compiler implements VKInsertParser {
     topLevel = new VKTopLevel(this, this, environment);
     errorFound = false;
 
-    
+
     gkopic.initialize(environment);
     com.kopiright.xkopi.comp.xkjc.XUtils.initialize(environment, options.xkjcpath, !options.nooo, options.database);
 
@@ -143,7 +144,7 @@ public class Main extends Compiler implements VKInsertParser {
 
    if (options.localizationOnly) {
      VKInsert[] tree = new VKInsert[infiles.size()];
-         
+
      for (int count = 0; count < tree.length; count++) {
        tree[count] = (VKInsert)parseFile((File)infiles.get(count), environment);
        tree[count].genLocalization(options.localizationDirectory);
@@ -153,7 +154,7 @@ public class Main extends Compiler implements VKInsertParser {
 
     // PARSING
     VKCompilationUnit[]  tree = new VKCompilationUnit[infiles.size()];
-    
+
     for (int count = 0; count < tree.length; count++) {
       tree[count] = (VKCompilationUnit)parseFile((File)infiles.get(count), environment);
     }
@@ -184,15 +185,15 @@ public class Main extends Compiler implements VKInsertParser {
          reportTrouble(e);
        }
      }
-     
+
      if (errorFound) {
        return false;
      }
 
-     JCompilationUnit[]	cunits = topLevel.genCUnits(this, tree);
+     JCompilationUnit[] cunits = topLevel.genCUnits(this, tree);
 
      // $$$ IN ONE BIG METHOD IN GKOPIC
-     
+
      if (!gkopic.join(cunits)) {
        return false;
      }
@@ -209,17 +210,17 @@ public class Main extends Compiler implements VKInsertParser {
        return false;
      }
    }
-   
+
    if (options.beautify) {
      for (int count = 0; count < tree.length; count++) {
        tree[count].genVKCode(options.destination, environment.getTypeFactory());
      }
    }
-   
 
-   
+
+
    gkopic.genCode(environment.getTypeFactory());
-   
+
    if (verboseMode()) {
      inform(CompilerMessages.COMPILATION_ENDED);
    }
@@ -228,7 +229,7 @@ public class Main extends Compiler implements VKInsertParser {
       // One warning in something deprecated is used
       inform(KjcMessages.SOMETHING_DEPRECATED_USED);
     }
-    
+
     return true;
   }
 
@@ -245,27 +246,27 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * Parse the argument list and set flags
    *
-   * @param	args		the command line arguments
-   * @return	parsing error occur
+   * @param     args            the command line arguments
+   * @return    parsing error occur
    */
   protected boolean parseArguments(String[] args) {
     options = new VKOptions();
-    gkopic = new com.kopiright.vkopi.comp.trig.Main(getWorkingDirectory(), getDiagnosticOutput());	//!!!FIXME
+    gkopic = new com.kopiright.vkopi.comp.trig.Main(getWorkingDirectory(), getDiagnosticOutput());      //!!!FIXME
     gkopic.setOptions(options);
 
     if (! options.parseCommandLine(args)) {
       return false;
     }
 
-    List	gfiles = new Vector();
+    List        gfiles = new Vector();
 
     for (int i = 0; i < options.nonOptions.length; i++) {
-      String	suffix = options.nonOptions[i];
+      String    suffix = options.nonOptions[i];
 
       if (suffix.endsWith(".vp") || suffix.endsWith(".vf") || suffix.endsWith(".vr")) {
-	infiles.add(options.nonOptions[i]);
+        infiles.add(options.nonOptions[i]);
       } else {
-	gfiles.add(options.nonOptions[i]);
+        gfiles.add(options.nonOptions[i]);
       }
     }
 
@@ -281,18 +282,18 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * Reports a trouble (error or warning).
    *
-   * @param	trouble		a description of the trouble to report.
+   * @param     trouble         a description of the trouble to report.
    */
   public void reportTrouble(PositionedError trouble) {
     if (trouble instanceof CWarning) {
       if (options.warning != 0 &&
           filterWarning((CWarning)trouble)) {
-	inform(trouble);
+        inform(trouble);
       }
     } else {
       if (trouble.getTokenReference() != TokenReference.NO_REF) {
-	inform(trouble);
-	errorFound = true;
+        inform(trouble);
+        errorFound = true;
       }
     }
   }
@@ -329,7 +330,7 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * Reports a trouble.
    *
-   * @param	trouble		a description of the trouble to report.
+   * @param     trouble         a description of the trouble to report.
    */
   public void reportTrouble(UnpositionedError trouble) {
     inform(trouble);
@@ -350,22 +351,22 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * parse the givven file and return a compilation unit
    * side effect: increment error number
-   * @param	file		the name of the file (assert exists)
-   * @return	the compilation unit defined by this file
+   * @param     file            the name of the file (assert exists)
+   * @return    the compilation unit defined by this file
    */
   protected VKPhylum parseFile(File file, VKEnvironment environment) {
-    InputBuffer		buffer;
+    InputBuffer buffer;
 
     try {
       buffer = new InputBuffer(file, options.encoding);
     } catch (UnsupportedEncodingException e) {
       reportTrouble(new UnpositionedError(CompilerMessages.UNSUPPORTED_ENCODING,
-					  options.encoding));
+                                          options.encoding));
       return null;
     } catch (IOException e) {
       reportTrouble(new UnpositionedError(CompilerMessages.IO_EXCEPTION,
-					  file.getPath(),
-					  e.getMessage()));
+                                          file.getPath(),
+                                          e.getMessage()));
       return null;
     }
 
@@ -396,7 +397,6 @@ public class Main extends Compiler implements VKInsertParser {
       reportTrouble(parser.beautifyParseError(e));
       unit = null;
     } catch (Exception e) {
-      //err.println("{" + file.getPath() + ":" + scanner.getLine() + "} " + e.getMessage());
       e.printStackTrace();
       errorFound = true;
       unit = null;
@@ -410,8 +410,8 @@ public class Main extends Compiler implements VKInsertParser {
       buffer.close();
     } catch (IOException e) {
       reportTrouble(new UnpositionedError(CompilerMessages.IO_EXCEPTION,
-					  file.getPath(),
-					  e.getMessage()));
+                                          file.getPath(),
+                                          e.getMessage()));
     }
 
     return unit;
@@ -420,45 +420,44 @@ public class Main extends Compiler implements VKInsertParser {
   /**
    * parse the givven file and return a compilation unit
    * side effect: increment error number
-   * @param	file		the name of the file (assert exists)
-   * @return	the compilation unit defined by this file
+   * @param     file            the name of the file (assert exists)
+   * @return    the compilation unit defined by this file
    */
   public VKInsert parseInsert(File file, VKEnvironment environment) {
-    InputBuffer		buffer;
+    InputBuffer buffer;
 
     try {
       buffer = new InputBuffer(file, options.encoding);
     } catch (UnsupportedEncodingException e) {
       reportTrouble(new UnpositionedError(CompilerMessages.UNSUPPORTED_ENCODING,
-					  options.encoding));
+                                          options.encoding));
       return null;
     } catch (IOException e) {
       reportTrouble(new UnpositionedError(CompilerMessages.IO_EXCEPTION,
-					  file.getPath(),
-					  e.getMessage()));
+                                          file.getPath(),
+                                          e.getMessage()));
       return null;
     }
 
-    Parser		parser = null;
-    VKInsert		unit;
-    long		lastTime = System.currentTimeMillis();
+    Parser      parser = null;
+    VKInsert    unit;
+    long        lastTime = System.currentTimeMillis();
 
     try {
       if (file.getName().endsWith(".vf") || file.getName().endsWith(".vr")) {
-	parser = new BaseParser(this, buffer, environment);
-	unit = ((BaseParser)parser).vkCompilationUnit();
+        parser = new BaseParser(this, buffer, environment);
+        unit = ((BaseParser)parser).vkCompilationUnit();
       } else if (file.getName().endsWith(".vp")) {
-	parser = new PrintParser(this, buffer, environment);
-	unit = ((PrintParser)parser).prInsert();
+        parser = new PrintParser(this, buffer, environment);
+        unit = ((PrintParser)parser).prInsert();
       } else {
-	inform(BaseMessages.UNKNOWN_FILE_SUFFIX, file.getPath());
-	return null;
+        inform(BaseMessages.UNKNOWN_FILE_SUFFIX, file.getPath());
+        return null;
       }
     } catch (ParserException e) {
       reportTrouble(parser.beautifyParseError(e));
       unit = null;
     } catch (Exception e) {
-      //err.println("{" + file.getPath() + ":" + scanner.getLine() + "} " + e.getMessage());
       e.printStackTrace();
       errorFound = true;
       unit = null;
@@ -472,8 +471,8 @@ public class Main extends Compiler implements VKInsertParser {
       buffer.close();
     } catch (IOException e) {
       reportTrouble(new UnpositionedError(CompilerMessages.IO_EXCEPTION,
-					  file.getPath(),
-					  e.getMessage()));
+                                          file.getPath(),
+                                          e.getMessage()));
     }
 
     return unit;
@@ -494,14 +493,13 @@ public class Main extends Compiler implements VKInsertParser {
   // PROTECTED DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  protected static boolean		errorFound;
+  protected static com.kopiright.vkopi.comp.trig.Main   gkopic;
+  protected static boolean                              errorFound;
+  private static VKTopLevel                             topLevel;
 
-  private static VKTopLevel		topLevel;
-  // it must be initialized to null otherwise the filter option is not used
-  private WarningFilter                 filter = null;
+  // it must be initialized to null, otherwise the filter option is not used
+  private WarningFilter filter = null;
 
-  protected VKOptions			options;
-
-  protected List			infiles;
-  protected static com.kopiright.vkopi.comp.trig.Main	gkopic;
+  protected VKOptions   options;
+  protected List        infiles;
 }

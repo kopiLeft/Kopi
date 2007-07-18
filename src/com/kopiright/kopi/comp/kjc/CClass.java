@@ -32,7 +32,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.SimpleStringBuffer;
 
 /**
- * This class represents the exported members of a class (inner classes, 
+ * This class represents the exported members of a class (inner classes,
  * methods and fields)
  */
 public abstract class CClass extends CMember {
@@ -60,7 +60,7 @@ public abstract class CClass extends CMember {
     this.superClassType = superClass;
     this.qualifiedAndAnonymous = false;
 
-    int		cursor = qualifiedName.lastIndexOf('/');
+    int cursor = qualifiedName.lastIndexOf('/');
 
     this.packageName = cursor > 0 ? qualifiedName.substring(0, cursor).intern() : "";
   }
@@ -69,8 +69,8 @@ public abstract class CClass extends CMember {
    * Ends the definition of this class
    */
   public void close(CReferenceType[] interfaces,
-		    Hashtable fields,
-		    CMethod[] methods)
+                    Hashtable fields,
+                    CMethod[] methods)
   {
     this.interfaces = interfaces;
     this.fields = fields;
@@ -83,7 +83,7 @@ public abstract class CClass extends CMember {
   // ----------------------------------------------------------------------
 
   /**
-   * @return	the interface
+   * @return    the interface
    */
   public CClass getCClass() {
     return this;
@@ -97,14 +97,14 @@ public abstract class CClass extends CMember {
    * occurs within the body of another class or interface. A top level
    * type is a type that is not a nested class.
    *
-   * @return	true iff this type is nested
+   * @return    true iff this type is nested
    */
   public boolean isNested() {
     return getOwner() != null;
   }
 
   /**
-   * @return	true if this member is abstract
+   * @return    true if this member is abstract
    */
   public boolean isAbstract() {
     return CModifier.contains(getModifiers(), ACC_ABSTRACT);
@@ -147,7 +147,7 @@ public abstract class CClass extends CMember {
                                                               new JPhylum[0],
                                                               null,
                                                               null);
-      
+
       decl.generateInterface(context.getEnvironment().getClassReader(), null, "");
       decl.join(context.getCompilationUnitContext());
       decl.checkInterface(context.getCompilationUnitContext());
@@ -162,7 +162,7 @@ public abstract class CClass extends CMember {
   }
 
   /**
-   * Returns true if the classs can declare static members, 
+   * Returns true if the classs can declare static members,
    * which are not compile-time constatn fields.
    */
   public boolean canDeclareStatic() {
@@ -276,7 +276,7 @@ public abstract class CClass extends CMember {
   /**
    * Returns the field with the specified name.
    *
-   * @param	ident		the name of the field
+   * @param     ident           the name of the field
    */
   public CField getField(String ident) {
     return (CField)fields.get(ident);
@@ -293,11 +293,11 @@ public abstract class CClass extends CMember {
    * Returns an array containing the fields defined by this class.
    */
   public CField[] getFields() {
-    CField[]		result;
+    CField[]    result;
 
     result = new CField[fields.size()];
     for (Enumeration elems = fields.elements(); elems.hasMoreElements(); ) {
-      CSourceField	field = (CSourceField)elems.nextElement();
+      CSourceField      field = (CSourceField)elems.nextElement();
 
       result[field.getPosition()] = field;
     }
@@ -340,8 +340,8 @@ public abstract class CClass extends CMember {
 
   /**
    * descendsFrom
-   * @param	from	an other CClass
-   * @return	true if this class inherit from "from" or equals "from"
+   * @param     from    an other CClass
+   * @return    true if this class inherit from "from" or equals "from"
    */
   public boolean descendsFrom(CClass from) {
     if (from == this) {
@@ -353,9 +353,9 @@ public abstract class CClass extends CMember {
       return true;
     } else {
       for (int i = 0; i < interfaces.length; i++) {
-	if (interfaces[i].getCClass().descendsFrom(from)) {
-	  return true;
-	}
+        if (interfaces[i].getCClass().descendsFrom(from)) {
+          return true;
+        }
       }
 
       return false;
@@ -371,7 +371,7 @@ public abstract class CClass extends CMember {
 
       if (isGenericClass()) {
         typeArgs = from.getArguments();
-      } else { 
+      } else {
         typeArgs = CReferenceType.EMPTY;
       }
 
@@ -382,11 +382,11 @@ public abstract class CClass extends CMember {
 
           if (tArg.isTypeVariable()) {
             tArg = substitution[((CTypeVariable) tArg).getIndex()];
-          } 
+          }
           if (!tArg.equals(actuals[i], substitution)) {
             return false;
           }
-          
+
 //           if (!tArg.equals(actuals[i])) {
 //             return false;
 //           }
@@ -434,7 +434,7 @@ public abstract class CClass extends CMember {
 
   /**
    * Returns true iff this class is defined inside the specified class
-   * @param	outer		another class
+   * @param     outer           another class
    */
   public boolean isDefinedInside(CClass outer) {
     if (this == outer) {
@@ -448,7 +448,7 @@ public abstract class CClass extends CMember {
 
   /**
    * Returns true iff this class is defined inside the specified class
-   * @param	outer		another class
+   * @param     outer           another class
    */
   public boolean isDefinedInside(String outer) {
     if (getIdent() == outer) {
@@ -462,8 +462,8 @@ public abstract class CClass extends CMember {
 
   public boolean dependsOn(CClass from) {
     // JLS 8.1.3
-    // A class C directly depends on a type T if T is mentioned 
-    // in the extends or implements clause of C 
+    // A class C directly depends on a type T if T is mentioned
+    // in the extends or implements clause of C
     if (this == from) {
       return true;
     }
@@ -472,8 +472,8 @@ public abstract class CClass extends CMember {
       if (interfaces[i].getCClass() == from) {
         return true;
       }
-      // C directly depends on a class D that depends 
-      // on T (using this definition recursively). 
+      // C directly depends on a class D that depends
+      // on T (using this definition recursively).
       if (interfaces[i].getCClass().dependsOn(from)) {
         return true;
       }
@@ -491,11 +491,11 @@ public abstract class CClass extends CMember {
         return false; //object depends on nothing
       }
 
-      // C directly depends on T. 
+      // C directly depends on T.
       if (superClassType.getCClass() == from) {
         return true;
-      } 
-      // C directly depends on an interface I that depends (§9.1.2) on T. 
+      }
+      // C directly depends on an interface I that depends (§9.1.2) on T.
       if (superClassType.getCClass().dependsOn(from)) {
         return true;
       }
@@ -521,35 +521,35 @@ public abstract class CClass extends CMember {
   // ----------------------------------------------------------------------
 
   public void checkInstantiation(TokenReference ref, CTypeContext context, CReferenceType[] typeArguments) throws UnpositionedError {
-    CTypeVariable[]     typeVariables = getTypeVariables();
+//     CTypeVariable[]     typeVariables = getTypeVariables();
 
-    if (isGenericClass()) {
-      if (typeArguments.length == 0) {
-	context.reportTrouble(new CWarning(TokenReference.NO_REF,
-                                           KjcMessages.ERASURE_USED,
-                                           getQualifiedName()));
-        
-      } else {
-        if (typeArguments.length < typeVariables.length) {
-          throw new UnpositionedError(KjcMessages.LESS_TYPEARG, 
-                                      getQualifiedName(),
-                                      String.valueOf(typeVariables.length));
-        }
-        if (typeArguments.length > typeVariables.length) {
-          throw new UnpositionedError(KjcMessages.OVERSUP_TYPEARG, 
-                                      getQualifiedName(),
-                                      String.valueOf(typeVariables.length));
-        }
+//     if (isGenericClass()) {
+//       if (typeArguments.length == 0) {
+//         context.reportTrouble(new CWarning(TokenReference.NO_REF,
+//                                            KjcMessages.ERASURE_USED,
+//                                            getQualifiedName()));
 
-        for (int i = 0; i < typeArguments.length; i++) {
-          if (!typeArguments[i].isAssignableTo(context, typeVariables[i], typeArguments, true)) {
-            throw new UnpositionedError(KjcMessages.TYPEARG_NOT_IN_BOUND, 
-                                        typeArguments[i].getIdent(),
-                                        typeVariables[i].getIdent());
-          }
-        }
-      }
-    }
+//       } else {
+//         if (typeArguments.length < typeVariables.length) {
+//           throw new UnpositionedError(KjcMessages.LESS_TYPEARG,
+//                                       getQualifiedName(),
+//                                       String.valueOf(typeVariables.length));
+//         }
+//         if (typeArguments.length > typeVariables.length) {
+//           throw new UnpositionedError(KjcMessages.OVERSUP_TYPEARG,
+//                                       getQualifiedName(),
+//                                       String.valueOf(typeVariables.length));
+//         }
+
+//         for (int i = 0; i < typeArguments.length; i++) {
+//           if (!typeArguments[i].isAssignableTo(context, typeVariables[i], typeArguments, true)) {
+//             throw new UnpositionedError(KjcMessages.TYPEARG_NOT_IN_BOUND,
+//                                         typeArguments[i].getIdent(),
+//                                         typeVariables[i].getIdent());
+//           }
+//         }
+//       }
+//     }
   }
   // ----------------------------------------------------------------------
   // LOOKUP
@@ -561,31 +561,31 @@ public abstract class CClass extends CMember {
    * include their package and simple names that are visible thanks to some
    * previous import statement or visible because they are in this file.
    * If one is found, that entry is returned, otherwise null is returned.
-   * @param	caller		the class of the caller
-   * @param	name		a TypeName (6.5.2)
+   * @param     caller          the class of the caller
+   * @param     name            a TypeName (6.5.2)
    */
-  public CClass lookupClass(CClass caller, String name)  
+  public CClass lookupClass(CClass caller, String name)
     throws UnpositionedError {
-    CClass[]    candidates = new CClass[(interfaces == null) ? 1 : interfaces.length +1]; 
+    CClass[]    candidates = new CClass[(interfaces == null) ? 1 : interfaces.length +1];
     int         length = 0;
 
     if (innerClasses != null && (name.indexOf('/') == -1)) {
      for (int i = 0; i < innerClasses.length; i++) {
         CClass  innerClass = innerClasses[i].getCClass();
 
-	if (innerClass.getIdent().equals(name)) {
-	  if (innerClass.isAccessible(caller)) {
+        if (innerClass.getIdent().equals(name)) {
+          if (innerClass.isAccessible(caller)) {
             candidates[length++] = innerClass;
           }
           break;
-	}
+        }
       }
-    }  
+    }
 
     if (length != 0 ) {
-      /* JLS 8.5 If the class declares a member type with a certain name, 
-         then the declaration of that type is said to hide any and all 
-         accessible declarations of member types with the same name in 
+      /* JLS 8.5 If the class declares a member type with a certain name,
+         then the declaration of that type is said to hide any and all
+         accessible declarations of member types with the same name in
          superclasses and superinterfaces of the class. */
       return candidates[0];
     } else {
@@ -620,10 +620,10 @@ public abstract class CClass extends CMember {
         if (length == 1) {
           return candidates[0];
         } else {
-          /* JLS 8.5 A class may inherit two or more type declarations with 
-             the same name, either from two interfaces or from its superclass 
-             and an interface. A compile-time error occurs on any attempt to 
-             refer to any ambiguously inherited class or interface by its simple 
+          /* JLS 8.5 A class may inherit two or more type declarations with
+             the same name, either from two interfaces or from its superclass
+             and an interface. A compile-time error occurs on any attempt to
+             refer to any ambiguously inherited class or interface by its simple
              name. */
           throw new UnpositionedError(KjcMessages.CLASS_AMBIGUOUS, name);
         }
@@ -634,17 +634,17 @@ public abstract class CClass extends CMember {
   /**
    * Searches the class or interface to locate declarations of fields that are
    * accessible.
-   * 
-   * @param	caller		the class of the caller
+   *
+   * @param     caller          the class of the caller
    * @param     primary         the class of the primary expression (can be null)
-   * @param	ident		the simple name of the field
-   * @return	the field definition
-   * @exception UnpositionedError	this error will be positioned soon
+   * @param     ident           the simple name of the field
+   * @return    the field definition
+   * @exception UnpositionedError       this error will be positioned soon
    */
   public CField lookupField(CClass caller, CClass primary, String ident)
     throws UnpositionedError
   {
-    CField	field = getField(ident);
+    CField      field = getField(ident);
 
     if (field != null && field.isAccessible(primary, caller)) {
       return field;
@@ -656,16 +656,16 @@ public abstract class CClass extends CMember {
   /**
    * Searches the class or interface to locate declarations of fields that are
    * accessible.
-   * 
-   * @param	caller		the class of the caller
-   * @param	ident		the simple name of the field
-   * @return	the field definition
-   * @exception UnpositionedError	this error will be positioned soon
+   *
+   * @param     caller          the class of the caller
+   * @param     ident           the simple name of the field
+   * @return    the field definition
+   * @exception UnpositionedError       this error will be positioned soon
    */
   public CField lookupSuperField(CClass caller, CClass primary, String ident)
     throws UnpositionedError
   {
-    CField	field;
+    CField      field;
 
     if (superClassType == null) {
       // java.lang.Object
@@ -675,14 +675,14 @@ public abstract class CClass extends CMember {
     }
 
     for (int i = 0; i < interfaces.length; i++) {
-      CField	newField = interfaces[i].getCClass().lookupField(caller, primary, ident);
+      CField    newField = interfaces[i].getCClass().lookupField(caller, primary, ident);
 
       if ((field != null) && (newField != null) && (field.getOwner() != newField.getOwner())) {
-	throw new UnpositionedError(KjcMessages.FIELD_AMBIGUOUS, ident);
+        throw new UnpositionedError(KjcMessages.FIELD_AMBIGUOUS, ident);
       }
 
       if (newField != null) {
-	field = newField;
+        field = newField;
       }
     }
 
@@ -696,47 +696,47 @@ public abstract class CClass extends CMember {
    * invoked on the given arguments. There may be more than one such method
    * declaration, in which case the most specific one is chosen.
    *
-   * @param	caller		the class of the caller
-   * @param	ident		method invocation name
-   * @param	actuals		method invocation arguments
-   * @return	the method to apply
-   * @exception UnpositionedError	this error will be positioned soon
+   * @param     caller          the class of the caller
+   * @param     ident           method invocation name
+   * @param     actuals         method invocation arguments
+   * @return    the method to apply
+   * @exception UnpositionedError       this error will be positioned soon
    */
   public CMethod lookupMethod(CTypeContext context, CClass caller, CType primary, String ident, CType[] actuals, CReferenceType[] substitution)
     throws UnpositionedError
   {
-    CMethod[]	applicable = getApplicableMethods(context, ident, actuals, substitution);
-    CMethod[]	candidates = new CMethod[applicable.length];
-    int		length = 0;
+    CMethod[]   applicable = getApplicableMethods(context, ident, actuals, substitution);
+    CMethod[]   candidates = new CMethod[applicable.length];
+    int length = 0;
 
 
     // find the maximally specific methods
   _all_methods_:
     for (int i = 0; i < applicable.length; i++) {
-      int	current = 0;
+      int       current = 0;
 
       if (! applicable[i].isAccessible(primary, caller)) {
-	continue _all_methods_;
+        continue _all_methods_;
       }
 
       for (;;) {
-	if (current == length) {
-	  // no other method is more specific: add it
-	  candidates[length++] = applicable[i];
-	  continue _all_methods_;
-	} else if (candidates[current].isMoreSpecificThan(context, applicable[i], substitution)) {
-	  // other method is more specific: skip it
-	  continue _all_methods_;
-	} else if (applicable[i].isMoreSpecificThan(context, candidates[current], substitution)) {
-	  // this method is more specific: remove the other
-	  if (current < length - 1) {
-	    candidates[current] = candidates[length - 1];
-	  }
-	  length -= 1;
-	} else {
-	  // none is more specific than the other: check next candidate
-	  current += 1;
-	}
+        if (current == length) {
+          // no other method is more specific: add it
+          candidates[length++] = applicable[i];
+          continue _all_methods_;
+        } else if (candidates[current].isMoreSpecificThan(context, applicable[i], substitution)) {
+          // other method is more specific: skip it
+          continue _all_methods_;
+        } else if (applicable[i].isMoreSpecificThan(context, candidates[current], substitution)) {
+          // this method is more specific: remove the other
+          if (current < length - 1) {
+            candidates[current] = candidates[length - 1];
+          }
+          length -= 1;
+        } else {
+          // none is more specific than the other: check next candidate
+          current += 1;
+        }
       }
     }
 
@@ -751,24 +751,24 @@ public abstract class CClass extends CMember {
 
       // do all the maximally specific methods have the same signature ?
       for (int i = 1; i < length; i++) {
-	if (!candidates[i].hasSameSignature(candidates[0], substitution)) {
-	  // more than one most specific method with different signatures: ambiguous
-	  throw new UnpositionedError(KjcMessages.METHOD_INVOCATION_AMBIGUOUS,
-				      new Object[] {
-					buildCallSignature(ident, actuals),
-					candidates[0],
-					candidates[i]
-				      });
-	}
+        if (!candidates[i].hasSameSignature(candidates[0], substitution)) {
+          // more than one most specific method with different signatures: ambiguous
+          throw new UnpositionedError(KjcMessages.METHOD_INVOCATION_AMBIGUOUS,
+                                      new Object[] {
+                                        buildCallSignature(ident, actuals),
+                                        candidates[0],
+                                        candidates[i]
+                                      });
+        }
       }
 
       // now, all maximally specific methods have the same signature
       // is there a non-abstract method (there is at most one) ?
       for (int i = 0; i < length; i++) {
-	if (! candidates[i].isAbstract()) {
-	  // the non-abstract method is the most specific one
-	  return candidates[i];
-	}
+        if (! candidates[i].isAbstract()) {
+          // the non-abstract method is the most specific one
+          return candidates[i];
+        }
       }
 
       // now, all maximally specific methods have the same signature and are abstract
@@ -787,13 +787,13 @@ public abstract class CClass extends CMember {
    * Returns a string representation of the call.
    */
   private static String buildCallSignature(String ident, CType[] actuals) {
-    StringBuffer	buffer = new StringBuffer();
+    StringBuffer        buffer = new StringBuffer();
 
     buffer.append(ident);
     buffer.append("(");
     for (int i = 0; i < actuals.length; i++) {
       if (i != 0) {
-	buffer.append(", ");
+        buffer.append(", ");
       }
       buffer.append(actuals[i]);
     }
@@ -806,14 +806,14 @@ public abstract class CClass extends CMember {
    * Searches the superclass and superinterfaces to locate method declarations
    * that are applicable. No check for accessibility is done here.
    *
-   * @param	ident		method invocation name
-   * @param	actuals		method invocation arguments
-   * @exception UnpositionedError	this error will be positioned soon
+   * @param     ident           method invocation name
+   * @param     actuals         method invocation arguments
+   * @exception UnpositionedError       this error will be positioned soon
    */
 //   public CMethod[] lookupSuperMethod(String ident, CType[] actuals)
 //     throws UnpositionedError
 //   {
-//     ArrayList	container = new ArrayList();
+//     ArrayList        container = new ArrayList();
 
 //     if (superClassType != null) {
 //       // java.lang.object
@@ -828,7 +828,7 @@ public abstract class CClass extends CMember {
 //   }
 
   public void checkOverriding(CClassContext context, CMethod method, ArrayList bridges)
-    throws UnpositionedError 
+    throws UnpositionedError
   {
     String      ident = method.getIdent();
 
@@ -847,11 +847,11 @@ public abstract class CClass extends CMember {
     }
   }
 
-  protected void checkOverriding(CClassContext context, 
-                                 CMethod method, 
-                                 CReferenceType[] substitution, 
-                                 ArrayList bridges) 
-    throws UnpositionedError 
+  protected void checkOverriding(CClassContext context,
+                                 CMethod method,
+                                 CReferenceType[] substitution,
+                                 ArrayList bridges)
+    throws UnpositionedError
   {
     checkOverridingInThis(context, method, substitution, bridges);
 
@@ -898,16 +898,16 @@ public abstract class CClass extends CMember {
     }
   }
 
-  protected void checkOverridingInThis(CClassContext context, 
-                                       CMethod ovMethod, 
+  protected void checkOverridingInThis(CClassContext context,
+                                       CMethod ovMethod,
                                        CReferenceType[] substitution,
                                        ArrayList bridges)
-    throws UnpositionedError 
+    throws UnpositionedError
   {
     for (int i = 0; i < methods.length; i++) {
       CMethod   method = methods[i];
+
       boolean   direct;  //direct overriding?
-      boolean   indirect;//indirct overriding?
 
       if (method.isPrivate()) {
         continue;
@@ -915,14 +915,11 @@ public abstract class CClass extends CMember {
       if (ovMethod.getIdent() != method.getIdent()) {
         continue;
       }
-      direct = ovMethod.hasSameSignature(context, method);
-      indirect = ovMethod.hasSameSignature(method, substitution);
-      if (!direct && !indirect) {
-        continue;
-      }
 
-      if (direct && !indirect) {
-        throw new UnpositionedError(KjcMessages.GENERIC_OVER_RULE2, ovMethod, method);
+      direct = ovMethod.hasSameSignature(context, method);
+
+      if (!direct) {
+        continue;
       } else {
         ovMethod.checkOverriding(context, method, substitution);
 
@@ -951,10 +948,6 @@ public abstract class CClass extends CMember {
           if (rt2.isClassType() && rt1.getCClass() != rt2.getCClass() && !method.isPrivate()) {
             bridges.add(method); //construct bridge
           }
-        } else  if (indirect) {
-          if (!method.isPrivate()) {
-            bridges.add(method); //construct bridge
-          }
         }
       }
     }
@@ -965,27 +958,27 @@ public abstract class CClass extends CMember {
    *
    * JLS 8.1.1.1 :
    * A class C has abstract methods if any of the following is true :
-   * -	C explicitly contains a declaration of an abstract method.
-   * -	Any of C's superclasses declares an abstract method that has
-   *	not been implemented in C or any of its superclasses.
-   * -	A direct superinterface of C declares or inherits a method
-   *	(which is therefore necessarily abstract) and C neither
-   *	declares nor inherits a method that implements it.
+   * -  C explicitly contains a declaration of an abstract method.
+   * -  Any of C's superclasses declares an abstract method that has
+   *    not been implemented in C or any of its superclasses.
+   * -  A direct superinterface of C declares or inherits a method
+   *    (which is therefore necessarily abstract) and C neither
+   *    declares nor inherits a method that implements it.
    */
   public CMethod[] getAbstractMethods(CTypeContext context, boolean test) throws UnpositionedError {
-    ArrayList	container = new ArrayList();
+    ArrayList   container = new ArrayList();
 
     // C explicitly contains a declaration of an abstract method.
     for (int i = 0; i < methods.length; i++) {
       if (methods[i].isAbstract()) {
-	container.add(methods[i]);
+        container.add(methods[i]);
       }
     }
 
     // Any of C's superclasses declares an abstract method that has
     // not been implemented in C or any of its superclasses.
     if (superClassType != null) {
-      CMethod[]		inherited;
+      CMethod[] inherited;
 
       inherited = getSuperClass().getAbstractMethods(context, false);
       for (int i = 0; i < inherited.length; i++) {
@@ -996,9 +989,9 @@ public abstract class CClass extends CMember {
           }
         }
 
-	if (getImplementingMethod(context, inherited[i], this, true) == null) {
-	  container.add(inherited[i]);
-	}
+        if (getImplementingMethod(context, inherited[i], this, true) == null) {
+          container.add(inherited[i]);
+        }
       }
     }
 
@@ -1008,21 +1001,21 @@ public abstract class CClass extends CMember {
     ArrayList         interfaceMethods = new ArrayList();
 
     for (int i = 0; i < interfaces.length; i++) {
-      CMethod[]		inherited;
+      CMethod[] inherited;
 
       inherited = interfaces[i].getCClass().getAbstractMethods(context, false);
       for (int j = 0; j < inherited.length; j++) {
         CMethod         implMethod = getImplementingMethod(context, inherited[j], this, false);
 
-	if (implMethod == null) {
-	  container.add(inherited[j]);
-	} 
-        
+        if (implMethod == null) {
+          container.add(inherited[j]);
+        }
+
         if (test) {
           if (implMethod != null) {
-            // FIX 020206 lackner 
+            // FIX 020206 lackner
             // parameter null is substitution in the generic case!!
-            implMethod.checkOverriding(context, inherited[j], null);  
+            implMethod.checkOverriding(context, inherited[j], null);
           } else {
             // check it against other interface methods
             Iterator      en = interfaceMethods.iterator();
@@ -1038,7 +1031,7 @@ public abstract class CClass extends CMember {
 
           }
           interfaceMethods.add(inherited[j]);
-        }  
+        }
       }
     }
 
@@ -1049,13 +1042,13 @@ public abstract class CClass extends CMember {
     ArrayList         interfaceMethods = new ArrayList();
 
     for (int i = 0; i < interfaces.length; i++) {
-      CMethod[]		inherited;
+      CMethod[] inherited;
 
       inherited = interfaces[i].getCClass().getAbstractMethods(context, false);
       for (int j = 0; j < inherited.length; j++) {
         // check it against other interface methods
         Iterator      en = interfaceMethods.iterator();
-          
+
         while (en.hasNext()) {
           CMethod     iMethod = (CMethod) en.next();
 
@@ -1072,7 +1065,7 @@ public abstract class CClass extends CMember {
   /**
    * JLS 5.5 Casting interface to interface
    *
-   * @return true if there exits a method with the 
+   * @return true if there exits a method with the
    *              same signature but different return type
    */
   public boolean testAbstractMethodReturnTypes(CTypeContext context, CClass clazz) {
@@ -1108,11 +1101,11 @@ public abstract class CClass extends CMember {
               if (returnType.isClassType()) {
                 if (!returnType.isAssignableTo(context, thisReturnType)) {
                   return false;
-                }      
+                }
               } else {
                 if (!returnType.equals(thisReturnType)) {
                   return false;
-                }        
+                }
               }
             }
             // correct implementation found
@@ -1131,18 +1124,18 @@ public abstract class CClass extends CMember {
    * Returns the non-abstract method that implements the
    * specified method, or null if the method is not implemented.
    *
-   * @param	pattern		the method specification
-   * @param	localClassOnly	do not search superclasses ?
+   * @param     pattern         the method specification
+   * @param     localClassOnly  do not search superclasses ?
    */
-  protected CMethod getImplementingMethod(CTypeContext context, 
-                                          CMethod pattern, 
+  protected CMethod getImplementingMethod(CTypeContext context,
+                                          CMethod pattern,
                                           CClass caller,
-					  boolean localClassOnly) throws UnpositionedError
+                                          boolean localClassOnly) throws UnpositionedError
   {
     for (int i = 0; i < methods.length; i++) {
       if (methods[i].getIdent() == pattern.getIdent()
-	  && methods[i].hasSameSignature(context, pattern)) {
-	return (methods[i].isAbstract() || !methods[i].isAccessible(caller))? null : methods[i];
+          && methods[i].hasSameSignature(context, pattern)) {
+        return (methods[i].isAbstract() || !methods[i].isAccessible(caller))? null : methods[i];
       }
     }
 
@@ -1155,11 +1148,11 @@ public abstract class CClass extends CMember {
 
   /**
    * Returns all applicable methods (JLS 15.12.2.1).
-   * @param	ident		method invocation name
-   * @param	actuals		method invocation arguments
+   * @param     ident           method invocation name
+   * @param     actuals         method invocation arguments
    */
   public CMethod[] getApplicableMethods(CTypeContext context, String ident, CType[] actuals, CReferenceType[] substitution) {
-    ArrayList	container = new ArrayList();
+    ArrayList   container = new ArrayList();
 
     collectApplicableMethods(context, container, ident, actuals, substitution);
     return (CMethod[]) container.toArray(new CMethod[container.size()]); //Utils.toArray(container, CMethod.class);
@@ -1167,11 +1160,15 @@ public abstract class CClass extends CMember {
 
   /**
    * Adds all applicable methods (JLS 15.12.2.1) to the specified container.
-   * @param	container	the container for the methods
-   * @param	ident		method invocation name
-   * @param	actuals		method invocation arguments
+   * @param     container       the container for the methods
+   * @param     ident           method invocation name
+   * @param     actuals         method invocation arguments
    */
-  public void collectApplicableMethods(CTypeContext context, ArrayList container, String ident, CType[] actuals, CReferenceType[] substitution) {
+  public void collectApplicableMethods(CTypeContext context,
+                                       ArrayList container,
+                                       String ident,
+                                       CType[] actuals,
+                                       CReferenceType[] substitution) {
     // look in current class
     for (int i = 0; i < methods.length; i++) {
       if (methods[i].isApplicableTo(context, ident, actuals, substitution)) {
@@ -1181,10 +1178,10 @@ public abstract class CClass extends CMember {
 
     // look in super classes and interfaces
     if (ident != JAV_CONSTRUCTOR
-	&& ident != JAV_INIT
-	&& ident != JAV_STATIC_INIT) {
+        && ident != JAV_INIT
+        && ident != JAV_STATIC_INIT) {
       if (superClassType != null) {
-	// java.lang.object
+        // java.lang.object
         CReferenceType[]        actualArgs = superClassType .getArguments();
         CReferenceType[]        newSubstitution;
 
@@ -1201,13 +1198,13 @@ public abstract class CClass extends CMember {
             }
           }
         }
-	getSuperClass().collectApplicableMethods(context, container, ident, actuals, newSubstitution);
+        getSuperClass().collectApplicableMethods(context, container, ident, actuals, newSubstitution);
       }
 
       for (int i = 0; i < interfaces.length; i++) {
         CReferenceType[]        actualArgs = interfaces[i].getArguments();
         CReferenceType[]        newSubstitution = new CReferenceType[actualArgs.length];
-        
+
         if (substitution.length == 0) {
           // erasure
           newSubstitution = CReferenceType.EMPTY;
@@ -1221,7 +1218,7 @@ public abstract class CClass extends CMember {
             }
           }
         }
-	interfaces[i].getCClass().collectApplicableMethods(context, container, ident, actuals, newSubstitution);
+        interfaces[i].getCClass().collectApplicableMethods(context, container, ident, actuals, newSubstitution);
       }
     }
   }
@@ -1231,9 +1228,9 @@ public abstract class CClass extends CMember {
    */
   protected static String getIdent(String qualifiedName) {
     verify(qualifiedName != null);
-    String	syntheticName;
+    String      syntheticName;
 
-    int		cursor = qualifiedName.lastIndexOf('/');
+    int cursor = qualifiedName.lastIndexOf('/');
     if (cursor > 0) {
       syntheticName = qualifiedName.substring(cursor + 1);
     } else {
@@ -1251,7 +1248,7 @@ public abstract class CClass extends CMember {
   /**
    * Checks whether this type is accessible from the specified class (JLS 6.6).
    *
-   * @return	true iff this member is accessible
+   * @return    true iff this member is accessible
    */
   public boolean isAccessible(CClass from) {
     if (!isNested()) {
@@ -1320,11 +1317,11 @@ public abstract class CClass extends CMember {
   }
 
   /**
-   * If a generic type is instantiated, the typevariables are substituted with 
+   * If a generic type is instantiated, the typevariables are substituted with
    * type arguments. This method returns the corresponing type argument for the
    * type variable.
    *
-   * @param typeVariable 
+   * @param typeVariable
    * @param substitution
    */
   public CReferenceType getSubstitution(CTypeVariable typeVariable, CReferenceType[][] sub) {
@@ -1393,8 +1390,8 @@ public abstract class CClass extends CMember {
    CReferenceType[]      newSubstitution;
 
    if (!superType.isGenericType()) {
-     newSubstitution = CReferenceType.EMPTY; 
-   } else {   
+     newSubstitution = CReferenceType.EMPTY;
+   } else {
       //FIX mke copy!!  of actualTypeArgs
       // resolve typeVariable
      CReferenceType[]   typeArguments = ((CClassOrInterfaceType) superType).getArguments();
@@ -1420,8 +1417,8 @@ public abstract class CClass extends CMember {
    * generates generic signature
    */
   public String getGenericSignature() {
-    SimpleStringBuffer	buffer;
-    String		result;
+    SimpleStringBuffer  buffer;
+    String      result;
 
     buffer = SimpleStringBuffer.request();
     if (typeVariables.length > 0) {
@@ -1475,37 +1472,37 @@ public abstract class CClass extends CMember {
   // PRIVATE INITIALIZATIONS
   // ----------------------------------------------------------------------
 
-  protected static CClass	CLS_UNDEFINED = new CSourceClass(null, 
-                                                                 TokenReference.NO_REF, 
-                                                                 0, 
-                                                                 "<gen>", 
-                                                                 "<gen>", 
-                                                                 CTypeVariable.EMPTY, 
-                                                                 false, 
-                                                                 true, 
+  protected static CClass       CLS_UNDEFINED = new CSourceClass(null,
+                                                                 TokenReference.NO_REF,
+                                                                 0,
+                                                                 "<gen>",
+                                                                 "<gen>",
+                                                                 CTypeVariable.EMPTY,
+                                                                 false,
+                                                                 true,
                                                                  null);
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final String		sourceFile;
-  private final	String		qualifiedName;
-  private final	String		packageName;
+  private final String  sourceFile;
+  private final String  qualifiedName;
+  private final String  packageName;
 
-  private CClass		assertionStatusClass; // JSR 41
+  private CClass        assertionStatusClass; // JSR 41
 
-  private CReferenceType[]	interfaces;
-  private CReferenceType	type;
-  private CReferenceType[]	innerClasses;
-  protected CReferenceType	superClassType;
+  private CReferenceType[]      interfaces;
+  private CReferenceType        type;
+  private CReferenceType[]      innerClasses;
+  protected CReferenceType      superClassType;
 
-  private boolean		localClass;
-  private boolean		hasOuterThis;
+  private boolean       localClass;
+  private boolean       hasOuterThis;
 
-  protected Hashtable		fields;
-  private CMethod[]		methods;
-  private boolean               qualifiedAndAnonymous; 
-  private int                   syntheticIndex = 0; 
-  private CTypeVariable[]       typeVariables; 
+  protected Hashtable           fields;
+  private CMethod[]             methods;
+  private boolean               qualifiedAndAnonymous;
+  private int                   syntheticIndex = 0;
+  private CTypeVariable[]       typeVariables;
 }

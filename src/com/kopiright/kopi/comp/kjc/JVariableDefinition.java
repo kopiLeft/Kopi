@@ -35,16 +35,16 @@ public class JVariableDefinition extends JLocalVariable {
   /**
    * Construct a node in the parsing tree
    * This method is directly called by the parser
-   * @param	where		the line of this node in the source code
-   * @param	modifiers	the modifiers of this variable
-   * @param	ident		the name of this variable
-   * @param	initializer	the initializer
+   * @paramwhere                the line of this node in the source code
+   * @param     modifiers       the modifiers of this variable
+   * @param     ident           the name of this variable
+   * @param     initializer     the initializer
    */
   public JVariableDefinition(TokenReference where,
-			     int modifiers,
-			     CType type,
-			     String ident,
-			     JExpression initializer)
+                             int modifiers,
+                             CType type,
+                             String ident,
+                             JExpression initializer)
   {
     super(where, modifiers, DES_LOCAL_VAR, type, ident, initializer);
     verify(type != null);
@@ -56,14 +56,14 @@ public class JVariableDefinition extends JLocalVariable {
 
   /**
    * hasInitializer
-   * @return	true if there is an initializer
+   * @return    true if there is an initializer
    */
   public boolean hasInitializer() {
     return getValue() != null;
   }
 
   /**
-   * @return	the initial value
+   * @return    the initial value
    */
   public JExpression getValue() {
     return expr;
@@ -78,8 +78,8 @@ public class JVariableDefinition extends JLocalVariable {
    * Exceptions are not allowed here, this pass is just a tuning
    * pass in order to create informations about exported elements
    * such as Classes, Interfaces, Methods, Constructors and Fields
-   * @param	context		the current context
-   * @return	true iff sub tree is correct enought to check code
+   * @param     context         the current context
+   * @return    true iff sub tree is correct enought to check code
    */
   public void checkInterface(CClassContext context) {
     try {
@@ -95,8 +95,8 @@ public class JVariableDefinition extends JLocalVariable {
 
   /**
    * Check expression and evaluate and alter context
-   * @param	context			the actual context of analyse
-   * @exception	PositionedError Error catched as soon as possible
+   * @param     context                 the actual context of analyse
+   * @exception PositionedError Error catched as soon as possible
    */
   public void analyse(CBodyContext context) throws PositionedError {
     TypeFactory         factory = context.getTypeFactory();
@@ -108,39 +108,39 @@ public class JVariableDefinition extends JLocalVariable {
     }
     if (! type.isPrimitive()) {
       // JLS 6.6.1
-      // An array type is accessible if and only if its element type is accessible. 
+      // An array type is accessible if and only if its element type is accessible.
       if (type.isArrayType()) {
         check(context,
-              ((CArrayType)type).getBaseType().isPrimitive() 
+              ((CArrayType)type).getBaseType().isPrimitive()
               || ((CArrayType)type).getBaseType().getCClass().isAccessible(context.getClassContext().getCClass()),
-              KjcMessages.CLASS_NOACCESS, ((CArrayType)type).getBaseType());        
+              KjcMessages.CLASS_NOACCESS, ((CArrayType)type).getBaseType());
       }
 
       check(context,
-	    type.getCClass().isAccessible(context.getClassContext().getCClass()),
-	    KjcMessages.CLASS_NOACCESS, type);
+            type.getCClass().isAccessible(context.getClassContext().getCClass()),
+            KjcMessages.CLASS_NOACCESS, type);
     }
 
     if (expr != null) {
       // special case for array initializers
       if (expr instanceof JArrayInitializer) {
-	check(context, type.isArrayType(), KjcMessages.ARRAY_INIT_NOARRAY, type);
-	((JArrayInitializer)expr).setType((CArrayType)type);
+        check(context, type.isArrayType(), KjcMessages.ARRAY_INIT_NOARRAY, type);
+        ((JArrayInitializer)expr).setType((CArrayType)type);
       }
 
-      CExpressionContext	expressionContext = new CExpressionContext(context, context.getEnvironment());
+      CExpressionContext        expressionContext = new CExpressionContext(context, context.getEnvironment());
 
       expr = expr.analyse(expressionContext);
       if (expr instanceof JTypeNameExpression) {
-	check(context,
-	      false,
-	      KjcMessages.VAR_UNKNOWN,
-	      ((JTypeNameExpression)expr).getQualifiedName());
+        check(context,
+              false,
+              KjcMessages.VAR_UNKNOWN,
+              ((JTypeNameExpression)expr).getQualifiedName());
       }
 
       check(context,
-	    expr.isAssignableTo(context, type),
-	    KjcMessages.VAR_INIT_BADTYPE, getIdent(), expr.getType(factory));
+            expr.isAssignableTo(context, type),
+            KjcMessages.VAR_INIT_BADTYPE, getIdent(), expr.getType(factory));
       expr = expr.convertType(expressionContext, type);
     }
   }
@@ -151,7 +151,7 @@ public class JVariableDefinition extends JLocalVariable {
 
   /**
    * Accepts the specified visitor
-   * @param	p		the visitor
+   * @param     p               the visitor
    */
   public void accept(KjcVisitor p) {
     p.visitVariableDefinition(this, modifiers, type, getIdent(), expr);
