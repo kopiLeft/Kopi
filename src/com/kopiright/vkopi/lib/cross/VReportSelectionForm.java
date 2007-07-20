@@ -19,18 +19,19 @@
 
 package com.kopiright.vkopi.lib.cross;
 
-import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.form.VBlock;
+import com.kopiright.vkopi.lib.form.VDictionaryForm;
+import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.report.VNoRowException;
 import com.kopiright.vkopi.lib.report.VReport;
-import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.form.VForm;
-import com.kopiright.vkopi.lib.form.VBlock;
+import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 
 
-public abstract class VReportSelectionForm extends VForm {
+public abstract class VReportSelectionForm extends VDictionaryForm {
 
   protected VReportSelectionForm() throws VException {
   }
