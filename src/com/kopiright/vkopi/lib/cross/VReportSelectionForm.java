@@ -30,9 +30,8 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 
-
 public abstract class VReportSelectionForm extends VDictionaryForm {
-
+  
   protected VReportSelectionForm() throws VException {
   }
 
@@ -53,7 +52,6 @@ public abstract class VReportSelectionForm extends VDictionaryForm {
    */
   public void createReport(VBlock b) throws VException {
     b.validate();
-
     try {
       setWaitInfo(Message.getMessage("report_generation"));
       VReport report = createReport();
@@ -64,7 +62,6 @@ public abstract class VReportSelectionForm extends VDictionaryForm {
       unsetWaitInfo();
       error(MessageCode.getMessage("VIS-00057"));
     }
-
     b.setRecordChanged(0, false);
   }
 
