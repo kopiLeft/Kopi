@@ -16,15 +16,23 @@
  *
  * $Id$
  */
-
 package com.kopiright.vkopi.lib.report;
 
 import java.util.Vector;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+
+import com.graphbuilder.math.Expression;
+import com.graphbuilder.math.ExpressionTree;
+import com.graphbuilder.math.FuncMap;
+import com.graphbuilder.math.VarMap;
 
 import com.kopiright.util.base.Utils;
 import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.xkopi.lib.type.NotNullFixed;
 
 public class MReport extends AbstractTableModel implements Constants {
 
@@ -44,6 +52,260 @@ public class MReport extends AbstractTableModel implements Constants {
     userRows = new Vector(500);
   }
 
+  public void removeColumn(int position) {
+    VReportColumn[] cols = new VReportColumn[columns.length - 1];
+    int         hiddenColumns = 0;
+
+    for (int i = 0; i < columns.length; i++) {
+      if ((columns[i].getOptions() & Constants.CLO_HIDDEN) != 0) {
+        hiddenColumns += 1;
+      }
+    }
+    position +=  hiddenColumns;
+    // copy columns before position.
+    for (int i = 0; i < position; i++) {
+      cols[i] = columns[i];
+    }
+    // copy columns after position.
+    for (int i = position; i < columns.length - 1; i++) {
+      cols[i] = columns[i + 1];
+    }
+    position -= hiddenColumns;
+    columns = (VReportColumn[]) cols.clone();
+    createAccessibleTab();
+    VBaseRow[] rows = new VBaseRow[baseRows.length];
+
+    for (int i = 0; i < baseRows.length; i++) {
+      Object[] data = new Object[getAccessibleColumnCount()];
+      
+      for (int j = 0; j < position; j++) {
+        data[j] = baseRows[i].getValueAt(j);
+      }
+      // skip position.
+      for (int j = position; j < getAccessibleColumnCount(); j++) {
+        data[j] = baseRows[i].getValueAt(j + 1);
+      }
+      rows[i] = new VBaseRow(data);
+    }
+    baseRows = rows;
+    //fireTableChanged(new TableModelEvent(this));
+  }
+
+  public void  initializeAfterRemovingColumn(int position) {
+    int[] newDisplayOrder;
+    int   columnCount;
+
+    columnCount = getAccessibleColumnCount();
+    newDisplayOrder = new int[columnCount];
+    reverseOrder = new int[columnCount];
+    displayLevels = new int[columnCount];
+
+    for (int i = 0; i < position; i++) {
+      newDisplayOrder[i] = displayOrder[i];
+    }
+    for (int i = position; i < columnCount; i++) {
+      newDisplayOrder[i] = displayOrder[i + 1];
+    }
+    for (int i = 0; i < columnCount; i++) {
+      reverseOrder[i] = i;
+      displayLevels[i] = -1;
+    }
+    displayOrder = newDisplayOrder;
+  }
+
+  /**
+   * Adds a column at runtime.
+   */
+  public void addColumn(String label, int position) {
+    VReportColumn[] cols = new VReportColumn[columns.length + 1];
+    
+    // add the new column;
+    cols[columns.length] = new VFixnumColumn(null,
+                                             0,
+                                             4,
+                                             -1,
+                                             null,
+                                             15,
+                                             7,
+                                             null);
+    cols[columns.length].setLabel(label);
+    cols[columns.length].setAddedAtRuntime(true);
+    // copy the other columns.
+    for (int i = 0; i < columns.length; i++) {
+      cols[i] = columns[i];
+    }  
+    columns = (VReportColumn[]) cols.clone();
+    initializeAfterAddingColumn();
+    VBaseRow[] rows = new VBaseRow[baseRows.length];
+    for (int i = 0; i < baseRows.length; i++) {
+      Object[] data = new Object[getAccessibleColumnCount()];
+
+      for (int j = 0; j < getAccessibleColumnCount() - 1; j++) {
+        data[j] = baseRows[i].getValueAt(j);
+      }
+      // fill the new column with  null , column data will be set by user.
+      data[getAccessibleColumnCount() - 1] = null;
+      rows[i] = new VBaseRow(data); 
+    }
+    baseRows = rows;
+    //createTree();
+    //fireTableChanged(new TableModelEvent(this));
+  }
+
+  private void  initializeAfterAddingColumn() {
+    int          columnCount;
+    int[]        newDisplayOrder;
+    createAccessibleTab();
+    columnCount = getAccessibleColumnCount();
+
+    newDisplayOrder = new int[columnCount];
+    displayLevels = new int[columnCount];
+    reverseOrder = new int[columnCount];
+    for (int i = 0; i < columnCount - 1; i++) {
+      newDisplayOrder[i] = displayOrder[i];
+    }
+    newDisplayOrder[columnCount - 1] = columnCount - 1;
+    
+    displayOrder = newDisplayOrder;
+    for (int i = 0; i < columnCount; i++) {
+      reverseOrder[i] = i;
+      displayLevels[i] = -1;
+    }
+  }
+
+  public void computeDataForColumn(int column, int[] columnIndexes, String formula) throws VExecFailedException {
+    Expression x;   
+
+    try {
+      x = ExpressionTree.parse(formula);
+    } catch(Exception e) {
+      throw new VExecFailedException(MessageCode.getMessage("VIS-00064", formula, "\n" + e.toString()));
+    }
+    String[] params = x.getVariableNames();
+    int[] paramColumns = new int[params.length];
+    int[] functions = new int[params.length]; 
+    final int NONE = -1;
+    final int MAX = 0;
+    final int MIN = 1;
+    final int OVR = 2;
+    final int SUM = 3;
+    for (int i = 0; i < params.length; i++) {
+      try {
+        if (params[i].startsWith("C")) {
+          paramColumns[i] = Integer.parseInt(params[i].substring(1));
+          functions[i] = NONE;
+        } else if (params[i].startsWith("maxC")) {
+          paramColumns[i] = Integer.parseInt(params[i].substring(4));
+          functions[i] = MAX;
+        } else if (params[i].startsWith("minC")) {
+          paramColumns[i] = Integer.parseInt(params[i].substring(4));
+          functions[i] = MIN;
+        } else if (params[i].startsWith("ovrC")) {
+          paramColumns[i] = Integer.parseInt(params[i].substring(4));
+          functions[i] = OVR;
+        } else if (params[i].startsWith("sumC")) {
+          paramColumns[i] = Integer.parseInt(params[i].substring(4));
+          functions[i] = SUM;
+        } else { 
+          throw new VExecFailedException(MessageCode.getMessage("VIS-00061", params[i] + "\n", "Cx, maxCx, minCx, ovrCx, sumCx"));
+        }
+      } catch (NumberFormatException e) {
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00062", params[i].substring(1)));
+      }
+      // test column indexes.
+      boolean test = false;
+      
+      for (int j = 0; j < columnIndexes.length; j++) {
+          if (paramColumns[i] == columnIndexes[j]) {
+            test = true;
+            break;
+          }
+      }
+      if (!test) {
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00063", params[i].substring(1)));
+      }
+    }
+    
+    VarMap vm = new VarMap(false /* case sensitive */);
+    FuncMap fm = null; // no functions in expression
+    
+      for (int i = 0; i < baseRows.length; i++) {
+        for (int j = 0; j < paramColumns.length; j++) {
+          switch(functions[j]) {
+          case NONE:
+            vm.setValue(params[j],
+                        baseRows[i].getValueAt(paramColumns[j]) == null ?
+                        0 : // !!! wael 20070622 : use 0 unstead of null values.
+                        ((NotNullFixed)baseRows[i].getValueAt(paramColumns[j])).floatValue());
+            break;
+          case MAX:
+            float max;
+            float tmp;
+            // init max
+            max = baseRows[0].getValueAt(paramColumns[j]) == null ?
+              0:
+              ((NotNullFixed)baseRows[0].getValueAt(paramColumns[j])).floatValue();
+            // calculate max value.
+            for (int k = 1; k < baseRows.length; k++) {
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ? 
+                0:
+                ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
+              if (tmp > max) {
+                max = tmp;
+              }
+            }
+            vm.setValue(params[j], max);
+            break;
+          case MIN:
+            float min;
+            
+            // init max
+            min = baseRows[0].getValueAt(paramColumns[j]) == null ?
+              0:
+              ((NotNullFixed)baseRows[0].getValueAt(paramColumns[j])).floatValue();
+            // calculate min value.
+            for (int k = 1; k < baseRows.length; k++) {
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ? 
+                0:
+                ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
+              if (tmp < min) {
+                min = tmp;
+              }
+            }
+            vm.setValue(params[j], min);
+            break;
+          case OVR:
+            float ovr;
+            
+            ovr = 0;
+            // calculate moyenne.
+            for (int k = 1; k < baseRows.length; k++) {
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ? 
+                0:
+                ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
+              ovr += tmp / baseRows.length;
+            }
+            vm.setValue(params[j], ovr);
+            break;
+          case SUM:
+            float sum;
+            
+            sum = 0;
+            // calculate sum.
+            for (int k = 1; k < baseRows.length; k++) {
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ?
+                0:
+                ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
+              sum += tmp;
+            }
+            vm.setValue(params[j], sum);
+            break;
+          }
+        }
+        baseRows[i].setValueAt(column,new NotNullFixed(x.eval(vm, fm)));         
+      }
+  }
+  
   /**
    * Add a row to the list of rows defined by the user
    */
@@ -78,6 +340,7 @@ public class MReport extends AbstractTableModel implements Constants {
       reverseOrder[i]  = i;
       displayLevels[i] = -1;
     }
+      
   }
 
   // --------------------------------------------------------------------
@@ -111,6 +374,10 @@ public class MReport extends AbstractTableModel implements Constants {
    */
   public VReportColumn getAccessibleColumn(int column) {
     return accessiblecolumns[column];
+  }
+
+  public VReportColumn[] getAccessibleColumns() {
+    return accessiblecolumns;
   }
 
   /**
@@ -174,7 +441,7 @@ public class MReport extends AbstractTableModel implements Constants {
 
     // retrieve the groups in original column order
     for (int i = 0; i < columnCount; i++) {
-      defaultGroups[i] = columns[i].getGroups();
+      defaultGroups[i] = accessiblecolumns[i].getGroups();
     }
 
     // reorder the groups in displayed column order
@@ -540,7 +807,7 @@ public class MReport extends AbstractTableModel implements Constants {
    * Folds the specified column
    */
   public void setColumnFolded(int column, boolean fold) {
-    getModelColumn(column).setFolded(fold);
+    accessiblecolumns[column].setFolded(fold);
     fireTableChanged(new TableModelEvent(this));
   }
 
@@ -548,7 +815,7 @@ public class MReport extends AbstractTableModel implements Constants {
    * Folds the specified column
    */
   public void switchColumnFolding(int column) {
-    getModelColumn(column).setFolded(!getModelColumn(column).isFolded());
+    accessiblecolumns[column].setFolded(!accessiblecolumns[column].isFolded());
     fireTableChanged(new TableModelEvent(this));
   }
 
@@ -613,9 +880,7 @@ public class MReport extends AbstractTableModel implements Constants {
     for (int i = 0; i < displayOrder.length; i++) {
       reverseOrder[displayOrder[i]] = i;
     }
-
     createTree();
-
     fireTableChanged(new TableModelEvent(this));
   }
 
@@ -660,9 +925,16 @@ public class MReport extends AbstractTableModel implements Constants {
    * @return	the value Object at the specified cell
    */
   public Object getValueAt(int row, int column) {
+    Object x = null;
+
+    try {
+      x = visibleRows[row].getValueAt(column);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return visibleRows[row].getLevel() < displayLevels[reverseOrder[column]] ?
-      null :
-      visibleRows[row].getValueAt(column);
+      null : 
+      x;
   }
 
   /**

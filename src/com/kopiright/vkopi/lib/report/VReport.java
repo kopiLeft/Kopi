@@ -141,7 +141,7 @@ public abstract class VReport extends VWindow
   protected void build() {
     model.build();
     model.createTree();
-    getDisplay().build();
+    ((DReport)getDisplay()).build();
     built = true;
 
     // all commands are by default enabled
@@ -164,21 +164,22 @@ public abstract class VReport extends VWindow
           cmdOpenLine = command;
         } else if (command.getIdent().equals("ColumnInfo")) {
           cmdColumnInfo = command;
+        } else if (command.getIdent().equals("EditColumnData")) {
+          cmdEditColumn = command;
         } else {
           setCommandEnabled(commands[i], true);
-        }
+        } 
       }
     }
   }
-
+    
   public void columnMoved(final int[] pos) {
-    SwingUtilities.invokeLater(new Runnable() {
+    SwingUtilities.invokeLater (new Runnable() {
         public void run() {
           ((DReport)getDisplay()).reorder(pos);
           getModel().columnMoved(pos);
           ((DReport)getDisplay()).redisplay();
-        }
-      });
+        }});
   }
 
   // ----------------------------------------------------------------------
@@ -282,7 +283,6 @@ public abstract class VReport extends VWindow
 				 model,
 				 pconfig,
                                  pageTitle,
-                                 firstPageHeader,
                                  Message.getMessage("toner_save_mode").equals("true"));
       printJob = exporter.export();
       printJob.setDocumentType(getDocumentType());
@@ -347,8 +347,7 @@ public abstract class VReport extends VWindow
       exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
-                                 pageTitle,
-                                 firstPageHeader);
+                                 pageTitle);
       break;
     case TYP_XLS:
       exporter = new PExport2XLS(((DReport)getDisplay()).getTable(),
@@ -383,10 +382,6 @@ public abstract class VReport extends VWindow
   public void setPageTitle(String title) {
     this.pageTitle = title;
     setTitle(title);
-  }
-  
-  public void setFirstPageHeader(String firstPageHeader) {
-    this.firstPageHeader = firstPageHeader;
   }
 
   public void setPageTitleParams(Object param) {
@@ -471,6 +466,18 @@ public abstract class VReport extends VWindow
     }
   }
 
+  public void setColumnData() throws VException {
+    if (cmdEditColumn != null) {
+      executeVoidTrigger(cmdEditColumn.getTrigger());
+    }
+  }
+  
+  public void setColumnInfo() throws VException {
+    if (cmdColumnInfo != null) {
+      executeVoidTrigger(cmdColumnInfo.getTrigger());
+    }
+  }
+ 
   public MReport getModel() {
     return model;
   }
@@ -622,6 +629,9 @@ public abstract class VReport extends VWindow
     if (cmdColumnInfo != null) {
       setCommandEnabled(cmdColumnInfo, column != -1);
     }
+    if (cmdEditColumn != null) {
+      setCommandEnabled(cmdEditColumn, column != -1 && model.getAccessibleColumn(column).isAddedAtRuntime());
+    }
   }
 
   // ----------------------------------------------------------------------
@@ -687,12 +697,12 @@ public abstract class VReport extends VWindow
   private VCommand              cmdFoldColumn;
   private VCommand              cmdUnfoldColumn;
   private VCommand              cmdColumnInfo;
+  private VCommand              cmdEditColumn;
 
   private String                source;
   protected MReport             model;
   private boolean               built;
   private String                pageTitle = "";
-  private String                firstPageHeader = "";
   private String                help;
 
   protected int[][]             VKT_Triggers;	// trigger list

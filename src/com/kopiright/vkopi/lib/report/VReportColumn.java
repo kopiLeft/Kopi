@@ -55,6 +55,7 @@ public abstract class VReportColumn {
     this.format = format;
     this.visible = true;
     this.folded = false;
+    this.addedAtRuntime = false;
   }
 
   // ----------------------------------------------------------------------
@@ -73,6 +74,14 @@ public abstract class VReportColumn {
    */
   public String getIdent() {
     return ident;
+  }
+  
+  public void setAddedAtRuntime(boolean addedAtRuntime) {
+    this.addedAtRuntime = addedAtRuntime;
+  }
+  
+  public boolean isAddedAtRuntime() {
+    return addedAtRuntime;
   }
 
   /**
@@ -278,6 +287,7 @@ public abstract class VReportColumn {
   private	VCellFormat		format;
   private	boolean			visible;
   private	boolean			folded;
+  private       boolean                 addedAtRuntime;
   private	DColumnStyle[]		styles;
   protected	int			width;
   protected	int			height;

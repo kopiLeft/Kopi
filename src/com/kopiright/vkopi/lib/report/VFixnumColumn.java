@@ -103,6 +103,15 @@ public class VFixnumColumn extends VReportColumn {
     setFormat(new VFixedFormat(scale));
     this.maxScale = scale;
   }
+  
+  public void setFormula(String formula) {
+    this.formula = formula;
+  }
+  
+  public String getFormula() {
+    return formula;
+  }
 
-  private int maxScale;
+  private String         formula;
+  private int            maxScale;
 }
