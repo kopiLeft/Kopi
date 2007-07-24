@@ -124,8 +124,7 @@ class VRReport
     context.addCommand(new VKCommandName(where, "RemoveConfiguration", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "ColumnInfo", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Help", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
-    // !!! 20070710 wael uncomment the following line to test report configuration.
-    //context.addCommand(new VKCommandName(where, "EditColumn", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
+    context.addCommand(new VKCommandName(where, "EditColumn", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
   }
 
   // ----------------------------------------------------------------------
