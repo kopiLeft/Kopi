@@ -283,6 +283,7 @@ public abstract class VReport extends VWindow
 				 model,
 				 pconfig,
                                  pageTitle,
+                                 firstPageHeader,
                                  Message.getMessage("toner_save_mode").equals("true"));
       printJob = exporter.export();
       printJob.setDocumentType(getDocumentType());
@@ -347,7 +348,8 @@ public abstract class VReport extends VWindow
       exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
-                                 pageTitle);
+                                 pageTitle,
+                                 firstPageHeader);
       break;
     case TYP_XLS:
       exporter = new PExport2XLS(((DReport)getDisplay()).getTable(),
@@ -395,7 +397,11 @@ public abstract class VReport extends VWindow
   public void setPageTitleParams(Object[] params) {
     setPageTitle(MessageFormat.format(pageTitle, params));
   }
-
+  
+  public void setFirstPageHeader(String firstPageHeader) {
+    this.firstPageHeader = firstPageHeader;
+  }
+  
   public VReportColumn getColumn(int i) {
     return model.getModelColumn(i);
   }
@@ -703,6 +709,7 @@ public abstract class VReport extends VWindow
   protected MReport             model;
   private boolean               built;
   private String                pageTitle = "";
+  private String                firstPageHeader = "";
   private String                help;
 
   protected int[][]             VKT_Triggers;	// trigger list
