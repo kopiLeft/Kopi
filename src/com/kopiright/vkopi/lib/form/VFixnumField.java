@@ -71,6 +71,7 @@ public class VFixnumField extends VField {
     this.maxScale = maxScale;
     this.minval = minval == null ? calculateUpperBound(digits, maxScale).negate() : minval.setScale(maxScale);
     this.maxval = maxval == null ? calculateUpperBound(digits, maxScale) : maxval.setScale(maxScale);
+    this.digits = digits;
     this.fraction = fraction;
   }
 
@@ -299,6 +300,27 @@ public class VFixnumField extends VField {
    */
   public void setScale(int scale) throws VExecFailedException {
     setScale(block.getCurrentRecord(), scale);
+  }
+
+  /**
+   * Sets the maxScale value for the current record.
+   *
+   * @param     scale           the scale value.
+   */
+  public void setMaxScale(int scale) throws VExecFailedException {
+    if (scale > maxScale) {
+      throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale)));
+    }
+    this.maxScale = scale;
+    this.minval = minval.setScale(maxScale);
+    this.maxval = maxval.setScale(maxScale);
+    setDimension(computeWidth(digits, maxScale, minval, maxval), getHeight());
+    //records scale must be <= maxscale
+    for (int i = 0; i < currentScale.length; i++) {
+      if(currentScale[i] > maxScale) {
+        currentScale[i] = maxScale;
+      }
+    }
   }
 
   /**
@@ -791,12 +813,12 @@ public class VFixnumField extends VField {
    */
 
   // static (compiled) data
-  private final int             maxScale; // number of max digits after dot
-  private final Fixed           minval;   // minimum value allowed
-  private final Fixed           maxval;   // maximum value allowed
   private final boolean         fraction; // display as fraction
-
+  private final int             digits;
   // dynamic data
-  private Fixed[]               value;
-  private int[]                 currentScale; // number of digits after dot
+  private  Fixed           maxval;   // maximum value allowed
+  private  Fixed           minval;   // minimum value allowed
+  private  int             maxScale; 
+  private int[]            currentScale; // number of digits after dot
+  private Fixed[]          value;
 }
