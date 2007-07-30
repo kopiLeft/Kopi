@@ -3505,7 +3505,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	if (query.getInt(1) != id) {
 	  query.close();
 	  form.getDBContext().abortWork();
-          form.getActiveBlock().gotoFirstField();
+          form.setActiveBlock(this);
+          setActiveRecord(recno);
+          gotoFirstField();
 	  throw new VExecFailedException(MessageCode.getMessage("VIS-00014",
 							    new Object[]{ indices[idx] }));
 	}
