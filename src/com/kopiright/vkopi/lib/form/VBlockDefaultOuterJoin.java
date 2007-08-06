@@ -21,12 +21,12 @@ package com.kopiright.vkopi.lib.form;
 
 import java.util.ArrayList;
 
-public class VBlockOuterJoinTree {
+public class VBlockDefaultOuterJoin {
 
   /**
    * Constructor
    */
-  public VBlockOuterJoinTree(VBlock block) {
+  public VBlockDefaultOuterJoin(VBlock block) {
     this.block = block;
     this.fields = block.getFields();
     this.tables = block.getBlockTables();
@@ -83,10 +83,10 @@ public class VBlockOuterJoinTree {
    * search from-clause condition
    */
   public static String getSearchTables(VBlock block) {
-    return (new VBlockOuterJoinTree(block)).getSearchTablesCondition();
+    return (new VBlockDefaultOuterJoin(block)).getSearchTablesCondition();
   }
 
-  public String getSearchTablesCondition() {
+  private String getSearchTablesCondition() {
     StringBuffer        buffer;
 
     if (tables == null) {
@@ -111,7 +111,65 @@ public class VBlockOuterJoinTree {
     }
     return buffer.toString();
   }
+  
+  public static StringBuffer getSearchCondition(VField fld, StringBuffer buffer) {
+    if (fld.hasNullableCols()) {
+      for(int j = 1; j < fld.getColumnCount(); j++) {
+        if (!fld.getColumn(j).isNullable()) {
+          if (buffer == null) {
+            buffer = new StringBuffer(" WHERE ");
+          } else {
+            buffer.append(" AND ");
+          }
+          buffer.append(fld.getColumn(j).getQualifiedName());
+          buffer.append(" = ");
+          buffer.append(fld.getColumn(0).getQualifiedName());
+        }
+      }
+    } else {
+      for (int j = 1; j < fld.getColumnCount(); j++) {
+        if (buffer == null) {
+          buffer = new StringBuffer(" WHERE ");
+        } else {
+          buffer.append(" AND ");
+        }
+        buffer.append(fld.getColumn(j).getQualifiedName());
+        buffer.append(" = ");
+        buffer.append(fld.getColumn(j - 1).getQualifiedName());
+      }
+    }
+    return buffer;
+  }
+  
+  public static String getFetchRecordCondition(VField[] fields) {
+    String tailbuf = "";
 
+    for (int i = 0; i < fields.length; i++) {
+      VField    fld = fields[i];
+
+      if (fld.hasNullableCols()) {
+        for (int j = 1; j < fld.getColumnCount(); j++) {
+          if (!fld.getColumn(j).isNullable()) {
+            tailbuf +=
+              " AND " +
+              fld.getColumn(j).getQualifiedName() +
+              " = " +
+              fld.getColumn(0).getQualifiedName();
+          }
+        }
+      } else {
+        for (int j = 1; j < fld.getColumnCount(); j++) {
+          tailbuf +=
+            " AND " +
+            fld.getColumn(j).getQualifiedName() +
+            " = " +
+            fld.getColumn(j - 1).getQualifiedName();
+        }
+      }
+    }
+    return tailbuf;
+  }
+  
   private void addToJoinedTables(int table) {
     joinedTables.add(Integer.toString(table));
   }

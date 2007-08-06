@@ -57,7 +57,7 @@ JAVAFILES +=	BlockAlignment Commands					\
 		BlockListener ViewBlockAlignment FormListener		\
 		PredefinedValueHandler GUIPredefinedValueHandler	\
 		KeyNavigator Environment Accessor ModelTransformer	\
-		VBlockOuterJoinTree
+		VBlockDefaultOuterJoin VBlockOracleOuterJoin
 
 ## ----------------------------------------------------------------------
 ## GOALS

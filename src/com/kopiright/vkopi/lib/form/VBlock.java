@@ -1693,29 +1693,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     headbuf = getSearchColumns();
     frombuf = getSearchTables();
     tailbuf = "";
-
-    for (int i = 0; i < fields.length; i++) {
-      VField    fld = fields[i];
-
-      if (fld.hasNullableCols()) {
-        for (int j = 1; j < fld.getColumnCount(); j++) {
-          if (!fld.getColumn(j).isNullable()) {
-            tailbuf +=
-              " AND " +
-              fld.getColumn(j).getQualifiedName() +
-              " = " +
-              fld.getColumn(0).getQualifiedName();
-          }
-        }
-      } else {
-        for (int j = 1; j < fld.getColumnCount(); j++) {
-          tailbuf +=
-            " AND " +
-            fld.getColumn(j).getQualifiedName() +
-            " = " +
-            fld.getColumn(j - 1).getQualifiedName();
-        }
-      }
+    if (form.getDBContext().getDefaultConnection().getJDBCConnection() instanceof com.kopiright.kconnect.ora.Connection) {
+      tailbuf = VBlockOracleOuterJoin.getFetchRecordCondition(fields);
+    } else {
+      tailbuf = VBlockDefaultOuterJoin.getFetchRecordCondition(fields);
     }
 
     query = new Query(form.getDBContext().getDefaultConnection());
@@ -2083,7 +2064,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Returns the tables for database query, with outer joins conditions.
    */
   public String getSearchTables() {
-    return VBlockOuterJoinTree.getSearchTables(this);
+    if (form.getDBContext().getDefaultConnection().getJDBCConnection() instanceof com.kopiright.kconnect.ora.Connection) {
+      return VBlockOracleOuterJoin.getSearchTables(this);
+    } else {
+      return VBlockDefaultOuterJoin.getSearchTables(this);
+    }
   }
 
   /**
@@ -2125,30 +2110,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 	  buffer.append(cond);
 	}
       }
-      if (fld.hasNullableCols()) {
-        for(int j = 1; j < fld.getColumnCount(); j++) {
-          if (!fld.getColumn(j).isNullable()) {
-            if (buffer == null) {
-              buffer = new StringBuffer(" WHERE ");
-            } else {
-              buffer.append(" AND ");
-            }
-            buffer.append(fld.getColumn(j).getQualifiedName());
-            buffer.append(" = ");
-            buffer.append(fld.getColumn(0).getQualifiedName());
-          }
-        }
+      if (form.getDBContext().getDefaultConnection().getJDBCConnection() instanceof com.kopiright.kconnect.ora.Connection) {
+        buffer = VBlockOracleOuterJoin.getSearchCondition(fld, buffer);
       } else {
-        for (int j = 1; j < fld.getColumnCount(); j++) {
-          if (buffer == null) {
-            buffer = new StringBuffer(" WHERE ");
-          } else {
-            buffer.append(" AND ");
-          }
-          buffer.append(fld.getColumn(j).getQualifiedName());
-          buffer.append(" = ");
-          buffer.append(fld.getColumn(j - 1).getQualifiedName());
-        }
+        buffer = VBlockDefaultOuterJoin.getSearchCondition(fld, buffer);
       }
     }
     return buffer == null ? null : buffer.toString();
