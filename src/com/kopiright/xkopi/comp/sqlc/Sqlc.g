@@ -1056,14 +1056,12 @@ sSortElem []
   returns [SortElem self = null]
 {
   Expression            p1 = null;
-  String                ident = null;
   boolean               isDesc = false;
   TokenReference        sourceRef = buildTokenReference();
 }
 :
-  (
-    ident = sIdentifier[] { p1 = new SimpleIdentExpression(sourceRef, ident); }
-  |
+  ( p1 = sFieldReference[]
+   |
     p1 = sIntegerLiteral[]
   )
   ( "ASC" | "DESC" { isDesc = true; } )?

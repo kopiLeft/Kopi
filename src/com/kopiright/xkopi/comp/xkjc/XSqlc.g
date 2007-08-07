@@ -235,12 +235,10 @@ sSortElem[]
   TokenReference	sourceRef = buildTokenReference();
   Expression		p1 = null;
   boolean		ifDesc = false;
-  String		s = null;
 }
 :
   (
-    s = sIdentifier[]
-      { p1 = new SimpleIdentExpression(sourceRef, s); }
+    p1 =  sFieldReference[]       
   |
     p1 = sIntegerLiteral[]
   |
