@@ -242,6 +242,8 @@ sSortElem[]
   |
     p1 = sIntegerLiteral[]
   |
+    p1 = sJdbcFunction[]
+  |
     p1 = xJavaExpression[]
   )
   ( "ASC" | "DESC" { ifDesc = true; } )?

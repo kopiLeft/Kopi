@@ -1060,9 +1060,12 @@ sSortElem []
   TokenReference        sourceRef = buildTokenReference();
 }
 :
-  ( p1 = sFieldReference[]
-   |
+  ( 
+    p1 = sFieldReference[]
+  |
     p1 = sIntegerLiteral[]
+  |
+    p1 = sJdbcFunction[]         
   )
   ( "ASC" | "DESC" { isDesc = true; } )?
     { self = new SortElem(sourceRef, p1, isDesc); }
