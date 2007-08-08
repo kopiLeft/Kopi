@@ -107,13 +107,13 @@ public class VReportCommand extends VCommand implements ActionHandler {
 //    break;
 //  case Constants.CMD_PRINT_OPTIONS:
 //    break;
-    case Constants.CMD_EXPORT:
+    case Constants.CMD_EXPORT_CSV:
       report.export(VReport.TYP_CSV);
       break;
-    case Constants.CMD_EXPORTXLS:
+    case Constants.CMD_EXPORT_XLS:
       report.export(VReport.TYP_XLS);
       break;
-    case Constants.CMD_EXPORTPDF:
+    case Constants.CMD_EXPORT_PDF:
       report.export(VReport.TYP_PDF);
       break;
     case Constants.CMD_FOLD:

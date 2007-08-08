@@ -113,7 +113,7 @@ class VRReport
     context.addCommand(new VKCommandName(where, "Quit", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Print", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "PrintOptions", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
-    context.addCommand(new VKCommandName(where, "Export", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
+    context.addCommand(new VKCommandName(where, "ExportCSV", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "ExportPDF", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "ExportXLS", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Fold", com.kopiright.vkopi.lib.form.VConstants.MOD_ANY));

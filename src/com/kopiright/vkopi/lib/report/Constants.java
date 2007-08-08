@@ -84,6 +84,28 @@ public interface Constants extends com.kopiright.vkopi.lib.visual.Constants {
   int STA_DEFAULT			= 4;
 
   // ---------------------------------------------------------------------
+  // PREDEFINED COMMANDS
+  // ---------------------------------------------------------------------
+
+  int CMD_QUIT                          = 0;
+  int CMD_PRINT                         = 1;
+  int CMD_PREVIEW                       = 2;
+  int CMD_PRINT_OPTIONS                 = 3;
+  int CMD_EXPORT_CSV                    = 4;
+  int CMD_EXPORT_XLS                    = 5;
+  int CMD_EXPORT_PDF                    = 6;
+  int CMD_FOLD                          = 7;
+  int CMD_UNFOLD                        = 8;
+  int CMD_SORT                          = 9;
+  int CMD_FOLD_COLUMN                   = 10;
+  int CMD_UNFOLD_COLUMN                 = 11;
+  int CMD_COLUMN_INFO                   = 12;
+  int CMD_OPEN_LINE                     = 13;
+  int CMD_REMOVE_CONFIGURATION          = 14;
+  int CMD_LOAD_CONFIGURATION            = 15;
+  int CMD_HELP                          = 16;
+
+  // ---------------------------------------------------------------------
   // TRIGGER INFO
   // ---------------------------------------------------------------------
 
@@ -93,22 +115,5 @@ public interface Constants extends com.kopiright.vkopi.lib.visual.Constants {
   int[] TRG_TYPES			= new int[] {
     TRG_VOID, TRG_VOID, TRG_VOID, TRG_OBJECT, TRG_OBJECT};
 
-  int CMD_QUIT = 0;
-  int CMD_PRINT = 1;
-  int CMD_PREVIEW = 2;
-  int CMD_PRINT_OPTIONS = 3;
-  int CMD_EXPORT = 4;
-  int CMD_EXPORTXLS = 5;
-  int CMD_EXPORTPDF = 6;
-  int CMD_FOLD   = 7;
-  int CMD_UNFOLD        = 8;
-  int CMD_SORT          = 9;
-  int CMD_FOLD_COLUMN   = 10;
-  int CMD_UNFOLD_COLUMN   = 11;
-  int CMD_COLUMN_INFO = 12;
-  int CMD_OPEN_LINE = 13;
-  int CMD_REMOVE_CONFIGURATION = 14;
-  int CMD_LOAD_CONFIGURATION = 15;
-  int CMD_HELP = 16;
 
 }

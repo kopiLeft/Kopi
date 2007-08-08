@@ -241,12 +241,12 @@
   <property key="Preview-help" value="Report Preview."/>
   <property key="PrintOptions" value="Options" />
   <property key="PrintOptions-help" value="Change print options." />
-  <property key="Export" value="Export" />
-  <property key="Export-help" value="save data in a file." />
+  <property key="ExportCSV" value="CSV" />
+  <property key="ExportCSV-help" value="save data in a CSV-file." />
   <property key="ExportXLS" value="XLS" />
-  <property key="ExportXLS-help" value="save data in a file." />
+  <property key="ExportXLS-help" value="save data in a XLS-file." />
   <property key="ExportPDF" value="PDF" />
-  <property key="ExportPDF-help" value="save data in a file." />
+  <property key="ExportPDF-help" value="save data in a PDF-file." />
   <property key="Fold" value="Fold" />
   <property key="Fold-help" value="Fold selection." />
   <property key="Unfold" value="unfold" />

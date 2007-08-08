@@ -19,9 +19,14 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.OutputStream;
-
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import javax.swing.JTable;
+
+import com.kopiright.util.base.InconsistencyException;
 
 public class  PExport2CSV extends PExport implements Constants {
   /**
@@ -32,12 +37,13 @@ public class  PExport2CSV extends PExport implements Constants {
   }
 
   public void export(OutputStream out) {
-    outStream = out;
     try {
+      writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
       exportData();
-      outStream.close();
-    } catch (Exception e) {
-      e.printStackTrace();
+      writer.flush();
+      writer.close();
+    } catch (IOException e) {
+      throw new InconsistencyException(e);
     } 
   }
 
@@ -54,22 +60,26 @@ public class  PExport2CSV extends PExport implements Constants {
     
   private void writeData(String[] data) {
     try {
-      boolean first = true;
+      boolean   first = true;
 
       for (int i = 0; i < data.length; i++) {
         if (! first) {
-          outStream.write("\t".getBytes());
+          writer.write("\t");
         }
         if (data[i] != null) {
-          outStream.write(data[i].getBytes());
+          writer.write(data[i]);
         }
         first = false;
       }
-      outStream.write("\n".getBytes()); 
-    } catch (Exception e) {
-      e.printStackTrace();
-    } 
+      writer.write("\n"); 
+    } catch (IOException e) {
+      throw new InconsistencyException(e);
+    }
   }
 
-  OutputStream  outStream;
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  private Writer                writer;
 }

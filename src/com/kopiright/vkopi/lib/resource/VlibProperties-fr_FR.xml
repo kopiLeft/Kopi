@@ -241,12 +241,12 @@
   <property key="Preview-help" value="Afficher le rapport sur l'écran" />
   <property key="PrintOptions" value="Options" />
   <property key="PrintOptions-help" value="Changer les options d'impression" />
-  <property key="Export" value="Exporter" />
-  <property key="Export-help" value="Enregistrer les données dans un fichier" />
+  <property key="ExportCSV" value="CSV" />
+  <property key="ExportCSV-help" value="Enregistrer les données dans un fichier CSV" />
   <property key="ExportXLS" value="XLS" />
-  <property key="ExportXLS-help" value="Enregistrer les données dans un fichier" />
+  <property key="ExportXLS-help" value="Enregistrer les données dans un fichier XLS" />
   <property key="ExportPDF" value="PDF" />
-  <property key="ExportPDF-help" value="Enregistrer les données dans un fichier" />
+  <property key="ExportPDF-help" value="Enregistrer les données dans un fichier PDF" />
   <property key="Fold" value="Plier" />
   <property key="Fold-help" value="Plie la colonne pour synthétiser les données" />
   <property key="Unfold" value="Deplier" />

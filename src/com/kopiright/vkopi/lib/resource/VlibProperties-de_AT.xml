@@ -240,12 +240,12 @@
   <property key="Preview-help" value="Hier können Sie eine Vorschau des Ausdruckes anzeigen." />
   <property key="PrintOptions" value="Seite einrichten ..." />
   <property key="PrintOptions-help" value="Druckereinstellungen festlegen" />
-  <property key="Export" value="Exportieren" />
-  <property key="Export-help" value="Bericht wird in eine Datei abgelegt" />
+  <property key="ExportCSV" value="CSV" />
+  <property key="ExportCSV-help" value="Bericht wird in einer CSV-Datei abgelegt" />
   <property key="ExportXLS" value="XLS" />
-  <property key="ExportXLS-help" value="Bericht wird in eine Datei abgelegt" />
+  <property key="ExportXLS-help" value="Bericht wird in einer XLS-Datei abgelegt" />
   <property key="ExportPDF" value="PDF" />
-  <property key="ExportPDF-help" value="Bericht wird in eine Datei abgelegt" />
+  <property key="ExportPDF-help" value="Bericht wird in einer PDF-Datei abgelegt" />
   <property key="Fold" value="Schliessen" />
   <property key="Fold-help" value="Zuklappen der Spalte, um Details auszublenden" />
   <property key="Unfold" value="öffnen" />

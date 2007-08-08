@@ -392,9 +392,9 @@ public class VDynamicReport extends VReport {
     actorsDef = new SActor[11];
     createActor("File", "Quit", "quit-icon", KeyEvent.VK_ESCAPE, 0, Constants.CMD_QUIT);
     createActor("File", "Print", "print-icon", KeyEvent.VK_F6, 0, Constants.CMD_PRINT);
-    createActor("File", "Export", "export-icon", KeyEvent.VK_F8, 0, Constants.CMD_EXPORT);
-    createActor("File", "ExportXLS", "export-icon", KeyEvent.VK_F8, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORTXLS);
-    createActor("File", "ExportPDF", "export-icon",KeyEvent.VK_F9, 0, Constants.CMD_EXPORTPDF);
+    createActor("File", "ExportCSV", "export-icon", KeyEvent.VK_F8, 0, Constants.CMD_EXPORT_CSV);
+    createActor("File", "ExportXLS", "export-icon", KeyEvent.VK_F8, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORT_XLS);
+    createActor("File", "ExportPDF", "export-icon",KeyEvent.VK_F9, 0, Constants.CMD_EXPORT_PDF);
     createActor("Action", "Fold", "fold-icon", KeyEvent.VK_F2, 0, Constants.CMD_FOLD);
     createActor("Action","Unfold", "unfold-icon", KeyEvent.VK_F3, 0, Constants.CMD_UNFOLD);
     createActor("Action", "FoldColumn", "foldColumn-icon", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_FOLD_COLUMN);
