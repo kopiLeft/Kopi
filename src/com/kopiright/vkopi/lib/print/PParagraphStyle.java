@@ -99,23 +99,29 @@ public class PParagraphStyle extends PBodyStyle {
   public String gotoNextTab(PTextBlock list, String tab) {
     if (tabs == null && hasParentStyle()) {
       return getParentStyle().gotoNextTab(list, tab);
-    }
-    PTabStop    stop = (tabs == null || tab == null || tabArray == null) ? null : (PTabStop)tabs.get(tab);
-    if (stop == null) {
-      stop = tabArray[0];
     } else {
-      for (int i = 0; i < tabArray.length; i++) {
-        if (tabArray[i].getIdent().equals(tab)) {
-          stop = tabArray[i == tabArray.length - 1 ? i : i + 1];
-          break;
+      PTabStop  stop;
+
+      stop = (tabs == null || tab == null || tabArray == null) ? null : (PTabStop)tabs.get(tab);
+      if (stop == null) {
+        if (tabArray != null) {
+          stop = tabArray[0];
+        }
+      } else {
+        for (int i = 0; i < tabArray.length; i++) {
+          if (tabArray[i].getIdent().equals(tab)) {
+            stop = tabArray[i == tabArray.length - 1 ? i : i + 1];
+            break;
+          }
         }
       }
+      if (stop == null) {
+        return null;
+      } else {
+        list.setPosition(stop.getPosition(), stop.getAlignment());
+        return stop.getIdent();
+      }
     }
-    if (stop != null) {
-      list.setPosition(stop.getPosition(), stop.getAlignment());
-      return stop.getIdent();
-    }
-    return null;
   }
 
   /**
