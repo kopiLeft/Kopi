@@ -130,10 +130,6 @@ public class XSqlChecker extends com.kopiright.xkopi.comp.sqlc.SqlChecker implem
       }
     }
     sqlExpr.accept(this);
-    if (hasAs) {
-      current.append(" AS ");
-      current.append(ident);
-    }
   }
 
   /**
