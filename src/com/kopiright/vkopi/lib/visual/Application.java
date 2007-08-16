@@ -217,18 +217,17 @@ public abstract class Application extends java.applet.Applet implements MessageL
       exitWithError(1);
       return false;
     }
-    
+
      try {
        UIManager.setLookAndFeel(new com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel());//UIManager.getSystemLookAndFeelClassName());
      } catch (Exception e) {
        System.err.println("Undefined look and feel: Kopi Look & Feel must be installed!");
      }
-    //   if (!DObject.isLookAndFeelInstalled()) {
-    //  installLF(defaults.getKopiLFProperties());
-      //    }
+     //if (!DObject.isLookAndFeelInstalled()) {
+     //  installLF(defaults.getKopiLFProperties());
+     //}
 
     startApplication();
-
     isStarted = true;
 
     return true;
@@ -249,7 +248,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
       defaultLocale = null;
     } else {
       char[]    chars = options.locale.toCharArray();
-      
+
       if(chars.length != 5
          || chars[0] < 'a' || chars[0] > 'z'
          || chars[1] < 'a' || chars[1] > 'z'
@@ -257,8 +256,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
          || chars[3] < 'A' || chars[3] > 'Z'
          || chars[4] < 'A' || chars[4] > 'Z'
          ) {
-	System.err.println("Error: Wrong locale format.");
-	options.usage();
+        System.err.println("Error: Wrong locale format.");
+        options.usage();
         return false;
       } else {
         defaultLocale = new Locale(options.locale.substring(0,2),
@@ -272,7 +271,9 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public void verifyConfiguration() {
     VerifyConfiguration       verifyConfiguration = VerifyConfiguration.getVerifyConfiguration();
     try {
-      verifyConfiguration.verifyConfiguration(getDefaults().getSMTPServer(),getDefaults().getDebugMailRecipient(),getDefaults().getApplicationName());
+      verifyConfiguration.verifyConfiguration(getDefaults().getSMTPServer(),
+                                              getDefaults().getDebugMailRecipient(),
+                                              getDefaults().getApplicationName());
     } catch (PropertyException e) {
       e.printStackTrace();
     }
@@ -284,15 +285,15 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private boolean connectToDatabase() {
     if (options.username != null) {
       try {
-	DBContext.registerDriver(options.driver);
-	context = new DBContext();
-	context.setDefaultConnection(context.createConnection(options.database,
-							      options.username,
-							      options.password));
+        DBContext.registerDriver(options.driver);
+        context = new DBContext();
+        context.setDefaultConnection(context.createConnection(options.database,
+                                                              options.username,
+                                                              options.password));
       } catch (Exception e) {
-	System.err.println(e.getMessage());
-	options.usage();
-	context = null;
+        System.err.println(e.getMessage());
+        options.usage();
+        context = null;
       }
     }
 
@@ -319,22 +320,22 @@ public abstract class Application extends java.applet.Applet implements MessageL
    */
   protected void startApplication() {
     if (options.form != null) {
-      String		form;
+      String    form;
 
       if (options.form.indexOf(".") != -1) {
-	form = options.form;
+        form = options.form;
       } else {
-	// form name without qualification: qualify with application package
-	String	appli = getClass().getName();
-	int	index = appli.lastIndexOf('.');
+        // form name without qualification: qualify with application package
+        String  appli = getClass().getName();
+        int     index = appli.lastIndexOf('.');
 
-	form = appli.substring(0, index + 1) + options.form;
+        form = appli.substring(0, index + 1) + options.form;
       }
 
       try {
         KopiExecutable  module;
 
-	module = Module.startForm(context, form, "initial form");
+        module = Module.startForm(context, form, "initial form");
         if (module instanceof VWindow) {
           ((VWindow) module).addModelCloseListener(new ModelCloseListener() {
               public void modelClosed(int type) {
@@ -345,12 +346,12 @@ public abstract class Application extends java.applet.Applet implements MessageL
           exitWithError(1);
         }
       } catch (VException e) {
-	e.printStackTrace();
+        e.printStackTrace();
         exitWithError(1);
       }
     } else {
       String url = getURL();
-      
+
       menuTree = new MenuTree(context);
       menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
     }
@@ -361,7 +362,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
    * Displays the splash screen.
    */
   private void displaySplashScreen() {
-    ImageIcon		img = com.kopiright.vkopi.lib.util.Utils.getImage("splash.jpg");
+    ImageIcon   img = com.kopiright.vkopi.lib.util.Utils.getImage("splash.jpg");
 
     if (img != null) {
       splash = new SplashScreen(img.getImage(), null);
@@ -404,7 +405,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public static void reportTrouble(String module,
                                    String place,
                                    String data,
-                                   Throwable reason) 
+                                   Throwable reason)
   {
     if (options.nobugreport) {
       System.out.println("notice: reporting trouble is disabled, no mail will be sent.");
@@ -417,12 +418,12 @@ public abstract class Application extends java.applet.Applet implements MessageL
       String                      logFile;
       boolean                     sendMail;
       boolean                     writeLog;
-      
+
       if (ApplicationConfiguration.getConfiguration() == null) {
         System.err.println("ERROR: No application configuration available");
         return;
       }
-      
+
       try {
         applicationName = getDefaults().getApplicationName();
       } catch (PropertyException e) {
@@ -443,7 +444,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
       } catch (PropertyException e) {
         logFile = null;
       }
-      
+
       try {
         sendMail = getDefaults().mailErrors();
       } catch (PropertyException e) {
@@ -454,10 +455,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
       } catch (PropertyException e) {
         writeLog = false;
       }
-      
+
       if (smtpServer != null && sendMail) {
-        String    recipient, cc, bcc; 
-        
+        String    recipient, cc, bcc;
+
         try {
           recipient = getDefaults().getDebugMailRecipient();
         } catch (PropertyException e) {
@@ -473,15 +474,15 @@ public abstract class Application extends java.applet.Applet implements MessageL
         } catch (PropertyException e) {
           bcc = null;
         }
-        
-        
-        StringWriter	buffer = new StringWriter();
+
+
+        StringWriter    buffer = new StringWriter();
         PrintWriter       writer = new PrintWriter(buffer);
         // failureID is added to the subject of the mail.
         // similar error mail should have the smae id which makes the
         // easier to find duplicated messages.
-        String            failureID; 
-        
+        String            failureID;
+
         writer.println("Application Name:    " + applicationName);
         writer.println("Version:             " + version);
         writer.println("Module:              " + module);
@@ -490,9 +491,9 @@ public abstract class Application extends java.applet.Applet implements MessageL
         writer.println("Architecture:        " + System.getProperty("os.arch",""));
         writer.print  ("Operating System:    " + System.getProperty("os.name","") + " " );
         writer.println(System.getProperty("os.version",""));
-        
+
         writeNetworkInterfaces(writer);
-        
+
         writer.println("Local Time:          "+(new Date()).toString() + ":");
         writer.println("Default Locale:      "+Locale.getDefault());
         writer.println("Default Encoding:    "+(new InputStreamReader(System.in)).getEncoding());
@@ -500,7 +501,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
         try {
           writer.println("Kopi-User:           "+getDBContext().getDefaultConnection().getUserName());
         } catch (Exception e) {
-          writer.println("Kopi-User:           <not available>");        
+          writer.println("Kopi-User:           <not available>");
         }
         writer.println("System-User/Name:    "+System.getProperty("user.name",""));
         writer.println("System-User/Home:    "+System.getProperty("user.home",""));
@@ -528,10 +529,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
           writer.println("Message:             "+reason.getMessage());
           writer.println("Exception:           ");
           reason.printStackTrace(writer);
-          
+
           try {
             CharArrayWriter       write;
-            
+
             write = new CharArrayWriter();
             reason.printStackTrace(new PrintWriter(write));
             failureID = " " + write.toString().hashCode();
@@ -542,37 +543,37 @@ public abstract class Application extends java.applet.Applet implements MessageL
           failureID = " "; // no information
         }
         writer.println();
-        writer.println("Information:         "+data);
+        writer.println("Information:         " + data);
         writer.flush();
-        
+
         Mailer.sendMail(smtpServer,
                         recipient,
-                        cc,       
-                        bcc,      
+                        cc,
+                        bcc,
                         "[KOPI ERROR] " +applicationName + failureID,
                         buffer.toString(),
                         "kopi@kopiright.com");
       }
-      
+
       if (logFile != null && writeLog) {
         try {
           final PrintWriter       writer;
-          
+
           writer = new PrintWriter(new FileWriter(logFile, true));
           writer.println();
           writer.println();
         try {
           writer.println(getDBContext().getDefaultConnection().getUserName() + ":" + new Date());
         } catch (Exception e) {
-          writer.println("<user no available>" + ":" + new Date());          
+          writer.println("<user no available>" + ":" + new Date());
         }
         writer.println(reason.getMessage());
         reason.printStackTrace(writer);
-        
+
         if (writer.checkError()) {
           throw new IOException("error while writing");
         }
-	writer.close();
+        writer.close();
         } catch (IOException e) {
           System.err.println("Can't write to file:" + logFile);
           System.err.println(": " + e.getMessage());
@@ -586,20 +587,20 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private static void writeNetworkInterfaces(PrintWriter writer) {
     try {
       // find out which ip-addresses this host has
-      
+
 
       for (Enumeration netInterfaces = java.net.NetworkInterface.getNetworkInterfaces();
            netInterfaces.hasMoreElements();
            )
       {
         NetworkInterface        ni = (NetworkInterface) netInterfaces.nextElement();
-        
+
         writer.println("Netzwerk:            " + ni.getDisplayName());
         for (Enumeration addresses = ni.getInetAddresses(); addresses.hasMoreElements(); ) {
           InetAddress           address = ((InetAddress) addresses.nextElement());
 
           writer.println("                     "
-                         + address.getHostAddress() + " " 
+                         + address.getHostAddress() + " "
                          + address.getCanonicalHostName());
         }
       }
@@ -660,13 +661,13 @@ public abstract class Application extends java.applet.Applet implements MessageL
   private Registry                      registry;
   private Locale                        defaultLocale;
   private LocalizationManager           localizationManager;
-  
+
   // ---------------------------------------------------------------------
   // Failure cause informations
   // ---------------------------------------------------------------------
 
   private static final Date             startupTime; // remembers the startup time
-  
+
   static {
     startupTime = new Date();
   }

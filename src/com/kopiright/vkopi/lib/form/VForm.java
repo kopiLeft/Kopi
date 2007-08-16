@@ -86,7 +86,7 @@ public abstract class VForm extends VWindow implements VConstants {
     super(ctxt);
     initIntern(true);
   }
-  
+
   /**
    * Constructor
    */
@@ -107,7 +107,7 @@ public abstract class VForm extends VWindow implements VConstants {
       callTrigger(TRG_PREFORM);
     }
     initActors();
-    
+
     // localize the form using the default locale
     localize(Locale.getDefault());
   }
@@ -220,7 +220,7 @@ public abstract class VForm extends VWindow implements VConstants {
     // Form-level commands are always enabled
     if (commands != null) {
       for (int i = 0; i < commands.length; i++) {
-	commands[i].setEnabled(true);
+        commands[i].setEnabled(true);
       }
     }
   }
@@ -231,21 +231,21 @@ public abstract class VForm extends VWindow implements VConstants {
   public void setActors(SActor[] actors) {
     if (actors != null) {
       for (int i = 0; i < actors.length; i++) {
-	if (actors[i] instanceof SDefaultActor) {
-	  switch (((SDefaultActor)actors[i]).getCode()) {
-	  case VForm.CMD_AUTOFILL:
-	    autofillActor = actors[i];
-	    break;
-	  case VForm.CMD_EDITITEM:
-	    editItemActor = actors[i];
-	    break;
-	  case VForm.CMD_EDITITEM_S:
-	    editItemActor_S = actors[i];
-	    break;
-	  case VForm.CMD_NEWITEM:
-	    newItemActor = actors[i];
-	  }
-	}
+        if (actors[i] instanceof SDefaultActor) {
+          switch (((SDefaultActor)actors[i]).getCode()) {
+          case VForm.CMD_AUTOFILL:
+            autofillActor = actors[i];
+            break;
+          case VForm.CMD_EDITITEM:
+            editItemActor = actors[i];
+            break;
+          case VForm.CMD_EDITITEM_S:
+            editItemActor_S = actors[i];
+            break;
+          case VForm.CMD_NEWITEM:
+            newItemActor = actors[i];
+          }
+        }
       }
     }
     super.setActors(actors);
@@ -269,12 +269,9 @@ public abstract class VForm extends VWindow implements VConstants {
    */
   public void localize(Locale locale) {
     LocalizationManager         manager;
-    
+
     manager = new LocalizationManager(locale, Application.getDefaultLocale());
-
-    // localizes the actors in VWindow
-    super.localizeActors(manager);
-
+    super.localizeActors(manager); // localizes the actors in VWindow
     localize(manager);
     manager = null;
   }
@@ -309,7 +306,7 @@ public abstract class VForm extends VWindow implements VConstants {
   }
 
   protected void prepareForm() throws VException {
-    final VBlock	block = getActiveBlock();
+    final VBlock        block = getActiveBlock();
 
     if (block != null) {
       block.leave(false);
@@ -338,12 +335,12 @@ public abstract class VForm extends VWindow implements VConstants {
   private void checkForm(KopiAction action) {
     // !!! fixes model (if left in a bad state)
     if (activeBlock == null) {
-      int	i;
+      int       i;
 
       for (i = 0; i < blocks.length; i++) {
-	if (blocks[i].isAccessible()) {
-	  break;
-	}
+        if (blocks[i].isAccessible()) {
+          break;
+        }
       }
       assert i < blocks.length : threadInfo() + "No accessible block";
       blocks[i].enter();
@@ -354,7 +351,7 @@ public abstract class VForm extends VWindow implements VConstants {
         Application.reportTrouble("DForm chechUI " + Thread.currentThread(),
                                   "Where is this code used? " + action,
                                   this.toString(),
-                                  new RuntimeException("CHECKUI: Entered  block "+blocks[i].getName()));
+                                  new RuntimeException("CHECKUI: Entered  block " + blocks[i].getName()));
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -377,11 +374,11 @@ public abstract class VForm extends VWindow implements VConstants {
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by field.leave
    */
   public void gotoPage(int target) throws VException {
-    VBlock	block = null;
+    VBlock      block = null;
 
     for (int i = 0; block == null && i < blocks.length; i++) {
       if (blocks[i].getPageNumber() == target && blocks[i].isAccessible()) {
-	block = blocks[i];
+        block = blocks[i];
       }
     }
 

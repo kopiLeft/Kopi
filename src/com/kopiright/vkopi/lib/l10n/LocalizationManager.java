@@ -46,7 +46,7 @@ public class LocalizationManager {
     this.locale = locale;
     this.defaultLocale = defaultLocale;
   }
-  
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
@@ -86,7 +86,7 @@ public class LocalizationManager {
   public ActorLocalizer getActorLocalizer(String source, String name) {
     return new ActorLocalizer(getDocument(source), name);
   }
-  
+
   /**
    * Constructs a menu localizer using the specified source.
    *
@@ -163,7 +163,7 @@ public class LocalizationManager {
   public PropertyLocalizer getPropertyLocalizer(String source) {
     return new PropertyLocalizer(getDocument(source));
   }
-  
+
   // ----------------------------------------------------------------------
   // FILE HANDLING
   // ----------------------------------------------------------------------
@@ -199,7 +199,7 @@ public class LocalizationManager {
       if (defaultLocale == null) {
         throw new InconsistencyException("Cannot load file " + fileName + localeException.getMessage());
       }
-      
+
       System.err.println("Warning: Cannot load file " + fileName + ": " + localeException.getMessage());
       try {
         fileName = source.replace('.', '/') + "-" + defaultLocale.toString() + ".xml";
@@ -208,17 +208,17 @@ public class LocalizationManager {
         throw new InconsistencyException("Cannot load file " + fileName + ": " + defaultLocaleException.getMessage());
       }
     }
-    
+
     // the URI is used to report the file name when a child lookup fails
     document.setBaseURI(fileName);
-    
+
     return document;
   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  
+
   private final Hashtable               documents = new Hashtable();
   private final Locale                  locale;
   private final Locale                  defaultLocale;
