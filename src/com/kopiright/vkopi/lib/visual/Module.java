@@ -34,12 +34,12 @@ public class Module {
    * Constructor
    */
   public Module(int id,
-		int parent,
-		String shortname,
+                int parent,
+                String shortname,
                 String source,
-		String object,
-		int access,
-		String icon)
+                String object,
+                int access,
+                String icon)
   {
     this.id = id;
     this.parent = parent;
@@ -59,7 +59,7 @@ public class Module {
       this.icon = com.kopiright.vkopi.lib.util.Utils.getImage(icon);
       smallIcon = (ImageIcon)icons.get(icon);
       if (smallIcon == null) {
- 	icons.put(icon, smallIcon = new ImageIcon(this.icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH)));
+        icons.put(icon, smallIcon = new ImageIcon(this.icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH)));
       }
     }
   }
@@ -179,10 +179,10 @@ public class Module {
 	Thread.yield();
       }
 
-      KopiExecutable	form = getKopiExecutable(object);
+      KopiExecutable    form = getKopiExecutable(object);
 
       if (form instanceof VWindow) {
-	((VWindow)form).setSmallIcon(icon);
+        ((VWindow)form).setSmallIcon(icon);
       }
       form.setDBContext(ctxt);
       form.doNotModal();
@@ -205,6 +205,7 @@ public class Module {
     return shortname;
   }
 
+
   // ---------------------------------------------------------------------
   // LOCALIZATION
   // ---------------------------------------------------------------------
@@ -216,12 +217,21 @@ public class Module {
    */
   public void localize(LocalizationManager manager) {
     ModuleLocalizer             loc;
-    
-    loc = manager.getModuleLocalizer(source, shortname);
+
+    try {
+      loc = manager.getModuleLocalizer(source, shortname);
+    } catch (com.kopiright.util.base.InconsistencyException e) {
+      // If the module localization is not found, report it
+      Application.reportTrouble(shortname,
+                                source,
+                                "Module '" + shortname + "' was not found in '" + source + "'",
+                                e);
+      throw e;
+    }
     description = loc.getLabel();
     help = loc.getHelp();
   }
-  
+
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
