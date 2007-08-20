@@ -141,6 +141,10 @@ public class FieldReference extends Expression {
     return field;
   }
 
+  public String getQualifiedFieldName() {
+    return (table == null ? "" : table + ".") + field;
+  }
+
   public String toString() {
     return (table == null ? "" : table + ".") + field + 
       (hasPlus ? "(+)" : "");

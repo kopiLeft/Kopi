@@ -26,6 +26,8 @@
 <msg identifier="TABLE_NOT_FOUND" format="The table \&quot;{0}\&quot; doesn&apos;&apos;t exist." reference="SQLC" level="2"/>
 <msg identifier="ALIAS_NOT_FOUND" format="The alias \&quot;{0}\&quot; doesn&apos;&apos;t exist." reference="SQLC" level="2"/>
 <msg identifier="ALIAS_NOT_UNIQUE" format="The alias \&quot;{0}\&quot; is not unique." reference="SQLC" level="2"/>
+<msg identifier="BAD_ALIAS_FORMAT" format="The alias \&quot;{0}\&quot; contains \&quot;.\&quot;, this way of naming aliases is deprecated. It can be removed in future versions." reference="SQLC" level="2"/>
+<msg identifier="NOT_USEFUL_ALIAS" format="The alias and the field name are the same:\&quot;{0}\&quot;" reference="SQLC" level="2"/>
 <msg identifier="COLUMN_NOT_IN_TABLE" format="Table \&quot;{1}\&quot; has no column \&quot;{0}\&quot;." reference="SQLC" level="2"/>
 <msg identifier="COLUMN_NOT_RESOLVABLE" format="The column \&quot;{0}\&quot; is not resolvable." reference="SQLC" level="2"/>
 <msg identifier="COLUMN_NOT_UNIQUE" format="The column \&quot;{0}\&quot; is not unique in the list." reference="SQLC" level="2"/>

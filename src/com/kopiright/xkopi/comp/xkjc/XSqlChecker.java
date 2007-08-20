@@ -130,6 +130,21 @@ public class XSqlChecker extends com.kopiright.xkopi.comp.sqlc.SqlChecker implem
       }
     }
     sqlExpr.accept(this);
+    if (hasAs) {
+      //current.append(" AS ");
+      //current.append(ident);
+      if (ident.indexOf('.') != -1) {
+        getContext().reportTrouble(new CWarning(self.getTokenReference(),
+                                   SqlcMessages.BAD_ALIAS_FORMAT,
+                                   ident));
+      }
+      if (sqlExpr instanceof FieldReference
+          && ((FieldReference)sqlExpr).getQualifiedFieldName().equals(ident)) {
+        getContext().reportTrouble(new CWarning(self.getTokenReference(),
+                                   SqlcMessages.NOT_USEFUL_ALIAS,
+                                   ident + " AS " + ident));
+      }
+    }
   }
 
   /**

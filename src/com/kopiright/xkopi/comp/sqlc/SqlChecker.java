@@ -909,6 +909,17 @@ public class SqlChecker implements SqlVisitor {
   {
     columnExpr.accept(this);
     if (newColumnName != null) {
+      if (columnExpr instanceof FieldReference
+          && ((FieldReference) columnExpr).getQualifiedFieldName().equals(newColumnName)) {
+        reportTrouble(new CWarning(self.getTokenReference(),
+                                   SqlcMessages.NOT_USEFUL_ALIAS,
+                                   newColumnName + " AS " + newColumnName));
+      }
+      if (newColumnName.indexOf('.') != -1) {
+        reportTrouble(new CWarning(self.getTokenReference(),
+                                   SqlcMessages.BAD_ALIAS_FORMAT,
+                                   newColumnName));
+      }
       current.append(" AS ");
       current.append(newColumnName);
     }
