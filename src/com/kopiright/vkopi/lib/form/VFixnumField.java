@@ -67,7 +67,7 @@ public class VFixnumField extends VField {
                       Fixed maxval)
   {
     super(computeWidth(digits, maxScale, minval, maxval), 1);
-
+    this.fieldMaxScale = maxScale;
     this.maxScale = maxScale;
     this.minval = minval == null ? calculateUpperBound(digits, maxScale).negate() : minval.setScale(maxScale);
     this.maxval = maxval == null ? calculateUpperBound(digits, maxScale) : maxval.setScale(maxScale);
@@ -308,13 +308,18 @@ public class VFixnumField extends VField {
    * @param     scale           the scale value.
    */
   public void setMaxScale(int scale) throws VExecFailedException {
-    if (scale > maxScale) {
-      throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale)));
+    // dynamic maxScale musn't exceed the maxScale defined in the field declaration (fieldMaxScale).
+    if (scale > fieldMaxScale) {
+      throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(fieldMaxScale)));
     }
     this.maxScale = scale;
-    this.minval = minval.setScale(maxScale);
-    this.maxval = maxval.setScale(maxScale);
-    setDimension(computeWidth(digits, maxScale, minval, maxval), getHeight());
+
+    if (minval.getScale() > maxScale) {
+      this.minval = minval.setScale(maxScale);
+    }
+    if (maxval.getScale() > maxScale) {
+      this.maxval = maxval.setScale(maxScale);
+    }
     //records scale must be <= maxscale
     for (int i = 0; i < currentScale.length; i++) {
       if(currentScale[i] > maxScale) {
@@ -815,6 +820,7 @@ public class VFixnumField extends VField {
   // static (compiled) data
   private final boolean         fraction; // display as fraction
   private final int             digits;
+  private final int             fieldMaxScale;
   // dynamic data
   private  Fixed           maxval;   // maximum value allowed
   private  Fixed           minval;   // minimum value allowed
