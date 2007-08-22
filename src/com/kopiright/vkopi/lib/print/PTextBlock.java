@@ -82,6 +82,10 @@ public abstract class PTextBlock extends PBlock {
 	}
       }
       isFullyPrinted = engine.getHeight() <= size;
+      if (engine.getHeight() > size) {
+        // wael : 22082007 this is for test, throw an Inconsistency exception when this occurs;
+        System.err.println("the specified size : " + size + " is too small to write data (dataHeight = "+ engine.getHeight() +") for the Block : " + getIdent());
+      }
       pending = !isFullyPrinted;
       return isFullyPrinted ? (currentHeight = engine.getHeight()) : 0;
     }
