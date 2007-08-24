@@ -48,6 +48,21 @@ public abstract class VReportSelectionForm extends VDictionaryForm {
   }
 
   /**
+   * static call to createReport.
+   */
+  public static void createReport(VReport report, VForm form) throws VException {
+    try {
+      form.setWaitInfo(Message.getMessage("report_generation"));
+      report.setDBContext(form.getDBContext());
+      report.doNotModal();
+      form.unsetWaitInfo();
+    } catch (VNoRowException e) {
+      form.unsetWaitInfo();
+      form.error(MessageCode.getMessage("VIS-00057"));
+    }
+  }
+
+  /**
    * Implements interface for COMMAND CreateReport
    */
   public void createReport(VBlock b) throws VException {
