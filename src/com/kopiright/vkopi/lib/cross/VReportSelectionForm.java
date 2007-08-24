@@ -50,16 +50,18 @@ public abstract class VReportSelectionForm extends VDictionaryForm {
   /**
    * static call to createReport.
    */
-  public static void createReport(VReport report, VForm form) throws VException {
+  public static void createReport(VReport report, VBlock b) throws VException {
+    b.validate();
     try {
-      form.setWaitInfo(Message.getMessage("report_generation"));
-      report.setDBContext(form.getDBContext());
+      report.setWaitInfo(Message.getMessage("report_generation"));
+      report.setDBContext(report.getDBContext());
       report.doNotModal();
-      form.unsetWaitInfo();
+      report.unsetWaitInfo();
     } catch (VNoRowException e) {
-      form.unsetWaitInfo();
-      form.error(MessageCode.getMessage("VIS-00057"));
+      report.unsetWaitInfo();
+      report.error(MessageCode.getMessage("VIS-00057"));
     }
+    b.setRecordChanged(0, false);
   }
 
   /**
