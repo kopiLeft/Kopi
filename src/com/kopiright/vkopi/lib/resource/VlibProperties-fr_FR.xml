@@ -285,7 +285,7 @@
   <property key="enter_new_label" value="entrer un nouveau label pour cette colonne" />
   <property key="add_data_for_column" value="Ajouter des données pour cette colonne" />
 <!-- report column popup menu -->
-  <property key="set_column_data" value="Ajouter des données" />
+  <property key="set_column_data" value="attribuer une formule" />
   <property key="add_column" value="Ajouter une colonne" />
   <property key="sort_DSC" value="trier &lt;&lt;" />
   <property key="sort_ASC" value="trier &gt;&gt;" />

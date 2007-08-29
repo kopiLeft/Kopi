@@ -271,25 +271,25 @@
   <property key="Help" value="Hilfe" />
   <property key="Help-help" value="Hilfe zum Bericht" />
 <!-- icons -->  
-  <property key="export-icon" value="export" />
-  <property key="fold-icon" value="fold" />
-  <property key="unfold-icon" value="unfold" />
-  <property key="foldColumn-icon" value="foldColumn" />
-  <property key="unfoldColumn-icon" value="unfoldColumn" />  
+  <property key="export-icon" value="Export" />
+  <property key="fold-icon" value="Ausblenden" />
+  <property key="unfold-icon" value="Einblenden" />
+  <property key="foldColumn-icon" value="Spalte ausblenden" />
+  <property key="unfoldColumn-icon" value="Spalte einblenden" />  
   <property key="serialquery-icon" value="serialquery" />
-  <property key="help-icon" value="help" />
-  <property key="quit-icon" value="quit" />
-  <property key="print-icon" value="print" />
+  <property key="help-icon" value="Hilfe" />
+  <property key="quit-icon" value="Beenden" />
+  <property key="print-icon" value="Drucken" />
 
-  <property key="choose_column" value="Select a column from this list:" />
-  <property key="validate" value="Validate" />
-  <property key="enter_new_label" value="enter a new label for this column" />
-  <property key="add_data_for_column" value="Add data for this column" />
+  <property key="choose_column" value="Wählen Sie ein Spalte dieser Liste aus:" />
+  <property key="validate" value="Überprüfen" />
+  <property key="enter_new_label" value="Geben Sie einen neuen Namen für diese Spalte ein" />
+  <property key="add_data_for_column" value="Wo wird das  verwendet, wo liegt das" />
 <!-- report column popup menu -->
-  <property key="set_column_data" value="set Column data" />
-  <property key="add_column" value="add a new Column" />
-  <property key="sort_DSC" value="sort &lt;&lt;" />
-  <property key="sort_ASC" value="sort &gt;&gt;" />
-  <property key="set_column_info" value="set column info" />
-  <property key="remove_column" value="remove column" />
+  <property key="set_column_data" value="Formel eingeben" />
+  <property key="add_column" value="Neue Spalte hinzufügen" />
+  <property key="sort_DSC" value="absteigende Sortierung" />
+  <property key="sort_ASC" value="aufsteigende Sortierung" />
+  <property key="set_column_info" value="Spalten-Info eingeben" />
+  <property key="remove_column" value="Spalte löschen" />
 </properties>
