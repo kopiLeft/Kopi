@@ -140,11 +140,9 @@ public class VStringField extends VField {
       default:
 	throw new InconsistencyException();
       }
-
-//       if (! checkText(s)) {
-// 	throw new VExecFailedException();
-//       }
-
+      if (! checkText(s)) {
+	throw new VExecFailedException();
+      }
       setString(block.getActiveRecord(), s);
     }
   }
@@ -186,9 +184,10 @@ public class VStringField extends VField {
   public void setString(int r, String v) {
     String      modelVal =  v == null || v.equals("") ? null : v;
 
-    if(!checkText(v == null ? "" : v)) {
-      throw new IllegalArgumentException(MessageCode.getMessage("VIS-00065", Integer.toString(width), Integer.toString(height)));
-    }
+    //wael  : 04092007 , bad data in database this exception may cause problems when launching a form.
+//     if(!checkText(v == null ? "" : v)) {
+//       throw new IllegalArgumentException(MessageCode.getMessage("VIS-00065", Integer.toString(width), Integer.toString(height)));
+//     }
     if (isChangedUI() 
         || value[r] == null
         || (value[r] != null && !value[r].equals(modelVal))) {
