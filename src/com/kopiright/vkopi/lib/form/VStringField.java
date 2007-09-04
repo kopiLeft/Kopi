@@ -187,7 +187,7 @@ public class VStringField extends VField {
     String      modelVal =  v == null || v.equals("") ? null : v;
 
     if(!checkText(v == null ? "" : v)) {
-      throw new IllegalArgumentException(MessageCode.getMessage("VIS-00063", Integer.toString(width), Integer.toString(height)));
+      throw new IllegalArgumentException(MessageCode.getMessage("VIS-00065", Integer.toString(width), Integer.toString(height)));
     }
     if (isChangedUI() 
         || value[r] == null
