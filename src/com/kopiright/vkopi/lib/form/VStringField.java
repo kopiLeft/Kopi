@@ -27,6 +27,7 @@ import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.util.LineBreaker;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.Query;
@@ -140,9 +141,9 @@ public class VStringField extends VField {
 	throw new InconsistencyException();
       }
 
-      if (! checkText(s)) {
-	throw new VExecFailedException();
-      }
+//       if (! checkText(s)) {
+// 	throw new VExecFailedException();
+//       }
 
       setString(block.getActiveRecord(), s);
     }
@@ -154,7 +155,6 @@ public class VStringField extends VField {
    * @param	source		the source text. 
    */
   private String convertName(String source) {
-
     char[]      chars = source.toLowerCase().toCharArray();
     boolean     found = false;
 
@@ -166,7 +166,6 @@ public class VStringField extends VField {
         found = false;
       }
     }
-
     return String.valueOf(chars);
   }
   
@@ -187,6 +186,9 @@ public class VStringField extends VField {
   public void setString(int r, String v) {
     String      modelVal =  v == null || v.equals("") ? null : v;
 
+    if(!checkText(v == null ? "" : v)) {
+      throw new IllegalArgumentException(MessageCode.getMessage("VIS-00063", Integer.toString(width), Integer.toString(height)));
+    }
     if (isChangedUI() 
         || value[r] == null
         || (value[r] != null && !value[r].equals(modelVal))) {
