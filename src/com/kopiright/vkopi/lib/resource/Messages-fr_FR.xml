@@ -84,4 +84,5 @@
   <message ident="00062" text="{0} n'est pas un numéro." />
   <message ident="00063" text="Le numéro de la colonne est faux : {0}, choisis une colonne depuis la liste."/>
   <message ident="00064" text="Une exception s'est produite lors du parse de l'expression : {0} {1}"/>
+  <message ident="00065" text="ce Texte est trés large pour ce champ VStringField({0}, {1})"/>
 </messages>
