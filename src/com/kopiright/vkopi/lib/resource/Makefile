@@ -83,7 +83,7 @@ PNGFILES =	all apply  article					\
 PNGNEW =	align_center align_justify align_left align_right bold	\
 		cut ident italic paste redo unident underline undo      \
 		border password zoomminus zoomwidth zoomheight		\
-		zoomoptimal zoomplus
+		zoomoptimal zoomplus formula
 
 GIFFILES =	$(FREEGIFS) $(OLDGIFS)
 
