@@ -135,14 +135,42 @@ public abstract class VCodeField extends VField {
 	  }
 	}
       }
-
       switch (found) {
       case -1:	/* no match */
 	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
-
       case -2:	/* two (or more) exact matches: cannot choose */
-	throw new VFieldException(this, MessageCode.getMessage("VIS-00002"));
+        final ListDialog    listDialog;
+        final int           selected;
+        int count;
+        int[] selectedToModel;
+        Object[] codes;
+        
+        count = 0;
+        for (int i = 0; i < labels.length; i++) {
+          if (labels[i].toLowerCase().startsWith(s)) {
+            count ++;
+          }
+        }
+        codes = new Object[count];
+        selectedToModel = new int[count];
+        int j = 0;
 
+        for (int i = 0; i < labels.length ; i++) {
+          if (labels[i].toLowerCase().startsWith(s)) {
+            codes[j] = getCodes()[i];
+            selectedToModel[j] = i;
+            j++;
+          }
+        }
+        listDialog = new ListDialog(new VListColumn[] {getListColumn()},
+                                    new Object[][]{ codes });
+        selected = listDialog.selectFromDialog(getForm(), (DField)getDisplay());
+        if (selected != -1) {
+          setCode(block.getActiveRecord(), selectedToModel[selected]);
+        } else {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00002"));
+        }
+        break;
       default:
 	setCode(block.getActiveRecord(), found);
       }
