@@ -37,29 +37,25 @@ public class SDefaultReportActor extends SActor {
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
-
   public SDefaultReportActor(String menuIdent,
                              String actorIdent,
-                             String iconIdent,
+                             String iconName,
                              int acceleratorKey,
                              int acceleratorModifier) {
                                          
-    super(menuIdent,null,actorIdent,null,null,acceleratorKey,acceleratorModifier);
-    this.iconIdent = iconIdent;
+    super(menuIdent, null, actorIdent, null, null, acceleratorKey, acceleratorModifier);
+    this.iconName = iconName;
     localize();
   }
-  
-  
+
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
   private void localize() {
     menuName = VlibProperties.getString(menuIdent);
     menuItem = VlibProperties.getString(actorIdent);
     help = VlibProperties.getString(actorIdent + "-help");
-    iconName = VlibProperties.getString(iconIdent);
     initAction();
   }  
-  private String iconIdent;
 }
+

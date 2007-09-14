@@ -390,17 +390,17 @@ public class VDynamicReport extends VReport {
   
   private void initDefaultActors() {
     actorsDef = new SActor[11];
-    createActor("File", "Quit", "quit-icon", KeyEvent.VK_ESCAPE, 0, Constants.CMD_QUIT);
-    createActor("File", "Print", "print-icon", KeyEvent.VK_F6, 0, Constants.CMD_PRINT);
-    createActor("File", "ExportCSV", "export-icon", KeyEvent.VK_F8, 0, Constants.CMD_EXPORT_CSV);
-    createActor("File", "ExportXLS", "export-icon", KeyEvent.VK_F8, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORT_XLS);
-    createActor("File", "ExportPDF", "export-icon",KeyEvent.VK_F9, 0, Constants.CMD_EXPORT_PDF);
-    createActor("Action", "Fold", "fold-icon", KeyEvent.VK_F2, 0, Constants.CMD_FOLD);
-    createActor("Action","Unfold", "unfold-icon", KeyEvent.VK_F3, 0, Constants.CMD_UNFOLD);
-    createActor("Action", "FoldColumn", "foldColumn-icon", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_FOLD_COLUMN);
-    createActor("Action", "UnfoldColumn", "unfoldColumn-icon", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_UNFOLD_COLUMN);
-    createActor("Action", "Sort", "serialquery-icon", KeyEvent.VK_F4 , 0, Constants.CMD_SORT);
-    createActor("Help", "Help", "help-icon", KeyEvent.VK_F1, 0, Constants.CMD_HELP);
+    createActor("File", "Quit", QUIT_ICON, KeyEvent.VK_ESCAPE, 0, Constants.CMD_QUIT);
+    createActor("File", "Print", PRINT_ICON, KeyEvent.VK_F6, 0, Constants.CMD_PRINT);
+    createActor("File", "ExportCSV", EXPORT_ICON, KeyEvent.VK_F8, 0, Constants.CMD_EXPORT_CSV);
+    createActor("File", "ExportXLS", EXPORT_ICON, KeyEvent.VK_F8, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORT_XLS);
+    createActor("File", "ExportPDF", EXPORT_ICON,KeyEvent.VK_F9, 0, Constants.CMD_EXPORT_PDF);
+    createActor("Action", "Fold", FOLD_ICON, KeyEvent.VK_F2, 0, Constants.CMD_FOLD);
+    createActor("Action","Unfold", UNFOLD_ICON, KeyEvent.VK_F3, 0, Constants.CMD_UNFOLD);
+    createActor("Action", "FoldColumn", FOLD_COLUMN_ICON, KeyEvent.VK_UNDEFINED , 0, Constants.CMD_FOLD_COLUMN);
+    createActor("Action", "UnfoldColumn", UNFOLD_COLUMN_ICON, KeyEvent.VK_UNDEFINED , 0, Constants.CMD_UNFOLD_COLUMN);
+    createActor("Action", "Sort", SERIALQUERY_ICON, KeyEvent.VK_F4 , 0, Constants.CMD_SORT);
+    createActor("Help", "Help", HELP_ICON, KeyEvent.VK_F1, 0, Constants.CMD_HELP);
     // !!! wael 20070418: these actors can be added in the future.
     //    createActor("File", "Preview", null, KeyEvent.SHIFT_MASK + KeyEvent.VK_F6, 0, Constants.CMD_PREVIEW);
     //    createActor("File", "PrintOptions", "border", KeyEvent.VK_F7, KeyEvent.SHIFT_MASK, Constants.CMD_PRINT_OPTIONS);
@@ -530,5 +530,14 @@ public class VDynamicReport extends VReport {
   private VBlock                block;    
   private SActor[]              actorsDef;
   private int                   number = 0;
+  private static String EXPORT_ICON            = "export";
+  private static String FOLD_ICON              = "fold";
+  private static String UNFOLD_ICON            = "unfold";
+  private static String FOLD_COLUMN_ICON       = "foldColumn";
+  private static String UNFOLD_COLUMN_ICON     = "unfoldColumn";
+  private static String SERIALQUERY_ICON       = "serialquery";
+  private static String HELP_ICON              = "help";
+  private static String QUIT_ICON              = "quit";
+  private static String PRINT_ICON             = "print";
 }
 
