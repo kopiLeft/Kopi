@@ -270,17 +270,6 @@
   <property key="Options-help" value="Änderung der Darstellungsoptionen" />
   <property key="Help" value="Hilfe" />
   <property key="Help-help" value="Hilfe zum Bericht" />
-<!-- icons -->  
-  <property key="export-icon" value="Export" />
-  <property key="fold-icon" value="Ausblenden" />
-  <property key="unfold-icon" value="Einblenden" />
-  <property key="foldColumn-icon" value="Spalte ausblenden" />
-  <property key="unfoldColumn-icon" value="Spalte einblenden" />  
-  <property key="serialquery-icon" value="serialquery" />
-  <property key="help-icon" value="Hilfe" />
-  <property key="quit-icon" value="Beenden" />
-  <property key="print-icon" value="Drucken" />
-
   <property key="choose_column" value="Wählen Sie ein Spalte dieser Liste aus:" />
   <property key="validate" value="Überprüfen" />
   <property key="enter_new_label" value="Geben Sie einen neuen Namen für diese Spalte ein" />

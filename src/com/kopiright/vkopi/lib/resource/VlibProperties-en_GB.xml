@@ -269,17 +269,6 @@
   <property key="LoadConfiguration" value="Load saved configuration." />
   <property key="Options" value="options" />
   <property key="Options-help" value="Change display options." />
-  <!-- icons -->
-  <property key="export-icon" value="export" />
-  <property key="fold-icon" value="fold" />
-  <property key="unfold-icon" value="unfold" />
-  <property key="foldColumn-icon" value="foldColumn" />
-  <property key="unfoldColumn-icon" value="unfoldColumn" />
-  <property key="serialquery-icon" value="serialquery" />
-  <property key="help-icon" value="help" />
-  <property key="quit-icon" value="quit" />
-  <property key="print-icon" value="print" />
-
   <property key="choose_column" value="Select a column from this list:" />
   <property key="validate" value="Validate" />
   <property key="enter_new_label" value="enter a new label for this column" />
