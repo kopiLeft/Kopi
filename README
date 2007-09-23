@@ -8,8 +8,8 @@
 
 --------------------------------------------------------------------------------
 
-VERSION :	2.3A
-RELEASED :	09 February 2007
+VERSION :	2.3B
+RELEASED :	17 September 2007
 
 THIS FILE :	$Id$
 
@@ -119,11 +119,16 @@ src
 OTHER PACKAGES YOU WILL NEED
 
     JDK 1.4 or higher
+     
+    JDOM	
+    java api to manipulate xml files.
+    it can be downloaded from :
+    http://www.jdom.org/downloads/index.html
+	
     For KJC :
        GNU GETOPT
 	   The parsing of the arguments of the command line is made with gnu.getopt :
 	   http://www.urbanophile.com/arenn/hacking/download.html
-
        JFLEX
 	   The lexical analysers are generated with JFlex :
 	   http://www.jflex.de
@@ -143,7 +148,10 @@ OTHER PACKAGES YOU WILL NEED
            The gnu.hylafax package is a pure-Java implementation of the HylaFAX (FAX server) client protocol.
            it can be downloaded from :
            http://sourceforge.net/projects/gnu-hylafax
-        
+       MESP : Math Expression String Parser 
+	   Parser for mathematical expressions, used to make calculation for added at runtime report columns.
+	   it can be downloaded from :
+           http://sourceforge.net/projects/expression-tree/
 --------------------------------------------------------------------------------
 BUILDING FROM SOURCE
 
