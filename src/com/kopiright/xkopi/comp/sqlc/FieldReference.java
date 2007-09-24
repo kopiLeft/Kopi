@@ -79,7 +79,8 @@ public class FieldReference extends Expression {
       TableReference    tableReference = context.getTableFromAlias(table);
 
       if (tableReference != null) {
-        if (!tableReference.hasColumn(field)) {
+        if (!tableReference.hasColumn(field) 
+            && !field.equals("rowid")) {
           context.reportTrouble(new CWarning(ref,
                                              SqlcMessages.COLUMN_NOT_IN_TABLE,
                                              field,
@@ -100,9 +101,11 @@ public class FieldReference extends Expression {
           return newTable.getTableForColumn(field);
         }
       }
-      context.reportTrouble(new CWarning(ref,
-                                         SqlcMessages.IDENT_NOT_RESOLVABLE,
-                                         field));
+      if (!field.equals("rowid")) {
+        context.reportTrouble(new CWarning(ref,
+                                           SqlcMessages.IDENT_NOT_RESOLVABLE,
+                                           field));
+      }
       return null;
     }
   }

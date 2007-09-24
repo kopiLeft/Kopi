@@ -107,7 +107,8 @@ public class SqlChecker implements SqlVisitor {
     // check if left is a text and if it exists in the table
     if (left instanceof SimpleIdentExpression) {
       TableReference table = (TableReference)(getContext().getTables()).get(0);
-      if (!table.hasColumn(((SimpleIdentExpression)left).getIdent())) {
+      if (!table.hasColumn(((SimpleIdentExpression)left).getIdent())
+          && !((SimpleIdentExpression)left).getIdent().equals("rowid")) { // rowid is a pseudo column in oracle
 	reportTrouble(new CWarning(self.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, ((SimpleIdentExpression)left).getIdent()));
       }
     }
@@ -1384,7 +1385,8 @@ public class SqlChecker implements SqlVisitor {
       while (it.hasNext()) {
         String          field = (String) it.next();
 
-        if (!table.hasColumn(field)) {
+        if (!table.hasColumn(field)
+            && !field.equals("rowid")) {
 	reportTrouble(new CWarning(fields.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, field));
         }
       }
