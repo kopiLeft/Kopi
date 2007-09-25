@@ -738,14 +738,6 @@ public class VFixnumField extends VField {
     if (maxVal != null && maxVal.compareTo(upperBound) < 0) {
       upperBound = maxVal.setScale(scale);
     }
-
-//!!!TEST
-    {
-      if (digits == 5 && scale == 2) {
-        System.err.println("**** " + lowerBound + " " + upperBound);
-      }
-    }
-//!!!TEST
     return Math.max(upperBound.toString().length(), lowerBound.toString().length());
   }
 
