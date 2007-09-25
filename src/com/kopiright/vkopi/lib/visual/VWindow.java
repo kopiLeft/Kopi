@@ -85,7 +85,6 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * doModal
    * modal call to this form
    * @exception	VException	an exception may be raised by triggers
-   * @deprecated
    */
   public boolean doModal(Frame f) throws com.kopiright.vkopi.lib.visual.VException {
     return WindowController.getWindowController().doModal(this);
