@@ -3516,19 +3516,16 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       /* check if unique index constraints are respected by new record */
       checkUniqueIndices(recno);
 
-      /* get next id if not given as argument */
-      if (id == -1) {
-	id = KopiUtils.getNextTableId(form.getDBContext().getDefaultConnection(), tables[0]);
-      }
+      
+      /* fill with next id if not given as argument and not overridden */
+      fillIdField(recno, id);
 
-      final VField      idFld = getIdField();
       final VField      tsFld = getTsField();
       final VField      ucFld = getUcField();
 
       assert ucFld != null || tsFld != null
         : "TS or UC field must exist (Block = " + getName() + ").";
 
-      idFld.setInt(recno, new Integer(id));
       if (tsFld != null) {
         // if there is a timestamp field set it with the
         // current time
@@ -3589,6 +3586,17 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
       throw e;
     }
+  }
+
+  /**
+   *
+   */
+  protected void fillIdField(int recno, int id) throws VException, SQLException {
+    if (id == -1) {
+      id = KopiUtils.getNextTableId(form.getDBContext().getDefaultConnection(), tables[0]);
+    }
+
+    getIdField().setInt(recno, new Integer(id));
   }
 
   /**
