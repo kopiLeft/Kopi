@@ -220,16 +220,19 @@ public class Module {
 
     try {
       loc = manager.getModuleLocalizer(source, shortname);
+      description = loc.getLabel();
+      help = loc.getHelp();
     } catch (com.kopiright.util.base.InconsistencyException e) {
       // If the module localization is not found, report it
       Application.reportTrouble(shortname,
                                 source,
                                 "Module '" + shortname + "' was not found in '" + source + "'",
                                 e);
-      throw e;
+
+      
+      description = "!!! " + shortname + " !!!";
+      help = description;
     }
-    description = loc.getLabel();
-    help = loc.getHelp();
   }
 
 
