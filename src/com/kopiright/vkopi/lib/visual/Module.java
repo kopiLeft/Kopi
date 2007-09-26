@@ -228,8 +228,6 @@ public class Module {
                                 source,
                                 "Module '" + shortname + "' was not found in '" + source + "'",
                                 e);
-
-      
       description = "!!! " + shortname + " !!!";
       help = description;
     }
