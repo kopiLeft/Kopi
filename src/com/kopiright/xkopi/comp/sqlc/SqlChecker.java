@@ -108,7 +108,8 @@ public class SqlChecker implements SqlVisitor {
     if (left instanceof SimpleIdentExpression) {
       TableReference table = (TableReference)(getContext().getTables()).get(0);
       if (!table.hasColumn(((SimpleIdentExpression)left).getIdent())
-          && !((SimpleIdentExpression)left).getIdent().equals("rowid")) { // rowid is a pseudo column in oracle
+          && !((SimpleIdentExpression)left).getIdent().equalsIgnoreCase("rowid")
+          && !((SimpleIdentExpression)left).getIdent().equalsIgnoreCase("rownum")) { // rowid is a pseudo column in oracle
 	reportTrouble(new CWarning(self.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, ((SimpleIdentExpression)left).getIdent()));
       }
     }
@@ -1386,7 +1387,8 @@ public class SqlChecker implements SqlVisitor {
         String          field = (String) it.next();
 
         if (!table.hasColumn(field)
-            && !field.equals("rowid")) {
+            && !field.equalsIgnoreCase("rowid")
+            && !field.equalsIgnoreCase("rownum")) {
 	reportTrouble(new CWarning(fields.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, field));
         }
       }

@@ -80,7 +80,8 @@ public class FieldReference extends Expression {
 
       if (tableReference != null) {
         if (!tableReference.hasColumn(field) 
-            && !field.equals("rowid")) {
+            && !field.equalsIgnoreCase("rowid")
+            && !field.equalsIgnoreCase("rownum")) {
           context.reportTrouble(new CWarning(ref,
                                              SqlcMessages.COLUMN_NOT_IN_TABLE,
                                              field,
@@ -101,7 +102,8 @@ public class FieldReference extends Expression {
           return newTable.getTableForColumn(field);
         }
       }
-      if (!field.equals("rowid")) {
+      if (!field.equalsIgnoreCase("rowid")
+          && !field.equalsIgnoreCase("rownum")) {
         context.reportTrouble(new CWarning(ref,
                                            SqlcMessages.IDENT_NOT_RESOLVABLE,
                                            field));
