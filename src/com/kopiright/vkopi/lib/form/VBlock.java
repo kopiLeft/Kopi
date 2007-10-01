@@ -1357,7 +1357,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           if (((DForm) getForm().getDisplay()).runtimeDebugInfo != null) {
             ((DForm) getForm().getDisplay()).runtimeDebugInfo.printStackTrace();
           }
-          System.out.println("INFO: VBlock checkBlock " + Thread.currentThread());
+          // System.out.println("INFO: VBlock checkBlock " + Thread.currentThread());
 	} catch (VException f) {
 	  throw new InconsistencyException();
 	}
