@@ -191,9 +191,12 @@ public class Module {
       v.printStackTrace();
       throw v;
     } catch (Throwable t) {
-      System.out.println(t.getMessage());
-      t.printStackTrace();
-      System.out.println("Error while loading " + description + ":" + t);
+      Application.reportTrouble("Form loading",
+                                "Module.startForm(DBContext ctxt, String object, String description, ImageIcon icon)",
+                                t.getMessage(),
+                                t);
+      DWindow.displayError(Application.getMenu(), 
+                           com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
       return null;
     }
   }

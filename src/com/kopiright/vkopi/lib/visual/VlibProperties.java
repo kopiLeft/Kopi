@@ -85,6 +85,10 @@ public class VlibProperties {
       format = manager.getPropertyLocalizer(VLIB_PROPERTIES_RESOURCE_FILE, key).getValue().replaceAll("'", "''");
       return MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
+      Application.reportTrouble("localize Property",
+                                "com.kopiright.vkopi.lib.visual.VlibProperties.getString(String key, Object[] params)",
+                                e.getMessage(),
+                                e);
       System.err.println("ERROR: " + e.getMessage());
       return "!" + key + "!";
     }

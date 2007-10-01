@@ -716,7 +716,15 @@ public class MenuTree extends DWindow {
       LocalizationManager         manager;
 
       manager = new LocalizationManager(locale, Application.getDefaultLocale());
-      super.localizeActors(manager); // localizes the actors in VWindow
+      try {
+        super.localizeActors(manager); // localizes the actors in VWindow
+      } catch (InconsistencyException e) {
+        Application.reportTrouble("MenuTree Actor localization",
+                                  "MenuTreeModel.localize",
+                                  e.getMessage(),
+                                  e);
+        System.exit(1);
+      }
       manager = null;
     }
 
@@ -803,27 +811,27 @@ public class MenuTree extends DWindow {
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-
-    /**
-     * Localize this menu tree
-     * 
-     * @param     locale  the locale to use
-     */
-    public void localize(Locale locale) {
-      LocalizationManager         manager;
-
-      manager = new LocalizationManager(locale, Application.getDefaultLocale());
-
-      // localizes the modules
-      for (ListIterator i = items.listIterator(); i.hasNext(); ) {
-        Module          item;
-
-        item = (Module)i.next();
-        item.localize(manager);
-      }
-      manager = null;
+  
+  /**
+   * Localize this menu tree
+   * 
+   * @param     locale  the locale to use
+   */
+  public void localize(Locale locale) {
+    LocalizationManager         manager;
+    
+    manager = new LocalizationManager(locale, Application.getDefaultLocale());
+    
+    // localizes the modules
+    for (ListIterator i = items.listIterator(); i.hasNext(); ) {
+      Module          item;
+      
+      item = (Module)i.next();
+      item.localize(manager);
     }
-
+    manager = null;
+  }
+  
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------

@@ -126,8 +126,12 @@ public class MessageCode {
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
-      return (withKey? (key + ": ") : "")+ MessageFormat.format(format, params);
+      return (withKey? (key + ": ") : "") + MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
+      Application.reportTrouble("localize MessageCode",
+                                "com.kopiright.vkopi.lib.visual.MessageCode.getMessage(String key, Object[] params, boolean withKey)",
+                                e.getMessage(),
+                                e);
       System.err.println("ERROR: " + e.getMessage());
       return key + ": " + "message for !" + key + "! not found!";
     }
