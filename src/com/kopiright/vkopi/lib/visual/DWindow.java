@@ -707,9 +707,14 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     getModel().setCommandsEnabled(false);
     currentAction = action;
     // DebugInfo#
-    if (Application.getDefaults().isDebugModeEnabled()) {
+
+    //!!! graf 20071002: throws NPE
+    //if (Application.getDefaults().isDebugModeEnabled()) {
+    //!!! graf 20071002: throws NPE
       runtimeDebugInfo = new RuntimeException(currentAction.toString());
-    }
+    //!!! graf 20071002: throws NPE
+    //}
+    //!!! graf 20071002: throws NPE
     if (!asynch || !getModel().allowAsynchronousOperation()) {
       // synchronus call
       actionRunner.run();
