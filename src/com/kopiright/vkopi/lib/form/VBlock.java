@@ -30,6 +30,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.list.VListColumn;
+import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.Message;
@@ -1354,11 +1355,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           // lackner 2003.07.31
           // - inserted to get information about the usage of this code
           // - can be removed if the method checkBlock is removed
-          if (((DForm) getForm().getDisplay()).runtimeDebugInfo != null) {
-            ((DForm) getForm().getDisplay()).runtimeDebugInfo.printStackTrace();
+          if (Application.getDefaults() != null 
+              && Application.getDefaults().isDebugModeEnabled()) {
+            if (((DForm) getForm().getDisplay()).runtimeDebugInfo != null) {
+              ((DForm) getForm().getDisplay()).runtimeDebugInfo.printStackTrace();
+            }
+            System.out.println("INFO: VBlock checkBlock " + Thread.currentThread());
           }
-          // System.out.println("INFO: VBlock checkBlock " + Thread.currentThread());
-	} catch (VException f) {
+        } catch (VException f) {
 	  throw new InconsistencyException();
 	}
       }
