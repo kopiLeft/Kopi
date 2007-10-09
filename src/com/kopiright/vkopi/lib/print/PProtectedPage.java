@@ -134,7 +134,8 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
 	try {
 	  abortProtected((SQLException) (new SQLException().initCause(e)));
 	} catch (SQLException ignored) {
-          throw new InconsistencyException(ignored);
+          throw new VRuntimeException(MessageCode.getMessage("VIS-00058")
+                                      + ": " + ignored.getMessage());
 	}
       }
     } else {
