@@ -32,9 +32,10 @@ public class CountExpression extends Expression {
    * Constructor
    * @param	ref		           the token reference for this statement
    */
-  public CountExpression (TokenReference ref, boolean hasDistinct, Expression expr) {
+  public CountExpression (TokenReference ref, boolean hasDistinct, boolean countAll, Expression expr) {
     super(ref);
     this.hasDistinct = hasDistinct;
+    this.countAll = countAll; 
     this.expr = expr;
   }
 
@@ -48,7 +49,7 @@ public class CountExpression extends Expression {
    * @param	visitor			the visitor
    */
   public void accept(SqlVisitor visitor) throws PositionedError {
-    visitor.visitCountExpression(this, hasDistinct, expr);
+    visitor.visitCountExpression(this, hasDistinct, countAll, expr);
   }
 
   // ----------------------------------------------------------------------
@@ -56,5 +57,6 @@ public class CountExpression extends Expression {
   // ----------------------------------------------------------------------
 
   boolean	hasDistinct;
+  boolean       countAll; 
   Expression	expr;
 }

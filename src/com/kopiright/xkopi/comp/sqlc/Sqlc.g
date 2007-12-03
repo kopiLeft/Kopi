@@ -1393,17 +1393,20 @@ sCountExpression []
 {
   Expression            expr = null;
   boolean               hasDistinct = false;
+  boolean               countAll = false;
   TokenReference        sourceRef = buildTokenReference();
 }
 :
   "COUNT" LPAREN
   (
-    STAR
+    STAR  { countAll = true; }
+  |      
+    expr = sExpression[] 
   |
     "DISTINCT" expr = sExpression[] { hasDistinct = true; }
   )
   RPAREN
-    { self = new CountExpression(sourceRef, hasDistinct, expr); }
+    { self = new CountExpression(sourceRef, hasDistinct, countAll, expr); }
 ;
 
 sSetFunction []

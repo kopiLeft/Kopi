@@ -263,6 +263,7 @@ public class SqlChecker implements SqlVisitor {
    */
   public void visitCountExpression(CountExpression self,
                                    boolean hasDistinct,
+                                   boolean countAll,
                                    Expression expr)
     throws PositionedError
   {
@@ -270,8 +271,12 @@ public class SqlChecker implements SqlVisitor {
       current.append("COUNT(DISTINCT ");
       expr.accept(this);
       current.append(")");
-    } else {
+    } else if (countAll) {
       current.append("COUNT(*)");
+    } else {
+      current.append("COUNT(");
+      expr.accept(this);
+      current.append(")");
     }
   }
 

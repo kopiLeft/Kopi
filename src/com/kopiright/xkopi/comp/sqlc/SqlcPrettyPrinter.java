@@ -304,15 +304,19 @@ public class SqlcPrettyPrinter implements SqlVisitor {
   /**
    * Visits a CountExpression node.
    */
-  public void visitCountExpression(CountExpression self, boolean hasDistinct, Expression expr)
+  public void visitCountExpression(CountExpression self, boolean hasDistinct, boolean countAll, Expression expr)
     throws PositionedError
   {
     if (hasDistinct) {
       print("COUNT(DISTINCT ");
       expr.accept(this);
       print(")");
-    } else {
+    } else if (countAll){
       print("COUNT(*)");
+    } else {
+      print("COUNT(");
+      expr.accept(this);
+      print(")");
     }
   }
 

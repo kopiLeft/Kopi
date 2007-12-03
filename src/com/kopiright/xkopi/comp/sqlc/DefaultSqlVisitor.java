@@ -180,10 +180,10 @@ public class DefaultSqlVisitor implements SqlVisitor {
   /**
    * Visits a CountExpression node.
    */
-  public void visitCountExpression(CountExpression self, boolean hasDistinct, Expression expr)
+  public void visitCountExpression(CountExpression self, boolean hasDistinct, boolean countAll, Expression expr)
     throws PositionedError
   {
-    if (hasDistinct) {
+    if (!countAll) {
       expr.accept(this);
     }
   }

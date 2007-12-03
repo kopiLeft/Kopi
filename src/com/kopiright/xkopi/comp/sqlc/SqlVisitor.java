@@ -458,6 +458,7 @@ public interface SqlVisitor {
    */
   void visitCountExpression(CountExpression self,
 			    boolean hasDistinct,
+                            boolean countAll,
 			    Expression expr)
     throws PositionedError;
 
