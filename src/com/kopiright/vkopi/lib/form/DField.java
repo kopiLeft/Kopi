@@ -359,6 +359,7 @@ public abstract class DField extends JPanel {
 
   public void setInDetail(boolean detail) {
     inDetail = detail;
+    label.setInDetailMode(detail);
   }
 
   public boolean isInDetail() {
@@ -419,7 +420,7 @@ public abstract class DField extends JPanel {
   // ----------------------------------------------------------------------
 
   protected	VFieldUI		model;
-  protected	DLabel			label;
+  public	DLabel			label;
   protected	JButton			info;
   protected	JButton			incr;
   protected	JButton			decr;

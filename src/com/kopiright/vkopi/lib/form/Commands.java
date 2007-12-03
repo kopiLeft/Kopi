@@ -29,6 +29,7 @@ import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VWindow;
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
 
@@ -76,6 +77,14 @@ public class Commands implements VConstants {
    * BLOCK-LEVEL COMMANDS
    * ----------------------------------------------------------------------
    */
+
+  public static void SwitchBlockView(final VBlock b) throws VException {
+    if (b.isDetailMode()) {
+      ((DMultiBlock)b.getDisplay()).switchView(-1);
+      return;
+    }
+    ((DMultiBlock)b.getDisplay()).switchView(b.getActiveRecord());
+  }
 
   /**
    * Aborts current processing (old)

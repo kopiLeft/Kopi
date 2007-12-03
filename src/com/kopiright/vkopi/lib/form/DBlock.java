@@ -46,6 +46,7 @@ public class DBlock extends JPanel implements BlockListener {
     SwingThreadHandler.verifyRunsInEventThread("DBlock <init>");
 
     setBorder(model.getBorder(), model.getTitle());
+    setBorder(border);
     setFocusCycleRoot(true);
     setFocusable(false);
 
@@ -113,8 +114,6 @@ public class DBlock extends JPanel implements BlockListener {
    *
    */
   private void setBorder(int style, String title) {
-    Border	border;
-
     if (style == VConstants.BRD_NONE) {
       border = KopiTitledBorder.BRD_EMPTY;
     } else {
@@ -143,9 +142,6 @@ public class DBlock extends JPanel implements BlockListener {
 	border = new KopiTitledBorder(border, title);
       }
     }
-
-
-    setBorder(border);
   }
 
 
@@ -486,7 +482,7 @@ public class DBlock extends JPanel implements BlockListener {
   protected final int		maxRowPos;
   protected final int		maxColumnPos;
   protected final int		displayedFields;
-
+  protected       Border	border;
   // cached infos
   private  int			sortedToprec;		// first record displayed
   private  int[]		sortedRecToDisplay;

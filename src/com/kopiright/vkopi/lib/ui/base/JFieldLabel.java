@@ -69,14 +69,22 @@ public class JFieldLabel extends JLabel implements FieldStates {
   public String getInfoText() {
     return infoText;
   }
+  
+  public void setInDetailMode(boolean mode) {
+    this.detailMode = mode;
+  }
+
+  public boolean isInDetailMode() {
+    return detailMode;
+  }
 
   private String        infoText;
-
+  private boolean       detailMode = false;
   private int           state;
   private static int    TXT_Y_SPACE = UIManager.getInt("FieldText.y.space");
   private static int    TXT_X_SPACE = UIManager.getInt("KopiLabel.x.space");
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
+   * Comment for <code>serialVersionUID</code>
+   */
   private static final long serialVersionUID = -8885234047322326209L; 
 }

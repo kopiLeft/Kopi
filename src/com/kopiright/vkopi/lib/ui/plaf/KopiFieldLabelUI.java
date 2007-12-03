@@ -92,7 +92,7 @@ public class KopiFieldLabelUI extends KopiLabelUI {
         return;
       }
 
-      if ((fl.getState() & FieldStates.CHART) == 0) {
+      if ((fl.getState() & FieldStates.CHART) == 0 || fl.isInDetailMode()) {
         switch (fl.getState() & FieldStates.FLD_MASK) {
         case FieldStates.SKIPPED:
           g.setColor(color_underline_skipped);
