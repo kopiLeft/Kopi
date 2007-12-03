@@ -113,6 +113,23 @@ public class VKBlock
   // ACCESSORS
   // ----------------------------------------------------------------------
 
+  public void addDefaultCommands(TokenReference where) { //, VKParseBlockContext context) {
+    if (hasDetailView()) {
+      int       mode = com.kopiright.vkopi.lib.form.VConstants.MOD_ANY;
+      VKCommand cmd;
+      
+      VKCommandBody cmdBody = new VKCommandBody(where, "SwitchBlockView", new VKExternAction(where, "com.kopiright.vkopi.lib.form.Commands.SwitchBlockView"));
+      cmd = new VKDefaultCommand(where, mode, cmdBody);
+      VKCommand[]  old = commands;
+      
+      commands = new VKCommand[commands.length + 1];
+      for (int i = 0; i < old.length; i++) {
+        commands[i] = old[i];
+      }
+      commands[commands.length - 1] = cmd;
+    }
+  }
+
   /**
    * Return an unique number in block
    */

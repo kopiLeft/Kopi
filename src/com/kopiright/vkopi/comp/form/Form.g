@@ -181,6 +181,7 @@ vkBlock [String pkg]
 			 context.getCommands(),
 			 context.getTriggers(),
 			 context.getFields());
+      self.addDefaultCommands(buildTokenReference());
       context.release();
     }
 ;
@@ -230,6 +231,7 @@ vkModeAndCommands[int[] access, VKParseContext context]
   VKCommand	cmd;
 }
 :
+
   (
     ( m = vkModeList[]
       (
@@ -243,6 +245,7 @@ vkModeAndCommands[int[] access, VKParseContext context]
         { context.addCommand(cmd); }
     )
   )+
+
 ;
 
 vkModeAccess [int mode, int[] self]
