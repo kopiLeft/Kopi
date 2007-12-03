@@ -303,25 +303,25 @@ public class VKBlock
                                            new Object[] {tables[i].getName(),
                                                          tables[i].getCorr(),
                                                          getIdent()}));
-      } else {
-        // check that lookup tables has not only internal fields.
-        boolean  hasOnlyInternalFields;
+      } // else {
+//         // check that lookup tables has not only internal fields.
+//         boolean  hasOnlyInternalFields;
         
-        hasOnlyInternalFields = true;
-        for (int j = 0; j < fields.length; j++) {
-          if (fields[j].fetchColumn(tables[i]) != -1 && !fields[j].isInternal()) {
-            hasOnlyInternalFields = false;
-            break;
-          }
-        }
-        if (hasOnlyInternalFields) {
-          context.reportTrouble(new CWarning(getTokenReference(),
-                                             FormMessages.LOOKUP_TABLE_HAS_ONLY_INTERNAL_FIELDS,
-                                             new Object[] {tables[i].getName(),
-                                                           tables[i].getCorr(),
-                                                           getIdent()}));
-        }
-      }
+//         hasOnlyInternalFields = true;
+//         for (int j = 0; j < fields.length; j++) {
+//           if (fields[j].fetchColumn(tables[i]) != -1 && !fields[j].isInternal()) {
+//             hasOnlyInternalFields = false;
+//             break;
+//           }
+//         }
+//         if (hasOnlyInternalFields) {
+//           context.reportTrouble(new CWarning(getTokenReference(),
+//                                              FormMessages.LOOKUP_TABLE_HAS_ONLY_INTERNAL_FIELDS,
+//                                              new Object[] {tables[i].getName(),
+//                                                            tables[i].getCorr(),
+//                                                            getIdent()}));
+//         }
+//       }
     }
     
     //check that each trigger is used only once
