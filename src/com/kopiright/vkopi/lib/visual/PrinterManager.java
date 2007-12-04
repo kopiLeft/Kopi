@@ -21,6 +21,11 @@ package com.kopiright.vkopi.lib.visual;
 
 import com.kopiright.vkopi.lib.util.PreviewPrinter;
 import com.kopiright.vkopi.lib.util.Printer;
+import com.kopiright.vkopi.lib.util.Rexec;
+import com.kopiright.vkopi.lib.util.IPPPrinter;
+import com.kopiright.vkopi.lib.util.LpRPrinter;
+import com.kopiright.vkopi.lib.util.Printer;
+import com.kopiright.vkopi.lib.util.RPrinter;
 
 /**
  *
@@ -38,21 +43,28 @@ public abstract class PrinterManager {
   /**
    * Returns a print for previewing document
    */
-  public Printer getPreviewPrinter() {
-    try {
-      String    command;
-
-      command = ApplicationConfiguration.getConfiguration().getStringFor("print.preview.command");
-      return new PreviewPrinter("PreviewPrinter", command);
-    } catch (PropertyException e) {
-      return null;
-    }
-  }
-
+  public abstract Printer getPreviewPrinter();
+    
   /**
-   * Returns the currently selected printer for current user
+   * Property print.server
+   * Returns the name of the print server to use. for printing
+   */
+  public abstract String getPrintServer() throws PropertyException;
+  
+  /**
+   * Returns the specific printer for a form or the default one if none
+   */
+  public abstract Printer getSpecificPrinter(String formName) throws PropertyException;
+  
+  /**
+   * Returns the preferred printer for the STANDARD_MEDIA
    */
   public abstract Printer getCurrentPrinter();
+  
+  /**
+   * Returns the preferredPrinter for the specified media.
+   */
+  public abstract Printer getPreferredPrinter(String media);
 
   /**
    * Returns the currently selected printer for current user
@@ -68,7 +80,6 @@ public abstract class PrinterManager {
    * Returns the default Printer for a kind of document
    */
   public abstract Printer getPrinterByDocumentType(String documentType);
-
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS

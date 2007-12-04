@@ -21,10 +21,7 @@ package com.kopiright.vkopi.lib.visual;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.Rexec;
-
 /**
  * Manages Applicatin configuration data
  */
@@ -103,43 +100,16 @@ public abstract class ApplicationConfiguration {
   public abstract String getSMTPServer() throws PropertyException;
 
   /**
-   * Property print.server  
-   * Returns the name of the print server to use. for printing
-   */
-  public abstract String getPrintServer() throws PropertyException;
-
-  /**
-   * Returns the currently selected printer for current user
-   */
-  public abstract Printer getCurrentPrinter() throws PropertyException;
-  /**
-   * Returns the Preview printer
-   */
-  public abstract Printer getPreviewPrinter(); 
-    
-  public abstract Printer getEnvelopePrinter();
-  
-  /**
-   * Returns the specific printer for a form or the default one if none
-   */
-  public abstract Printer getSpecificPrinter(String formName) throws PropertyException;
-
-  public abstract Printer getPrinterMedia(final String media);
-  /**
    * Property fax.server 
    * Returns the name of the fax server to use.
    */
   public abstract String getFaxServer() throws PropertyException;
 
-  // --------------------------------------------------------------
-  //  RExec
-  // --------------------------------------------------------------
-
   /**
    * Returns a RExec command handler
    */
   public abstract Rexec getRExec() throws PropertyException;
-
+  
   // --------------------------------------------------------------
   //   Spell checking
   // --------------------------------------------------------------
@@ -232,7 +202,6 @@ public abstract class ApplicationConfiguration {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
+  public static final String            STANDARD_PRINTER_NAME = "<Standard>";
   private static      ApplicationConfiguration       configuration;
-  public static final String                         STANDARD_PRINTER_NAME = "<Standard>";
 }
