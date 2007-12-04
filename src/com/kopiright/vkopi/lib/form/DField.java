@@ -147,14 +147,7 @@ public abstract class DField extends JPanel {
   int getPosition() {
     return pos;
   }
-
-  /**
-   * Returns the label text
-   */
-  public String getLabel() {
-    return label.getTextWithoutTwoPoints();
-  }
-
+  
   /**
    * Returns the alignment
    */
