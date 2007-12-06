@@ -272,8 +272,8 @@ public class Triggers {
           NotNullFixed value = (NotNullFixed)leaf.getValueAt(column);
           if (value != null) {
             result = result.add(value);
-            leaf = (VReportRow)leaf.getNextLeaf();
           }
+          leaf = (VReportRow)leaf.getNextLeaf();
         }
         return result.divide(new NotNullFixed(leafCount)).setScale(2);
       }
