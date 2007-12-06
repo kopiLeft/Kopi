@@ -265,17 +265,23 @@ public class Triggers {
     return new VCCDepthFirstCircuitN() {
       public Object evalNode(VReportRow row, int column) {
         int             leafCount = row.getLeafCount();
+        int             notNullLeafCount = 0;
         NotNullFixed    result = new NotNullFixed(0, 2);
         VReportRow      leaf = (VReportRow)row.getFirstLeaf();
-
+        
         for (int i = 0; i < leafCount; i++) {
           NotNullFixed value = (NotNullFixed)leaf.getValueAt(column);
           if (value != null) {
             result = result.add(value);
+            notNullLeafCount ++;
           }
           leaf = (VReportRow)leaf.getNextLeaf();
         }
-        return result.divide(new NotNullFixed(leafCount)).setScale(2);
+        if (notNullLeafCount != 0) {
+          return result.divide(new NotNullFixed(notNullLeafCount)).setScale(2);
+        } else {
+          return new NotNullFixed(0, 2);
+        }
       }
     };
   }
