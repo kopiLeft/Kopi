@@ -39,15 +39,19 @@ public class DLabel extends JFieldLabel {
   public DLabel(String text, String help) {
 //     setText(text == null ? "" : text);
 //     setToolTipText(help);
-    // ensure that label ends with two points.
-    init(getTextWithoutTwoPoints(text) + ":", help);
+    init(text, help);
   }
 
   /**
    * 
    */
   public void init(String text, String help) {
-    setText(text == null ? "" : text);
+    // ensure that label ends with two points.
+    setText(text == null ? 
+            "" : 
+            text.endsWith(":") ? 
+            text : 
+            text + ":");
     setToolTipText(help);
   }
 
