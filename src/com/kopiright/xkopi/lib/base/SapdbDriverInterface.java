@@ -498,6 +498,8 @@ public class SapdbDriverInterface extends DriverInterface {
 	return "GREATEST(" + arguments.elementAt(0) + ", " +  arguments.elementAt(1) + ")";
       case 35:
         return  arguments.elementAt(0) + " || ''";
+      case 36: // MOD/2
+        return  "MOD(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
                                          "/" + arguments.size());
@@ -549,5 +551,6 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("STRING2INT/1", new Integer(33)); 
     functions.put("GREATEST/2", new Integer(34));
     functions.put("INT2STRING/1", new Integer(35));
+    functions.put("MOD/2", new Integer(36));
   }
 }

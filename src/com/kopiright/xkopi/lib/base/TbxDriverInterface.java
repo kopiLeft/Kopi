@@ -444,6 +444,9 @@ public class TbxDriverInterface extends DriverInterface {
           " THEN " + arguments.elementAt(0) + " ELSE " + arguments.elementAt(1) + " FI";
       case 35: // INT2STRING/1
         return  "CAST (" + arguments.elementAt(0) + " AS STRING)";
+      case 36: // MOD/2
+        return  arguments.elementAt(0) + " % " + arguments.elementAt(1);
+
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
 				   "/" + arguments.size());
@@ -495,5 +498,6 @@ public class TbxDriverInterface extends DriverInterface {
     functions.put("STRING2INT/1", new Integer(33));
     functions.put("GREATEST/2", new Integer(34));
     functions.put("INT2STRING/1", new Integer(35));
+    functions.put("MOD/2", new Integer(36));
   }
 }
