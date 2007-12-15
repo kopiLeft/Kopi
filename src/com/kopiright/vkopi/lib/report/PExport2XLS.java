@@ -49,6 +49,7 @@ import com.kopiright.xkopi.lib.type.Time;
 import com.kopiright.xkopi.lib.type.Week;
 
 public class PExport2XLS extends PExport implements Constants {
+
   /**
    * Constructor
    */
@@ -91,15 +92,18 @@ public class PExport2XLS extends PExport implements Constants {
 
     // Sheet name cannot be blank, greater than 31 chars,
     // or contain any of /\*?[]
-    subTitle.replaceAll("/|\\\\|\\*|\\?|\\[|\\]", "");
-
+    subTitle = subTitle.replaceAll("/|\\\\|\\*|\\?|\\[|\\]", "");
     if (subTitle.length() > 31) {
       subTitle = subTitle.substring(0, 28) + "...";
     } else if (subTitle.length() == 0) {
       subTitle = " ";
     }
     rowNumber = 0;
-    sheet = wb.createSheet(subTitle);
+    try {
+      sheet = wb.createSheet(subTitle);
+    } catch (IllegalArgumentException e) {
+      sheet = wb.createSheet("" + subTitle.hashCode());
+    }
     for (short i = 0; i < getColumnCount(); i++) {
       sheet.setColumnWidth(i, widths[i]);
     }
