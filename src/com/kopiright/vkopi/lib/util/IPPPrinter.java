@@ -20,8 +20,8 @@
 package com.kopiright.vkopi.lib.util;
 
 import java.io.*;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import com.kopiright.util.ipp.IPPClient;
 
@@ -77,22 +77,20 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
    * @return true iff the attribute is supported by this printer.
    */
   private String[] getAttributes(String media) {
-    Iterator    it = attributesForMedia.iterator();
-    //    boolean     found = false;
-
     if (media == null) {
       return null;
-    }
+    } else {
+      Iterator  it = attributesForMedia.iterator();
 
-    while(it.hasNext()) {
-      String[]  att = (String[]) it.next();
+      while (it.hasNext()) {
+        String[]        att = (String[])it.next();
 
-      System.out.println(att[0]);
-      if (att.length == 2 && att[0].equals(media)) {
-        return att[1].split(" ");
+        if (att.length == 2 && att[0].equals(media)) {
+          return att[1].split(" ");
+        }
       }
+      return null;
     }
-    return null;
   }
 
   // ----------------------------------------------------------------------
@@ -104,13 +102,10 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
    */
   public String print(PrintJob printData) throws IOException, PrintException {
     IPPClient             ippClient = new IPPClient(host, (short)port, printer, user);
-    String[]              attributes = null;
 
-    if (printData.getMedia() != null) {
-      attributes = getAttributes(printData.getMedia());
-    }
-
-    ippClient.print(printData.getInputStream(), printData.getNumberOfCopies(), attributes);
+    ippClient.print(printData.getInputStream(),
+                    printData.getNumberOfCopies(),
+                    printData.getMedia() == null ? null : getAttributes(printData.getMedia()));
     return "IPP Print";
   }
 
@@ -118,9 +113,9 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private String		user;
-  private String		host;
-  private String                printer;
-  private int                   port;
-  private List                  attributesForMedia;
+  private final String          user;
+  private final String          host;
+  private final String          printer;
+  private final int             port;
+  private final List            attributesForMedia;
 }
