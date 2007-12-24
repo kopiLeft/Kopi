@@ -112,6 +112,9 @@ class OptionDefinition {
     out.print(longname);
     out.print(" = ");
     if (argument == null) {
+      if (isMultiple) {
+        throw new InconsistencyException("multiple arguments support for type " + type + " is not yet implemented.");
+      }
       out.print("!" + defaultValue);
       out.print(";");
     } else {
@@ -133,7 +136,7 @@ class OptionDefinition {
         } else if (type.equals("String")) {
           out.print("addString(" + longname + ", " + methodName + "(g, " + arg + "))");
         } else {
-          throw new InconsistencyException("type : " + type + "[] is not yet implemented.");
+          throw new InconsistencyException("multiple arguments support for type " + type + " is not yet implemented.");
         }  
       } else {
         out.print(methodName + "(g, " + arg + ")");
