@@ -294,23 +294,22 @@ import org.jdom.input.SAXBuilder;
       Element   current = (Element)iter.next();
       String    type;
       String    arg;
-
+      boolean   isMultiple = false;
+ 
       type = current.getAttributeValue("type");
+      isMultiple = current.getAttributeValue("multiple") != null;
       arg = current.getAttributeValue("optionalDefault");
-             
       if (arg == null && !type.equals("boolean")) {
         arg = "";
       }
-
       options[i] = new OptionDefinition(current.getAttributeValue("longname"),
                                         current.getAttributeValue("shortname"),
                                         type,
+                                        isMultiple,
                                         current.getAttributeValue("default"),
                                         arg,
                                         current.getAttributeValue("help"));
-
     }
-
     return options;
   }
 

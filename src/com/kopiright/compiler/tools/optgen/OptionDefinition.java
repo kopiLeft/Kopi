@@ -21,6 +21,7 @@ package com.kopiright.compiler.tools.optgen;
 
 import java.io.PrintWriter;
 import java.util.Hashtable;
+import com.kopiright.util.base.InconsistencyException;
 
 class OptionDefinition {
 
@@ -30,13 +31,15 @@ class OptionDefinition {
   public OptionDefinition(String longname,
 			  String shortname,
 			  String type,
-			  String defaultValue,
+                          boolean isMultiple,
+                          String defaultValue,
 			  String argument,
 			  String help)
   {
     this.longname = longname;
     this.shortname = shortname;
     this.type = type;
+    this.isMultiple = isMultiple;
     this.defaultValue = defaultValue;
     this.argument = argument;
     this.help = help;
@@ -124,8 +127,17 @@ class OptionDefinition {
 	methodName = "getString";
 	arg = "\"" + arg + "\"";
       }
-
-      out.print(methodName + "(g, " + arg + ")");
+      if (isMultiple) {
+        if (type.equals("int")) {
+          out.print("addInt(" + longname + ", " + methodName + "(g, " + arg + "))");
+        } else if (type.equals("String")) {
+          out.print("addString(" + longname + ", " + methodName + "(g, " + arg + "))");
+        } else {
+          throw new InconsistencyException("type : " + type + "[] is not yet implemented.");
+        }  
+      } else {
+        out.print(methodName + "(g, " + arg + ")");
+      }
       out.print(";");
     }
     out.println(" return true;");
@@ -138,14 +150,18 @@ class OptionDefinition {
    */
   public void printFields(PrintWriter out) {
     out.print("  public ");
-    out.print(type);
+    out.print(!isMultiple ? type : type + "[]");
     out.print(" ");
     out.print(longname);
     out.print(" = ");
     if (!type.equals("String") || defaultValue.equals("null")) {
-      out.print(defaultValue);
+      if (defaultValue.equals("null")) {
+        out.print(defaultValue);
+      } else {
+        out.print(!isMultiple ? defaultValue : "{ " + defaultValue + " }");
+      }
     } else {
-      out.print("\"" + defaultValue + "\"");
+      out.print(!isMultiple ? "\"" + defaultValue + "\"" :  "{ \"" + defaultValue + "\" }");
     }
     out.println(";");
   }
@@ -224,4 +240,5 @@ class OptionDefinition {
   private final String defaultValue;
   private final String argument;
   private final String help;
+  private final boolean isMultiple;
 }
