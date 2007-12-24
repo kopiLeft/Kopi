@@ -161,6 +161,36 @@ public abstract class Options {
     return g.getOptarg() != null ? g.getOptarg() : defaultValue;
   }
 
+  protected String[] addString(String[] array, String str) {
+    if (array == null) {
+      return new String[] { str };
+    } else {
+      int size = array.length;
+      String[] newArray =  new String [size + 1];
+
+      for (int i = 0; i < size; i++) {
+        newArray[i] = array[i];
+      }
+      newArray[size] = str;
+      return newArray;
+    }
+  }
+
+  protected int[] addInt(int[] array, int value) {
+    if (array == null) {
+      return new int[] { value };
+    } else {
+      int size = array.length;
+      int[] newArray = new int [size + 1];
+
+      for (int i = 0; i < size; i++) {
+        newArray[i] = array[i];
+      }
+      newArray[size] = value;
+      return newArray;
+    }
+  }
+
   // ----------------------------------------------------------------------
   // DEFAULT OPTIONS
   // ----------------------------------------------------------------------
