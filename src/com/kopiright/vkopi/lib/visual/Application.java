@@ -608,6 +608,10 @@ public abstract class Application extends java.applet.Applet implements MessageL
     }
   }
 
+  public static ApplicationOptions getApplicationOptions() {
+    return options;
+  }
+
   // ---------------------------------------------------------------------
   // Implement a default message listener.
   // ---------------------------------------------------------------------
