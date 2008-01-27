@@ -52,11 +52,6 @@ public abstract class PrinterManager {
   public abstract String getPrintServer() throws PropertyException;
   
   /**
-   * Returns the specific printer for a form or the default one if none
-   */
-  public abstract Printer getSpecificPrinter(String formName) throws PropertyException;
-  
-  /**
    * Returns the preferred printer for the STANDARD_MEDIA
    */
   public abstract Printer getCurrentPrinter();
