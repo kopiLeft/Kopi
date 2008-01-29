@@ -35,7 +35,7 @@ JAVAFILES +=	PPage PBlock PPosition PSize PRectangleBlock		\
 		PreviewPrinter Printable PrintManager			\
 		DefaultPrintManager LabelPrinter PLabelForm		\
 		LabelPrintable PSPrintException				\
-		PdfPrintJob  Laserjet EpsonLQ  MailPrinter  EltronEPL2
+		PdfPrintJob Laserjet EpsonLQ MailPrinter
 
 ## ----------------------------------------------------------------------
 ## GOALS
