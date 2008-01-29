@@ -36,6 +36,10 @@ public final class NotNullDate extends Date {
     super(image);
   }
 
+  public NotNullDate(java.util.Calendar calendar) {
+    super(calendar);
+  }
+
   /**
    * Constructs a Date from a scalar representation.
    * DO NOT USE OUTSIDE OF THE LIBRARY

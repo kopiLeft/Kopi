@@ -40,6 +40,10 @@ public final class NotNullTime extends Time {
     super(image);
   }
 
+  public NotNullTime(java.util.Calendar calendar) {
+    super(calendar);
+  }
+
   /**
    * Constructs a time from a scalar representation.
    * DO NOT USE OUTSIDE OF THE LIBRARY

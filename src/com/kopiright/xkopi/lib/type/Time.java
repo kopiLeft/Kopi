@@ -57,6 +57,19 @@ public class Time extends Type {
     this(java.sql.Time.valueOf(image));
   }
 
+  /*package*/ Time(Calendar calendar) {
+    if (calendar != null) {
+      int         hours;
+      int         minutes;
+      int         seconds;
+      
+      hours = calendar.get(Calendar.HOUR_OF_DAY);
+      minutes = calendar.get(Calendar.MINUTE);
+      seconds = calendar.get(Calendar.SECOND);
+      this.scalar = (hours * 3600 + minutes * 60 + seconds) % (3600 * 24);
+    }
+  }
+
   /**
    * Current time
    */

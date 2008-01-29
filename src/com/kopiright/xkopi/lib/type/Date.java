@@ -49,6 +49,14 @@ public class Date extends Type {
     }
   }
 
+  /*package*/ Date(Calendar calendar) {
+    if (calendar != null) {
+      this.scalar = gregorianToJulian(calendar.get(Calendar.YEAR),
+                                      calendar.get(Calendar.MONTH) + 1,
+                                      calendar.get(Calendar.DAY_OF_MONTH));
+    }
+  }
+  
   /**
    * Parses a date of format 'yyyy.MM.dd' or 'yyyy-MM-dd'
    */
