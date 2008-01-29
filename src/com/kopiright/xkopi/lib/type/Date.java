@@ -137,8 +137,19 @@ public class Date extends Type {
 
     return new SimpleDateFormat(format, locale).format(cal.getTime());
   }
-
-
+  
+  /**
+   * create an instance of calendar to represent date.
+   */
+  public GregorianCalendar toCalendar() {
+    GregorianCalendar   calendar = new GregorianCalendar();
+    
+    calendar.clear();
+    calendar.set(Calendar.YEAR, getYear());
+    calendar.set(Calendar.MONTH, getMonth() - 1);
+    calendar.set(Calendar.DAY_OF_MONTH, getDay());
+    return calendar;
+  }
   // ----------------------------------------------------------------------
   // COMPILER METHODS - DO NOT USE OUTSIDE OF THE LIBRARY
   // ----------------------------------------------------------------------

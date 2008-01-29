@@ -124,10 +124,21 @@ public class Time extends Type {
     cal.set(Calendar.HOUR_OF_DAY, getHours());
     cal.set(Calendar.MINUTE, getMinutes());
     cal.set(Calendar.SECOND, getSeconds());
-
     return new SimpleDateFormat(format).format(cal.getTime());
   }
 
+  /**
+   * create an instance of Calendar to represent time.
+   */
+  public GregorianCalendar toCalendar() {
+    GregorianCalendar   calendar = new GregorianCalendar();
+    
+    calendar.clear();
+    calendar.set(Calendar.HOUR_OF_DAY, getHours());
+    calendar.set(Calendar.MINUTE, getMinutes());
+    calendar.set(Calendar.SECOND, getSeconds());
+    return calendar;
+  }
   // ----------------------------------------------------------------------
   // COMPILER METHODS - DO NOT USE OUTSIDE OF THE LIBRARY
   // ----------------------------------------------------------------------
