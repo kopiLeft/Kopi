@@ -73,7 +73,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
    * Get the media for this document
    */
   public String getMedia() {
-    return media;
+    return (media == null) ? STANDARD_MEDIA : media;
   }
 
   /**
@@ -374,4 +374,5 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
   private String		message;
   private DBContextHandler	handler;
   private String                media;
+  public static final String    STANDARD_MEDIA = "STANDARD";
 }
