@@ -278,6 +278,6 @@
   <property key="add_column" value="Ajouter une colonne" />
   <property key="sort_DSC" value="trier &lt;&lt;" />
   <property key="sort_ASC" value="trier &gt;&gt;" />
-  <property key="set_column_label" value="personnaliser la colonne" />
+  <property key="set_column_info" value="personnaliser la colonne" />
   <property key="remove_column" value="supprimer la colonne" />
 </properties>
