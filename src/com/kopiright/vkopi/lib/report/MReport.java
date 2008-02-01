@@ -189,6 +189,7 @@ public class MReport extends AbstractTableModel implements Constants {
     final int MIN = 1;
     final int OVR = 2;
     final int SUM = 3;
+
     for (int i = 0; i < params.length; i++) {
       try {
         if (params[i].startsWith("C")) {
@@ -216,10 +217,10 @@ public class MReport extends AbstractTableModel implements Constants {
       boolean test = false;
       
       for (int j = 0; j < columnIndexes.length; j++) {
-          if (paramColumns[i] == columnIndexes[j]) {
-            test = true;
-            break;
-          }
+        if (paramColumns[i] == columnIndexes[j]) {
+          test = true;
+          break;
+        }
       }
       if (!test) {
         throw new VExecFailedException(MessageCode.getMessage("VIS-00063", params[i].substring(1)));
@@ -302,7 +303,13 @@ public class MReport extends AbstractTableModel implements Constants {
             break;
           }
         }
-        baseRows[i].setValueAt(column,new NotNullFixed(x.eval(vm, fm)));         
+        try {
+          baseRows[i].setValueAt(column, new NotNullFixed(x.eval(vm, fm)));
+        } catch (NumberFormatException e) {
+          // this exception occurs with INFINITE double values. (ex : division by ZERO)
+          // return a null value (can not evaluate expression)
+          baseRows[i].setValueAt(column, (NotNullFixed)null);
+        }
       }
   }
   
