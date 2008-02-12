@@ -52,9 +52,11 @@ public class LocalizationChecker {
    * @param             model           the localization candidate
    */
   public LocalizationChecker(String model, String candidate) {
+    this.model = model;
+    this.candidate = candidate;
     this.modelDoc = loadDocument(model);
     this.candidateDoc = loadDocument(candidate);
-
+    
     initWriter();
   }
 
@@ -78,15 +80,23 @@ public class LocalizationChecker {
    * Entry point.
    */
   public static void main(String[] args) {
-    if (args.length != 2) {
-      fail("Usage: java com.kopiright.vkopi.lib.l10n.LocalizationChecker <model> <candidate>");
+    LocalizationCheckerOptions options = new LocalizationCheckerOptions();
+    
+    if (!options.parseCommandLine(args)) {
+      options.usage();
+      System.exit(1);
     }
+    String[] infiles = options.nonOptions;
     LocalizationChecker checker;
-
-    checker = new LocalizationChecker(args[0], args[1]);
     
-    checker.run(args[1] + ".gen");
-    
+    if (options.locales != null) {
+      for (int i = 0; i < infiles.length; i++) {
+        for (int j = 0; j < options.locales.length; j++) {
+          checker = new LocalizationChecker(infiles[i] + "-" + options.defaultLocale + ".xml", infiles[i] + "-" + options.locales[j] + ".xml");
+          checker.run(infiles[i] + "-" + options.locales[j]  + ".xml.gen");
+        }
+      }
+    }
   }
   
   /**
@@ -95,14 +105,11 @@ public class LocalizationChecker {
    * @param             outFile         name of the file to generate
    */
   private void run(String outFile) {
-    
     check();
     if (modified) {
       write(outFile);      
-      System.out.println("Candidate file not compatible,"
-                         + " new auto-genrated one: " + outFile );
-    } else {
-      System.out.println("Candidate file OK.");
+      System.out.println("warning: " + candidate + " not compatible with " + model
+                         + ", a new file : " + outFile + " is auto-generated." );
     }
   }
 
@@ -305,7 +312,8 @@ public class LocalizationChecker {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  
+  private String model;
+  private String candidate;
   private Document                      modelDoc;
   private Document                      candidateDoc;
   private Document                      validatedDoc;

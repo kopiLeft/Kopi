@@ -1,4 +1,3 @@
-##
 ## Copyright (c) 1990-2007 kopiRight Managed Solutions GmbH
 ##
 ## This library is free software; you can redistribute it and/or
@@ -33,7 +32,7 @@ JAVAFILES +=	ActorLocalizer BlockLocalizer FieldLocalizer		\
 		MessageLocalizer ModuleLocalizer ReportLocalizer	\
 		TypeLocalizer Utils PropertyLocalizer
 
-OPTIONS =	
+OPTIONS =	LocalizationCheckerOptions
 
 PROPERTIES =
 
