@@ -92,8 +92,11 @@ public class LocalizationChecker {
     if (options.locales != null) {
       for (int i = 0; i < infiles.length; i++) {
         for (int j = 0; j < options.locales.length; j++) {
-          checker = new LocalizationChecker(infiles[i] + "-" + options.defaultLocale + ".xml", infiles[i] + "-" + options.locales[j] + ".xml");
-          checker.run(infiles[i] + "-" + options.locales[j]  + ".xml.gen");
+          checker = new LocalizationChecker(options.LocalizationDirectory + File.separator + infiles[i] + "-" + options.defaultLocale + ".xml",
+                                            options.LocalizationDirectory + File.separator + infiles[i] + "-" + options.locales[j] + ".xml");
+          if (checker.modelDoc != null && checker.candidateDoc != null) {
+            checker.run(options.L10NDirectory + File.separator + infiles[i] + "-" + options.locales[j]  + ".xml.gen");
+          }
         }
       }
     }
@@ -127,7 +130,7 @@ public class LocalizationChecker {
     
     // check we have the same root name
     if(! model.getName().equals(candidate.getName())) {
-      fail("The given documents doen't have the same root element");
+      fail("warning : The given documents doen't have the same root element");
     }
     
     validated = checkAttributes(model, candidate);
@@ -253,7 +256,7 @@ public class LocalizationChecker {
     try {
       writer.output(validatedDoc, new FileOutputStream(new File(fileName)));
     } catch(IOException e) {
-      fail("cannot write file " + fileName + ": " + e.getMessage());
+      fail("warning : cannot write file " + fileName + ": " + e.getMessage());
     }
   }
   
@@ -267,8 +270,9 @@ public class LocalizationChecker {
    * @param             msg             the error message to output
    */
   public static void fail(String msg) {
-    System.err.println(msg);
-    System.exit(1);
+    System.out.println(msg);
+    // signal an error, don't stop compilation process.
+    //System.exit(1);
   }
   
   /**
@@ -300,7 +304,7 @@ public class LocalizationChecker {
       document = builder.build(new File(fileName));
     } catch (Exception e) {
       document = null;
-      fail("Cannot load file " + fileName + ": " + e.getMessage());
+      fail("warning: Cannot load file " + fileName + ": " + e.getMessage());
     }
 
     // the URI is used to report the file name when a child lookup fails

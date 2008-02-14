@@ -21,4 +21,6 @@
 <option prefix="LocalizationChecker" parent="com.kopiright.util.base.Options"  package="com.kopiright.vkopi.lib.l10n"  usage="usage: com.kopiright.vkopi.lib.l10n.LocalizationChecker [option]* [--help] 'xml-files without locale and xml extention'">
   <param longname="locales" shortname="l" type="String" multiple="true" default="null" help="list of locales"/>
   <param longname="defaultLocale" shortname="d" type="String" default="de_AT"  help="default locale"/>
+  <param longname="LocalizationDirectory" shortname="r" type="String" default="null"  help="directory where xml files are stored."/>
+  <param longname="L10NDirectory" shortname="g" type="String" default="null"  help="directory where generated xml files will be stored."/>
 </option>
