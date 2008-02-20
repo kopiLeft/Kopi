@@ -44,7 +44,7 @@ public class VIntegerColumn extends VReportColumn {
 	  function,
 	  width,
 	  1,
-	  format);
+	  format == null ? new VIntegerFormat() : format);
   }
 
   /**
@@ -72,5 +72,14 @@ public class VIntegerColumn extends VReportColumn {
 
   public void formatColumn(PExport exporter, int index) {
     exporter.formatIntegerColumn(this, index);
+  }
+
+  private static class VIntegerFormat extends VCellFormat {
+    public String format(Object value) {
+      // don't do substring when value.length() > columnWidth
+      return value == null ?
+        "" :
+        value.toString();
+    }
   }
 }

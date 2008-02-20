@@ -52,6 +52,15 @@ public class MReport extends AbstractTableModel implements Constants {
     userRows = new Vector(500);
   }
 
+  public int computeColumnWidth(int column) {
+    int max = 0;
+    
+    for (int i = 0; i < baseRows.length; i++) { 
+      max = Math.max(max, baseRows[i].getValueAt(column).toString().length());
+    }
+    return (max + 2);
+  }
+
   public void removeColumn(int position) {
     VReportColumn[] cols = new VReportColumn[columns.length - 1];
     int         hiddenColumns = 0;
