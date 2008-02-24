@@ -25,6 +25,7 @@ import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JFieldAccessExpression;
 import com.kopiright.kopi.comp.kjc.JNameExpression;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
+import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.Utils;
 
 /**
@@ -91,7 +92,13 @@ public class XNameExpression extends JNameExpression {
     if (prefix instanceof XCursorFieldExpression) {
       return new XCursorFieldExpression(ref, prefix, ident, hasSuffix);
     } else {
-      CClass	access = prefix.getType(factory).getCClass();
+      CClass	access;
+
+      try {
+        access = prefix.getType(factory).getCClass();
+      } catch (InconsistencyException e) {
+        throw new InconsistencyException("no class: " + ident + " at " + ref);
+      }
 
       if (access.getSuperClass().equals(factory.createReferenceType(XTypeFactory.RFT_CURSOR).getCClass())) {
 	return new XCursorFieldExpression(getTokenReference(), prefix, ident, hasSuffix);

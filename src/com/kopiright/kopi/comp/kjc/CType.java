@@ -244,7 +244,7 @@ public abstract class CType extends Utils implements Constants {
    * @return the object class of this type
    */
   public CClass getCClass() {
-    throw new InconsistencyException();
+    throw new InconsistencyException("no class: " + this);
   }
 
   // ----------------------------------------------------------------------
