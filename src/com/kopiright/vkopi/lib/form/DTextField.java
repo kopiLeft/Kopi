@@ -292,14 +292,9 @@ public DTextField(VFieldUI model,
     // is handled before the updateText-event although
     // the focus-gained event is in the queue after the
     // updateText-event.
-    
-    // wael 2007.09.08 
-    // RT #070716 , don't select text after text-update
-    // this was added in ticket #25754, but when using TAB , this method is not called ...
-
-    //if (modelHasFocus()) {
-    //      TextSelecter.TEXT_SELECTOR.selectText(field);
-    //}
+    if (modelHasFocus() && selectionAfterUpdateEnabled) {
+         TextSelecter.TEXT_SELECTOR.selectText(field);
+    }
   }
 
   public synchronized void updateFocus() {
@@ -793,8 +788,12 @@ public DTextField(VFieldUI model,
     return target.toString();
   }
 
+  public void disableSelectionAfterUpdate() {
+    selectionAfterUpdateEnabled = false;
+  }
   /**
    * Comment for <code>serialVersionUID</code>
    */
   private static final long serialVersionUID = -2367294538619200551L;
+  private boolean selectionAfterUpdateEnabled = true;
 }
