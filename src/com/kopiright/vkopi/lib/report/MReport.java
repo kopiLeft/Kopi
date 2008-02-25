@@ -56,7 +56,9 @@ public class MReport extends AbstractTableModel implements Constants {
     int max = 0;
     
     for (int i = 0; i < baseRows.length; i++) { 
-      max = Math.max(max, baseRows[i].getValueAt(column).toString().length());
+      if (baseRows[i].getValueAt(column) != null) {
+        max = Math.max(max, baseRows[i].getValueAt(column).toString().length());
+      }
     }
     return (max + 2);
   }
