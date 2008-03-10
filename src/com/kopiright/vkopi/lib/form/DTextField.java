@@ -292,8 +292,9 @@ public DTextField(VFieldUI model,
     // is handled before the updateText-event although
     // the focus-gained event is in the queue after the
     // updateText-event.
-    if (modelHasFocus() && selectionAfterUpdateEnabled) {
+    if (modelHasFocus() && !selectionAfterUpdateDisabled) {
          TextSelecter.TEXT_SELECTOR.selectText(field);
+         selectionAfterUpdateDisabled = false;
     }
   }
 
@@ -788,12 +789,9 @@ public DTextField(VFieldUI model,
     return target.toString();
   }
 
-  public void disableSelectionAfterUpdate() {
-    selectionAfterUpdateEnabled = false;
-  }
   /**
    * Comment for <code>serialVersionUID</code>
    */
   private static final long serialVersionUID = -2367294538619200551L;
-  private boolean selectionAfterUpdateEnabled = true;
+  public boolean selectionAfterUpdateDisabled = false;
 }
