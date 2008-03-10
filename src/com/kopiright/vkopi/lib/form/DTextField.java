@@ -789,9 +789,12 @@ public DTextField(VFieldUI model,
     return target.toString();
   }
 
+  public void setSelectionAfterUpdateDisabled(boolean disable) {
+    selectionAfterUpdateDisabled = disable;
+  }
   /**
    * Comment for <code>serialVersionUID</code>
    */
   private static final long serialVersionUID = -2367294538619200551L;
-  public boolean selectionAfterUpdateDisabled = false;
+  private boolean selectionAfterUpdateDisabled = false;
 }
