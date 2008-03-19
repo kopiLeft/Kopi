@@ -188,6 +188,8 @@ public KopiLookAndFeel() {
     table.put("TabbedPane.highlight",           KopiTheme.USER_COLORS.COLOR_3);
 
     table.put("KopiField.alert",                Color.red);
+    table.put("KopiField.critical",             Color.pink);
+    table.put("KopiField.critical.skipped", new Color(255, 192, 203)); // LIGHT PINK
     table.put("KopiField.noedit",               Color.white);
 
 

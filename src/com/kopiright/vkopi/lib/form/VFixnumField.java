@@ -73,6 +73,8 @@ public class VFixnumField extends VField {
     this.maxval = maxval == null ? calculateUpperBound(digits, maxScale) : maxval.setScale(maxScale);
     this.digits = digits;
     this.fraction = fraction;
+    this.criticalMinValue = minval;
+    this.criticalMaxValue = maxval;
   }
 
   /**
@@ -196,7 +198,6 @@ public class VFixnumField extends VField {
           throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
         }
       }
-
       setFixed(block.getActiveRecord(), v);
     }
   }
@@ -383,6 +384,7 @@ public class VFixnumField extends VField {
       // inform that value has changed
       setChanged(r);
     }
+    checkCriticalValue();
   }
 
   /**
@@ -803,6 +805,38 @@ public class VFixnumField extends VField {
     }
   }
 
+  public void setCriticalMinValue(Fixed criticalMinValue) {
+    this.criticalMinValue = criticalMinValue;
+  }
+
+  public void setCriticalMaxValue(Fixed criticalMaxValue) {
+    this.criticalMaxValue = criticalMaxValue;
+  }
+
+  private void checkCriticalValue() {
+    if (criticalMinValue != null) {
+      if(value[0] != null && value[0].compareTo(criticalMinValue) < 0) {
+        setHasCriticalValue(true);
+        return;
+      }
+    }
+
+    if (criticalMaxValue != null) {
+      if(value[0] != null && value[0].compareTo(criticalMaxValue) > 0) {
+        setHasCriticalValue(true);
+        return;
+      }
+    }
+    setHasCriticalValue(false);
+  }
+
+  private void setHasCriticalValue(boolean critical) {
+    if (getDisplay() != null) {
+      ((DTextField)getDisplay()).setHasCriticalValue(critical);
+    }
+  }
+
+
   /*
    * ----------------------------------------------------------------------
    * DATA MEMBERS
@@ -819,4 +853,6 @@ public class VFixnumField extends VField {
   private  int             maxScale; 
   private int[]            currentScale; // number of digits after dot
   private Fixed[]          value;
+  protected Fixed criticalMinValue;
+  protected Fixed criticalMaxValue;
 }

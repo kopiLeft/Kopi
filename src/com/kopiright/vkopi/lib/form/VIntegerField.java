@@ -45,6 +45,8 @@ public class VIntegerField extends VField {
 
     this.minval = minval;
     this.maxval = maxval;
+    this.criticalMinValue = new Integer(minval);
+    this.criticalMaxValue = new Integer(maxval);
   }
 
   /**
@@ -180,6 +182,7 @@ public class VIntegerField extends VField {
       // inform that value has changed
       setChanged(r);
     }
+    checkCriticalValue();
   }
 
   /**
@@ -339,6 +342,45 @@ public class VIntegerField extends VField {
     return Integer.toString(value);
   }
 
+  public void setCriticalMinValue(int criticalMinValue) {
+    this.criticalMinValue = new Integer(criticalMinValue);
+  }
+  
+  public void setCriticalMaxValue(int criticalMaxValue) {
+    this.criticalMaxValue = new Integer(criticalMaxValue);
+  }
+  
+  public void setCriticalMinValue(Integer criticalMinValue) {
+    this.criticalMinValue = criticalMinValue;
+  }
+  
+  public void setCriticalMaxValue(Integer criticalMaxValue) {
+    this.criticalMaxValue = criticalMaxValue;
+  }
+
+  public void checkCriticalValue() {
+    if (value[0] != null && criticalMinValue != null) {
+      if (value[0].compareTo(criticalMinValue) < 0) {
+        setHasCriticalValue(true);
+        return;
+      }
+    }
+    
+    if (value[0] != null && criticalMaxValue != null) {
+      if (value[0].compareTo(criticalMaxValue) > 0) {
+        setHasCriticalValue(true);
+        return;
+      }
+    }
+    setHasCriticalValue(false);
+  }
+  
+  private void setHasCriticalValue(boolean critical) {
+    if (getDisplay() != null) {
+      ((DTextField)getDisplay()).setHasCriticalValue(critical);
+    }
+  }
+  
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -349,4 +391,7 @@ public class VIntegerField extends VField {
 
   // dynamic data
   private Integer[]	value;		// value
+  private Integer	criticalMinValue;
+  private Integer	criticalMaxValue;
 }
+

@@ -23,6 +23,7 @@ public interface Stateful {
   int getState();
   boolean getAutofill();
   boolean isAlert();
+  boolean hasCriticalValue();
   Object getModel();
 }
 

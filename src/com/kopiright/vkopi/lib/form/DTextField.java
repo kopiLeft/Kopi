@@ -361,6 +361,16 @@ public DTextField(VFieldUI model,
     }
   }
 
+  public void setHasCriticalValue(boolean b) {
+    if (b) {
+      document.setHasCriticalValue(true);
+      repaint();
+    } else {
+      document.setHasCriticalValue(false);
+      setDisplayProperties();
+      repaint();
+    }
+  }
 
   /**
    * set blink state

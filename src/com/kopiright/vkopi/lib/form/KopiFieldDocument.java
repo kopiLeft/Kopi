@@ -129,9 +129,18 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
     return state;
   }
 
+  public void setHasCriticalValue(boolean hasCriticalValue) {
+    this.hasCriticalValue = hasCriticalValue;
+  }
+  
+  public boolean hasCriticalValue() {
+    return hasCriticalValue;
+  }
+
   public void setAlert(boolean alert) {
     this.alert = alert;
   }
+  
   public boolean isAlert() {
     return alert;
   }
@@ -150,11 +159,11 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
   private int                   state;
   private boolean               alert;
   private boolean               autofill = false;
-
+  private boolean               hasCriticalValue;
   private VField		model;
   private ModelTransformer      transformer;
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
+   * Comment for <code>serialVersionUID</code>
+   */
   private static final long serialVersionUID = -7098798410173878552L;
 }

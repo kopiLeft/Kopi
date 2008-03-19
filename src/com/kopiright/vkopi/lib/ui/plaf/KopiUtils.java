@@ -26,7 +26,6 @@ import javax.swing.border.*;
 import com.kopiright.vkopi.lib.ui.base.*;
 
 public class KopiUtils {
-
   public static void drawBackground(Graphics g, JTextComponent c, Rectangle clipRect) {
     if (c.getDocument() instanceof Stateful) {
       if (((Stateful) c.getDocument()).isAlert()) {
@@ -39,13 +38,20 @@ public class KopiUtils {
             g.setColor(c.getBackground());
           }
         } else {
-          g.setColor(getBackColor(g, (JComponent) c));
+          if (((Stateful)c.getDocument()).hasCriticalValue()) {
+            if ((((Stateful) c.getDocument()).getState() & FieldStates.NOEDIT) != 0 || (((Stateful) c.getDocument()).getState() & FieldStates.FLD_MASK) == FieldStates.SKIPPED ) {
+              g.setColor(color_critical_skipped);
+            } else {
+              g.setColor(color_critical);
+            }
+          } else {
+            g.setColor(getBackColor(g, (JComponent) c));
+          }
         }
       }
     } else {
       g.setColor(color_back);
     }
-
     g.fillRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
   }
 
@@ -267,6 +273,8 @@ public class KopiUtils {
 
   private static final int      underline_width     = UIManager.getInt("KopiField.ul.width");
   private static Color          color_alert       = UIManager.getColor("KopiField.alert");
+  private static Color          color_critical       = UIManager.getColor("KopiField.critical");
+  private static Color          color_critical_skipped       = UIManager.getColor("KopiField.critical.skipped");
   private static Color          color_noEdit      = UIManager.getColor("KopiField.noedit");
 
   protected static final Color  color_focused;
