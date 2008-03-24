@@ -535,7 +535,19 @@ public DTextField(VFieldUI model,
       return textfield;
     }
   }
+  
 
+  /**
+   * remove selection focus Listener
+   * if the listener specified by the argument was not previously added to this component
+   * or If listener l is null, 
+   * no exception is thrown and no action is performed.
+   */
+  public void removeSelectionFocusListener() {
+    if (!noEdit) {
+      field.removeFocusListener(TextSelecter.TEXT_SELECTOR);
+    }
+  }
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
