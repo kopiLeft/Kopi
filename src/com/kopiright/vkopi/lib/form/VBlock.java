@@ -3633,48 +3633,48 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       tsfld = getTsField();
       ucfld = getUcField();
 
-      if (!isRecordModified(recno, tables[0], idfld, ucfld, tsfld)) {
-        Query   query = new Query(form.getDBContext().getDefaultConnection());
+      checkRecordUnchanged(recno, idfld, ucfld, tsfld);
 
-        tsfld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
-        if (ucfld != null) {
-          ucfld.setInt(recno, new Integer(ucfld.getInt().intValue() + 1));
-        }
-
-        buffer = new StringBuffer();
-
-        for (int i = 0; i < fields.length; i++) {
-          VField                fld = fields[i];
-          String                col;
-
-          /* do not update ID field */
-          if (fld == idfld) {
-            continue;
-          }
-
-          col = fld.lookupColumn(0);
-
-          if (col != null) {
-            if (buffer.length() != 0) {
-              buffer.append(", ");
-            }
-
-            buffer.append(col + " = " + fld.getSql(recno));
-            if (fld.hasLargeObject(recno)) {
-              if (fld.hasBinaryLargeObject(recno)) {
-                query.addBlob(fld.getLargeObject(recno));
-              } else {
-                query.addClob(fld.getLargeObject(recno));
-              }
-            }
-          }
-        }
-
-        query.addString(tables[0]);
-        query.addString(buffer.toString());
-        query.addInt(idfld.getInt(recno).intValue());
-        query.run("UPDATE $1 SET $2 WHERE ID = #3");
+      Query   query = new Query(form.getDBContext().getDefaultConnection());
+      
+      tsfld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
+      if (ucfld != null) {
+        ucfld.setInt(recno, new Integer(ucfld.getInt().intValue() + 1));
       }
+      
+      buffer = new StringBuffer();
+      
+      for (int i = 0; i < fields.length; i++) {
+        VField                fld = fields[i];
+        String                col;
+        
+        /* do not update ID field */
+        if (fld == idfld) {
+          continue;
+        }
+        
+        col = fld.lookupColumn(0);
+        
+        if (col != null) {
+          if (buffer.length() != 0) {
+            buffer.append(", ");
+          }
+          
+          buffer.append(col + " = " + fld.getSql(recno));
+          if (fld.hasLargeObject(recno)) {
+            if (fld.hasBinaryLargeObject(recno)) {
+              query.addBlob(fld.getLargeObject(recno));
+            } else {
+              query.addClob(fld.getLargeObject(recno));
+            }
+          }
+        }
+      }
+
+      query.addString(tables[0]);
+      query.addString(buffer.toString());
+      query.addInt(idfld.getInt(recno).intValue());
+      query.run("UPDATE $1 SET $2 WHERE ID = #3");
 
       setRecordChanged(recno, false);
 
@@ -3720,19 +3720,19 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       VDatabaseUtils.checkForeignKeys(form, id, tables[0]);
 
-      if (!isRecordModified(recno, tables[0], getIdField(), getUcField(), getTsField())) {
-        Query       query = new Query(form.getDBContext().getDefaultConnection());
+      checkRecordUnchanged(recno, getIdField(), getUcField(), getTsField());
 
-        try {
-          query.addString(tables[0]);
-          query.addInt(id);
-          query.run("DELETE FROM $1 WHERE ID = #2");
-        } catch (DBForeignKeyException e) {
-          //query.close(); --- in comment because it produces an error
-          form.getDBContext().abortWork();
-          setActiveRecord(recno);               // also valid for single blocks
-          throw convertForeignKeyException(e.getConstraint());
-        }
+      Query       query = new Query(form.getDBContext().getDefaultConnection());
+
+      try {
+        query.addString(tables[0]);
+        query.addInt(id);
+        query.run("DELETE FROM $1 WHERE ID = #2");
+      } catch (DBForeignKeyException e) {
+        //query.close(); --- in comment because it produces an error
+        form.getDBContext().abortWork();
+        setActiveRecord(recno);               // also valid for single blocks
+        throw convertForeignKeyException(e.getConstraint());
       }
 
       clearRecord(recno);
@@ -3745,72 +3745,51 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
-   * Check if a record has been modified (deleted or updated) in the
-   * database
+   * Check whether the given record has been modified (deleted or updated) in the
+   * database.
    */
-  protected boolean isRecordModified(int recno,
-                                     String baseTable,
-                                     VField idfld,
-                                     VField ucfld,
-                                     VField tsfld)
+  protected void checkRecordUnchanged(int recno,
+                                      VField idfld,
+                                      VField ucfld,
+                                      VField tsfld)
     throws SQLException, VExecFailedException
   {
     Query       query = new Query(form.getDBContext().getDefaultConnection());
 
-    query.addString(tables[0]);
-    query.addInt(idfld.getInt(recno).intValue());
-
+    //!!! samir 25032008 : Assertion enabled only for tables with ID
     assert ucfld != null || tsfld != null
       : "TS or UC field must exist (Block = " + getName() + ").";
 
-    // if there is a field UC in the form there must be a field UC
-    // in the table too.
-    if (ucfld != null && tsfld != null) {
-      query.open("SELECT TS, UC FROM $1 WHERE ID = #2");
-    } else if (ucfld != null) {
-      query.open("SELECT UC FROM $1 WHERE ID = #2");
-    } else {
-      query.open("SELECT TS FROM $1 WHERE ID = #2");
-    }
+    query.addString(ucfld == null ? "-1" : "UC");
+    query.addString(tsfld == null ? "-1" : "TS");
+    query.addString(tables[0]);
+    query.addInt(idfld.getInt(recno).intValue());
+    query.open("SELECT $1, $2 FROM $3 WHERE ID = #4");
     if (! query.next()) {
       // kein Eintrag gefunden
       query.close();
       form.getDBContext().abortWork();
       setActiveRecord(recno);
       throw new VExecFailedException(MessageCode.getMessage("VIS-00018"));
-    } else if (isRecordUpdated(query, recno, ucfld, tsfld)) {
-      // record has been updated
-      query.close();
-      form.getDBContext().abortWork();
-      setActiveRecord(recno);           // also valid for single blocks
-      throw new VExecFailedException(MessageCode.getMessage("VIS-00017"));
     } else {
+      boolean   changed;
+      
+      changed = false;
+      if (ucfld != null) {
+        changed |= ucfld.getInt(recno).intValue() != query.getInt(1);
+      }
+      if (tsfld != null) {
+        changed |= tsfld.getInt(recno).intValue() != query.getInt(2);
+      }
       query.close();
+      
+      if (changed) {
+        // record has been updated
+        form.getDBContext().abortWork();
+        setActiveRecord(recno);           // also valid for single blocks
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00017"));
+      }
     }
-
-    // The record was not deleted neither updated
-    return false;
-  }
-
-  /**
-   * Check if a record has been updated
-   */
-  protected boolean isRecordUpdated(Query query, int recno, VField ucfld, VField tsfld)
-    throws SQLException
-  {
-    int         ucPos;
-    boolean     ucChanged = false;
-    boolean     tsChanged = false;
-
-    if (tsfld != null) {
-      tsChanged = tsfld.getInt(recno).intValue() != query.getInt(1);
-    }
-    if (ucfld != null) {
-      ucPos = (tsfld == null) ? 1 : 2;
-      ucChanged = ucfld.getInt(recno).intValue() != query.getInt(ucPos);
-    }
-
-    return ucChanged || tsChanged;
   }
 
   /*
