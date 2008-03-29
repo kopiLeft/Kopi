@@ -86,18 +86,18 @@ public abstract class VField implements VConstants {
    * set information on the field.
    */
   public void setInfo(String name,
-		      int index,
-		      int posInArray,
-		      int options,
-		      int[] access,
-		      VList list,
-		      VColumn[] columns,
-		      int indices,
-		      int priority,
-		      VCommand[] commands,
-		      VPosition pos,
-		      int align,
-		      VField alias)
+                      int index,
+                      int posInArray,
+                      int options,
+                      int[] access,
+                      VList list,
+                      VColumn[] columns,
+                      int indices,
+                      int priority,
+                      VCommand[] commands,
+                      VPosition pos,
+                      int align,
+                      VField alias)
   {
     this.name = name;
     this.index = index;
@@ -137,7 +137,7 @@ public abstract class VField implements VConstants {
 
   /**
    * The name of the field is the ident in the kopi language
-   * @return	the name of this field
+   * @return    the name of this field
    */
   public String getName() {
     return name;
@@ -187,7 +187,7 @@ public abstract class VField implements VConstants {
   /**
    * The tooltip of the field is a small sentence that describe usage of the field
    * It is the first line of the field help
-   * @return	the help of this field
+   * @return    the help of this field
    */
   public String getToolTip() {
     return help;
@@ -234,8 +234,8 @@ public abstract class VField implements VConstants {
   }
 
   public boolean hasAutofill() {
-     return list != null;
-   }
+    return list != null;
+  }
 
   /**
    * return true if this field implements "enumerateValue"
@@ -247,7 +247,7 @@ public abstract class VField implements VConstants {
   /**
    * The width of a field is the max number of character needed to display
    * any value
-   * @return	the width of this field
+   * @return    the width of this field
    */
   public int getWidth() {
     return width;
@@ -256,7 +256,7 @@ public abstract class VField implements VConstants {
   /**
    * The height of a field is the max number of line needed to display
    * any value
-   * @return	the width of this field
+   * @return    the width of this field
    */
   public int getHeight() {
     return height;
@@ -299,7 +299,7 @@ public abstract class VField implements VConstants {
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
+
   /**
    * Localizes this field
    *
@@ -309,7 +309,7 @@ public abstract class VField implements VConstants {
     FieldLocalizer      loc;
 
     loc = parent.getFieldLocalizer(name);
-    setLabel(loc.getLabel()); 
+    setLabel(loc.getLabel());
     help = loc.getHelp();
     if (list != null) {
       list.localize(loc.getManager());
@@ -318,7 +318,7 @@ public abstract class VField implements VConstants {
     // field type specific localizations
     localize(loc);
   }
-  
+
   /**
    * Localizes this field
    *
@@ -350,13 +350,13 @@ public abstract class VField implements VConstants {
       callTrigger(TRG_PREVAL);
       checkList();
       try {
-	if (!isNull(block.getActiveRecord())) {
-	  callTrigger(TRG_VALFLD);
-	}
-	callTrigger(TRG_POSTCHG);
+        if (!isNull(block.getActiveRecord())) {
+          callTrigger(TRG_VALFLD);
+        }
+        callTrigger(TRG_POSTCHG);
       } catch (VFieldException e) {
-	e.resetValue();
-	throw e;
+        e.resetValue();
+        throw e;
       }
       changed = false; // !!! check
       changedUI = false;
@@ -369,16 +369,16 @@ public abstract class VField implements VConstants {
   /**
    * Verify that text is valid (during typing)
    *
-   * @param	s		the text to check
-   * @return	true if the text is valid
+   * @param     s               the text to check
+   * @return    true if the text is valid
    */
   protected abstract boolean checkText(String s);
 
   /**
    * verify that value is valid (on exit)
    *
-   * @param	s		the object to check
-   * @exception	VException	an exception is raised if text is bad
+   * @param     s               the object to check
+   * @exception VException      an exception is raised if text is bad
    */
   protected abstract void checkType(Object s) throws VException;
 
@@ -410,7 +410,7 @@ public abstract class VField implements VConstants {
           public void execute() throws VException {
             getBlock().getForm().getActiveBlock().gotoNextField();
           }
-        };    
+        };
       ((DField) getDisplay()).getBlockView().getFormView().performAsyncAction(action);
     }
   }
@@ -439,7 +439,7 @@ public abstract class VField implements VConstants {
   }
 
   public void build() {
-   setAccess(access[MOD_QUERY]);
+    setAccess(access[MOD_QUERY]);
   }
 
   public VCommand[] getCommand() {
@@ -465,7 +465,7 @@ public abstract class VField implements VConstants {
   /**
    * Fill this field with an appropriate value according to present text
    * and ask the user if there is multiple choice
-   * @exception	VException	an exception may occur in gotoNextField
+   * @exception VException      an exception may occur in gotoNextField
    */
   public final void autofill() throws VException {
     // programatic autofill => no UI
@@ -479,7 +479,7 @@ public abstract class VField implements VConstants {
   /**
    * Fill this field with an appropriate value according to present text
    * and ask the user if there is multiple choice
-   * @exception	VException	an exception may occur in gotoNextField
+   * @exception VException      an exception may occur in gotoNextField
    */
   public final void predefinedFill() throws VException {
     if (hasListener) {
@@ -536,26 +536,26 @@ public abstract class VField implements VConstants {
 
   /**
    * when leaving field, if text is okay, set value in record
-   * @exception	VException	an exception is raised if text is bad
+   * @exception VException      an exception is raised if text is bad
    */
   public final void leave(boolean check) throws VException {
     assert this == block.getActiveField() : threadInfo() + "current field: "+block.getActiveField();
     try {
       if (check && changed) {
-	if (changedUI && hasListener) {
-	  checkType(getDisplayedValue(true));
-	}
-	callTrigger(TRG_PREVAL);
-	checkList();
-	try {
-	  if (!isNull(block.getActiveRecord())) {
-	    callTrigger(TRG_VALFLD);
-	  }
-	  callTrigger(TRG_POSTCHG);
-	} catch (VFieldException e) {
-	  e.resetValue();
-	  throw e;
-	}
+        if (changedUI && hasListener) {
+          checkType(getDisplayedValue(true));
+        }
+        callTrigger(TRG_PREVAL);
+        checkList();
+        try {
+          if (!isNull(block.getActiveRecord())) {
+            callTrigger(TRG_VALFLD);
+          }
+          callTrigger(TRG_POSTCHG);
+        } catch (VFieldException e) {
+          e.resetValue();
+          throw e;
+        }
       } else if (getForm().getEnvironment().setTextOnFieldLeave()) {
         if (changed && changedUI && hasListener) {
           checkType(getDisplayedValue(true));
@@ -651,8 +651,8 @@ public abstract class VField implements VConstants {
     // used for debugging
     //    if (current < 5) System.out.println("---- VBlock updateAccess() : current = " + current + "  " + getName());
 
-    int		defaultAccess = getDefaultAccess();
-    int		accessTemp = defaultAccess;//dynAccess;
+    int         defaultAccess = getDefaultAccess();
+    int         accessTemp = defaultAccess;//dynAccess;
 
     if (current != -1) {
       if ((!getBlock().isRecordInsertAllowed(current))) {
@@ -660,7 +660,7 @@ public abstract class VField implements VConstants {
       } else if (hasTrigger(TRG_FLDACCESS)) {
         // evaluate ACCESS-Trigger
         int     oldrow = getBlock().getActiveRecord();
-	VField  old = getBlock().getActiveField();
+        VField  old = getBlock().getActiveField();
 
         // used by callTrigger
         getBlock().setActiveRecord(current);
@@ -717,9 +717,9 @@ public abstract class VField implements VConstants {
   public void setDefault() {
     if (isNull(block.getActiveRecord())) {
       try {
-	callTrigger(TRG_DEFAULT);
+        callTrigger(TRG_DEFAULT);
       } catch (VException e) {
-	throw new InconsistencyException(); // !!! NO, Just a VExc...
+        throw new InconsistencyException(); // !!! NO, Just a VExc...
       }
     }
   }
@@ -750,7 +750,7 @@ public abstract class VField implements VConstants {
   public String lookupColumn(int corr) {
     for (int i = 0; i < getColumnCount(); i++) {
       if (corr == columns[i].getTable()) {
-	return columns[i].getName();
+        return columns[i].getName();
       }
     }
     return null;
@@ -785,19 +785,19 @@ public abstract class VField implements VConstants {
   public int getSearchType() {
     if (isNull(block.getActiveRecord())) {
       if (getSearchOperator() == SOP_EQ) {
-	return STY_NO_COND;
+        return STY_NO_COND;
       } else if (getSearchOperator() == SOP_NE) {
-	return STY_MANY;
+        return STY_MANY;
       } else {
-	return STY_EXACT;
+        return STY_EXACT;
       }
     } else {
-      String	 buffer = getSql(block.getActiveRecord());
+      String     buffer = getSql(block.getActiveRecord());
 
       if (buffer.indexOf('*') == -1) {
-	return getSearchOperator() == SOP_EQ ? STY_EXACT : STY_MANY;
+        return getSearchOperator() == SOP_EQ ? STY_EXACT : STY_MANY;
       } else {
-	return STY_MANY;
+        return STY_MANY;
       }
     }
   }
@@ -808,46 +808,46 @@ public abstract class VField implements VConstants {
   public String getSearchCondition() {
     if (isNull(block.getActiveRecord())) {
       if (getSearchOperator() == SOP_EQ) {
-	return null;
+        return null;
       } else if (getSearchOperator() == SOP_NE) {
-	return "IS NOT NULL";
+        return "IS NOT NULL";
       } else {
-	return "IS NULL";
+        return "IS NULL";
       }
     } else {
-      String	operator = OPERATOR_NAMES[getSearchOperator()];
-      String	operand = getSql(block.getActiveRecord());
+      String    operator = OPERATOR_NAMES[getSearchOperator()];
+      String    operand = getSql(block.getActiveRecord());
 
 
       if (operand.indexOf('*') == -1) {
-	// nothing to change: standard case
+        // nothing to change: standard case
       } else {
-	switch (getSearchOperator()) {
-	case SOP_EQ:
-	  operator = "LIKE ";
-	  operand = operand.replace('*', '%');
-	  break;
+        switch (getSearchOperator()) {
+        case SOP_EQ:
+          operator = "LIKE ";
+          operand = operand.replace('*', '%');
+          break;
 
-	case SOP_NE:
-	  operator = "NOT LIKE ";
-	  operand = operand.replace('*', '%');
-	  break;
+        case SOP_NE:
+          operator = "NOT LIKE ";
+          operand = operand.replace('*', '%');
+          break;
 
-	case SOP_GE:
-	case SOP_GT:
-	  // remove everything after at '*'
-	  operand = operand.substring(0, operand.indexOf('*')) + "'";
-	  break;
+        case SOP_GE:
+        case SOP_GT:
+          // remove everything after at '*'
+          operand = operand.substring(0, operand.indexOf('*')) + "'";
+          break;
 
-	case SOP_LE:
-	case SOP_LT:
-	  // replace substring starting at '*' by highest (ascii) char
-	  operand = operand.substring(0, operand.indexOf('*')) + "\377'";
-	  break;
+        case SOP_LE:
+        case SOP_LT:
+          // replace substring starting at '*' by highest (ascii) char
+          operand = operand.substring(0, operand.indexOf('*')) + "\377'";
+          break;
 
-	default:
-	  throw new InconsistencyException();
-	}
+        default:
+          throw new InconsistencyException();
+        }
       }
 
       switch (options & FDO_SEARCH_MASK) {
@@ -873,7 +873,7 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field label.
-   * @kopi	inaccessible
+   * @kopi      inaccessible
    */
   String getHeader() {
     return label == null ? "" : label.substring(0, label.length() - 1);
@@ -906,10 +906,6 @@ public abstract class VField implements VConstants {
       throw new InconsistencyException("Value " + value + " is not a valid operator");
     }
 
-    //    fireInfoChanged();
-//     if (ui != null) {
-//       ui.fireInfoHasChanged();
-//     }
     if (searchOperator != value) {
       searchOperator = value;
       fireSearchOperatorChanged();
@@ -944,8 +940,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a bigdecimal value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setFixed(Fixed v) {
     setFixed(block.getCurrentRecord(), v);
@@ -953,8 +949,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a boolean value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setBoolean(Boolean v) {
     setBoolean(block.getCurrentRecord(), v);
@@ -962,8 +958,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a date value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setDate(Date v) {
     setDate(block.getCurrentRecord(), v);
@@ -971,8 +967,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a month value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setMonth(Month v) {
     setMonth(block.getCurrentRecord(), v);
@@ -980,8 +976,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a int value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setInt(Integer v) {
     setInt(block.getCurrentRecord(), v);
@@ -989,8 +985,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setObject(Object v) {
     setObject(block.getCurrentRecord(), v);
@@ -998,8 +994,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a string value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setString(String v) {
     setString(block.getCurrentRecord(), v);
@@ -1014,8 +1010,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a time value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setTime(Time v) {
     setTime(block.getCurrentRecord(), v);
@@ -1023,8 +1019,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a week value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setWeek(Week v) {
     setWeek(block.getCurrentRecord(), v);
@@ -1032,8 +1028,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record to a color value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setColor(java.awt.Color v) {
     setColor(block.getCurrentRecord(), v);
@@ -1041,15 +1037,15 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a null value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public abstract void setNull(int r);
 
   /**
    * Sets the field value of given record to a bigdecimal value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setFixed(int r, Fixed v) {
     throw new InconsistencyException();
@@ -1057,8 +1053,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a boolean value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setBoolean(int r, Boolean v) {
     throw new InconsistencyException();
@@ -1066,8 +1062,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a date value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setDate(int r, Date v) {
     throw new InconsistencyException();
@@ -1075,8 +1071,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a month value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setMonth(int r, Month v) {
     throw new InconsistencyException();
@@ -1084,8 +1080,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a week value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setWeek(int r, Week v) {
     throw new InconsistencyException();
@@ -1093,8 +1089,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a int value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setInt(int r, Integer v) {
     throw new InconsistencyException();
@@ -1102,15 +1098,15 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public abstract void setObject(int r, Object v);
 
   /**
    * Sets the field value of given record to a string value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setString(int r, String v) {
     throw new InconsistencyException();
@@ -1125,8 +1121,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a time value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setTime(int r, Time v) {
     throw new InconsistencyException();
@@ -1134,8 +1130,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record to a color value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public void setColor(int r, java.awt.Color v) {
     throw new InconsistencyException();
@@ -1143,8 +1139,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of the current record from a query tuple.
-   * @param	query		the query holding the tuple
-   * @param	column		the index of the column in the tuple
+   * @param     query           the query holding the tuple
+   * @param     column          the index of the column in the tuple
    */
   public void setQuery(Query query, int column) throws SQLException {
     setQuery(block.getCurrentRecord(), query, column);
@@ -1152,9 +1148,9 @@ public abstract class VField implements VConstants {
 
   /**
    * Sets the field value of given record from a query tuple.
-   * @param	record		the index of the record
-   * @param	query		the query holding the tuple
-   * @param	column		the index of the column in the tuple
+   * @param     record          the index of the record
+   * @param     query           the query holding the tuple
+   * @param     column          the index of the column in the tuple
    */
   public void setQuery(int record, Query query, int column)
     throws SQLException
@@ -1164,8 +1160,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the specified tuple column as object of correct type for the field.
-   * @param	query		the query holding the tuple
-   * @param	column		the index of the column in the tuple
+   * @param     query           the query holding the tuple
+   * @param     column          the index of the column in the tuple
    */
   public abstract Object retrieveQuery(Query query, int column)
     throws SQLException;
@@ -1190,8 +1186,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a bigdecimal value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Fixed getFixed() {
     return getFixed(block.getCurrentRecord());
@@ -1199,8 +1195,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a boolean value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Boolean getBoolean() {
     return getBoolean(block.getCurrentRecord());
@@ -1208,8 +1204,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a date value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Date getDate() {
     return getDate(block.getCurrentRecord());
@@ -1217,8 +1213,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a int value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Integer getInt() {
     return getInt(block.getCurrentRecord());
@@ -1233,8 +1229,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a month value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Month getMonth() {
     return getMonth(block.getCurrentRecord());
@@ -1242,8 +1238,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a string value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public String getString() {
     return getString(block.getCurrentRecord());
@@ -1251,8 +1247,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a time value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Time getTime() {
     return getTime(block.getCurrentRecord());
@@ -1260,8 +1256,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a week value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Week getWeek() {
     return getWeek(block.getCurrentRecord());
@@ -1269,8 +1265,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as a time value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public java.awt.Color getColor() {
     return getColor(block.getCurrentRecord());
@@ -1278,8 +1274,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the display representation of field value of the current record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public String getText() {
     return getText(block.getCurrentRecord());
@@ -1287,8 +1283,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the SQL representation of field value of the current record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public String getSql() {
     return getSql(block.getCurrentRecord());
@@ -1296,8 +1292,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Is the field value of given record null ?
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public final boolean isNull(int r) {
     if (alias != null) {
@@ -1311,15 +1307,15 @@ public abstract class VField implements VConstants {
 
   /**
    * Is the field value of given record null ?
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public abstract boolean isNullImpl(int r);
 
   /**
    * Returns the field value of the current record as an object
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public final Object getObject(int r) {
     if (alias != null) {
@@ -1334,15 +1330,15 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of the current record as an object
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public abstract Object getObjectImpl(int r);
 
   /**
    * Returns the field value of given record as a bigdecimal value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Fixed getFixed(int r) {
     throw new InconsistencyException();
@@ -1350,8 +1346,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a boolean value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Boolean getBoolean(int r) {
     throw new InconsistencyException();
@@ -1359,8 +1355,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a date value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Date getDate(int r) {
     throw new InconsistencyException();
@@ -1368,8 +1364,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a month value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Month getMonth(int r) {
     throw new InconsistencyException();
@@ -1377,8 +1373,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a week value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Week getWeek(int r) {
     throw new InconsistencyException();
@@ -1386,8 +1382,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a int value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Integer getInt(int r) {
     throw new InconsistencyException();
@@ -1402,8 +1398,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a string value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public String getString(int r) {
     throw new InconsistencyException();
@@ -1411,8 +1407,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a time value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public Time getTime(int r) {
     throw new InconsistencyException();
@@ -1420,8 +1416,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the field value of given record as a color value.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public java.awt.Color getColor(int r) {
     throw new InconsistencyException();
@@ -1429,8 +1425,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the display representation of field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public final String getText(int r) {
     if (alias != null) {
@@ -1452,15 +1448,15 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the display representation of field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public abstract String getTextImpl(int r);
 
   /**
    * Returns the SQL representation of field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public final String getSql(int r) {
     if (alias != null) {
@@ -1474,23 +1470,23 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the SQL representation of field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public abstract String getSqlImpl(int r);
 
   /**
    * Returns the SQL representation of field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public boolean hasLargeObject(int r) {
     return false;
   }
 
   /**
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public boolean hasBinaryLargeObject(int r) {
     throw new InconsistencyException("NO LOB WITH THIS FIELD " + this);
@@ -1498,8 +1494,8 @@ public abstract class VField implements VConstants {
 
   /**
    * Returns the SQL representation of field value of given record.
-   * Warning:	This method will become inaccessible to kopi users in next release
-   * @kopi	inaccessible
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
    */
   public InputStream getLargeObject(int r) {
     throw new InconsistencyException("NO BLOB WITH THIS FIELD " + this);
@@ -1609,14 +1605,14 @@ public abstract class VField implements VConstants {
     }
 
     final String SELECT_IS_IN_LIST =
-      " SELECT   1					" +
-      " FROM	 $2					" +
-      " WHERE	 $1 = $3";
+      " SELECT   1                                      " +
+      " FROM     $2                                     " +
+      " WHERE    $1 = $3";
 
     final String SELECT_MATCHING_STRINGS =
-      " SELECT	 $1					" +
-      " FROM	 $2					" +
-      " WHERE	 {fn SUBSTRING($1, 1, {fn LENGTH(#3)})} = #3	" +
+      " SELECT   $1                                     " +
+      " FROM     $2                                     " +
+      " WHERE    {fn SUBSTRING($1, 1, {fn LENGTH(#3)})} = #3    " +
       " ORDER BY 1";
 
     if (isNull(block.getActiveRecord())) {
@@ -1629,162 +1625,162 @@ public abstract class VField implements VConstants {
 
     boolean alreadyProtected = getForm().inTransaction();
     if (!(this instanceof VStringField)) {
-      boolean		exists;
+      boolean           exists;
 
       try {
-	for (;;) {
-	  try {
-	    if (!alreadyProtected) {
-	      getForm().startProtected(null);
-	    }
+        for (;;) {
+          try {
+            if (!alreadyProtected) {
+              getForm().startProtected(null);
+            }
 
-	    Query	query = new Query(getForm().getDBContext().getDefaultConnection());
+            Query       query = new Query(getForm().getDBContext().getDefaultConnection());
 
-	    query.addString(list.getColumn(0).getColumn());
-	    query.addString(evalListTable());
-	    query.addString(getSql(block.getActiveRecord()));
-	    query.open(SELECT_IS_IN_LIST);
-	    exists = query.next();
-	    query.close();
+            query.addString(list.getColumn(0).getColumn());
+            query.addString(evalListTable());
+            query.addString(getSql(block.getActiveRecord()));
+            query.open(SELECT_IS_IN_LIST);
+            exists = query.next();
+            query.close();
 
-	    if (!alreadyProtected) {
-	      getForm().commitProtected();
-	    }
-	    break;
-	  } catch (SQLException e) {
-	    if (!alreadyProtected) {
-	      getForm().abortProtected(e);
-	    } else {
-	      throw e;
-	    }
-	  } catch (Error error) {
-	    if (!alreadyProtected) {
-	      getForm().abortProtected(error);
-	    } else {
-	      throw error;
-	    }
-	  } catch (RuntimeException rte) {
-	    if (!alreadyProtected) {
-	      getForm().abortProtected(rte);
-	    } else {
-	      throw rte;
-	    }
+            if (!alreadyProtected) {
+              getForm().commitProtected();
+            }
+            break;
+          } catch (SQLException e) {
+            if (!alreadyProtected) {
+              getForm().abortProtected(e);
+            } else {
+              throw e;
+            }
+          } catch (Error error) {
+            if (!alreadyProtected) {
+              getForm().abortProtected(error);
+            } else {
+              throw error;
+            }
+          } catch (RuntimeException rte) {
+            if (!alreadyProtected) {
+              getForm().abortProtected(rte);
+            } else {
+              throw rte;
+            }
           }
-	}
+        }
       } catch (Throwable e) {
-	throw new VExecFailedException(e);
+        throw new VExecFailedException(e);
       }
 
       if (! exists) {
-	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
       }
 
       return;
     } else {
-      Query		query;
-      String		fldbuf;
-      int		count = 0;
-      String		result = null;
+      Query             query;
+      String            fldbuf;
+      int               count = 0;
+      String            result = null;
 
       fldbuf = getSql(block.getActiveRecord());
       if (fldbuf.indexOf('*') > 0) {
-	return;
+        return;
       }
 
       try {
-	for (;;) {
-	  try {
-	    if (!alreadyProtected) {
-	      getForm().startProtected(null);
-	    }
+        for (;;) {
+          try {
+            if (!alreadyProtected) {
+              getForm().startProtected(null);
+            }
 
-	    query = new Query(getForm().getDBContext().getDefaultConnection());
-	    query.addString(list.getColumn(0).getColumn());
-	    query.addString(evalListTable());
-	    query.addString(getString(block.getActiveRecord()));
-	    query.open(SELECT_MATCHING_STRINGS);
-	    if (!query.next()) {
-	      count = 0;
-	    } else {
-	      count = 1;
-	      result = query.getString(1);
+            query = new Query(getForm().getDBContext().getDefaultConnection());
+            query.addString(list.getColumn(0).getColumn());
+            query.addString(evalListTable());
+            query.addString(getString(block.getActiveRecord()));
+            query.open(SELECT_MATCHING_STRINGS);
+            if (!query.next()) {
+              count = 0;
+            } else {
+              count = 1;
+              result = query.getString(1);
 
-	      if (query.next()) {
-		count = 2;
-	      }
-	    }
-	    query.close();
+              if (query.next()) {
+                count = 2;
+              }
+            }
+            query.close();
 
-	    if (!alreadyProtected) {
-	      getForm().commitProtected();
-	    }
-	    break;
-	  } catch (SQLException e) {
-	    if (!alreadyProtected) {
-	      getForm().abortProtected(e);
-	    } else {
-	      throw e;
-	    }
-	  } catch (Error error) {
-	    if (!alreadyProtected) {
-	      getForm().abortProtected(error);
-	    } else {
-	      throw error;
-	    }
-	  } catch (RuntimeException rte) {
-	    if (!alreadyProtected) {
-	      getForm().abortProtected(rte);
-	    } else {
-	      throw rte;
-	    }
-	  }
-	}
+            if (!alreadyProtected) {
+              getForm().commitProtected();
+            }
+            break;
+          } catch (SQLException e) {
+            if (!alreadyProtected) {
+              getForm().abortProtected(e);
+            } else {
+              throw e;
+            }
+          } catch (Error error) {
+            if (!alreadyProtected) {
+              getForm().abortProtected(error);
+            } else {
+              throw error;
+            }
+          } catch (RuntimeException rte) {
+            if (!alreadyProtected) {
+              getForm().abortProtected(rte);
+            } else {
+              throw rte;
+            }
+          }
+        }
       } catch (Throwable e) {
-	throw new VExecFailedException(e);
+        throw new VExecFailedException(e);
       }
 
       switch (count) {
       case 0:
-	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
 
       case 1:
-	if (! result.equals(getString(block.getActiveRecord()))) {
-	  setString(block.getActiveRecord(), result);
-	}
-	return;
+        if (! result.equals(getString(block.getActiveRecord()))) {
+          setString(block.getActiveRecord(), result);
+        }
+        return;
 
       case 2:
-	if (result.equals(getString(block.getActiveRecord()))) {
-	  return;
-	} else {
-	  String	qrybuf;
-	  String	colbuf = "";
+        if (result.equals(getString(block.getActiveRecord()))) {
+          return;
+        } else {
+          String        qrybuf;
+          String        colbuf = "";
 
-	  for (int i = 0; i < list.columnCount(); i++) {
-	    if (i != 0) {
-	      colbuf += ", ";
-	    }
-	    colbuf += list.getColumn(i).getColumn();
-	  }
+          for (int i = 0; i < list.columnCount(); i++) {
+            if (i != 0) {
+              colbuf += ", ";
+            }
+            colbuf += list.getColumn(i).getColumn();
+          }
 
-	  qrybuf =
-	    " SELECT   " + colbuf +
-	    " FROM     " + evalListTable() +
+          qrybuf =
+            " SELECT   " + colbuf +
+            " FROM     " + evalListTable() +
             " WHERE    {fn SUBSTRING(" + list.getColumn(0).getColumn() + ", 1, {fn LENGTH(" + fldbuf + ")})} = " + fldbuf +
-	    " ORDER BY 1";
+            " ORDER BY 1";
 
-	  result = (String)displayQueryList(qrybuf, list.getColumns());
+          result = (String)displayQueryList(qrybuf, list.getColumns());
 
-	  if (result == null) {
-	    throw new VExecFailedException();	// no message to display
-	  } else {
-	    setString(block.getActiveRecord(), result);
-	    return;
-	  }
-	}
+          if (result == null) {
+            throw new VExecFailedException();   // no message to display
+          } else {
+            setString(block.getActiveRecord(), result);
+            return;
+          }
+        }
 
       default:
-	throw new InconsistencyException(threadInfo() + "count = " + count);
+        throw new InconsistencyException(threadInfo() + "count = " + count);
       }
     }
   }
@@ -1795,35 +1791,35 @@ public abstract class VField implements VConstants {
    */
   public int getListID() throws VException {
     final String SELECT_IS_IN_LIST =
-      " SELECT  ID			" +
-      " FROM	$2			" +
-      " WHERE	$1 = $3";
+      " SELECT  ID                      " +
+      " FROM    $2                      " +
+      " WHERE   $1 = $3";
 
     assert !isNull(block.getActiveRecord()) : threadInfo() + " is null";
     assert list != null : threadInfo() + "list ist not null";
-    int		id = -1;
+    int         id = -1;
     try {
       for (;;) {
-	try {
-	  getForm().startProtected(null);
+        try {
+          getForm().startProtected(null);
 
-	  Query	query = new Query(getForm().getDBContext().getDefaultConnection());
+          Query query = new Query(getForm().getDBContext().getDefaultConnection());
 
-	  query.addString(list.getColumn(0).getColumn());
-	  query.addString(evalListTable());
-	  query.addString(getSql(block.getActiveRecord()));
-	  query.open(SELECT_IS_IN_LIST);
-	  if (query.next()) {
-	    id = query.getInt(1);
-	  }
+          query.addString(list.getColumn(0).getColumn());
+          query.addString(evalListTable());
+          query.addString(getSql(block.getActiveRecord()));
+          query.open(SELECT_IS_IN_LIST);
+          if (query.next()) {
+            id = query.getInt(1);
+          }
 
-	  query.close();
+          query.close();
 
-	  getForm().commitProtected();
-	    break;
-	} catch (SQLException e) {
-	  getForm().abortProtected(e);
-	} catch (Error error) {
+          getForm().commitProtected();
+          break;
+        } catch (SQLException e) {
+          getForm().abortProtected(e);
+        } catch (Error error) {
           getForm().abortProtected(error);
         } catch (RuntimeException rte) {
           getForm().abortProtected(rte);
@@ -1843,46 +1839,46 @@ public abstract class VField implements VConstants {
   private Object displayQueryList(String queryText, VListColumn[] columns)
     throws VException {
 
-    final String	newForm = list.getNewForm();
+    final String        newForm = list.getNewForm();
 
-    final int		MAX_LINE_COUNT = 1024;
-    final boolean	SKIP_FIRST_COLUMN = false;
-    final boolean	SHOW_SINGLE_ENTRY = newForm != null;
+    final int           MAX_LINE_COUNT = 1024;
+    final boolean       SKIP_FIRST_COLUMN = false;
+    final boolean       SHOW_SINGLE_ENTRY = newForm != null;
 
-    Object[][]		lines = new Object[columns.length - (SKIP_FIRST_COLUMN ? 1 : 0)][MAX_LINE_COUNT];
-    int			lineCount = 0;
+    Object[][]          lines = new Object[columns.length - (SKIP_FIRST_COLUMN ? 1 : 0)][MAX_LINE_COUNT];
+    int                 lineCount = 0;
 
     try {
       for (;;) {
-	try {
-	  getForm().startProtected(Message.getMessage("searching_database"));
+        try {
+          getForm().startProtected(Message.getMessage("searching_database"));
 
-	  Query		query = new Query(getForm().getDBContext().getDefaultConnection());
+          Query         query = new Query(getForm().getDBContext().getDefaultConnection());
 
 
-	  query.open(queryText);
-	  lineCount = 0;
-	  while (query.next() && lineCount < MAX_LINE_COUNT - 1) {
-	    if (query.isNull(1)) {
-	      continue;
-	    }
+          query.open(queryText);
+          lineCount = 0;
+          while (query.next() && lineCount < MAX_LINE_COUNT - 1) {
+            if (query.isNull(1)) {
+              continue;
+            }
 
-	    for (int i = 0; i < lines.length; i += 1) {
-	      lines[i][lineCount] = query.getObject(i + (SKIP_FIRST_COLUMN ? 2 : 1));
-	    }
-	    lineCount += 1;
-	  }
-	  query.close();
+            for (int i = 0; i < lines.length; i += 1) {
+              lines[i][lineCount] = query.getObject(i + (SKIP_FIRST_COLUMN ? 2 : 1));
+            }
+            lineCount += 1;
+          }
+          query.close();
 
-	  getForm().commitProtected();
-	  break;
-	} catch (SQLException e) {
-	  getForm().abortProtected(e);
-	} catch (Error error) {
+          getForm().commitProtected();
+          break;
+        } catch (SQLException e) {
+          getForm().abortProtected(e);
+        } catch (Error error) {
           getForm().abortProtected(error);
         } catch (RuntimeException rte) {
           getForm().abortProtected(rte);
-	}
+        }
       }
     } catch (Throwable e) {
       throw new VRuntimeException(e);
@@ -1894,61 +1890,61 @@ public abstract class VField implements VConstants {
       int     selected;
 
       if (lineCount == 0 && (newForm != null && isNull(block.getActiveRecord()))) {
-	selected = ((VDictionaryForm)Module.getKopiExecutable(newForm)).newRecord(getForm());
+        selected = ((VDictionaryForm)Module.getKopiExecutable(newForm)).newRecord(getForm());
       } else {
-	if (lineCount == MAX_LINE_COUNT - 1) {
-	  getForm().notice(MessageCode.getMessage("VIS-00028"));
-	}
+        if (lineCount == MAX_LINE_COUNT - 1) {
+          getForm().notice(MessageCode.getMessage("VIS-00028"));
+        }
 
-	if (lineCount == 1 && ! SHOW_SINGLE_ENTRY) {
-	  selected = 0;
-	} else {
-          final ListDialog	ld;
+        if (lineCount == 1 && ! SHOW_SINGLE_ENTRY) {
+          selected = 0;
+        } else {
+          final ListDialog      ld;
 
-	  ld = new ListDialog(columns, lines, lineCount, newForm);
+          ld = new ListDialog(columns, lines, lineCount, newForm);
           selected = ld.selectFromDialog(getForm(), getDisplay());
-	}
+        }
       }
 
       if (selected == -1) {
-	throw new VExecFailedException();	// no message needed
+        throw new VExecFailedException();       // no message needed
       } else if (selected >= lineCount) {
-	// new, retrieve it
-	Object result = null;
+        // new, retrieve it
+        Object result = null;
 
-	try {
-	  for (;;) {
-	    try {
-	      getForm().startProtected(null);
-	      final String SELECT_IS_IN_LIST =
-		" SELECT   $1			" +
-		" FROM	   $2			" +
-		" WHERE	   ID = " + selected;
+        try {
+          for (;;) {
+            try {
+              getForm().startProtected(null);
+              final String SELECT_IS_IN_LIST =
+                " SELECT   $1                   " +
+                " FROM     $2                   " +
+                " WHERE    ID = " + selected;
 
-	      Query	query = new Query(getForm().getDBContext().getDefaultConnection());
+              Query     query = new Query(getForm().getDBContext().getDefaultConnection());
 
-	      query.addString(list.getColumn(0).getColumn());
-	      query.addString(evalListTable());
-	      query.open(SELECT_IS_IN_LIST);
-	      query.next();
-	      result = query.getObject(1);
-	      query.close();
-	      getForm().commitProtected();
-	      break;
-	    } catch (SQLException e) {
-	      getForm().abortProtected(e);
+              query.addString(list.getColumn(0).getColumn());
+              query.addString(evalListTable());
+              query.open(SELECT_IS_IN_LIST);
+              query.next();
+              result = query.getObject(1);
+              query.close();
+              getForm().commitProtected();
+              break;
+            } catch (SQLException e) {
+              getForm().abortProtected(e);
             } catch (Error error) {
               getForm().abortProtected(error);
             } catch (RuntimeException rte) {
               getForm().abortProtected(rte);
-	    }
-	  }
-	} catch (Throwable e) {
-	  throw new VRuntimeException(e);
-	}
-	return result;
+            }
+          }
+        } catch (Throwable e) {
+          throw new VRuntimeException(e);
+        }
+        return result;
       } else {
-	return lines[0][selected];
+        return lines[0][selected];
       }
     }
   }
@@ -1957,12 +1953,12 @@ public abstract class VField implements VConstants {
    * Checks that field value exists in list
    */
   protected void selectFromList(boolean gotoNextField) throws VException {
-    StringBuffer	qrybuf = new StringBuffer();
+    StringBuffer        qrybuf = new StringBuffer();
 
     qrybuf.append("SELECT ");
     for (int i = 0; i < list.columnCount(); i++) {
       if (i != 0) {
-	qrybuf.append(", ");
+        qrybuf.append(", ");
       }
       qrybuf.append(list.getColumn(i).getColumn());
     }
@@ -1974,20 +1970,20 @@ public abstract class VField implements VConstants {
       qrybuf.append(" WHERE ");
       switch (options & FDO_SEARCH_MASK) {
       case FDO_SEARCH_NONE:
-	qrybuf.append(list.getColumn(0).getColumn());
-	break;
+        qrybuf.append(list.getColumn(0).getColumn());
+        break;
       case FDO_SEARCH_UPPER:
-	qrybuf.append("{fn UPPER(");
-	qrybuf.append(list.getColumn(0).getColumn());
-	qrybuf.append(")}");
-	break;
+        qrybuf.append("{fn UPPER(");
+        qrybuf.append(list.getColumn(0).getColumn());
+        qrybuf.append(")}");
+        break;
       case FDO_SEARCH_LOWER:
-	qrybuf.append("{fn LOWER(");
-	qrybuf.append(list.getColumn(0).getColumn());
-	qrybuf.append(")}");
-	break;
+        qrybuf.append("{fn LOWER(");
+        qrybuf.append(list.getColumn(0).getColumn());
+        qrybuf.append(")}");
+        break;
       default:
-	throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
+        throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
       }
       qrybuf.append(" ");
       qrybuf.append(getSearchCondition());
@@ -1995,14 +1991,14 @@ public abstract class VField implements VConstants {
 
     qrybuf.append(" ORDER BY 1");
 
-    Object	result = displayQueryList(qrybuf.toString(), list.getColumns());
+    Object      result = displayQueryList(qrybuf.toString(), list.getColumns());
 
     if (result == null) {
-      throw new VExecFailedException();	// no message to display
+      throw new VExecFailedException(); // no message to display
     } else {
       setObject(block.getActiveRecord(), result);
       if (gotoNextField) {
-	block.gotoNextField();
+        block.gotoNextField();
       }
     }
   }
@@ -2011,7 +2007,7 @@ public abstract class VField implements VConstants {
    * Checks that field value exists in list
    */
   protected void enumerateValue(boolean desc) throws VException {
-    String	qrybuf;
+    String      qrybuf;
     Object      value = null;
 
     qrybuf =
@@ -2024,17 +2020,17 @@ public abstract class VField implements VConstants {
 
     for (;;) {
       try {
-	getForm().startProtected(null);
+        getForm().startProtected(null);
 
-	Query		query = new Query(getForm().getDBContext().getDefaultConnection());
-	query.open(qrybuf);
-	while (value == null && query.next()) {
-	  value = query.getObject(1);
-	}
-	query.close();
+        Query           query = new Query(getForm().getDBContext().getDefaultConnection());
+        query.open(qrybuf);
+        while (value == null && query.next()) {
+          value = query.getObject(1);
+        }
+        query.close();
 
-	getForm().commitProtected();
-	break;
+        getForm().commitProtected();
+        break;
       } catch (SQLException e) {
         try {
           getForm().abortProtected(e);
@@ -2056,7 +2052,7 @@ public abstract class VField implements VConstants {
       }
     }
     if (value == null) {
-      throw new VExecFailedException();	// no message to display
+      throw new VExecFailedException(); // no message to display
     } else {
       setObject(block.getActiveRecord(), value);
     }
@@ -2118,24 +2114,24 @@ public abstract class VField implements VConstants {
     Object result = null;
     try {
       for (;;) {
-	try {
-	  getForm().startProtected(null);
-	  Query	query = new Query(getForm().getDBContext().getDefaultConnection());
-	  query.addString(list.getColumn(0).getColumn());
-	  query.addString(evalListTable());
-	  query.addInt(id);
-	  query.open("SELECT $1 FROM $2 WHERE ID = #3");
-	  if (query.next()) {
-	    result = query.getObject(1);
-	  } else {
-	    result = null;
-	  }
-	  query.close();
-	  getForm().commitProtected();
-	  break;
-	} catch (SQLException e) {
-	  getForm().abortProtected(e);
-	} catch (Error error) {
+        try {
+          getForm().startProtected(null);
+          Query query = new Query(getForm().getDBContext().getDefaultConnection());
+          query.addString(list.getColumn(0).getColumn());
+          query.addString(evalListTable());
+          query.addInt(id);
+          query.open("SELECT $1 FROM $2 WHERE ID = #3");
+          if (query.next()) {
+            result = query.getObject(1);
+          } else {
+            result = null;
+          }
+          query.close();
+          getForm().commitProtected();
+          break;
+        } catch (SQLException e) {
+          getForm().abortProtected(e);
+        } catch (Error error) {
           getForm().abortProtected(error);
         } catch (RuntimeException rte) {
           getForm().abortProtected(rte);
@@ -2153,19 +2149,15 @@ public abstract class VField implements VConstants {
   // ----------------------------------------------------------------------
 
   public void helpOnField(VHelpGenerator help) {
-    String	lab = getLabel();
+    String      lab = getLabel();
     if (lab != null) {
       lab = lab.lastIndexOf(":") == -1 ? lab.replace(' ', '_') : lab.substring(0, lab.lastIndexOf(":")).replace(' ', '_');
 
-//       VFieldUI ui = getUI() == null ?
-// 	new VFieldUI(this, cmd, pos, align, list) :
-// 	getUI();
-
       help.helpOnField(getBlock().getTitle(),
-		       getBlock().getFieldPos(this),
-		       getLabel(),
-		       lab == null ? getName() : lab,
-		       getToolTip());
+                       getBlock().getFieldPos(this),
+                       getLabel(),
+                       lab == null ? getName() : lab,
+                       getToolTip());
       if (access[MOD_UPDATE] != ACS_SKIPPED
           || access[MOD_INSERT] != ACS_SKIPPED
           || access[MOD_QUERY] != ACS_SKIPPED)
@@ -2220,23 +2212,19 @@ public abstract class VField implements VConstants {
     }
 
     help.helpOnType(modeName,
-		    modeDesc,
-		    getTypeName(),
-		    getTypeInformation(),
-		    names);
+                    modeDesc,
+                    getTypeName(),
+                    getTypeInformation(),
+                    names);
   }
 
   /**
    * prepare a snapshot
    *
-   * @param	fieldPos	position of this field within block visible fields
+   * @param     fieldPos        position of this field within block visible fields
    */
   public void prepareSnapshot(int fieldPos, boolean active) {
     // !!! TO DO
-
-//     if (getUI() != null) {
-//       getUI().prepareSnapshot(fieldPos, active);
-//     }
   }
 
   public String toString() {
@@ -2365,27 +2353,7 @@ public abstract class VField implements VConstants {
       }
     }
   }
-  // NOT NECESSARY
-//   public void fireRecordChanged() {
-//     if (hasListener) {
-//       Iterator    iterator = fieldListener.listIterator();
 
-//       while (iterator.hasNext()) {
-//         ((FieldListener) iterator.next()).recordChanged();
-//       }
-//     }
-//   }
-
-  // removed not useful code:
-//   public void fireInfoChanged() {
-//     if (hasListener) {
-//       Iterator    iterator = fieldListener.listIterator();
-
-//       while (iterator.hasNext()) {
-//         ((FieldListener) iterator.next()).infoChanged();
-//       }
-//     }
-//   }
   public void fireEntered(){
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2488,35 +2456,35 @@ public abstract class VField implements VConstants {
   // ----------------------------------------------------------------------
 
   // static (compiled) data
-  protected	int		width;		// max # of chars per line
-  protected	int		height;		// max # of lines
+  protected     int             width;          // max # of chars per line
+  protected     int             height;         // max # of lines
 
-  private	int[]		access;		// access in each mode
-  private	int		priority;	// order in select results
-  private	int		indices;	// bitset of unique indices
-  private	String		name;		// field name (for dumps)
-  private	String		label;		// field label
-  private	int		options;	// options
-  private	String		help;		// help text
-  private	int		index;		// The position in parent field array
-  private	int		align;		// field alignment
-  private       int		posInArray;	// position in array of fields
+  private       int[]           access;         // access in each mode
+  private       int             priority;       // order in select results
+  private       int             indices;        // bitset of unique indices
+  private       String          name;           // field name (for dumps)
+  private       String          label;          // field label
+  private       int             options;        // options
+  private       String          help;           // help text
+  private       int             index;          // The position in parent field array
+  private       int             align;          // field alignment
+  private       int             posInArray;     // position in array of fields
 
-  protected	VList		list;		// list
-  protected	VBlock		block;		// containing block
-  private	VColumn[]	columns;	// columns in block's tables
-  //  private	VFieldUI	ui;		// The UI manager
-  private	VField		alias;		// The alias field
+  protected     VList           list;           // list
+  protected     VBlock          block;          // containing block
+  private       VColumn[]       columns;        // columns in block's tables
+  //  private   VFieldUI        ui;             // The UI manager
+  private       VField          alias;          // The alias field
 
   // changed?
-  private	boolean		changed;	// changed by user / changes are done in the model
-  private	boolean		changedUI;	// changed by user / changes are in the ui -> update model
+  private       boolean         changed;        // changed by user / changes are done in the model
+  private       boolean         changedUI;      // changed by user / changes are in the ui -> update model
                                                 // UPDATE model before doing anything
   private       int             border;
 
   // dynamic data
-  private	int		searchOperator;	// search operator
-  private	int[]		dynAccess;	// dynamic access
+  private       int             searchOperator; // search operator
+  private       int[]           dynAccess;      // dynamic access
 
   // ####
   private       EventListenerList       fieldListener;
@@ -2524,12 +2492,8 @@ public abstract class VField implements VConstants {
   // all the job use less memory and are faster
   private       boolean         hasListener;
 
-  private	VPosition	pos;
-  private	VCommand[]	cmd;
-//   private	VCommand	incrementCommand;
-//   private	VCommand	decrementCommand;
-//   private	VCommand	autofillCommand;
-
+  private       VPosition       pos;
+  private       VCommand[]      cmd;
 
   public static final int              MDL_FLD_COLOR = 1;
   public static final int              MDL_FLD_IMAGE = 2;
