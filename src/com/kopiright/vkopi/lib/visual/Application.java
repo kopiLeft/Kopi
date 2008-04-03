@@ -418,12 +418,23 @@ public abstract class Application extends java.applet.Applet implements MessageL
       String                      logFile;
       boolean                     sendMail;
       boolean                     writeLog;
-
+      String                      revision = null;
+      String                      releaseDate = null;      
+      String[]                    versionArray = Utils.getVersion();
+      
+      for (int i = 0; i < versionArray.length; i++) {
+        if (versionArray[i].startsWith("Revision: ")) {
+          revision = versionArray[i].substring(10);
+        } else if ((versionArray[i].startsWith("Last Changed Date: "))) {
+          releaseDate = versionArray[i].substring(19);
+        }
+      }
+      
       if (ApplicationConfiguration.getConfiguration() == null) {
         System.err.println("ERROR: No application configuration available");
         return;
       }
-
+      
       try {
         applicationName = getDefaults().getApplicationName();
       } catch (PropertyException e) {
@@ -474,8 +485,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
         } catch (PropertyException e) {
           bcc = null;
         }
-
-
+        
         StringWriter    buffer = new StringWriter();
         PrintWriter       writer = new PrintWriter(buffer);
         // failureID is added to the subject of the mail.
@@ -484,7 +494,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
         String            failureID;
 
         writer.println("Application Name:    " + applicationName);
-        writer.println("Version:             " + version);
+        writer.println("SVN Version:         " + (revision == null ? "no revision available." : revision));
+        writer.println("Release Date:        " + (releaseDate == null ? "not available." : releaseDate));
         writer.println("Module:              " + module);
         writer.println("Started at:          " + startupTime);
         writer.println();
@@ -532,7 +543,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
 
           try {
             CharArrayWriter       write;
-
+            
             write = new CharArrayWriter();
             reason.printStackTrace(new PrintWriter(write));
             failureID = " " + write.toString().hashCode();
