@@ -267,19 +267,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (act != null && act.getAccess(getActiveRecord()) >= ACS_VISIT) {
         act.enter();
       }
-      /*
-       * !!! queryMove does not work if this is uncommented
-       else {
-       try {
-       gotoFirstField();
-       } catch (VException e) {
-       // should only be raised when leaving a field
-       throw new InconsistencyException();
-       }
-       }
-      */
     }
-    //    resetCommands = true;
   }
 
   /**
@@ -292,24 +280,23 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   public void executeProtectedVoidTrigger(final int VKT_Type)
-    throws com.kopiright.vkopi.lib.visual.VException, SQLException
+    throws VException, SQLException
   {
     // default: does nothing
   }
 
-  public Object executeObjectTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
+  public Object executeObjectTrigger(final int VKT_Type) throws VException {
     // default: does nothing
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
 
-  public boolean executeBooleanTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
+  public boolean executeBooleanTrigger(final int VKT_Type) throws VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
 
-  public int executeIntegerTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
+  public int executeIntegerTrigger(final int VKT_Type) throws VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
-
 
   /**
    * implemented for compatiblity with old gui
@@ -1342,7 +1329,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (activeField == null) {
         try {
           if (getActiveRecord() == -1 || isRecordDeleted(getActiveRecord())) {
-            int i = 0;
+            int         i = 0;
 
             for (; i < getBufferSize(); i += 1) {
               if (!isRecordDeleted(i)) {
@@ -1355,7 +1342,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           // lackner 2003.07.31
           // - inserted to get information about the usage of this code
           // - can be removed if the method checkBlock is removed
-          if (Application.getDefaults() != null 
+          if (Application.getDefaults() != null
               && Application.getDefaults().isDebugModeEnabled()) {
             if (((DForm) getForm().getDisplay()).runtimeDebugInfo != null) {
               ((DForm) getForm().getDisplay()).runtimeDebugInfo.printStackTrace();
@@ -1708,7 +1695,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     query.addString(frombuf);
     query.addInt(id);
     query.addString(tailbuf);
-
     query.open("SELECT $1 $2 WHERE T0.ID = #3$4");
     if (! query.next()) {
       /* Record does not exist anymore: it was deleted by another user */
@@ -2085,7 +2071,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       VField            fld = fields[i];
 
       if (fld.getColumnCount() > 0) {
-        String  cond = fld.getSearchCondition();
+        String          cond = fld.getSearchCondition();
 
         if (cond != null) {
           if (buffer == null) {
@@ -2264,7 +2250,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       String    headbuff = null;
 
       for (int i = 0; i < fields.length; i++) {
-        String  column = fields[i].lookupColumn(table);
+        String          column = fields[i].lookupColumn(table);
 
         if (column != null) {
           if (headbuff == null) {
@@ -3520,7 +3506,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       /* check if unique index constraints are respected by new record */
       checkUniqueIndices(recno);
 
-      
       /* fill with next id if not given as argument and not overridden */
       fillIdField(recno, id);
 
@@ -3548,8 +3533,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query = new Query(form.getDBContext().getDefaultConnection());
 
       for (int i = 0; i < fields.length; i++) {
-        VField  fld = fields[i];
-        String  col = fld.lookupColumn(0);
+        VField          fld = fields[i];
+        String          col = fld.lookupColumn(0);
 
         if (col != null) {
           if (! colbuf.equals("")) {
@@ -3608,7 +3593,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   protected void updateRecord(int recno) throws VException, SQLException {
     try {
-      VField            idfld, tsfld, ucfld;
+      VField            idFld;
+      VField            ucFld;
+      VField            tsFld;
       StringBuffer      buffer;
 
       assert !isMulti() || getActiveRecord() == -1 : "isMulti? " + isMulti() + " current record " + getActiveRecord();
@@ -3629,37 +3616,38 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       /* check if unique index constraints are respected after update */
       checkUniqueIndices(recno);
 
-      idfld = getIdField();
-      tsfld = getTsField();
-      ucfld = getUcField();
+      /* verify that the record has not been changed in the database */
+      checkRecordUnchanged(recno);
 
-      checkRecordUnchanged(recno, idfld, ucfld, tsfld);
+      idFld = getIdField();
+      ucFld = getUcField();
+      tsFld = getTsField();
 
       Query   query = new Query(form.getDBContext().getDefaultConnection());
-      
-      tsfld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
-      if (ucfld != null) {
-        ucfld.setInt(recno, new Integer(ucfld.getInt().intValue() + 1));
+
+      tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
+      if (ucFld != null) {
+        ucFld.setInt(recno, new Integer(ucFld.getInt().intValue() + 1));
       }
-      
+
       buffer = new StringBuffer();
-      
+
       for (int i = 0; i < fields.length; i++) {
-        VField                fld = fields[i];
-        String                col;
-        
+        VField          fld = fields[i];
+        String          col;
+
         /* do not update ID field */
-        if (fld == idfld) {
+        if (fld == idFld) {
           continue;
         }
-        
+
         col = fld.lookupColumn(0);
-        
+
         if (col != null) {
           if (buffer.length() != 0) {
             buffer.append(", ");
           }
-          
+
           buffer.append(col + " = " + fld.getSql(recno));
           if (fld.hasLargeObject(recno)) {
             if (fld.hasBinaryLargeObject(recno)) {
@@ -3673,7 +3661,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       query.addString(tables[0]);
       query.addString(buffer.toString());
-      query.addInt(idfld.getInt(recno).intValue());
+      query.addInt(idFld.getInt(recno).intValue());
       query.run("UPDATE $1 SET $2 WHERE ID = #3");
 
       setRecordChanged(recno, false);
@@ -3720,7 +3708,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       VDatabaseUtils.checkForeignKeys(form, id, tables[0]);
 
-      checkRecordUnchanged(recno, getIdField(), getUcField(), getTsField());
+      /* verify that the record has not been changed in the database */
+      checkRecordUnchanged(recno);
 
       Query       query = new Query(form.getDBContext().getDefaultConnection());
 
@@ -3731,7 +3720,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       } catch (DBForeignKeyException e) {
         //query.close(); --- in comment because it produces an error
         form.getDBContext().abortWork();
-        setActiveRecord(recno);               // also valid for single blocks
+        setActiveRecord(recno);                 // also valid for single blocks
         throw convertForeignKeyException(e.getConstraint());
       }
 
@@ -3748,22 +3737,22 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Check whether the given record has been modified (deleted or updated) in the
    * database.
    */
-  protected void checkRecordUnchanged(int recno,
-                                      VField idfld,
-                                      VField ucfld,
-                                      VField tsfld)
+  protected void checkRecordUnchanged(int recno)
     throws SQLException, VExecFailedException
   {
+    VField      idFld = getIdField();
+    VField      ucFld = getUcField();
+    VField      tsFld = getTsField();
     Query       query = new Query(form.getDBContext().getDefaultConnection());
 
     //!!! samir 25032008 : Assertion enabled only for tables with ID
-    assert ucfld != null || tsfld != null
+    assert ucFld != null || tsFld != null
       : "TS or UC field must exist (Block = " + getName() + ").";
 
-    query.addString(ucfld == null ? "-1" : "UC");
-    query.addString(tsfld == null ? "-1" : "TS");
+    query.addString(ucFld == null ? "-1" : "UC");
+    query.addString(tsFld == null ? "-1" : "TS");
     query.addString(tables[0]);
-    query.addInt(idfld.getInt(recno).intValue());
+    query.addInt(idFld.getInt(recno).intValue());
     query.open("SELECT $1, $2 FROM $3 WHERE ID = #4");
     if (! query.next()) {
       // kein Eintrag gefunden
@@ -3773,16 +3762,16 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       throw new VExecFailedException(MessageCode.getMessage("VIS-00018"));
     } else {
       boolean   changed;
-      
+
       changed = false;
-      if (ucfld != null) {
-        changed |= ucfld.getInt(recno).intValue() != query.getInt(1);
+      if (ucFld != null) {
+        changed |= ucFld.getInt(recno).intValue() != query.getInt(1);
       }
-      if (tsfld != null) {
-        changed |= tsfld.getInt(recno).intValue() != query.getInt(2);
+      if (tsFld != null) {
+        changed |= tsFld.getInt(recno).intValue() != query.getInt(2);
       }
       query.close();
-      
+
       if (changed) {
         // record has been updated
         form.getDBContext().abortWork();
@@ -3795,8 +3784,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /*
    * Checks if a foreign key is referenced in the view SYSTEMREFERENZEN
    */
-  protected VExecFailedException convertForeignKeyException(String name)
-  {
+  protected VExecFailedException convertForeignKeyException(String name) {
     try {
       Query             query;
       String            tabelle;
