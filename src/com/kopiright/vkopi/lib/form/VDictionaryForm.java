@@ -189,7 +189,7 @@ public abstract class VDictionaryForm extends VForm {
 
     assert !getBlock(0).isMulti() : threadInfo();
 
-    id = getBlock(0).getField("ID");
+    id = getBlock(0).getField("ID");    //!!! graf 20080403: replace by getIdField()
     if (id != null) {
       Integer   i = id.getInt(0);
 

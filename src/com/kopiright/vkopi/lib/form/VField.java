@@ -1855,7 +1855,6 @@ public abstract class VField implements VConstants {
 
           Query         query = new Query(getForm().getDBContext().getDefaultConnection());
 
-
           query.open(queryText);
           lineCount = 0;
           while (query.next() && lineCount < MAX_LINE_COUNT - 1) {
@@ -1919,12 +1918,13 @@ public abstract class VField implements VConstants {
               final String SELECT_IS_IN_LIST =
                 " SELECT   $1                   " +
                 " FROM     $2                   " +
-                " WHERE    ID = " + selected;
+                " WHERE    $3 = " + selected;
 
               Query     query = new Query(getForm().getDBContext().getDefaultConnection());
 
               query.addString(list.getColumn(0).getColumn());
               query.addString(evalListTable());
+              query.addString("ID");
               query.open(SELECT_IS_IN_LIST);
               query.next();
               result = query.getObject(1);
@@ -2112,6 +2112,7 @@ public abstract class VField implements VConstants {
    */
   public void setValueID(int id) {
     Object result = null;
+
     try {
       for (;;) {
         try {
@@ -2119,8 +2120,9 @@ public abstract class VField implements VConstants {
           Query query = new Query(getForm().getDBContext().getDefaultConnection());
           query.addString(list.getColumn(0).getColumn());
           query.addString(evalListTable());
+          query.addString("ID");
           query.addInt(id);
-          query.open("SELECT $1 FROM $2 WHERE ID = #3");
+          query.open("SELECT $1 FROM $2 WHERE $3 = #4");
           if (query.next()) {
             result = query.getObject(1);
           } else {

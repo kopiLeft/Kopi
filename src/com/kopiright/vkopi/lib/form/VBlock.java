@@ -1693,9 +1693,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     query = new Query(form.getDBContext().getDefaultConnection());
     query.addString(headbuf);
     query.addString(frombuf);
+    query.addString(getIdColumn());
     query.addInt(id);
     query.addString(tailbuf);
-    query.open("SELECT $1 $2 WHERE T0.ID = #3$4");
+    query.open("SELECT $1 $2 WHERE T0.$3 = #4$5");
     if (! query.next()) {
       /* Record does not exist anymore: it was deleted by another user */
       query.close();
@@ -1828,9 +1829,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
               Query     query = new Query(form.getDBContext().getDefaultConnection());
 
               query.addString(tables[0]);
+              query.addString(getIdColumn());
               query.addInt(getIdField().getInt(i).intValue());
               // !!! check return value (= update count)
-              query.run("DELETE FROM $1 WHERE ID = #2");
+              query.run("DELETE FROM $1 WHERE $2 = #3");
             } else if (isRecordDeleted(i)) {
               deleteRecord(i);
             }
@@ -1910,25 +1912,28 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
-   * Searches field holding ID of block base table
+   * Searches the field holding the ID of the block's base table.
+   * May be overridden by actual form.
    */
   public VField getIdField() {
     VField      f = getBaseTableField("ID");
 
     if (f == null) {
       throw new InconsistencyException();
-    } else {
-      return f;
     }
+    return f;
   }
 
   /**
-   * Searches field holding TS of block base table
+   * Returns the name of the DB column of the ID field.
    */
-  public VField getTsField() {
-    VField      f = getBaseTableField("TS");
+  public String getIdColumn() {
+    String    column = getIdField().lookupColumn(0);
 
-    return f;
+    if (column == null) {
+      throw new InconsistencyException();
+    }
+    return column;
   }
 
   /**
@@ -1940,6 +1945,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // laurent : return f even if it's null until we add this field in
     // all the forms. After we can throw an Exception if the field UC
     // of the block base table is not present.
+    return f;
+  }
+
+  /**
+   * Searches field holding TS of block base table
+   */
+  public VField getTsField() {
+    VField      f = getBaseTableField("TS");
+
     return f;
   }
 
@@ -1985,6 +1999,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
 
+      //!!! graf 20080329: should we replace fld.getName().equals("ID") by fld == getIdField() ?
       if (fld.isInternal() && fld.getName().equals("ID") && fld.getColumnCount() > 0) {
         if (result == null) {
           result = "";
@@ -2482,10 +2497,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     Query       query = new Query(form.getDBContext().getDefaultConnection());
     query.addString(whatbuf);
+    query.addString(getIdColumn());
     query.addString(frombuf);
     query.addString(condbuf);
     query.addString(orderbuf);
-    query.open("SELECT $1 T0.ID $2 $3 $4");
+    query.open("SELECT $1 T0.$2 $3 $4 $5");
     while (query.next()) {
       if (rows == fetchSize) {
         break;
@@ -3453,9 +3469,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (! buffer.equals("")) {
       Query             query = new Query(form.getDBContext().getDefaultConnection());
 
+      query.addString(getIdColumn());
       query.addString(tables[0]);
       query.addString(buffer);
-      query.open("SELECT ID FROM $1 WHERE $2");
+      query.open("SELECT $1 FROM $2 WHERE $3");
       if (query.next()) {
         if (query.getInt(1) != id) {
           query.close();
@@ -3509,22 +3526,24 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       /* fill with next id if not given as argument and not overridden */
       fillIdField(recno, id);
 
-      final VField      tsFld = getTsField();
-      final VField      ucFld = getUcField();
+      if (! blockHasNoUcOrTsField()) {
+        VField          ucFld = getUcField();
+        VField          tsFld = getTsField();
 
-      assert ucFld != null || tsFld != null
-        : "TS or UC field must exist (Block = " + getName() + ").";
+        assert ucFld != null || tsFld != null
+          : "UC or TS field must exist (Block = " + getName() + ").";
 
-      if (tsFld != null) {
-        // if there is a timestamp field set it with the
-        // current time
-        tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
-      }
-      if (ucFld != null) {
-        // The value of the UC field for an insert is 0. Should it be
-        // handled by a default value in dbSchema or now ? => we can
-        // do both
-        ucFld.setInt(recno, new Integer(0));
+        if (ucFld != null) {
+          // The value of the UC field for an insert is 0. Should it be
+          // handled by a default value in dbSchema or now ? => we can
+          // do both
+          ucFld.setInt(recno, new Integer(0));
+        }
+        if (tsFld != null) {
+          // if there is a timestamp field set it with the
+          // current time
+          tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
+        }
       }
 
       colbuf = "";
@@ -3661,8 +3680,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       query.addString(tables[0]);
       query.addString(buffer.toString());
+      query.addString(getIdColumn());
       query.addInt(idFld.getInt(recno).intValue());
-      query.run("UPDATE $1 SET $2 WHERE ID = #3");
+      query.run("UPDATE $1 SET $2 WHERE $3 = #4");
 
       setRecordChanged(recno, false);
 
@@ -3715,8 +3735,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       try {
         query.addString(tables[0]);
+        query.addString(getIdColumn());
         query.addInt(id);
-        query.run("DELETE FROM $1 WHERE ID = #2");
+        query.run("DELETE FROM $1 WHERE $2 = #3");
       } catch (DBForeignKeyException e) {
         //query.close(); --- in comment because it produces an error
         form.getDBContext().abortWork();
@@ -3740,45 +3761,58 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected void checkRecordUnchanged(int recno)
     throws SQLException, VExecFailedException
   {
-    VField      idFld = getIdField();
-    VField      ucFld = getUcField();
-    VField      tsFld = getTsField();
-    Query       query = new Query(form.getDBContext().getDefaultConnection());
-
     //!!! samir 25032008 : Assertion enabled only for tables with ID
-    assert ucFld != null || tsFld != null
-      : "TS or UC field must exist (Block = " + getName() + ").";
+    if (! blockHasNoUcOrTsField()) {
+      VField    idFld = getIdField();
+      VField    ucFld = getUcField();
+      VField    tsFld = getTsField();
+      Query     query = new Query(form.getDBContext().getDefaultConnection());
 
-    query.addString(ucFld == null ? "-1" : "UC");
-    query.addString(tsFld == null ? "-1" : "TS");
-    query.addString(tables[0]);
-    query.addInt(idFld.getInt(recno).intValue());
-    query.open("SELECT $1, $2 FROM $3 WHERE ID = #4");
-    if (! query.next()) {
-      // kein Eintrag gefunden
-      query.close();
-      form.getDBContext().abortWork();
-      setActiveRecord(recno);
-      throw new VExecFailedException(MessageCode.getMessage("VIS-00018"));
-    } else {
-      boolean   changed;
+      assert ucFld != null || tsFld != null
+        : "UC or TS field must exist (Block = " + getName() + ").";
 
-      changed = false;
-      if (ucFld != null) {
-        changed |= ucFld.getInt(recno).intValue() != query.getInt(1);
-      }
-      if (tsFld != null) {
-        changed |= tsFld.getInt(recno).intValue() != query.getInt(2);
-      }
-      query.close();
-
-      if (changed) {
-        // record has been updated
+      query.addString(ucFld == null ? "-1" : "UC");
+      query.addString(tsFld == null ? "-1" : "TS");
+      query.addString(tables[0]);
+      query.addString(getIdColumn());
+      query.addInt(idFld.getInt(recno).intValue());
+      query.open("SELECT $1, $2 FROM $3 WHERE $4 = #5");
+      if (! query.next()) {
+        // kein Eintrag gefunden
+        query.close();
         form.getDBContext().abortWork();
-        setActiveRecord(recno);           // also valid for single blocks
-        throw new VExecFailedException(MessageCode.getMessage("VIS-00017"));
+        setActiveRecord(recno);
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00018"));
+      } else {
+        boolean         changed;
+
+        changed = false;
+        if (ucFld != null) {
+          changed |= ucFld.getInt(recno).intValue() != query.getInt(1);
+        }
+        if (tsFld != null) {
+          changed |= tsFld.getInt(recno).intValue() != query.getInt(2);
+        }
+        query.close();
+
+        if (changed) {
+          // record has been updated
+          form.getDBContext().abortWork();
+          setActiveRecord(recno);           // also valid for single blocks
+          throw new VExecFailedException(MessageCode.getMessage("VIS-00017"));
+        }
       }
     }
+  }
+
+  /**
+   * Returns true iff this block has no UC and no TS field. 
+   * May be overridden in subclasses eg actual blocks. Note: In this case,
+   * conflicting deletes or updates of a record being edited, are impossible to
+   * detect. 
+   */
+  protected boolean blockHasNoUcOrTsField() {
+    return false;
   }
 
   /*
