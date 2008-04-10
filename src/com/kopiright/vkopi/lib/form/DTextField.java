@@ -353,6 +353,7 @@ public DTextField(VFieldUI model,
 
     field.setEditable(false);
     field.setFocusable(false);
+    reInstallSelectionFocusListener();
     // update GUI: for
     // scanner nescessary
     if (scanner) {
@@ -548,6 +549,18 @@ public DTextField(VFieldUI model,
       field.removeFocusListener(TextSelecter.TEXT_SELECTOR);
     }
   }
+
+  public void addSelectionFocusListener() {
+    if (!noEdit) {
+      field.addFocusListener(TextSelecter.TEXT_SELECTOR);
+    }
+  }
+
+  public void reInstallSelectionFocusListener() {
+    removeSelectionFocusListener();
+    addSelectionFocusListener();
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
