@@ -48,6 +48,8 @@ import com.kopiright.vkopi.lib.form.VTimestampField;
 import com.kopiright.vkopi.lib.form.VWeekField;
 import com.kopiright.vkopi.lib.report.Constants;
 import com.kopiright.vkopi.lib.report.DColumnStyle;
+import com.kopiright.vkopi.lib.report.MReport;
+import com.kopiright.vkopi.lib.report.PConfig;
 import com.kopiright.vkopi.lib.report.SDefaultReportActor;
 import com.kopiright.vkopi.lib.report.VBooleanCodeColumn;
 import com.kopiright.vkopi.lib.report.VBooleanColumn;
@@ -81,6 +83,9 @@ import com.kopiright.xkopi.lib.type.NotNullFixed;
 public class VDynamicReport extends VReport {
 
   public VDynamicReport (VBlock block) throws VException {
+    model = new MReport();
+    pconfig = new PConfig();
+    setDBContext(block.getDBContext());
     this.block = block;
     this.fields = initFields(block.getFields());
     this.columns = new VReportColumn[fields.length];
@@ -188,6 +193,7 @@ public class VDynamicReport extends VReport {
                                                           null,
                                                           0,
                                                           null);
+          columns[fields.length - 1].setFolded(true);
           style.setFont(0);
           style.setBackground(Constants.CLR_RED);
           style.setForeground(Constants.CLR_RED);
