@@ -716,7 +716,7 @@ public abstract class VReport extends VWindow
   protected VCommand[]          commands;	// commands
   private Vector                activeCommands;
 
-  private PConfig               pconfig;	// print configuration object
+  protected PConfig             pconfig;	// print configuration object
   private String                media;
 
   public static final int       TYP_CSV = 1;

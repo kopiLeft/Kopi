@@ -25,6 +25,7 @@ import com.kopiright.vkopi.lib.visual.ActionHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SActor;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.PrinterManager;
 import com.kopiright.vkopi.lib.print.PrintManager;
 
 public class VReportCommand extends VCommand implements ActionHandler {
@@ -86,22 +87,7 @@ public class VReportCommand extends VCommand implements ActionHandler {
       report.close();
       break;
     case Constants.CMD_PRINT:
-      
-      // !!! wael 20070418: cannot reference apps from within kopi
-      // we must find a way how to access PrintCopies, may be using
-      // an interface/plug-in
-
-//       PrintManager pm = new com.kopiright.apps.common.PrintCopies();
-//       try {
-//         pm.print(report,
-//                  report,
-//                  1,
-//                  ApplicationConfiguration.getConfiguration().getCurrentPrinter(),
-//                  null,
-//                  null);
-//       } catch (Exception e){
-//         e.printStackTrace();
-//       }
+      PrinterManager.getPrinterManager().printReport(report);
       break;
 //  case Constants.CMD_PREVIEW:
 //    break;
