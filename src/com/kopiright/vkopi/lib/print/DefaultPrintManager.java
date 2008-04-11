@@ -46,4 +46,17 @@ public class DefaultPrintManager implements PrintManager {
       throw new VExecFailedException(exc.getMessage());
     }
   }
+
+  public static void setPrintManager(PrintManager printCopies) {
+    DefaultPrintManager.printCopies = printCopies;
+  }
+
+  public static PrintManager getPrintManager() {
+    if (printCopies == null) {
+      return new DefaultPrintManager();
+    }
+    return printCopies;
+  }
+
+  private static PrintManager printCopies;
 }

@@ -27,6 +27,7 @@ import com.kopiright.vkopi.lib.visual.SActor;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.PrinterManager;
 import com.kopiright.vkopi.lib.print.PrintManager;
+import com.kopiright.vkopi.lib.print.DefaultPrintManager;
 
 public class VReportCommand extends VCommand implements ActionHandler {
 
@@ -87,7 +88,13 @@ public class VReportCommand extends VCommand implements ActionHandler {
       report.close();
       break;
     case Constants.CMD_PRINT:
-      PrinterManager.getPrinterManager().printReport(report);
+      PrintManager pm = DefaultPrintManager.getPrintManager();
+      pm.print(report,
+               report,
+               1,
+               PrinterManager.getPrinterManager().getCurrentPrinter(),
+               null,
+               null);
       break;
 //  case Constants.CMD_PREVIEW:
 //    break;

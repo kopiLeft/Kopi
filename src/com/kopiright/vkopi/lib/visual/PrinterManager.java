@@ -26,7 +26,6 @@ import com.kopiright.vkopi.lib.util.IPPPrinter;
 import com.kopiright.vkopi.lib.util.LpRPrinter;
 import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.RPrinter;
-import com.kopiright.vkopi.lib.report.VReport;
 
 /**
  *
@@ -76,8 +75,6 @@ public abstract class PrinterManager {
    * Returns the default Printer for a kind of document
    */
   public abstract Printer getPrinterByDocumentType(String documentType);
-
-  public abstract void printReport(VReport r) throws VException;
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
