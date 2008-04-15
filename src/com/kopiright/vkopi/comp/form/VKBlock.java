@@ -257,20 +257,24 @@ public class VKBlock
    */
   public VKField getField(String ident) {
     int		i = ident.indexOf(".");
+
     if (i == -1) {
       for (int j = 0; j < fields.length; j++) {
 	if (fields[j].getIdent().equals(ident)) {
 	  return fields[j];
 	}
       }
-
       return null;
     }
     if (isInner()) {
       VKFormElement	block = ((VKForm)window).getFormElement(ident.substring(0, i));
-      return ((VKBlock)block).getField(ident.substring(i + 1));
+      if (block instanceof VKBlock) {
+        return ((VKBlock)block).getField(ident.substring(i + 1));
+      }
+    } else {
+      return ((VKBlockInsert)window).getBlock().getField(ident.substring(i + 1));
     }
-
+    
     return null;
   }
   // ----------------------------------------------------------------------
@@ -393,6 +397,27 @@ public class VKBlock
     for (int i = 0; i < freePositions.length; i++) {
       for ( int k = 0; k < freePositions[i].length; k++) {
         freePositions[i][k] = null;
+      }
+    }
+    
+    // ALIAS CHECK
+    for (int i = 0; i < fields.length; i++) {
+      String fieldAlias;
+      
+      fieldAlias = fields[i].getAlias();
+      if(fieldAlias != null) {
+        VKField alias;
+        
+        alias = getField(fieldAlias);
+        if(alias != null) {
+          if(fields[i].getFieldType().getDef().getType() != alias.getFieldType().getDef().getType()) {
+            context.reportTrouble(new CWarning(getTokenReference(),
+                                               FormMessages.INCORRECT_ALIAS_TYPE,
+                                               alias.getFieldType().getDef().getType(),
+                                               fields[i].getFieldType().getDef().getType()));
+          }
+        }
+        
       }
     }
 

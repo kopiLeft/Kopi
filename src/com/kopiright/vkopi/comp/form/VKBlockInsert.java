@@ -86,7 +86,6 @@ class VKBlockInsert extends VKWindow {
    */
   public void checkCode(VKContext context) throws PositionedError {
     super.checkCode(context);
-
     block.checkCode(context, this);
   }
 
@@ -161,7 +160,10 @@ class VKBlockInsert extends VKWindow {
    */
   public void genVKCode(VKPrettyPrinter p) {
   }
-
+  
+  public VKBlock getBlock() {
+    return block;
+  }
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------

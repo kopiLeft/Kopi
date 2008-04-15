@@ -288,6 +288,7 @@ public class VKField
     // ALIAS
     if (type instanceof VKAliasType) {
       check(isInternal() || isSkipped(), FormMessages.ALIAS_FIELD_VISIBLE, getIdent());
+      System.out.println("found alias field ....");
     }
 
     // COLUMN
@@ -305,6 +306,10 @@ public class VKField
       }
       usedTriggers |= triggers[i].getEvents();
     }
+  }
+
+  public String getAlias() {
+    return alias;
   }
 
   /**

@@ -98,11 +98,10 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
    */
   public VKFormElement getFormElement(String ident) {
     for (int j = 0; j < blocks.length; j++) {
-      if (blocks[j].getIdent().equals(ident)) {
+      if (blocks[j].getIdent().equals(ident) || blocks[j].getShortcut().equals(ident)) {
 	return blocks[j];
       }
     }
-
     return null;
   }
 
