@@ -85,4 +85,5 @@
   <message ident="00063" text="Wrong column number,{0} choose from column list"/>
   <message ident="00064" text="Exception occured during parsing of expression : {0} {1}"/>
   <message ident="00065" text="Text is too large for this field VStringField({0}, {1})"/>
+  <message ident="00066" text="can not compute this formula."/>
 </messages>
