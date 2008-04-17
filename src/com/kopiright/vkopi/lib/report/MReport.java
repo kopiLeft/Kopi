@@ -320,6 +320,8 @@ public class MReport extends AbstractTableModel implements Constants {
           // this exception occurs with INFINITE double values. (ex : division by ZERO)
           // return a null value (can not evaluate expression)
           baseRows[i].setValueAt(column, (NotNullFixed)null);
+        } catch (Exception e) {
+          throw new VExecFailedException(MessageCode.getMessage("VIS-00066"));
         }
       }
   }
