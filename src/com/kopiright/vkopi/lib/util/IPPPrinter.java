@@ -86,7 +86,7 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
         String[]        att = (String[])it.next();
 
         if (att.length == 2 && att[0].equals(media)) {
-          return att[1].split(" ");
+          return att[1] == null ? null : att[1].split(" ");
         }
       }
       return null;
