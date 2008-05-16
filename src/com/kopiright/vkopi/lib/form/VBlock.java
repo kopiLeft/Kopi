@@ -2714,7 +2714,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Sets the current record.
    */
-  protected void setActiveRecord(int rec) {
+  public void setActiveRecord(int rec) {
     assert isMulti() || rec == 0 :  "multi? " + isMulti() + "rec: "+rec;
     activeRecord = rec;
   }
@@ -2979,7 +2979,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Sets the current field
    */
-  protected void setActiveField(VField field) {
+  public void setActiveField(VField field) {
     activeField = field;
   }
 
