@@ -182,8 +182,9 @@ public class VDynamicReport extends VReport {
                                          ((VFixnumField)fields[i]).getScale(0),
                                          null);
       } else if (fields[i] instanceof VIntegerField) {
-        // field ID of the block will represent the last column in the report ,and it will have the red color.
-        if(fields[i].getName().equals("ID")) {
+        // field ID of the block will represent the last column in the report, and it will have the red color.
+        //!!! graf 20080418: replace by block.getIdField()
+        if (fields[i].getName().equals("ID")) {
           DColumnStyle  style = new DColumnStyle();
           
           columns[fields.length - 1] = new VIntegerColumn(null,
@@ -293,6 +294,7 @@ public class VDynamicReport extends VReport {
         throw new InconsistencyException("Error: unknown field type.");
       }
       // add labels for columns.
+      //!!! graf 20080418: replace by block.getIdField()
       if (!fields[i].getName().equals("ID")) { 
         String  columnLabel;
         
@@ -323,19 +325,19 @@ public class VDynamicReport extends VReport {
           String        searchTables = block.getSearchTables(); 
           
           query.open("SELECT " + searchColumns + " " + searchTables  + " " + searchCondition);
-          if(query.next()) {
+          if (query.next()) {
             // don't  add a line when ID equals 0.
             if (!query.getObject(fields.length).toString().equals("0")) {
               List result = new ArrayList();
-              for (int i=0; i< fields.length; i++) {
-                result.add(query.getObject(i + 1 ));
+              for (int i = 0; i < fields.length; i++) {
+                result.add(query.getObject(i + 1));
               }
               model.addLine(result.toArray());
             }
           }
           while (query.next()) {
             List result = new ArrayList();
-            for (int i=0; i< fields.length; i++) {
+            for (int i = 0; i< fields.length; i++) {
               result.add(query.getObject(i + 1 ));
             }
             model.addLine(result.toArray()); 
