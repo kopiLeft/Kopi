@@ -46,7 +46,7 @@ public class Commands implements VConstants {
 
   /**
    * Aborts current processing, resets form.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur in form.reset()
+   * @exception	VException	an exception may occur in form.reset()
    */
   public static void resetForm(final VForm form) throws VException {
     if (! form.isChanged() || form.ask(Message.getMessage("confirm_break"))) {
@@ -56,7 +56,7 @@ public class Commands implements VConstants {
 
   /**
    * Aborts current processing, closes form.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur in form.close()
+   * @exception	VException	an exception may occur in form.close()
    */
   public static void quitForm(VForm form, int code) {
     if (! form.isChanged() || form.ask(Message.getMessage("confirm_quit"))) {
@@ -66,7 +66,7 @@ public class Commands implements VConstants {
 
   /**
    * Aborts current processing, closes form.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur in form.close()
+   * @exception	VException	an exception may occur in form.close()
    */
   public static void quitForm(VForm form) {
     quitForm(form, VWindow.CDE_QUIT);
@@ -78,17 +78,17 @@ public class Commands implements VConstants {
    * ----------------------------------------------------------------------
    */
 
-  public static void SwitchBlockView(final VBlock b) throws VException {
+  public static void switchBlockView(final VBlock b) throws VException {
     if (b.isDetailMode()) {
       ((DMultiBlock)b.getDisplay()).switchView(-1);
-      return;
+    } else {
+      ((DMultiBlock)b.getDisplay()).switchView(b.getActiveRecord());
     }
-    ((DMultiBlock)b.getDisplay()).switchView(b.getActiveRecord());
   }
 
   /**
    * Aborts current processing (old)
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur in b.clear()
+   * @exception	VException	an exception may occur in b.clear()
    */
   public static void resetBlock(VBlock b) throws VException {
     if (! b.isChanged() || b.getForm().ask(Message.getMessage("confirm_break"))) {
@@ -106,7 +106,6 @@ public class Commands implements VConstants {
       }
     }
   }
-
 
   private static void gotoFieldIfNoActive(VBlock lastBlock) throws VException {
     // it is possible that (for example) the load method is
@@ -129,7 +128,7 @@ public class Commands implements VConstants {
 
   /**
    * Menu query block, fetches selected record.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void menuQuery(VBlock b) throws VException {
     VForm	form = b.getForm();
@@ -191,7 +190,7 @@ public class Commands implements VConstants {
 
   /**
    * Menu query block, fetches selected record.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void recursiveQuery(VBlock b) throws VException {
     VDictionaryForm	form = (VDictionaryForm)b.getForm();
@@ -252,7 +251,7 @@ public class Commands implements VConstants {
 
   /**
    * Menu query block, fetches selected record, then moves to next block
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void queryMove(VBlock b) throws VException {
     VForm	form = b.getForm();
@@ -314,7 +313,7 @@ public class Commands implements VConstants {
 
   /**
    * Queries block, fetches first record.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void serialQuery(VBlock b) throws VException {
     VForm	form = b.getForm();
@@ -375,7 +374,7 @@ public class Commands implements VConstants {
 
   /**
    * Sets the block into insert mode.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void insertMode(VBlock b) throws VException {
     assert !b.isMulti() : "The command InsertMode can be used only with a single block.";
@@ -408,7 +407,7 @@ public class Commands implements VConstants {
 
   /**
    * Saves current block (insert or update)
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void saveBlock(VBlock b) throws VException {
     VForm	form = b.getForm();
@@ -472,7 +471,7 @@ public class Commands implements VConstants {
   /**
    * saveDone
    * This method should be called after a self made save trigger
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void saveDone(VBlock b) throws VException {
     saveDone(b, false);
@@ -481,7 +480,7 @@ public class Commands implements VConstants {
   /**
    * saveDone
    * This method should be called after a self made save trigger
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   private static void saveDone(VBlock b, boolean single) throws VException {
     VForm	form = b.getForm();
@@ -530,7 +529,7 @@ public class Commands implements VConstants {
 
   /**
    * Deletes current block
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void deleteBlock(VBlock b) throws VException {
     VForm	form = b.getForm();
@@ -614,7 +613,7 @@ public class Commands implements VConstants {
 
   /**
    * Inserts an empty line in multi-block.
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during DB access
+   * @exception	VException	an exception may occur during DB access
    */
   public static void insertLine(VBlock b) throws VException {
     int		recno;
@@ -646,29 +645,29 @@ public class Commands implements VConstants {
   public static void setSearchOperator(VBlock b) {
     VField	f = b.getActiveField();
 
-    if (f == null) {
-      return;
-    }
+    if (f != null) {
+      int       v;
 
-    int		v = new ListDialog(VlibProperties.getString("search_operator"),
-				   new String[] {
-				     VlibProperties.getString("operator_eq"),
-				       VlibProperties.getString("operator_lt"),
-				       VlibProperties.getString("operator_gt"),
-				       VlibProperties.getString("operator_le"),
-				       VlibProperties.getString("operator_ge"),
-				       VlibProperties.getString("operator_ne")
-				       }
-				   ).selectFromDialog(b.getForm().getDisplay(), f.getDisplay());
-    if (v != -1) {
-      f.setSearchOperator(v);
-      f.getForm().setFieldSearchOperator(f.getSearchOperator());
+      v = new ListDialog(VlibProperties.getString("search_operator"),
+                         new String[] {
+                           VlibProperties.getString("operator_eq"),
+                           VlibProperties.getString("operator_lt"),
+                           VlibProperties.getString("operator_gt"),
+                           VlibProperties.getString("operator_le"),
+                           VlibProperties.getString("operator_ge"),
+                           VlibProperties.getString("operator_ne")
+                         }
+                         ).selectFromDialog(b.getForm().getDisplay(), f.getDisplay());
+      if (v != -1) {
+        f.setSearchOperator(v);
+        f.getForm().setFieldSearchOperator(f.getSearchOperator());
+      }
     }
   }
 
   /**
    * Navigate between accessible blocks
-   * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may occur during block focus transfert
+   * @exception	VException	an exception may occur during block focus transfer
    */
   public static void changeBlock(VBlock b) throws VException {
     b.validate();
