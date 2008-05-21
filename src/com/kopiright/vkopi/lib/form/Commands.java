@@ -78,12 +78,13 @@ public class Commands implements VConstants {
    * ----------------------------------------------------------------------
    */
 
+  /**
+   * Switches view between list and detail mode.
+   */
   public static void switchBlockView(final VBlock b) throws VException {
-    if (b.isDetailMode()) {
-      ((DMultiBlock)b.getDisplay()).switchView(-1);
-    } else {
-      ((DMultiBlock)b.getDisplay()).switchView(b.getActiveRecord());
-    }
+    assert b.isMulti() : "The command switchBlockView can be used only with a multi block.";
+    //!!! graf 20080521 check that both chart and detail view are available
+    ((DMultiBlock)b.getDisplay()).switchView(-1);
   }
 
   /**

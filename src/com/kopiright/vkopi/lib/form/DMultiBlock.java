@@ -120,8 +120,14 @@ public class DMultiBlock extends DChartBlock {
     detailPane.add(c, o);
   }
 
+  /**
+   * Switches view between list and detail mode.
+   *
+   * !!! graf 20080521: is row always == -1 ?
+   */
   public void switchView(int row) throws VException {
     // if this block is not the current block
+    //!!! graf 20080521: is this possible?
     if (!(getModel().getForm().getActiveBlock() == getModel())) {
       if (!getModel().isAccessible()) {
         return;
@@ -222,17 +228,18 @@ public class DMultiBlock extends DChartBlock {
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------
-  final JLayeredPane          layeredPane;
+  private final JLayeredPane    layeredPane;
   private JPanel                chartPane;  // pane with chart view
   private JPanel                detailPane; // pane with detail view (one row of thechart)
   private JPanel                detailLayerPane; // pane with buttons to move
-  private KopiLayoutManager  detailLayout;
-  private KopiLayoutManager  chartLayout;
+  private KopiLayoutManager     detailLayout;
+  private KopiLayoutManager     chartLayout;
 
-  private static final Color    color_border_chart        = UIManager.getColor("KopiField.ul.chart");
+  private static final Color    color_border_chart = UIManager.getColor("KopiField.ul.chart");
   private static final Color    color_border_chart_active = UIManager.getColor("KopiField.ul.chart.active");
-  private static final Color    color_back          = UIManager.getColor("KopiField.background.skipped.color");
-  private static final Color    color_line  = UIManager.getColor("KopiField.ul.color");
+  private static final Color    color_back = UIManager.getColor("KopiField.background.skipped.color");
+  private static final Color    color_line = UIManager.getColor("KopiField.ul.color");
+
   /**
    * Comment for <code>serialVersionUID</code>
    */
