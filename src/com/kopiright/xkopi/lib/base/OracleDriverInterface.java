@@ -48,8 +48,14 @@ public class OracleDriverInterface extends DriverInterface {
   public String convertSql(String from) {
     try {
      OracleParser	parser = new OracleParser(from);
-
-      return parser.getText().trim();
+     String             nativeSql = parser.getText().trim();
+     
+     if (trace) {
+       System.err.println("-- NATIVE SQL: ");
+       System.err.println(nativeSql + ";");
+       System.err.println("--");
+     }
+     return nativeSql;
     } catch (SQLException e) {
       throw new DBRuntimeException(e.getMessage());
     }
@@ -420,9 +426,11 @@ class OracleParser extends JdbcParser {
   // ----------------------------------------------------------------------
   // PRIVATE DATA MEMBERS
   // ----------------------------------------------------------------------
-
+    
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
   private static Hashtable	functions;
-
   // ----------------------------------------------------------------------
   // STATIC INITIALIZER
   // ----------------------------------------------------------------------

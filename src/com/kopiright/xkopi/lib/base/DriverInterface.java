@@ -34,6 +34,10 @@ public abstract class DriverInterface {
   public DriverInterface() {
   }
 
+  public void setTrace(boolean trace) {
+    this.trace = trace;
+  }
+  
   /**
    * Count the maximum size for an ORDER BY clause on the
    * driver (data base)
@@ -142,5 +146,5 @@ public abstract class DriverInterface {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
+  protected boolean      trace;
 }

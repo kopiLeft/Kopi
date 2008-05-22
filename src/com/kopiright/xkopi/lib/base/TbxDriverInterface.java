@@ -118,10 +118,11 @@ public class TbxDriverInterface extends DriverInterface {
     try {
       TbxParser parser = new TbxParser(from);
 
-      System.err.println("-- NATIVE SQL: ");
-      System.err.println(parser.getText() + ";");
-      System.err.println("--");
-
+      if (trace) {
+        System.err.println("-- NATIVE SQL: ");
+        System.err.println(parser.getText() + ";");
+        System.err.println("--");
+      }
       return parser.getText();
     } catch (SQLException e) {
       throw new DBRuntimeException(from + "\r\n" + e.getMessage(), e);
@@ -457,7 +458,6 @@ public class TbxDriverInterface extends DriverInterface {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
   private static Hashtable	functions;
 
   static {

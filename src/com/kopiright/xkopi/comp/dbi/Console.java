@@ -154,6 +154,7 @@ public class Console extends Compiler implements Constants {
     options = new ConsoleOptions();
 
     if (options.parseCommandLine(args)) {
+      trace = options.trace;
       datasource = DbiDataSourceFactory.create(options.datasource);
 
       try {
@@ -537,20 +538,24 @@ public class Console extends Compiler implements Constants {
     }
 
     public static DbiDataSource create(String name) {
+      DbiDataSource dataSource;
+
       if (name.equals("sap")) {
-        return new SapDBDataSource();
+        dataSource = new SapDBDataSource();
       } else if (name.equals("tbx")) {
-        return new TbxDataSource();
+        dataSource = new TbxDataSource();
       } else if (name.equals("pg")) {
-        return new PostgresDataSource();
+        dataSource = new PostgresDataSource();
       } else if (name.equals("ora")) {
-        return new OracleDataSource();
+        dataSource = new OracleDataSource();
       } else if (name.equals("ora10g")) {
-        return new Oracle10gDataSource();
+        dataSource = new Oracle10gDataSource();
       } else {
         throw new IllegalArgumentException("No data source corresponding to '"
                                            + name + "'");
       }
+      dataSource.setTrace(trace);
+      return dataSource;
     }
   }
 
@@ -568,8 +573,12 @@ public class Console extends Compiler implements Constants {
       }
       this.checker = DbiChecker.create(syntax, sqlContext);
       this.driver = checker.getDriverInterface();
-   }
-
+    }
+    
+    public void setTrace(boolean trace) {
+      driver.setTrace(trace);
+    }
+    
     // ----------------------------------------------------------------------
     // DATA MEMBERS
     // ----------------------------------------------------------------------
@@ -660,4 +669,6 @@ public class Console extends Compiler implements Constants {
             "pgsql");
     }
   }
+
+  private static boolean trace = false;
 }

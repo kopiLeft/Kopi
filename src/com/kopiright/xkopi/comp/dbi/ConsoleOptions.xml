@@ -57,4 +57,9 @@
 	 type="boolean"
 	 default="false"
 	 help="Abort the transaction and exit on error" />
+  <param longname="trace"
+	 shortname="t"
+	 type="boolean"
+	 default="false"
+	 help="print sql trace." />
 </option>

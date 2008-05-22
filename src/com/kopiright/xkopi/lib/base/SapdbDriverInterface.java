@@ -120,6 +120,11 @@ public class SapdbDriverInterface extends DriverInterface {
       SapdbParser       parser = new SapdbParser(from);
       String            nativeSql = parser.getText().trim();
 
+      if (trace) {
+        System.err.println("-- NATIVE SQL: ");
+        System.err.println(nativeSql + ";");
+        System.err.println("--");
+      }
       // trace if system-property maxdb.tacer is set
       if (tracer != null) {
         try {
@@ -510,7 +515,6 @@ public class SapdbDriverInterface extends DriverInterface {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
   private static Hashtable      functions;
 
   static {
