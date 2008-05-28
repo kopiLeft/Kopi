@@ -684,8 +684,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
 
       try {
-        assert activeField != null : "current field "+activeField;
-        activeField.leave(false);
+        if (activeField != null) {
+          activeField.leave(false);
+        }
       } catch (VException e) {
         throw new InconsistencyException();
       }
