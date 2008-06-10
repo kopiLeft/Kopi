@@ -122,10 +122,12 @@ public class VDynamicReport extends VReport {
     int       size = 0;
     
     for (int i = 0; i < fields.length; i++) {
-      if ((!fields[i].isInternal() || fields[i].isInternal() && fields[i].getName().equals("ID")) && fields[i].getColumnCount() > 0) {
-        if (!(fields[i] instanceof VTextField || fields[i] instanceof VImageField || fields[i] instanceof VColorField)) {
-          processedFields[size] = fields[i];
-          size ++;
+      if ((!fields[i].isInternal() || fields[i].isInternal() && fields[i].getName().equals("ID"))) {
+        if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
+          if (!(fields[i] instanceof VTextField || fields[i] instanceof VImageField || fields[i] instanceof VColorField)) {
+            processedFields[size] = fields[i];
+            size ++;
+          }
         }
       }
     }
@@ -139,7 +141,17 @@ public class VDynamicReport extends VReport {
     }
     return processedFields;
   }
-
+  
+  public boolean isFetched() {
+    for (int i = 0; i < block.getBufferSize(); i += 1) {
+      if (block.isRecordFetched(i)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
   /**
    * create report columns and fill them with data.
    */
@@ -182,9 +194,9 @@ public class VDynamicReport extends VReport {
                                          ((VFixnumField)fields[i]).getScale(0),
                                          null);
       } else if (fields[i] instanceof VIntegerField) {
-        // field ID of the block will represent the last column in the report, and it will have the red color.
+        // field ID of the block will represent the last column in the report ,and it will have the red color.
         //!!! graf 20080418: replace by block.getIdField()
-        if (fields[i].getName().equals("ID")) {
+        if(fields[i].getName().equals("ID")) {
           DColumnStyle  style = new DColumnStyle();
           
           columns[fields.length - 1] = new VIntegerColumn(null,
@@ -310,66 +322,97 @@ public class VDynamicReport extends VReport {
       col ++;
     }
     model.columns = columns;
-    boolean     alreadyProtected = block.getForm().inTransaction();
     
-    try {
-      while (true) {
-        try {
-          if (!alreadyProtected) {
-            block.getForm().startProtected(null);
-          }
+    if (block.isMulti() && isFetched()) {
+      for (int i = 0; i < block.getBufferSize(); i++) {
+        if (block.isRecordFilled(i)) {
+          block.setCurrentRecord(i);
+          ArrayList list = new ArrayList();
           
-          Query         query = new Query(block.getForm().getDBContext().getDefaultConnection());
-          String        searchCondition = block.getSearchConditions() == null ? "" : block.getSearchConditions(); 
-          String        searchColumns = block.getReportSearchColumns(); 
-          String        searchTables = block.getSearchTables(); 
-          
-          query.open("SELECT " + searchColumns + " " + searchTables  + " " + searchCondition);
-          if (query.next()) {
-            // don't  add a line when ID equals 0.
-            if (!query.getObject(fields.length).toString().equals("0")) {
-              List result = new ArrayList();
-              for (int i = 0; i < fields.length; i++) {
-                result.add(query.getObject(i + 1));
-              }
-              model.addLine(result.toArray());
+          for (int j = 0; j < fields.length; j++) { 
+            if (!fields[j].getName().equals("ID")) { 
+              list.add(fields[j].getObject());
             }
           }
-          while (query.next()) {
-            List result = new ArrayList();
-            for (int i = 0; i< fields.length; i++) {
-              result.add(query.getObject(i + 1 ));
+          // add ID field in the end.
+          for (int j = 0; j < fields.length; j++) { 
+            if (fields[j].getName().equals("ID")) { 
+              list.add(fields[j].getObject());
+              break;
             }
-            model.addLine(result.toArray()); 
           }
-          query.close();
-          
-          if (!alreadyProtected) {
-            block.getForm().commitProtected();
-          }
-          break;
-        } catch (SQLException e) {
-          if (!alreadyProtected) {
-            block.getForm().abortProtected(e);
-          } else {
-            throw e;
-          }
-        } catch (Error error) {
-          if (!alreadyProtected) {
-            block.getForm().abortProtected(error);
-          } else {
-            throw error;
-          }
-        } catch (RuntimeException rte) {
-          if (!alreadyProtected) {
-            block.getForm().abortProtected(rte);
-          } else {
-            throw rte;
-          }
+          model.addLine(list.toArray());
         }
       }
-    } catch (Throwable e) {
-      throw new VExecFailedException(e);
+    } else {
+      boolean     alreadyProtected = block.getForm().inTransaction();
+      try {
+        while (true) {
+          try {
+            if (!alreadyProtected) {
+              block.getForm().startProtected(null);
+            }
+            
+            if (block.isMulti()) {
+              block.setActiveRecord(0);
+            }
+            
+            Query         query = new Query(block.getForm().getDBContext().getDefaultConnection());
+            String        searchCondition = block.getSearchConditions() == null ? "" : block.getSearchConditions(); 
+            String        searchColumns = block.getReportSearchColumns(); 
+            String        searchTables = block.getSearchTables(); 
+          
+            if (block.isMulti()) {
+              block.setActiveRecord(-1);
+              block.setActiveField(null);
+            } 
+            query.open("SELECT " + searchColumns + " " + searchTables  + " " + searchCondition);
+            if(query.next()) {
+              // don't  add a line when ID equals 0.
+              if (!query.getObject(fields.length).toString().equals("0")) {
+                List result = new ArrayList();
+                for (int i=0; i< fields.length; i++) {
+                  result.add(query.getObject(i + 1 ));
+                }
+                model.addLine(result.toArray());
+              }
+            }
+            while (query.next()) {
+              List result = new ArrayList();
+              for (int i=0; i< fields.length; i++) {
+                result.add(query.getObject(i + 1 ));
+              }
+              model.addLine(result.toArray()); 
+            }
+            query.close();
+          
+            if (!alreadyProtected) {
+              block.getForm().commitProtected();
+            }
+            break;
+          } catch (SQLException e) {
+            if (!alreadyProtected) {
+              block.getForm().abortProtected(e);
+            } else {
+              throw e;
+            }
+          } catch (Error error) {
+            if (!alreadyProtected) {
+              block.getForm().abortProtected(error);
+            } else {
+              throw error;
+            }
+          } catch (RuntimeException rte) {
+            if (!alreadyProtected) {
+              block.getForm().abortProtected(rte);
+            } else {
+              throw rte;
+            }
+          }
+        }
+      } catch (Throwable e) {
+        throw new VExecFailedException(e);
+      }
     }
   }
 
@@ -451,13 +494,13 @@ public class VDynamicReport extends VReport {
     // since ID field, represents the last column in the dynamic report.
     // search before field ID.
     for (i = 0; i < fields.length - 1 && !fields[i].isInternal(); i++) {
-      if (fields[i].getColumn(0).getTable() == table && fields[i].getColumn(0).isKey()) {        
+      if (fields[i].getColumnCount() > 0 && fields[i].getColumn(0).getTable() == table && fields[i].getColumn(0).isKey()) {        
         return i;
       }
     }
     // search after field ID.
     for (int j = i + 1; j < fields.length - 1; j++) {
-      if (fields[j].getColumn(0).getTable() == table && fields[j].getColumn(0).isKey()) {        
+      if (fields[j].getColumnCount() > 0 && fields[j].getColumn(0).getTable() == table && fields[j].getColumn(0).isKey()) {
         return j - 1; 
       }
     }
@@ -500,10 +543,10 @@ public class VDynamicReport extends VReport {
    * return the report column group for the given field.
    */
   private int getColumnGroups(VField field) {
-    if (field.getColumn(0).getTable() == 0) {
+    if (field.getColumnCount() == 0 || field.getColumn(0).getTable() == 0) {
       return -1;
     } else {
-      return getColumnGroups(field.getColumn(0).getTable());
+        return getColumnGroups(field.getColumn(0).getTable());
     }
   }
   
