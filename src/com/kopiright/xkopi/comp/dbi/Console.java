@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -62,6 +63,47 @@ public class Console extends Compiler implements Constants {
     super(null, null);
 
     infiles = new Vector();
+  }
+
+  public static void executeKopiDbSchema(String host, String dbname, String datasource, String login, String password, InputStream file) {
+    // initialise a new console instance.
+    Console console = new Console();
+    ConsoleOptions options = new ConsoleOptions();
+    
+    options.datasource = datasource;
+    options.host = host;
+    options.dbname = dbname;
+    options.login = login;
+    options.password = password;
+    options.noprompt = false;
+    options.abortonerror = true;
+    options.trace = true;
+    console.options = options;
+    console.executeKopiDbSchema(file);
+  }
+
+  private void executeKopiDbSchema(InputStream file) {
+    try {
+      datasource = DbiDataSourceFactory.create(options.datasource);
+      if (options.host != null &&
+          options.dbname != null &&
+          options.login != null) {
+        final String  url = datasource.startURL + "//" + options.host + "/" + options.dbname;
+        
+        connection = DriverManager.getConnection(url,
+                                                 options.login,
+                                                 options.password);
+        connection.setAutoCommit(false);
+      } else {
+        System.out.println("error : verify that host, dbname and login are not null.");
+        System.exit(1);
+      }
+    } catch (SQLException e) {
+      inform(DbiMessages.CONNECTION_FAILED, e.getMessage());
+    }
+    output = new PrintWriter(new OutputStreamWriter(System.out));
+    input = new BufferedReader(new InputStreamReader(file));
+    processInput();
   }
 
   // --------------------------------------------------------------------
@@ -163,17 +205,17 @@ public class Console extends Compiler implements Constants {
             && options.login != null)
           {
             final String  url = datasource.startURL + "//" + options.host + "/"
-                                + options.dbname;
+              + options.dbname;
 
             connection = DriverManager.getConnection(url,
                                                      options.login,
                                                      options.password);
             connection.setAutoCommit(false);
           } else {
-            options.usage();
+          options.usage();
 
-            return false;
-          }
+          return false;
+        }
       } catch (SQLException e) {
         inform(DbiMessages.CONNECTION_FAILED, e.getMessage());
         return false;
@@ -387,33 +429,33 @@ public class Console extends Compiler implements Constants {
       } else if (statement instanceof com.kopiright.xkopi.comp.sqlc.DeleteStatement
                  || statement instanceof com.kopiright.xkopi.comp.sqlc.InsertStatement
                  || statement instanceof com.kopiright.xkopi.comp.sqlc.UpdateStatement)
-      {
-        int     count = -1;
+        {
+          int     count = -1;
 
-        synchronized (this) {
-          inTransaction = true;
-          count = stmt.executeUpdate(sqlCode);
-        }
-
-        // Print summary
-        output.println();
-        if (count < 0) {
-          output.println("There is a problem : return of executeUpdate is negative : "
-                         + count);
-        } else {
-          switch (count) {
-          case 0:
-            output.print("No row was");
-            break;
-          case 1:
-            output.print("1 row was");
-            break;
-          default:
-            output.print(count + " rows were");
+          synchronized (this) {
+            inTransaction = true;
+            count = stmt.executeUpdate(sqlCode);
           }
-          output.println(" updated, deleted or inserted.");
-        }
-      } else {
+
+          // Print summary
+          output.println();
+          if (count < 0) {
+            output.println("There is a problem : return of executeUpdate is negative : "
+                           + count);
+          } else {
+            switch (count) {
+            case 0:
+              output.print("No row was");
+              break;
+            case 1:
+              output.print("1 row was");
+              break;
+            default:
+              output.print(count + " rows were");
+            }
+            output.println(" updated, deleted or inserted.");
+          }
+        } else {
         // NO SELECT, NO INSERT, NO UPDATE, NO DELETE => DDL statements.
         synchronized (this) {
           inTransaction = true;
@@ -525,7 +567,6 @@ public class Console extends Compiler implements Constants {
   private DbiDataSource         datasource;
   private List                  infiles;
   private boolean               inTransaction;
-
 
   // ----------------------------------------------------------------------
   // INNER CLASSES
