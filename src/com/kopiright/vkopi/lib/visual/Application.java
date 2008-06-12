@@ -407,7 +407,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
                                    String data,
                                    Throwable reason)
   {
-    if (options.nobugreport) {
+    if (options != null && options.nobugreport) {
       System.out.println("notice: reporting trouble is disabled, no mail will be sent.");
       System.err.println(reason.getMessage());
       reason.printStackTrace(System.err);
