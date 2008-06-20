@@ -399,6 +399,9 @@ class OracleParser extends JdbcParser {
       case 33: // STRING2INT/1
 	return "TO_NUMBER(" + arguments.elementAt(0) + ")";
 
+      case 37: // NEXTVAL/1
+        return  arguments.elementAt(0) + ".NEXTVAL";
+
       default:
         // use function as it.
         String  functionCall;
@@ -471,5 +474,7 @@ class OracleParser extends JdbcParser {
     functions.put("COALESCE/2", new Integer(31));
     functions.put("ROWNO/0", new Integer(32));
     functions.put("STRING2INT/1", new Integer(33));
+    // 34 , 35 , 36 , to define
+    functions.put("NEXTVAL/1", new Integer(37));
   }
 }

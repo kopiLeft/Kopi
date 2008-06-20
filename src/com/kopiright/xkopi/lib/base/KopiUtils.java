@@ -381,43 +381,33 @@ public class KopiUtils {
                   createKopiInsertStatement(conn, table, id, columns, values));
     return id;
   }
-
-  /**
-   * execute an query and close statement
+  
+  /*
+   * Returns first free ID of table.
    */
   public static final int getNextTableId(com.kopiright.xkopi.lib.base.Connection conn,
-                                         String table)
+                                          String table)
     throws DBException
   {
     try {
-      return getNextTableId(conn.getJDBCConnection(), table);
+      ResultSet		  rset;
+      Statement           stmt;
+      int		  id;
+      String              getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM DUMMY";
+      java.sql.Connection jdbcConnection = conn.getJDBCConnection();
+      
+      stmt = jdbcConnection.createStatement();
+      rset = stmt.executeQuery(conn.convertSql(getSeqNextVal));
+      if (!rset.next()) {
+        throw new DBRuntimeException("Database Internal Error");
+      }
+      id = rset.getInt(1);
+      stmt.close();
+      return id;
     } catch (SQLException exc) {
       throw conn.convertException(exc);
     }
   }
-
-  /*
-   * Returns first free ID of table.
-   */
-  private static int getNextTableId(java.sql.Connection conn,
-                                    String table)
-    throws SQLException
-  {
-    Statement		stmt;
-    ResultSet		rset;
-    int			id;
-
-    stmt = conn.createStatement();
-    rset = stmt.executeQuery("SELECT  " + table + "Id.NEXTVAL FROM DUMMY");
-    if (!rset.next()) {
-      throw new DBRuntimeException("Database Internal Error");
-    }
-    id = rset.getInt(1);
-    stmt.close();
-
-    return id;
-  }
-
 
   /**
    * Creates the insert statement.
@@ -462,7 +452,7 @@ public class KopiUtils {
                   createInsertStatement(conn, table, columns, values),
                   blobs);
   }
-
+  
   /**
    * Inserts a new record into the database.
    */
