@@ -303,8 +303,8 @@ public class LocalizationChecker {
     try {
       document = builder.build(new File(fileName));
     } catch (Exception e) {
-      document = null;
-      fail("warning: Cannot load file " + fileName + ": " + e.getMessage());
+      System.out.println("warning: Cannot load file " + fileName + ": " + e.getMessage());
+      return null;
     }
 
     // the URI is used to report the file name when a child lookup fails
