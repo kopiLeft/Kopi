@@ -76,16 +76,23 @@ public class VFixnumColumn extends VReportColumn {
 
   private static class VFixedFormat extends VCellFormat {
     VFixedFormat(int maxScale) {
-      this.maxScale = maxScale;
+      this(maxScale, false);
     }
+
+    VFixedFormat(int maxScale, boolean resetScale) {
+      this.maxScale = maxScale;
+      this.resetScale = resetScale;
+    }
+
     public String format(Object value) {
       return value == null ? 
         "" :
-        ((NotNullFixed)value).getScale() > maxScale ? 
+        (((NotNullFixed)value).getScale() > maxScale || resetScale) ? 
         ((NotNullFixed)value).setScale(maxScale).toString() :
         value.toString();
     }
-    int	maxScale;
+    boolean     resetScale;
+    int 	maxScale;
   }
 
   public void formatColumn(PExport exporter, int index) {
@@ -95,11 +102,22 @@ public class VFixnumColumn extends VReportColumn {
   public int getMaxScale() {
     return maxScale;
   }
-  
+
+  /*
+   * Sets display scale to maxScale
+   * all values will be set to the same scale
+   */
+  public void setDisplayScale(int scale) {
+    setFormat(new VFixedFormat(scale, true));
+    this.maxScale = scale;
+  }
+
+  /*
+   * Sets maxScale
+   * all values with scale superior than maxScale will have 
+   * maxScale as scale, and the other values will keep their scale.
+   */
   public void setMaxScale(int scale) {
-    if (scale > maxScale) {
-      throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale)));
-    }
     setFormat(new VFixedFormat(scale));
     this.maxScale = scale;
   }
