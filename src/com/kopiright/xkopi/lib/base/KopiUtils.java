@@ -393,8 +393,8 @@ public class KopiUtils {
       ResultSet		  rset;
       Statement           stmt;
       int		  id;
-      //String              getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM DUMMY";
-      String              getSeqNextVal = "SELECT  " + table + "Id.nextval FROM DUMMY";
+      String              getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM DUMMY";
+      
       java.sql.Connection jdbcConnection = conn.getJDBCConnection();
       
       stmt = jdbcConnection.createStatement();
