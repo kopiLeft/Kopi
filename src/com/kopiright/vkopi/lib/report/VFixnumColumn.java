@@ -75,24 +75,28 @@ public class VFixnumColumn extends VReportColumn {
   }
 
   private static class VFixedFormat extends VCellFormat {
-    VFixedFormat(int maxScale) {
-      this(maxScale, false);
+    /*
+     * sets all column values to the same scale
+     */
+    public VFixedFormat(int maxScale, boolean exactScale) {
+      this.maxScale = maxScale;
+      this.exactScale = exactScale;
     }
 
-    VFixedFormat(int maxScale, boolean resetScale) {
-      this.maxScale = maxScale;
-      this.resetScale = resetScale;
+    public VFixedFormat(int maxScale) {
+      this(maxScale, false);
     }
 
     public String format(Object value) {
       return value == null ? 
         "" :
-        (((NotNullFixed)value).getScale() > maxScale || resetScale) ? 
+        (((NotNullFixed)value).getScale() > maxScale || exactScale) ? 
         ((NotNullFixed)value).setScale(maxScale).toString() :
         value.toString();
     }
-    boolean     resetScale;
-    int 	maxScale;
+
+    private final boolean     exactScale;
+    private final int         maxScale;
   }
 
   public void formatColumn(PExport exporter, int index) {
