@@ -331,7 +331,7 @@ public class MenuTree extends DWindow {
         Module  module = (Module)modules.get(i);
 
         new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-                                  + "(SELECT {fn NEXTVAL(FAVORITENId)} FROM DUMMY)" + ", "
+                                  + "{fn NEXTVAL(FAVORITENId)}" + ", "
                                   + (int)(System.currentTimeMillis()/1000) + ", "
                                   + getUserID() + ", "
                                   + module.getId()
