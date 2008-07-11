@@ -102,6 +102,7 @@ FILES =		$(PNGFILES:%=%.png)					\
 		$(LOCALIZATIONS:%=%-de_AT.xml)				\
 		$(LOCALIZATIONS:%=%-fr_FR.xml)				\
 		$(LOCALIZATIONS:%=%-en_GB.xml)				\
+		$(LOCALIZATIONS:%=%-ar_TN.xml)				\
 		$(OTHERFILES)
 
 ## ----------------------------------------------------------------------
