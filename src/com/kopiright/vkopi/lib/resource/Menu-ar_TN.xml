@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<insert>
+  <menu ident="File" label="الملف"/>
+  <menu ident="Edit" label="الاجراء"/>
+  <menu ident="Help" label="المساعدة"/>
+  <actor ident="Close" label="قطع" help="قطع التطبيق الحالي"/>
+  <actor ident="Open" label="فتح" help="فتح استمارة"/>
+  <actor ident="Show" label="تعليق الأفضليات" help="تعليق الأفضليات"/>
+  <actor ident="Add" label="أضف الى الأفضليات" help="أضف الى الأفضليات"/>
+  <actor ident="Remove" label="شطب الأفضليات" help="شطب الأفضليات"/>
+  <actor ident="Fold" label="غلق" help="غلق القائمة"/>
+  <actor ident="Unfold" label="فتح" help="فتح القائمة"/>
+  <actor ident="Information" label="معلومة" help="معلومة"/>
+  <actor ident="Help" label="المساعدة" help="فتح نافذة المساعدة"/>
+</insert>
