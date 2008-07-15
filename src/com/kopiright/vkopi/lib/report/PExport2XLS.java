@@ -112,7 +112,7 @@ public class PExport2XLS extends PExport implements Constants {
     HSSFFooter footer = sheet.getFooter();
     HSSFHeader header = sheet.getHeader();
 
-    header.setLeft(getTitle());
+    header.setLeft(getTitle() + "  " + getColumnLabel(0) + " : " + subTitle);
     
     footer.setLeft(getTitle() + " - Seite " + HSSFFooter.page() + " / " + HSSFFooter.numPages() );
     footer.setRight(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"));

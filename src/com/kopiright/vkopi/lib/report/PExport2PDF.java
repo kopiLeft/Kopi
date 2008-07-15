@@ -114,7 +114,7 @@ public class  PExport2PDF extends PExport implements Constants {
                               pconfig.rightmargin, 
                               pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin + firstPageHead.getTotalHeight(), 
                               pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin+2); 
-                              // 2 to be sure to print the border
+      // 2 to be sure to print the border
 
       scale = (float) getScale(3, 12, 0.1);
 
@@ -169,7 +169,7 @@ public class  PExport2PDF extends PExport implements Constants {
   }
 
   private void addFooter(File tempfile, OutputStream out) {
-      // write footer;
+    // write footer;
     try {
       PdfReader           reader = new PdfReader(new FileInputStream(tempfile));
       PdfStamper          stamper = new PdfStamper(reader, out);
@@ -193,11 +193,11 @@ public class  PExport2PDF extends PExport implements Constants {
     PdfPTable       head = new PdfPTable(1);
     
     head.addCell(createCell(firstPageHeader,
-                              14,
-                              Color.black,
-                              Color.white,
-                              ALG_LEFT,
-                              false));
+                            14,
+                            Color.black,
+                            Color.white,
+                            ALG_LEFT,
+                            false));
     return head;
   }
   
@@ -231,11 +231,10 @@ public class  PExport2PDF extends PExport implements Constants {
       if (datatable != null) {
         document.add(datatable);
       }
-      currentSubtitle = subTitle;
-
+      currentSubtitle = nextPageSubtitle;
+      nextPageSubtitle = subTitle;
       datatable = new PdfPTable(getColumnCount());
       datatable.setWidthPercentage(100);
-
       PdfPCell  defaultCell = datatable.getDefaultCell();
 
       defaultCell.setBorderWidth(BORDER_WIDTH);
@@ -435,6 +434,7 @@ public class  PExport2PDF extends PExport implements Constants {
   private int                   pages;
   private Document              document;
   private String                currentSubtitle;
+  private String                nextPageSubtitle;
   private String                firstPageHeader;
   private boolean               firstPage;
 
