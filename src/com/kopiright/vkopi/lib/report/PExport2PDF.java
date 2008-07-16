@@ -210,6 +210,7 @@ public class  PExport2PDF extends PExport implements Constants {
                             Color.white,
                             ALG_LEFT,
                             false));
+    currentSubtitle = nextPageSubtitle;
     return head;
   }
 
