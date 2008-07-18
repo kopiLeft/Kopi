@@ -45,7 +45,8 @@ public class GVKAccess extends XExpression {
 		   JExpression field,
 		   JExpression record,
 		   boolean hasBang,
-		   boolean hasQuestion) {
+		   boolean hasQuestion)
+  {
     super(where);
     this.name = name;
     if (record == null) {
@@ -83,13 +84,13 @@ public class GVKAccess extends XExpression {
     case MOD_NULLABLE:
       return new JMethodCallExpression(ref,
 				       expr,
-				       READ[getType(expr.getType(factory))],
+				       TYPE_OPERATORS[getType(expr.getType(factory))][OPE_READ],
 				       params).analyse(context);
     case MOD_FORCE:
       return new XCastExpression(expr.getTokenReference(),
 				 new JMethodCallExpression(ref,
 							   expr,
-							   READ_FORCE[getType(expr.getType(factory))],
+							   TYPE_OPERATORS[getType(expr.getType(factory))][OPE_READ_FORCE],
 							   params),
 				 translateToPrimitive(expr.getType(factory))).analyse(context);
     case MOD_ISNOTNULL:
@@ -207,7 +208,7 @@ public class GVKAccess extends XExpression {
 
     return new XMethodCallExpression(ref,
 				     self,
-				     WRITE[getType(self.getType(factory))],
+				     TYPE_OPERATORS[getType(self.getType(factory))][OPE_WRITE],
 				     record != null ?
 				     new JExpression[]{ new JCheckedExpression(ref, record), expr } :
 				     new JExpression[]{ expr }
@@ -395,20 +396,28 @@ public class GVKAccess extends XExpression {
   // PRIVATE CONSTANTS
   // ----------------------------------------------------------------------
 
-  private static final String[] READ = new String[] {
-    "getFixed", "getBoolean", "getBoolean", "getColor", "getDate",
-    "getFixed", "getImage", "getInt", "getInt", "getMonth", "getString",
-    "getTime", "getString", "getObject", "getWeek", "getString"
-  };
-  private static final String[] READ_FORCE = new String[] {
-    "getFixed", "getBoolean", "getBoolean", "getColor", "getDate",
-    "getFixed", "getImage", "getInt", "getInt", "getMonth", "getString",
-    "getTime", "getString", "getObject", "getWeek", "getString"
-  };
-  private static final String[] WRITE = new String[] {
-    "setFixed", "setBoolean", "setBoolean", "setColor", "setDate",
-    "setFixed","setImage",  "setInt", "setInt", "setMonth", "setString",
-    "setTime", "setString", "setObject", "setWeek", "setString"
+  private static final int      OPE_READ        = 0;
+  private static final int      OPE_READ_FORCE  = 1;
+  private static final int      OPE_WRITE       = 2;
+
+  private static final String[][] TYPE_OPERATORS = new String[][] {
+    new String[]{ "getFixed", "getFixed", "setFixed" },
+    new String[]{ "getBoolean", "getBoolean", "setBoolean" },
+    new String[]{ "getBoolean", "getBoolean", "setBoolean" },
+    new String[]{ "getColor", "getColor", "setColor" },
+    new String[]{ "getDate", "getDate", "setDate" },
+    new String[]{ "getFixed", "getFixed", "setFixed" },
+    new String[]{ "getImage", "getImage", "setImage" },
+    new String[]{ "getInt", "getInt", "setInt" },
+    new String[]{ "getInt", "getInt", "setInt" },
+    new String[]{ "getMonth", "getMonth", "setMonth" },
+    new String[]{ "getString", "getString", "setString" },
+    new String[]{ "getTime", "getTime", "setTime" },
+    new String[]{ "getString", "getString", "setString" },
+    new String[]{ "getObject", "getObject", "setObject" },
+    new String[]{ "getWeek", "getWeek", "setWeek" },
+    new String[]{ "getString", "getString", "setString" },
+    new String[]{ "getTimestamp", "getTimestamp", "setTimestamp" },
   };
 
   private static final int TYP_FIXED		= 0;

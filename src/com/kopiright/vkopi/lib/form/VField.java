@@ -46,6 +46,7 @@ import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Month;
 import com.kopiright.xkopi.lib.type.Time;
 import com.kopiright.xkopi.lib.type.Week;
+import com.kopiright.xkopi.lib.type.Timestamp;
 
 /**
  * A field is a column in the the database (a list of rows)
@@ -1027,6 +1028,15 @@ public abstract class VField implements VConstants {
   }
 
   /**
+   * Sets the field value of the current record to a timestamp value.
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
+   */
+  public void setTimestamp(Timestamp v) {
+    setTimestamp(block.getCurrentRecord(), v);
+  }
+
+  /**
    * Sets the field value of the current record to a color value.
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
@@ -1125,6 +1135,15 @@ public abstract class VField implements VConstants {
    * @kopi      inaccessible
    */
   public void setTime(int r, Time v) {
+    throw new InconsistencyException();
+  }
+
+  /**
+   * Sets the field value of given record to a timestamp value.
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
+   */
+  public void setTimestamp(int r, Timestamp v) {
     throw new InconsistencyException();
   }
 
@@ -1261,6 +1280,15 @@ public abstract class VField implements VConstants {
    */
   public Week getWeek() {
     return getWeek(block.getCurrentRecord());
+  }
+
+  /**
+   * Returns the field value of the current record as a timestamp value.
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
+   */
+  public Timestamp getTimestamp() {
+    return getTimestamp(block.getCurrentRecord());
   }
 
   /**
@@ -1411,6 +1439,15 @@ public abstract class VField implements VConstants {
    * @kopi      inaccessible
    */
   public Time getTime(int r) {
+    throw new InconsistencyException();
+  }
+
+  /**
+   * Returns the field value of given record as a timestamp value.
+   * Warning:   This method will become inaccessible to kopi users in next release
+   * @kopi      inaccessible
+   */
+  public Timestamp getTimestamp(int r) {
     throw new InconsistencyException();
   }
 
