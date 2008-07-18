@@ -120,7 +120,9 @@ public class XCompoundAssignmentExpression extends JCompoundAssignmentExpression
       default:
 	throw new InconsistencyException("UNDEFINED OPERATOR:" + oper);
       }
-      check(context, type.isCastableTo(context, left.getType(factory)), KjcMessages.ASSIGNMENT_BADTYPE);
+      check(context,
+            type.isCastableTo(context, left.getType(factory)),
+            KjcMessages.ASSIGNMENT_BADTYPE, right.getType(factory), left.getType(factory));
 
       type = left.getType(factory);
 
