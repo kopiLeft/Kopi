@@ -46,6 +46,8 @@ public class XKjcSignatureParser extends KjcSignatureParser {
         return XStdType.PMonth;
       } else if (((CReferenceType)type).getQualifiedName() == com.kopiright.xkopi.lib.type.NotNullTime.class.getName().replace('.','/')) {
         return XStdType.PTime;
+      } else if (((CReferenceType)type).getQualifiedName() == com.kopiright.xkopi.lib.type.NotNullTimestamp.class.getName().replace('.','/')) {
+        return XStdType.PTimestamp;
       } else if (((CReferenceType)type).getQualifiedName() == com.kopiright.xkopi.lib.type.NotNullWeek.class.getName().replace('.','/')) {
         return XStdType.PWeek;
       } else {

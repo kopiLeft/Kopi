@@ -346,6 +346,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
         "com/kopiright/xkopi/lib/oper/XDate",
         "com/kopiright/xkopi/lib/oper/XMonth",
         "com/kopiright/xkopi/lib/oper/XTime",
+        "com/kopiright/xkopi/lib/oper/XTimestamp",
         "com/kopiright/xkopi/lib/oper/XWeek",
         "com/kopiright/xkopi/lib/oper/XCharacter",
         "com/kopiright/xkopi/lib/oper/XString"

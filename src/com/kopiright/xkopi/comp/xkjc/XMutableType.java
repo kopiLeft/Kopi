@@ -87,6 +87,8 @@ public class XMutableType extends CType {
       code = CODE_XMONTH;
     } else if (original.equals(XStdType.Time)) {
       code = CODE_XTIME;
+    } else if (original.equals(XStdType.Timestamp)) {
+      code = CODE_XTIMESTAMP;
     } else if (original.equals(XStdType.Week)) {
       code = CODE_XWEEK;
     }
@@ -246,6 +248,7 @@ public class XMutableType extends CType {
       case CODE_XDATE:
       case CODE_XMONTH:
       case CODE_XTIME:
+      case CODE_XTIMESTAMP:
       case CODE_XWEEK:
       default:
 	return false; // can't overload
@@ -278,7 +281,8 @@ public class XMutableType extends CType {
   private static final int	CODE_XDATE		= 18;
   private static final int	CODE_XMONTH		= 19;
   private static final int	CODE_XTIME		= 20;
-  private static final int	CODE_XWEEK		= 21;
+  private static final int	CODE_XTIMESTAMP		= 21;
+  private static final int	CODE_XWEEK		= 22;
 
   private CType		original;
   private int		code;

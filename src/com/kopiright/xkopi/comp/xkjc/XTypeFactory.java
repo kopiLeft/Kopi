@@ -44,9 +44,9 @@ public interface XTypeFactory extends com.kopiright.kopi.comp.kjc.TypeFactory {
   int           PRM_PDATE               = (MIN_TYPE_ID + 9);
   int           PRM_PMONTH              = (MIN_TYPE_ID + 10);
   int           PRM_PTIME               = (MIN_TYPE_ID + 11);
-  int           PRM_PWEEK               = (MIN_TYPE_ID + 12);
-  int           PRM_PFIXED              = (MIN_TYPE_ID + 13);
-  int           PRM_PTIMESTAMP          = (MIN_TYPE_ID + 14);
+  int           PRM_PTIMESTAMP          = (MIN_TYPE_ID + 12);
+  int           PRM_PWEEK               = (MIN_TYPE_ID + 13);
+  int           PRM_PFIXED              = (MIN_TYPE_ID + 14);
 
   int           RFT_DATE                = (MIN_TYPE_ID + 15);
   int           RFT_MONTH               = (MIN_TYPE_ID + 16);

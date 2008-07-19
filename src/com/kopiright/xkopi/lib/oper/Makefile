@@ -33,7 +33,7 @@ XKJC =		$(JAVA) com.kopiright.xkopi.comp.xkjc.Main --verbose --nooo --xkjcpath /
 
 XFILES =	XBoolean XByte XCharacter XDate XDouble			\
 		XFixed XFloat XInteger XMonth XShort			\
-		XString XTime XWeek
+		XString XTime XTimestamp XWeek
 
 JFILES  =	NullValueInComparison NullValueInCastOperator		\
 		NullValueInOperation
