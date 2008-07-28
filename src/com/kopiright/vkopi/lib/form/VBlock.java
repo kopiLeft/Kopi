@@ -3643,8 +3643,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       tsFld = getTsField();
 
       Query   query = new Query(form.getDBContext().getDefaultConnection());
-
-      tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
+      
+      if (tsFld != null) {
+	tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
+      }
       if (ucFld != null) {
         ucFld.setInt(recno, new Integer(ucFld.getInt().intValue() + 1));
       }
