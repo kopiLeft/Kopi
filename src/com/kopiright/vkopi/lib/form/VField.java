@@ -877,7 +877,7 @@ public abstract class VField implements VConstants {
    * @kopi      inaccessible
    */
   String getHeader() {
-    return label == null ? "" : label.substring(0, label.length() - 1);
+    return label == null ? "" : label;
   }
 
   /**
@@ -2189,8 +2189,9 @@ public abstract class VField implements VConstants {
 
   public void helpOnField(VHelpGenerator help) {
     String      lab = getLabel();
+
     if (lab != null) {
-      lab = lab.lastIndexOf(":") == -1 ? lab.replace(' ', '_') : lab.substring(0, lab.lastIndexOf(":")).replace(' ', '_');
+      lab = lab.replace(' ', '_');
 
       help.helpOnField(getBlock().getTitle(),
                        getBlock().getFieldPos(this),

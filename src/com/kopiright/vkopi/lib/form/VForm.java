@@ -867,8 +867,6 @@ public abstract class VForm extends VWindow implements VConstants {
 
       if (anchor == null) {
 	anchor = field.getName();
-      } else if (anchor.lastIndexOf(":") != -1) {
-        anchor = anchor.substring(0, anchor.lastIndexOf(":"));
       }
       anchor.replace(' ', '_');
 

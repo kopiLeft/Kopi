@@ -37,8 +37,6 @@ public class DLabel extends JFieldLabel {
    * Constructor
    */
   public DLabel(String text, String help) {
-//     setText(text == null ? "" : text);
-//     setToolTipText(help);
     init(text, help);
   }
 
@@ -46,12 +44,7 @@ public class DLabel extends JFieldLabel {
    * 
    */
   public void init(String text, String help) {
-    // ensure that label ends with two points.
-    setText(text == null ? 
-            "" : 
-            text.endsWith(":") ? 
-            text : 
-            text + ":");
+    setText(text == null ? "" : text);
     setToolTipText(help);
   }
 
@@ -61,31 +54,6 @@ public class DLabel extends JFieldLabel {
 
     return tip;
   }
-
- //  public void paint(Graphics g) {
-//     super.paint(g);
-    
-//     if (searchText != null) {
-//       g.setColor(Color.red);
-//       g.drawString(searchText, 4, 4);
-//     }
-//   }
-
-  /**
-   *
-   */
-  public String getTextWithoutTwoPoints(String text) {
-    if (text == null) {
-      return null;
-    }
-
-    if (text.endsWith(":")) {
-      return text.substring(0, text.length() - 1);
-    } else {
-      return text;
-    }
-  }
-
 
   /**
    * Model access has changed, change accordingly.

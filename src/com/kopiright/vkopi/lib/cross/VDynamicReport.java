@@ -311,9 +311,7 @@ public class VDynamicReport extends VReport {
         String  columnLabel;
         
         if (fields[i].getLabel() != null) {
-          columnLabel = fields[i].getLabel().endsWith(":") ?
-            fields[i].getLabel().trim().substring(0, fields[i].getLabel().length() - 1) : 
-            fields[i].getLabel().trim();
+          columnLabel = fields[i].getLabel().trim();
         } else {
           columnLabel = fields[i].getName();
         }
