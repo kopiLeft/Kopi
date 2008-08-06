@@ -2526,11 +2526,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (rows == 0) {
       return null;
     } else {
-      VListColumn[] cols = new VListColumn[query_cnt];
+      ListDialog        dialog;
+      VListColumn[]     cols;
+
+      cols = new VListColumn[query_cnt];
       for (int i = 0; i < cols.length; i++) {
         cols[i] = query_tab[i].getListColumn();
       }
-      ListDialog        dialog = new ListDialog(cols, values, ids, rows);
+      dialog = new ListDialog(cols, values, ids, rows);
       if (rows == fetchSize) {
         dialog.setTooManyRows();
       }
