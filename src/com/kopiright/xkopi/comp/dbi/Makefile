@@ -62,7 +62,8 @@ JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		TableConstraint TableDefinition				\
 		TablePrivilege TextType TimeType			\
 		TimestampType UniqueConstraintDefinition		\
-		ViewColumn ViewDefinition WeekType 
+		ViewColumn ViewDefinition WeekType  MysqlDbiChecker	\
+		IngresDbiChecker
 
 OPTIONS =	DbiOptions  ConsoleOptions
 

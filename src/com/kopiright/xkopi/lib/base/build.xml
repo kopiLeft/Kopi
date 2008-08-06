@@ -25,7 +25,7 @@
                    XInterruptProtectedException.java 
                    As400DriverInterface.java 
                    Db2UdbDriverInterface.java KconnectDriverInterface.java 
-                   MySqlDriverInterface.java OracleDriverInterface.java 
+                   MysqlDriverInterface.java OracleDriverInterface.java 
                    PostgresDriverInterface.java SapdbDriverInterface.java 
                    TbxDriverInterface.java
                    ConnectionOptions.java" />

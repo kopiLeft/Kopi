@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id$
+ * $Id: MysqlDriverInterface.java 27892 2007-02-16 16:09:48Z graf $
  */
 
 package com.kopiright.xkopi.lib.base;
@@ -23,18 +23,19 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Vector;
-
+import java.sql.ResultSet;
+import java.sql.Statement;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
  * This class encapsulates specific properties of the SAPDB JDBC driver.
  */
-public class MySqlDriverInterface extends DriverInterface {
+public class MysqlDriverInterface extends DriverInterface {
 
   /**
    * Constructs a new driver interface object
    */
-  public MySqlDriverInterface() {
+  public MysqlDriverInterface() {
     super();
   }
 
@@ -45,7 +46,7 @@ public class MySqlDriverInterface extends DriverInterface {
    * @return	the maximum number of characters in the ORDER BY of the driver
    */
   public int getMaximumCharactersCountInOrderBy() {
-      return 250;
+    return 250;
   }
 
   /**
@@ -68,7 +69,7 @@ public class MySqlDriverInterface extends DriverInterface {
    * @param	user		the login of the user
    */
   public void grantAccess(Connection conn, String user) throws SQLException {
-    executeSQL(conn, "CREATE USER " + user + " PASSWORD 2change NOT EXCLUSIVE");
+    executeSQL(conn, "CREATE USER " + user + " IDENTIFIED BY '2change' ");//walim
   }
 
   /**
@@ -91,7 +92,7 @@ public class MySqlDriverInterface extends DriverInterface {
                              String newPassword)
     throws SQLException
   {
-    executeSQL(conn, "ALTER PASSWORD " + oldPassword + " TO " + newPassword);
+    executeSQL(conn, "SET PASSWORD FOR " + user + " = PASSWORD('" + newPassword + "')");//walim
   }
 
   /**
@@ -103,7 +104,7 @@ public class MySqlDriverInterface extends DriverInterface {
   public void lockTable(Connection conn, String tableName)
     throws SQLException
   {
-    executeSQL(conn, "LOCK TABLE " + tableName + " IN EXCLUSIVE MODE");
+    executeSQL(conn, "LOCK TABLES " + tableName + " WRITE");
   }
 
   /**
@@ -115,11 +116,11 @@ public class MySqlDriverInterface extends DriverInterface {
    */
   public String convertSql(String from) {
     try {
-      MySqlParser	parser = new MySqlParser(from);
+      MysqlParser	parser = new MysqlParser(from);
 
-      System.err.println("-- NATIVE SQL: ");
-      System.err.println(parser.getText() + ";");
-      System.err.println("--");
+      //   System.err.println("-- NATIVE SQL: ");
+      //System.err.println(parser.getText() + ";");
+      //System.err.println("--");
 
       return parser.getText().trim();
     } catch (SQLException e) {
@@ -127,6 +128,25 @@ public class MySqlDriverInterface extends DriverInterface {
     }
   }
 
+  public int getNextTableId(java.sql.Connection conn,
+                            String table)
+    throws SQLException
+  {
+    Statement           stmt;
+    ResultSet           rset;
+    int                 id;
+    
+    stmt = conn.createStatement();
+    rset = stmt.executeQuery("SELECT  (MAX(ID) + 1) FROM " + table);
+    if (!rset.next()) {
+      throw new DBRuntimeException("Database Internal Error");
+    }
+    id = rset.getInt(1);
+    stmt.close();
+    
+    return id;
+  }
+  
   /**
    * Transforms an SQLException into its corresponding kopi DBException
    *
@@ -200,11 +220,11 @@ public class MySqlDriverInterface extends DriverInterface {
 /**
  * This class translates SQL queries from JDBC format to native format.
  */
-/*package*/ class MySqlParser extends JdbcParser {
+/*package*/ class MysqlParser extends JdbcParser {
   /**
    * Constructor
    */
-  public MySqlParser(String input) {
+  public MysqlParser(String input) {
     super(input);
   }
 
@@ -375,10 +395,10 @@ public class MySqlDriverInterface extends DriverInterface {
         return "INDEX(" + arguments.elementAt(1) + "," + arguments.elementAt(0) + ")";
 
       case 24:	// TRUE
-	return "t";
+	return "TRUE";
 
       case 25:	// FALSE
-	return "f";
+	return "FALSE";
 
       case 26: // LENGTH
 	return "LENGTH(" + arguments.elementAt(0) + ")";
@@ -412,7 +432,7 @@ public class MySqlDriverInterface extends DriverInterface {
 
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
-				   "/" + arguments.size());
+                                         "/" + arguments.size());
       }
     }
   }

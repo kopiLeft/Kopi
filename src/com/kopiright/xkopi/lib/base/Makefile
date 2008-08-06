@@ -42,11 +42,12 @@ JAVAFILES +=	Connection Cursor					\
 JAVAFILES +=	As400DriverInterface					\
 		Db2UdbDriverInterface					\
 		KconnectDriverInterface					\
-		MySqlDriverInterface					\
+		MysqlDriverInterface					\
 		OracleDriverInterface					\
 		PostgresDriverInterface					\
 		SapdbDriverInterface					\
-		TbxDriverInterface
+		TbxDriverInterface					\
+		IngresDriverInterface
 
 OPTIONS =	ConnectionOptions
 

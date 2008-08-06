@@ -285,19 +285,27 @@ public class Connection {
     } else if (driverName.equals("transbase.jdbc.Driver")) {
       driver = new TbxDriverInterface();
     } else if (driverName.equals("com.mysql.jdbc.Driver")) {
-      driver = new MySqlDriverInterface();
+      driver = new MysqlDriverInterface();
+    } else if (driverName.equals("org.postgresql.Driver")) {
+      driver = new PostgresDriverInterface();
+    } else if (driverName.equals("ca.edbc.jdbc.EdbcDriver")) {
+      driver = new IngresDriverInterface();
     } else {
       throw new InconsistencyException("no appropriate driver found");
       // !!! graf 000220: bad default
       //driver = new OracleDriverInterface();
     }
   }
-
+  
+  public DriverInterface getDriverInterface() {
+    return driver;
+  }
+  
   /**
    * Retrieves the user ID of the current user
    */
   private void setUserID() {
-    if (getUserName().equals("lgvplus") || getUserName().equals("tbadmin") || getUserName().equals("dba") || getUserName().equals("scott")) {
+    if (getUserName().equals("root") || getUserName().equals("lgvplus") || getUserName().equals("tbadmin") || getUserName().equals("dba") || getUserName().equals("scott")) {
       userID = -1;
     } else {
       try {
@@ -306,7 +314,7 @@ public class Connection {
 	Query	query = new Query(this);
 
 	query.open("SELECT ID FROM KOPI_USERS WHERE Kurzname = '" + getUserName() + "'");
-
+        
 	if (!query.next()) {
 	  throw new SQLException("user unknown");
 	}
@@ -316,9 +324,9 @@ public class Connection {
 	if (query.next()) {
 	  throw new SQLException("different users with same name");
 	}
-
+        
 	query.close();
-
+        
 	ctxt.commitWork();
 	// manually commit ourself since we are not in the connection list of the context
 	conn.commit();
@@ -329,7 +337,7 @@ public class Connection {
       }
     }
   }
-
+  
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

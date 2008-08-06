@@ -591,6 +591,10 @@ public class Console extends Compiler implements Constants {
         dataSource = new OracleDataSource();
       } else if (name.equals("ora10g")) {
         dataSource = new Oracle10gDataSource();
+      } else if (name.equals("mysql")) {
+        return new MysqlDataSource();
+      } else if (name.equals("ingres")) {
+        return new IngresDataSource();
       } else {
         throw new IllegalArgumentException("No data source corresponding to '"
                                            + name + "'");
@@ -708,6 +712,22 @@ public class Console extends Compiler implements Constants {
       super("org.postgresql.Driver",
             "jdbc:postgesql:",
             "pgsql");
+    }
+  }
+
+  private static final class MysqlDataSource extends DbiDataSource {
+    MysqlDataSource() {
+      super("com.mysql.jdbc.Driver",
+            "jdbc:mysql:",
+            "mysql");
+    }
+  }
+
+  private static final class IngresDataSource extends DbiDataSource {
+    IngresDataSource() {
+      super("ca.edbc.jdbc.EdbcDriver",
+            "jdbc:edbc:",
+            "ingres");
     }
   }
 

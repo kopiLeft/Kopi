@@ -71,7 +71,12 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
       return new PostgresDbiChecker(context);
     } else if (syntax.equals("ora")) {
       return new OracleDbiChecker(context);
+    } else if (syntax.equals("mysql")) {
+      return new MysqlDbiChecker(context);
+    } else if (syntax.equals("ingres")) {
+      return new IngresDbiChecker(context);
     } else {
+      System.err.println("syntax " + syntax + " not found using, default syntax." );
       return new KopiDbiChecker(context);
     }
   }
@@ -414,7 +419,7 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   /**
    * Visits GrantUserClassStatement
    */
-    // !!! coco 050201 : verify what it is an user class
+  // !!! coco 050201 : verify what it is an user class
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
                                            int userClass,
                                            String userName)

@@ -22,7 +22,6 @@ package com.kopiright.xkopi.comp.dbi;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kopiright.compiler.base.JavaStyleComment;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.comp.sqlc.Expression;
@@ -30,21 +29,20 @@ import com.kopiright.xkopi.comp.sqlc.FieldNameList;
 import com.kopiright.xkopi.comp.sqlc.JdbcDateLiteral;
 import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
 import com.kopiright.xkopi.comp.sqlc.SqlContext;
-import com.kopiright.xkopi.comp.sqlc.Type;
 import com.kopiright.xkopi.lib.base.DriverInterface;
-import com.kopiright.xkopi.lib.base.PostgresDriverInterface;
+import com.kopiright.xkopi.lib.base.MysqlDriverInterface;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Fixed;
 
 /**
  *
  */
-public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
+public class MysqlDbiChecker extends DbiChecker implements DbiVisitor {
 
   /**
-   * Constructs a new PostgresDbiChecker object.
+   * Constructs a new MysqlDbiChecker object.
    */
-  public PostgresDbiChecker(SqlContext sql) {
+  public MysqlDbiChecker(SqlContext sql) {
     super(sql);
   }
 
@@ -52,21 +50,21 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    *
    */
   public String getStatementText() {
-    String stmt = getStatementText(getDriverInterface());
-    //System.out.println(stmt);
-    return stmt.length() != 0 ? stmt + ";": "";
+    String      statement = getStatementText(getDriverInterface());
+    
+    //System.out.println(statement + "\n");
+    return statement.length() != 0 ? statement + ";": "";
   }
-  
+
   /**
    *
    */
   /*package*/ DriverInterface getDriverInterface() {
-    return new PostgresDriverInterface();
+    return new MysqlDriverInterface();
   }
-  
+
   /*
    * Visits JdbcDateLiteral
-   * !!! coco 310202 : verify the syntax
    */
   public void visitJdbcDateLiteral(JdbcDateLiteral self, Date value)
     throws PositionedError
@@ -74,11 +72,47 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("'");
     current.append(value.getYear());
     current.append("-");
+    if (value.getMonth() < 10) {
+      current.append("0");
+    }
     current.append(value.getMonth());
     current.append("-");
+    if (value.getDay() < 10) {
+      current.append("0");
+    }
     current.append(value.getDay());
     current.append("'");
   }
+
+  /**
+   * Visits AlterDropDefaultColumnStatement
+   */
+  public void visitAlterDropDefaultColumnStatement(AlterDropDefaultColumnStatement self,
+                                                   Expression tableName,
+                                                   String columnName)
+    throws PositionedError
+  {
+    current.append("ALTER TABLE ");
+    tableName.accept(this);
+    current.append("DROP COLUMN ");
+    current.append(columnName);
+  }
+
+  /**
+   * Visits a AlterNotNullColumnStatement.
+   */
+  public void visitAlterNotNullColumnStatement(AlterNotNullColumnStatement self,
+                                               Expression tableName,
+                                               String columnName)
+    throws PositionedError
+  {
+    current.append("ALTER TABLE ");
+    tableName.accept(this);
+    current.append(" COLUMN ");
+    current.append(columnName);
+    current.append(" NOT NULL ");
+  }
+
 
   /**
    * Visits AddTableConstraintStatement
@@ -97,14 +131,28 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   /**
+   * Visits a AddTableColumnsStatement.
+   */
+  public void visitAddTableColumnsStatement(AddTableColumnsStatement self,
+                                            Expression tableName,
+                                            Column column)
+    throws PositionedError
+  {
+    current.append("ALTER TABLE ");
+    tableName.accept(this);
+    current.append(" ADD COLUMN ");
+    column.accept(this);
+    current.append(" INT");
+  }
+
+  /**
    * Visits DropSequenceStatement
    */
   public void visitDropSequenceStatement(DropSequenceStatement self,
                                          Expression sequenceName)
     throws PositionedError
   {
-    current.append("DROP SEQUENCE ");
-    sequenceName.accept(this);
+    // no sequence for mysql
   }
 
   
@@ -113,22 +161,19 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
                                       Integer startValue)
     throws PositionedError
   {
-    current.append("CREATE SEQUENCE ");
-    sequenceName.accept(this);
-    current.append(" START WITH " + startValue );
-    
+    // no sequence for mysql
   }
   
   
   /**
-
-     /**
-     * Visits BlobType
-     */
+   * Visits BlobType
+   */
   public void visitBlobType(BlobType self)
     throws PositionedError
   {
-    current.append("bytea");
+    //walim current.append(BLOB_DEFINITION);
+    current.append("BLOB");
+      
   }
 
   /**
@@ -137,7 +182,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitClobType(ClobType self)
     throws PositionedError
   {
-    current.append("bytea");
+    current.append(BLOB_DEFINITION);
   }
 
   /**
@@ -146,7 +191,9 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitBooleanType(BooleanType self)
     throws PositionedError
   {
-    current.append("BOOLEAN");
+    //walim current.append("TINYINT");
+    //current.append("BOOLEAN");
+    current.append("TINYINT(1)");
   }
 
   /**
@@ -155,7 +202,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitByteType(ByteType self, Integer min, Integer max)
     throws PositionedError
   {
-    current.append("INT2");
+    current.append("BIT");
   }
 
   /**
@@ -164,7 +211,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitCodeBoolType(CodeBoolType self, ArrayList list)
     throws PositionedError
   {
-    current.append("BOOLEAN");
+    current.append("TINYINT");
   }
 
   /**
@@ -176,7 +223,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
                                  ArrayList list)
     throws PositionedError
   {
-    current.append("NUMERIC(");
+    current.append("DECIMAL(");
     current.append("" + precision);
     current.append("," + scale);
     current.append(")");
@@ -188,7 +235,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitCodeLongType(CodeLongType self, ArrayList list)
     throws PositionedError
   {
-    current.append("INTEGER");
+    current.append("BIGINT");
   }
 
   /**
@@ -197,31 +244,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitColorType(ColorType self)
     throws PositionedError
   {
-    current.append("bytea");
-  }
-
-  /**
-   * Visits Column
-   */
-  public void visitColumn(Column self,
-                          String ident,
-                          Type type,
-                          boolean nullable,
-                          String constraintName,
-                          JavaStyleComment[] comment)
-    throws PositionedError
-  {
-
-    current.append(ident);
-    current.append(" ");
-    type.accept(this);
-    if (!nullable) {
-      current.append(" NOT NULL");
-    }
-    if (constraintName != null) {
-      current.append(" CONSTRAINT ");
-      current.append(constraintName);
-    }
+    current.append(BLOB_DEFINITION);
   }
 
   /**
@@ -239,7 +262,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitEnumType(EnumType self, ArrayList list)
     throws PositionedError
   {
-    current.append("VARCHAR(256)");
+    current.append("ENUM(" + list + ")");
   }
 
   /**
@@ -252,19 +275,10 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
                              Fixed max)
     throws PositionedError
   {
-    current.append("NUMERIC(");
+    current.append("DECIMAL(");
     current.append("" + precision);
     current.append("," + scale);
     current.append(")");
-  }
-
-  /**
-   * Visits ImageType
-   */
-  public void visitImageType(ImageType self, int width, int height)
-    throws PositionedError
-  {
-    current.append("bytea");
   }
 
   /**
@@ -275,21 +289,16 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
                                            String userName)
     throws PositionedError
   {
-    // current.append("GRANT ");
-    // switch(userClass) {
-    // case GrantUserClassStatement.TYP_ACCESS:
-    //   current.append("ACCESS TO ");
-    //   break;
-    // case GrantUserClassStatement.TYP_RESOURCE:
-    //   current.append("RESOURCE TO ");
-    //   break;
-    // case GrantUserClassStatement.TYP_DBA:
-    //   current.append("DBA TO ");
-    //   break;
-    // default:
-    //   throw new InconsistencyException("Unexpected privilege");
-    // }
-    // current.append(userName);
+    // laurent 20020725 : sapdb does not use the user class. TO VERIFY !
+  }
+
+  /**
+   * Visits ImageType
+   */
+  public void visitImageType(ImageType self, int width, int height)
+    throws PositionedError
+  {
+    current.append(BLOB_DEFINITION);
   }
 
   /**
@@ -333,7 +342,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitIntType(IntType self, Integer min, Integer max)
     throws PositionedError
   {
-    current.append("INTEGER");
+    current.append("INT");
   }
 
   /**
@@ -369,7 +378,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitMonthType(MonthType self)
     throws PositionedError
   {
-    current.append("INTEGER");
+    current.append("INT");
   }
 
   /**
@@ -383,9 +392,9 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
                                                    int type)
     throws PositionedError
   {
-    current.append(" ADD CONSTRAINT ");
+    current.append(" ADD FOREIGN KEY "); //add ADD
     current.append(name);
-    current.append(" FOREIGN KEY (");
+    current.append(" (");
     field.accept(this);
     current.append(") REFERENCES ");
     reference.accept(this);
@@ -404,7 +413,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     int size;
 
     if (width == -1) {
-      size = 256;       // arbitrary : we don't know the size
+      size = DEFAULT_STRING_SIZE;       // arbitrary : we don't know the size
     } else {
       size = width * height;
     }
@@ -493,6 +502,14 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitWeekType(WeekType self)
     throws PositionedError
   {
-    current.append("INTEGER");
+    current.append("INT");
   }
+
+  // ----------------------------------------------------------------------
+  // DATA CONSTANTS
+  // ----------------------------------------------------------------------
+
+  public static final int               DEFAULT_STRING_SIZE = 256;
+
+  private static final String           BLOB_DEFINITION = "BLOB";
 }
