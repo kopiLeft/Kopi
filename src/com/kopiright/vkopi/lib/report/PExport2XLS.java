@@ -247,58 +247,62 @@ public class PExport2XLS extends PExport implements Constants {
     rowNumber += 1;
   }
 
+  private int computeColumnWidth(VReportColumn column) {
+    return (column.getLabel().length() < column.getWidth()) ? column.getWidth() : column.getLabel().length() + 2;
+  }
+  
   protected void formatStringColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatWeekColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatDateColumn(VReportColumn column, int index) {
     dataformats[index] = format.getFormat("dd.mm.yyyy");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatMonthColumn(VReportColumn column, int index) {
     dataformats[index] = format.getFormat("mm.yyyy");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatFixedColumn(VReportColumn column, int index) {
     dataformats[index] = format.getFormat("#,##0.00");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatIntegerColumn(VReportColumn column, int index) {
     dataformats[index] = format.getFormat("0");
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatBooleanColumn(VReportColumn column, int index) {
     dataformats[index] = 0; // General type
     datatype[index] = HSSFCell.CELL_TYPE_BOOLEAN;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatTimeColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * Math.max(column.getLabel().length(), column.getWidth()));
   }
 
   protected void formatTimestampColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
-    widths[index] = (short) (256 * column.getWidth());
+    widths[index] = (short) (256 * Math.max(column.getLabel().length(), column.getWidth()));
   }
 
   private HSSFPalette           palette;
