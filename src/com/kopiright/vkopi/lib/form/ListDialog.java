@@ -192,21 +192,10 @@ public class ListDialog extends JPanel {
   public void setTooManyRows() {
     tooManyRows = true;
   }
-  // method not read locally.
-  /*
-  private static boolean isInJWindow(Component c) {
-    while (c.getParent() != null) {
-      if (c instanceof JWindow) {
-        return true;
-      }
-      c = c.getParent();
-    }
-    return false;
-  }
-  */
+
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception com.kopiright.vkopi.lib.visual.VException       an exception may be raised by string formater
+   * @exception VException       an exception may be raised by string formater
    */
   private int selectFromDialogIn(final Component field,
                                  final boolean showSingleEntry)
@@ -362,7 +351,7 @@ public class ListDialog extends JPanel {
 
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception com.kopiright.vkopi.lib.visual.VException       an exception may be raised by string formater
+   * @exception VException       an exception may be raised by string formater
    */
   private int selectFromJDialog(Frame frame, boolean showSingleEntry) throws VException {
     if (!showSingleEntry && model.getRowCount() == 1) {
@@ -399,9 +388,10 @@ public class ListDialog extends JPanel {
   /**
    * Add Key Listener
    */
-  private void addKeyListener() { //DWindow parent) {
+  private void addKeyListener() {
     listener = new KeyAdapter() {
         String  current = "";
+
         public void keyPressed(KeyEvent k) {
           int   key = k.getKeyCode();
           switch (key) {
@@ -466,12 +456,6 @@ public class ListDialog extends JPanel {
           k.consume();
         }
       };
-    // NOT USEFULL
-    //    if (parent != null) {
-//       listenerOwner = parent;
-//       parent.addKeyListener(listener);
-//       parent.requestFocusInWindow();
-//    }
     table.addKeyListener(listener);
     table.requestFocusInWindow();
   }
@@ -554,7 +538,7 @@ public class ListDialog extends JPanel {
 
   /**
    * Displays a dialog box returning position of selected element.
-   * @exception com.kopiright.vkopi.lib.visual.VException       an exception may be raised by string formater
+   * @exception VException       an exception may be raised by string formater
    */
   public int selectFromDialog(Frame frame, boolean showSingleEntry) {
     try {
@@ -608,7 +592,6 @@ public class ListDialog extends JPanel {
         }
       });
     table.getColumnModel().addColumnModelListener(model);
-//    table.getTableHeader().setFont(DObject.FNT_FIXED);
 
     // set columns width and table width = sum columns width
     Dimension   screen  = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -646,13 +629,8 @@ public class ListDialog extends JPanel {
     if (dialog != null) {
       dialog.dispose();
     } else {
-      //      popup.setVisible(false);
       popup.dispose();
       removeKeyListener();
-      // NOT USED ANYMORE
- //      synchronized(ListDialog.this) {
-//         ListDialog.this.notify();
-//       }
     }
   }
 
@@ -841,23 +819,16 @@ public class ListDialog extends JPanel {
 
     private String[]    columns1;
     private Object[][]  data;
-    private int count;
+    private int         count;
     private int[]       lineID;
     private int[]       tab;
+
     /**
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = 1956519774210966774L;
   }
 
-   // class DialogFactory is never read locally.
-  /*
-  private static class DialogFactory {
-    static JDialog getDialog(Frame frame) {
-      return new JDialog(frame, VlibProperties.getString("pick_in_list"));
-    }
-  }
-  */
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
@@ -880,6 +851,7 @@ public class ListDialog extends JPanel {
   private boolean               doNewForm;
 
   private static final int      rowHeight = UIManager.getInt("ListDialog.row.height");
+
   /**
    * Comment for <code>serialVersionUID</code>
    */
