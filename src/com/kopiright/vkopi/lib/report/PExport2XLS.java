@@ -276,7 +276,12 @@ public class PExport2XLS extends PExport implements Constants {
   }
 
   protected void formatFixedColumn(VReportColumn column, int index) {
-    dataformats[index] = format.getFormat("#,##0.00");
+    String fixnumFormat = "#,##0";
+    
+    for (int i= 0; i < ((VFixnumColumn)column).getMaxScale(); i ++) {
+      fixnumFormat += (i == 0 ? ".0" : "0");
+    }
+    dataformats[index] = format.getFormat(fixnumFormat);
     datatype[index] = HSSFCell.CELL_TYPE_NUMERIC;
     widths[index] = (short) (256 * computeColumnWidth(column));
   }
