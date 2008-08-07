@@ -143,7 +143,7 @@ public abstract class PExport {
       if (pconfig.groupFormfeed && row.getLevel() == maxLevel-1) {
         VReportColumn   column = model.getAccessibleColumn(firstVisibleColumn);
 
-        startGroup(column.format(row.getValueAt(firstVisibleColumn)));
+        startGroup(column.format(row.getValueAt(table.convertColumnIndexToModel(firstVisibleColumn))));
         exportHeader();
       }
       if (pconfig.order != Constants.SUM_AT_TAIL
