@@ -296,13 +296,13 @@ public class PExport2XLS extends PExport implements Constants {
   protected void formatTimeColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
-    widths[index] = (short) (256 * Math.max(column.getLabel().length(), column.getWidth()));
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   protected void formatTimestampColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
-    widths[index] = (short) (256 * Math.max(column.getLabel().length(), column.getWidth()));
+    widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
   private HSSFPalette           palette;
