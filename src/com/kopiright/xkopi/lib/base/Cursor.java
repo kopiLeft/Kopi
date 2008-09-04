@@ -88,9 +88,12 @@ public class Cursor {
         traceQuery(Query.TRL_QUERY, "OPEN", sql);
         rset = stmt.executeQuery(conn.convertSql(sql));
         traceTimer(Query.TRL_TIMER, "OPEN");
-
-        //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
-        rset.setFetchSize(1);
+        
+        //!!! wael 20080904 : this workaround fails with ingres.
+        if (!(conn.getDriverInterface() instanceof IngresDriverInterface)) {
+          //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
+          rset.setFetchSize(1);
+        }
       } catch (SQLException exc) {
         throw conn.convertException(exc);
       }
