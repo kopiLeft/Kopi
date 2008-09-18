@@ -112,7 +112,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
   /**
    *
    */
-  protected void printBlocks(PdfPrintJob printjob) {
+  protected void printBlocks(PdfPrintJob printjob) throws PSPrintException {
     if (!inTransaction()) {
       try {
 	startProtected(message);
@@ -129,6 +129,13 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
           throw new VRuntimeException(MessageCode.getMessage("VIS-00058"));
 	} catch (SQLException ignored) {
           throw new InconsistencyException(ignored);
+	}
+      } catch (PSPrintException e) {
+	try {
+	  abortProtected((SQLException) (new SQLException(e.getMessage())));
+	} catch (SQLException ignored) {
+          throw new VRuntimeException(MessageCode.getMessage("VIS-00058")
+                                      + ": " + ignored.getMessage());
 	}
       } catch (Throwable e) {
 	try {
@@ -150,7 +157,7 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
     }
   }
 
-  public void initPage() throws SQLException {}
+  public void initPage() throws SQLException, PSPrintException {}
 
   public void closePage() throws SQLException {}
 
