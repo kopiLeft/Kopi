@@ -189,9 +189,10 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
      */
     public PrintJob createPrintJob() throws PrintException, VException {
       PdfPrintJob        printJob;
+      PdfPrintJob        pdfPrintJob;
 
       printJob = reports[0].printProlog();
-
+      
       for (int i = 0; i < reports.length; i++) {
          // add report to print job
          reports[i].continuePrinting(printJob, restartPageNumer);
@@ -211,7 +212,9 @@ public abstract class PProtectedPage extends PPage implements DBContextHandler, 
         }
 
         stamper.close();
-        return new PdfPrintJob(file, printJob.getFormat());
+        pdfPrintJob = new PdfPrintJob(file, printJob.getFormat());
+        pdfPrintJob.setTitle(reports[0].getTitle());
+        return pdfPrintJob;
       } catch (Exception e) {
         throw new InconsistencyException(e);
       }

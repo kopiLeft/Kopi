@@ -92,6 +92,13 @@ public abstract class PPage {
   }
 
   /**
+   * Gets the title of this page
+   */
+  public String getTitle() {
+    return title;
+  }
+
+  /**
    * Sets the title of this page
    */
   public void setTitle(String title) {
