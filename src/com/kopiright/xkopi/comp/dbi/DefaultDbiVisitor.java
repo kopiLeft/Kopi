@@ -295,6 +295,7 @@ public class DefaultDbiVisitor extends DefaultSqlVisitor implements DbiVisitor {
                                            Expression tableName,
                                            ArrayList privileges,
                                            ArrayList userList,
+                                           int type,
                                            boolean grantOption)
     throws PositionedError
   {

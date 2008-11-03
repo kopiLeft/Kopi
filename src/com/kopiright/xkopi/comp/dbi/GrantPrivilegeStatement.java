@@ -46,11 +46,13 @@ public class GrantPrivilegeStatement extends DbiStatement {
 				 Expression tableName,
 				 ArrayList privileges,
 				 ArrayList userList,
+                                 int type,
 				 boolean grantOption) {
     super(ref);
     this.tableName = tableName;
     this.privileges = privileges;
     this.userList = userList;
+    this.type = type;
     this.grantOption = grantOption;
  }
 
@@ -64,7 +66,7 @@ public class GrantPrivilegeStatement extends DbiStatement {
    * @param	visitor			the visitor
    */
   public void accept(DbiVisitor visitor) throws PositionedError {
-    visitor.visitGrantPrivilegeStatement(this, tableName, privileges, userList, grantOption);
+    visitor.visitGrantPrivilegeStatement(this, tableName, privileges, userList, type, grantOption);
   }
 
   // ----------------------------------------------------------------------
@@ -74,5 +76,9 @@ public class GrantPrivilegeStatement extends DbiStatement {
   Expression	tableName;
   ArrayList	privileges;
   ArrayList	userList;
+  int           type;
   boolean	grantOption;
+
+  public static final int TABLE_TYPE = 1;
+  public static final int SEQUENCE_TYPE = 2;
 }

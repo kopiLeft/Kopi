@@ -277,10 +277,17 @@ grantPrivilegeStatement []
   ArrayList             userList;
   boolean               hasGrantOption = false;
   TokenReference        sourceRef = buildTokenReference();
+  int                   type = 0;
 }
 :
   privilege = privileges[]
-  "ON" tableName = sTableName[]
+  "ON" 
+  (       
+      "TABLE" { type = GrantPrivilegeStatement.TABLE_TYPE; }
+    |
+      "SEQUENCE" { type = GrantPrivilegeStatement.SEQUENCE_TYPE; }
+  ) ?
+  tableName = sTableName[]
   "TO"  userList = userList[]
   ("WITH" "GRANT" "OPTION" { hasGrantOption = true; } )?
     {
@@ -288,6 +295,7 @@ grantPrivilegeStatement []
                                          tableName,
                                          privilege,
                                          userList,
+                                         type,       
                                          hasGrantOption);
     }
 ;

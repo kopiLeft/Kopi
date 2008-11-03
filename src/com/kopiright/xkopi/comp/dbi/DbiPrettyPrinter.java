@@ -507,6 +507,7 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
                                            Expression tableName,
                                            ArrayList privileges,
                                            ArrayList userList,
+                                           int type,
                                            boolean grantOption)
     throws PositionedError
   {

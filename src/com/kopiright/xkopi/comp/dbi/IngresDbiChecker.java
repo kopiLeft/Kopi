@@ -287,9 +287,9 @@ public class IngresDbiChecker extends DbiChecker implements DbiVisitor {
       ((TablePrivilege)privileges.get(i)).accept(this);
     }
     current.append(" ON ");
-    if (type == 1) {
+    if (type == GrantPrivilegeStatement.TABLE_TYPE) {
       current.append(" TABLE ");
-    } else if (type == 2) {
+    } else if (type == GrantPrivilegeStatement.SEQUENCE_TYPE) {
       current.append(" SEQUENCE ");
     }
     tableName.accept(this);

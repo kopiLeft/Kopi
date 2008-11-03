@@ -394,6 +394,7 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
                                            Expression tableName,
                                            ArrayList privileges,
                                            ArrayList userList,
+                                           int type,
                                            boolean grantOption)
     throws PositionedError
   {
