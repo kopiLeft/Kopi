@@ -368,7 +368,11 @@ public class Console extends Compiler implements Constants {
     try {
       Statement         stmt = connection.createStatement();
       final String      sqlCode = genSQLCode(statement);
-
+      
+      if (sqlCode.equals("")) {
+        return;
+      }
+      
       if (statement instanceof SelectStatement) {
         ResultSet               rset = stmt.executeQuery(sqlCode);
         ResultSetMetaData       rsmd = rset.getMetaData();
