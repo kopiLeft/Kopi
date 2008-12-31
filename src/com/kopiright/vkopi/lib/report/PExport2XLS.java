@@ -46,6 +46,7 @@ import com.kopiright.xkopi.lib.type.Month;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullTime;
 import com.kopiright.xkopi.lib.type.Time;
+import com.kopiright.xkopi.lib.type.Timestamp;
 import com.kopiright.xkopi.lib.type.Week;
 
 public class PExport2XLS extends PExport implements Constants {
@@ -162,7 +163,11 @@ public class PExport2XLS extends PExport implements Constants {
           if (orig[j] instanceof Fixed) {
             cell.setCellValue(((Fixed) orig[j]).doubleValue());
           } else if (orig[j] instanceof Integer) {
-            cell.setCellValue(((Integer) orig[j]).doubleValue());
+            if (datatype[j] == HSSFCell.CELL_TYPE_BOOLEAN) {
+              cell.setCellValue(((Integer) orig[j]).doubleValue() == 1 ? true : false);
+            } else {
+              cell.setCellValue(((Integer) orig[j]).doubleValue());
+            }
           } else if (orig[j] instanceof Boolean) {
             cell.setCellValue(((Boolean) orig[j]).booleanValue());
           } else if (orig[j] instanceof Date) {
@@ -174,6 +179,11 @@ public class PExport2XLS extends PExport implements Constants {
             cal.set(Calendar.DAY_OF_MONTH, date.getDay());
 
             cell.setCellValue(cal);
+          } else if (orig[j] instanceof Timestamp ||
+                     orig[j] instanceof java.sql.Timestamp) {
+            // date columns can be returned as a timestamp by the jdbc driver.
+            cell.setCellValue(strings[j]);
+            datatype[j] = HSSFCell.CELL_TYPE_STRING;
           } else if (orig[j] instanceof Month) {
             Date                date = ((Month) orig[j]).getFirstDay();
             GregorianCalendar   cal = new GregorianCalendar();
