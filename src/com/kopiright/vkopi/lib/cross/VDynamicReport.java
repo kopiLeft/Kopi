@@ -89,6 +89,7 @@ public class VDynamicReport extends VReport {
     this.block = block;
     this.fields = initFields(block.getFields());
     this.columns = new VReportColumn[fields.length];
+    this.idColumn = -1;
     setPageTitle(block.getTitle());
     initDefaultActors();
     initDefaultCommands();
@@ -122,7 +123,7 @@ public class VDynamicReport extends VReport {
     int       size = 0;
     
     for (int i = 0; i < fields.length; i++) {
-      if ((!fields[i].isInternal() || fields[i].isInternal() && fields[i].getName().equals("ID"))) {
+      if ((!fields[i].isInternal() || fields[i].getName().equals("ID"))) {
         if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
           if (!(fields[i] instanceof VTextField || fields[i] instanceof VImageField || fields[i] instanceof VColorField)) {
             processedFields[size] = fields[i];
@@ -194,26 +195,24 @@ public class VDynamicReport extends VReport {
                                          ((VFixnumField)fields[i]).getScale(0),
                                          null);
       } else if (fields[i] instanceof VIntegerField) {
-        // field ID of the block will represent the last column in the report ,and it will have the red color.
+        // hidden field ID of the block will represent the last column in the report.
         //!!! graf 20080418: replace by block.getIdField()
-        if(fields[i].getName().equals("ID")) {
-          DColumnStyle  style = new DColumnStyle();
-          
+        if(fields[i].getName().equals("ID") && fields[i].isInternal()) {
+          idColumn = fields.length - 1;
           columns[fields.length - 1] = new VIntegerColumn(null,
                                                           0,
                                                           0,
                                                           getColumnGroups(fields[i]),
                                                           null,
-                                                          0,
+                                                          fields[i].getWidth(),
                                                           null);
           columns[fields.length - 1].setFolded(true);
-          style.setFont(0);
-          style.setBackground(Constants.CLR_RED);
-          style.setForeground(Constants.CLR_RED);
-          columns[fields.length - 1].setStyles(new DColumnStyle[] {style});
           // next column will have the position col.
           col -= 1;
         } else {
+          if (fields[i].getName().equals("ID")) {
+            idColumn = i;
+          }
           columns[col] = new VIntegerColumn(null,
                                             0,
                                             0,
@@ -363,14 +362,14 @@ public class VDynamicReport extends VReport {
             if (block.isMulti()) {
               block.setActiveRecord(-1);
               block.setActiveField(null);
-            } 
+            }
             query.open("SELECT " + searchColumns + " " + searchTables  + " " + searchCondition);
             if(query.next()) {
               // don't  add a line when ID equals 0.
-              if (!query.getObject(fields.length).toString().equals("0")) {
+              if (!query.getObject(idColumn + 1).toString().equals("0")) {
                 List result = new ArrayList();
                 for (int i=0; i< fields.length; i++) {
-                  result.add(query.getObject(i + 1 ));
+                  result.add(query.getObject(i + 1));
                 }
                 model.addLine(result.toArray());
               }
@@ -378,7 +377,7 @@ public class VDynamicReport extends VReport {
             while (query.next()) {
               List result = new ArrayList();
               for (int i=0; i< fields.length; i++) {
-                result.add(query.getObject(i + 1 ));
+                result.add(query.getObject(i + 1));
               }
               model.addLine(result.toArray()); 
             }
@@ -482,30 +481,6 @@ public class VDynamicReport extends VReport {
   }
   
   /**
-   * get the key column position for the given table (position is calculated in the  order of the report columns), return -1 if not found.
-   */
-  // !!! wael 20070514: a table can have many keys, this method returns the first key found.
-  private int getKeyColumnForTable(int table) {
-    int       i;
-    
-    // the order of fields is different of the order of dynamic report columns, 
-    // since ID field, represents the last column in the dynamic report.
-    // search before field ID.
-    for (i = 0; i < fields.length - 1 && !fields[i].isInternal(); i++) {
-      if (fields[i].getColumnCount() > 0 && fields[i].getColumn(0).getTable() == table && fields[i].getColumn(0).isKey()) {        
-        return i;
-      }
-    }
-    // search after field ID.
-    for (int j = i + 1; j < fields.length - 1; j++) {
-      if (fields[j].getColumnCount() > 0 && fields[j].getColumn(0).getTable() == table && fields[j].getColumn(0).isKey()) {
-        return j - 1; 
-      }
-    }
-    return -1;
-  }
-  
-  /**
    * return the report column group for the given table.
    */
   private int getColumnGroups(int table) {
@@ -518,18 +493,7 @@ public class VDynamicReport extends VReport {
         if (col != -1 && flds[i].getColumn(col).getName().equals("ID")) {
           if (flds[i].fetchColumn(0) != -1) {
             // group with the Id of the block.
-            return this.fields.length - 1;
-          } else {
-            // group with the key of the joined table.
-            // if this table is joined with many tables, group with the key of the next table in the list of columns for this field.
-            // if the next table doesn't exist do nothing.
-            if (col + 1 < flds[i].getColumnCount()) {
-              return getKeyColumnForTable(flds[i].getColumn(col + 1).getTable());
-            } else if (flds[i].getColumnCount() == 2) {
-              return getKeyColumnForTable(flds[i].getColumn(col - 1).getTable());
-            } else {
-              return -1;
-            }
+            return idColumn;
           }
         }
       }
@@ -579,6 +543,7 @@ public class VDynamicReport extends VReport {
   private VBlock                block;    
   private SActor[]              actorsDef;
   private int                   number = 0;
+  private int                   idColumn = 0;
   private static String EXPORT_ICON            = "export";
   private static String FOLD_ICON              = "fold";
   private static String UNFOLD_ICON            = "unfold";
