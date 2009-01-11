@@ -36,6 +36,10 @@ public final class NotNullTimestamp extends Timestamp {
     super(millis);
   }
 
+  public NotNullTimestamp(java.util.Calendar calendar) {
+    super(calendar);
+  }
+
   public static NotNullTimestamp castToNotNull(Timestamp value) {
     return (NotNullTimestamp)value;
   }

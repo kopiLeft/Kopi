@@ -20,6 +20,7 @@
 package com.kopiright.xkopi.lib.type;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * This class represents kopi timestamp types
@@ -36,6 +37,12 @@ public class Timestamp extends Type {
 
   /*package*/ Timestamp(long millis) {
     timestamp = new java.sql.Timestamp(millis);
+  }
+
+  /*package*/ Timestamp(Calendar calendar) {
+    if (calendar != null) {
+      timestamp = new java.sql.Timestamp(calendar.getTimeInMillis());
+    }
   }
 
   // ----------------------------------------------------------------------
