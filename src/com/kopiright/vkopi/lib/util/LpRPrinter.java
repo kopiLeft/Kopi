@@ -119,26 +119,13 @@ public class LpRPrinter implements Printer {
       return "not yet implemented";
     }
 
+
     protected byte[] readFully(InputStream is) throws IOException {
-      StringBuffer      header = new StringBuffer("%Kopi ");
-
-      if (data.getNumberOfCopies() > 1) {
-        header.append("-c" + data.getNumberOfCopies() + " ");
-      }
-      if (tray > 1) {
-        header.append("-t" + tray + " ");
-      }
-      if (paperFormat != null) {
-        header.append("-p" + paperFormat);
-      }
-      header.append("\n");
-
       int         size = (int)is.available();
-      byte[]      headerB = header.toString().getBytes();
-      int         count = headerB.length;
-      byte[]      data = new byte[size + headerB.length];
-      System.arraycopy(headerB, 0, data, 0, headerB.length);
-      size += count;
+      byte[]      data = new byte[size];
+      int         count;
+
+      count = 0;
       while (count < size) {
         count += is.read(data, count, size-count);
       }
