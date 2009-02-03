@@ -2001,7 +2001,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       VField    fld = fields[i];
 
       //!!! graf 20080329: should we replace fld.getName().equals("ID") by fld == getIdField() ?
-      if (fld.isInternal() && fld.getName().equals("ID") && fld.getColumnCount() > 0) {
+      if (fld.isInternal() && fld.getName().equals(getIdField().getName()) && fld.getColumnCount() > 0) {
         if (result == null) {
           result = "";
         } else {
