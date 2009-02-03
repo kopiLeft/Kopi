@@ -123,7 +123,7 @@ public class VDynamicReport extends VReport {
     int       size = 0;
     
     for (int i = 0; i < fields.length; i++) {
-      if ((!fields[i].isInternal() || fields[i].getName().equals("ID"))) {
+      if ((!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName()))) {
         if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
           if (!(fields[i] instanceof VTextField || fields[i] instanceof VImageField || fields[i] instanceof VColorField)) {
             processedFields[size] = fields[i];
@@ -196,8 +196,7 @@ public class VDynamicReport extends VReport {
                                          null);
       } else if (fields[i] instanceof VIntegerField) {
         // hidden field ID of the block will represent the last column in the report.
-        //!!! graf 20080418: replace by block.getIdField()
-        if(fields[i].getName().equals("ID") && fields[i].isInternal()) {
+        if(fields[i].getName().equals(block.getIdField().getName()) && fields[i].isInternal()) {
           idColumn = fields.length - 1;
           columns[fields.length - 1] = new VIntegerColumn(null,
                                                           0,
@@ -210,7 +209,7 @@ public class VDynamicReport extends VReport {
           // next column will have the position col.
           col -= 1;
         } else {
-          if (fields[i].getName().equals("ID")) {
+          if (fields[i].getName().equals(block.getIdField().getName())) {
             idColumn = i;
           }
           columns[col] = new VIntegerColumn(null,
@@ -305,8 +304,7 @@ public class VDynamicReport extends VReport {
         throw new InconsistencyException("Error: unknown field type.");
       }
       // add labels for columns.
-      //!!! graf 20080418: replace by block.getIdField()
-      if (!fields[i].getName().equals("ID")) { 
+      if (!fields[i].getName().equals(block.getIdField().getName())) { 
         String  columnLabel;
         
         if (fields[i].getLabel() != null) {
@@ -327,13 +325,13 @@ public class VDynamicReport extends VReport {
           ArrayList list = new ArrayList();
           
           for (int j = 0; j < fields.length; j++) { 
-            if (!fields[j].getName().equals("ID")) { 
+            if (!fields[j].getName().equals(block.getIdField().getName())) { 
               list.add(fields[j].getObject());
             }
           }
           // add ID field in the end.
           for (int j = 0; j < fields.length; j++) { 
-            if (fields[j].getName().equals("ID")) { 
+            if (fields[j].getName().equals(block.getIdField().getName())) { 
               list.add(fields[j].getObject());
               break;
             }
@@ -490,7 +488,7 @@ public class VDynamicReport extends VReport {
       if (flds[i].isInternal() && flds[i].getColumnCount() > 1) {
         int col = flds[i].fetchColumn(table);
         
-        if (col != -1 && flds[i].getColumn(col).getName().equals("ID")) {
+        if (col != -1 && flds[i].getColumn(col).getName().equals(block.getIdField().getName())) {
           if (flds[i].fetchColumn(0) != -1) {
             // group with the Id of the block.
             return idColumn;
@@ -508,7 +506,7 @@ public class VDynamicReport extends VReport {
     if (field.getColumnCount() == 0 || field.getColumn(0).getTable() == 0) {
       return -1;
     } else {
-        return getColumnGroups(field.getColumn(0).getTable());
+      return getColumnGroups(field.getColumn(0).getTable());
     }
   }
   
