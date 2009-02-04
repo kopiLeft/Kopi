@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id$
+ * $Id: ProgressWindow.java 33836 2009-02-02 16:37:31Z bmwael $
  */
 
 package com.kopiright.vkopi.lib.visual;
@@ -43,72 +43,53 @@ import javax.swing.border.LineBorder;
  * This class displays a window with a menu, a tool bar, a content panel
  * and a footbar
  */
-public class ProgressWindow {
+public class WaitWindow {
 
-  public ProgressWindow(Frame frame) {
+  public WaitWindow(Frame frame) {
     this.frame = frame;
   }
 
   // ---------------------------------------------------------------------
   // INFORMATIONS
   // ---------------------------------------------------------------------
+  class TimerListener implements ActionListener {
+    public void actionPerformed(ActionEvent evt) {
+      long newTime = System.currentTimeMillis();
 
-  class ProgressThread extends Thread {
-    public void run() {
-      int progress = 0;
-      while (progress < 100) {
-        try {
-          Thread.sleep(100);
-        } catch (InterruptedException ignore) {
-          // ignore
-        }
-        if (totalJobs != 0) {
-          progress = (jobNumber * 100) / totalJobs;
-          progressBar.setValue(progress);
-        }
-      }
+      seconds += newTime - time;
+      time = newTime;
+
+      progressBar.setValue(seconds);
     }
   }
-  
-  private void setTotalJobs(int totalJobs) {
-    this.totalJobs = totalJobs;
-  }
-  
-  public void setCurrentJob(int jobNumber) {
-    if (jobNumber > totalJobs) {
-      jobNumber = totalJobs;
-    }
-    this.jobNumber = jobNumber;
-  }
-  
   /**
    * setWaitInfo
    */
-  public final void setProgressDialog(String message, int totalJobs) {
+  public final void setWaitDialog(String message, int maxTime) {
     if (waitDialog == null) {
       waitDialog = new JDialog(frame, "no frame", true);
       waitDialog.setUndecorated(true);
       waitDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-      progressBar = new JProgressBar(0, 100);
+      progressBar = new JProgressBar(0, maxTime);
       progressBar.setValue(0);
       progressBar.setStringPainted(true);
 
       text = new JLabel(message);
-      
+
       JPanel            panel = new JPanel();
-      
+
       panel.setLayout(new BorderLayout());
       panel.add(new JLabel("<html><b> Bitte um Geduld ...</b><br>" + message), BorderLayout.NORTH);
       panel.add(progressBar, BorderLayout.SOUTH);
       panel.setBorder(new CompoundBorder(new LineBorder(Color.black, 1), new EmptyBorder(2,2,2,2)));
-      
+
       waitDialog.getContentPane().add(panel);
-      setTotalJobs(totalJobs);
-      
-      p = new ProgressThread();
-      p.start();
-      
+
+      timer = new Timer(250, new TimerListener()); 
+      timer.start();
+      time = System.currentTimeMillis();
+
       Dimension         screen = Toolkit.getDefaultToolkit().getScreenSize();
       Point		parentPos = new Point(0, 0);
 
@@ -143,27 +124,27 @@ public class ProgressWindow {
     } else {
       // change dialog text
       text.setText("<html><b> Bitte um Beduld</b><br>" + message);
-      progressBar.setMaximum(100);
+      progressBar.setMaximum(maxTime);
     }
   }
-  
+
   /**
    * change mode to free state
    */
-  public final void unsetProgressDialog() {
+  public final void unsetWaitDialog() {
     waitDialog.setVisible(false);
-    p.stop();
+    timer.stop();
     waitDialog.dispose();
     waitDialog = null;
   }
-  
-  int           jobNumber = 0;
-  int           totalJobs;
-  
-  ProgressThread p;
-  
+
   Frame         frame;
+
+  int           seconds = 0;
+  long          time;
+
   JDialog       waitDialog;
+  Timer         timer;
   JProgressBar  progressBar;
   JLabel        text;
 }

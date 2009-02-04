@@ -77,7 +77,7 @@ import com.kopiright.vkopi.lib.visual.PropertyException;
  * This class displays a window with a menu, a tool bar, a content panel
  * and a footbar
  */
-public abstract class DWindow extends JPanel implements VActionListener, ModelCloseListener, WaitDialogListener {
+public abstract class DWindow extends JPanel implements VActionListener, ModelCloseListener, WaitDialogListener, ProgressDialogListener {
 
   /**
    * Constructor
@@ -119,7 +119,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     waitInfoHandler = new WaitInfoHandler();
     model.addWaitInfoListener(waitInfoHandler);
     model.addWaitDialogListener(this);
-
+    model.addProgressDialogListener(this);
+    
     messageHandler = new MessageHandler();
     model.addMessageListener(messageHandler);
   }
@@ -825,24 +826,43 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     footPanel.setStatePanel(panel);
   }
 
+  public final void setProgressDialog(String message, int totalJobs) {
+    if (progressWindow == null) {
+      progressWindow = new ProgressWindow(getFrame());
+    } 
+    progressWindow.setProgressDialog(message, totalJobs);
+  }
+  
+  public final void unsetProgressDialog() {
+    if (progressWindow != null) {
+      progressWindow.unsetProgressDialog();
+      progressWindow = null;
+    }
+  }
+
+  public final void setCurrentJob(int currentJob) {
+    if (progressWindow != null) {
+      progressWindow.setCurrentJob(currentJob);
+    }
+  }
 
   /**
    * setWaitInfo
    */
   public final void setWaitDialog(String message, int maxTime) {
-    if (progressWindow == null) {
-      progressWindow = new ProgressWindow(getFrame());
-    } 
-    progressWindow.setWaitDialog(message, maxTime);
+    if (waitWindow == null) {
+      waitWindow = new WaitWindow(getFrame());
+    }
+    waitWindow.setWaitDialog(message, maxTime);
   }
 
   /**
    * change mode to free state
    */
   public final void unsetWaitDialog() {
-    if (progressWindow != null) {
-      progressWindow.unsetWaitDialog();
-      progressWindow = null;
+    if (waitWindow != null) {
+      waitWindow.unsetWaitDialog();
+      waitWindow = null;
     }
   }
 
@@ -1353,6 +1373,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   private VWindow			model;
 
   private ProgressWindow		progressWindow;
+  private WaitWindow                    waitWindow;
   private DMenuBar			menuBar;
   private DFootPanel			footPanel;
   private JPanel			buttonPanel;

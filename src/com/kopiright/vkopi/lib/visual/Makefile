@@ -34,7 +34,7 @@ JAVAFILES +=	ActionHandler Application 				\
 		FileChooser DHelpViewer VHelpViewer			\
 		KopiAction KopiExecutable				\
 		MenuItemRenderer MenuTree MessageCode Module 		\
-		Registry WaitDialogListener				\
+		Registry WaitDialogListener ProgressDialogListener	\
 		SActor SDefaultActor VActionListener			\
 		SplashScreen Utils VCommand VException			\
 		VExecFailedException VHelpGenerator			\
@@ -44,7 +44,7 @@ JAVAFILES +=	ActionHandler Application 				\
 		UIBuilder WaitInfoListener MessageListener		\
 		VerifyConfiguration ApplicationConfiguration		\
 		PrinterManager PropertyException ModelCloseListener	\
-		UserConfiguration Message VlibProperties
+		UserConfiguration Message VlibProperties WaitWindow
 
 
 OPTIONS =	ApplicationOptions

@@ -478,6 +478,36 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       display.setInformationText(text);
     }
   }
+
+  /**
+   * setProgressDialog
+   */
+  public void setProgressDialog(String message, int currentJob) {
+    Object[]          listeners = modelListener.getListenerList();
+    
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]==ProgressDialogListener.class) {
+        ((ProgressDialogListener)listeners[i+1]).setProgressDialog(message, currentJob);
+      }
+    }
+  }
+  
+  public final void setCurrentJob(int currentJob) {
+    if (getDisplay() != null) {
+      getDisplay().setCurrentJob(currentJob);
+    }
+  }
+  
+  public void unsetProgressDialog() {
+    Object[]          listeners = modelListener.getListenerList();
+    
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]==ProgressDialogListener.class) {
+        ((ProgressDialogListener)listeners[i+1]).unsetProgressDialog();
+      }
+    }
+  }
+  
   /**
    * setWaitInfo
    */
@@ -729,6 +759,14 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     modelListener.remove(WaitDialogListener.class, wil);
   }
 
+  public void addProgressDialogListener(ProgressDialogListener wil) {
+    modelListener.add(ProgressDialogListener.class, wil);
+  }
+  
+  public void removeProgressDialogListener(ProgressDialogListener wil) {
+    modelListener.remove(ProgressDialogListener.class, wil);
+  }
+  
   public void addVActionListener(VActionListener al) {
     modelListener.add(VActionListener.class, al);
   }
