@@ -125,7 +125,7 @@ public class SapdbDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("ALTER TABLE ");
     tableName.accept(this);
     if ( !(tableConstraint instanceof ReferentialConstraintDefinition) ) {
-      current.append(" ADD CONSTRAINT ");
+      current.append(" ADD ");
     }
     tableConstraint.accept(this);
   }
@@ -472,6 +472,9 @@ public class SapdbDbiChecker extends DbiChecker implements DbiVisitor {
     switch (type) {
     case UniqueConstraintDefinition.TYP_UNIQUE:
       current.append("UNIQUE ");
+      break;
+    case UniqueConstraintDefinition.TYP_PRIMARY:
+      current.append("PRIMARY KEY (");
       break;
     default:
       throw new InconsistencyException("Unexpected type");
