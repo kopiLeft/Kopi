@@ -468,8 +468,11 @@ public abstract class Application extends java.applet.Applet implements MessageL
       }
 
       if (smtpServer != null && sendMail) {
-        String    recipient, cc, bcc;
-
+        String  recipient;
+        String  cc;
+        String  bcc;
+        String  sender;
+        
         try {
           recipient = getDefaults().getDebugMailRecipient();
         } catch (PropertyException e) {
@@ -485,9 +488,14 @@ public abstract class Application extends java.applet.Applet implements MessageL
         } catch (PropertyException e) {
           bcc = null;
         }
+        try {
+          sender = getDefaults().getStringFor("debugging.mail.sender");
+        } catch (PropertyException e) {
+          sender = "kopi@kopiright.com";
+        }
         
         StringWriter    buffer = new StringWriter();
-        PrintWriter       writer = new PrintWriter(buffer);
+        PrintWriter     writer = new PrintWriter(buffer);
         // failureID is added to the subject of the mail.
         // similar error mail should have the smae id which makes the
         // easier to find duplicated messages.
@@ -561,9 +569,9 @@ public abstract class Application extends java.applet.Applet implements MessageL
                         recipient,
                         cc,
                         bcc,
-                        "[KOPI ERROR] " +applicationName + failureID,
+                        "[KOPI ERROR] " + applicationName + failureID,
                         buffer.toString(),
-                        "kopi@kopiright.com");
+                        sender);
       }
 
       if (logFile != null && writeLog) {
