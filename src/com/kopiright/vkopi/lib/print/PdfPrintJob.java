@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.print;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.PrintJob;
@@ -57,6 +58,11 @@ public class PdfPrintJob extends PrintJob {
     closed = true;
   }
 
+  public PdfPrintJob(InputStream stream, Rectangle format) throws IOException {
+    super(stream, format);
+    closed = true;
+  }
+  
   public PdfWriter getWriter() throws PSPrintException {
     if (closed) {
       throw new PSPrintException("Document is already closed");
