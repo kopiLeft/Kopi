@@ -40,6 +40,6 @@
 <msg identifier="BYTE_TOO_SMALL" format="The short \&quot;{0}\&quot; has to be bigger than the minimum required \&quot;{1}\&quot;" reference="DBI" level="0"/>
 <msg identifier="BYTE_TOO_BIG" format="The short \&quot;{0}\&quot; has to be smaller than the maximum required \&quot;{1}\&quot;" reference="DBI" level="0"/>
 <msg identifier="TYPE_NOT_EQUALS" format="The type \&quot;{0}\&quot; and the type \&quot;{1}\&quot; are not equals" reference="DBI" level="0"/>
-<msg identifier="STRING_SIZE" format="No size specified for string column." reference="DBI" level="0"/>
+<msg identifier="STRING_SIZE" format="No size specified for string column." reference="DBI" level="2"/>
 <msg identifier="SQL_EXCEPTION" format="A database exception has occured: \&quot;{0}\&quot;" reference="DBI" level="0"/>
 </messages>
