@@ -426,7 +426,7 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
       current.append("UNIQUE ");
       break;
     case UniqueConstraintDefinition.TYP_PRIMARY:
-      current.append("PRIMARY KEY ");
+      current.append("PRIMARY KEY (");
       break;
     default:
       throw new InconsistencyException("Unexpected type");

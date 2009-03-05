@@ -347,7 +347,21 @@ public class SapdbDriverInterface extends DriverInterface {
 
     return buffer.toString();
   }
-
+  
+  private String cast(String object, String type) {
+    if (type.startsWith("INT") || type.startsWith("NUMERIC") || type.startsWith("FIXED")) {
+      return "NUM(" + object + ")";
+    } else if (type.startsWith("STRING") || type.startsWith("CHAR")) {
+      return "CHR(" + object + ")";
+    } else if (type.equals("DATETIME[YY:DD]")) {
+      return "CHAR(" + object + ", " + "'YYYY-MM-DD')";
+    } else if (type.equals("TIMESPAN[MI]")) {
+      return "CHAR(" + object + ", " + "'MM')";
+    } else {
+      return object;
+    }
+  }
+  
   /**
    * Converts a function call in JDBC syntax to native syntax
    *
@@ -440,7 +454,7 @@ public class SapdbDriverInterface extends DriverInterface {
         return "DATE";
 
       case 18:  // USER
-        return "USER";
+        return "LOWER(USER)";
 
       case 19:  // SPACE
         return "LFILL('',' '," + arguments.elementAt(1) + ")";
@@ -507,6 +521,8 @@ public class SapdbDriverInterface extends DriverInterface {
         return  "MOD(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
       case 37: // NEXTVAL/1
         return  arguments.elementAt(0) + ".NEXTVAL";
+      case 38: // CAST/2
+        return  cast((String)arguments.elementAt(0), (String)arguments.elementAt(1));
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
                                          "/" + arguments.size());
@@ -559,5 +575,6 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("INT2STRING/1", new Integer(35));
     functions.put("MOD/2", new Integer(36));
     functions.put("NEXTVAL/1", new Integer(37));
+    functions.put("CAST/2", new Integer(38));
   }
 }

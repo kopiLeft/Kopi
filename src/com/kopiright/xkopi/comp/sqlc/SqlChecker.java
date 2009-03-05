@@ -209,11 +209,11 @@ public class SqlChecker implements SqlVisitor {
   public void visitCastPrimary(CastPrimary self, Expression left, Type right)
     throws PositionedError
   {
-    current.append(" CAST (");
+    current.append("{fn CAST (");
     left.accept(this);
-    current.append(" AS ");
+    current.append(",");
     right.accept(this);
-    current.append(")");
+    current.append(")}");
   }
 
   /*
