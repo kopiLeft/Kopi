@@ -186,6 +186,8 @@ public class Query {
       buildText(format);
       traceQuery(TRL_QUERY, "OPEN " + name);
       rset = stmt.executeQuery(conn.convertSql(text));
+      //!!! wael 20090306 WORKAROUND FOR SAP DB BUG, this workaround is used also on Cursor.java
+      rset.setFetchSize(1);
       traceTimer(TRL_QUERY, "OPEN " + name);
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("OPEN " + name, text), exc);
