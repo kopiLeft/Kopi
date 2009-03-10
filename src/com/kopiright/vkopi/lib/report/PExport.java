@@ -146,22 +146,16 @@ public abstract class PExport {
         startGroup(column.format(row.getValueAt(table.convertColumnIndexToModel(firstVisibleColumn))));
         exportHeader();
       }
-      if (pconfig.order != Constants.SUM_AT_TAIL
-          // if we have a new page for each group
-          // the sum over all groups is not shown
-          && (!pconfig.groupFormfeed || row.getLevel() != maxLevel)) {
+      if (pconfig.order != Constants.SUM_AT_TAIL) {
         // show sum first
         exportRow(row, false);
       }
-
+      
       for (int i = 0; i < row.getChildCount(); i++) {
 	addTree((VReportRow)row.getChildAt(i));
       }
 
-      if (pconfig.order == Constants.SUM_AT_TAIL
-          // if we have a new page for each group
-          // the sum over all groups is not shown
-          && (!pconfig.groupFormfeed || row.getLevel() != maxLevel)) {
+      if (pconfig.order == Constants.SUM_AT_TAIL) {
         // show sum at the end
         exportRow(row, true);
       }
