@@ -34,6 +34,8 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Date;
@@ -48,7 +50,6 @@ import com.kopiright.xkopi.lib.type.NotNullWeek;
 import com.kopiright.xkopi.lib.type.Time;
 import com.kopiright.xkopi.lib.type.Timestamp;
 import com.kopiright.xkopi.lib.type.Week;
-
 
 public class Query {
 
@@ -177,18 +178,29 @@ public class Query {
    */
   public void open(String format) throws DBException {
     try {
+      String convertedSql;
+      
       stmt = conn.getJDBCConnection().createStatement();
-
+      
       if (supportsCursorNames()) {
         name = "C" + nextCursorId++;
 	stmt.setCursorName(name);
       }
       buildText(format);
       traceQuery(TRL_QUERY, "OPEN " + name);
-      rset = stmt.executeQuery(conn.convertSql(text));
-      //!!! wael 20090306 WORKAROUND FOR SAP DB BUG, this workaround is used also on Cursor.java
-      rset.setFetchSize(1);
+      convertedSql = conn.convertSql(text);
+      rset = stmt.executeQuery(convertedSql);
       traceTimer(TRL_QUERY, "OPEN " + name);
+      //!!! wael 20090306 WORKAROUND FOR SAP DB BUG, this workaround is used also on Cursor.java
+      if (conn.getDriverInterface() instanceof SapdbDriverInterface) {
+        String patternStr = "FOR *UPDATE";
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher matcher = pattern.matcher(convertedSql.toUpperCase());
+        
+        if (matcher.find()) {
+          rset.setFetchSize(1);
+        }
+      }
     } catch (SQLException exc) {
       throw conn.convertException(buildQueryForTrace("OPEN " + name, text), exc);
     }

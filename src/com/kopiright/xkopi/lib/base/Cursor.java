@@ -30,6 +30,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Date;
@@ -78,21 +80,29 @@ public class Cursor {
       throw new DBCursorException("This cursor (" + this.name + ") is already opened");
     } else {
       try {
+        String convertedSql;
+        
         stmt = conn.getJDBCConnection().createStatement();
         this.conn = conn;
-
+        
         if (supportsCursorNames()) {
           this.name = "K" + nextCursorId++;
           stmt.setCursorName(name);
         }
         traceQuery(Query.TRL_QUERY, "OPEN", sql);
-        rset = stmt.executeQuery(conn.convertSql(sql));
+        convertedSql = conn.convertSql(sql);
+        rset = stmt.executeQuery(convertedSql);
         traceTimer(Query.TRL_TIMER, "OPEN");
         
-        //!!! wael 20080904 : this workaround fails with ingres.
-        if (!(conn.getDriverInterface() instanceof IngresDriverInterface)) {
+        if (conn.getDriverInterface() instanceof SapdbDriverInterface) {
           //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
-          rset.setFetchSize(1);
+          String patternStr = "FOR *UPDATE";
+          Pattern pattern = Pattern.compile(patternStr);
+          Matcher matcher = pattern.matcher(convertedSql.toUpperCase());
+          
+          if (matcher.find()) {
+            rset.setFetchSize(1);
+          }
         }
       } catch (SQLException exc) {
         throw conn.convertException(exc);
