@@ -107,7 +107,20 @@ public class TransbaseDbiChecker extends DbiChecker implements DbiVisitor {
     column.accept(this);
     current.append(") ");
   }
-
+  
+  /*
+   * Visits CastPrimary
+   */
+  public void visitCastPrimary(CastPrimary self, Expression left, Type right)
+    throws PositionedError
+  {
+    current.append("CAST (");
+    left.accept(this);
+    current.append(" AS ");
+    right.accept(this);
+    current.append(")");
+  }
+  
   /**
    * Visits BlobType
    */
