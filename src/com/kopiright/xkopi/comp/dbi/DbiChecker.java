@@ -75,6 +75,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
       return new MysqlDbiChecker(context);
     } else if (syntax.equals("ingres")) {
       return new IngresDbiChecker(context);
+    } else if (syntax.equals("spooler")) {
+      return new SpoolerDbiChecker(context);
     } else {
       System.err.println("syntax " + syntax + " not found using, default syntax." );
       return new KopiDbiChecker(context);

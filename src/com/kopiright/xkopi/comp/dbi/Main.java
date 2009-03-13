@@ -435,7 +435,9 @@ public class Main extends Compiler implements Constants {
   }
 
   protected void handleStatment(String str) {
-    out.println(str);
+    if (!str.trim().equals("")) {
+      out.println(str);
+    }
   }
 
   /**
