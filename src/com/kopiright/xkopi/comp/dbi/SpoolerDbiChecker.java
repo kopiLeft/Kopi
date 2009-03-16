@@ -400,7 +400,7 @@ public class SpoolerDbiChecker extends DbiChecker implements DbiVisitor {
       +    "IF (MO OF " + column + ") < 10  THEN '0' || TO_CHAR(MO OF " + column + ") ELSE TO_CHAR(MO OF " + column + ")  FI "
       +    "|| '-' || "
       +    "IF (DD OF " + column + ") < 10  THEN '0' ||  TO_CHAR(DD OF " + column + ") ELSE TO_CHAR(DD OF " + column + ")  FI "
-      +    "|| '-' || "
+      +    "|| ' ' || "
       +    "IF (HH OF " + column + ") < 10 THEN '0' || TO_CHAR(HH OF " + column + ") ELSE TO_CHAR(HH OF " + column + ") FI "
       +    "|| ':' || "
       +    "IF (MI OF " + column + ") < 10 THEN '0' || TO_CHAR(MI OF " + column + ") ELSE TO_CHAR(MI OF " + column + ") FI "
