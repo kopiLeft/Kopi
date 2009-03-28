@@ -28,6 +28,7 @@ public interface PrintManager {
    * Handle printing
    * @param	parent	the form that initiate the printing process
    * @param	report	the report to print
+   * @param     copies  the number of copies to print
    * @param	printer	an optional default printer
    * @param	fax	an optional default fax number
    * @param	mail	an optional default mail address
