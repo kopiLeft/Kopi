@@ -22,9 +22,8 @@ package com.kopiright.xkopi.lib.base;
 import java.sql.SQLException;
 
 public class DBForeignKeyException extends DBConstraintException {
-
-
-/**
+  
+  /**
    * Constructor
    *
    * @param	original		the original SQLException
@@ -33,7 +32,7 @@ public class DBForeignKeyException extends DBConstraintException {
   public DBForeignKeyException(SQLException original, String constraint) {
     super(original, constraint);
   }
-
+  
   /**
    * Constructor
    *
@@ -45,8 +44,7 @@ public class DBForeignKeyException extends DBConstraintException {
     super(query, original, constraint);
   }
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 7172366406602713556L;
-  
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = 7172366406602713556L;
 }
