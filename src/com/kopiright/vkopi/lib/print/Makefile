@@ -33,8 +33,8 @@ JAVAFILES +=	PPage PBlock PPosition PSize PRectangleBlock		\
 		PRecursiveBlock PListBlock				\
 		PProtectedPage PHorizontalBlock				\
 		PreviewPrinter Printable PrintManager			\
-		DefaultPrintManager LabelPrinter PLabelForm		\
-		LabelPrintable PSPrintException				\
+		DefaultPrintManager LabelPrinter			\
+		PSPrintException					\
 		PdfPrintJob Laserjet EpsonLQ MailPrinter
 
 ## ----------------------------------------------------------------------

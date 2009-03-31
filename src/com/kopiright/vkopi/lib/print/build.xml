@@ -18,8 +18,7 @@
                    PRecursiveBlock.java PListBlock.java 
                    PProtectedPage.java PHorizontalBlock.java 
                    PreviewPrinter.java Printable.java PrintManager.java 
-                   DefaultPrintManager.java PLabelForm.java 
-                   LabelPrintable.java PSPrintException.java PdfPrintJob.java" />
+                   DefaultPrintManager.java PSPrintException.java PdfPrintJob.java" />
 
 
   <import file="${topdir}/defs.xml" />
