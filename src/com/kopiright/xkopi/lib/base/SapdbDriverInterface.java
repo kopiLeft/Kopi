@@ -521,8 +521,21 @@ public class SapdbDriverInterface extends DriverInterface {
         return  "MOD(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
       case 37: // NEXTVAL/1
         return  arguments.elementAt(0) + ".NEXTVAL";
+      
       case 38: // CAST/2
         return  cast((String)arguments.elementAt(0), (String)arguments.elementAt(1));
+      case 39: // NVL/2
+        return "VALUE(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
+
+      case 40: // TO_NUMBER/1
+        return "NUM(" + arguments.elementAt(0) + ")";
+
+      case 41: // INSTR/2
+        return "INDEX(" + arguments.elementAt(1) + "," + arguments.elementAt(0) + ")";
+        
+      case 42:  // SYSDATE/0
+        return "DATE";
+
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
                                          "/" + arguments.size());
@@ -576,5 +589,9 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("MOD/2", new Integer(36));
     functions.put("NEXTVAL/1", new Integer(37));
     functions.put("CAST/2", new Integer(38));
+    functions.put("NVL/2", new Integer(39));
+    functions.put("TO_NUMBER/1", new Integer(40));
+    functions.put("INSTR/2", new Integer(41));
+    functions.put("SYSDATE/0", new Integer(42));
   }
 }
