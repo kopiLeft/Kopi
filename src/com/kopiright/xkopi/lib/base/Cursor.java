@@ -105,7 +105,7 @@ public class Cursor {
           }
         }
       } catch (SQLException exc) {
-        throw conn.convertException(exc);
+        throw conn.convertException(sql, exc);
       }
     }
   }
@@ -155,7 +155,7 @@ public class Cursor {
       }
       traceTimer(Query.TRL_TIMER, "UPDATE");
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(sql, exc);
     }
   }
 
@@ -218,7 +218,7 @@ public class Cursor {
 
       return count;
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(sql, exc);
     }
   }
 

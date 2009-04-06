@@ -286,7 +286,7 @@ public class KopiUtils {
     try {
       return executeUpdate(conn.getJDBCConnection(), conn.convertSql(text), blobs);
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(text, exc);
     }
   }
 
@@ -317,7 +317,7 @@ public class KopiUtils {
     try {
       return executeUpdate(conn.getJDBCConnection(), conn.convertSql(text));
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(text, exc);
     }
   }
 
@@ -389,11 +389,13 @@ public class KopiUtils {
                                           String table)
     throws DBException
   {
+    String       getSeqNextVal;
+
+    getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM DUMMY";
     try {
       ResultSet		  rset;
       Statement           stmt;
       int		  id;
-      String              getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM DUMMY";
       
       java.sql.Connection jdbcConnection = conn.getJDBCConnection();
       
@@ -406,7 +408,7 @@ public class KopiUtils {
       stmt.close();
       return id;
     } catch (SQLException exc) {
-      throw conn.convertException(exc);
+      throw conn.convertException(getSeqNextVal, exc);
     }
   }
 
