@@ -51,12 +51,12 @@ import com.kopiright.xkopi.lib.type.Fixed;
 /**
  *
  */
-public class SpoolerDbiChecker extends DbiChecker implements DbiVisitor {
+public class OraSpoolerDbiChecker extends DbiChecker implements DbiVisitor {
 
   /**
    * Constructs a new SpoolerDbiChecker object.
    */
-  public SpoolerDbiChecker(SqlContext sql) {
+  public OraSpoolerDbiChecker(SqlContext sql) {
     super(sql);
   }
 
@@ -67,6 +67,27 @@ public class SpoolerDbiChecker extends DbiChecker implements DbiVisitor {
     String      statement = getStatementText(getDriverInterface());
 
     return statement.length() != 0 ? "" + statement + ";" : "";
+  }
+  
+  private void writeHeader(int width) {
+    current.append("SET ECHO OFF;");
+    current.append("\n");
+    current.append("SET TERMOUT OFF;");
+    current.append("\n");
+    current.append("SET TRIMOUT OFF;");
+    current.append("\n");
+    current.append("SET TAB OFF;");
+    current.append("\n");
+    current.append("SET HEADING OFF;");
+    current.append("\n");
+    current.append("SET FEEDBACK OFF;");
+    current.append("\n");
+    current.append("SET VERIFY OFF;");
+    current.append("\n");
+    current.append("SET NEWPAGE 0;");
+    current.append("\n");
+    current.append("SET LINE " + width + ";");
+    current.append("\n");
   }
 
   /**
@@ -145,16 +166,85 @@ public class SpoolerDbiChecker extends DbiChecker implements DbiVisitor {
                           JavaStyleComment[] comment)
     throws PositionedError
   {
-    if (type instanceof DateType) {
-      visitDateType(ident);
-    } else if (type instanceof TimestampType) {
-      visitTimestampType(ident);
-    } else if (type instanceof TimeType) {
-      visitTimeType(ident);
-    } else {
-      current.append(ident);
+    if (ident.contains("#") ||
+        ident.contains("-")) {
+      ident = "\"" + ident + "\"";
     }
-    current.append(" ");
+    
+    if (type instanceof TimeType) {
+      visitTimeColumn(ident, nullable);
+    } else if (type instanceof TimestampType) {
+      visitTimestampColumn(ident, nullable);
+    } else if (type instanceof DateType) {
+      visitDateColumn(ident, nullable);
+    } else if (type instanceof StringType) {
+      visitStringColumn(ident, nullable);
+    } else if (type instanceof TextType) {
+      visitStringColumn(ident, nullable);
+    } else if (type instanceof IntType) {
+      visitNumericColumn(ident, nullable);
+    } else if (type instanceof ShortType) {
+      visitNumericColumn(ident, nullable);
+    } else if (type instanceof ByteType) {
+      visitNumericColumn(ident, nullable);
+    } else if (type instanceof FixedType) {
+      visitNumericColumn(ident, nullable);
+    } else if (type instanceof BooleanType) {
+      visitBooleanColumn(ident, nullable);
+    } else if (type instanceof BlobType) {
+      visitBlobColumn(ident, nullable);
+    } else {
+      throw new InconsistencyException("--------- UNHANDLED TYPE  "  + type   + "-----------");
+    }
+  }
+  
+  private void visitBooleanColumn(String column, boolean nullable) {
+    current.append("DECODE(" +  column + ", 0, 'FALSE', 'TRUE')");
+  }
+  
+
+  private void visitBlobColumn(String column, boolean nullable) {
+      current.append("'?'");
+  }
+  
+  private void visitStringColumn(String column, boolean nullable) {
+    if (!nullable) {
+      current.append(column);
+    } else {
+      current.append("NVL(" + column + ", '?')");
+    }
+  }
+  
+  private void visitNumericColumn(String column, boolean nullable) {
+    if (!nullable) {
+      current.append(column);
+    } else {
+      current.append("NVL(TO_CHAR(" + column + "), '?')");
+    }
+  }
+  
+  private void visitDateColumn(String column, boolean nullable) {
+    if (!nullable) {
+      current.append("TO_CHAR(" + column + ", 'YYYY-MM-DD')");
+    } else {
+      current.append("NVL(TO_CHAR(" + column +", 'YYYY-MM-DD'), '?')");
+    }
+  }
+  
+  private void visitTimeColumn(String column, boolean nullable) {
+    if (!nullable) {
+      current.append("TO_CHAR(" + column + ", 'HH24:MI:SS')");
+    } else {
+      current.append("NVL(TO_CHAR(" + column + ", 'HH24:MI:SS'), '?')");
+    }
+  }
+  
+  private void visitTimestampColumn(String column, boolean nullable) {
+    if (!nullable) {
+      current.append("TO_CHAR(" + column + ", 'YYYY-MM-DD HH24:MI:SS')");
+    } else {
+      current.append("NVL(TO_CHAR(" + column + ", 'YYYY-MM-DD HH24:MI:SS'), '?')");
+    }
   }
   
   public void visitUpdateStatement(UpdateStatement self,
@@ -364,60 +454,13 @@ public class SpoolerDbiChecker extends DbiChecker implements DbiVisitor {
     
   }
 
-  private void visitDateType(String column) {
-    String sql;
-    
-    sql = "CASE WHEN (YY  OF " + column + ") < 10 THEN '199' || TO_CHAR(YY  OF " + column + ") "
-      +    "WHEN (YY  OF " + column + ") < 100 THEN '19' || TO_CHAR(YY  OF " + column + ") "
-      +    "WHEN (YY  OF " + column + ") < 1000 THEN '1' || TO_CHAR(YY  OF " + column + ") ELSE TO_CHAR(YY  OF " + column + ") END "
-      +    "|| '-' || "
-      +    "IF (MO OF " + column + ") < 10  THEN '0' || TO_CHAR(MO OF " + column + ") ELSE TO_CHAR(MO OF " + column + ")  FI "
-      +    "|| '-' || "
-      +    "IF (DD OF " + column + ") < 10  THEN '0' ||  TO_CHAR(DD OF " + column + ") ELSE TO_CHAR(DD OF " + column + ")  FI";
-    
-    current.append(sql);
-  }
-
-  private void visitTimeType(String column) {
-    String sql;
-    
-    sql = "IF (HH OF " + column + ") < 10 THEN '0' || TO_CHAR(HH OF " + column + ") ELSE TO_CHAR(HH OF " + column + ") FI " 
-      +    "|| ':' || "
-      +    "IF (MI OF " + column + ") < 10 THEN '0' || TO_CHAR(MI OF " + column + ") ELSE TO_CHAR(MI OF " + column + ") FI "
-      +    "|| ':' || "
-      +    "IF (SS OF " + column + ") < 10 THEN '0' || TO_CHAR(SS OF " + column + ") ELSE TO_CHAR(SS OF " + column + ") FI";
-    
-    current.append(sql);
-  }
-
-    private void visitTimestampType(String column) {
-    String sql;
-    
-    sql = "CASE WHEN (YY  OF " + column + ") < 10 THEN '199' || TO_CHAR(YY  OF " + column + ") "
-      +    "WHEN (YY  OF " + column + ") < 100 THEN '19' || TO_CHAR(YY  OF " + column + ") "
-      +    "WHEN (YY  OF " + column + ") < 1000 THEN '1' || TO_CHAR(YY  OF " + column + ") ELSE TO_CHAR(YY  OF " + column + ") END "
-      +    "|| '-' || "
-      +    "IF (MO OF " + column + ") < 10  THEN '0' || TO_CHAR(MO OF " + column + ") ELSE TO_CHAR(MO OF " + column + ")  FI "
-      +    "|| '-' || "
-      +    "IF (DD OF " + column + ") < 10  THEN '0' ||  TO_CHAR(DD OF " + column + ") ELSE TO_CHAR(DD OF " + column + ")  FI "
-      +    "|| ' ' || "
-      +    "IF (HH OF " + column + ") < 10 THEN '0' || TO_CHAR(HH OF " + column + ") ELSE TO_CHAR(HH OF " + column + ") FI "
-      +    "|| ':' || "
-      +    "IF (MI OF " + column + ") < 10 THEN '0' || TO_CHAR(MI OF " + column + ") ELSE TO_CHAR(MI OF " + column + ") FI "
-      +    "|| ':' || "
-      +    "IF (SS OF " + column + ") < 10 THEN '0' || TO_CHAR(SS OF " + column + ") ELSE TO_CHAR(SS OF " + column + ") FI " 
-      +    "|| '.' || "
-      +    "TO_CHAR(MS OF " + column + ")";
-    
-    current.append(sql);
-    }
-  
   /**
    * Visits DateType
    */
   public void visitDateType(DateType self)
     throws PositionedError
   {
+   
   }
 
   /**
@@ -532,35 +575,59 @@ public class SpoolerDbiChecker extends DbiChecker implements DbiVisitor {
                                    Pragma pragma)
     throws PositionedError
   {
-    boolean containsDateType = false;
-    
-    current.append("SPOOL INTO  /tmp/");
-    tableName.accept(this);
-    current.append(" SELECT  ");
+    int width = 0;
     
     for (int i = 0; i < columns.size(); i++) {
       Type type = ((Column)columns.get(i)).getType();
       
-      if (type instanceof TimeType ||
-          type instanceof TimestampType ||
-          type instanceof DateType) {
-        containsDateType = true;
-        break;
+      if (type instanceof TimeType) {
+        width += 8;
+      } else if (type instanceof TimestampType) {
+        width += 0;
+      } else if (type instanceof DateType) {
+        width += 0;
+      } else if (type instanceof StringType) {
+        width += ((StringType)type).getWidth() * ((StringType)type).getHeight();
+      } else if (type instanceof TextType) {
+        width += ((TextType)type).getWidth() * ((TextType)type).getHeight();
+      } else if (type instanceof IntType) {
+        width += 12;
+      } else if (type instanceof ShortType) {
+        width += 12;
+      } else if (type instanceof ByteType) {
+        width += 1;
+      } else if (type instanceof FixedType) {
+        width += ((FixedType)type).getPrecision() + ((FixedType)type).getScale() + 1;
+      } else if (type instanceof BooleanType) {
+        width += 5;
+      } else if (type instanceof BlobType) {
+        width += 1;
+      } else {
+        throw new InconsistencyException("--------- UNHANDLED TYPE  "  + type   + "-----------");
       }
     }
     
-    if (containsDateType) {
-      for (int i = 0; i < columns.size(); i++) {
-        if (i != 0) {
-          current.append(", ");
-        }
-        ((Column)columns.get(i)).accept(this);
+    writeHeader(width);
+      
+    current.append("SPOOL ");
+    tableName.accept(this);
+    current.append(".dat;");
+    current.append("\n");
+    current.append("SELECT  ");
+    
+    for (int i = 0; i < columns.size(); i++) {
+      if (i != 0) {
+        current.append(" || '\t' || ");
       }
-    } else {
-      current.append(" * ");
+      ((Column)columns.get(i)).accept(this);
     }
     current.append(" FROM ");
+
     tableName.accept(this);
+    current.append(";");
+    current.append("\n");
+    current.append("SPOOL OFF");
+    current.append("\n");
   }
 
   /**

@@ -22,7 +22,7 @@
 <param longname="simulate" shortname="t"  type="boolean"  default="false"  help="Runs the script but abort it" />
 <param longname="stdout" shortname="s"  type="boolean"  default="false"  help="Prints on standard output" />
 <param longname="stdin" shortname="e"  type="boolean"  default="false"  help="Reads from standard input" />
-<param longname="syntax" shortname="S"  type="String"  default="jdbc"  help="Sets the syntax to use for output (jdbc | tbx | sap | pg | ora | spooler)" />
+<param longname="syntax" shortname="S"  type="String"  default="jdbc"  help="Sets the syntax to use for output (jdbc | tbx | sap | pg | ora | tbspool | oraspool)" />
 <param longname="beautify" shortname="b"  type="boolean"  default="false"  help="Prints the source code (beautifier)" />
 <param longname="driver" shortname="D"  type="String"  default="null"  help="Sets the driver to use for DB access" />
 <param longname="url" shortname="u"  type="String"  default="null"  help="Sets the url of the database" />
