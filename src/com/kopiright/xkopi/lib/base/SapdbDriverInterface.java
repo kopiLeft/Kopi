@@ -539,6 +539,12 @@ public class SapdbDriverInterface extends DriverInterface {
       case 43:  // TRUNC_DATE/1
         return "DATE(" + arguments.elementAt(0) + ")";
         
+      case 44:  // TO_CHAR/1
+        return "CHR(" + arguments.elementAt(0) + ")";
+
+      case 45:  // TO_DATE/1
+        return "DATE(" + arguments.elementAt(0) + ")";
+        
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
                                          "/" + arguments.size());
@@ -597,5 +603,7 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("INSTR/2", new Integer(41));
     functions.put("SYSDATE/0", new Integer(42));
     functions.put("TRUNC_DATE/1", new Integer(43));
+    functions.put("TO_CHAR/1", new Integer(44));
+    functions.put("TO_DATE/1", new Integer(45));
   }
 }
