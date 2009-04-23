@@ -564,6 +564,9 @@ public class SapdbDriverInterface extends DriverInterface {
         } else {
           throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR {fn " + functor.toUpperCase() + ", " + arguments.elementAt(1) + "}");
         }
+
+      case 48: // UCASE/1
+        return "UPPER(" + arguments.elementAt(0) + ")";
         
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
@@ -627,6 +630,6 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("TO_CHAR/2", new Integer(45));
     functions.put("TO_DATE/1", new Integer(46));
     functions.put("TO_DATE/2", new Integer(47));
-        
+    functions.put("UCASE/1", new Integer(48));
   }
 }
