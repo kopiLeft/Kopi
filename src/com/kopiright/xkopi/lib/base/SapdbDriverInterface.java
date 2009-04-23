@@ -542,8 +542,28 @@ public class SapdbDriverInterface extends DriverInterface {
       case 44:  // TO_CHAR/1
         return "CHR(" + arguments.elementAt(0) + ")";
 
-      case 45:  // TO_DATE/1
+      case 45:  // TO_CHAR/2
+        String format = (String)arguments.elementAt(1);
+                
+        if (format.equalsIgnoreCase("'YYMMDD'")) {
+          return "SUBSTR(CHR(YEAR(" + arguments.elementAt(0) + ")), 3, 2 ) || LFILL(CHR(MONTH(" + arguments.elementAt(0) + ")), '0', 2) || LFILL(CHR(DAY(" + arguments.elementAt(0) + ")), '0', 2)";
+        } else {
+          throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR {fn " + functor.toUpperCase() + ", " + arguments.elementAt(1) + "}");
+        }
+        
+      case 46:  // TO_DATE/1
         return "DATE(" + arguments.elementAt(0) + ")";
+        
+      case 47:  // TO_DATE/2
+        format = (String)arguments.elementAt(1);
+        
+        if (format.equalsIgnoreCase("'YYMM'")) {
+          return "DATE('20' || SUBSTR(" + arguments.elementAt(0) + ", 1, 2) || '-' || SUBSTR(" + arguments.elementAt(0) + ", 3, 2) || '-01')";
+        } else if (format.equalsIgnoreCase("'YYMMDD'")) {
+          return "DATE('20' || SUBSTR(" + arguments.elementAt(0) + ", 1, 2) || '-' || SUBSTR(" + arguments.elementAt(0) + ", 3, 2) || '-' || SUBSTR(" + arguments.elementAt(0) + ", 5, 2))";
+        } else {
+          throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR {fn " + functor.toUpperCase() + ", " + arguments.elementAt(1) + "}");
+        }
         
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
@@ -604,6 +624,9 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("SYSDATE/0", new Integer(42));
     functions.put("TRUNC_DATE/1", new Integer(43));
     functions.put("TO_CHAR/1", new Integer(44));
-    functions.put("TO_DATE/1", new Integer(45));
+    functions.put("TO_CHAR/2", new Integer(45));
+    functions.put("TO_DATE/1", new Integer(46));
+    functions.put("TO_DATE/2", new Integer(47));
+        
   }
 }
