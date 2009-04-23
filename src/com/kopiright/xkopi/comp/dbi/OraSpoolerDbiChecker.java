@@ -580,12 +580,13 @@ public class OraSpoolerDbiChecker extends DbiChecker implements DbiVisitor {
     for (int i = 0; i < columns.size(); i++) {
       Type type = ((Column)columns.get(i)).getType();
       
+      width += 1;
       if (type instanceof TimeType) {
         width += 8;
       } else if (type instanceof TimestampType) {
-        width += 0;
+        width += 19;
       } else if (type instanceof DateType) {
-        width += 0;
+        width += 10;
       } else if (type instanceof StringType) {
         width += ((StringType)type).getWidth() * ((StringType)type).getHeight();
       } else if (type instanceof TextType) {
