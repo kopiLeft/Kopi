@@ -36,21 +36,13 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
    */
   public static String[] getVersion() {
     try {
-      DataInputStream	in;
-      FileInputStream	fstream;
-      URL		url;
-      ArrayList		list = new ArrayList();
+      DataInputStream   in;
+      FileInputStream   fstream;
+      ArrayList         list = new ArrayList();
 
-      url = ClassLoader.getSystemClassLoader().getResource(APPLICATION_DIR + "/version");
+      in = new DataInputStream(Utils.class.getClassLoader().getResourceAsStream(APPLICATION_DIR + "/version"));
       
-      if (url == null) {
-        return DEFAULT_VERSION;
-      }
-      
-      fstream = new FileInputStream(url.getFile());
-      in = new DataInputStream(fstream);
-      
-      while (in.available() !=0) {
+      while (in.available() != 0) {
         list.add(in.readLine());
       }
       in.close();
