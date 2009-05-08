@@ -570,6 +570,12 @@ public class SapdbDriverInterface extends DriverInterface {
       case 48: // UCASE/1
         return "UPPER(" + arguments.elementAt(0) + ")";
         
+      case 49: // LPAD/3
+        return "LFILL(" + arguments.elementAt(0) + ", " + arguments.elementAt(2) + ", " + arguments.elementAt(1) + ")";
+
+      case 50: // RPAD/3
+        return "RFILL(" + arguments.elementAt(0) + ", " + arguments.elementAt(2) + ", " + arguments.elementAt(1) + ")";
+
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
                                          "/" + arguments.size());
@@ -633,5 +639,7 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("TO_DATE/1", new Integer(46));
     functions.put("TO_DATE/2", new Integer(47));
     functions.put("UCASE/1", new Integer(48));
+    functions.put("LPAD/3", new Integer(49));
+    functions.put("RPAD/3", new Integer(50));
   }
 }
