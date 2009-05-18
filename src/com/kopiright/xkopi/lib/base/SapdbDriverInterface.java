@@ -577,10 +577,10 @@ public class SapdbDriverInterface extends DriverInterface {
         return "RFILL(" + arguments.elementAt(0) + ", " + arguments.elementAt(2) + ", " + arguments.elementAt(1) + ")";
       
       case 51: // ROWID/0
-        return "SYSKEY";
+        return "HEX(SYSKEY)";
 
       case 52: // ROWID/1
-        return arguments.elementAt(0) + ".SYSKEY";
+        return "HEX(" + arguments.elementAt(0) + ".SYSKEY)";
         
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
