@@ -575,6 +575,9 @@ public class SapdbDriverInterface extends DriverInterface {
 
       case 50: // RPAD/3
         return "RFILL(" + arguments.elementAt(0) + ", " + arguments.elementAt(2) + ", " + arguments.elementAt(1) + ")";
+      
+      case 51: // ROWID/0
+        return "SYSKEY";
 
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
@@ -641,5 +644,6 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("UCASE/1", new Integer(48));
     functions.put("LPAD/3", new Integer(49));
     functions.put("RPAD/3", new Integer(50));
+    functions.put("ROWID/0", new Integer(51));
   }
 }
