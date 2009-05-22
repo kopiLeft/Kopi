@@ -581,6 +581,11 @@ public class SapdbDriverInterface extends DriverInterface {
 
       case 52: // ROWID/1
         return "HEX(" + arguments.elementAt(0) + ".SYSKEY)";
+
+      case 53: // LAST_DAY/1
+        String date = (String)arguments.elementAt(0);
+        
+        return "(SUBDATE(MAKEDATE(YEAR(" + date + "), DAYOFYEAR(" + date + ") - DAYOFMONTH(" + date + ") + 32), DAYOFMONTH(MAKEDATE(YEAR(" + date + "), DAYOFYEAR(" + date + ") - DAYOFMONTH(" + date + ") + 32))))";
         
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
@@ -649,5 +654,6 @@ public class SapdbDriverInterface extends DriverInterface {
     functions.put("RPAD/3", new Integer(50));
     functions.put("ROWID/0", new Integer(51));
     functions.put("ROWID/1", new Integer(52));
+    functions.put("LAST_DAY/1", new Integer(53));
   }
 }
