@@ -40,4 +40,5 @@
 <msg identifier="ASSIGN_NULL" format="Not ANSI syntax, use \&quot;IS NULL\&quot; instead of \&quot;= NULL\&quot;" reference="SQLC" level="2"/>
 <msg identifier="NE_NULL" format="Not ANSI syntax, use \&quot;IS NOT NULL\&quot; instead of \&quot;&lt;&gt; NULL\&quot;" reference="SQLC" level="2"/>
 <msg identifier="IF_EXPR" format="Not ANSI syntax, use \&quot;DECODE(&lt;cond&gt;, {&lt;search&gt;, &lt;result&gt;}, &lt;default&gt;)\&quot; instead of \&quot;IF &lt;cond&gt; THEN &lt;if-part&gt; ELSE &lt;else-part&gt; FI\&quot;" reference="SQLC" level="2"/>
+<msg identifier="RESERVED_DATABASE_KEYWORD" format="Field name {0} is a reserved database keyword." reference="SQLC" level="2"/>
 </messages>

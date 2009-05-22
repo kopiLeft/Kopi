@@ -34,7 +34,7 @@ SCANNER1 =	Sqlc
 # Compiler classes
 JAVAFILES +=	DefaultSqlVisitor Main SqlcScanner			\
 		SqlContext SqlcPrettyPrinter				\
-		SqlVisitor DBChecker SCompilationUnitContext SqlChecker
+		SqlVisitor DBChecker SCompilationUnitContext Constants SqlChecker
 
 # Syntax tree classes
 JAVAFILES +=	AbstractCaseExpression AndCondition ArrayPrecision	\

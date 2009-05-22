@@ -19,19 +19,20 @@
 
 package com.kopiright.xkopi.comp.sqlc;
 
-import java.util.Stack;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
 
 import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
+import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Time;
 import com.kopiright.xkopi.lib.type.Timestamp;
-
 /**
  * This class implements a Java pretty printer
  */
@@ -107,9 +108,7 @@ public class SqlChecker implements SqlVisitor {
     // check if left is a text and if it exists in the table
     if (left instanceof SimpleIdentExpression) {
       TableReference table = (TableReference)(getContext().getTables()).get(0);
-      if (!table.hasColumn(((SimpleIdentExpression)left).getIdent())
-          && !((SimpleIdentExpression)left).getIdent().equalsIgnoreCase("rowid")
-          && !((SimpleIdentExpression)left).getIdent().equalsIgnoreCase("rownum")) { // rowid is a pseudo column in oracle
+      if (!table.hasColumn(((SimpleIdentExpression)left).getIdent())) {
 	reportTrouble(new CWarning(self.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, ((SimpleIdentExpression)left).getIdent()));
       }
     }
@@ -394,6 +393,7 @@ public class SqlChecker implements SqlVisitor {
       current.append(table);
       current.append(".");
     }
+    checkDatabaseReservedKeyword(self.getTokenReference(), ident);
     current.append(ident);
     if (hasPlus) {
       current.append("(+)");
@@ -927,6 +927,7 @@ public class SqlChecker implements SqlVisitor {
                                    SqlcMessages.BAD_ALIAS_FORMAT,
                                    newColumnName));
       }
+      checkDatabaseReservedKeyword(self.getTokenReference(), newColumnName);
       current.append(" AS ");
       current.append(newColumnName);
     }
@@ -1391,10 +1392,8 @@ public class SqlChecker implements SqlVisitor {
       while (it.hasNext()) {
         String          field = (String) it.next();
 
-        if (!table.hasColumn(field)
-            && !field.equalsIgnoreCase("rowid")
-            && !field.equalsIgnoreCase("rownum")) {
-	reportTrouble(new CWarning(fields.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, field));
+        if (!table.hasColumn(field)) {
+          reportTrouble(new CWarning(fields.getTokenReference(), SqlcMessages.COLUMN_NOT_RESOLVABLE, field));
         }
       }
     }
@@ -1591,6 +1590,16 @@ public class SqlChecker implements SqlVisitor {
    */
   private void reportTrouble(PositionedError trouble) {
     getContext().reportTrouble(trouble);
+  }
+
+  private void checkDatabaseReservedKeyword(TokenReference ref, String ident) {
+    List keywords = Arrays.asList(Constants.RESERVED_DATABASE_KEYWORDS);
+    
+    if (keywords.contains(ident.toUpperCase())) {
+      reportTrouble(new CWarning(ref,
+                                 SqlcMessages.RESERVED_DATABASE_KEYWORD,
+                                 ident));
+    }
   }
 
   // ----------------------------------------------------------------------
