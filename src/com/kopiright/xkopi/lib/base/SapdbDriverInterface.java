@@ -549,6 +549,8 @@ public class SapdbDriverInterface extends DriverInterface {
           return "SUBSTR(CHR(YEAR(" + arguments.elementAt(0) + ")), 3, 2) || LFILL(CHR(MONTH(" + arguments.elementAt(0) + ")), '0', 2) || LFILL(CHR(DAY(" + arguments.elementAt(0) + ")), '0', 2)";
         } else if (format.equalsIgnoreCase("'YYMM'")) {
           return "SUBSTR(CHR(YEAR(" + arguments.elementAt(0) + ")), 3, 2) || LFILL(CHR(MONTH(" + arguments.elementAt(0) + ")), '0', 2)";
+        } else if (format.equalsIgnoreCase("'YYYYMMDD'")) {
+          return "CHR(YEAR(" + arguments.elementAt(0) + ")) || LFILL(CHR(MONTH(" + arguments.elementAt(0) + ")), '0', 2) || LFILL(CHR(DAY(" + arguments.elementAt(0) + ")), '0', 2)";
         } else {
           throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR {fn " + functor.toUpperCase() + ", " + arguments.elementAt(1) + "}");
         }
