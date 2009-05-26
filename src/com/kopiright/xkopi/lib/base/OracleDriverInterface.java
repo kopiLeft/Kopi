@@ -47,15 +47,15 @@ public class OracleDriverInterface extends DriverInterface {
    */
   public String convertSql(String from) {
     try {
-     OracleParser	parser = new OracleParser(from);
-     String             nativeSql = parser.getText().trim();
+      OracleParser	parser = new OracleParser(from);
+      String             nativeSql = parser.getText().trim();
      
-     if (trace) {
-       System.err.println("-- NATIVE SQL: ");
-       System.err.println(nativeSql + ";");
-       System.err.println("--");
-     }
-     return nativeSql;
+      if (trace) {
+        System.err.println("-- NATIVE SQL: ");
+        System.err.println(nativeSql + ";");
+        System.err.println("--");
+      }
+      return nativeSql;
     } catch (SQLException e) {
       throw new DBRuntimeException(e.getMessage());
     }
@@ -68,7 +68,7 @@ public class OracleDriverInterface extends DriverInterface {
    * @return	the maximum number of characters in the ORDER BY of the driver
    */
   public int getMaximumCharactersCountInOrderBy() {
-      return Integer.MAX_VALUE;
+    return Integer.MAX_VALUE;
   }
 
   /**
@@ -333,30 +333,30 @@ class OracleParser extends JdbcParser {
       case 12:	// LOWER/1
 	return "LOWER (" + arguments.elementAt(0) + ")";
 
-       case 13:	// LTRIM/1
-	 return "LTRIM (" + arguments.elementAt(0) + ")";
+      case 13:	// LTRIM/1
+        return "LTRIM (" + arguments.elementAt(0) + ")";
 
-       case 14:	// RTRIM/1
-	 return "RTRIM (" + arguments.elementAt(0) + ")";
+      case 14:	// RTRIM/1
+        return "RTRIM (" + arguments.elementAt(0) + ")";
 
-       case 15:	// REPLACE/3
-	 return "REPLACE (" + arguments.elementAt(2) + ", " + arguments.elementAt(0) + " , " +
-	   arguments.elementAt(1) + ")";
+      case 15:	// REPLACE/3
+        return "REPLACE (" + arguments.elementAt(2) + ", " + arguments.elementAt(0) + " , " +
+          arguments.elementAt(1) + ")";
 
-         /* TO SEE: REPEAT AND SPACE in Oracle ? */
-//        case 16:	// REPEAT/2
-// 	 return "REPEAT (" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
+        /* TO SEE: REPEAT AND SPACE in Oracle ? */
+        //        case 16:	// REPEAT/2
+        // 	 return "REPEAT (" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
 
-       case 17:	// CURRENTDATE
+      case 17:	// CURRENTDATE
 	return "SYSDATE";
 
-       case 18:	// USER
-	 return "USER";
+      case 18:	// USER
+        return "USER";
 
-//        case 19:	// SPACE
-// 	 return "REPEAT (" + "' '" + ", " + arguments.elementAt(0) + ")";
+        //        case 19:	// SPACE
+        // 	 return "REPEAT (" + "' '" + ", " + arguments.elementAt(0) + ")";
 
-       case 20:	// RIGHT
+      case 20:	// RIGHT
         return "SUBSTR (" + arguments.elementAt(0) + ", " +  "(" +
 	  "LENGTH (" + arguments.elementAt(0) + ")" + ") - " + arguments.elementAt(1) + " + 1" + ")";
 
@@ -410,6 +410,9 @@ class OracleParser extends JdbcParser {
       
       case 40: // ROWID/1
         return  arguments.elementAt(0) + ".ROWID";
+        
+      case 41: // TRUNC_DATE/1
+        return  "TRUNC(" + arguments.elementAt(0) + ")";
         
       default:
         // use function as it.
@@ -488,5 +491,6 @@ class OracleParser extends JdbcParser {
     functions.put("UCASE/1", new Integer(38));
     functions.put("ROWID/0", new Integer(39));
     functions.put("ROWID/1", new Integer(40));
+    functions.put("TRUNC_DATE/1", new Integer(41));
   }
 }
