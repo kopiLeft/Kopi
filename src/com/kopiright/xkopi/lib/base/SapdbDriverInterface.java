@@ -582,7 +582,10 @@ public class SapdbDriverInterface extends DriverInterface {
         return "HEX(SYSKEY)";
 
       case 52: // ROWID/1
-        return "HEX(" + arguments.elementAt(0) + ".SYSKEY)";
+        String tablename;
+
+        tablename = ((String)arguments.elementAt(0)).replaceAll("'","");
+        return "HEX(" + tablename + ".SYSKEY)";
 
       case 53: // LAST_DAY/1
         String date = (String)arguments.elementAt(0);
