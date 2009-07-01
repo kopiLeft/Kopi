@@ -846,6 +846,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     }
   }
 
+  public final void updateWaitDialogMessage(String message) {
+    if (waitWindow != null) {
+      waitWindow.updateMessage(message);
+    }
+  }
+  
   /**
    * setWaitInfo
    */

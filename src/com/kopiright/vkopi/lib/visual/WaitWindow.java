@@ -75,12 +75,12 @@ public class WaitWindow {
       progressBar.setValue(0);
       progressBar.setStringPainted(true);
 
-      text = new JLabel(message);
+      text = new JLabel("<html><b> Bitte um Geduld ...</b><br>" + message);
 
       JPanel            panel = new JPanel();
 
       panel.setLayout(new BorderLayout());
-      panel.add(new JLabel("<html><b> Bitte um Geduld ...</b><br>" + message), BorderLayout.NORTH);
+      panel.add(text, BorderLayout.NORTH);
       panel.add(progressBar, BorderLayout.SOUTH);
       panel.setBorder(new CompoundBorder(new LineBorder(Color.black, 1), new EmptyBorder(2,2,2,2)));
 
@@ -123,11 +123,17 @@ public class WaitWindow {
         });
     } else {
       // change dialog text
-      text.setText("<html><b> Bitte um Beduld</b><br>" + message);
+      text.setText("<html><b> Bitte um Geduld ...</b><br>" + message);
       progressBar.setMaximum(maxTime);
     }
   }
 
+  public void updateMessage(String message) {
+    if (waitDialog != null) {
+      text.setText("<html><b> Bitte um Geduld ...</b><br>" + message);
+    }
+  }
+  
   /**
    * change mode to free state
    */

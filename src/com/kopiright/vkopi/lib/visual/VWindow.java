@@ -507,6 +507,12 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       }
     }
   }
+
+  public final void updateWaitDialogMessage(String message) {
+    if (getDisplay() != null) {
+      getDisplay().updateWaitDialogMessage(message);
+    }
+  }
   
   /**
    * setWaitInfo
