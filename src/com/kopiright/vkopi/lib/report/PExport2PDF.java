@@ -115,9 +115,13 @@ public class  PExport2PDF extends PExport implements Constants {
                               pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin + firstPageHead.getTotalHeight(), 
                               pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin+2); 
       // 2 to be sure to print the border
-
-      scale = (float) getScale(3, 12, 0.1);
-
+      if (pconfig.reportScale == PConfig.MIN_REPORT_SCALE) {
+        scale = (float) getScale(PConfig.MIN_REPORT_SCALE, PConfig.MAX_REPORT_SCALE, 0.1);
+        pconfig.reportScale = scale;
+      } else {
+        scale = pconfig.reportScale;
+      }
+      
       File      tempFile = Utils.getTempFile("kopiexport", "pdf");
       PdfWriter writer = PdfWriter.getInstance(document,
                                                new FileOutputStream(tempFile));
@@ -266,15 +270,15 @@ public class  PExport2PDF extends PExport implements Constants {
     }
     datatable.setHeaderRows(1); 
   }
-
-
+  
+  
   protected void exportRow(VReportRow row, boolean tail) {
     exportRow(row, tail, true);
   }
-
+  
   protected void exportRow(int level, String[] strings, Object[] orig, int[] alignments) {
     int       cell = 0;
-
+    
     datatable.getDefaultCell().setBorderWidth(BORDER_WIDTH);
     datatable.getDefaultCell().setBackgroundColor(Color.white);
     

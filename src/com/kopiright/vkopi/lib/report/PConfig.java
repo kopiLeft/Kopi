@@ -43,6 +43,7 @@ public class PConfig {
     grid_H		= 0.1;
     grid_V		= 0.1;
     border		= 1.0;
+    reportScale         = MIN_REPORT_SCALE;
   }
 
   // --------------------------------------------------------------------
@@ -72,4 +73,8 @@ public class PConfig {
   public double			grid_H;		// horizontal grid
   public double			grid_V;		// vertical grid
   public double			border;		// border size
+  public double                 reportScale;    // report scale
+  
+  public static final double    MIN_REPORT_SCALE = 3;
+  public static final double    MAX_REPORT_SCALE = 12;
 }
