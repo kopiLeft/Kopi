@@ -120,6 +120,7 @@ public class  PExport2PDF extends PExport implements Constants {
         pconfig.reportScale = scale;
       } else {
         scale = pconfig.reportScale;
+        formatColumns();
       }
       
       File      tempFile = Utils.getTempFile("kopiexport", "pdf");
