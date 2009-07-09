@@ -268,7 +268,7 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
             columnName = columnName.toUpperCase();
           }
 
-          fieldDeclarations.add(genColumnFieldDeclaration(tableName + "_" + columnName,
+          fieldDeclarations.add(genColumnFieldDeclaration(tableName + "__" + columnName,
                                                           column.getType(),
                                                           column.isNullable()));
           names[j] = columnName;
@@ -293,7 +293,7 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
             columnName = columnName.toUpperCase();
           }
 
-          fieldDeclarations.add(genColumnFieldDeclaration(tableName + "_" + columnName,
+          fieldDeclarations.add(genColumnFieldDeclaration(tableName + "__" + columnName,
                                                           column.getType(),
                                                           column.isNullable()));
           names[j] = columnName;

@@ -159,7 +159,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
    * Returns the database type of a Table/column
    */
   public static XDatabaseColumn getDatabaseColumn(String table, String column) {
-    XDatabaseMember dm = getDatabaseMember(table + "_" + column);
+    XDatabaseMember dm = getDatabaseMember(table + "__" + column);
 
     if ((dm != null) && (dm.isColumn())) {
       return (XDatabaseColumn) dm;

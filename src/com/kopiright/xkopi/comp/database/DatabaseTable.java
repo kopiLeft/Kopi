@@ -65,7 +65,7 @@ public class DatabaseTable extends DatabaseMember implements XDatabaseTable {
      JExpression[] initializer = new JExpression[columnNames.length];
      JExpression[] initializerNames = new JExpression[columnNames.length];
      for (int i=0; i < columnNames.length; i++) {
-       initializer[i] = new JFieldAccessExpression(TokenReference.NO_REF, tableName + "_" + columnNames[i]);
+       initializer[i] = new JFieldAccessExpression(TokenReference.NO_REF, tableName + "__" + columnNames[i]);
        initializerNames[i] = new JStringLiteral(TokenReference.NO_REF, columnNames[i]);
      }
 //     JExpression[] initializer = new JExpression[]{};
