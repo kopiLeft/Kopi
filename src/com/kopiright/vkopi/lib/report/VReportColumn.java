@@ -56,6 +56,7 @@ public abstract class VReportColumn {
     this.visible = true;
     this.folded = false;
     this.addedAtRuntime = false;
+    this.userDefinedLabel = false;
   }
 
   // ----------------------------------------------------------------------
@@ -76,6 +77,14 @@ public abstract class VReportColumn {
     return ident;
   }
   
+  public void setUserDefinedLabel(boolean userDefinedLabel) {
+    this.userDefinedLabel = userDefinedLabel;
+  }
+
+  public boolean isUserDefinedLabel() {
+    return userDefinedLabel;
+  }
+  
   public void setAddedAtRuntime(boolean addedAtRuntime) {
     this.addedAtRuntime = addedAtRuntime;
   }
@@ -84,6 +93,7 @@ public abstract class VReportColumn {
     return addedAtRuntime;
   }
 
+  
   /**
    * Sets the column label
    */
@@ -288,6 +298,7 @@ public abstract class VReportColumn {
   private	boolean			visible;
   private	boolean			folded;
   private       boolean                 addedAtRuntime;
+  private       boolean                 userDefinedLabel;
   private	DColumnStyle[]		styles;
   protected	int			width;
   protected	int			height;
