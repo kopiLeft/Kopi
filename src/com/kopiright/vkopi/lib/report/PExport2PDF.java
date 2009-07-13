@@ -397,42 +397,50 @@ public class  PExport2PDF extends PExport implements Constants {
   }
 
   protected void formatWeekColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
   
   protected void formatDateColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("00.00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("00.00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
 
   protected void formatMonthColumn(VReportColumn column, int index) {
-    widths[index] = 4 + new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widths[index] = 4 + Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                                 new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
 
   protected void formatFixedColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("0", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("0", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
     widthSum += widths[index];
   }
 
   protected void formatIntegerColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("0", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("0", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
     widthSum += widths[index];
   }
 
   protected void formatBooleanColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("false", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("false", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
 
   protected void formatTimeColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("00:00", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("00:00", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
 
   protected void formatTimestampColumn(VReportColumn column, int index) {
-    widths[index] = new Chunk("00.00.0000 00:00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint();
+    widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
+                             new Chunk("00.00.0000 00:00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
 
