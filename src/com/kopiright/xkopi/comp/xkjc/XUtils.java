@@ -42,6 +42,7 @@ import com.kopiright.kopi.comp.kjc.TypeFactory;
 
 import com.kopiright.util.base.Utils;
 import com.kopiright.xkopi.comp.sqlc.SqlcMessages;
+import com.kopiright.xkopi.comp.sqlc.Constants;
 
 public class XUtils extends com.kopiright.util.base.Utils {
 
@@ -159,7 +160,7 @@ public class XUtils extends com.kopiright.util.base.Utils {
    * Returns the database type of a Table/column
    */
   public static XDatabaseColumn getDatabaseColumn(String table, String column) {
-    XDatabaseMember dm = getDatabaseMember(table + "__" + column);
+    XDatabaseMember dm = getDatabaseMember(table + Constants.DICT_SEPARATOR + column);
 
     if ((dm != null) && (dm.isColumn())) {
       return (XDatabaseColumn) dm;

@@ -80,8 +80,8 @@ public class FieldReference extends Expression {
 
       if (tableReference != null) {
         if (!tableReference.hasColumn(field) 
-            && !field.equalsIgnoreCase("rowid")
-            && !field.equalsIgnoreCase("rownum")) {
+            && !field.equalsIgnoreCase(Constants.ROWID)
+            && !field.equalsIgnoreCase(Constants.ROWNUM)) {
           context.reportTrouble(new CWarning(ref,
                                              SqlcMessages.COLUMN_NOT_IN_TABLE,
                                              field,
@@ -102,8 +102,9 @@ public class FieldReference extends Expression {
           return newTable.getTableForColumn(field);
         }
       }
-      if (!field.equalsIgnoreCase("rowid")
-          && !field.equalsIgnoreCase("rownum")) {
+      if (!field.equalsIgnoreCase(Constants.ROWID)
+          && !field.equalsIgnoreCase(Constants.ROWNUM)
+          && !XUtils.columnExists(Constants.KOPI_SEQUENCES_TABLE, field)) {
         context.reportTrouble(new CWarning(ref,
                                            SqlcMessages.IDENT_NOT_RESOLVABLE,
                                            field));

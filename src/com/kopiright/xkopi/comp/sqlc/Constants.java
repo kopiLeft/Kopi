@@ -19,10 +19,12 @@
 
 package com.kopiright.xkopi.comp.sqlc;
 
-/**
- * Defines disassembler constants
- */
 public interface Constants {
+  public static final String KOPI_SEQUENCES_TABLE = "ALL_KOPI_SEQUENCES";
+  public static final String DICT_SEPARATOR = "__";
+  public static final String ROWID = "rowid";
+  public static final String ROWNUM = "rownum";
+
   // this list contains reserved database keywords for maxdb
   // and must be extended for other databases
   // these keywords must not be used as table columns or aliases

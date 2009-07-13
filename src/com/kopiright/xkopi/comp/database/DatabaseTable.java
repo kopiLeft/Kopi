@@ -29,6 +29,7 @@ import com.kopiright.kopi.comp.kjc.JStringLiteral;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import com.kopiright.xkopi.comp.xkjc.XDatabaseColumn;
 import com.kopiright.xkopi.comp.xkjc.XDatabaseTable;
+import com.kopiright.xkopi.comp.sqlc.Constants;
 
 /**
  * The type of a field which represents a table in Database.k
@@ -65,7 +66,7 @@ public class DatabaseTable extends DatabaseMember implements XDatabaseTable {
      JExpression[] initializer = new JExpression[columnNames.length];
      JExpression[] initializerNames = new JExpression[columnNames.length];
      for (int i=0; i < columnNames.length; i++) {
-       initializer[i] = new JFieldAccessExpression(TokenReference.NO_REF, tableName + "__" + columnNames[i]);
+       initializer[i] = new JFieldAccessExpression(TokenReference.NO_REF, tableName + Constants.DICT_SEPARATOR + columnNames[i]);
        initializerNames[i] = new JStringLiteral(TokenReference.NO_REF, columnNames[i]);
      }
 //     JExpression[] initializer = new JExpression[]{};

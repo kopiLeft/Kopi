@@ -93,7 +93,14 @@ public class SequenceDefinition extends DbiStatement implements SqlContext {
   // ----------------------------------------------------------------------
   // CHECK SQL
   // ----------------------------------------------------------------------
-
+  
+  /**
+   * Returns the sequence name
+   */
+  public Expression getSequenceName() {
+    return sequenceName;
+  }
+  
   /**
    * Returns the table reference with alias "alias"
    */

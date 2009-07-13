@@ -60,10 +60,13 @@ import com.kopiright.xkopi.comp.database.DatabaseMember;
 import com.kopiright.xkopi.comp.database.DatabaseTable;
 import com.kopiright.xkopi.comp.dbi.Column;
 import com.kopiright.xkopi.comp.dbi.DbiType;
+import com.kopiright.xkopi.comp.dbi.IntType;
 import com.kopiright.xkopi.comp.dbi.SCompilationUnit;
 import com.kopiright.xkopi.comp.dbi.TableDefinition;
 import com.kopiright.xkopi.comp.dbi.ViewColumn;
 import com.kopiright.xkopi.comp.dbi.ViewDefinition;
+import com.kopiright.xkopi.comp.dbi.SequenceDefinition;
+import com.kopiright.xkopi.comp.sqlc.Constants;
 import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
 import com.kopiright.xkopi.comp.sqlc.Statement;
 import com.kopiright.xkopi.comp.sqlc.Type;
@@ -268,7 +271,7 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
             columnName = columnName.toUpperCase();
           }
 
-          fieldDeclarations.add(genColumnFieldDeclaration(tableName + "__" + columnName,
+          fieldDeclarations.add(genColumnFieldDeclaration(tableName + Constants.DICT_SEPARATOR + columnName,
                                                           column.getType(),
                                                           column.isNullable()));
           names[j] = columnName;
@@ -293,14 +296,26 @@ public class DBInterface implements com.kopiright.kopi.comp.kjc.Constants {
             columnName = columnName.toUpperCase();
           }
 
-          fieldDeclarations.add(genColumnFieldDeclaration(tableName + "__" + columnName,
+          fieldDeclarations.add(genColumnFieldDeclaration(tableName + Constants.DICT_SEPARATOR + columnName,
                                                           column.getType(),
                                                           column.isNullable()));
           names[j] = columnName;
         }
 
         fieldDeclarations.add(genTableFieldDeclaration(tableName, names));
+      } else if (stmt instanceof SequenceDefinition) {
+        SequenceDefinition def = (SequenceDefinition)stmt;
+        String sequenceName = ((SimpleIdentExpression)def.getSequenceName()).getIdent();
+        
+        if (toUpperCase) {
+          sequenceName = sequenceName.toUpperCase();
+        }
+        
+        fieldDeclarations.add(genColumnFieldDeclaration(Constants.KOPI_SEQUENCES_TABLE + Constants.DICT_SEPARATOR + sequenceName,
+                                                        SEQUENCE_TYPE,
+                                                        false));
       }
     }
   }
+  private static final IntType SEQUENCE_TYPE  = new IntType(null, new Integer(1), new Integer(Integer.MAX_VALUE));
 }
