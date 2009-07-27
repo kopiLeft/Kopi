@@ -414,6 +414,12 @@ class OracleParser extends JdbcParser {
       case 41: // TRUNC_DATE/1
         return  "TRUNC(" + arguments.elementAt(0) + ")";
         
+      case 54: // ROWIDEXT/0
+        return "ROWID";
+
+      case 55: // ROWIDEXT/1
+        return "(" + arguments.elementAt(0) + ".ROWID)";
+
       default:
         // use function as it.
         String  functionCall;
@@ -492,5 +498,7 @@ class OracleParser extends JdbcParser {
     functions.put("ROWID/0", new Integer(39));
     functions.put("ROWID/1", new Integer(40));
     functions.put("TRUNC_DATE/1", new Integer(41));
+    functions.put("ROWIDEXT/0", new Integer(54));
+    functions.put("ROWIDEXT/1", new Integer(55));
   }
 }
