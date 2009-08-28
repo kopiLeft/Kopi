@@ -119,13 +119,13 @@ public class VKBlock
       
       commands = new VKCommand[commands.length + 1];
       for (int i = 0; i < old.length; i++) {
-        commands[i] = old[i];
+        commands[i + 1] = old[i];
       }
-      commands[commands.length - 1] = new VKDefaultCommand(where,
-                                                           VConstants.MOD_ANY,
-                                                           new VKCommandBody(where,
-                                                                             "SwitchBlockView",
-                                                                             new VKExternAction(where, "com.kopiright.vkopi.lib.form.Commands.switchBlockView")));
+      commands[0] = new VKDefaultCommand(where,
+                                         VConstants.MOD_ANY,
+                                         new VKCommandBody(where,
+                                                           "SwitchBlockView",
+                                                           new VKExternAction(where, "com.kopiright.vkopi.lib.form.Commands.switchBlockView")));
     }
   }
 
