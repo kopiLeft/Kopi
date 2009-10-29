@@ -30,17 +30,18 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.visual.Application;
-import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
+import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.SActor;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VDatabaseUtils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.xkopi.lib.base.Connection;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
@@ -48,6 +49,8 @@ import com.kopiright.xkopi.lib.base.DBForeignKeyException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
 import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.Query;
+import com.kopiright.xkopi.lib.base.SapdbDriverInterface;
+
 
 public abstract class VBlock implements VConstants, DBContextHandler, ActionHandler {
 
@@ -1685,7 +1688,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     headbuf = getSearchColumns();
     frombuf = getSearchTables();
     tailbuf = "";
-    if (form.getDBContext().getDefaultConnection().getJDBCConnection() instanceof com.kopiright.kconnect.ora.Connection) {
+    if (useOracleOuterJoinSyntax()) {
       tailbuf = VBlockOracleOuterJoin.getFetchRecordCondition(fields);
     } else {
       tailbuf = VBlockDefaultOuterJoin.getFetchRecordCondition(fields);
@@ -2037,6 +2040,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
+   *
+   */
+  private boolean useOracleOuterJoinSyntax() {
+    Connection conn = form.getDBContext().getDefaultConnection();
+    
+    return !(conn.getJDBCConnection() instanceof com.kopiright.kconnect.tb.Connection);
+  }
+  /**
    * Tests whether the specified table has nullable columns.
    */
   public boolean hasNullableColumns(int table) {
@@ -2070,7 +2081,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Returns the tables for database query, with outer joins conditions.
    */
   public String getSearchTables() {
-    if (form.getDBContext().getDefaultConnection().getJDBCConnection() instanceof com.kopiright.kconnect.ora.Connection) {
+    if (useOracleOuterJoinSyntax()) {
       return VBlockOracleOuterJoin.getSearchTables(this);
     } else {
       return VBlockDefaultOuterJoin.getSearchTables(this);
@@ -2116,7 +2127,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           buffer.append(cond);
         }
       }
-      if (form.getDBContext().getDefaultConnection().getJDBCConnection() instanceof com.kopiright.kconnect.ora.Connection) {
+      if (useOracleOuterJoinSyntax()) {
         buffer = VBlockOracleOuterJoin.getSearchCondition(fld, buffer);
       } else {
         buffer = VBlockDefaultOuterJoin.getSearchCondition(fld, buffer);
