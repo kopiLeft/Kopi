@@ -380,18 +380,22 @@ public class Console extends Compiler implements Constants {
 
         // Print Header
         for (int column = 1; column <= rsmd.getColumnCount(); column++) {
+          if (column > 1) {
+            output.print(FIELD_SEPARATOR);
+          }
           output.print(rsmd.getColumnName(column));
-          output.print(";");
         }
         output.println();
 
         // Print tuples
         while(rset.next()) {
-          String      printedValue = null;
-
           for (int column = 1; column <= rsmd.getColumnCount(); column++) {
-            Object    value = rset.getObject(column);
+            Object      value = rset.getObject(column);
+            String      printedValue;
 
+            if (column > 1) {
+              output.print(FIELD_SEPARATOR);
+            }
             if (value != null) {
               switch (rsmd.getColumnType(column)) {
               case Types.CLOB:
@@ -408,7 +412,7 @@ public class Console extends Compiler implements Constants {
             } else {
               printedValue = "NULL";
             }
-            output.print(printedValue + ";");
+            output.print(printedValue);
           }
           output.println();
 
@@ -735,5 +739,10 @@ public class Console extends Compiler implements Constants {
     }
   }
 
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  private static final char             FIELD_SEPARATOR = '\t';
   private static boolean trace = false;
 }
