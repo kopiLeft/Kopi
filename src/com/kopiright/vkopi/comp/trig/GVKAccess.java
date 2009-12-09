@@ -92,7 +92,8 @@ public class GVKAccess extends XExpression {
 							   expr,
 							   TYPE_OPERATORS[getType(expr.getType(factory))][OPE_READ_FORCE],
 							   params),
-				 translateToPrimitive(expr.getType(factory))).analyse(context);
+				 translateToPrimitive(expr.getType(factory)),
+                                 true).analyse(context);
     case MOD_ISNOTNULL:
       return new JLogicalComplementExpression(ref,
 					      new JMethodCallExpression(ref,
@@ -361,7 +362,8 @@ public class GVKAccess extends XExpression {
     case TYP_FIXED_CODE:
       return new XCastExpression(expr.getTokenReference(),
 				 expr,
-				 XStdType.Fixed);
+				 XStdType.Fixed,
+                                 true);
 
     case TYP_COLOR:
     case TYP_DATE:
@@ -377,7 +379,8 @@ public class GVKAccess extends XExpression {
     case TYP_INTEGER_CODE:
       return new XCastExpression(expr.getTokenReference(),
 				 expr,
-				 XStdType.Int);
+				 XStdType.Int,
+                                 true);
 
     case TYP_BOOLEAN:
     case TYP_BOOLEAN_CODE:

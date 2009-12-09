@@ -310,7 +310,7 @@ jUnaryExpressionNotPlusMinus []
     // Also, no reason to backtrack if type keyword like int, float...
     LPAREN dest = jBuiltInTypeSpec[] RPAREN
     expr = jUnaryExpression[]
-      { self = new XCastExpression(sourceRef, expr, dest); }
+      { self = new XCastExpression(sourceRef, expr, dest, false); }
     // Have to backtrack to see if operator follows.  If no operator
     // follows, it's a typecast.  No semantic checking needed to parse.
     // if it _looks_ like a cast, it _is_ a cast; else it's a "(expr)"
@@ -318,7 +318,7 @@ jUnaryExpressionNotPlusMinus []
     (LPAREN jClassTypeSpec[] RPAREN jUnaryExpressionNotPlusMinus[])=>
     LPAREN dest = jClassTypeSpec[] RPAREN
     expr = jUnaryExpressionNotPlusMinus[]
-      { self = new XCastExpression(sourceRef, expr, dest); }
+      { self = new XCastExpression(sourceRef, expr, dest, false); }
   |
     self = jPostfixExpression[]
   )

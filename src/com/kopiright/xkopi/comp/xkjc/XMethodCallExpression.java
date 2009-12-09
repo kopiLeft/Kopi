@@ -122,7 +122,7 @@ public class XMethodCallExpression extends JMethodCallExpression {
       TokenReference ref = getTokenReference();
       argsType = method.getParameters();
       for (int i = 0; i < argsType.length; i++) {
-	args[i] = new XCastExpression(ref, args[i], argsType[i]).analyse(context);
+	args[i] = new XCastExpression(ref, args[i], argsType[i], true).analyse(context);
       }
 
       return this.analyse(context);

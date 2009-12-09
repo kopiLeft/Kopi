@@ -82,10 +82,14 @@ public class JCastExpression extends JExpression {
 
     check(context, expr.getType(factory).isCastableTo(context, dest), KjcMessages.CAST_CANT, expr.getType(factory), dest);
 
-    if (!expr.getType(factory).isPrimitive() 
-        && expr.getType(factory).isAssignableTo(context, dest) 
-        && expr.getType(factory) != context.getTypeFactory().getNullType()) {
-      context.reportTrouble(new CWarning(getTokenReference(), KjcMessages.UNNECESSARY_CAST, expr.getType(factory), dest));
+    if (getTokenReference() != TokenReference.NO_REF) {
+      if (expr.getType(factory).equals(dest)
+          || (!expr.getType(factory).isPrimitive() 
+              && expr.getType(factory).isAssignableTo(context, dest) 
+              && expr.getType(factory) != context.getTypeFactory().getNullType()))
+      {
+        context.reportTrouble(new CWarning(getTokenReference(), KjcMessages.UNNECESSARY_CAST, expr.getType(factory), dest));
+      }
     }
 
     if (expr.isConstant() /*&& expr.getType(factory).isPrimitive() */) {
