@@ -475,7 +475,7 @@ public abstract class PTextBlock extends PBlock {
     }
     if (error != null) {
       error.printStackTrace();
-      throw new PSPrintException("PTextBlock.fillBlock():1", error);
+      throw new PSPrintException(error.getMessage(), error);
     }
   }
 
