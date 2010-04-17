@@ -100,18 +100,14 @@ public class FieldNameList extends SqlPhylum {
    * Return the number of elements in the vector
    */
   public int elemNumber() {
-    int number = 0;
-    for (int i = 0; i < fields.size(); i++) {
-      number++;
-    }
-    return number;
+    return fields.size();
   }
 
   /**
    * This function check if all the idents are unique
    */
   public boolean checkIdentsAreUnique(SqlContext context) {
-    for(int i = 0; i < fields.size(); i++) {
+    for (int i = 0; i < fields.size(); i++) {
       String field = (String)fields.get(i);
       for (int j = i + 1; j < fields.size(); j++) {
 	if (field.equals(fields.get(j))) {
@@ -122,30 +118,18 @@ public class FieldNameList extends SqlPhylum {
     }
     return true;
   }
-/*
-!!!
-  public JExpression checkSql(SqlContext context, JExpression left, StringBuffer current, TableReference table) {
-    for (int i = 0; i < fields.size(); i++) {
-      if (i != 0) {
-	current.append(", ");
-      }
-      current.append(fields.get(i));
-    }
 
-    // check if the columns are in the table
-    //if (context.getTables().size() == 1) {
-      //TableReference table = (TableReference)context.getTables().get(0);
-      for(int i = 0; i < fields.size(); i++) {
-	if (!table.hasColumn((String)fields.get(i))) {
-	  context.reportTrouble(new CWarning(getTokenReference(), "x-column-not-resolvable", fields.get(i)));
-	}
-      }
-   // } else {
-   //   context.reportTrouble(new CWarning(getTokenReference(), "x-more-than-one-name"));
-  //  }
-    return left;
+  /**
+   * Verifies whether each field in the list is defined in the specified table.
+   */
+  public void checkColumnsExist(TokenReference ref,
+                                SqlContext context,
+                                String table)
+  {
+    for (int i = 0; i < fields.size(); i++) {
+      FieldReference.checkColumnExists(ref, context, table, (String)fields.get(i));
+    }
   }
-*/
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

@@ -507,13 +507,13 @@ public class SqlChecker implements SqlVisitor {
    * Visits InsertStatement
    */
   public void visitInsertStatement(InsertStatement self,
-                                   String ident,
+                                   String table,
                                    FieldNameList fields,
                                    InsertSource source)
     throws PositionedError
   {
     current.append("INSERT INTO ");
-    current.append(ident);
+    current.append(table);
     if (fields != null) {
       current.append("(");
       fields.accept(this);
@@ -522,9 +522,9 @@ public class SqlChecker implements SqlVisitor {
     current.append(" ");
     source.accept(this);
 
-    if (!XUtils.tableExists(ident)) {
+    if (!XUtils.tableExists(table)) {
       reportTrouble(new CWarning(self.getTokenReference(),
-                                 SqlcMessages.TABLE_NOT_FOUND, ident));
+                                 SqlcMessages.TABLE_NOT_FOUND, table));
     } else {
       // !!! TESTER POUR LES AUTRES CAS
       //if (source instanceof TableInsertSource) {
@@ -542,9 +542,10 @@ public class SqlChecker implements SqlVisitor {
 	} else {
 	  // System.err.println("The columns aren't unique");
 	}
+        fields.checkColumnsExist(self.getTokenReference(), getContext(), table);
       } else {
 	// verifier que (ValueListInsertSource)source).elemNumber() == nombre
-	// de colonnes dans la table ident
+	// de colonnes dans la table
       }
     }
   }
