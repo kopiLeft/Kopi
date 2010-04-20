@@ -68,9 +68,10 @@ public class SapdbDriverInterface extends DriverInterface {
    *
    * @param     conn            the connection
    * @param     user            the login of the user
+   * @param     password        the initial password
    */
-  public void grantAccess(Connection conn, String user) throws SQLException {
-    executeSQL(conn, "CREATE USER " + user + " PASSWORD 2change NOT EXCLUSIVE");
+  public void grantAccess(Connection conn, String user, String password) throws SQLException {
+    executeSQL(conn, "CREATE USER " + user + " PASSWORD " + password + " NOT EXCLUSIVE");
   }
 
   /**

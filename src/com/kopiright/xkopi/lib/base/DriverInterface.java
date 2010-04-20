@@ -62,8 +62,9 @@ public abstract class DriverInterface {
    *
    * @param	conn		the connection
    * @param	user		the login of the user
+   * @param     password        the initial password
    */
-  public abstract void grantAccess(Connection conn, String user)
+  public abstract void grantAccess(Connection conn, String user, String password)
     throws SQLException;
 
   /**

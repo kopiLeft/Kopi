@@ -61,10 +61,11 @@ public class KconnectDriverInterface extends DriverInterface {
    *
    * @param	conn		the connection
    * @param	user		the login of the user
+   * @param     password        the initial password
    */
-  public void grantAccess(Connection conn, String user) throws SQLException {
+  public void grantAccess(Connection conn, String user, String password) throws SQLException {
     executeSQL(conn,
-               "GRANT CONNECT TO " + user + " IDENTIFIED BY \"2change\"", // Oracle
+               "GRANT CONNECT TO " + user + " IDENTIFIED BY \"" + password + "\"", // Oracle
                "GRANT ACCESS TO '" + user + "'"); // Transbase
   }
 

@@ -66,8 +66,9 @@ public class Db2UdbDriverInterface extends DriverInterface {
    *
    * @param	conn		the connection
    * @param	user		the login of the user
+   * @param     password        the initial password
    */
-  public void grantAccess(Connection conn, String user) throws SQLException {
+  public void grantAccess(Connection conn, String user, String password) throws SQLException {
     // !!! coco 050102 : verify the syntax
     executeSQL(conn, "GRANT ACCESS TO '" + user + "'");
   }

@@ -67,9 +67,10 @@ public class IngresDriverInterface extends DriverInterface {
    *
    * @param	conn		the connection
    * @param	user		the login of the user
+   * @param     password        the initial password
    */
-  public void grantAccess(Connection conn, String user) throws SQLException {
-    executeSQL(conn, "CREATE USER " + user + " WITH PASSWORD='2change'");
+  public void grantAccess(Connection conn, String user, String password) throws SQLException {
+    executeSQL(conn, "CREATE USER " + user + " WITH PASSWORD='" + password + "'");
   }
 
   /**

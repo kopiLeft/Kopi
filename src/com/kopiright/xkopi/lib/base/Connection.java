@@ -196,9 +196,10 @@ public class Connection {
    *
    *
    * @param	user		the login of the user
+   * @param     password        the initial password
    */
-  public void grantAccess(String user) throws SQLException {
-    driver.grantAccess(conn, user);
+  public void grantAccess(String user, String password) throws SQLException {
+    driver.grantAccess(conn, user, password);
   }
 
   /**

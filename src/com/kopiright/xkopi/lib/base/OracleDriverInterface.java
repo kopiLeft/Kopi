@@ -89,9 +89,10 @@ public class OracleDriverInterface extends DriverInterface {
    *
    * @param	conn		the connection
    * @param	user		the login of the user
+   * @param     password        the initial password
    */
-  public void grantAccess(Connection conn, String user) throws SQLException {
-    executeSQL(conn, "GRANT CONNECT TO " + user + " IDENTIFIED BY \"2change\"");
+  public void grantAccess(Connection conn, String user, String password) throws SQLException {
+    executeSQL(conn, "GRANT CONNECT TO " + user + " IDENTIFIED BY \"" + password + "\"");
   }
 
   /**
