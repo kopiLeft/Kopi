@@ -171,37 +171,16 @@ public class PExport2XLS extends PExport implements Constants {
           } else if (orig[j] instanceof Boolean) {
             cell.setCellValue(((Boolean) orig[j]).booleanValue());
           } else if (orig[j] instanceof Date) {
-            Date                date = (Date) orig[j];
-            GregorianCalendar   cal = new GregorianCalendar();
-
-            cal.set(Calendar.YEAR, date.getYear());
-            cal.set(Calendar.MONTH, date.getMonth() - 1);
-            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
-
-            cell.setCellValue(cal);
-          } else if (orig[j] instanceof Timestamp ||
-                     orig[j] instanceof java.sql.Timestamp) {
+            setCellValue(cell, (Date)orig[j]);
+          } else if (orig[j] instanceof Timestamp
+                      || orig[j] instanceof java.sql.Timestamp) {
             // date columns can be returned as a timestamp by the jdbc driver.
             cell.setCellValue(strings[j]);
             datatype[j] = HSSFCell.CELL_TYPE_STRING;
           } else if (orig[j] instanceof Month) {
-            Date                date = ((Month) orig[j]).getFirstDay();
-            GregorianCalendar   cal = new GregorianCalendar();
-
-            cal.set(Calendar.YEAR, date.getYear());
-            cal.set(Calendar.MONTH, date.getMonth() - 1);
-            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
-
-            cell.setCellValue(cal);
+            setCellValue(cell, ((Month)orig[j]).getFirstDay());
           } else if (orig[j] instanceof Week) {
-            Date                date = ((Week) orig[j]).getFirstDay();
-            GregorianCalendar   cal = new GregorianCalendar();
-
-            cal.set(Calendar.YEAR, date.getYear());
-            cal.set(Calendar.MONTH, date.getMonth() - 1);
-            cal.set(Calendar.DAY_OF_MONTH, date.getDay());
-
-            cell.setCellValue(cal);
+            setCellValue(cell, ((Week) orig[j]).getFirstDay());
           } else if (orig[j] instanceof String && orig[j].equals("")) {
             // myabe reportIdenticalValue Trigger used
             // nothing
@@ -255,6 +234,20 @@ public class PExport2XLS extends PExport implements Constants {
       cellPos++;
     }
     rowNumber += 1;
+  }
+
+  /**
+   * Set the value of the cell to the specified date value.
+   */
+  private static void setCellValue(HSSFCell cell, Date value) {
+    GregorianCalendar   cal = new GregorianCalendar();
+
+    cal.clear();
+    cal.set(Calendar.YEAR, value.getYear());
+    cal.set(Calendar.MONTH, value.getMonth() - 1);
+    cal.set(Calendar.DAY_OF_MONTH, value.getDay());
+    
+    cell.setCellValue(cal);
   }
 
   private int computeColumnWidth(VReportColumn column) {
