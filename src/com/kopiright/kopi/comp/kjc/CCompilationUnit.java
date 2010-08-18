@@ -91,7 +91,7 @@ public class CCompilationUnit {
         loadedClasses.put(name, cl);
       } else {
         // Otherwise, look for a type declared by EXACTLY ONE import-on-demand declaration
-        for (int i = 0; i < importedPackages.length; i++) {
+        for (int i = 0; importedPackages != null && i < importedPackages.length; i++) {
           String        qualifiedName;
           if (classReader.hasClassFile(importedPackages[i].getName())) {
             // import on demand of enclosed classes!
