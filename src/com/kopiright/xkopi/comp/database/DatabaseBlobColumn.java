@@ -21,6 +21,7 @@ package com.kopiright.xkopi.comp.database;
 
 import com.kopiright.compiler.base.TokenReference;
 import com.kopiright.kopi.comp.kjc.CClassNameType;
+import com.kopiright.kopi.comp.kjc.CArrayType;
 import com.kopiright.kopi.comp.kjc.CStdType;
 import com.kopiright.kopi.comp.kjc.CType;
 import com.kopiright.kopi.comp.kjc.JBooleanLiteral;
@@ -30,7 +31,7 @@ import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 /**
  * The type of a field which represents a boolean-column in Database.k. 
  */
-public class DatabaseBlobColumn extends DatabaseColumn{
+public class DatabaseBlobColumn extends DatabaseColumn {
 
   /**
    * Creates a representation of a column with type boolean. The values in 
@@ -46,7 +47,7 @@ public class DatabaseBlobColumn extends DatabaseColumn{
    * @return the type
    */
   protected CType getStandardType(boolean isNullable) {
-    return CStdType.Object;
+    return standardType;
   } 
 
   /**
@@ -77,4 +78,10 @@ public class DatabaseBlobColumn extends DatabaseColumn{
       return false;
     }
   }
+
+  // ----------------------------------------------------------------------
+  // MEMBERS
+  // ----------------------------------------------------------------------
+
+  private static final CType            standardType = new CArrayType(CStdType.Byte, 1);
 }
