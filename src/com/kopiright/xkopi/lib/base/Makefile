@@ -37,7 +37,7 @@ JAVAFILES +=	Connection Cursor					\
 		DBForeignKeyException DefaultDBContextHandler		\
 		DriverInterface JdbcParser				\
 		KopiSerializable KopiUtils				\
-		Query XKjcRtUtils XInterruptProtectedException
+		Query XInterruptProtectedException
 
 JAVAFILES +=	As400DriverInterface					\
 		Db2UdbDriverInterface					\

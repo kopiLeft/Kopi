@@ -21,7 +21,7 @@
                    DBUnspecifiedException.java DBDuplicateIndexException.java 
                    DBForeignKeyException.java DefaultDBContextHandler.java 
                    DriverInterface.java JdbcParser.java KopiSerializable.java 
-                   KopiUtils.java Query.java XKjcRtUtils.java 
+                   KopiUtils.java Query.java
                    XInterruptProtectedException.java 
                    As400DriverInterface.java 
                    Db2UdbDriverInterface.java KconnectDriverInterface.java 

@@ -95,23 +95,7 @@ public class XPostfixExpression extends JPostfixExpression {
 
     TokenReference	ref = getTokenReference();
     JExpression	left = new JCheckedExpression(ref, expr);
-   
-    /* remove if it works / dont forget to remove com/kopiright/xkopi/lib/base/XKjcRtUtils
-    CReferenceType    utilType = (CReferenceType) context.getTypeFactory().createType(com.kopiright.xkopi.lib.base.XKjcRtUtils.class.getName().replace('.','/'), true);
 
-    try {
-      utilType = (CReferenceType) utilType.checkType(context);
-    } catch (UnpositionedError ue) {
-      throw ue.addPosition(ref);
-    }
-    
-    return new JCastExpression(ref,
-                               new JMethodCallExpression(ref, 
-                                                         new JTypeNameExpression(ref, utilType),
-                                                         "returnMe", 
-                                                         new JExpression[] {left, right}),
-			       expr.getType());
-    */
     return left;
   }
 }
