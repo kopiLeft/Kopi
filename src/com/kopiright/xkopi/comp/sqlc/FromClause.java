@@ -113,7 +113,7 @@ public class FromClause extends SqlPhylum {
     ArrayList     tables = (ArrayList)tableRefs.clone();
     
     // if a table reference is an outer join
-    // replace it with the left and right tables withi it
+    // replace it with the left and right tables within it
     for (Iterator i = tableRefs.iterator(); i.hasNext(); ) {
       SimpleTableReference      elem = (SimpleTableReference)i.next();
       if (elem instanceof JdbcOuterJoin) {
@@ -129,7 +129,30 @@ public class FromClause extends SqlPhylum {
         tables.remove(elem);
       }        
     }
-    
+
+    // if more than one table is involved, then verify that an alias
+    // is defined for each table
+    if (tables.size() > 1) {
+      for (int i = 0; i < tables.size(); i++) {
+        SimpleTableReference    elem = (SimpleTableReference)tables.get(i);
+        String                  alias = elem.getAlias();
+
+        if (alias == null) {
+          String        name;
+
+          if (elem instanceof TableName) {
+            name = ((TableName) elem).getTableName();
+          } else {
+            name = "<complex table reference>";
+          }
+          context.reportTrouble(new CWarning(getTokenReference(),
+                                             SqlcMessages.JOIN_TABLE_WITHOUT_ALIAS,
+                                             name));
+        }
+      }
+    }
+
+    // verify that each alias is unique
     for (int i = 0; i < tables.size(); i++) {
       SimpleTableReference      elem = (SimpleTableReference)tables.get(i);
       String                    alias = elem.getAlias();
