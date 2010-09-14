@@ -32,8 +32,7 @@ import com.kopiright.xkopi.lib.type.NotNullTimestamp;
 import com.kopiright.xkopi.lib.type.Timestamp;
 
 /**
- * !!! NEED COMMENTS
- * default values
+ * !!! graf 20100914 complete input methods
  */
 public class VTimestampField extends VField {
 
@@ -45,7 +44,7 @@ public class VTimestampField extends VField {
    * Constructor
    */
   public VTimestampField() {
-    super(10 + 1 + 9 + 3 + 3, 1); // yyyy-MM-dd hh:mm:ss.000000
+    super(10 + 1 + 9 + 3 + 9, 1); // yyyy-MM-dd hh:mm:ss.nnnnnnnnn
   }
 
   /**
@@ -217,8 +216,6 @@ public class VTimestampField extends VField {
       return super.fillField(handler);
     }
   }
-
-
 
   /**
    * Checks that field value exists in list
