@@ -23,6 +23,7 @@ import java.util.Vector;
 import java.util.Stack;
 
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.vkopi.comp.base.VKParseVKWindowContext;
 import com.kopiright.vkopi.comp.base.VKEnvironment;
 
@@ -47,12 +48,17 @@ public class VRParseReportContext extends VKParseVKWindowContext {
   }
 
   private void clear() {
+    interfaces.setSize(0);
     fields.setSize(0);
   }
 
   // ----------------------------------------------------------------------
   // ACCESSORS (ADD)
   // ----------------------------------------------------------------------
+
+  public void addInterface(CReferenceType inter) {
+    interfaces.addElement(inter);
+  }
 
   public void addField(VRField field) {
     fields.addElement(field);
@@ -61,6 +67,10 @@ public class VRParseReportContext extends VKParseVKWindowContext {
   // ----------------------------------------------------------------------
   // ACCESSORS (GET)
   // ----------------------------------------------------------------------
+
+  public CReferenceType[] getInterfaces() {
+    return (CReferenceType[])Utils.toArray(interfaces, CReferenceType.class);
+  }
 
   public VRField[] getFields() {
     addField(new VRSeparatorField(TokenReference.NO_REF));
@@ -72,6 +82,7 @@ public class VRParseReportContext extends VKParseVKWindowContext {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private Vector	interfaces = new Vector();
   private Vector	fields = new Vector();
 
   private static Stack stack = new Stack();

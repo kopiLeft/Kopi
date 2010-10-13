@@ -83,6 +83,8 @@ vrReport []
   returns [VRReport self]
 {
   String                name;
+  CReferenceType        superReport = null;
+  String                ident;
   String                help = "";
   VRField               fld;
   TokenReference        sourceRef = buildTokenReference();	// !!! add comment
@@ -90,6 +92,19 @@ vrReport []
 }
 :
   "REPORT" name = vkString[]
+  (
+    "IS" ident = vkQualifiedIdent[]
+      { superReport = environment.getTypeFactory().createType(ident.replace('.', '/'), false); }
+  )?
+  (
+    "IMPLEMENTS"
+    ident = vkQualifiedIdent[]
+      { context.addInterface(environment.getTypeFactory().createType(ident.replace('.', '/'), false)); }
+    (
+      COMMA ident = vkQualifiedIdent[]
+        { context.addInterface(environment.getTypeFactory().createType(ident.replace('.', '/'), false)); }
+    )*
+  )?
   vkContextHeader[context.getCompilationUnitContext()]
   help = vkHelp[] 
   vkDefinitions[context.getDefinitionCollector(), context.getCompilationUnitContext().getPackageName().getName()]
@@ -107,6 +122,8 @@ vrReport []
 			  context.getDefinitionCollector(),
 			  name,
                           getLocale(),
+                          superReport,
+                          context.getInterfaces(),
 			  context.getCommands(),
 			  context.getTriggers(),
 			  context.getFields(),
