@@ -88,11 +88,17 @@ public class VFixnumColumn extends VReportColumn {
     }
 
     public String format(Object value) {
-      return value == null ? 
-        "" :
-        (((NotNullFixed)value).getScale() > maxScale || exactScale) ? 
-        ((NotNullFixed)value).setScale(maxScale).toString() :
-        value.toString();
+      if (value == null) {
+        return "";
+      } else if (value instanceof Integer) {
+        return value.toString();
+      } else if (value instanceof NotNullFixed) {
+        return (((NotNullFixed)value).getScale() > maxScale || exactScale) ? 
+          ((NotNullFixed)value).setScale(maxScale).toString() :
+          value.toString();
+      } else {
+        throw new InconsistencyException("bad type for " + value);
+      }
     }
 
     private final boolean     exactScale;
@@ -133,6 +139,10 @@ public class VFixnumColumn extends VReportColumn {
   public String getFormula() {
     return formula;
   }
+
+  // --------------------------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------------------------
 
   private String         formula;
   private int            maxScale;

@@ -483,13 +483,6 @@ public class MReport extends AbstractTableModel implements Constants {
       }
     }
 
-    /*
-    for (int i = 0; i < columnCount; i++) {
-      System.err.print(" " + displayGroups[i]);
-    }
-    System.err.println();
-    */
-
     int		level = 0;
     //top is reached
     for (int i = 0; i < displayGroups.length; i++) {
@@ -513,13 +506,6 @@ public class MReport extends AbstractTableModel implements Constants {
     for (int i = 0; i < columnCount; i++) {
       displayLevels[i] = level - displayLevels[i];
     }
-
-    /*
-    for (int i = 0; i < columnCount; i++) {
-      System.err.print(" " + displayLevels[i]);
-    }
-    System.err.println();
-    */
   }
 
   /*

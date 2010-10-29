@@ -72,6 +72,21 @@ public class VFixnumCodeColumn extends VCodeColumn {
   public void formatColumn(PExport exporter, int index) {
     exporter.formatFixedColumn(this, index);
   }
+
+
+  /**
+   * Compares two objects.
+   *
+   * @param	o1	the first operand of the comparison
+   * @param	o2	the second operand of the comparison
+   * @return	-1 if the first operand is smaller than the second
+   *		 1 if the second operand if smaller than the first
+   *		 0 if the two operands are equal
+   */
+  public int compareTo(Object o1, Object o2) {
+    return ((NotNullFixed)o1).compareTo((NotNullFixed)o2);
+  }
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

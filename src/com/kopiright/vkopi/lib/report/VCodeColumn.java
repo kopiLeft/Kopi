@@ -66,17 +66,11 @@ public abstract class VCodeColumn extends VReportColumn {
    *		 1 if the second operand if smaller than the first
    *		 0 if the two operands are equal
    */
-  public int compareTo(Object o1, Object o2) {
-    if (o1 == null || o2 == null) {
-      return o1 == null ? -1 : (o2 == null ? 0 : 1);
-    } else {
-      int	v1 = ((Integer)o1).intValue();
-      int	v2 = ((Integer)o2).intValue();
+  public abstract int compareTo(Object o1, Object o2);
 
-      return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
-    }
-  }
-
+  /*
+   * Return a string representation.
+   */
   public String format(Object o) {
     return isFolded() || o == null ?
       "" :
