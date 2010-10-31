@@ -247,6 +247,18 @@ public class Console extends Compiler implements Constants {
           quit = true;
         } else if (statement.equals("HELP;")) {
           help();
+        } else if (statement.startsWith("VERBATIM QUERY\n")) {
+          // cut header and remove trailing ;
+          statement = statement.substring(("VERBATIM QUERY\n").length(), statement.length() - 1);
+
+          // execute SQL code without preprocessing
+          executeQuery(statement);
+        } else if (statement.startsWith("VERBATIM OTHER\n")) {
+          // cut header and remove trailing ;
+          statement = statement.substring(("VERBATIM OTHER\n").length(), statement.length() - 1);
+
+          // execute SQL code without preprocessing
+          executeOther(statement);
         } else {
           com.kopiright.xkopi.comp.sqlc.Statement     stmt;
           
@@ -360,122 +372,135 @@ public class Console extends Compiler implements Constants {
   }
 
   /**
+   * Execute the specified SQL code
+   */
+  private void executeQuery(String sqlCode)
+    throws SQLException
+  {
+    Statement           stmt = connection.createStatement();
+    ResultSet           rset = stmt.executeQuery(sqlCode);
+    ResultSetMetaData   meta = rset.getMetaData();
+    int                 count = 0;
+
+    // Print Header
+    for (int column = 1; column <= meta.getColumnCount(); column++) {
+      if (column > 1) {
+        output.print(FIELD_SEPARATOR);
+      }
+      output.print(meta.getColumnName(column));
+    }
+    output.println();
+    
+    // Print tuples
+    while (rset.next()) {
+      for (int column = 1; column <= meta.getColumnCount(); column++) {
+        Object      value = rset.getObject(column);
+        String      printedValue;
+        
+        if (column > 1) {
+          output.print(FIELD_SEPARATOR);
+        }
+        if (value != null) {
+          switch (meta.getColumnType(column)) {
+          case Types.CLOB:
+          case Types.LONGVARCHAR:
+            printedValue = "<CLOB>";
+            break;
+          case Types.BLOB:
+          case Types.LONGVARBINARY:
+            printedValue = "<BLOB>";
+            break;
+          default:
+            printedValue = value.toString();
+          }
+        } else {
+          printedValue = "NULL";
+        }
+        output.print(printedValue);
+      }
+      output.println();
+      
+      count ++;
+    }
+
+    // Print summary
+    output.println();
+    switch (count) {
+    case 0:
+      output.print("No row was");
+      break;
+    case 1:
+      output.print("1 row was");
+      break;
+    default:
+      output.print(count + " rows were");
+    }
+    output.println(" selected.");
+    
+    rset.close();
+  }
+
+  /**
+   * Execute the specified SQL code
+   */
+  private void executeOther(String sqlCode)
+    throws SQLException
+  {
+    Statement   stmt = connection.createStatement();
+    int         count = -1;
+
+    synchronized (this) {
+      inTransaction = true;
+      count = stmt.executeUpdate(sqlCode);
+    }
+        
+    // Print summary
+    output.println();
+    if (count < 0) {
+      output.println("There is a problem : return of executeUpdate is negative : " + count);
+    } else {
+      switch (count) {
+      case 0:
+        output.print("No row was");
+        break;
+      case 1:
+        output.print("1 row was");
+        break;
+      default:
+        output.print(count + " rows were");
+      }
+      output.println(" updated, deleted or inserted.");
+    }
+  }
+
+  /**
    *
    */
   private void executeStatement(com.kopiright.xkopi.comp.sqlc.Statement statement)
     throws PositionedError, UnpositionedError
   {
+    String              sqlCode = genSQLCode(statement);
+
+    if (sqlCode.equals("")) {
+      return;
+    }
+
     try {
-      Statement         stmt = connection.createStatement();
-      final String      sqlCode = genSQLCode(statement);
-      
-      if (sqlCode.equals("")) {
-        return;
-      }
-      
       if (statement instanceof SelectStatement) {
-        ResultSet               rset = stmt.executeQuery(sqlCode);
-        ResultSetMetaData       rsmd = rset.getMetaData();
-        int                     count = 0;
-
-        // Print Header
-        for (int column = 1; column <= rsmd.getColumnCount(); column++) {
-          if (column > 1) {
-            output.print(FIELD_SEPARATOR);
-          }
-          output.print(rsmd.getColumnName(column));
-        }
-        output.println();
-
-        // Print tuples
-        while(rset.next()) {
-          for (int column = 1; column <= rsmd.getColumnCount(); column++) {
-            Object      value = rset.getObject(column);
-            String      printedValue;
-
-            if (column > 1) {
-              output.print(FIELD_SEPARATOR);
-            }
-            if (value != null) {
-              switch (rsmd.getColumnType(column)) {
-              case Types.CLOB:
-              case Types.LONGVARCHAR:
-                printedValue = "<CLOB>";
-                break;
-              case Types.BLOB:
-              case Types.LONGVARBINARY:
-                printedValue = "<BLOB>";
-                break;
-              default:
-                printedValue = value.toString();
-              }
-            } else {
-              printedValue = "NULL";
-            }
-            output.print(printedValue);
-          }
-          output.println();
-
-          count ++;
-        }
-
-        // Print summary
-        output.println();
-        switch (count) {
-        case 0:
-          output.print("No row was");
-          break;
-        case 1:
-          output.print("1 row was");
-          break;
-        default:
-          output.print(count + " rows were");
-        }
-        output.println(" selected.");
-
-        rset.close();
+        executeQuery(sqlCode);
       } else if (statement instanceof com.kopiright.xkopi.comp.sqlc.DeleteStatement
                  || statement instanceof com.kopiright.xkopi.comp.sqlc.InsertStatement
-                 || statement instanceof com.kopiright.xkopi.comp.sqlc.UpdateStatement)
-        {
-          int     count = -1;
-
-          synchronized (this) {
-            inTransaction = true;
-            count = stmt.executeUpdate(sqlCode);
-          }
-
-          // Print summary
-          output.println();
-          if (count < 0) {
-            output.println("There is a problem : return of executeUpdate is negative : "
-                           + count);
-          } else {
-            switch (count) {
-            case 0:
-              output.print("No row was");
-              break;
-            case 1:
-              output.print("1 row was");
-              break;
-            default:
-              output.print(count + " rows were");
-            }
-            output.println(" updated, deleted or inserted.");
-          }
-        } else {
+                 || statement instanceof com.kopiright.xkopi.comp.sqlc.UpdateStatement) {
+        executeOther(sqlCode);
+      } else {
         // NO SELECT, NO INSERT, NO UPDATE, NO DELETE => DDL statements.
-        synchronized (this) {
-          inTransaction = true;
-          stmt.executeUpdate(sqlCode);
-        }
+        executeOther(sqlCode);
       }
     } catch (SQLException e) {
-      output.println("A database exception has occured while executing this statement : ");
+      output.println("A database exception has occured while executing this statement: ");
       output.println(datasource.driver.convertException(e).getMessage());
       if (options.abortonerror) {
-        throw new UnpositionedError(DbiMessages.SQL_EXCEPTION,
-                                    e.getMessage());
+        throw new UnpositionedError(DbiMessages.SQL_EXCEPTION, e.getMessage());
       }
     }
   }
