@@ -234,39 +234,10 @@ public class Console extends Compiler implements Constants {
 
     while (!quit) {
       try {
-        String    statement;
+        AbstractStatement     s;
 
-        printPrompt(true);
-        statement = readStatement();
-        if (statement.equals("COMMIT;")) {
-          commitTransaction();
-        } else if (statement.equals("ABORT;")) {
-          abortTransaction();
-        } else if (statement.equals("QUIT;")) {
-          quit();
-          quit = true;
-        } else if (statement.equals("HELP;")) {
-          help();
-        } else if (statement.startsWith("VERBATIM QUERY\n")) {
-          // cut header and remove trailing ;
-          statement = statement.substring(("VERBATIM QUERY\n").length(), statement.length() - 1);
-
-          // execute SQL code without preprocessing
-          executeQuery(statement);
-        } else if (statement.startsWith("VERBATIM OTHER\n")) {
-          // cut header and remove trailing ;
-          statement = statement.substring(("VERBATIM OTHER\n").length(), statement.length() - 1);
-
-          // execute SQL code without preprocessing
-          executeOther(statement);
-        } else {
-          com.kopiright.xkopi.comp.sqlc.Statement     stmt;
-          
-          stmt = parseStatement(statement);
-          if (stmt != null) {
-            executeStatement(stmt);
-          }
-        }
+        s = readStatement();
+        quit = s.execute();
       } catch (Throwable e) {
         reportTrouble(e);
         if (options.abortonerror) {
@@ -294,33 +265,72 @@ public class Console extends Compiler implements Constants {
   /**
    *
    */
-  private String readStatement() {
-    StringBuffer      statement = new StringBuffer();
-
+  private AbstractStatement readStatement() {
     try {
-      boolean   statementEnded = false;
+      String    line;
 
-      while (!statementEnded) {
-        String          readLine;
+      // read first line
+      printPrompt(true);
+      do {
+        line = input.readLine();
+      } while (line == null || line.equals(""));
 
-        readLine = input.readLine();
-        if (readLine != null) {
-          statement.append("\n");
-          statement.append(readLine);
+      if (line.equals("COMMIT;")) {
+        return new CommitStatement();
+      } else if (line.equals("ABORT;")) {
+        return new AbortStatement();
+      } else if (line.equals("QUIT;")) {
+        return new QuitStatement();
+      } else if (line.equals("HELP;")) {
+        return new HelpStatement();
+      } else if (line.equals("VERBATIM QUERY")) {
+        return new VerbatimStatement(true, readVerbatimStatement());
+      } else if (line.equals("VERBATIM OTHER")) {
+        return new VerbatimStatement(false, readVerbatimStatement());
+      } else {
+        StringBuffer    buffer = new StringBuffer();
 
-          statementEnded = (statement.lastIndexOf(";") != -1);
-          if (!statementEnded) {
-            printPrompt(statementEnded);
+        for (;;) {
+          buffer.append("\n");
+          buffer.append(line);
+          if (line.lastIndexOf(";") != -1) {
+            break;
           }
+          printPrompt(false);
+          line = input.readLine();
         }
+        return new SqlStatement(buffer.toString().trim());
       }
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }      
+
+  /*
+   * Reads until a line with 
+   */
+  private String readVerbatimStatement() throws IOException {
+    StringBuffer    buffer = new StringBuffer();
+
+    for (;;) {
+      String    line;
+
+      printPrompt(false);
+      line = input.readLine();
+      if (END_OF_VERBATIM_TEXT_MARKER.equals(line)) {
+        break;
+      }
+      if (line != null) {
+        if (buffer.length() != 0) {
+          buffer.append("\n");
+        }
+        buffer.append(line);
+      }
     }
 
-    return statement.toString().trim();
+    return buffer.toString();
   }
-
 
   /**
    *
@@ -516,7 +526,6 @@ public class Console extends Compiler implements Constants {
 
     return datasource.checker.getStatementText(datasource.driver);
   }
-
 
   private void quit() {
     if (inTransaction) {
@@ -765,9 +774,86 @@ public class Console extends Compiler implements Constants {
   }
 
   // ----------------------------------------------------------------------
+  // INNER CLASSES
+  // ----------------------------------------------------------------------
+
+  private abstract class AbstractStatement {
+    public abstract boolean execute() throws PositionedError, UnpositionedError, SQLException;
+  }
+
+  private class AbortStatement extends AbstractStatement {
+    public boolean execute() {
+      abortTransaction();
+      return false;
+    }
+  }
+
+  private class CommitStatement extends AbstractStatement {
+    public boolean execute() {
+      commitTransaction();
+      return false;
+    }
+  }
+
+  private class HelpStatement extends AbstractStatement {
+    public boolean execute() {
+      help();
+      return false;
+    }
+  }
+
+  private class QuitStatement extends AbstractStatement {
+    public boolean execute() {
+      quit();
+      return true;
+    }
+  }
+
+  private class SqlStatement extends AbstractStatement {
+    public SqlStatement(String sqlText) {
+      this.sqlText = sqlText;
+    }
+
+    public boolean execute() throws PositionedError, UnpositionedError, SQLException {
+      com.kopiright.xkopi.comp.sqlc.Statement     stmt;
+          
+      stmt = parseStatement(sqlText);
+      if (stmt != null) {
+        executeStatement(stmt);
+      }
+      return false;
+    }
+
+    private final String        sqlText;
+  }
+
+  /**
+   * Execute SQL code without preprocessing
+   */
+  private class VerbatimStatement extends AbstractStatement {
+    public VerbatimStatement(boolean isQuery, String sqlText) {
+      this.isQuery = isQuery;
+      this.sqlText = sqlText;
+    }
+
+    public boolean execute() throws SQLException {
+      if (isQuery) {
+        executeQuery(sqlText);
+      } else {
+        executeOther(sqlText);
+      }
+      return false;
+    }
+
+    private final boolean       isQuery;
+    private final String        sqlText;
+  }
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  private static final String           END_OF_VERBATIM_TEXT_MARKER = "//";
   private static final char             FIELD_SEPARATOR = '\t';
-  private static boolean trace = false;
+  private static boolean                trace = false;
 }
