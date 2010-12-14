@@ -68,12 +68,12 @@ public class Date extends Type {
     matcher = pattern.matcher(image);
     if (matcher.matches()) {
       String[] res = Pattern.compile("[-.]").split(image);
-    this.scalar = gregorianToJulian(Integer.parseInt(res[0]),
-				    Integer.parseInt(res[1]),
-				    Integer.parseInt(res[2]));
 
+      this.scalar = gregorianToJulian(Integer.parseInt(res[0]),
+                                      Integer.parseInt(res[1]),
+                                      Integer.parseInt(res[2]));
     } else {
-        throw new IllegalArgumentException("invalid date string " + image);
+      throw new IllegalArgumentException("invalid date string " + image);
     }
   }
 
@@ -81,7 +81,11 @@ public class Date extends Type {
    * Today's date
    */
   public static NotNullDate now() {
-    return new NotNullDate((int)(System.currentTimeMillis() / 86400000L) + ((Date)ORIGIN).scalar);
+    Calendar	now = Calendar.getInstance();
+
+    return new NotNullDate(now.get(Calendar.YEAR),
+                           now.get(Calendar.MONTH) + 1,
+                           now.get(Calendar.DAY_OF_MONTH));
   }
 
   /**
