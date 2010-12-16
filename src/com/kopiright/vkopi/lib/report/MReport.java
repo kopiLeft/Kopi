@@ -992,6 +992,20 @@ public class MReport extends AbstractTableModel implements Constants {
     return displayOrder[column];
   }
 
+  /**
+   * Returns the number of base rows.
+   */
+  public int getBaseRowCount() {
+    return baseRows.length;
+  }
+  
+  /**
+   * Returns the number of visible rows.
+   */
+  public int getVisibleRowCount() {
+    return visibleRows.length;
+  }
+  
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

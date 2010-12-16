@@ -45,13 +45,15 @@ public final class DFootPanel extends JPanel {
     setFocusable(false);
     setBorder(new KopiLookAndFeel.TopLineBorder());
     
-    infoPanel = new DInfoPanel();
-    add(infoPanel, BorderLayout.CENTER);	// will have maximum size
-
+    messagePanel = new DInfoPanel();
+    add(messagePanel, BorderLayout.CENTER);	// will have maximum size
+   
     statePanel = new DStatePanel();
     waitPanel = new DWaitPanel(parent);
     waitPanel.setVisible(false);
-
+    
+    statisticsPanel = new DInfoPanel();
+    statisticsPanel.setText(" ");
 
     east.setLayout(new BoxLayout(east, BoxLayout.X_AXIS));
     
@@ -62,7 +64,8 @@ public final class DFootPanel extends JPanel {
 
     east.add(waitPanel);
     east.add(statePanel);
-
+    east.add(statisticsPanel);
+    
     add(east, BorderLayout.EAST);
   }
 
@@ -74,8 +77,16 @@ public final class DFootPanel extends JPanel {
    * setInformationText
    */
   public void setInformationText(String message) {
-    infoPanel.setText(message, false);
+    messagePanel.setText(message, false);
     waitPanel.setWaiting(false);
+  }
+  
+  /**
+   * Display statistical information.
+   * In case of a report table informations will be diplayed
+   */
+  public void setStatisticsText(String message) {
+    statisticsPanel.setText(message, false);
   }
 
   /**
@@ -86,9 +97,9 @@ public final class DFootPanel extends JPanel {
       System.err.println("ERROR: DFootPanel.setWaitInfo(..) calles outside of Eventdispatching Thread");
     }
 
-    oldMessage = infoPanel.getText();
+    oldMessage = messagePanel.getText();
     if (message != null) {
-      infoPanel.setText(message, true);
+      messagePanel.setText(message, true);
     }
     waitPanel.setWaiting(true);
   }
@@ -109,7 +120,7 @@ public final class DFootPanel extends JPanel {
       System.err.println("ERROR: DFootPanel.unsetWaitInfo() calles outside of Eventdispatching Thread");
     }
 
-    infoPanel.setText(oldMessage, false);
+    messagePanel.setText(oldMessage, false);
     waitPanel.setWaiting(false);
   }
 
@@ -132,7 +143,8 @@ public final class DFootPanel extends JPanel {
   // ----------------------------------------------------------------------
 
   private DWaitPanel            waitPanel;
-  private DInfoPanel            infoPanel;
+  private DInfoPanel            messagePanel;
+  private DInfoPanel            statisticsPanel;
   private DStatePanel           statePanel;
   private JLabel                emptyText;
   private String                oldMessage;

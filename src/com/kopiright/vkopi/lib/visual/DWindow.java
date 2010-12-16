@@ -806,7 +806,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   // ---------------------------------------------------------------------
 
   /**
-   * setInformationText
+   * Displays a text in the lower left corner of the window.
    */
   public final void setInformationText(final String text) {
     SwingThreadHandler.startAndWait(new Runnable() {
@@ -818,10 +818,21 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
         }
       });
   }
-
+  
   /**
-   * setInformationText
+   * Displays a text in the lower right corner of the window.
    */
+  public final void setStatisticsText(final String text) {
+    SwingThreadHandler.startAndWait(new Runnable() {
+        public void run() {
+          if (footPanel != null) {
+            // if a footpanel exists
+            footPanel.setStatisticsText(text);
+          }
+        }
+      });
+  }
+
   public final void setStatePanel(JPanel panel) {
     footPanel.setStatePanel(panel);
   }

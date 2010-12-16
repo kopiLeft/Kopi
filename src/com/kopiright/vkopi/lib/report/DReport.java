@@ -264,7 +264,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     bounds.height = Math.max(bounds.height, 500); // 500 is aprox. 15 lines
     frame.setBounds(bounds);
     frame.show();
-
+    setInfoTable();
     // Focus this panel to dispatch the key-events to the menu.
     // If "table" is focused, it will handle "esc" and "F2"
     // itself and will consume them.
@@ -357,6 +357,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     }
 
     cell.set(text, isSelected, parameters.getBackground(level));
+    setInfoTable();
 
     return cell;
   }
@@ -708,10 +709,22 @@ public class DReport extends DWindow implements TableCellRenderer {
     }
     table.getColumnModel().getColumn(pos).setPreferredWidth(width);
 
-
     ((JComponent)table.getColumnModel().getColumn(pos).getHeaderRenderer()).setToolTipText(help);
 
     return width;
+  }
+  
+  /**
+   * Display table informations in the footer of the table
+   */
+  private void setInfoTable() {
+    setStatisticsText("<html><font color=#736AFF>" 
+                      + table.getRowCount()
+                      + "/"
+                      + model.getBaseRowCount()
+                      + "/"
+                      + model.getVisibleRowCount()
+                      + "</font>");
   }
 
   /**
@@ -755,7 +768,7 @@ public class DReport extends DWindow implements TableCellRenderer {
       }
     
       setValue(value);
- 
+      setInfoTable();
       return this;
     }
     /**
