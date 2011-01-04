@@ -135,6 +135,7 @@
   <property key="Week" value="Woche" />
   <property key="Boolean" value="Boolean" />
   <property key="Code" value="Code" />
+  <property key="Timestamp" value="Timestamp" />
   <property key="Image-long" value="Das ist ein Feld vom Typ Image mit einer Dimension von {0}x{1} Pixeln" />
   <property key="Color-long" value="Das ist ein Feld vom Typ Farbe" />
   <property key="StringArea-long" value="Dieses Feld kann eine Zeichenkette enthalten, die nicht länger als {0} Zeichen und kürzer als {1} Zeile(n) ist." />

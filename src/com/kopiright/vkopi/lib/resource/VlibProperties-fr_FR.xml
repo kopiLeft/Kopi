@@ -135,6 +135,7 @@
   <property key="Week" value="Semaine" />
   <property key="Boolean" value="Booleen" />
   <property key="Code" value="Code" />
+  <property key="Timestamp" value="Timestamp" />
   <property key="Image-long" value="Une image de {0}x{1} pixels" />
   <property key="Color-long" value="Une couleur definie par ces composantes RGB" />
   <property key="StringArea-long" value="Ce champ doit être rempli par un texte de moins de {0} caracteres et de {1} lignes au plus" />

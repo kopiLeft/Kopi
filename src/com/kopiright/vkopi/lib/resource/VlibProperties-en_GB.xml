@@ -135,6 +135,7 @@
   <property key="Week" value="" />
   <property key="Boolean" value="Boolean" />
   <property key="Code" value="Code" />
+  <property key="Timestamp" value="Timestamp" />
   <property key="Image-long" value="This is an image field of {0}x{1} pixels" />
   <property key="Color-long" value="This is a color field" />
   <property key="StringArea-long" value="This field must be filled by a text not longer than {0} character and with less than {1} line." />

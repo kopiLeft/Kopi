@@ -135,6 +135,7 @@
   <property key="Week" value="أسبوع"/>
   <property key="Boolean" value="بوليني"/>
   <property key="Code" value="رمز"/>
+  <property key="Timestamp" value="Timestamp" />
   <property key="Image-long" value="صورة (0)(1) بكسل"/>
   <property key="Color-long" value=" RGB صورة محددة بمكونات"/>
   <property key="StringArea-long" value="هذا الموقع يجب أن يملأ بنص به (0)حرف و (1)سطر على الأكثر"/>
