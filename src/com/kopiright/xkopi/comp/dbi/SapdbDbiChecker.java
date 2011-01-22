@@ -368,7 +368,6 @@ public class SapdbDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits ReferentialConstraintDefinition
    */
-  // coco 010329 : look at the documentation to see what produce
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
                                                    String name,
                                                    FieldNameList field,
@@ -382,6 +381,22 @@ public class SapdbDbiChecker extends DbiChecker implements DbiVisitor {
     field.accept(this);
     current.append(") REFERENCES ");
     reference.accept(this);
+    switch (type) {
+    case ReferentialConstraintDefinition.TYP_RESTRICT:
+      current.append(" ON DELETE RESTRICT");
+      break;
+    case ReferentialConstraintDefinition.TYP_CASCADE:
+      current.append(" ON DELETE CASCADE");
+      break;
+    case ReferentialConstraintDefinition.TYP_NULL:
+      current.append(" ON DELETE SET NULL");
+      break;
+    case ReferentialConstraintDefinition.TYP_DEFAULT:
+      current.append(" ON DELETE SET DEFAULT");
+      break;
+    default:
+      throw new InconsistencyException("Unexpected type");
+    }
   }
 
   /**
