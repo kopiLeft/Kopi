@@ -86,7 +86,8 @@ public class SapdbDriverInterface extends DriverInterface {
   }
 
   /**
-   * Change the password of the current user
+   * Change the password of the specified user. If user = NULL change the password
+   * of the current user.
    */
   public void changePassword(Connection conn,
                              String user,
@@ -94,7 +95,13 @@ public class SapdbDriverInterface extends DriverInterface {
                              String newPassword)
     throws SQLException
   {
-    executeSQL(conn, "ALTER PASSWORD " + oldPassword + " TO " + newPassword);
+    if (user == null) {
+      //  user changes its password
+      executeSQL(conn, "ALTER PASSWORD " + oldPassword + " TO " + newPassword);
+    } else {
+      // admin resets password
+      executeSQL(conn, "ALTER PASSWORD " +  user + " " + newPassword);
+    }
   }
 
   /**
