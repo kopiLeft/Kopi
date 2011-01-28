@@ -21,7 +21,6 @@ package com.kopiright.vkopi.lib.report;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VFixnumField;
-import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
 public class VFixnumColumn extends VReportColumn {
@@ -50,7 +49,7 @@ public class VFixnumColumn extends VReportColumn {
 	  function,
 	  VFixnumField.computeWidth(digits, maxScale, null, null),
 	  1,
-	  format != null ? format : new VFixedFormat(maxScale));
+	  format != null ? format : new VFixedFormat(maxScale, true));
     this.maxScale = maxScale;
   }
 
@@ -81,10 +80,6 @@ public class VFixnumColumn extends VReportColumn {
     public VFixedFormat(int maxScale, boolean exactScale) {
       this.maxScale = maxScale;
       this.exactScale = exactScale;
-    }
-
-    public VFixedFormat(int maxScale) {
-      this(maxScale, false);
     }
 
     public String format(Object value) {
@@ -128,7 +123,7 @@ public class VFixnumColumn extends VReportColumn {
    * maxScale as scale, and the other values will keep their scale.
    */
   public void setMaxScale(int scale) {
-    setFormat(new VFixedFormat(scale));
+    setFormat(new VFixedFormat(scale, false));
     this.maxScale = scale;
   }
   
