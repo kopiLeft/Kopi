@@ -14,9 +14,9 @@
   <property name="javafiles" 
             value="BlockAlignment.java Commands.java 
                    DBlock.java DColorField.java DField.java
-                   DForm.java DImage.java DImageField.java DLabel.java DChartBlock.java
-                   DMultiBlock.java DObjectField.java DPage.java
-                   DTextEditor.java DTextField.java DateChooser.java
+                   DForm.java DImage.java DImageField.java DImageFieldDropTarget.java
+                   DLabel.java DChartBlock.java DMultiBlock.java DObjectField.java 
+                   DPage.java DTextEditor.java DTextField.java DateChooser.java
                    ImageFileChooser.java KopiAlignment.java
                    KopiFieldDocument.java KopiScanDocument.java 
                    KopiMultiBlockLayout.java KopiSimpleBlockLayout.java

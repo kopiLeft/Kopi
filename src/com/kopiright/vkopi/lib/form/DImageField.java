@@ -41,7 +41,7 @@ public class DImageField extends DObjectField {
   // CONSTRUCTION
   // ----------------------------------------------------------------------
 
-  
+
 /**
    * Constructor
    *
@@ -57,7 +57,7 @@ public class DImageField extends DObjectField {
 		     int options,
 		     int width,
 		     int height,
-                      boolean detail)
+                     boolean detail)
   {
     super(model, label, align, options, detail);
     this.width = width;
@@ -67,31 +67,34 @@ public class DImageField extends DObjectField {
 
     empty = new JPanel() {
       /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-	  private static final long serialVersionUID = 4603093785481453119L;
+       * Comment for <code>serialVersionUID</code>
+       */
+        private static final long serialVersionUID = 4603093785481453119L;
 
 	public Dimension getPreferredSize() {
-	return new Dimension(DImageField.this.width, DImageField.this.height);
-      }
-    };
+          return new Dimension(DImageField.this.width, DImageField.this.height);
+        }
+      };
 
     //    empty.setBackground(DObject.CLR_FLD_BACK);
 
     add(empty, BorderLayout.CENTER);
 
     registerKeyboardAction(new AbstractAction() {
-      /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-	  private static final long serialVersionUID = -555322973317509685L;
+        /**
+         * Comment for <code>serialVersionUID</code>
+         */
+        private static final long serialVersionUID = -555322973317509685L;
 
 	public void actionPerformed(ActionEvent e) {
-	setObject(null);
-      }},
+          setObject(null);
+        }},
       null,
       KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
       JComponent.WHEN_FOCUSED);
+
+    target = new DImageFieldDropTarget(this);
+    target.setDragEnabled(true);
   }
 
   // ----------------------------------------------------------------------
@@ -143,8 +146,7 @@ public class DImageField extends DObjectField {
   // ----------------------------------------------------------------------
 
   public void setDisplayProperties() {
-    
-   repaint();
+    repaint();
   }
 
   // ----------------------------------------------------------------------
@@ -177,18 +179,27 @@ public class DImageField extends DObjectField {
   public void setBlink(boolean start) {
   }
 
+  /**
+   * Gets the target panel
+   * @return
+   */
+  public JPanel getTargetPane() {
+    return this.empty;
+  }
+
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private	JLabel		icon;		// the image component
-  private	JPanel		empty;		// the no image component
-  private	int		width;
-  private	int		height;
-  private	byte[]		image;
+  private	JLabel			icon;		// the image component
+  private	JPanel			empty;		// the no image component
+  private	int			width;
+  private	int			height;
+  private	byte[]			image;
+  private       DImageFieldDropTarget	target;
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
+   * Comment for <code>serialVersionUID</code>
+   */
   private static final long serialVersionUID = -4798732518710333986L;
 }
