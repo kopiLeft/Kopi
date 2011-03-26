@@ -675,22 +675,6 @@ vkFieldColumns []
 vkFieldEvent []
   returns [int self]
 :
-  "PREQRY"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREQRY; }
-|
-  "POSTQRY"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTQRY; }
-|
-  "PREDEL"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREDEL; }
-|
-  "POSTDEL"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTDEL; }
-|
-  "PREINS"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREINS; }
-|
-  "POSTINS"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTINS; }
-|
-  "PREUPD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREUPD; }
-|
-  "POSTUPD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTUPD; }
-|
   "PREFLD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREFLD; }
 |
   "POSTFLD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTFLD; }
