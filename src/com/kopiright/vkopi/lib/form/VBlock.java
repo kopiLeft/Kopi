@@ -1569,7 +1569,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (isMulti()) {
       setActiveRecord(0);
     }
-
+    
+    for (int i = 0; i < fields.length; i++) {
+      fields[i].callTrigger(TRG_PREQRY);
+    }
     callProtectedTrigger(TRG_PREQRY);
 
     // create database query
@@ -1637,6 +1640,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         try {
           if (isMulti()) {
             setActiveRecord(fetchCount);
+          }
+          for (int i = 0; i < fields.length; i++) {
+            fields[i].callTrigger(TRG_POSTQRY);
           }
           callProtectedTrigger(TRG_POSTQRY);
           if (isMulti()) {
@@ -1724,6 +1730,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     setRecordChanged(getActiveRecord(), false);
     setRecordDeleted(getActiveRecord(), false);
 
+    for (int i = 0; i < fields.length; i++) {
+      fields[i].callTrigger(TRG_POSTQRY);
+    }
     callProtectedTrigger(TRG_POSTQRY);
     setMode(MOD_UPDATE);
   }
@@ -2358,6 +2367,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         try {
           form.startProtected(Message.getMessage("searching_database"));
 
+          for (int i = 0; i < fields.length; i++) {
+            fields[i].callTrigger(TRG_PREQRY);
+          }
           callProtectedTrigger(TRG_PREQRY);
           dialog = buildQueryDialog();
 
@@ -3526,6 +3538,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (isMulti()) {
         setActiveRecord(recno);
       }
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callTrigger(TRG_PREINS);
+      }
       callProtectedTrigger(TRG_PREINS);
       if (isMulti()) {
         setActiveRecord(-1);
@@ -3637,6 +3652,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       if (isMulti()) {
         setActiveRecord(recno);
+      }
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callTrigger(TRG_PREUPD);
       }
       callProtectedTrigger(TRG_PREUPD);
       if (isMulti()) {
