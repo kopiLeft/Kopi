@@ -19,6 +19,7 @@
 <param longname="driver" shortname="d"  type="String"  default="null"  help="The JDBC driver to use to access the database" />
 <param longname="username" shortname="u"  type="String"  default="null"  help="The username for the database" />
 <param longname="password" shortname="p"  type="String"  default="null"  help="The password for the database" />
+<param longname="lookupUserId" shortname="U"  type="boolean"  default="true"  help="Lookup user ID in database?" />
 <param longname="trace" shortname="t"  type="int"  default="0"  optionalDefault="1"  help="Set the trace level to print database queries before execution (0: none, 1: all but FETCH, 2: all)" />
 <param longname="properties" shortname="q"  type="String" multiple="true" default="null"  help="These properties override or complete the properties stored in the database." />
 </option>

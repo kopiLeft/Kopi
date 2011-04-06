@@ -36,27 +36,49 @@ public class Connection {
   // ----------------------------------------------------------------------
 
   /**
-   * Creates a kopi connection from an sql one
+   * Creates a kopi connection from an JDBC connection
    *
    * @param	ctxt		the database context
    * @param	url		the URL of the database to connect to
    * @param	user		the name of the database user
    * @param	pass		the password of the database user
+   * @param     lookupUserId    lookup user id in table KOPI_USERS ?
    */
   public Connection(DBContext ctxt,
 		    String url,
-		    String user,
-		    String pass)
+		    String username,
+		    String password,
+                    boolean lookupUserId)
     throws DBException
   {
     this.ctxt = ctxt;
     this.url = url;
-    this.userName = user;
-    this.pass = pass;
+    this.userName = username;
+    this.pass = password;
+
+    this.userID = !lookupUserId ? -1 : 0;
 
     setDriverInterface();
 
     open();
+  }
+
+  /**
+   * Creates a kopi connection from an JDBC connection
+   *
+   * @param	ctxt		the database context
+   * @param	url		the URL of the database to connect to
+   * @param	user		the name of the database user
+   * @param	pass		the password of the database user
+   * @param     lookupUserId    lookup user id in table KOPI_USERS ?
+   */
+  public Connection(DBContext ctxt,
+		    String url,
+		    String username,
+		    String password)
+    throws DBException
+  {
+    this(ctxt, url, username, password, true);
   }
 
   // ----------------------------------------------------------------------
@@ -95,6 +117,9 @@ public class Connection {
    *
    */
   public int getUserID() {
+    if (userID == 0) {
+      throw new InconsistencyException("user id not set");
+    }
     return userID;
   }
 
@@ -306,35 +331,32 @@ public class Connection {
    * Retrieves the user ID of the current user
    */
   private void setUserID() {
-    if (getUserName().equals("root") || getUserName().equals("lgvplus") || getUserName().equals("tbadmin") || getUserName().equals("dba") || getUserName().equals("scott")) {
-      userID = -1;
-    } else {
-      try {
-	ctxt.startWork();	// !!! BEGIN_SYNC
+    if (userID != -1) {
+      if (getUserName().equals("root") || getUserName().equals("lgvplus") || getUserName().equals("tbadmin") || getUserName().equals("dba") || getUserName().equals("scott")) {
+        userID = -1;
+      } else {
+        try {
+          Query	query;
 
-	Query	query = new Query(this);
+	  ctxt.startWork();	// !!! BEGIN_SYNC
 
-	query.open("SELECT ID FROM KOPI_USERS WHERE Kurzname = '" + getUserName() + "'");
+          query = new Query(this);
+          query.open("SELECT ID FROM KOPI_USERS WHERE Kurzname = '" + getUserName() + "'");
+          if (!query.next()) {
+            throw new SQLException("user unknown");
+          }
+          this.userID = query.getInt(1);
+          if (query.next()) {
+            throw new SQLException("different users with same name");
+          }
+          query.close();
         
-	if (!query.next()) {
-	  throw new SQLException("user unknown");
-	}
-
-	this.userID = query.getInt(1);
-
-	if (query.next()) {
-	  throw new SQLException("different users with same name");
-	}
-        
-	query.close();
-        
-	ctxt.commitWork();
-	// manually commit ourself since we are not in the connection list of the context
-	conn.commit();
-      } catch (java.sql.SQLException e) {
-	System.err.println("FATAL ERROR : " + e.getMessage());
-	e.printStackTrace();
-	throw new InconsistencyException(e.getMessage());
+          ctxt.commitWork();
+          // manually commit ourself since we are not in the connection list of the context
+          conn.commit();
+        } catch (java.sql.SQLException e) {
+          throw new InconsistencyException(e.getMessage());
+        }
       }
     }
   }
@@ -348,6 +370,8 @@ public class Connection {
   private DBContext			ctxt;
   private String			url;
   private String			userName;
-  private int				userID;
+        // -1 ... do not lookup user ID
+        //  0 ... not yet determined
+  private int                           userID;
   private String			pass;
 }

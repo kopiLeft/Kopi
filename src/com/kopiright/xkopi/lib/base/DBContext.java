@@ -46,17 +46,24 @@ public class DBContext {
    * @param     url             the URL of the database to connect to
    * @param     user            the name of the database user
    * @param     pass            the password of the database user
+   * @param     lookupUserId    lookup user id in table KOPI_USERS ?
    * @return    a new kopi connection
    */
-  public Connection createConnection(String url, String user, String pass)
+  public Connection createConnection(String url, String user, String pass, boolean lookupUserId)
     throws DBException
   {
     Connection  conn;
 
-    conn = new Connection(this, url, user, pass);
+    conn = new Connection(this, url, user, pass, lookupUserId);
     connections.addElement(conn);
 
     return conn;
+  }
+
+  public Connection createConnection(String url, String user, String pass)
+    throws DBException
+  {
+    return createConnection(url, user, pass, true);
   }
 
   /**
