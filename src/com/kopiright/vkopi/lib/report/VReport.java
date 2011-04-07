@@ -521,22 +521,21 @@ public abstract class VReport extends VWindow
   
   /**
    * Return the value of a field in the selected row
-   * by passing its name
+   * by passing its name(key)
    */
   
-  public String getValueByFieldName(String fieldName) {
-    int         idCol = -1;
-    String      fieldValue = "";
+  public Object getValueOfField(Object key) {
+    int         col = -1;
 
-    for (int i = 0; i < model.getModelColumnCount() && idCol == -1; i++) {
-      if (model.getModelColumn(i).getIdent().equals(fieldName)) {
-        idCol = i;
+    for (int i = 0; i < model.getModelColumnCount() && col == -1; i++) {
+      if (model.getModelColumn(i).getIdent().equals(key)) {
+        col = i;
       }
     }
-    if (idCol != -1 && (getSelectedCell().y != -1)) {
-      fieldValue = "" + model.getRow(getSelectedCell().y).getValueAt(idCol);
+    if (col != -1 && (getSelectedCell().y != -1)) {
+      return  model.getRow(getSelectedCell().y).getValueAt(col);
     }
-      return fieldValue;
+      return null;
   }
 
   // ----------------------------------------------------------------------
