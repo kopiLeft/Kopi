@@ -117,8 +117,11 @@ public class Connection {
    *
    */
   public int getUserID() {
-    if (userID == 0) {
-      throw new InconsistencyException("user id not set");
+    if (userID == USERID_NO_LOOKUP) {
+      throw new InconsistencyException("user id must not be queried");
+    }
+    if (userID == USERID_TO_DETERMINE) {
+      throw new InconsistencyException("user id not yet determined");
     }
     return userID;
   }
