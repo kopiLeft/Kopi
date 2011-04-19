@@ -56,7 +56,7 @@ public class Connection {
     this.userName = username;
     this.pass = password;
 
-    this.userID = !lookupUserId ? -1 : 0;
+    this.userID = !lookupUserId ? USERID_NO_LOOKUP : USERID_TO_DETERMINE;
 
     setDriverInterface();
 
@@ -318,8 +318,6 @@ public class Connection {
       driver = new IngresDriverInterface();
     } else {
       throw new InconsistencyException("no appropriate driver found");
-      // !!! graf 000220: bad default
-      //driver = new OracleDriverInterface();
     }
   }
   
@@ -331,9 +329,9 @@ public class Connection {
    * Retrieves the user ID of the current user
    */
   private void setUserID() {
-    if (userID != -1) {
-      if (getUserName().equals("root") || getUserName().equals("lgvplus") || getUserName().equals("tbadmin") || getUserName().equals("dba") || getUserName().equals("scott")) {
-        userID = -1;
+    if (userID != USERID_NO_LOOKUP) {
+      if (getUserName().equals("root") || getUserName().equals("lgvplus") || getUserName().equals("tbadmin") || getUserName().equals("dba")) {
+        userID = USERID_NO_LOOKUP;
       } else {
         try {
           Query	query;
@@ -365,13 +363,16 @@ public class Connection {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+        // -1 ... not yet determined
+  private static final int              USERID_TO_DETERMINE = -1;
+        // -2 ... do not lookup user ID
+  private static final int              USERID_NO_LOOKUP = -2;
+
   private DriverInterface		driver;
   private java.sql.Connection		conn;
   private DBContext			ctxt;
   private String			url;
   private String			userName;
-        // -1 ... do not lookup user ID
-        //  0 ... not yet determined
   private int                           userID;
   private String			pass;
 }
