@@ -182,6 +182,32 @@ public class VKBlock
     }
     throw new InconsistencyException();
   }
+  
+  /**
+   * return table num by its Shortcut
+   */
+  public int getTableNumByShortcut(String corr) {
+    for (int i = 0; i < tables.length; i++) {
+      if (corr.equals(tables[i].getCorr())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  
+  /**
+   * return the first table of a duplicated shortcut
+   */
+  public VKBlockTable getDuplicatedTableShortcut() {
+    int numTable = -1;
+    for (int i = 1; i < tables.length; i++) {
+      numTable = getTableNumByShortcut(tables[i].getCorr());
+      if ( numTable > -1 && numTable < i) {
+        return tables[i];
+      }
+    }
+    return null;
+  } 
 
   /**
    * return table num $$$
@@ -297,6 +323,16 @@ public class VKBlock
     
     check(isSingle() || visible <= buffer, FormMessages.MORE_VISIBLE_THAN_BUFFERED);
     check(getShortcut() != null, FormMessages.BLOCK_NO_SHORTCUT, getIdent());
+    
+    // check that there is no duplicated shortcut table.
+    VKBlockTable tempTable = getDuplicatedTableShortcut();
+    if(tempTable != null) {
+      context.reportTrouble(new CWarning(tempTable.getTokenReference(),
+                                         FormMessages.DUPLICATED_TABLE_SHORTCUT,
+                                         new Object[] {tempTable.getName(),
+                                                       tempTable.getCorr(),
+                                                       getIdent()}));
+    }
     
     // check that defined lookup tables are used.
     for (int i = 1; i < tables.length; i++) {

@@ -59,5 +59,6 @@
 <msg identifier="FIRST_COLUMN_NULLABLE" format="First column in a field with multi columns must not be nullable." reference="FORM" level="0" />
 <msg identifier="LOOKUP_TABLE_HAS_ONLY_INTERNAL_FIELDS" format="The lookup table &lt;{0}, {1}&gt; in the block {2} has only internal fields." reference="FORM" level="2" />
 <msg identifier="NOT_USED_TABLE" format="The table &lt;{0}, {1}&gt; is declared in the block {2} but is never used." reference="FORM" level="2" />
+<msg identifier="DUPLICATED_TABLE_SHORTCUT" format="The table shortcut of &lt;{0}, {1}&gt; is duplicated in the block {2}." reference= "FORM" level="2" />
 <msg identifier="INCORRECT_ALIAS_TYPE" format="The Alias type: {0}, is different from field type: {1}." reference="FORM" level="2" />
 </messages>
