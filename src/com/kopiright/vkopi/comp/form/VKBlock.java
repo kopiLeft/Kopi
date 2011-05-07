@@ -184,30 +184,23 @@ public class VKBlock
   }
   
   /**
-   * return table num by its Shortcut
+   * Verifies that each table shortcut is different
    */
-  public int getTableNumByShortcut(String corr) {
-    for (int i = 0; i < tables.length; i++) {
-      if (corr.equals(tables[i].getCorr())) {
-        return i;
+  public void checkDuplicateTableShortcuts() throws PositionedError {
+    for (int i = 0; i < tables.length - 1; i++) {
+      for (int j = i + 1; j < tables.length; j++) {
+        if (tables[i].getCorr().equals(tables[j].getCorr())) {
+          throw new CLineError(tables[j].getTokenReference(),
+                               FormMessages.DUPLICATE_TABLE_SHORTCUT,
+                               new Object[] {
+                                 tables[j].getName(),
+                                 tables[j].getCorr(),
+                                 getIdent()
+                               });
+        }
       }
     }
-    return -1;
   }
-  
-  /**
-   * return the first table of a duplicated shortcut
-   */
-  public VKBlockTable getDuplicatedTableShortcut() {
-    int numTable = -1;
-    for (int i = 1; i < tables.length; i++) {
-      numTable = getTableNumByShortcut(tables[i].getCorr());
-      if ( numTable > -1 && numTable < i) {
-        return tables[i];
-      }
-    }
-    return null;
-  } 
 
   /**
    * return table num $$$
@@ -325,14 +318,7 @@ public class VKBlock
     check(getShortcut() != null, FormMessages.BLOCK_NO_SHORTCUT, getIdent());
     
     // check that there is no duplicated shortcut table.
-    VKBlockTable tempTable = getDuplicatedTableShortcut();
-    if(tempTable != null) {
-      context.reportTrouble(new CWarning(tempTable.getTokenReference(),
-                                         FormMessages.DUPLICATED_TABLE_SHORTCUT,
-                                         new Object[] {tempTable.getName(),
-                                                       tempTable.getCorr(),
-                                                       getIdent()}));
-    }
+    checkDuplicateTableShortcuts();
     
     // check that defined lookup tables are used.
     for (int i = 1; i < tables.length; i++) {
