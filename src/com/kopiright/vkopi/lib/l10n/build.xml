@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    com.kopiright.vkopi.lib.l10n
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="com/kopiright/vkopi/lib/l10n" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.l10n" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="ActorLocalizer.java BlockLocalizer.java FieldLocalizer.java
+  	           FormLocalizer.java ListLocalizer.java LocalizationChecker.java
+  	           LocalizationManager.java Localizer.java MenuLocalizer.java
+  	           MessageLocalizer.java ModuleLocalizer.java PropertyLocalizer.java
+  	           ReportLocalizer.java ReportLocalizer.java TypeLocalizer.java
+  	           Utils.java LocalizationCheckerOptions.java" />
+
+  <property name="options" value="LocalizationCheckerOptions" />
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

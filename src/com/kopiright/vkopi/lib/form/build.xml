@@ -26,13 +26,13 @@
                    VBooleanField.java VCodeColumn.java VCodeField.java
                    VColorColumn.java VColorField.java VColumn.java VConstants.java
                    VDateColumn.java VDateField.java VDictionaryForm.java
-                   VDocGenerator.java VStringCodeColumn.java VStringCodeField.java
+                   VDocGenerator.java  VStringCodeField.java
                    VField.java VFieldCommand.java VFieldException.java
                    VFieldUI.java VFixedCodeColumn.java VFixedCodeField.java
                    VFixedColumn.java VFixedField.java VForm.java
                    VHelpGenerator.java VImageColumn.java VImageField.java
                    VImportedBlock.java VIntegerCodeColumn.java VIntegerCodeField.java
-                   VIntegerColumn.java VIntegerField.java VList.java
+                   VIntegerColumn.java VIntegerField.java
                    VListColumn.java VMonthColumn.java
                    VMonthField.java VPosition.java BlockRecordListener.java 
                    VQueryNoRowException.java VQueryOverflowException.java 
@@ -44,7 +44,10 @@
                    FieldListener.java FieldChangeListener.java
                    BlockListener.java ViewBlockAlignment.java FormListener.java 
                    PredefinedValueHandler.java GUIPredefinedValueHandler.java 
-                   KeyNavigator.java Environment.java Accessor.java ModelTransformer.java" />
+                   KeyNavigator.java Environment.java Accessor.java 
+  	           ModelTransformer.java VFixnumField.java 
+  	           VBlockOracleOuterJoin.java VBlockDefaultOuterJoin.java
+	           VFixnumCodeField.java VStringCodeField.java" />
 
   <!--  How to separte Model and Gui in 2 packages  -->
   <!-- 

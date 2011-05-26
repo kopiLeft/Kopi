@@ -36,7 +36,9 @@
                    VKTimeType.java VKTimestampType.java VKTopLevel.java VKTrigger.java 
                    VKType.java VKTypeFactory.java VKTypeDefinition.java VKUtils.java 
                    VKWeekType.java VKWindow.java 
-                   BaseMessages.java " />
+                   BaseMessages.java Parser.java
+  	           VKFixnumType.java VKFixnumCodeType.java VKMenuDefinition.java
+  	           VKLocalizationWriter.java VKMenuDefinition.java VKLocalizationWriter.java" />
 
   <property name="messages"    value="BaseMessages" />
   <property name="options"     value="VKOptions" />

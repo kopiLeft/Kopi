@@ -31,7 +31,9 @@
                    VerifyConfiguration.java ApplicationConfiguration.java
                    PrinterManager.java PropertyException.java ModelCloseListener.java 
 		   UserConfiguration.java
-                   ApplicationOptions.java" />
+                   ApplicationOptions.java
+  	           VlibProperties.java Registry.java ProgressDialogListener.java
+  	           MessageCode.java WaitWindow.java Message.java" />
 
   <property name="options" value="ApplicationOptions" />
 

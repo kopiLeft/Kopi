@@ -22,7 +22,8 @@
                    VMonthColumn.java VReport.java VReportColumn.java VReportRow.java 
                    VStringColumn.java VTimeColumn.java VTimestampColumn.java VWeekColumn.java 
                    VNoRowException.java VSeparatorColumn.java VHelpGenerator.java
-                   PExport.java PExport2XLS.java PExport2PDF.java PExport2CSV.java" />
+                   PExport.java PExport2XLS.java PExport2PDF.java PExport2CSV.java
+  	           VFixnumColumn.java VStringCodeColumn.java VFixnumCodeColumn.java" />
 
 
   <import file="${topdir}/defs.xml" />

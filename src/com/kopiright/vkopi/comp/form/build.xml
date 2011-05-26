@@ -24,7 +24,8 @@
                    VKDefinitionType.java VKAliasType.java VKBlockInsert.java 
                    VKImportedBlock.java VKFormElement.java VKFormPrettyPrinter.java 
                    VKMultiField.java VKMultiFieldPosition.java 
-                   FormMessages.java" />
+                   FormMessages.java VKBlockIndex.java VKPage.java
+  	           VKFormLocalizationWriter.java" />
 
   <property name="messages"    value="FormMessages" />
 

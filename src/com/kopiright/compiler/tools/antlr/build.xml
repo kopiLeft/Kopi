@@ -12,8 +12,8 @@
       ==============================================================-->
   <target name="node.build" description="  Runs subbuild files ">
     <ant dir="runtime"  inheritAll="false" target="${target}" />
-  	<ant dir="compiler" inheritAll="false" target="${target}" />
-  	<ant dir="extra"    inheritAll="false" target="${target}" />
+    <ant dir="compiler" inheritAll="false" target="${target}" />
+    <ant dir="extra"    inheritAll="false" target="${target}" />
   </target>
 
   <!--==============================================================

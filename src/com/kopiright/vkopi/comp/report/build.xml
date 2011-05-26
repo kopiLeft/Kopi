@@ -19,7 +19,7 @@
                    VRConstants.java VRReport.java VRField.java VRFieldType.java 
                    VRDefinitionType.java VRFieldTypeName.java VRSeparatorField.java 
                    VRSeparatorFieldType.java VRMultiField.java 
-                   ReportMessages.java" />
+                   ReportMessages.java VRReportLocalizationWriter.java" />
 
   <property name="messages"    value="ReportMessages" />
 

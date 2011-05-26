@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    com.kopiright.vkopi.lib.list
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="com/kopiright/vkopi/lib/list" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.list" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="VBooleanCodeColumn.java VBooleanColumn.java 
+  	           VCodeColumn.java VColorColumn.java VColumn.java
+  	           VConstants.java VDateColumn.java VFixnumCodeColumn.java
+  	           VFixnumColumn.java VImageColumn.java 
+  	           VIntegerCodeColumn.java VIntegerColumn.java
+  	           VList.java VListColumn.java VMonthColumn.java
+  	           VStringCodeColumn.java VStringColumn.java
+  	           VTextColumn.java VTimeColumn.java 
+  	           VTimestampColumn.java VWeekColumn.java" />
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

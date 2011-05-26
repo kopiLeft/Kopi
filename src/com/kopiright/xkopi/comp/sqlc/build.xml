@@ -64,7 +64,8 @@
                    ValueListInsertSource.java WhereClause.java 
                    FieldNameListTableReference.java XUtils.java 
                    DbSchemaVisitor.java 
-                   SqlcMessages.java SqlcOptions.java" />
+                   SqlcMessages.java SqlcOptions.java JdbcOuterJoin.java
+  	           SubOuterJoin.java Constants.java" />
 
   <property name="messages"    value="SqlcMessages" />
   <property name="options"     value="SqlcOptions" />
