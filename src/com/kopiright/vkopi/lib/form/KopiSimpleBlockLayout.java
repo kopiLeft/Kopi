@@ -67,14 +67,6 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
     this.align = align;
   }
 
-  // CODE REMOVED
-//   /**
-//    * Sets Alignments
-//    */
-//   public void setAlignments(BlockAlignment align) {
-//     this.align = align;
-//   }
-
   /**
    * Returns the horizontal gap between components.
    */
@@ -113,7 +105,7 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
    */
   public void addLayoutComponent(Component comp, Object constraints) {
     synchronized (comp.getTreeLock()) {
-      if (constraints instanceof KopiAlignment){
+      if (constraints instanceof KopiAlignment) {
 	KopiAlignment	align = (KopiAlignment)constraints;
 	if (align.width < 0) {
 	  follows.addElement(comp);
@@ -134,106 +126,107 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
   public void addLayoutComponent(String name, Component comp) {
       throw new IllegalArgumentException("dont use this deprecated method please");
   }
-    /**
-     * Removes the specified component from this border layout. This
-     * method is called when a container calls its <code>remove</code> or
-     * <code>removeAll</code> methods. Most applications do not call this
-     * method directly.
-     * @param   comp   the component to be removed.
-     * @see     java.awt.Container#remove(java.awt.Component)
-     * @see     java.awt.Container#removeAll()
-     * @since   JDK1.0
-     */
-    public void removeLayoutComponent(Component comp) {
-      throw new InconsistencyException("removeLayoutComponent not yet supported");
+
+  /**
+   * Removes the specified component from this border layout. This
+   * method is called when a container calls its <code>remove</code> or
+   * <code>removeAll</code> methods. Most applications do not call this
+   * method directly.
+   * @param   comp   the component to be removed.
+   * @see     java.awt.Container#remove(java.awt.Component)
+   * @see     java.awt.Container#removeAll()
+   * @since   JDK1.0
+   */
+  public void removeLayoutComponent(Component comp) {
+    throw new InconsistencyException("removeLayoutComponent not yet supported");
+  }
+
+  /**
+   * Determines the minimum size of the <code>target</code> container
+   * using this layout manager.
+   * <p>
+   * This method is called when a container calls its
+   * <code>getMinimumSize</code> method. Most applications do not call
+   * this method directly.
+   * @param   target   the container in which to do the layout.
+   * @return  the minimum dimensions needed to lay out the subcomponents
+   *          of the specified container.Math.max(com.kopiright.vkopi.lib.visual.DObject.FNT_FIXED_HEIGHT,
+   *			      com.kopiright.vkopi.lib.visual.DObject.FNT_DIALOG_HEIGHT)
+   * @see     java.awt.Container
+   * @see     java.awt.BorderLayout#preferredLayoutSize
+   * @see     java.awt.Container#getMinimumSize()
+   * @since   JDK1.0
+   */
+  public Dimension minimumLayoutSize(Container target) {
+    return preferredLayoutSize(target);
+  }
+
+  /**
+   *
+   */
+  private void precalculateSize() {
+    // Compute all size
+    height	= 0;
+    width	= 0;
+    columnHeight = textHeight + 9;
+
+    for (int x = 0; x < components.length + 1; x++) {
+      minStart[x] = 0;
     }
 
-    /**
-     * Determines the minimum size of the <code>target</code> container
-     * using this layout manager.
-     * <p>
-     * This method is called when a container calls its
-     * <code>getMinimumSize</code> method. Most applications do not call
-     * this method directly.
-     * @param   target   the container in which to do the layout.
-     * @return  the minimum dimensions needed to lay out the subcomponents
-     *          of the specified container.Math.max(com.kopiright.vkopi.lib.visual.DObject.FNT_FIXED_HEIGHT,
-			      com.kopiright.vkopi.lib.visual.DObject.FNT_DIALOG_HEIGHT)
-     * @see     java.awt.Container
-     * @see     java.awt.BorderLayout#preferredLayoutSize
-     * @see     java.awt.Container#getMinimumSize()
-     * @since   JDK1.0
-     */
-    public Dimension minimumLayoutSize(Container target) {
-      return preferredLayoutSize(target);
+    if (components.length == 0) {
+      return;
     }
 
-    /**
-     *
-     */
-    private void precalculateSize() {
-      // Compute all size
-      height	= 0;
-      width	= 0;
-      columnHeight = textHeight + 9;
+    for (int x = 0; x < components.length; x++) {
+      int		width_c = 0;
+      int		height_c = 0;
 
-      for (int x = 0; x < components.length + 1; x++) {
-	minStart[x] = 0;
+      for (int y = 0; y < components[0].length; y++) {
+        if (components[x][y] != null && !(aligns[x][y] instanceof MultiFieldAlignment)) {
+          // use dimension with all follows
+          Dimension   dim = getDimension(x, y);
+
+          minStart[x + aligns[x][y].width] = Math.max(minStart[x] + dim.width+hgap,
+                                                      minStart[x + aligns[x][y].width]);
+          if (aligns[x][y].width == 1) {
+            width_c = Math.max(width_c, dim.width+hgap);
+          }
+
+          height_c = Math.max(height_c, y * (columnHeight + vgap) + dim.height);
+        } else if (components[x][y] != null) {
+          // !!! lackner 2003.04.24 Multifields:
+          // size of multifields are not correctly calculated
+        }
       }
 
-      if (components.length == 0) {
-	return;
-      }
-
+      sizes[x] = width_c;
+      width = Math.max(width + width_c, minStart[x + 1]);
+      height = Math.max(height, height_c);
+    }
+    if (align != null) {
+      // block alignment
       for (int x = 0; x < components.length; x++) {
-	int		width_c = 0;
-        int		height_c = 0;
-
-	for (int y = 0; y < components[0].length; y++) {
-	  if (components[x][y] != null && !(aligns[x][y] instanceof MultiFieldAlignment)) {
-            // use dimension with all follows
-	    Dimension   dim = getDimension(x, y);
-
-	    minStart[x + aligns[x][y].width] = Math.max(minStart[x] + dim.width+hgap,
-							minStart[x + aligns[x][y].width]);
-	    if (aligns[x][y].width == 1) {
-	      width_c = Math.max(width_c, dim.width+hgap);
-	    }
-
-            height_c = Math.max(height_c, y * (columnHeight + vgap) + dim.height);
-	  } else if (components[x][y] != null) {
-            // !!! lackner 2003.04.24 Multifields:
-            // size of multifields are not correctly calculated
-	  }
-	}
-
-	sizes[x] = width_c;
-	width = Math.max(width + width_c, minStart[x + 1]);
- 	height = Math.max(height, height_c);
-      }
-      if (align != null) {
-        // block alignment
-        for (int x = 0; x < components.length; x++) {
-          if ((x % 2 == 1) &&align.isChart() && align.isAligned(x / 2 + 1)) {
-            minStart[x + 1] = align.getMinStart(x / 2 + 1);
-          } else if (!align.isChart()) {
-            // alignment if block is not a chart
-            if (x % 2 == 1) { 
-              // fields
-              minStart[x] = align.getMinStart(x / 2 + 1);
-            } else {
-              // labels
-              minStart[x] = align.getLabelMinStart(x / 2 + 1);
-            }
+        if ((x % 2 == 1) &&align.isChart() && align.isAligned(x / 2 + 1)) {
+          minStart[x + 1] = align.getMinStart(x / 2 + 1);
+        } else if (!align.isChart()) {
+          // alignment if block is not a chart
+          if (x % 2 == 1) {
+            // fields
+            minStart[x] = align.getMinStart(x / 2 + 1);
+          } else {
+            // labels
+            minStart[x] = align.getLabelMinStart(x / 2 + 1);
           }
         }
       }
-      if (width > hgap) {
-        // remove hgap at the and
-        width -= hgap;
-      }
-      computed = true;
     }
+    if (width > hgap) {
+      // remove hgap at the and
+      width -= hgap;
+    }
+    computed = true;
+  }
 
   private Dimension getDimension(int x, int y) {
     Dimension   dim = components[x][y].getPreferredSize();
@@ -271,172 +264,171 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
     return 0;
   }
 
-    /**
-     * Determines the preferred size of the <code>target</code>
-     * container using this layout manager, based on the components
-     * in the container.
-     * <p>
-     * Most applications do not call this method directly. This method
-     * is called when a container calls its <code>getPreferredSize</code>
-     * method.
-     * @param   target   the container in which to do the layout.
-     * @return  the preferred dimensions to lay out the subcomponents
-     *          of the specified container.
-     * @see     java.awt.Container
-     * @see     java.awt.BorderLayout#minimumLayoutSize
-     * @see     java.awt.Container#getPreferredSize()
-     * @since   JDK1.0
-     */
-    public Dimension preferredLayoutSize(Container target) {
-      synchronized (target.getTreeLock()) {
-
-	if (!computed) {
-	  precalculateSize();
-	}
-
-	Dimension dim = new Dimension(width, height);
-
-	Insets insets = target.getInsets();
-	dim.width += insets.left + insets.right;
-	dim.height += insets.top + insets.bottom;
-	return dim;
+  /**
+   * Determines the preferred size of the <code>target</code>
+   * container using this layout manager, based on the components
+   * in the container.
+   * <p>
+   * Most applications do not call this method directly. This method
+   * is called when a container calls its <code>getPreferredSize</code>
+   * method.
+   * @param   target   the container in which to do the layout.
+   * @return  the preferred dimensions to lay out the subcomponents
+   *          of the specified container.
+   * @see     java.awt.Container
+   * @see     java.awt.BorderLayout#minimumLayoutSize
+   * @see     java.awt.Container#getPreferredSize()
+   * @since   JDK1.0
+   */
+  public Dimension preferredLayoutSize(Container target) {
+    synchronized (target.getTreeLock()) {
+      if (!computed) {
+        precalculateSize();
       }
+
+      Dimension dim = new Dimension(width, height);
+      Insets insets = target.getInsets();
+
+      dim.width += insets.left + insets.right;
+      dim.height += insets.top + insets.bottom;
+      return dim;
     }
+  }
 
-    /**
-     * Returns the maximum dimensions for this layout given the components
-     * in the specified target container.
-     * @param target the component which needs to be laid out
-     * @see Container
-     * @see #minimumLayoutSize
-     * @see #preferredLayoutSize
-     */
-    public Dimension maximumLayoutSize(Container target) {
-      return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-    }
+  /**
+   * Returns the maximum dimensions for this layout given the components
+   * in the specified target container.
+   * @param target the component which needs to be laid out
+   * @see Container
+   * @see #minimumLayoutSize
+   * @see #preferredLayoutSize
+   */
+  public Dimension maximumLayoutSize(Container target) {
+    return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+  }
 
-    /**
-     * Returns the alignment along the x axis.  This specifies how
-     * the component would like to be aligned relative to other
-     * components.  The value should be a number between 0 and 1
-     * where 0 represents alignment along the origin, 1 is aligned
-     * the furthest away from the origin, 0.5 is centered, etc.
-     */
-    public float getLayoutAlignmentX(Container parent) {
-      return 0.5f;
-    }
+  /**
+   * Returns the alignment along the x axis.  This specifies how
+   * the component would like to be aligned relative to other
+   * components.  The value should be a number between 0 and 1
+   * where 0 represents alignment along the origin, 1 is aligned
+   * the furthest away from the origin, 0.5 is centered, etc.
+   */
+  public float getLayoutAlignmentX(Container parent) {
+    return 0.5f;
+  }
 
-    /**
-     * Returns the alignment along the y axis.  This specifies how
-     * the component would like to be aligned relative to other
-     * components.  The value should be a number between 0 and 1
-     * where 0 represents alignment along the origin, 1 is aligned
-     * the furthest away from the origin, 0.5 is centered, etc.
-     */
-    public float getLayoutAlignmentY(Container parent) {
-	return 0.5f;
-    }
+  /**
+   * Returns the alignment along the y axis.  This specifies how
+   * the component would like to be aligned relative to other
+   * components.  The value should be a number between 0 and 1
+   * where 0 represents alignment along the origin, 1 is aligned
+   * the furthest away from the origin, 0.5 is centered, etc.
+   */
+  public float getLayoutAlignmentY(Container parent) {
+    return 0.5f;
+  }
 
-    /**
-     * Invalidates the layout, indicating that if the layout manager
-     * has cached information it should be discarded.
-     */
-    public void invalidateLayout(Container target) {
-      computed = false;
-    }
+  /**
+   * Invalidates the layout, indicating that if the layout manager
+   * has cached information it should be discarded.
+   */
+  public void invalidateLayout(Container target) {
+    computed = false;
+  }
 
-    /**
-     * Lays out the container argument using this border layout.
-     * <p>
-     * This method actually reshapes the components in the specified
-     * container in order to satisfy the constraints of this
-     * <code>BorderLayout</code> object. The <code>North</code>
-     * and <code>South</code>components, if any, are placed at
-     * the top and bottom of the container, respectively. The
-     * <code>West</code> and <code>East</code> components are
-     * then placed on the left and right, respectively. Finally,
-     * the <code>Center</code> object is placed in any remaining
-     * space in the middle.
-     * <p>
-     * Most applications do not call this method directly. This method
-     * is called when a container calls its <code>doLayout</code> method.
-     * @param   target   the container in which to do the layout.
-     * @see     java.awt.Container
-     * @see     java.awt.Container#doLayout()
-     * @since   JDK1.0
-     */
-    public void layoutContainer(Container target) {
-      synchronized (target.getTreeLock()) {
-	Insets insets = target.getInsets();
-	int top = align == null ? insets.top : 0;
-	int left = insets.left;
-	
-	if (components.length == 0) {
-	  return;
-	}
+  /**
+   * Lays out the container argument using this border layout.
+   * <p>
+   * This method actually reshapes the components in the specified
+   * container in order to satisfy the constraints of this
+   * <code>BorderLayout</code> object. The <code>North</code>
+   * and <code>South</code>components, if any, are placed at
+   * the top and bottom of the container, respectively. The
+   * <code>West</code> and <code>East</code> components are
+   * then placed on the left and right, respectively. Finally,
+   * the <code>Center</code> object is placed in any remaining
+   * space in the middle.
+   * <p>
+   * Most applications do not call this method directly. This method
+   * is called when a container calls its <code>doLayout</code> method.
+   * @param   target   the container in which to do the layout.
+   * @see     java.awt.Container
+   * @see     java.awt.Container#doLayout()
+   * @since   JDK1.0
+   */
+  public void layoutContainer(Container target) {
+    synchronized (target.getTreeLock()) {
+      Insets insets = target.getInsets();
+      int top = align == null ? insets.top : 0;
+      int left = insets.left;
 
-	if (!computed) {
-	  precalculateSize();
-	}
+      if (components.length == 0) {
+        return;
+      }
 
-	for (int x = 0; x < components.length; x++) {	// for every component
-	  for (int y = 0; y < components[0].length; y++) {
-	    if (components[x][y] != null) {
-	      Dimension         d = components[x][y].getPreferredSize();
-	      int               cleft;
-	      int               sup = 0;
-            
-	      if (aligns[x][y] instanceof MultiFieldAlignment) {
-		if (aligns[x][y].alignRight) {
-		  // label
-		  cleft = ((x-1)/2) * (Math.max(d.width, components[x][y + 1].getPreferredSize().width) + hgap)+insets.left;
-		  sup = 5;
-		} else {
-		  // fields
-		  cleft = ((x-1)/2) * (Math.max(d.width,components[x][y - 1].getPreferredSize().width) + hgap)+insets.left;
-		}
-	      } else if (!aligns[x][y].alignRight && align != null && align.isAligned(x / 2 + 1)) {
-                if (components[x][y] instanceof DLabel) {
-                  cleft = insets.left;
+      if (!computed) {
+        precalculateSize();
+      }
+
+      for (int x = 0; x < components.length; x++) {	// for every component
+        for (int y = 0; y < components[0].length; y++) {
+          if (components[x][y] != null) {
+            Dimension         d = components[x][y].getPreferredSize();
+            int               cleft;
+            int               sup = 0;
+
+            if (aligns[x][y] instanceof MultiFieldAlignment) {
+              if (aligns[x][y].alignRight) {
+                // label
+                cleft = ((x-1)/2) * (Math.max(d.width, components[x][y + 1].getPreferredSize().width) + hgap)+insets.left;
+                sup = 5;
+              } else {
+                // fields
+                cleft = ((x-1)/2) * (Math.max(d.width,components[x][y - 1].getPreferredSize().width) + hgap)+insets.left;
+              }
+            } else if (!aligns[x][y].alignRight && align != null && align.isAligned(x / 2 + 1)) {
+              if (components[x][y] instanceof DLabel) {
+                cleft = insets.left;
+              } else {
+                if (align.isChart()) {
+                  cleft = minStart[x + 1] - d.width;
                 } else {
-                  if (align.isChart()) {
-                    cleft = minStart[x + 1] - d.width;
-                  } else {
-                    cleft = minStart[x] ;
-                  }
+                  cleft = minStart[x] ;
                 }
-	      } else if (align != null && align.isAligned(x / 2 + 1)) {
-		cleft = insets.left;
-	      } else if (aligns[x][y].alignRight) {
-		cleft = minStart[x + 1] - d.width;
-	      } else {
-		cleft = left ;
-	      }
-	      components[x][y].setBounds(cleft,
-					 y * (vgap + columnHeight) + top + sup,
-					 (aligns[x][y].alignRight || !aligns[x][y].useAll) ? 
-                                              d.width 
-                                              : minStart[x + 1]-cleft,
-					 d.height);
+              }
+            } else if (align != null && align.isAligned(x / 2 + 1)) {
+              cleft = insets.left;
+            } else if (aligns[x][y].alignRight) {
+              cleft = minStart[x + 1] - d.width;
+            } else {
+              cleft = left ;
             }
-	  }
-	  left = minStart[x + 1];
-	}
+            components[x][y].setBounds(cleft,
+                                       y * (vgap + columnHeight) + top + sup,
+                                       (aligns[x][y].alignRight || !aligns[x][y].useAll) ?
+                                       d.width
+                                       : minStart[x + 1]-cleft,
+                                       d.height);
+          }
+        }
+        left = minStart[x + 1];
+      }
 
-	for (int i = 0; i < follows.size(); i++) {
-	  KopiAlignment         align = (KopiAlignment)followsAligns.elementAt(i);
-	  Component             comp = (Component)follows.elementAt(i);
-	  Dimension             d = comp.getPreferredSize();
+      for (int i = 0; i < follows.size(); i++) {
+        KopiAlignment         align = (KopiAlignment)followsAligns.elementAt(i);
+        Component             comp = (Component)follows.elementAt(i);
+        Dimension             d = comp.getPreferredSize();
 
-	  comp.setBounds(components[align.x][align.y].getLocation().x 
-                         + hgap 
-                         + components[align.x][align.y].getPreferredSize().width,
-			 align.y * (vgap + columnHeight) + top,
-			 d.width,
-			 d.height);
-	}
+        comp.setBounds(components[align.x][align.y].getLocation().x
+                       + hgap
+                       + components[align.x][align.y].getPreferredSize().width,
+                       align.y * (vgap + columnHeight) + top,
+                       d.width,
+                       d.height);
       }
     }
+  }
 
   /**
    * Returns a string representation of the state of this border layout.
@@ -446,7 +438,7 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
   public String toString() {
     return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + "]";
   }
-  
+
   private static final int textHeight;
 
   static {
