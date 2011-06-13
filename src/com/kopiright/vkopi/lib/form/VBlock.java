@@ -3527,6 +3527,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         setActiveRecord(recno);
       }
       callProtectedTrigger(TRG_PREINS);
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callProtectedTrigger(TRG_PREINS);
+      }
       if (isMulti()) {
         setActiveRecord(-1);
       }
@@ -3599,6 +3602,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         setActiveRecord(recno);
       }
       callProtectedTrigger(TRG_POSTINS);
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callProtectedTrigger(TRG_POSTINS);
+      }
       if (isMulti()) {
         setActiveRecord(-1);
       }
@@ -3639,6 +3645,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         setActiveRecord(recno);
       }
       callProtectedTrigger(TRG_PREUPD);
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callProtectedTrigger(TRG_PREUPD);
+      }
       if (isMulti()) {
         setActiveRecord(-1);
       }
@@ -3706,6 +3715,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         setActiveRecord(recno);
       }
       callProtectedTrigger(TRG_POSTUPD);
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callProtectedTrigger(TRG_POSTUPD);
+      }
       if (isMulti()) {
         setActiveRecord(-1);
       }
@@ -3730,6 +3742,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         setActiveRecord(recno);
       }
       callProtectedTrigger(TRG_PREDEL);
+      for (int i = 0; i < fields.length; i++) {
+        fields[i].callProtectedTrigger(TRG_PREDEL);
+      }
       if (isMulti()) {
         setActiveRecord(-1);
       }

@@ -696,6 +696,16 @@ vkFieldEvent []
   "VALUE"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_VALUE; }
 |
   "AUTOLEAVE"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_AUTOLEAVE; }
+|
+  "PREINS"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREINS; }
+|
+  "PREUPD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREUPD; }
+|
+  "PREDEL"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREDEL; }
+|
+  "POSTINS"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTINS; }
+|
+  "POSTUPD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTUPD; }
 ;
 
 vkFieldEventList []

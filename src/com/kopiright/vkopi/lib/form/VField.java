@@ -2111,14 +2111,20 @@ public abstract class VField implements VConstants {
   }
 
   /**
-   * Calls trigger for given event, returns last trigger called 's value.
+   * Calls trigger for given event.
    */
   public Object callTrigger(int event) throws VException {
     Object      res;
 
-    //getBlock().setCurrentRecord(block.getActiveRecord());
     res = block.callTrigger(event, index + 1);
     return res;
+  }
+
+  /**
+   * Calls trigger for given event.
+   */
+  public Object callProtectedTrigger(int event) throws VException, SQLException {
+    return block.callProtectedTrigger(event, index + 1);
   }
 
   /**
@@ -2129,7 +2135,7 @@ public abstract class VField implements VConstants {
   }
 
   /**
-   * Calls trigger for given event, returns last trigger called 's value.
+   * Calls trigger for given event.
    */
   private Object callSafeTrigger(int event) {
     try {

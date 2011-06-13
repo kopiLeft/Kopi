@@ -41,6 +41,7 @@ public class Commandable implements com.kopiright.vkopi.lib.form.VConstants, com
 
   public Commandable(String access, Commandable superCommandable) {
     this.access = access;
+    voidProtectedTriggers = superCommandable.voidProtectedTriggers;
     voidTriggers = superCommandable.voidTriggers;
     objectTriggers = superCommandable.objectTriggers;
     booleanTriggers = superCommandable.booleanTriggers;
