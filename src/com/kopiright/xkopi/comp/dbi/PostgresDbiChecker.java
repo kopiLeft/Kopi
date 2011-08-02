@@ -121,10 +121,8 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   
   
   /**
-
-     /**
-     * Visits BlobType
-     */
+   * Visits BlobType
+   */
   public void visitBlobType(BlobType self)
     throws PositionedError
   {
@@ -137,7 +135,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitClobType(ClobType self)
     throws PositionedError
   {
-    current.append("bytea");
+    current.append("TEXT");
   }
 
   /**
@@ -155,7 +153,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   public void visitByteType(ByteType self, Integer min, Integer max)
     throws PositionedError
   {
-    current.append("INT2");
+    current.append("SMALLINT");
   }
 
   /**
@@ -443,11 +441,10 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits TextType
    */
-  // !!! coco 050201 : verify if it's correct or not
   public void visitTextType(TextType self, int width, int height)
     throws PositionedError
   {
-    current.append("VARCHAR(256)");
+    current.append("TEXT");
   }
 
   /**
