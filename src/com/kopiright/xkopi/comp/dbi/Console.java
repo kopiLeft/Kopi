@@ -637,6 +637,8 @@ public class Console extends Compiler implements Constants {
         return new MysqlDataSource();
       } else if (name.equals("ingres")) {
         return new IngresDataSource();
+      } else if (name.equals("as400")) {
+        return new As400DataSource();
       } else {
         throw new IllegalArgumentException("No data source corresponding to '"
                                            + name + "'");
@@ -770,6 +772,14 @@ public class Console extends Compiler implements Constants {
       super("ca.edbc.jdbc.EdbcDriver",
             "jdbc:edbc:",
             "ingres");
+    }
+  }
+
+  private static final class As400DataSource extends DbiDataSource {
+    As400DataSource() {
+      super("com.ibm.as400.access.AS400JDBCDriver",
+            "jdbc:as400:",
+            "as400");
     }
   }
 

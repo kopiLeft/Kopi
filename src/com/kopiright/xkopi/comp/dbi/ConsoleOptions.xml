@@ -21,12 +21,12 @@
 <option prefix="Console"
         parent="com.kopiright.util.base.Options"
         package="com.kopiright.xkopi.comp.dbi"
-        usage="usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource (tbx | sap | pg | ora | ora10g | mysql | ingres) --host &lt;host> --dbname &lt;dbname> --login &lt;login> --password &lt;password> &lt;dbi-files>">
+        usage="usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource &lt;datasrc> --host &lt;host> --dbname &lt;dbname> --login &lt;login> --password &lt;password> &lt;dbi-files>">
   <param longname="datasource"
          shortname="d"
          type="String"
          default="tbx"
-         help="Sets the source to connect to (tbx | sap | pg | ora | ora10g)" />
+         help="Sets the source to connect to (sap | tbx | pg | ora | ora10g | mysql | ingres | as400)" />
   <param longname="host"
          shortname="H"
          type="String"

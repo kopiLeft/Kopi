@@ -75,12 +75,14 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
       return new MysqlDbiChecker(context);
     } else if (syntax.equals("ingres")) {
       return new IngresDbiChecker(context);
+    } else if (syntax.equals("as400")) {
+      return new As400DbiChecker(context);
     } else if (syntax.equals("tbspool")) {
       return new TbSpoolerDbiChecker(context);
     } else if (syntax.equals("oraspool")) {
       return new OraSpoolerDbiChecker(context);
     } else {
-      System.err.println("syntax " + syntax + " not found using, default syntax." );
+      System.err.println("syntax " + syntax + " not found, using default syntax." );
       return new KopiDbiChecker(context);
     }
   }

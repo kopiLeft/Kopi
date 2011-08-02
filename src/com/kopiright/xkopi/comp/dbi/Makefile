@@ -39,7 +39,7 @@ JAVAFILES +=	DefaultDbiVisitor Main DBAccess DbiScanner DbiVisitor	\
 JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		AlterColumnStatement AlterSetDefaultColumnStatement	\
 		AlterDropDefaultColumnStatement				\
-		AlterNotNullColumnStatement				\
+		AlterNotNullColumnStatement As400DbiChecker		\
 		BlobType BooleanType ByteType ClobType CodeBoolDesc	\
 		CodeBoolType CodeDesc CodeFixedDesc			\
 		CodeFixedType CodeLongDesc CodeLongType			\
