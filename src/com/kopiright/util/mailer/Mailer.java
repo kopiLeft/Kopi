@@ -166,9 +166,9 @@ public class Mailer {
                                subject,
                                body,
                                attachments);
-	  } catch (Exception e) {
+	  } catch (SMTPException e) {
             e.printStackTrace();
-	    System.out.println("*** SMTP Exception: " + e.getMessage());
+	    System.err.println("*** SMTP Exception: " + e.getMessage());
 	  }
 	}
       };
@@ -285,19 +285,21 @@ public class Mailer {
   {
     try {
       Properties         props = new Properties();
-     
+
       props.put("mail.smtp.host", mailHost);
-      
+
       Session            session = Session.getDefaultInstance(props);
       Message            msg = new MimeMessage(session);
 
       msg.setFrom(new InternetAddress(sender));
-      msg.addRecipients(Message.RecipientType.TO,  getAddresses(recipients));  
+      if (recipients != null && !recipients.isEmpty()) {
+        msg.addRecipients(Message.RecipientType.TO, getAddresses(recipients));
+      }
       if (ccRecipients != null && !ccRecipients.isEmpty()) {
-        msg.addRecipients(Message.RecipientType.CC,  getAddresses(ccRecipients));     
+        msg.addRecipients(Message.RecipientType.CC,  getAddresses(ccRecipients));
       }
       if (bccRecipients != null && !bccRecipients.isEmpty()) {
-        msg.addRecipients(Message.RecipientType.BCC,  getAddresses(bccRecipients));     
+        msg.addRecipients(Message.RecipientType.BCC, getAddresses(bccRecipients));
       }
 
       msg.setSubject(subject != null ? subject : "NO SUBJECT");
@@ -307,17 +309,17 @@ public class Mailer {
       } else {
         MimeMultipart   content = new MimeMultipart();
         MimeBodyPart    text = new MimeBodyPart();
-      
+
         text.setText(message);
         content.addBodyPart(text);
 
         ListIterator    iterator = attachments.listIterator();
-          
+
         while (iterator.hasNext()) {
           Attachment    attachment = (Attachment) iterator.next();
           MimeBodyPart  bodyPart = new MimeBodyPart();
 
-          bodyPart.setDataHandler(new DataHandler(attachment)); 
+          bodyPart.setDataHandler(new DataHandler(attachment));
           bodyPart.setHeader("Content-Transfer-Encoding", "base64");
           bodyPart.setFileName(attachment.getName());
           content.addBodyPart(bodyPart);
