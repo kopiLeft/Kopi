@@ -175,7 +175,7 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
   public void visitBooleanType(BooleanType self)
     throws PositionedError
   {
-    current.append("BOOLEAN");
+    current.append(BOOLEAN_DEFINITION);
   }
 
   /**
@@ -193,7 +193,7 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
   public void visitCodeBoolType(CodeBoolType self, ArrayList list)
     throws PositionedError
   {
-    current.append("BOOLEAN");
+    current.append(BOOLEAN_DEFINITION);
   }
 
   /**
@@ -513,5 +513,6 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
 
   public static final int               DEFAULT_STRING_SIZE = 256;
 
-  private static final String           BLOB_DEFINITION = "LONG BYTE";
+  private static final String           BOOLEAN_DEFINITION = "NUMERIC(1, 0)";
+  private static final String           BLOB_DEFINITION = "BLOB";
 }

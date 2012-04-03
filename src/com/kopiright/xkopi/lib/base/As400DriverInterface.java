@@ -192,7 +192,6 @@ public class As400DriverInterface extends DriverInterface {
       // ugly, but more efficient than creating a command class for each functor
 
       switch (((Integer)function).intValue()) {
-/*
       case 1:	// TOMONTH/1
 	return "((" + arguments.elementAt(0) + ") CAST DATETIME[YY:MO])";
 
@@ -246,7 +245,7 @@ public class As400DriverInterface extends DriverInterface {
 	return "REPEAT (" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
 
       case 17:	// CURRENTDATE
-	return "CURRENTDATE";
+	return "CURRENT_DATE";
 
       case 18:	// USER
 	return "USER";
@@ -266,7 +265,6 @@ public class As400DriverInterface extends DriverInterface {
 
       case 23 : // LOCATE
         return "POSITION (" + arguments.elementAt(0) + " IN " + arguments.elementAt(1) + ")";
-*/
 
       case 24:	// TRUE
 	return "1";
@@ -274,22 +272,20 @@ public class As400DriverInterface extends DriverInterface {
       case 25:	// FALSE
 	return "0";
 
-/*
       case 26: // LENGTH
 	return "LENGTH(" + arguments.elementAt(0) + ")";
 
       case 27:	// CURRENTTIME
-	return "TIME";
+	return "CURRENT_TIME";
 
       case 28:	// CURRENTTIMESTAMP
-	return "TIMESTAMP";
+	return "CURRENT_TIMESTAMP";
 
       case 29:	// WEEK/2
 	return "((" + arguments.elementAt(0) + ") * 53 + (" + arguments.elementAt(1) + ") - 1)";
 
       case 30: //DATEDIFF
 	return "DATEDIFF(" + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
-*/
 
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
