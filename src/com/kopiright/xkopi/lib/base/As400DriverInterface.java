@@ -120,9 +120,11 @@ public class As400DriverInterface extends DriverInterface {
     try {
       As400Parser	parser = new As400Parser(from);
 
-      System.err.println("-- NATIVE SQL: ");
-      System.err.println(parser.getText() + ";");
-      System.err.println("--");
+      if (trace) {
+        System.err.println("-- NATIVE SQL: ");
+        System.err.println(parser.getText() + ";");
+        System.err.println("--");
+      }
 
       return parser.getText();
     } catch (SQLException e) {
