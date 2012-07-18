@@ -36,6 +36,39 @@ public class Connection {
   // ----------------------------------------------------------------------
 
   /**
+   * Creates a kopi connection from JDBC Connection
+   *
+   * @param	ctxt		the database context
+   * @param	conn		the JDBC connection
+   * @param     lookupUserId    lookup user id in table KOPI_USERS ?
+   */
+  public Connection(DBContext ctxt,
+                    java.sql.Connection conn,
+                    boolean lookupUserId)
+    throws SQLException
+  {
+    this.ctxt = ctxt;
+    this.url = conn.getMetaData().getURL();
+    this.userName = conn.getMetaData().getUserName();
+    this.userID = !lookupUserId ? USERID_NO_LOOKUP : USERID_TO_DETERMINE;
+    setDriverInterface();
+    this.conn = conn;
+    this.conn.setAutoCommit(false);
+  }
+
+  /**
+   * Creates a kopi connection from JDBC Connection
+   *
+   * @param	ctxt		the database context
+   * @param	conn		the JDBC connection
+   */
+  public Connection(DBContext ctxt, java.sql.Connection conn)
+    throws SQLException
+  {
+    this(ctxt, conn, true);
+  }
+
+  /**
    * Creates a kopi connection from an JDBC connection
    *
    * @param	ctxt		the database context
@@ -323,11 +356,11 @@ public class Connection {
       throw new InconsistencyException("no appropriate driver found");
     }
   }
-  
+
   public DriverInterface getDriverInterface() {
     return driver;
   }
-  
+
   /**
    * Retrieves the user ID of the current user
    */
@@ -351,7 +384,7 @@ public class Connection {
             throw new SQLException("different users with same name");
           }
           query.close();
-        
+
           ctxt.commitWork();
           // manually commit ourself since we are not in the connection list of the context
           conn.commit();
@@ -361,7 +394,7 @@ public class Connection {
       }
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
