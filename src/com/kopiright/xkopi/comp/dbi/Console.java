@@ -634,11 +634,11 @@ public class Console extends Compiler implements Constants {
       } else if (name.equals("ora10g")) {
         dataSource = new Oracle10gDataSource();
       } else if (name.equals("mysql")) {
-        return new MysqlDataSource();
+        dataSource = new MysqlDataSource();
       } else if (name.equals("ingres")) {
-        return new IngresDataSource();
+        dataSource = new IngresDataSource();
       } else if (name.equals("as400")) {
-        return new As400DataSource();
+        dataSource = new As400DataSource();
       } else {
         throw new IllegalArgumentException("No data source corresponding to '"
                                            + name + "'");
