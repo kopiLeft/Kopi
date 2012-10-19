@@ -161,7 +161,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public abstract DBContext login(String database,
                                   String driver,
                                   String username,
-                                  String password);
+                                  String password,
+                                  String schema);
 
   /**
    * This methods is called when an user want to quit the application
@@ -289,7 +290,9 @@ public abstract class Application extends java.applet.Applet implements MessageL
         context = new DBContext();
         context.setDefaultConnection(context.createConnection(options.database,
                                                               options.username,
-                                                              options.password));
+                                                              options.password,
+                                                              options.lookupUserId,
+                                                              options.schema));
       } catch (Exception e) {
         System.err.println(e.getMessage());
         options.usage();
@@ -304,7 +307,8 @@ public abstract class Application extends java.applet.Applet implements MessageL
       context = login(options.database,
                       options.driver,
                       options.username,
-                      options.password);
+                      options.password,
+                      options.schema);
       displaySplashScreen();
     }
 
