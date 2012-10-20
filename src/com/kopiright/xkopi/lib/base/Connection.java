@@ -54,6 +54,8 @@ public class Connection {
     setDriverInterface();
     this.conn = conn;
     this.conn.setAutoCommit(false);
+
+    setUserID();
   }
 
   /**
@@ -69,19 +71,46 @@ public class Connection {
   }
 
   /**
-   * Creates a kopi connection from an JDBC connection
+   * Creates a kopi connection and opens it.
+   *
+   * @param	ctxt		the database context
+   * @param	options		the parameters for the connection
+   */
+  public Connection(DBContext ctxt, ConnectionOptions options)
+    throws DBException
+  {
+    this.ctxt = ctxt;
+    this.url = options.database;
+    this.userName = options.username;
+    this.pass = options.password;
+
+    this.userID = !options.lookupUserId ? USERID_NO_LOOKUP : USERID_TO_DETERMINE;
+
+    setDriverInterface();
+
+    open();
+    if (options.schema != null) {
+      setSchema(options.schema);
+    }
+    setUserID();
+  }
+
+  /**
+   * Creates a kopi connection and opens it.
    *
    * @param	ctxt		the database context
    * @param	url		the URL of the database to connect to
    * @param	user		the name of the database user
    * @param	pass		the password of the database user
    * @param     lookupUserId    lookup user id in table KOPI_USERS ?
+   * @param     schema          the database schema to set as current schema
    */
   public Connection(DBContext ctxt,
 		    String url,
 		    String username,
 		    String password,
-                    boolean lookupUserId)
+                    boolean lookupUserId,
+                    String schema)
     throws DBException
   {
     this.ctxt = ctxt;
@@ -94,6 +123,10 @@ public class Connection {
     setDriverInterface();
 
     open();
+    if (schema != null) {
+      setSchema(schema);
+    }
+    setUserID();
   }
 
   /**
@@ -111,7 +144,7 @@ public class Connection {
 		    String password)
     throws DBException
   {
-    this(ctxt, url, username, password, true);
+    this(ctxt, url, username, password, true, null);
   }
 
   // ----------------------------------------------------------------------
@@ -173,8 +206,6 @@ public class Connection {
     } catch (SQLException e) {
       throw convertException(e);
     }
-
-    setUserID();
   }
 
   /**
@@ -217,6 +248,22 @@ public class Connection {
   // ----------------------------------------------------------------------
   // DRIVER SPECIFIC METHODS
   // ----------------------------------------------------------------------
+
+  /**
+   * Sets the current database schema.
+   *
+   * @param     name            the schema name.
+   */
+  private void setSchema(String name) throws DBException {
+    try {
+      java.sql.Statement	stmt;
+
+      stmt = conn.createStatement();
+      stmt.executeUpdate("SET SCHEMA " + name);
+    } catch (SQLException e) {
+      throw convertException(e);
+    }
+  }
 
   /**
    * Count the maximum size for an ORDER BY clause on the
