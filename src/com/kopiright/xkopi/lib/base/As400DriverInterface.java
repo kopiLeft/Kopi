@@ -27,7 +27,7 @@ import java.util.Vector;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
- * This class encapsulates specific JDBC driver properties.
+ * This class encapsulates specific properties of the AS/400 JDBC driver.
  */
 public class As400DriverInterface extends DriverInterface {
 
@@ -42,7 +42,7 @@ public class As400DriverInterface extends DriverInterface {
    * Count the maximum size for an ORDER BY clause on the
    * driver (data base)
    *
-   * @return	the maximum number of characters in the ORDER BY of the driver
+   * @return    the maximum number of characters in the ORDER BY of the driver
    */
   public int getMaximumCharactersCountInOrderBy() {
       return Integer.MAX_VALUE;
@@ -54,7 +54,7 @@ public class As400DriverInterface extends DriverInterface {
    * NOTE : A function exist for it :
    * java.sql.DatabaseMetaData.getMaximumColumnsInOrderBy()
    *
-   * @return	the maximum number of columns in an ORDER BY clause
+   * @return    the maximum number of columns in an ORDER BY clause
    */
   public int getMaximumColumnsInOrderBy() {
     return Integer.MAX_VALUE;
@@ -281,13 +281,16 @@ public class As400DriverInterface extends DriverInterface {
 	return "CURRENT_TIME";
 
       case 28:	// CURRENTTIMESTAMP
-	return "CURRENT_TIMESTAMP";
+	return "CURRENT TIMESTAMP";
 
       case 29:	// WEEK/2
 	return "((" + arguments.elementAt(0) + ") * 53 + (" + arguments.elementAt(1) + ") - 1)";
 
       case 30: //DATEDIFF
 	return "DATEDIFF(" + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
+
+      case 37: // NEXTVAL/1
+        return  "NEXT VALUE FOR " + arguments.elementAt(0);
 
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
@@ -296,16 +299,15 @@ public class As400DriverInterface extends DriverInterface {
     }
   }
 
-  private static Hashtable	functions;
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
 
-  // ----------------------------------------------------------------------
-  // STATIC INITIALIZER
-  // ----------------------------------------------------------------------
+  private static Hashtable      functions;
 
   static {
     functions = new Hashtable();
 
-    /*
     functions.put("TOMONTH/1", new Integer(1));
     functions.put("ADD_DAYS/2", new Integer(2));
     //unused
@@ -329,15 +331,41 @@ public class As400DriverInterface extends DriverInterface {
     functions.put("LEFT/2", new Integer(21));
     functions.put("CONCAT/2", new Integer(22));
     functions.put("LOCATE/2", new Integer(23));
-    */
     functions.put("TRUE/0", new Integer(24));
     functions.put("FALSE/0", new Integer(25));
-    /*
     functions.put("LENGTH/1", new Integer(26));
     functions.put("CURRENTTIME/0", new Integer(27));
     functions.put("CURRENTTIMESTAMP/0", new Integer(28));
     functions.put("WEEK/2", new Integer(29));
     functions.put("DATEDIFF/2", new Integer(30));
+    /*
+    functions.put("COALESCE/2", new Integer(31));
+    functions.put("ROWNO/0", new Integer(32));
+    functions.put("STRING2INT/1", new Integer(33)); 
+    functions.put("GREATEST/2", new Integer(34));
+    functions.put("INT2STRING/1", new Integer(35));
+    functions.put("MOD/2", new Integer(36));
+    */
+    functions.put("NEXTVAL/1", new Integer(37));
+    /*
+    functions.put("CAST/2", new Integer(38));
+    functions.put("NVL/2", new Integer(39));
+    functions.put("TO_NUMBER/1", new Integer(40));
+    functions.put("INSTR/2", new Integer(41));
+    functions.put("SYSDATE/0", new Integer(42));
+    functions.put("TRUNC_DATE/1", new Integer(43));
+    functions.put("TO_CHAR/1", new Integer(44));
+    functions.put("TO_CHAR/2", new Integer(45));
+    functions.put("TO_DATE/1", new Integer(46));
+    functions.put("TO_DATE/2", new Integer(47));
+    functions.put("UCASE/1", new Integer(48));
+    functions.put("LPAD/3", new Integer(49));
+    functions.put("RPAD/3", new Integer(50));
+    functions.put("ROWID/0", new Integer(51));
+    functions.put("ROWID/1", new Integer(52));
+    functions.put("LAST_DAY/1", new Integer(53));
+    functions.put("ROWIDEXT/0", new Integer(54));
+    functions.put("ROWIDEXT/1", new Integer(55));
     */
   }
 }

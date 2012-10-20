@@ -28,7 +28,10 @@ import com.kopiright.xkopi.comp.sqlc.Expression;
 import com.kopiright.xkopi.comp.sqlc.FieldNameList;
 import com.kopiright.xkopi.comp.sqlc.JdbcDateLiteral;
 import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
+import com.kopiright.xkopi.comp.sqlc.SimpleSubTableReference;
 import com.kopiright.xkopi.comp.sqlc.SqlContext;
+import com.kopiright.xkopi.comp.sqlc.TableAlias;
+import com.kopiright.xkopi.comp.sqlc.TableReference;
 import com.kopiright.xkopi.lib.base.DriverInterface;
 import com.kopiright.xkopi.lib.base.As400DriverInterface;
 import com.kopiright.xkopi.lib.type.Date;
@@ -400,6 +403,38 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   /**
+   * Visits SequenceDefinition
+   */
+  public void visitSequenceDefinition(SequenceDefinition self,
+                                      Expression sequenceName,
+                                      Integer startValue)
+    throws PositionedError
+  {
+    current.append("CREATE SEQUENCE ");
+    sequenceName.accept(this);
+    if (startValue != null) {
+      current.append(" START WITH ");
+      current.append(startValue);
+    }
+    current.append(" NOCACHE");
+    current.append(" ORDER");
+  }
+
+  /*
+   * Visits SimpleSubTableReference
+   */
+  public void visitSimpleSubTableReference(SimpleSubTableReference self,
+                                           TableAlias alias,
+                                           TableReference table)
+    throws PositionedError
+  {
+    if (alias == null) {
+      alias = new TableAlias(self.getTokenReference(), createSyntheticIdentifier(), null);
+    }
+    super.visitSimpleSubTableReference(self, alias, table);
+  }
+
+  /**
    * Visits StringType
    */
   public void visitStringType(StringType self,
@@ -508,6 +543,14 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   // ----------------------------------------------------------------------
+  // IMPLEMENTATION
+  // ----------------------------------------------------------------------
+
+  private String createSyntheticIdentifier() {
+    return "__$syn" + nextSyntheticIdentifier;
+  }
+
+  // ----------------------------------------------------------------------
   // DATA CONSTANTS
   // ----------------------------------------------------------------------
 
@@ -515,4 +558,6 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
 
   private static final String           BOOLEAN_DEFINITION = "NUMERIC(1, 0)";
   private static final String           BLOB_DEFINITION = "BLOB";
+
+  private int                           nextSyntheticIdentifier = 0;
 }
