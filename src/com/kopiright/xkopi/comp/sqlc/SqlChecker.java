@@ -1271,6 +1271,9 @@ public class SqlChecker implements SqlVisitor {
   public void visitTableAlias(TableAlias self, String name, FieldNameList list)
     throws PositionedError
   {
+    if (name == null) {
+      name = createSyntheticIdentifier();
+    }
     if (name != null) {
       current.append(" ");
       current.append(name);
@@ -1604,9 +1607,19 @@ public class SqlChecker implements SqlVisitor {
   }
 
   // ----------------------------------------------------------------------
+  // IMPLEMENTATION
+  // ----------------------------------------------------------------------
+
+  private String createSyntheticIdentifier() {
+    return "syn__" + nextSyntheticIndex + "__";
+  }
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
   protected StringBuffer		current;
   protected Stack			contexts;
+
+  private int                           nextSyntheticIndex = 0;
 }
