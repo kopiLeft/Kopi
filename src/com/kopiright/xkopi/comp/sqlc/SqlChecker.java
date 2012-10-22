@@ -1611,7 +1611,7 @@ public class SqlChecker implements SqlVisitor {
   // ----------------------------------------------------------------------
 
   private String createSyntheticIdentifier() {
-    return "syn__" + nextSyntheticIndex + "__";
+    return "syn__" + nextSyntheticIndex++ + "__";
   }
 
   // ----------------------------------------------------------------------
