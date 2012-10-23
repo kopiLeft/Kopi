@@ -362,11 +362,15 @@ public abstract class Application extends java.applet.Applet implements MessageL
     removeSplashScreen();
   }
 
+  protected ImageIcon getSplashScreenImage() {
+    return com.kopiright.vkopi.lib.util.Utils.getImage("splash.jpg");
+  }
+
   /**
    * Displays the splash screen.
    */
   private void displaySplashScreen() {
-    ImageIcon   img = com.kopiright.vkopi.lib.util.Utils.getImage("splash.jpg");
+    ImageIcon   img = getSplashScreenImage();
 
     if (img != null) {
       splash = new SplashScreen(img.getImage(), null);
@@ -423,9 +427,9 @@ public abstract class Application extends java.applet.Applet implements MessageL
       boolean                     sendMail;
       boolean                     writeLog;
       String                      revision = null;
-      String                      releaseDate = null;      
+      String                      releaseDate = null;
       String[]                    versionArray = Utils.getVersion();
-      
+
       for (int i = 0; i < versionArray.length; i++) {
         if (versionArray[i].startsWith("Revision: ")) {
           revision = versionArray[i].substring(10);
@@ -433,12 +437,12 @@ public abstract class Application extends java.applet.Applet implements MessageL
           releaseDate = versionArray[i].substring(19);
         }
       }
-      
+
       if (ApplicationConfiguration.getConfiguration() == null) {
         System.err.println("ERROR: No application configuration available");
         return;
       }
-      
+
       try {
         applicationName = getDefaults().getApplicationName();
       } catch (PropertyException e) {
@@ -476,7 +480,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
         String  cc;
         String  bcc;
         String  sender;
-        
+
         try {
           recipient = getDefaults().getDebugMailRecipient();
         } catch (PropertyException e) {
@@ -497,7 +501,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
         } catch (PropertyException e) {
           sender = "kopi@kopiright.com";
         }
-        
+
         StringWriter    buffer = new StringWriter();
         PrintWriter     writer = new PrintWriter(buffer);
         // failureID is added to the subject of the mail.
@@ -555,7 +559,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
 
           try {
             CharArrayWriter       write;
-            
+
             write = new CharArrayWriter();
             reason.printStackTrace(new PrintWriter(write));
             failureID = " " + write.toString().hashCode();
