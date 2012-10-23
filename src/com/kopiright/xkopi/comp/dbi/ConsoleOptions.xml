@@ -21,7 +21,7 @@
 <option prefix="Console"
         parent="com.kopiright.util.base.Options"
         package="com.kopiright.xkopi.comp.dbi"
-        usage="usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource &lt;datasrc> --host &lt;host> --dbname &lt;dbname> --login &lt;login> --password &lt;password> &lt;dbi-files>">
+        usage="usage: com.kopiright.xkopi.comp.dbi.Connection [options]* [--help] --datasource &lt;datasrc> --host &lt;host> --dbname &lt;dbname> [--schema &lt;schema>] --login &lt;login> --password &lt;password> [&lt;dbi-files>]">
   <param longname="datasource"
          shortname="d"
          type="String"
@@ -37,6 +37,11 @@
          type="String"
 	 default="null"
 	 help="The name of the database" />
+  <param longname="schema"
+         shortname="s"
+         type="String"
+	 default="null"
+	 help="The name of the database schema" />
   <param longname="login"
 	 shortname="l"
 	 type="String"

@@ -73,6 +73,7 @@ public class Console extends Compiler implements Constants {
     options.datasource = datasource;
     options.host = host;
     options.dbname = dbname;
+    options.schema = null;
     options.login = login;
     options.password = password;
     options.noprompt = false;
@@ -94,6 +95,9 @@ public class Console extends Compiler implements Constants {
                                                  options.login,
                                                  options.password);
         connection.setAutoCommit(false);
+        if (options.schema != null) {
+          setSchema(connection, options.schema);
+        }
       } else {
         System.out.println("error : verify that host, dbname and login are not null.");
         System.exit(1);
@@ -104,6 +108,18 @@ public class Console extends Compiler implements Constants {
     output = new PrintWriter(new OutputStreamWriter(System.out));
     input = new BufferedReader(new InputStreamReader(file));
     processInput();
+  }
+
+  /**
+   * Sets the current database schema.
+   *
+   * @param     name            the schema name.
+   */
+  private void setSchema(Connection connection, String name) throws SQLException {
+    java.sql.Statement	stmt;
+
+    stmt = connection.createStatement();
+    stmt.executeUpdate("SET SCHEMA " + name);
   }
 
   // --------------------------------------------------------------------
@@ -203,17 +219,20 @@ public class Console extends Compiler implements Constants {
         if (options.host != null
             && options.dbname != null
             && options.login != null)
-          {
-            final String  url = datasource.startURL + "//" + options.host + "/"
-              + options.dbname;
+        {
+          final String  url
+            = datasource.startURL + "//" + options.host + "/" + options.dbname;
 
-            connection = DriverManager.getConnection(url,
-                                                     options.login,
-                                                     options.password);
-            connection.setAutoCommit(false);
-          } else {
+          connection = DriverManager.getConnection(url,
+                                                   options.login,
+                                                   options.password);
+          connection.setAutoCommit(false);
+          if (options.schema != null) {
+            setSchema(connection, options.schema);
+          }
+        } else {
           options.usage();
-
+          
           return false;
         }
       } catch (SQLException e) {
