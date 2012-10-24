@@ -428,9 +428,6 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
                                            TableReference table)
     throws PositionedError
   {
-    if (alias == null) {
-      alias = new TableAlias(self.getTokenReference(), createSyntheticIdentifier(), null);
-    }
     super.visitSimpleSubTableReference(self, alias, table);
   }
 
@@ -543,14 +540,6 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   // ----------------------------------------------------------------------
-  // IMPLEMENTATION
-  // ----------------------------------------------------------------------
-
-  private String createSyntheticIdentifier() {
-    return "__$syn" + nextSyntheticIdentifier;
-  }
-
-  // ----------------------------------------------------------------------
   // DATA CONSTANTS
   // ----------------------------------------------------------------------
 
@@ -558,6 +547,4 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
 
   private static final String           BOOLEAN_DEFINITION = "NUMERIC(1, 0)";
   private static final String           BLOB_DEFINITION = "BLOB";
-
-  private int                           nextSyntheticIdentifier = 0;
 }
