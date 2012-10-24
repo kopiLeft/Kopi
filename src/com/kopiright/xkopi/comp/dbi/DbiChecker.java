@@ -412,6 +412,11 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
       ((TablePrivilege)privileges.get(i)).accept(this);
     }
     current.append(" ON ");
+    if (type == GrantPrivilegeStatement.TABLE_TYPE) {
+      current.append("TABLE ");
+    } else if (type == GrantPrivilegeStatement.SEQUENCE_TYPE) {
+      current.append("SEQUENCE ");
+    }
     tableName.accept(this);
     current.append(" TO ");
     for (int i = 0; i < userList.size(); i++) {

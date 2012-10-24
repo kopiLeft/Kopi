@@ -519,6 +519,11 @@ public class DbiPrettyPrinter extends SqlcPrettyPrinter implements DbiVisitor {
       ((TablePrivilege)privileges.get(i)).accept(this);
     }
     print(" ON ");
+    if (type == GrantPrivilegeStatement.TABLE_TYPE) {
+      print("TABLE ");
+    } else if (type == GrantPrivilegeStatement.SEQUENCE_TYPE) {
+      print("SEQUENCE ");
+    }
     tableName.accept(this);
     print(" TO ");
     for (int i = 0; i < userList.size(); i++) {
