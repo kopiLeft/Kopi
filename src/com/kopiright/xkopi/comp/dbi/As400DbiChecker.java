@@ -208,9 +208,7 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
                                  ArrayList list)
     throws PositionedError
   {
-    // !!! graf 990814: scale, precision missing
-    // !!! coco : put the scale and the precision
-    current.append("FIXED(");
+    current.append("DECIMAL(");
     current.append("" + precision);
     current.append("," + scale);
     current.append(")");
@@ -262,7 +260,7 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
                              Fixed max)
     throws PositionedError
   {
-    current.append("FIXED(");
+    current.append("DECIMAL(");
     current.append("" + precision);
     current.append("," + scale);
     current.append(")");
