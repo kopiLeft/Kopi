@@ -57,7 +57,7 @@ public class As400DriverInterface extends DriverInterface {
    * @return    the maximum number of columns in an ORDER BY clause
    */
   public int getMaximumColumnsInOrderBy() {
-    return Integer.MAX_VALUE;
+    return 10000;
   }
 
   /**
@@ -128,6 +128,7 @@ public class As400DriverInterface extends DriverInterface {
 
       return parser.getText();
     } catch (SQLException e) {
+      e.printStackTrace();
       throw new DBRuntimeException(e.getMessage());
     }
   }
@@ -167,7 +168,6 @@ public class As400DriverInterface extends DriverInterface {
    */
   public As400Parser(String input) {
     super(input);
-   
   }
 
 
@@ -299,6 +299,16 @@ public class As400DriverInterface extends DriverInterface {
     }
   }
 
+  protected String parseWhereCurrent() throws SQLException {
+    String      result;
+
+    result = super.parseWhereCurrent();
+    if (result != null) {
+      result += " OF \"" + getCursor() + "\"";
+    }
+    return result;
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -341,7 +351,7 @@ public class As400DriverInterface extends DriverInterface {
     /*
     functions.put("COALESCE/2", new Integer(31));
     functions.put("ROWNO/0", new Integer(32));
-    functions.put("STRING2INT/1", new Integer(33)); 
+    functions.put("STRING2INT/1", new Integer(33));
     functions.put("GREATEST/2", new Integer(34));
     functions.put("INT2STRING/1", new Integer(35));
     functions.put("MOD/2", new Integer(36));

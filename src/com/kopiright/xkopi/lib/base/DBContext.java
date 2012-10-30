@@ -65,6 +65,19 @@ public class DBContext {
     return conn;
   }
 
+  public Connection createConnection(java.sql.Connection connexion,
+                                      boolean lookupUserId,
+                                      String schema)
+    throws SQLException
+  {
+    Connection  conn;
+
+    conn = new Connection(this, connexion, lookupUserId, schema);
+    connections.addElement(conn);
+
+    return conn;
+  }
+
   /**
    * Connects to database and logs on.
    *
@@ -167,7 +180,7 @@ public class DBContext {
   public final void abortWork() throws SQLException {
     synchronized(this) {
       inTransaction = true; /* In case we are doing an abort wo start work */
-      
+
       for (Enumeration elems = getConnections().elements(); elems.hasMoreElements(); ) {
         Connection      conn = (Connection)elems.nextElement();
         try {

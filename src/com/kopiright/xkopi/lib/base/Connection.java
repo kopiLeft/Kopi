@@ -44,7 +44,8 @@ public class Connection {
    */
   public Connection(DBContext ctxt,
                     java.sql.Connection conn,
-                    boolean lookupUserId)
+                    boolean lookupUserId,
+                    String schema)
     throws SQLException
   {
     this.ctxt = ctxt;
@@ -55,7 +56,19 @@ public class Connection {
     this.conn = conn;
     this.conn.setAutoCommit(false);
 
+    if (schema != null) {
+      setSchema(schema);
+    }
+
     setUserID();
+  }
+
+  public Connection(DBContext ctxt,
+                     java.sql.Connection conn,
+                     String schema)
+    throws SQLException
+  {
+    this(ctxt, conn, true, schema);
   }
 
   /**
@@ -67,7 +80,7 @@ public class Connection {
   public Connection(DBContext ctxt, java.sql.Connection conn)
     throws SQLException
   {
-    this(ctxt, conn, true);
+    this(ctxt, conn, true, null);
   }
 
   /**
