@@ -492,6 +492,12 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     }
   }
   
+  public final void setTotalJobs(int totalJobs) {
+    if (getDisplay() != null) {
+      getDisplay().setTotalJobs(totalJobs);
+    }
+  }
+
   public final void setCurrentJob(int currentJob) {
     if (getDisplay() != null) {
       getDisplay().setCurrentJob(currentJob);

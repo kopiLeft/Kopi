@@ -70,7 +70,7 @@ public class ProgressWindow {
     }
   }
   
-  private void setTotalJobs(int totalJobs) {
+  public void setTotalJobs(int totalJobs) {
     this.totalJobs = totalJobs;
   }
   

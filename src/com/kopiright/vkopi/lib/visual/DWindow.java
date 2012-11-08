@@ -851,6 +851,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     }
   }
 
+  public final void setTotalJobs(int totalJobs) {
+    if (progressWindow != null) {
+      progressWindow.setTotalJobs(totalJobs);
+    }
+  }
   public final void setCurrentJob(int currentJob) {
     if (progressWindow != null) {
       progressWindow.setCurrentJob(currentJob);
