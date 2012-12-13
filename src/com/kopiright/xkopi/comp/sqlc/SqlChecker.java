@@ -1141,6 +1141,9 @@ public class SqlChecker implements SqlVisitor {
     current.append("(");
     table.accept(this);
     current.append(") ");
+    if (alias.getIdent() == null) {
+      alias.setIdent(createSyntheticIdentifier());
+    }
     alias.accept(this);
   }
 
@@ -1271,9 +1274,6 @@ public class SqlChecker implements SqlVisitor {
   public void visitTableAlias(TableAlias self, String name, FieldNameList list)
     throws PositionedError
   {
-    if (name == null) {
-      name = createSyntheticIdentifier();
-    }
     if (name != null) {
       current.append(" ");
       current.append(name);

@@ -56,6 +56,13 @@ public class TableAlias extends SqlPhylum {
     return name;
   }
 
+  /**
+   * Sets the alias for the table reference.
+   */
+  public void setIdent(String name) {
+    this.name = name;
+  }
+
   // --------------------------------------------------------------------
   // ACCEPT VISITORS
   // --------------------------------------------------------------------
