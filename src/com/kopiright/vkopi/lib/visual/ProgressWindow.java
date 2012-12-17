@@ -99,7 +99,7 @@ public class ProgressWindow {
       JPanel            panel = new JPanel();
       
       panel.setLayout(new BorderLayout());
-      panel.add(new JLabel("<html><b> Bitte um Geduld ...</b><br>" + message), BorderLayout.NORTH);
+      panel.add(new JLabel("<html><b> " + MessageCode.getMessage("VIS-00067") + " </b><br>" + message), BorderLayout.NORTH);
       panel.add(progressBar, BorderLayout.SOUTH);
       panel.setBorder(new CompoundBorder(new LineBorder(Color.black, 1), new EmptyBorder(2,2,2,2)));
       

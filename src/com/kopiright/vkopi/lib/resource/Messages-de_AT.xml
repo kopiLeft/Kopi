@@ -85,6 +85,7 @@
   <message ident="00063" text="Falsche Spaltennummer, {0} Wählen Sie als der Spaltenliste"/>
   <message ident="00064" text="Beim Parsen ist ein Fehler aufgetreten : {0} {1}"/> 
   <message ident="00065" text="Text ist für dieses Feld zu groß VStringField({0}, {1})"/>
-  <message ident="00066" text="kann nicht berechnen, diese Formel."/>
+  <message ident="00066" text="Kann diese Formel nicht berechnen."/>
+  <message ident="00067" text="Bitte um Geduld ..."  />
 </messages>
 
