@@ -57,6 +57,13 @@ public abstract class DriverInterface {
   public abstract int getMaximumColumnsInOrderBy();
 
   /**
+   * Returns the name of the system table DUAL.
+   *
+   * @return    the name of the system table DUAL.
+   */
+  public abstract String getDualTableName();
+
+  /**
    * Give an access to an user or create an user
    *
    *

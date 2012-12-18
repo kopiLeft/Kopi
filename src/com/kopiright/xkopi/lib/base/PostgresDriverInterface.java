@@ -61,6 +61,15 @@ public class PostgresDriverInterface extends DriverInterface {
   }
 
   /**
+   * Returns the name of the system table DUAL.
+   *
+   * @return    the name of the system table DUAL.
+   */
+  public String getDualTableName() {
+    throw new InconsistencyException("not implemented");
+  }
+
+  /**
    * Give an access to an user or create an user
    *
    *

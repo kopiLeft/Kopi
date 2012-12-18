@@ -61,6 +61,15 @@ public class Db2UdbDriverInterface extends DriverInterface {
   }
 
   /**
+   * Returns the name of the system table DUAL.
+   *
+   * @return    the name of the system table DUAL.
+   */
+  public String getDualTableName() {
+    return "SYSIBM.SYSDUMMY1";
+  }
+
+  /**
    * Give an access to an user or create an user
    *
    *

@@ -84,6 +84,15 @@ public class OracleDriverInterface extends DriverInterface {
   }
 
   /**
+   * Returns the name of the system table DUAL.
+   *
+   * @return    the name of the system table DUAL.
+   */
+  public String getDualTableName() {
+    return "DUAL";
+  }
+
+  /**
    * Give an access to an user or create an user
    *
    *

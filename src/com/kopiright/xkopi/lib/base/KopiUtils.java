@@ -391,7 +391,7 @@ public class KopiUtils {
   {
     String       getSeqNextVal;
 
-    getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM DUMMY";
+    getSeqNextVal = "SELECT  {fn NEXTVAL(" + table + "Id)} FROM " + conn.getDualTableName();
     try {
       ResultSet		  rset;
       Statement           stmt;

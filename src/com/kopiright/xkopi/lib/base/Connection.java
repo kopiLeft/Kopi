@@ -299,7 +299,15 @@ public class Connection {
    */
   public int getMaximumColumnsInOrderBy() {
     return driver.getMaximumColumnsInOrderBy();
+  }
 
+  /**
+   * Returns the name of the system table DUAL.
+   *
+   * @return    the name of the system table DUAL.
+   */
+  public String getDualTableName() {
+    return driver.getDualTableName();
   }
 
   /**

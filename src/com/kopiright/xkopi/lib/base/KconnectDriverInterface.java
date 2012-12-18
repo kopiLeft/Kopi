@@ -57,6 +57,16 @@ public class KconnectDriverInterface extends DriverInterface {
   }
 
   /**
+   * Returns the name of the system table DUAL.
+   *
+   * @return    the name of the system table DUAL.
+   */
+  public String getDualTableName() {
+    // TransBase has no predefined DUAL table - kopi adds a table named DUMMY.
+    return "DUMMY";
+  }
+
+  /**
    * Give an access to an user or create an user
    *
    * @param	conn		the connection
