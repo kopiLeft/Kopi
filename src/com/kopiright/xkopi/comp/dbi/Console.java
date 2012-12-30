@@ -96,7 +96,7 @@ public class Console extends Compiler implements Constants {
                                                  options.password);
         connection.setAutoCommit(false);
         if (options.schema != null) {
-          setSchema(connection, options.schema);
+          connection.setSchema(options.schema);
         }
       } else {
         System.out.println("error : verify that host, dbname and login are not null.");
@@ -108,18 +108,6 @@ public class Console extends Compiler implements Constants {
     output = new PrintWriter(new OutputStreamWriter(System.out));
     input = new BufferedReader(new InputStreamReader(file));
     processInput();
-  }
-
-  /**
-   * Sets the current database schema.
-   *
-   * @param     name            the schema name.
-   */
-  private void setSchema(Connection connection, String name) throws SQLException {
-    java.sql.Statement	stmt;
-
-    stmt = connection.createStatement();
-    stmt.executeUpdate("SET SCHEMA " + name);
   }
 
   // --------------------------------------------------------------------
@@ -228,7 +216,7 @@ public class Console extends Compiler implements Constants {
                                                    options.password);
           connection.setAutoCommit(false);
           if (options.schema != null) {
-            setSchema(connection, options.schema);
+            connection.setSchema(options.schema);
           }
         } else {
           options.usage();

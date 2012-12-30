@@ -267,7 +267,7 @@ public class Connection {
    *
    * @param     name            the schema name.
    */
-  private void setSchema(String name) throws DBException {
+  public void setSchema(String name) throws DBException {
     try {
       java.sql.Statement	stmt;
 
