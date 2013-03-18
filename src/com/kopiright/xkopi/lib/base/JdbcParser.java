@@ -697,7 +697,7 @@ loop:
     return "{ts '"
       + format(yy, 4) + "-" + format(mo, 2) + "-" + format(dd, 2)
       + " "
-      + format(hh, 2) + ":" + format(mi, 2) + ":" + format(ss, 2) + ":" + ns
+      + format(hh, 2) + ":" + format(mi, 2) + ":" + format(ss, 2) + "." + ns
       + "'}";
   }
 
