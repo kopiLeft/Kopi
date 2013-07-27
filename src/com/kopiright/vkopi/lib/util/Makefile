@@ -28,7 +28,7 @@ PACKAGE =	com/kopiright/vkopi/lib/util
 ## FILES
 
 JAVAFILES +=	AWTToPS AbstractPrinter CachePrinter Charset437		\
-		DBUtils FPrinter Fax					\
+		FPrinter Fax						\
 		FaxException FaxPrinter FaxStatus			\
 		Filter GroupHandler HylaFAXPrinter IPPPrinter		\
 		KnownBugs LPrinter 					\

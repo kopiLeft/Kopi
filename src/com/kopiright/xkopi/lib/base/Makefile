@@ -34,7 +34,7 @@ JAVAFILES +=	Connection Cursor					\
 		DBInvalidDataException DBNoRowException			\
 		DBRuntimeException DBTooManyRowsException		\
 		DBUnspecifiedException DBDuplicateIndexException	\
-		DBForeignKeyException DefaultDBContextHandler		\
+		DBForeignKeyException DBUtils DefaultDBContextHandler	\
 		DriverInterface JdbcParser				\
 		KopiSerializable KopiUtils				\
 		Query XInterruptProtectedException
