@@ -17,7 +17,7 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.util;
+package com.kopiright.xkopi.lib.base;
 
 import java.util.Vector;
 import java.sql.SQLException;
