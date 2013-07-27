@@ -2040,13 +2040,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
+   * Checks which outer join syntax (JDBC or Oracle) should be used.
    *
+   * @return    true iff Oracle outer join syntax should be used.
    */
   private boolean useOracleOuterJoinSyntax() {
-    Connection conn = form.getDBContext().getDefaultConnection();
-    
-    return !(conn.getJDBCConnection() instanceof com.kopiright.kconnect.tb.Connection);
+    return form.getDBContext().getDefaultConnection().useOracleOuterJoinSyntax();
   }
+
   /**
    * Tests whether the specified table has nullable columns.
    */
