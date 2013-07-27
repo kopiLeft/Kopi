@@ -47,7 +47,8 @@ endif
 
 ifndef JAVAC
 #JAVAC =		java -classpath /usr/lib/eclipse-3.1/plugins/org.eclipse.jdt.core_3.1.2.jar:${CLASSPATH} org.eclipse.jdt.internal.compiler.batch.Main -extdirs ${EXTDIRS} -source 1.4 -encoding utf-8
-JAVAC = jikes +E +P -source 1.4 -extdirs $(EXTDIRS) -encoding utf-8
+#JAVAC = jikes +E +P -source 1.4 -extdirs $(EXTDIRS) -encoding utf-8
+JAVAC = javac -extdirs $(EXTDIRS) -source 1.4 -encoding utf-8
 endif
 
 ifndef TOKDEF
