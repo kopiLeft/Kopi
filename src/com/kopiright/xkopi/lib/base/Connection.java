@@ -22,6 +22,8 @@ package com.kopiright.xkopi.lib.base;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 import com.kopiright.util.base.InconsistencyException;
 
@@ -206,7 +208,7 @@ public class Connection {
   }
 
   // ----------------------------------------------------------------------
-  // CONNECTION MANAGEMENT
+  // CONNECTION MANAGEMENT / OPERATIONS ON THE CONNECTION
   // ----------------------------------------------------------------------
 
   /**
@@ -252,15 +254,58 @@ public class Connection {
   }
 
   /**
-   *
+   * Sets the transaction isolation level for the connection.
    */
   public void setTransactionIsolation(int isolation) throws SQLException {
     conn.setTransactionIsolation(isolation);
   }
 
+  /**
+   * Commits a transaction.
+   */
+  public void commit() throws SQLException {
+    conn.commit();
+  }
+
+  /**
+   * Rolls a transaction back.
+   */
+  public void rollback() throws SQLException {
+    conn.rollback();
+  }
+
+  /**
+   * Creates an SQL statement.
+   */
+  public Statement createStatement() throws SQLException {
+    return conn.createStatement();
+  }
+
+  /**
+   * Creates a prepared statement.
+   */
+  public PreparedStatement prepareStatement(String text)
+    throws SQLException
+  {
+    return conn.prepareStatement(text);
+  }
+
   // ----------------------------------------------------------------------
   // DRIVER SPECIFIC METHODS
   // ----------------------------------------------------------------------
+
+  /**
+   * Checks whether the underlying connection supports cursor names.
+   *
+   * @return    true iff the underlying JDBC connection supports cursor names
+   */
+  public boolean supportsCursorNames() {
+    try {
+      return conn.getMetaData().getMaxCursorNameLength() > 0;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
 
   /**
    * Checks which outer join syntax (JDBC or Oracle) should be used.

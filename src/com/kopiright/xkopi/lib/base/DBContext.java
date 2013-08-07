@@ -164,7 +164,7 @@ public class DBContext {
       for (Enumeration elems = getConnections().elements(); elems.hasMoreElements(); ) {
         Connection      conn = (Connection)elems.nextElement();
         try {
-          conn.getJDBCConnection().commit();
+          conn.commit();
         } catch (SQLException exc) {
           throw conn.convertException(exc);
         }
@@ -184,7 +184,7 @@ public class DBContext {
       for (Enumeration elems = getConnections().elements(); elems.hasMoreElements(); ) {
         Connection      conn = (Connection)elems.nextElement();
         try {
-          conn.getJDBCConnection().rollback();
+          conn.rollback();
         } catch (SQLException exc) {
           //throw conn.convertException(exc); (if the error has already closed the transaction)
         }

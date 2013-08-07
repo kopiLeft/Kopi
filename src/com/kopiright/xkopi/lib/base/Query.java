@@ -180,9 +180,9 @@ public class Query {
     try {
       String convertedSql;
       
-      stmt = conn.getJDBCConnection().createStatement();
+      stmt = conn.createStatement();
       
-      if (supportsCursorNames()) {
+      if (conn.supportsCursorNames()) {
         name = "C" + nextCursorId++;
 	stmt.setCursorName(name);
       }
@@ -261,7 +261,7 @@ public class Query {
    * Positioned update
    */
   public int update(String format) throws DBException {
-    if (! supportsCursorNames()) {
+    if (! conn.supportsCursorNames()) {
       throw new DBRuntimeException(buildQueryForTrace("UPDPOS " + name, rset),
                                    "operation not supported by JDBC driver");
     }
@@ -279,7 +279,7 @@ public class Query {
         count = ((PreparedStatement)updater).executeUpdate();
         updater.close();
       } else {
-	updater = conn.getJDBCConnection().createStatement();
+	updater = conn.createStatement();
 	count = updater.executeUpdate(conn.convertSql(text + " WHERE CURRENT OF " + rset.getCursorName()));
 	updater.close();
       }
@@ -296,7 +296,7 @@ public class Query {
    * Positioned delete
    */
   public int delete(String format) throws DBException {
-    if (! supportsCursorNames()) {
+    if (! conn.supportsCursorNames()) {
       throw new DBRuntimeException(buildQueryForTrace("DELPOS " + name, rset),
                                    "operation not supported by JDBC driver");
     }
@@ -309,7 +309,7 @@ public class Query {
 
       traceQuery(TRL_QUERY, "DELPOS " + name);
 
-      updater = conn.getJDBCConnection().createStatement();
+      updater = conn.createStatement();
       count = updater.executeUpdate(conn.convertSql(text + " WHERE CURRENT OF " + rset.getCursorName()));
       updater.close();
 
@@ -354,9 +354,11 @@ public class Query {
       if (!lobs.isEmpty()) {
         stmt = createFilledPreparedStatement(text);
 	count = ((PreparedStatement)stmt).executeUpdate();
+        //!!!CLOSE
       } else {
-	stmt = conn.getJDBCConnection().createStatement();
+	stmt = conn.createStatement();
 	count = stmt.executeUpdate(conn.convertSql(text));
+        //!!!CLOSE
       }
 
       traceTimer(TRL_QUERY, "RUN");
@@ -801,17 +803,6 @@ public class Query {
    */
 
   /*
-   * Returns true if the underlying JDBC connection supports cursor names
-   */
-  private boolean supportsCursorNames() {
-    try {
-      return conn.getJDBCConnection().getMetaData().getMaxCursorNameLength() > 0;
-    } catch (SQLException e) {
-      return false;
-    }
-  }
-
-  /*
    * Builds the query text.
    */
   private void buildText(String format) {
@@ -949,7 +940,7 @@ public class Query {
   {
     PreparedStatement   result;
 
-    result = conn.getJDBCConnection().prepareStatement(text);
+    result = conn.prepareStatement(text);
     try {
       int               index = 1;
       ListIterator      iterator = lobs.listIterator();

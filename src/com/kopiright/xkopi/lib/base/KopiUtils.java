@@ -227,83 +227,55 @@ public class KopiUtils {
   }
 
   /**
-   * execute an query and close statement
+   * Executes a query.
    */
-  private static final int executeUpdate(java.sql.Connection conn, String text, Object[] blobs)
-    throws SQLException
-  {
-    PreparedStatement	stmt;
-    int                 count;
-    long                timer;
-
-    timer = System.currentTimeMillis();
-    Query.traceQuery(Query.TRL_QUERY, "UPDATE", text);
-
-    stmt = conn.prepareStatement(text);
-
-    if (blobs != null) {
-      try {
-	for (int i = 0; i < blobs.length; i++) {
-          byte[]        data;
-
-	  if (blobs[i] instanceof KopiSerializable) {
-            data = ((KopiSerializable)blobs[i]).toKopiData();
-	  } else if (blobs[i] instanceof byte[]) {
-	    data = (byte[])blobs[i];
-	  } else {
-	    ByteArrayOutputStream       outer;
-	    ObjectOutputStream          inner;
-
-            outer = new ByteArrayOutputStream();
-            inner = new ObjectOutputStream(outer);
-            inner.writeObject(blobs[i]);
-	    inner.flush();
-	    outer.close();
-
-	    data = outer.toByteArray();
-	  }
-          stmt.setBinaryStream(i + 1, new ByteArrayInputStream(data), data.length);
-	}
-      } catch (IOException e) {
-        throw new DBInvalidDataException(e);
-      }
-    }
-
-    count = stmt.executeUpdate();
-    stmt.close();
-
-    Query.traceTimer(Query.TRL_QUERY, "UPDATE", timer);
-
-    return count;
-  }
-
-  /**
-   * execute an query and close statement
-   */
-  public static final int executeUpdate(com.kopiright.xkopi.lib.base.Connection conn, String text, Object[] blobs)
+  public static final int executeUpdate(Connection conn, String text, Object[] blobs)
     throws DBException
   {
-    try {
-      return executeUpdate(conn.getJDBCConnection(), conn.convertSql(text), blobs);
-    } catch (SQLException exc) {
-      throw conn.convertException(text, exc);
-    }
-  }
-
-  /**
-   * execute an query and close statement
-   */
-  private static final int executeUpdate(java.sql.Connection conn, String text) throws SQLException {
-    Statement           stmt;
     int                 count;
     long                timer;
 
     timer = System.currentTimeMillis();
     Query.traceQuery(Query.TRL_QUERY, "UPDATE", text);
 
-    stmt = conn.createStatement();
-    count = stmt.executeUpdate(text);
-    stmt.close();
+    try {
+      PreparedStatement stmt;
+
+      stmt = conn.prepareStatement(conn.convertSql(text));
+
+      if (blobs != null) {
+        try {
+          for (int i = 0; i < blobs.length; i++) {
+            byte[]        data;
+            
+            if (blobs[i] instanceof KopiSerializable) {
+              data = ((KopiSerializable)blobs[i]).toKopiData();
+            } else if (blobs[i] instanceof byte[]) {
+              data = (byte[])blobs[i];
+            } else {
+              ByteArrayOutputStream       outer;
+              ObjectOutputStream          inner;
+              
+              outer = new ByteArrayOutputStream();
+              inner = new ObjectOutputStream(outer);
+              inner.writeObject(blobs[i]);
+              inner.flush();
+              outer.close();
+              
+              data = outer.toByteArray();
+            }
+            stmt.setBinaryStream(i + 1, new ByteArrayInputStream(data), data.length);
+          }
+        } catch (IOException e) {
+          throw new DBInvalidDataException(e);
+        }
+      }
+
+      count = stmt.executeUpdate();
+      stmt.close();
+    } catch (SQLException e) {
+      throw conn.convertException(text, e);
+    }
 
     Query.traceTimer(Query.TRL_QUERY, "UPDATE", timer);
 
@@ -311,20 +283,34 @@ public class KopiUtils {
   }
 
   /**
-   * execute an query and close statement
+   * Executes a query.
    */
-  public static final int executeUpdate(com.kopiright.xkopi.lib.base.Connection conn, String text) throws DBException {
+  public static final int executeUpdate(Connection conn, String text) throws DBException {
+    int                 count;
+    long                timer;
+
+    timer = System.currentTimeMillis();
+    Query.traceQuery(Query.TRL_QUERY, "UPDATE", text);
+
     try {
-      return executeUpdate(conn.getJDBCConnection(), conn.convertSql(text));
-    } catch (SQLException exc) {
-      throw conn.convertException(text, exc);
+      Statement           stmt;
+
+      stmt = conn.createStatement();
+      count = stmt.executeUpdate(conn.convertSql(text));
+      stmt.close();
+    } catch (SQLException e) {
+      throw conn.convertException(text, e);
     }
+
+    Query.traceTimer(Query.TRL_QUERY, "UPDATE", timer);
+
+    return count;
   }
 
   /**
    * Creates the insert statement.
    */
-  private static final String createKopiInsertStatement(com.kopiright.xkopi.lib.base.Connection conn,
+  private static final String createKopiInsertStatement(Connection conn,
                                                         String table,
                                                         int id,
                                                         String[] columns,
@@ -349,7 +335,7 @@ public class KopiUtils {
   /**
    * Inserts a new record with ID and TS into the database.
    */
-  public static final int executeKopiInsert(com.kopiright.xkopi.lib.base.Connection conn,
+  public static final int executeKopiInsert(Connection conn,
 					    String table,
 					    String[] columns,
 					    String[] values,
@@ -368,7 +354,7 @@ public class KopiUtils {
   /**
    * Inserts a new record with ID and TS into the database.
    */
-  public static final int executeKopiInsert(com.kopiright.xkopi.lib.base.Connection conn,
+  public static final int executeKopiInsert(Connection conn,
 					    String table,
 					    String[] columns,
 					    String[] values)
@@ -385,8 +371,7 @@ public class KopiUtils {
   /*
    * Returns first free ID of table.
    */
-  public static final int getNextTableId(com.kopiright.xkopi.lib.base.Connection conn,
-                                          String table)
+  public static final int getNextTableId(Connection conn, String table)
     throws DBException
   {
     String       getSeqNextVal;
@@ -397,9 +382,7 @@ public class KopiUtils {
       Statement           stmt;
       int		  id;
       
-      java.sql.Connection jdbcConnection = conn.getJDBCConnection();
-      
-      stmt = jdbcConnection.createStatement();
+      stmt = conn.createStatement();
       rset = stmt.executeQuery(conn.convertSql(getSeqNextVal));
       if (!rset.next()) {
         throw new DBRuntimeException("Database Internal Error");
@@ -415,7 +398,7 @@ public class KopiUtils {
   /**
    * Creates the insert statement.
    */
-  private static final String createInsertStatement(com.kopiright.xkopi.lib.base.Connection conn,
+  private static final String createInsertStatement(Connection conn,
                                                     String table,
                                                     String[] columns,
                                                     String[] values)
@@ -444,7 +427,7 @@ public class KopiUtils {
   /**
    * Inserts a new record into the database.
    */
-  public static final int executeInsert(com.kopiright.xkopi.lib.base.Connection conn,
+  public static final int executeInsert(Connection conn,
                                         String table,
                                         String[] columns,
                                         String[] values,
@@ -452,14 +435,14 @@ public class KopiUtils {
     throws DBException
   {
     return executeUpdate(conn,
-                  createInsertStatement(conn, table, columns, values),
-                  blobs);
+                         createInsertStatement(conn, table, columns, values),
+                         blobs);
   }
   
   /**
    * Inserts a new record into the database.
    */
-  public static final int executeInsert(com.kopiright.xkopi.lib.base.Connection conn,
+  public static final int executeInsert(Connection conn,
                                         String table,
                                         String[] columns,
                                         String[] values)

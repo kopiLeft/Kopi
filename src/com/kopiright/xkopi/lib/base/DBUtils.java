@@ -82,7 +82,7 @@ public class DBUtils {
 
     context.startWork();
     com.kopiright.xkopi.lib.base.Connection	conn = context.getDefaultConnection();
-    Statement stmt = conn.getJDBCConnection().createStatement();
+    Statement stmt = conn.createStatement();
     stmt.executeQuery("SELECT ID, " + column + " FROM " + table);
     ResultSet   rs = stmt.getResultSet();
     Vector	ids = new Vector();
@@ -110,7 +110,7 @@ public class DBUtils {
 
 	val = "'" + val + "'";
 
-	stmt = conn.getJDBCConnection().createStatement();
+	stmt = conn.createStatement();
 	stmt.executeUpdate("UPDATE " + table + " SET " + column + " = " + val + " WHERE ID = " + id);
 	System.err.println("UPDATE " + table + " SET " + column + " = " + val + " WHERE ID = " + id);
 	count++;

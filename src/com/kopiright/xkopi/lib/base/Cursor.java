@@ -82,10 +82,10 @@ public class Cursor {
       try {
         String convertedSql;
         
-        stmt = conn.getJDBCConnection().createStatement();
+        stmt = conn.createStatement();
         this.conn = conn;
         
-        if (supportsCursorNames()) {
+        if (conn.supportsCursorNames()) {
           this.name = "K" + nextCursorId++;
           stmt.setCursorName(name);
         }
@@ -191,7 +191,7 @@ public class Cursor {
   // laurent 20021122 : This method only handles blobs. See to add clob support.
   public int update(String sql, Object[] blobs) throws DBException {
     try {
-      if (! supportsCursorNames()) {
+      if (! conn.supportsCursorNames()) {
 	throw new SQLException("operation not supported by JDBC driver");
       }
 
@@ -202,7 +202,7 @@ public class Cursor {
 
       traceQuery(Query.TRL_QUERY, "UPDATE", sql);
 
-      updater = conn.getJDBCConnection().prepareStatement(conn.convertSql(sql));
+      updater = conn.prepareStatement(conn.convertSql(sql));
       for (int i = 0; blobs != null && i < blobs.length; i++) {
         if (blobs[i] == null) {
           updater.setNull(i + 1, Types.BLOB);
@@ -580,17 +580,6 @@ public class Cursor {
   private void checkCursorIsFetched() {
     if (!isFetched) {
       throw new DBCursorException("No value was fetched.");
-    }
-  }
-
-  /*
-   * Returns true if the underlying JDBC connection supports cursor names
-   */
-  private boolean supportsCursorNames() {
-    try {
-      return conn.getJDBCConnection().getMetaData().getMaxCursorNameLength() > 0;
-    } catch (SQLException e) {
-      return false;
     }
   }
 
