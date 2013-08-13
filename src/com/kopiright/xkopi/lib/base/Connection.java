@@ -474,7 +474,7 @@ public class Connection {
     final String driverName = d.getClass().getName();
 
     if (driverName.equals("com.kopiright.kconnect.Driver")) {
-      driver = new KconnectDriverInterface();
+      driver = new KconnectDriverInterface(url);
     } else if (driverName.equals("COM.ibm.db2.jdbc.app.DB2Driver")) {
       driver = new Db2UdbDriverInterface();
     } else if (driverName.equals("com.ibm.as400.access.AS400JDBCDriver")) {

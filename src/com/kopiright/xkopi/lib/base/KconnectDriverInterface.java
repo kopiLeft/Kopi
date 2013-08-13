@@ -30,8 +30,15 @@ public class KconnectDriverInterface extends DriverInterface {
   /**
    * Constructs a new driver interface object
    */
-  public KconnectDriverInterface() {
+  public KconnectDriverInterface(String url) {
     super();
+    if (url.startsWith("jdbc:kconnect:ora:")) {
+      this.database = "ora";
+    } else if (url.startsWith("jdbc:kconnect:tb:")) {
+      this.database = "tb";
+    } else {
+      throw new RuntimeException("Unsupported url: " + url);
+    }
   }
 
   /**
@@ -199,11 +206,12 @@ public class KconnectDriverInterface extends DriverInterface {
    * @param     connection      the JDBC connection
    */
   public void interrupt(Connection connection) {
-    try {
-      ((com.kopiright.kconnect.tb.Connection)connection).sendInterrupt();
-    } catch (SQLException e) {
-      // ignore it
-    }
+    // graf 20130813: we do not support this method anymore
+    //try {
+    //  ((com.kopiright.kconnect.tb.Connection)connection).sendInterrupt();
+    //} catch (SQLException e) {
+    //  // ignore it
+    //}
   }
 
 
@@ -214,9 +222,9 @@ public class KconnectDriverInterface extends DriverInterface {
   private void executeSQL(Connection conn, String oraSQL, String tbSQL)
     throws SQLException
   {
-    if (conn instanceof com.kopiright.kconnect.ora.Connection) {
+    if (database.equals("ora")) {
       executeSQL(conn, oraSQL);
-    } else if (conn instanceof com.kopiright.kconnect.tb.Connection) {
+    } else if (database.equals("tb")) {
       executeSQL(conn, tbSQL);
     } else {
       throw new RuntimeException("Unsupported connection class: " + conn.getClass());
@@ -282,4 +290,10 @@ public class KconnectDriverInterface extends DriverInterface {
 
     return new DBForeignKeyException(query, from, mesg.substring(index1 + 1, index2));
   }
+
+  // ----------------------------------------------------------------------
+  // DATA MEMBERS
+  // ----------------------------------------------------------------------
+
+  private final String          database;
 }
