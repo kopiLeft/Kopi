@@ -53,6 +53,7 @@ public class Connection {
     this.ctxt = ctxt;
     this.url = conn.getMetaData().getURL();
     this.userName = conn.getMetaData().getUserName();
+    this.pass = null;   // already authenticated
     this.userID = !lookupUserId ? USERID_NO_LOOKUP : USERID_TO_DETERMINE;
     setDriverInterface();
     this.conn = conn;
@@ -526,11 +527,12 @@ public class Connection {
         // -2 ... do not lookup user ID
   private static final int              USERID_NO_LOOKUP = -2;
 
+  private final DBContext		ctxt;
+  private final String			url;
+  private final String			userName;
+  private final String			pass;
+
   private DriverInterface		driver;
   private java.sql.Connection		conn;
-  private DBContext			ctxt;
-  private String			url;
-  private String			userName;
   private int                           userID;
-  private String			pass;
 }
