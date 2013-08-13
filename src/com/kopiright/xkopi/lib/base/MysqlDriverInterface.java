@@ -199,6 +199,14 @@ public class MysqlDriverInterface extends DriverInterface {
     // operation not (yet) supported by this driver
   }
 
+  /**
+   * Checks which outer join syntax (JDBC or Oracle) should be used.
+   *
+   * @return    true iff Oracle outer join syntax should be used.
+   */
+  public boolean useOracleOuterJoinSyntax() {
+    return false;
+  }
 
   // ----------------------------------------------------------------------
   // PRIVATE UTILITIES METHODS

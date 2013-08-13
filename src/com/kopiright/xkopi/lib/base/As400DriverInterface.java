@@ -163,8 +163,15 @@ public class As400DriverInterface extends DriverInterface {
     // operation not (yet) supported by this driver
   }
 
+  /**
+   * Checks which outer join syntax (JDBC or Oracle) should be used.
+   *
+   * @return    true iff Oracle outer join syntax should be used.
+   */
+  public boolean useOracleOuterJoinSyntax() {
+    return false;
+  }
 }
-
 
 /**
  * This class translates SQL queries from JDBC format to native format.

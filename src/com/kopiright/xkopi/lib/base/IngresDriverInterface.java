@@ -179,6 +179,14 @@ public class IngresDriverInterface extends DriverInterface {
     // operation supported by Ingres using Linux interuption ctrl+c
   }
 
+  /**
+   * Checks which outer join syntax (JDBC or Oracle) should be used.
+   *
+   * @return    true iff Oracle outer join syntax should be used.
+   */
+  public boolean useOracleOuterJoinSyntax() {
+    return false;
+  }
 
   // ----------------------------------------------------------------------
   // PRIVATE UTILITIES METHODS

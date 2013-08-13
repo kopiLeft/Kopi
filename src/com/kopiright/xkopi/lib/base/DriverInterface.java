@@ -136,6 +136,13 @@ public abstract class DriverInterface {
    */
   public abstract void interrupt(Connection connection);
 
+  /**
+   * Checks which outer join syntax (JDBC or Oracle) should be used.
+   *
+   * @return    true iff Oracle outer join syntax should be used.
+   */
+  public abstract boolean useOracleOuterJoinSyntax();
+
   // ----------------------------------------------------------------------
   // PROTECTED UTILITIES
   // ----------------------------------------------------------------------

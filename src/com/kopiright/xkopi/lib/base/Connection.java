@@ -328,7 +328,7 @@ public class Connection {
    * @return    true iff Oracle outer join syntax should be used.
    */
   public boolean useOracleOuterJoinSyntax() {
-    return !(conn instanceof com.kopiright.kconnect.tb.Connection);
+    return driver.useOracleOuterJoinSyntax();
   }
 
   /**
