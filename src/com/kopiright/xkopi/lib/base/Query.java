@@ -354,11 +354,11 @@ public class Query {
       if (!lobs.isEmpty()) {
         stmt = createFilledPreparedStatement(text);
 	count = ((PreparedStatement)stmt).executeUpdate();
-        //!!!CLOSE
+        stmt.close();
       } else {
 	stmt = conn.createStatement();
 	count = stmt.executeUpdate(conn.convertSql(text));
-        //!!!CLOSE
+        stmt.close();
       }
 
       traceTimer(TRL_QUERY, "RUN");
