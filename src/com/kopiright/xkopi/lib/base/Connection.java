@@ -25,8 +25,6 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-import java.util.ArrayList;
-
 import com.kopiright.util.base.InconsistencyException;
 
 /**
@@ -267,8 +265,6 @@ public class Connection {
    * Commits a transaction.
    */
   public void commit() throws SQLException {
-    // verify that all statements created in this transaction have been closed
-    verifyStatementList();
     conn.commit();
   }
 
@@ -276,8 +272,6 @@ public class Connection {
    * Rolls a transaction back.
    */
   public void rollback() throws SQLException {
-    // ignore: all open statements will be closed anyway
-    cleanupStatementList();
     conn.rollback();
   }
 
@@ -285,11 +279,7 @@ public class Connection {
    * Creates an SQL statement.
    */
   public Statement createStatement() throws SQLException {
-    Statement   statement;
-
-    statement = conn.createStatement();
-    addOpenStatement(statement);
-    return statement;
+    return conn.createStatement();
   }
 
   /**
@@ -298,11 +288,7 @@ public class Connection {
   public PreparedStatement prepareStatement(String text)
     throws SQLException
   {
-    PreparedStatement   statement;
-
-    statement = conn.prepareStatement(text);
-    addOpenStatement(statement);
-    return statement;
+    return conn.prepareStatement(text);
   }
 
   // ----------------------------------------------------------------------
@@ -533,47 +519,6 @@ public class Connection {
   }
 
   // ----------------------------------------------------------------------
-  // DEBUG OPEN STATEMENTS
-  // ----------------------------------------------------------------------
-
-  /**
-   * Adds specified statement to the list of open statements.
-   */
-  private void addOpenStatement(Statement statement) {
-    if (System.getProperty("xkopi.verify.statements") != null) {
-      if (statements == null) {
-        statements = new ArrayList();
-      }
-      statements.add(new Object[] { statement, new Throwable() });
-    }
-  }
-  
-  /** 
-   * Verify that all statements created in this transaction have been closed.
-   */
-  private void verifyStatementList() throws SQLException {
-    if (statements != null) {
-      for (int i = 0; i < statements.size(); i++) {
-        Statement       s = (Statement)((Object[])statements.get(i))[0];
-        Throwable       p = (Throwable)((Object[])statements.get(i))[1];
-
-        if (! s.isClosed()) {
-          System.err.println("*** statement " + s + " is not closed");
-          p.printStackTrace(System.err);
-        }
-      }
-    }
-    // statements = null;
-  }
-
-  /**
-   * Cleanup statement list.
-   */
-  private void cleanupStatementList() {
-    statements = null;
-  }
-
-  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
@@ -590,7 +535,4 @@ public class Connection {
   private DriverInterface		driver;
   private java.sql.Connection		conn;
   private int                           userID;
-
-        // statements created in the current transaction
-  private ArrayList                     statements;
 }
