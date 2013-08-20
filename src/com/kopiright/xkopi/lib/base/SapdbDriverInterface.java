@@ -206,7 +206,7 @@ public class SapdbDriverInterface extends DriverInterface {
    * @return    true iff Oracle outer join syntax should be used.
    */
   public boolean useOracleOuterJoinSyntax() {
-    return false;
+    return true;
   }
 
   // ----------------------------------------------------------------------
