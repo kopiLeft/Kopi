@@ -42,8 +42,8 @@ public class VHelpViewer extends VWindow {
    */
   public VHelpViewer() {
     setTitle("Help Viewer");
-    setActors(new SActor[] {
-      new SActor("File",
+    setActors(new VActor[] {
+      new VActor("File",
                  HELPVIEWER_LOCALIZATION_RESOURCE,
                  "Close",
 		 HELPVIEWER_LOCALIZATION_RESOURCE,
@@ -64,12 +64,11 @@ public class VHelpViewer extends VWindow {
 		   com.kopiright.vkopi.lib.visual.VlibProperties.getString("help-index-help"))
 */
 	});
-    
+
     // localize the help viewer using the default locale
     localize(Locale.getDefault());
 
     getActor(CMD_QUIT).setNumber(CMD_QUIT);
-    setActorEnabled(CMD_QUIT, true);
   }
 
   public int getType() {
@@ -87,23 +86,23 @@ public class VHelpViewer extends VWindow {
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
+
   /**
    * Localize this menu tree
-   * 
+   *
    * @param     locale  the locale to use
    */
   public void localize(Locale locale) {
     LocalizationManager         manager;
-      
+
     manager = new LocalizationManager(locale, Application.getDefaultLocale());
-    
+
     // localizes the actors in VWindow
     super.localizeActors(manager);
-    
+
     manager = null;
   }
-  
+
   // ---------------------------------------------------------------------
   // ACCESSORS
   // ---------------------------------------------------------------------
@@ -162,7 +161,7 @@ public class VHelpViewer extends VWindow {
   private URL			url;
   private static final String    HELPVIEWER_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/HelpViewer";
 
-  private static final int	CMD_QUIT	= 0;
+  /*package*/ static final int	CMD_QUIT	= 0;
 //   private static final int	CMD_TOP		= 1;
 //   private static final int	CMD_INDEX	= 2;
 }

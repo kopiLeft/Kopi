@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VActor;
 
 public abstract class VImportedBlock extends VBlock {
 
@@ -42,21 +42,21 @@ public abstract class VImportedBlock extends VBlock {
   /**
    *
    */
-  public SActor getActor(int i) {
+  public VActor getActor(int i) {
     return actors[i];
   }
 
   /**
    *
    */
-  protected void setActors(SActor[] actors) {
+  protected void setActors(VActor[] actors) {
     this.actors = actors;
   }
 
   /**
    *
    */
-  public SActor[] getActors() {
+  public VActor[] getActors() {
     return actors;
   }
 }

@@ -33,7 +33,7 @@ import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.DWindow;
-import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.UIBuilder;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VWindow;
@@ -61,71 +61,71 @@ public class VPreviewWindow extends VWindow {
    */
   public VPreviewWindow() {
     setTitle("Preview");
-    setActors(new SActor[] {
-      new SActor("File",
+    setActors(new VActor[] {
+      new VActor("File",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "Close",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "quit",
                  KeyEvent.VK_ESCAPE,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PageFirst",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "pageFirst",
                  KeyEvent.VK_HOME,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PageLeft",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "pageLeft",
                  KeyEvent.VK_PAGE_UP,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PageRight",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "pageRight",
                  KeyEvent.VK_PAGE_DOWN,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PageLast",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "pageLast",
                  KeyEvent.VK_END,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PreviewFit",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "zoomoptimal",
                  KeyEvent.VK_F5,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PreviewFitWidth",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "zoomwidth",
                  KeyEvent.VK_F8,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PreviewFitHeight",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "zoomheight",
                  KeyEvent.VK_F9,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PreviewPlus",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "zoomplus",
                  KeyEvent.VK_F6,
                  0),
-      new SActor("Action",
+      new VActor("Action",
                  PREVIEW_LOCALIZATION_RESOURCE,
                  "PreviewMinus",
                  PREVIEW_LOCALIZATION_RESOURCE,
@@ -137,7 +137,7 @@ public class VPreviewWindow extends VWindow {
 
     // localize the preview using the default locale
     localize(Locale.getDefault());
-    
+
     getActor(CMD_QUIT).setNumber(CMD_QUIT);
     getActor(CMD_FIRST).setNumber(CMD_FIRST);
     getActor(CMD_LEFT).setNumber(CMD_LEFT);
@@ -191,14 +191,14 @@ public class VPreviewWindow extends VWindow {
       Process   p;
 
       resolution = (int) ((72f * this.height)/printJob.getHeight());
-      p = Runtime.getRuntime().exec(command + 
-                                    " -q" + 
-                                    " -sOutputFile=" + imageFile + "%d.JPG" + 
+      p = Runtime.getRuntime().exec(command +
+                                    " -q" +
+                                    " -sOutputFile=" + imageFile + "%d.JPG" +
                                     " -sDEVICE=jpeg" +
-                                    " -r" + resolution + "x" + resolution + 
+                                    " -r" + resolution + "x" + resolution +
                                     " -g" + this.width + "x" + this.height +
-                                    " -dNOPAUSE" + 
-                                    " " + printFile + 
+                                    " -dNOPAUSE" +
+                                    " " + printFile +
                                     " -c quit ");
       p.waitFor();
     } catch (Exception e) {
@@ -314,20 +314,20 @@ public class VPreviewWindow extends VWindow {
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
+
   /**
    * Localize this menu tree
-   * 
+   *
    * @param     locale  the locale to use
    */
   public void localize(Locale locale) {
     LocalizationManager         manager;
-      
+
     manager = new LocalizationManager(locale, Application.getDefaultLocale());
-    
+
     // localizes the actors in VWindow
     super.localizeActors(manager);
-    
+
     manager = null;
   }
 
@@ -402,7 +402,7 @@ public class VPreviewWindow extends VWindow {
   }
 
   protected PrintJob getPrintJob() {
-      return printJob;  
+      return printJob;
   }
 
 
@@ -424,7 +424,7 @@ public class VPreviewWindow extends VWindow {
   private static final float    DEF_ZOOM_RATIO  = 1.30f;
   private static final String   PREVIEW_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Preview";
 
-  // the following commands *MUST* be in the same order than 
+  // the following commands *MUST* be in the same order than
   // in 'actors' field set in the contructor of the current class.
   protected static final int    CMD_QUIT        =  0;
   protected static final int    CMD_FIRST       =  1;

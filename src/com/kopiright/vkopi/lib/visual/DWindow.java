@@ -996,22 +996,23 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   /**
    * add a command in the menu bar
    */
-  private void addActorsToGUI(SActor[] actorDefs) {
+  private void addActorsToGUI(VActor[] actorDefs) {
     if (actorDefs != null) {
       for (int i = 0; i < actorDefs.length; i++) {
-        addButton(buttonPanel, actorDefs[i]);
-        menuBar.addItem(actorDefs[i]);
+	DActor		actorView;
+
+	actorView = new DActor(actorDefs[i]);
+        addButton(buttonPanel, actorView);
+        menuBar.addItem(actorView);
       }
     }
+
     buttonPanel.add(Box.createGlue());
   }
 
-  private void addButton(JPanel panel, SActor actor) {
-    JButton	button;
-
-    if (actor.iconName != null) {
-      button = new JMenuButton(actor.getAction());
-      panel.add(button);
+  private void addButton(JPanel panel, DActor actorView) {
+    if (actorView.getModel().iconName != null) {
+      panel.add(actorView.getButton());
     }
   }
 

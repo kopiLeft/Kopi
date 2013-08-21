@@ -89,8 +89,8 @@ public class VKStdType {
     VReport = tf.createType(com.kopiright.vkopi.lib.report.VReport.class.getName().replace('.','/'), false);
     VReportColumn = tf.createType(com.kopiright.vkopi.lib.report.VReportColumn.class.getName().replace('.','/'), false);
 
-    SActor = tf.createType(com.kopiright.vkopi.lib.visual.SActor.class.getName().replace('.','/'), false);
-    SDefaultActor = tf.createType(com.kopiright.vkopi.lib.visual.SDefaultActor.class.getName().replace('.','/'), false);
+    SActor = tf.createType(com.kopiright.vkopi.lib.visual.VActor.class.getName().replace('.','/'), false);
+    SDefaultActor = tf.createType(com.kopiright.vkopi.lib.visual.VDefaultActor.class.getName().replace('.','/'), false);
     VList = tf.createType(com.kopiright.vkopi.lib.list.VList.class.getName().replace('.','/'), false);
     VException = tf.createType(com.kopiright.vkopi.lib.visual.VException.class.getName().replace('.','/'), false);
     VRuntimeException = tf.createType(com.kopiright.vkopi.lib.visual.VRuntimeException.class.getName().replace('.','/'), false);

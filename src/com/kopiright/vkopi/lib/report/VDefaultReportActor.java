@@ -19,30 +19,21 @@
 
 package com.kopiright.vkopi.lib.report;
 
-import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
 
-
-public class SDefaultReportActor extends SActor {
+public class VDefaultReportActor extends VActor {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
   // ----------------------------------------------------------------------
-  public SDefaultReportActor(String menuIdent,
+  public VDefaultReportActor(String menuIdent,
                              String actorIdent,
                              String iconName,
                              int acceleratorKey,
                              int acceleratorModifier) {
-                                         
+
     super(menuIdent, null, actorIdent, null, null, acceleratorKey, acceleratorModifier);
     this.iconName = iconName;
     localize();
@@ -51,11 +42,11 @@ public class SDefaultReportActor extends SActor {
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
+
   private void localize() {
     menuName = VlibProperties.getString(menuIdent);
     menuItem = VlibProperties.getString(actorIdent);
     help = VlibProperties.getString(actorIdent + "-help");
-    initAction();
-  }  
+  }
 }
 

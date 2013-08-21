@@ -35,7 +35,8 @@ JAVAFILES +=	CellRenderer Constants DColumnStyle			\
 		VStringCodeColumn VStringColumn				\
 		VTimeColumn VTimestampColumn VWeekColumn		\
 		VNoRowException VSeparatorColumn VHelpGenerator		\
-		PExport PExport2XLS PExport2PDF PExport2CSV SDefaultReportActor  VReportCommand
+		PExport PExport2XLS PExport2PDF PExport2CSV 		\
+		VDefaultReportActor  VReportCommand
 
 ## ----------------------------------------------------------------------
 ## GOALS

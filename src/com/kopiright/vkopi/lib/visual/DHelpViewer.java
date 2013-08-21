@@ -85,6 +85,7 @@ import javax.swing.text.Document;
   public void run() {
     setVisible(true);
     html.requestFocus();
+    getModel().setActorEnabled(VHelpViewer.CMD_QUIT, true);
   }
 
   /**

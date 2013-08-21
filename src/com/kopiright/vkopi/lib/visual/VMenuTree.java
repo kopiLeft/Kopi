@@ -91,7 +91,7 @@ public class VMenuTree extends VWindow {
     this.isSuperUser = isSuperUser;
     this.userName = userName;
     this.groupName = groupName;
-    actors = new SActor[9];
+    actors = new VActor[9];
     items = new ArrayList();
     shortcutsID = new ArrayList();
     createActor(CMD_QUIT, "File", "Close", "quit", 0 /*KeyEvent.VK_ESCAPE*/, 0);
@@ -160,7 +160,7 @@ public class VMenuTree extends VWindow {
                            int key,
                            int modifier)
   {
-    actors[number] = new SActor(menu,
+    actors[number] = new VActor(menu,
                                 MENU_LOCALIZATION_RESOURCE,
                                 item,
                                 MENU_LOCALIZATION_RESOURCE,
@@ -547,7 +547,7 @@ public class VMenuTree extends VWindow {
   // --------------------------------------------------------------------
 
   private TreeNode			root;
-  private SActor[]       		actors;
+  private VActor[]       		actors;
   private boolean               	isSuperUser;
   private Module[]              	array;
   private List                  	items;

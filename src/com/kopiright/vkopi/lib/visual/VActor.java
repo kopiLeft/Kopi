@@ -19,28 +19,21 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ActorLocalizer;
+import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.MenuLocalizer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
 
-public class SActor {
+public class VActor {
 
   // ----------------------------------------------------------------------
-  // CONSTRUCTORS
+  // CONSTRUCTOR
   // ----------------------------------------------------------------------
 
   /**
    * Creates a new actor.
    */
-  public SActor(String menuIdent,
+  public VActor(String menuIdent,
                 String menuSource,
                 String actorIdent,
                 String actorSource,
@@ -57,54 +50,9 @@ public class SActor {
     this.acceleratorModifier = acceleratorModifier;
   }
 
-  /**
-   * Creates a new actor.
-  public SActor(String menuName,
-		String menuItem,
-		String iconName,
-		int acceleratorKey,
-		int acceleratorModifier,
-		String help)
-  {
-    this.menuName = menuName;
-    this.menuItem = menuItem;
-    this.iconName = iconName;
-    this.acceleratorKey = acceleratorKey;
-    this.acceleratorModifier = acceleratorModifier;
-    this.help = help;
-    
-    this.action = new SActorAction(menuItem,
-                                   (iconName != null) ?
-                                       loadImage(iconName) :
-                                       null);
-    if (acceleratorKey != KeyEvent.VK_UNDEFINED) {
-      this.action.putValue(Action.ACCELERATOR_KEY,
-                           KeyStroke.getKeyStroke(acceleratorKey,
-                                                  acceleratorModifier));
-    }
-    this.action.putValue(Action.SHORT_DESCRIPTION, help);
-    action.setEnabled(false);
-  }
-  */
-
-  public Action getAction() {
-    return action;
-  }
-
-  private static ImageIcon loadImage(String iconName) {
-    ImageIcon   image;
-
-    image = com.kopiright.vkopi.lib.util.Utils.getImage(iconName + ".png");
-    if (image == null || image == com.kopiright.vkopi.lib.util.Utils.UKN_IMAGE) {
-      image = com.kopiright.vkopi.lib.util.Utils.getImage(iconName + ".gif");
-    }
-    return image;
-  }
-
   // ----------------------------------------------------------------------
   // ACCESSORS / MUTATORS
   // ----------------------------------------------------------------------
-
 
   public String getMenuIdent() {
     return menuIdent;
@@ -115,17 +63,19 @@ public class SActor {
   }
 
   /**
-   * Checks whether the atcor is enabled.
+   * Checks whether the actor is enabled.
    */
   public boolean isEnabled() {
-    return action.isEnabled();
+    return display != null && display.isEnabled();
   }
 
   /**
    * Enables/disables the actor.
    */
   public void setEnabled(boolean enabled) {
-    action.setEnabled(enabled);
+    if (display != null) {
+      display.setEnabled(enabled);
+    }
   }
 
   /**
@@ -141,63 +91,66 @@ public class SActor {
   public void setHandler(ActionHandler handler) {
     this.handler = handler;
   }
-  
+
   /**
    * get the number for the actor.
    */
   public int getNumber() {
-    return this.number;
+    return number;
   }
 
+  /**
+   * Sets the model display
+   */
+  public void setDisplay(DActor display) {
+    this.display = display;
+  }
 
+  /**
+   * Returns the model display
+   */
+  public DActor getDisplay() {
+    return display;
+  }
+
+  // ----------------------------------------------------------------------
+  // ACTIONS HANDLING
+  // ----------------------------------------------------------------------
 
   public void performAction() {
     handler.performAction(new KopiAction(menuItem + " in " + menuName) {
       public void execute() throws VException {
 	handler.executeVoidTrigger(number);
       }
-    }, synchronous);
+    }, false);
   }
 
   public void performBasicAction() throws VException {
     handler.executeVoidTrigger(number);
   }
 
+  // ----------------------------------------------------------------------
+  // HASHCODE AND EQUALS REDEFINITION
+  // ----------------------------------------------------------------------
+
   public int hashCode() {
-    return menuItem.hashCode() * menuItem.hashCode();
+    return actorIdent.hashCode() * actorIdent.hashCode();
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof SActor)) {
+    if (!(obj instanceof VActor)) {
       return false;
     } else {
-      SActor	actor = (SActor)obj;
+      VActor	actor = (VActor)obj;
 
       return
         menuName.equals(actor.menuName)
         && menuItem.equals(actor.menuItem)
         && ((iconName == null && actor.iconName == null)
-            || (iconName != null 
+            || (iconName != null
                 && actor.iconName != null
                 && iconName.equals(actor.iconName)));
     }
-  }
-
-  /**
-   *
-   */
-  public void initAction() {
-    action = new SActorAction(menuItem,
-                              (iconName != null) ?
-                              loadImage(iconName) :
-                              null);
-    if (acceleratorKey != KeyEvent.VK_UNDEFINED) {
-      action.putValue(Action.ACCELERATOR_KEY,
-                      KeyStroke.getKeyStroke(acceleratorKey,
-                                             acceleratorModifier));
-    }
-    action.putValue(Action.SHORT_DESCRIPTION, help);
-    action.setEnabled(false);
   }
 
   // ----------------------------------------------------------------------
@@ -212,15 +165,13 @@ public class SActor {
   public void localize(LocalizationManager manager) {
     ActorLocalizer      actorLoc;
     MenuLocalizer       menuLoc;
-    
+
     menuLoc = manager.getMenuLocalizer(menuSource, menuIdent);
     actorLoc = manager.getActorLocalizer(actorSource, actorIdent);
-    
+
     menuName = menuLoc.getLabel();
     menuItem = actorLoc.getLabel();
     help = actorLoc.getHelp();
-    
-    initAction();
   }
 
   // ----------------------------------------------------------------------
@@ -244,7 +195,7 @@ public class SActor {
     StringBuffer        buffer;
 
     buffer = new StringBuffer();
-    buffer.append("SActor[");
+    buffer.append("VActor[");
     buffer.append("menu=" + menuName + ":" + menuItem);
     if (iconName != null) {
       buffer.append(", ");
@@ -259,46 +210,25 @@ public class SActor {
     buffer.append("]");
     return buffer.toString();
   }
-  // --------------------------------------------------------------------
-  // DATA MEMBERS
-  // --------------------------------------------------------------------
-
-  private class SActorAction extends AbstractAction {
-    
-    SActorAction(String name, Icon icon) {
-      super(name, icon);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      SActor.this.performAction();
-    }
-    /**
-     * Comment for <code>serialVersionUID</code>
-     */
-    private static final long serialVersionUID = -6510825866215273279L;
-  }
 
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
+  public final int					acceleratorKey;
+  public final int					acceleratorModifier;
 
+  public String                 			menuName;
+  public String                 			menuItem;
 
-  public final int		acceleratorKey;
-  public final int		acceleratorModifier;
-    
-  public String                 menuName;
-  public String                 menuItem;
-    
-  private String                menuSource;  // qualified name of menu's source file
-  private String                actorSource; // qualified name of actor's source file
-  private Action                action; // replaces dactor
-  private int                   number;
-  private ActionHandler         handler;
-  private boolean		synchronous;
+  private String                			menuSource;  // qualified name of menu's source file
+  private String                			actorSource; // qualified name of actor's source file
+  private DActor                			display;
+  private int                   			number;
+  private ActionHandler         			handler;
 
-  protected String		iconName;
-  protected String              menuIdent;
-  protected String              actorIdent;
-  protected String              help;
+  public String						iconName;
+  public String              				menuIdent;
+  protected String              			actorIdent;
+  public String              				help;
 }

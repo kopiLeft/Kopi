@@ -50,7 +50,7 @@ import com.kopiright.vkopi.lib.report.Constants;
 import com.kopiright.vkopi.lib.report.DColumnStyle;
 import com.kopiright.vkopi.lib.report.MReport;
 import com.kopiright.vkopi.lib.report.PConfig;
-import com.kopiright.vkopi.lib.report.SDefaultReportActor;
+import com.kopiright.vkopi.lib.report.VDefaultReportActor;
 import com.kopiright.vkopi.lib.report.VBooleanCodeColumn;
 import com.kopiright.vkopi.lib.report.VBooleanColumn;
 import com.kopiright.vkopi.lib.report.VDateColumn;
@@ -70,7 +70,7 @@ import com.kopiright.vkopi.lib.report.VTimestampColumn;
 import com.kopiright.vkopi.lib.report.VWeekColumn;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
@@ -112,16 +112,16 @@ public class VDynamicReport extends VReport {
       block.getForm().unsetWaitInfo();
     }
     block.setRecordChanged(0, false);
-  }  
-  
+  }
+
   /**
-   * @param     fields  block fields.          
+   * @param     fields  block fields.
    * @return fields that will represent columns in the dynamic report.
    */
   private VField[] initFields(VField[] fields) {
     VField[]  processedFields = new VField[fields.length];
     int       size = 0;
-    
+
     for (int i = 0; i < fields.length; i++) {
       if ((!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName()))) {
         if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
@@ -142,7 +142,7 @@ public class VDynamicReport extends VReport {
     }
     return processedFields;
   }
-  
+
   public boolean isFetched() {
     for (int i = 0; i < block.getBufferSize(); i += 1) {
       if (block.isRecordFetched(i)) {
@@ -151,14 +151,14 @@ public class VDynamicReport extends VReport {
     }
     return false;
   }
-  
-  
+
+
   /**
    * create report columns and fill them with data.
    */
   protected void initColumns() throws VException {
     int         col = 0;
-    
+
     for (int i = 0; i < fields.length; i++) {
       if (fields[i] instanceof VStringField) {
         columns[col] = new VStringColumn(null,
@@ -191,7 +191,7 @@ public class VDynamicReport extends VReport {
                                          0,
                                          getColumnGroups(fields[i]),
                                          null,
-                                         fields[i].getWidth(), 
+                                         fields[i].getWidth(),
                                          ((VFixnumField)fields[i]).getScale(0),
                                          null);
       } else if (fields[i] instanceof VIntegerField) {
@@ -283,7 +283,7 @@ public class VDynamicReport extends VReport {
                                              0,
                                              0,
                                              getColumnGroups(fields[i]),
-                                             null, 
+                                             null,
                                              1,
                                              null,
                                              ((VCodeField)fields[i]).getLabels(),
@@ -299,14 +299,14 @@ public class VDynamicReport extends VReport {
                                               1,
                                               null,
                                               ((VCodeField)fields[i]).getLabels(),
-                                              getBoolArray((Boolean[])((VCodeField)fields[i]).getCodes()));     
+                                              getBoolArray((Boolean[])((VCodeField)fields[i]).getCodes()));
       } else {
         throw new InconsistencyException("Error: unknown field type.");
       }
       // add labels for columns.
-      if (!fields[i].getName().equals(block.getIdField().getName())) { 
+      if (!fields[i].getName().equals(block.getIdField().getName())) {
         String  columnLabel;
-        
+
         if (fields[i].getLabel() != null) {
           columnLabel = fields[i].getLabel().trim();
         } else {
@@ -317,21 +317,21 @@ public class VDynamicReport extends VReport {
       col ++;
     }
     model.columns = columns;
-    
+
     if (block.isMulti() && isFetched()) {
       for (int i = 0; i < block.getBufferSize(); i++) {
         if (block.isRecordFilled(i)) {
           block.setCurrentRecord(i);
           ArrayList list = new ArrayList();
-          
-          for (int j = 0; j < fields.length; j++) { 
-            if (!fields[j].getName().equals(block.getIdField().getName())) { 
+
+          for (int j = 0; j < fields.length; j++) {
+            if (!fields[j].getName().equals(block.getIdField().getName())) {
               list.add(fields[j].getObject());
             }
           }
           // add ID field in the end.
-          for (int j = 0; j < fields.length; j++) { 
-            if (fields[j].getName().equals(block.getIdField().getName())) { 
+          for (int j = 0; j < fields.length; j++) {
+            if (fields[j].getName().equals(block.getIdField().getName())) {
               list.add(fields[j].getObject());
               break;
             }
@@ -347,16 +347,16 @@ public class VDynamicReport extends VReport {
             if (!alreadyProtected) {
               block.getForm().startProtected(null);
             }
-            
+
             if (block.isMulti()) {
               block.setActiveRecord(0);
             }
-            
+
             Query         query = new Query(block.getForm().getDBContext().getDefaultConnection());
-            String        searchCondition = block.getSearchConditions() == null ? "" : block.getSearchConditions(); 
-            String        searchColumns = block.getReportSearchColumns(); 
-            String        searchTables = block.getSearchTables(); 
-          
+            String        searchCondition = block.getSearchConditions() == null ? "" : block.getSearchConditions();
+            String        searchColumns = block.getReportSearchColumns();
+            String        searchTables = block.getSearchTables();
+
             if (block.isMulti()) {
               block.setActiveRecord(-1);
               block.setActiveField(null);
@@ -377,10 +377,10 @@ public class VDynamicReport extends VReport {
               for (int i=0; i< fields.length; i++) {
                 result.add(query.getObject(i + 1));
               }
-              model.addLine(result.toArray()); 
+              model.addLine(result.toArray());
             }
             query.close();
-          
+
             if (!alreadyProtected) {
               block.getForm().commitProtected();
             }
@@ -412,7 +412,7 @@ public class VDynamicReport extends VReport {
   }
 
   // methods overriden from VReport
-  
+
   public void localize(Locale locale) {
     // report clumnns inherit their localization from the Block.
     // actors are localized with VlibProperties.
@@ -421,21 +421,21 @@ public class VDynamicReport extends VReport {
   public void add() {}
 
   protected void init() throws VException {}
-  
+
   public void initReport() throws VException {
     build();
   }
-  
+
   public void destroyModel() {
     //
   }
-  
+
   // ----------------------------------------------------------------------
   // Default Actors
   // ----------------------------------------------------------------------
-  
+
   private void initDefaultActors() {
-    actorsDef = new SActor[11];
+    actorsDef = new VActor[11];
     createActor("File", "Quit", QUIT_ICON, KeyEvent.VK_ESCAPE, 0, Constants.CMD_QUIT);
     createActor("File", "Print", PRINT_ICON, KeyEvent.VK_F6, 0, Constants.CMD_PRINT);
     createActor("File", "ExportCSV", EXPORT_ICON, KeyEvent.VK_F8, 0, Constants.CMD_EXPORT_CSV);
@@ -456,38 +456,38 @@ public class VDynamicReport extends VReport {
     //    createActor("Action", "ColumnInfo", "options", KeyEvent.VK_UNDEFINED , 0, Constants.CMD_COLUMN_INFO);
     setActors(actorsDef);
   }
-  
+
   // ----------------------------------------------------------------------
   // Default Actors
   // ----------------------------------------------------------------------
-  
+
   private void createActor(String menuIdent,String actorIdent,String iconIdent,int key,int modifier,int trigger) {
-    actorsDef[number] = new SDefaultReportActor(menuIdent, actorIdent, iconIdent, key, modifier);
+    actorsDef[number] = new VDefaultReportActor(menuIdent, actorIdent, iconIdent, key, modifier);
     actorsDef[number].setNumber(trigger);
     number ++;
   }
-  
+
   // ----------------------------------------------------------------------
   // Default Commands
   // ----------------------------------------------------------------------
-  
+
   private void initDefaultCommands() {
     commands = new VCommand[actorsDef.length];
     for (int i = 0; i < 11; i++) {
-      commands[i] = new VReportCommand(this, actorsDef[i]);  
+      commands[i] = new VReportCommand(this, actorsDef[i]);
     }
   }
-  
+
   /**
    * return the report column group for the given table.
    */
   private int getColumnGroups(int table) {
     VField[]  flds = block.getFields();
-    
+
     for (int i = 0; i < flds.length; i++) {
       if (flds[i].isInternal() && flds[i].getColumnCount() > 1) {
         int col = flds[i].fetchColumn(table);
-        
+
         if (col != -1 && flds[i].getColumn(col).getName().equals(block.getIdField().getName())) {
           if (flds[i].fetchColumn(0) != -1) {
             // group with the Id of the block.
@@ -498,7 +498,7 @@ public class VDynamicReport extends VReport {
     }
     return -1;
   }
-  
+
   /**
    * return the report column group for the given field.
    */
@@ -509,11 +509,11 @@ public class VDynamicReport extends VReport {
       return getColumnGroups(field.getColumn(0).getTable());
     }
   }
-  
+
   // ----------------------------------------------------------------------
   //  useful Methods.
   // ----------------------------------------------------------------------
-  
+
   private boolean[] getBoolArray(Boolean[] codes) {
     boolean[]   result = new boolean[codes.length];
 
@@ -522,7 +522,7 @@ public class VDynamicReport extends VReport {
     }
     return result;
   }
-  
+
   private int[] getIntArray(Integer[] codes) {
     int[]       result = new int[codes.length];
 
@@ -531,15 +531,15 @@ public class VDynamicReport extends VReport {
     }
     return result;
   }
-  
+
   // ----------------------------------------------------------------------
   // Data Members
   // ----------------------------------------------------------------------
-  
+
   private VReportColumn[]       columns;
   private VField[]              fields;
-  private VBlock                block;    
-  private SActor[]              actorsDef;
+  private VBlock                block;
+  private VActor[]              actorsDef;
   private int                   number = 0;
   private int                   idColumn = 0;
   private static String EXPORT_ICON            = "export";

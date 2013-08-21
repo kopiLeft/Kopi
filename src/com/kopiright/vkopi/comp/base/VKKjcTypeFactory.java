@@ -46,8 +46,8 @@ public class VKKjcTypeFactory
     VReportType = createType(com.kopiright.vkopi.lib.report.VReport.class.getName().replace('.','/'), false);
     VReportColumnType = createType(com.kopiright.vkopi.lib.report.VReportColumn.class.getName().replace('.','/'), false);
 
-    SActorType = createType(com.kopiright.vkopi.lib.visual.SActor.class.getName().replace('.','/'), false);
-    SDefaultActorType = createType(com.kopiright.vkopi.lib.visual.SDefaultActor.class.getName().replace('.','/'), false);
+    SActorType = createType(com.kopiright.vkopi.lib.visual.VActor.class.getName().replace('.','/'), false);
+    SDefaultActorType = createType(com.kopiright.vkopi.lib.visual.VDefaultActor.class.getName().replace('.','/'), false);
     VListType = createType(com.kopiright.vkopi.lib.list.VList.class.getName().replace('.','/'), false);
     VExceptionType = createType(com.kopiright.vkopi.lib.visual.VException.class.getName().replace('.','/'), false);
     VRuntimeExceptionType = createType(com.kopiright.vkopi.lib.visual.VRuntimeException.class.getName().replace('.','/'), false);
@@ -72,15 +72,15 @@ public class VKKjcTypeFactory
     VImageColumnType = createType(com.kopiright.vkopi.lib.list.VImageColumn.class.getName().replace('.','/'), false);
 
     try {
-      VFieldType = (CReferenceType) VFieldType.checkType(context); 
-      VBlockType = (CReferenceType) VBlockType.checkType(context); 
-      DBlockType = (CReferenceType) DBlockType.checkType(context); 
-      DMultiBlockType = (CReferenceType) DMultiBlockType.checkType(context); 
-      VDictionaryFormType = (CReferenceType) VDictionaryFormType.checkType(context); 
-      VFormType = (CReferenceType) VFormType.checkType(context); 
+      VFieldType = (CReferenceType) VFieldType.checkType(context);
+      VBlockType = (CReferenceType) VBlockType.checkType(context);
+      DBlockType = (CReferenceType) DBlockType.checkType(context);
+      DMultiBlockType = (CReferenceType) DMultiBlockType.checkType(context);
+      VDictionaryFormType = (CReferenceType) VDictionaryFormType.checkType(context);
+      VFormType = (CReferenceType) VFormType.checkType(context);
       VReportType =  (CReferenceType) VReportType.checkType(context);
       VReportColumnType = (CReferenceType) VReportColumnType.checkType(context);
-      
+
       SActorType = (CReferenceType) SActorType.checkType(context);
       SDefaultActorType = (CReferenceType) SDefaultActorType.checkType(context);
       VListType = (CReferenceType) VListType.checkType(context);
@@ -108,7 +108,7 @@ public class VKKjcTypeFactory
     } catch (UnpositionedError cue) {
       throw new InconsistencyException("Failure while loading standard types.");
     }
-  
+
   }
 
   public CReferenceType createReferenceType(int typeShortcut) {

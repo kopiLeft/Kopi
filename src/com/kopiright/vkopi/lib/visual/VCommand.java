@@ -20,7 +20,7 @@
 package com.kopiright.vkopi.lib.visual;
 
 public class VCommand {
-  public VCommand(int mode, ActionHandler handler, SActor actor, int trigger, String item) {
+  public VCommand(int mode, ActionHandler handler, VActor actor, int trigger, String item) {
     this.mode = mode;
     this.actor = actor;
     this.trigger = trigger;
@@ -127,7 +127,7 @@ public class VCommand {
   private String	item;
   private int		mode;
   private boolean	killed;
-  protected SActor	actor;
+  protected VActor	actor;
   protected int		trigger;
   protected ActionHandler handler;
 }

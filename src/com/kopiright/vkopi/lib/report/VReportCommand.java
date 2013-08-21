@@ -23,7 +23,7 @@ import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.PrinterManager;
 import com.kopiright.vkopi.lib.print.PrintManager;
@@ -31,7 +31,7 @@ import com.kopiright.vkopi.lib.print.DefaultPrintManager;
 
 public class VReportCommand extends VCommand implements ActionHandler {
 
-  public VReportCommand(VReport report, SActor actor) {
+  public VReportCommand(VReport report, VActor actor) {
     super(0xFFFF, null, actor, actor.getNumber(), actor.getActorIdent());
     this.report = report;
   }
@@ -53,7 +53,7 @@ public class VReportCommand extends VCommand implements ActionHandler {
    *
    * @param	action		the action to perform.
    * @param	block		This action should block the UI thread ?
-   * @deprecated                use method performAsyncAction 
+   * @deprecated                use method performAsyncAction
    */
   public void performAction(final KopiAction action, boolean block) {
     try {
@@ -143,7 +143,7 @@ public class VReportCommand extends VCommand implements ActionHandler {
   // ----------------------------------------------------------------------
 
   public void helpOnCommand(com.kopiright.vkopi.lib.visual.VHelpGenerator help) {
-    
+
     if (actor == null) {
       return;
     }

@@ -26,7 +26,7 @@ import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class DMenuBar extends JMenuBar {
 
-  
+
 /**
    * Constructs a menu panel
    */
@@ -38,26 +38,26 @@ public class DMenuBar extends JMenuBar {
   /**
    * Adds a menu item
    */
-  DMenuItem addItem(SActor actor) { //, DActor dactor) {
+  DMenuItem addItem(DActor actor) { //, DActor dactor) {
     JMenu		menu = null;
     DMenuItem		item;
 
     //!!! NOT YET IMPLEMENTED IN SWING
-    if (actor.getMenuIdent().equals("Help")) {
+    if (actor.getModel().getMenuIdent().equals("Help")) {
       if ((menu = getHelpMenu()) == null) {
-	menu = new JMenu(actor.menuName);
+	menu = new JMenu(actor.getModel().menuName);
 	setHelpMenu(menu);
       }
     } else {
       /* lookup menu with name menuName, add it if necessary */
       for (int i = 0; menu == null && i < getMenuCount(); i++) {
-	if (getMenu(i).getText().equals(actor.menuName)) {
+	if (getMenu(i).getText().equals(actor.getModel().menuName)) {
 	  menu = getMenu(i);
 	}
       }
 
       if (menu == null) {
-	menu = this.add(new JMenu(actor.menuName));
+	menu = this.add(new JMenu(actor.getModel().menuName));
       }
     }
 

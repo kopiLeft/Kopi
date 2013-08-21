@@ -42,8 +42,8 @@ import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Module;
-import com.kopiright.vkopi.lib.visual.SActor;
-import com.kopiright.vkopi.lib.visual.SDefaultActor;
+import com.kopiright.vkopi.lib.visual.VActor;
+import com.kopiright.vkopi.lib.visual.VDefaultActor;
 import com.kopiright.vkopi.lib.visual.UIBuilder;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -227,11 +227,11 @@ public abstract class VForm extends VWindow implements VConstants {
   /**
    * addCommand in menu
    */
-  public void setActors(SActor[] actors) {
+  public void setActors(VActor[] actors) {
     if (actors != null) {
       for (int i = 0; i < actors.length; i++) {
-        if (actors[i] instanceof SDefaultActor) {
-          switch (((SDefaultActor)actors[i]).getCode()) {
+        if (actors[i] instanceof VDefaultActor) {
+          switch (((VDefaultActor)actors[i]).getCode()) {
           case VForm.CMD_AUTOFILL:
             autofillActor = actors[i];
             break;
@@ -948,7 +948,7 @@ public abstract class VForm extends VWindow implements VConstants {
     close(0);
   }
 
-  /*package*/ SActor getDefaultActor(int type) {
+  /*package*/ VActor getDefaultActor(int type) {
     switch (type) {
     case VForm.CMD_NEWITEM:
       return newItemActor;
@@ -1065,10 +1065,10 @@ public abstract class VForm extends VWindow implements VConstants {
   // SHARED DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private	SActor		autofillActor;
-  private	SActor		editItemActor;
-  private	SActor		editItemActor_S;
-  private	SActor		newItemActor;
+  private	VActor		autofillActor;
+  private	VActor		editItemActor;
+  private	VActor		editItemActor_S;
+  private	VActor		newItemActor;
 
   // ---------------------------------------------------------------------
   // PREDEFINED COMMANDS

@@ -35,7 +35,7 @@ import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.SActor;
+import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VDatabaseUtils;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -2922,7 +2922,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    *
    */
-  public SActor getActor(int i) {
+  public VActor getActor(int i) {
     return getForm().getActor(i);
   }
 
@@ -3667,7 +3667,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       tsFld = getTsField();
 
       Query   query = new Query(form.getDBContext().getDefaultConnection());
-      
+
       if (tsFld != null) {
 	tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
       }
@@ -3838,10 +3838,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   /**
-   * Returns true iff this block has no UC and no TS field. 
+   * Returns true iff this block has no UC and no TS field.
    * May be overridden in subclasses eg actual blocks. Note: In this case,
    * conflicting deletes or updates of a record being edited, are impossible to
-   * detect. 
+   * detect.
    */
   protected boolean blockHasNoUcOrTsField() {
     return false;
@@ -3887,15 +3887,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    *
    */
-  protected void setActors(SActor[] actors) {
+  protected void setActors(VActor[] actors) {
     this.actors = actors;
   }
 
   /**
    *
    */
-  public SActor[] getActors() {
-    SActor[]    temp = actors;
+  public VActor[] getActors() {
+    VActor[]    temp = actors;
 
     actors = null;
     return temp;
@@ -4248,7 +4248,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected String[]            indices;        // error messages for violated indices
 
   protected VCommand[]          commands;       // commands
-  protected SActor[]            actors;         // actors to send to form (move to block import)
+  protected VActor[]            actors;         // actors to send to form (move to block import)
   protected VField[]            fields;         // fields
   protected int[][]             VKT_Triggers;
 
