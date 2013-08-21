@@ -29,16 +29,16 @@ PACKAGE =	com/kopiright/vkopi/lib/visual
 
 JAVAFILES +=	ActionHandler Application 				\
 		Constants DFootPanel DInfoPanel				\
-		DMenuBar DMenuItem DObject DPreferences DStatePanel	\
-		DWaitPanel DWindow ProgressWindow			\
+		DMenuBar DMenuItem DMenuTree DObject DPreferences	\
+		DStatePanel DWaitPanel DWindow ProgressWindow		\
 		FileChooser DHelpViewer VHelpViewer			\
 		KopiAction KopiExecutable				\
-		MenuItemRenderer MenuTree MessageCode Module 		\
+		MenuItemRenderer MessageCode Module 			\
 		Registry WaitDialogListener ProgressDialogListener	\
 		SActor SDefaultActor VActionListener			\
 		SplashScreen Utils VCommand VException			\
 		VExecFailedException VHelpGenerator			\
-		VInterruptException VRuntimeException			\
+		VInterruptException VMenuTree VRuntimeException		\
 		VTrigger VWindow DPositionPanel DPositionPanelListener  \
 		VDatabaseUtils WindowController SwingThreadHandler	\
 		UIBuilder WaitInfoListener MessageListener		\

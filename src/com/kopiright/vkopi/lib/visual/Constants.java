@@ -31,6 +31,7 @@ public interface Constants {
   int MDL_FORM = 10;
   int MDL_REPORT = 20;
   int MDL_PREVIEW = 30;
+  int MDL_MENU_TREE = 40;
 
   // --------------------------------------------------------------------
   // STANDARD FONT FAMILIES

@@ -63,7 +63,7 @@ import com.kopiright.vkopi.lib.visual.VException;
  * The text field appear as a JLabel until it is edited
  */
 public class DTextField extends DField implements VConstants {
-  
+
 
 
 public DTextField(VFieldUI model,
@@ -109,9 +109,9 @@ public DTextField(VFieldUI model,
 
     JComponent  comp;
 
-    comp = createFieldGUI(getModel().getWidth(), 
+    comp = createFieldGUI(getModel().getWidth(),
                           getModel().getHeight(),
-                          (getModel().getHeight() == 1) ? 
+                          (getModel().getHeight() == 1) ?
                           1 :
                           ((VStringField)getModel()).getVisibleHeight(),
                           (options & VConstants.FDO_NOECHO) != 0,
@@ -136,7 +136,7 @@ public DTextField(VFieldUI model,
 
       if (redo != null) {
         popup.add(redo);
-      } 
+      }
       if (undo != null) {
         popup.add(undo);
       }
@@ -145,7 +145,7 @@ public DTextField(VFieldUI model,
 
     ApplicationConfiguration                    appDefaults;
     String                                      dictionaryServer;
-    
+
     appDefaults = ApplicationConfiguration.getConfiguration();
 
     try {
@@ -178,7 +178,7 @@ public DTextField(VFieldUI model,
                 SpellChecker  spellChecker = new SpellChecker(spellCommand,
                                                                 Utils.getFrameAncestor(field),
                                                                 document);
-                            
+
                 try {
                   spellChecker.check();
                 } catch (SpellException se) {
@@ -194,11 +194,11 @@ public DTextField(VFieldUI model,
     }
     // Bookmarks (Shortcuts)
     if (Application.getMenu() != null) {
-      Action[]          bookmarks = Application.getMenu().getBookmarkActions();
+      Action[]          bookmarks = Application.getMenu().getDMenuTree().getBookmarkActions();
 
       if (bookmarks.length > 0) {
         popup.addSeparator();
-      
+
         JMenu           menu = new JMenu(VlibProperties.getString("toolbar-title"));
 
         for (int i = 0; i < bookmarks.length; i++) {
@@ -242,7 +242,7 @@ public DTextField(VFieldUI model,
   // UI MANAGEMENT
   // ----------------------------------------------------------------------
 
-  public void setDisplayProperties() { 
+  public void setDisplayProperties() {
     document.setState(state);
     field.invalidate();
     field.validate();
@@ -261,12 +261,12 @@ public DTextField(VFieldUI model,
 
   public synchronized void updateText() {
     document.setState(state);
- 
+
     String	newModelTxt = getModel().getText(getRowController().getBlockView().getRecordFromDisplayLine(getPosition()));
     String	currentModelTxt = document.getModelText();
 
     if ((newModelTxt == null && currentModelTxt != null) || !newModelTxt.equals(currentModelTxt)) {
-      // the ui of the field is updated by the model not by the 
+      // the ui of the field is updated by the model not by the
       // user, so don't inform the model (that the value is changed, ...)
       document.removeDocumentListener(listener);
       document.removeUndoableEditListener(undoManager);
@@ -282,10 +282,10 @@ public DTextField(VFieldUI model,
         }
       }
     }
-  
+
     super.updateText();
     // LACKNER 2005.11.18
-    // If this field has the focus, and the value is set 
+    // If this field has the focus, and the value is set
     // with this method, then the value should be selected.
     // RT #25754
     // this is required because, the focus-gained event
@@ -333,7 +333,7 @@ public DTextField(VFieldUI model,
 
     document.addDocumentListener(listener);
 
-    // request the focus, must be done later, otherwise it 
+    // request the focus, must be done later, otherwise it
     // does not work
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
@@ -344,7 +344,7 @@ public DTextField(VFieldUI model,
 
   private void leaveMe() {
     VField      model = getModel();
-    
+
     if (!noEdit) {
       document.removeUndoableEditListener(model.getForm().getUndoableEditListener());
     }
@@ -388,12 +388,12 @@ public DTextField(VFieldUI model,
   }
 
   class ListAction extends AbstractAction {
-    
-   
+
+
 	ListAction() {
       super(VlibProperties.getString("item-index"));
     }
-    
+
     public void actionPerformed(ActionEvent e) {
       getModel().getForm().performAsyncAction(new KopiAction() {
           public void execute() throws VException {
@@ -412,12 +412,12 @@ public DTextField(VFieldUI model,
   // Create field ui
   // ----------------------------------------------------------------------
 
-  private JComponent createFieldGUI(int col, 
-                                    int rows, 
-                                    int visibleRows, 
-                                    boolean noEcho, 
-                                    boolean scanner, 
-                                    MouseListener mouseListener, 
+  private JComponent createFieldGUI(int col,
+                                    int rows,
+                                    int visibleRows,
+                                    boolean noEcho,
+                                    boolean scanner,
+                                    MouseListener mouseListener,
                                     int align) {
     JTextComponent      textfield;
 
@@ -464,7 +464,7 @@ public DTextField(VFieldUI model,
               if (getColumns() != 0) {
                 Insets          insets = getInsets();
 
-                size.width = 1 
+                size.width = 1
                   + getColumns() * getColumnWidth() + insets.left + insets.right;
               }
               return size;
@@ -492,7 +492,7 @@ public DTextField(VFieldUI model,
       textfield.addFocusListener(TextSelecter.TEXT_SELECTOR);
     }
 
-    
+
     // scroller
     JScrollPane         scroller;
 
@@ -536,12 +536,12 @@ public DTextField(VFieldUI model,
       return textfield;
     }
   }
-  
+
 
   /**
    * remove selection focus Listener
    * if the listener specified by the argument was not previously added to this component
-   * or If listener l is null, 
+   * or If listener l is null,
    * no exception is thrown and no action is performed.
    */
   public void removeSelectionFocusListener() {
@@ -655,7 +655,7 @@ public DTextField(VFieldUI model,
 
         if (last != -1) {
           target.append(line.substring(0, last + 1));
-        } 
+        }
         if (usedRows < row) {
           if (start+col < length) {
             target.append('\n');
@@ -706,7 +706,7 @@ public DTextField(VFieldUI model,
       menu.removePopupMenuListener(this);
       menu = null;
     }
-    
+
     public void popupMenuCanceled(PopupMenuEvent e) {
     }
 
@@ -719,62 +719,7 @@ public DTextField(VFieldUI model,
     int               length = source.length();
     int               start = 0;
     int               lines = 0;
-    
-    while (start < length) {
-      int             index = source.indexOf('\n', start);
-        
-      if (index-start < col && index != -1) {
-        target.append(source.substring(start, index));
-        for (int j = index - start; j < col; j++) {
-          target.append(' ');
-        }
-        start = index+1;
-        if (start == length) {
-          // last line ends with a "new line" -> add an empty line
-          for (int j = 0; j < col; j++) {
-            target.append(' ');
-          }
-        }
-      } else {
-        if (start+col >= length) {
-          target.append(source.substring(start, length));
-          for (int j = length; j < start+col; j++) {
-            target.append(' ');
-          }
-          start = length;          
-        } else {
-          // find white space to break line
-          int   i;
-            
-          for (i = start+col-1; i > start; i--) {
-            if (Character.isWhitespace(source.charAt(i))) {
-              break;
-            }
-          }
-          if (i == start) {
-            index = start+col;
-          } else {
-            index = i+1;
-          }
-            
-          target.append(source.substring(start, index));
-          for (int j = (index - start)%col; j != 0 && j < col; j++) {
-            target.append(' ');
-          }
-          start = index;
-        }
-      }
-      lines++;
-    }
-    return target.toString();
-  }
-  
-  public static String convertFixedTextToSingleLine(String source, int col, int row) {
-    StringBuffer      target = new StringBuffer();
-    int               length = source.length();
-    int               start = 0;
-    int               lines = 0;
-    
+
     while (start < length) {
       int             index = source.indexOf('\n', start);
 
@@ -796,11 +741,66 @@ public DTextField(VFieldUI model,
           for (int j = length; j < start+col; j++) {
             target.append(' ');
           }
-          start = length;          
+          start = length;
         } else {
           // find white space to break line
           int   i;
-            
+
+          for (i = start+col-1; i > start; i--) {
+            if (Character.isWhitespace(source.charAt(i))) {
+              break;
+            }
+          }
+          if (i == start) {
+            index = start+col;
+          } else {
+            index = i+1;
+          }
+
+          target.append(source.substring(start, index));
+          for (int j = (index - start)%col; j != 0 && j < col; j++) {
+            target.append(' ');
+          }
+          start = index;
+        }
+      }
+      lines++;
+    }
+    return target.toString();
+  }
+
+  public static String convertFixedTextToSingleLine(String source, int col, int row) {
+    StringBuffer      target = new StringBuffer();
+    int               length = source.length();
+    int               start = 0;
+    int               lines = 0;
+
+    while (start < length) {
+      int             index = source.indexOf('\n', start);
+
+      if (index-start < col && index != -1) {
+        target.append(source.substring(start, index));
+        for (int j = index - start; j < col; j++) {
+          target.append(' ');
+        }
+        start = index+1;
+        if (start == length) {
+          // last line ends with a "new line" -> add an empty line
+          for (int j = 0; j < col; j++) {
+            target.append(' ');
+          }
+        }
+      } else {
+        if (start+col >= length) {
+          target.append(source.substring(start, length));
+          for (int j = length; j < start+col; j++) {
+            target.append(' ');
+          }
+          start = length;
+        } else {
+          // find white space to break line
+          int   i;
+
           for (i = start+col; i > start; i--) {
             if (Character.isWhitespace(source.charAt(i))) {
               break;
@@ -811,7 +811,7 @@ public DTextField(VFieldUI model,
           } else {
             index = i;
           }
-            
+
           target.append(source.substring(start, index));
           for (int j = (index - start); j < col; j++) {
             target.append(' ');

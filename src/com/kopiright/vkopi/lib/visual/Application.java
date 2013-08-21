@@ -76,7 +76,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   /**
    * Returns the menu window of this application
    */
-  public static MenuTree getMenu() {
+  public static VMenuTree getMenu() {
     return instance == null ? null : instance.menuTree;
   }
 
@@ -354,10 +354,16 @@ public abstract class Application extends java.applet.Applet implements MessageL
         exitWithError(1);
       }
     } else {
-      String url = getURL();
+      try {
+	String url = getURL();
 
-      menuTree = new MenuTree(context);
-      menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
+	menuTree = new VMenuTree(context);
+	menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
+	menuTree.doNotModal();
+      } catch (VException e) {
+	e.printStackTrace();
+        exitWithError(1);
+      }
     }
     removeSplashScreen();
   }
@@ -649,7 +655,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public void notice(String message) {
     // use model, because we are outside
     // swing event-dispatch-thread
-    menuTree.getModel().notice(message);
+    menuTree.notice(message);
   }
 
   /**
@@ -658,7 +664,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public void error(String message) {
     // use model, because we are outside
     // swing event-dispatch-thread
-    menuTree.getModel().error(message);
+    menuTree.error(message);
   }
 
   /**
@@ -667,7 +673,7 @@ public abstract class Application extends java.applet.Applet implements MessageL
   public void warn(String message) {
     // use model, because we are outside
     // swing event-dispatch-thread
-    menuTree.getModel().warn(message);
+    menuTree.warn(message);
   }
 
   /**
@@ -681,17 +687,17 @@ public abstract class Application extends java.applet.Applet implements MessageL
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private static Application            instance;
+  private static Application            	instance;
   private static ApplicationOptions            options;
 
-  private MenuTree                      menuTree;
-  private DBContext                     context;
-  private boolean                       isGeneratingHelp;
-  private SplashScreen                  splash;
-  private boolean                       isStarted;
-  private Registry                      registry;
-  private Locale                        defaultLocale;
-  private LocalizationManager           localizationManager;
+  private VMenuTree                      	menuTree;
+  private DBContext                     	context;
+  private boolean                       	isGeneratingHelp;
+  private SplashScreen                  	splash;
+  private boolean                       	isStarted;
+  private Registry                      	registry;
+  private Locale                        	defaultLocale;
+  private LocalizationManager           	localizationManager;
 
   // ---------------------------------------------------------------------
   // Failure cause informations

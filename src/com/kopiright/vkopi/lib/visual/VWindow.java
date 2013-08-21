@@ -206,7 +206,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
 
   public final void performAsyncAction(final KopiAction action) {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==VActionListener.class) {
         ((VActionListener)listeners[i+1]).performAsyncAction(action);
@@ -228,7 +228,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void notice(String message) {
     boolean     send = false;
     Object[]    listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==MessageListener.class) {
         ((MessageListener)listeners[i+1]).notice(message);
@@ -253,7 +253,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void error(String message) {
     boolean     send = false;
     Object[]    listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==MessageListener.class) {
         ((MessageListener)listeners[i+1]).error(message);
@@ -281,7 +281,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void warn(String message) {
     boolean     send = false;
     Object[]    listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==MessageListener.class) {
         ((MessageListener)listeners[i+1]).warn(message);
@@ -322,7 +322,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * Displays an ask dialog box
    */
   public boolean ask(String message, boolean yesIsDefault) {
-    Object[]          listeners = modelListener.getListenerList();    
+    Object[]          listeners = modelListener.getListenerList();
 
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==MessageListener.class) {
@@ -415,7 +415,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
+
   /**
    * Localizes the actors of this window
    *
@@ -442,7 +442,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * Inform close linstener that this model was closed
    */
   public void close(final int code) {
-    Object[]          listeners = modelListener.getListenerList();    
+    Object[]          listeners = modelListener.getListenerList();
 
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==ModelCloseListener.class) {
@@ -484,14 +484,14 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void setProgressDialog(String message, int currentJob) {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==ProgressDialogListener.class) {
         ((ProgressDialogListener)listeners[i+1]).setProgressDialog(message, currentJob);
       }
     }
   }
-  
+
   public final void setTotalJobs(int totalJobs) {
     if (getDisplay() != null) {
       getDisplay().setTotalJobs(totalJobs);
@@ -503,10 +503,10 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       getDisplay().setCurrentJob(currentJob);
     }
   }
-  
+
   public void unsetProgressDialog() {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==ProgressDialogListener.class) {
         ((ProgressDialogListener)listeners[i+1]).unsetProgressDialog();
@@ -519,13 +519,13 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       getDisplay().updateWaitDialogMessage(message);
     }
   }
-  
+
   /**
    * setWaitInfo
    */
   public void setWaitDialog(String message, int maxtime) {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==WaitDialogListener.class) {
         ((WaitDialogListener)listeners[i+1]).setWaitDialog(message, maxtime);
@@ -538,7 +538,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void unsetWaitDialog() {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==WaitDialogListener.class) {
         ((WaitDialogListener)listeners[i+1]).unsetWaitDialog();
@@ -551,7 +551,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void setWaitInfo(String message) {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==WaitInfoListener.class) {
         ((WaitInfoListener)listeners[i+1]).setWaitInfo(message);
@@ -564,7 +564,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void unsetWaitInfo() {
     Object[]          listeners = modelListener.getListenerList();
-    
+
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==WaitInfoListener.class) {
         ((WaitInfoListener)listeners[i+1]).unsetWaitInfo();
@@ -597,7 +597,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void executeVoidTrigger(final int VKT_Type) throws VException {
     if (VKT_Type == Constants.CMD_GOTO_SHORTCUTS) {
       try {
-        Application.getMenu().gotoShortcuts();
+        Application.getMenu().getDMenuTree().gotoShortcuts();
       } catch (NullPointerException npe) {
         throw new VExecFailedException(VlibProperties.getString("shortcuts-not-available"));
       }
@@ -732,7 +732,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   /**
-   * Returns the application default configuration 
+   * Returns the application default configuration
    */
   public ApplicationConfiguration getDefaults() {
     return Application.getDefaults();
@@ -774,11 +774,11 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void addProgressDialogListener(ProgressDialogListener wil) {
     modelListener.add(ProgressDialogListener.class, wil);
   }
-  
+
   public void removeProgressDialogListener(ProgressDialogListener wil) {
     modelListener.remove(ProgressDialogListener.class, wil);
   }
-  
+
   public void addVActionListener(VActionListener al) {
     modelListener.add(VActionListener.class, al);
   }
@@ -811,7 +811,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public static final int       CDE_VALIDATE = 2;
   public static final String    WINDOW_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Window";
 
-  private final Object          transactionMonitor = new Object(); 
+  private final Object          transactionMonitor = new Object();
   private EventListenerList     modelListener = new EventListenerList();
   private String                extraTitle;
 

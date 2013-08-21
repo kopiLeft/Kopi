@@ -57,14 +57,13 @@ import com.kopiright.xkopi.lib.base.DBContextHandler;
 public abstract class VForm extends VWindow implements VConstants {
 
   static {
-
     WindowController.getWindowController().registerUIBuilder(Constants.MDL_FORM, new UIBuilder() {
-        public DWindow createView(VWindow model) {
-          DForm         view = new DForm((VForm) model);
+      public DWindow createView(VWindow model) {
+	DForm         view = new DForm((VForm) model);
 
-          return view;
-        }
-      });
+	return view;
+      }
+    });
   }
 
   // ----------------------------------------------------------------------
@@ -264,7 +263,7 @@ public abstract class VForm extends VWindow implements VConstants {
 
   /**
    * Localize this form
-   * 
+   *
    * @param     locale  the locale to use
    */
   public void localize(Locale locale) {
@@ -397,7 +396,7 @@ public abstract class VForm extends VWindow implements VConstants {
     if (activeBlock != null) {
       activeBlock.leave(true);
     }
-      
+
     target.enter();
   }
 
@@ -843,7 +842,7 @@ public abstract class VForm extends VWindow implements VConstants {
     } catch (NullPointerException npe) {
 	mod = null;
     }
-    
+
     if (mod != null) {
       description = mod.getDescription();
       localHelp = mod.getHelp();

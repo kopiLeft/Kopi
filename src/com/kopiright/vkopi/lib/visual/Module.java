@@ -195,7 +195,7 @@ public class Module {
                                 "Module.startForm(DBContext ctxt, String object, String description, ImageIcon icon)",
                                 t.getMessage(),
                                 t);
-      DWindow.displayError(Application.getMenu(), 
+      DWindow.displayError(Application.getMenu().getDisplay(),
                            com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
       return null;
     }
@@ -215,7 +215,7 @@ public class Module {
 
   /**
    * Localize this module
-   * 
+   *
    * @param     manager         the manger to use for localization
    */
   public void localize(LocalizationManager manager) {

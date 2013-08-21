@@ -120,7 +120,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     model.addWaitInfoListener(waitInfoHandler);
     model.addWaitDialogListener(this);
     model.addProgressDialogListener(this);
-    
+
     messageHandler = new MessageHandler();
     model.addMessageListener(messageHandler);
   }
@@ -311,7 +311,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
         public void run() {
           close(type);
         }
-      });    
+      });
   }
 
   /**
@@ -365,7 +365,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     // wrap long text messages:
     // some SQL exceptions are too long and make the error window larger than
     // the screen width, this is a work around until a 'detail' option is added to
-    // error windows. 
+    // error windows.
     if (message.length() > 100) {
       message = LineBreaker.addBreakForWidth(message, 100);
     }
@@ -397,38 +397,38 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     JOptionPane pane;
     JDialog     dialog;
     Object      obj;
-    
+
     pane = new JOptionPane(VlibProperties.getString("position-number") + " :",
                            JOptionPane.QUESTION_MESSAGE,
                            JOptionPane.YES_NO_OPTION,
                            null,
                            options,
                            options[0]);
-    
+
     pane.setWantsInput(true);
     pane.setComponentOrientation(parent.getComponentOrientation());
     dialog = pane.createDialog(parent, current +  " " + VlibProperties.getString("from") + " " + total);
 
     dialog.show();
     dialog.dispose();
-    
+
     obj = pane.getInputValue();
     if(obj == JOptionPane.UNINITIALIZED_VALUE) {
       s = null;
     } else {
       s = (String)obj;
     }
-    
+
     try {
       userInput = Integer.parseInt(s);
     } catch (NumberFormatException  nfe) {
       return current;
     }
-    
+
     return (userInput < 1)? 1 : (userInput > total)? total : userInput ;
   }
-  
-  
+
+
   /**
    * Displays a warning message.
    */
@@ -580,7 +580,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   }
 
   public class RedoAction extends AbstractAction {
-    
+
 	public RedoAction() {
       super("Redo");
       this.setEnabled(false);
@@ -607,7 +607,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 	putValue(Action.NAME, VlibProperties.getString("item-redo"));
       }
     }
-    
+
     /**
      * Comment for <code>serialVersionUID</code>
      */
@@ -709,7 +709,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     currentAction = action;
     // DebugInfo#
     runtimeDebugInfo = new RuntimeException(currentAction.toString());
-    
+
     if (!asynch || !getModel().allowAsynchronousOperation()) {
       // synchronus call
       actionRunner.run();
@@ -818,7 +818,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
         }
       });
   }
-  
+
   /**
    * Displays a text in the lower right corner of the window.
    */
@@ -840,10 +840,10 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   public final void setProgressDialog(String message, int totalJobs) {
     if (progressWindow == null) {
       progressWindow = new ProgressWindow(getFrame());
-    } 
+    }
     progressWindow.setProgressDialog(message, totalJobs);
   }
-  
+
   public final void unsetProgressDialog() {
     if (progressWindow != null) {
       progressWindow.unsetProgressDialog();
@@ -867,7 +867,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       waitWindow.updateMessage(message);
     }
   }
-  
+
   /**
    * setWaitInfo
    */
@@ -1440,7 +1440,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     public void actionPerformed(ActionEvent e) {
       // Bookmarks (Shortcuts)
       if (Application.getMenu() != null) {
-        Action[]    bookmarks = Application.getMenu().getBookmarkActions();
+        Action[]    bookmarks = Application.getMenu().getDMenuTree().getBookmarkActions();
 
         if ( item < bookmarks.length) {
           bookmarks[item].actionPerformed(e);
@@ -1449,10 +1449,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     }
 
     int         item;
+
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -836013840309056928L;
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = -836013840309056928L;
   }
 
   static Bookmarks[]      BOOKMARKS;
@@ -1463,7 +1464,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     for (int i=0; i < 10; i++) {
       BOOKMARKS[i] = new Bookmarks(i);
     }
-   
+
   }
 
   static class KopiFocusManager extends DefaultFocusManager {
