@@ -21,6 +21,7 @@ package com.kopiright.xkopi.lib.type;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * This class represents kopi timestamp types
@@ -136,6 +137,26 @@ public class Timestamp extends Type {
     return new SimpleDateFormat("'{ts '''yyyy'-'MM'-'dd' 'HH':'mm':'ss'." + tmp.toString() + "''}'").format(timestamp);
   }
 
+  /**
+   * Formats the date according to the given format using the default
+   * locale
+   *
+   * @param     format  the format. see SimpleDateFormat
+   */
+  public String format(String format) {
+    return format(format, Locale.getDefault());
+  }
+
+  /**
+   * Formats the date according to the given format and locale
+   *
+   * @param     format  the format. see SimpleDateFormat
+   * @param     locale  the locale to use
+   */
+  public String format(String format, Locale locale) {
+    return new SimpleDateFormat(format, locale).format(timestamp);
+  }
+  
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
