@@ -51,7 +51,7 @@ public class XMutableType extends CType {
       code = CODE_SINTEGER;
     } else if (original == CStdType.Long) {
       code = CODE_SLONG;
-    } else if (original == CStdType.String) {
+    } else if (original.equals(CStdType.String)) {
       code = CODE_SSTRING;
     } else if (original == CStdType.Boolean) {
       code = CODE_SBOOLEAN;
