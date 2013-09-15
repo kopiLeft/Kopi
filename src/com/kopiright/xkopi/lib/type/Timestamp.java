@@ -19,8 +19,10 @@
 
 package com.kopiright.xkopi.lib.type;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
@@ -46,12 +48,6 @@ public class Timestamp extends Type {
     }
   }
 
-  // ----------------------------------------------------------------------
-  // DEFAULT OPERATIONS
-  // ----------------------------------------------------------------------
-
-  // HANDLED BY COMPILER, FOR NOW !!!!
-
   /**
    * now's timestamp
    */
@@ -59,12 +55,77 @@ public class Timestamp extends Type {
     return new NotNullTimestamp(System.currentTimeMillis());
   }
 
+  /**
+   * Parse the string to build the corresponding timestamp using the
+   * default Locale
+   *
+   * @param     input   the timestamp to parse
+   * @param     format  the format of the timestamp
+   */
+  public static NotNullTimestamp parse(String input, String format)
+  {
+    return parse(input, format, Locale.getDefault());
+  }
+
+  /**
+   * Parse the string to build the corresponding timestamp
+   *
+   * @param     input   the timestamp to parse
+   * @param     format  the format of the timestamp
+   * @param     locale  the Locale to use
+   */
+  public static NotNullTimestamp parse(String input,
+                                       String format,
+                                       Locale locale)
+  {
+    GregorianCalendar   cal = new GregorianCalendar();
+
+    try {
+      cal.setTime((new SimpleDateFormat(format, locale)).parse(input));
+    } catch (ParseException e) {
+      e.printStackTrace();
+      throw new IllegalArgumentException(e.getMessage());
+    }
+    return new NotNullTimestamp(cal.getTimeInMillis());
+  }
+
+  /**
+   * Formats the timestamp according to the given format using the default
+   * locale
+   *
+   * @param     format  the format. see SimpleDateFormat
+   */
+  public String format(String format) {
+    return format(format, Locale.getDefault());
+  }
+
+  /**
+   * Formats the timestamp according to the given format and locale
+   *
+   * @param     format  the format. see SimpleDateFormat
+   * @param     locale  the locale to use
+   */
+  public String format(String format, Locale locale) {
+    return new SimpleDateFormat(format, locale).format(timestamp);
+  }
+  
+  /**
+   * create an instance of calendar to represent timestamp.
+   */
+  public GregorianCalendar toCalendar() {
+    GregorianCalendar   calendar = new GregorianCalendar();
+    
+    calendar.clear();
+    calendar.setTimeInMillis(timestamp.getTime());
+    return calendar;
+  }
+
   // ----------------------------------------------------------------------
   // DEFAULT OPERATIONS
   // ----------------------------------------------------------------------
 
-  public NotNullTimestamp add(int seconds) {
-    return new NotNullTimestamp(timestamp.getTime() + seconds);
+  public NotNullTimestamp add(long millis) {
+    return new NotNullTimestamp(timestamp.getTime() + millis);
   }
 
   // ----------------------------------------------------------------------
@@ -137,26 +198,6 @@ public class Timestamp extends Type {
     return new SimpleDateFormat("'{ts '''yyyy'-'MM'-'dd' 'HH':'mm':'ss'." + tmp.toString() + "''}'").format(timestamp);
   }
 
-  /**
-   * Formats the date according to the given format using the default
-   * locale
-   *
-   * @param     format  the format. see SimpleDateFormat
-   */
-  public String format(String format) {
-    return format(format, Locale.getDefault());
-  }
-
-  /**
-   * Formats the date according to the given format and locale
-   *
-   * @param     format  the format. see SimpleDateFormat
-   * @param     locale  the locale to use
-   */
-  public String format(String format, Locale locale) {
-    return new SimpleDateFormat(format, locale).format(timestamp);
-  }
-  
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
