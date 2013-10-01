@@ -92,9 +92,6 @@ public class DImageField extends DObjectField {
       null,
       KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
       JComponent.WHEN_FOCUSED);
-
-    target = new DImageFieldDropTarget(this);
-    target.setDragEnabled(true);
   }
 
   // ----------------------------------------------------------------------
@@ -179,14 +176,6 @@ public class DImageField extends DObjectField {
   public void setBlink(boolean start) {
   }
 
-  /**
-   * Gets the target panel
-   * @return
-   */
-  public JPanel getTargetPane() {
-    return this.empty;
-  }
-
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
@@ -197,7 +186,6 @@ public class DImageField extends DObjectField {
   private	int			width;
   private	int			height;
   private	byte[]			image;
-  private       DImageFieldDropTarget	target;
   /**
    * Comment for <code>serialVersionUID</code>
    */

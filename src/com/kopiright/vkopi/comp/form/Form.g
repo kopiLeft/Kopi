@@ -180,7 +180,8 @@ vkBlock [String pkg]
 			 access,
 			 context.getCommands(),
 			 context.getTriggers(),
-			 context.getFields());
+			 context.getFields(),
+			 context.getDropListMap());
       self.addDefaultCommands(buildTokenReference());
       context.release();
     }
@@ -361,7 +362,7 @@ vkBlockIndices []
   VKBlockIndex	index;
 }
 :
-  ( 
+  (
     index = vkBlockIndex[container.size()]
       { container.add(index); }
   )*
@@ -424,10 +425,10 @@ vkBlockTables [VKParseBlockContext context]
 :
   (
     "TABLE"
-    LT 
+    LT
       n = vkSimpleIdent[]
       ( DOT t = vkSimpleIdent[] { n += "." + t; } )?
-    COMMA 
+    COMMA
       c = vkSimpleIdent[]
       ( DOT t = vkSimpleIdent[] { c += "." + t; }  )?
     GT
@@ -455,15 +456,15 @@ vkBlocks [VKParseFormContext context]
 }
 :
   (
-    ( 
+    (
       page = vkNewpage[context.getPages().length]
-        { 
+        {
           if (context.getElements().length > 0 && context.getPages().length == 0) {
             reportTrouble(new PositionedError(buildTokenReference(),
                                               FormMessages.MISSING_PAGE));
-          } 
+          }
           context.addPage(page);
-        } 
+        }
     )?
     (
       block = vkBlock[context.getCompilationUnitContext().getPackageName().getName()]
@@ -539,6 +540,7 @@ vkField [VKParseBlockContext block]
   String		help;
   VKFieldType		type;
   VKFieldColumns	columns = null;
+  String[]		dropList = null;
   int			align = com.kopiright.vkopi.lib.form.VConstants.ALG_LEFT;
   int			opts = 0;
   int[]			access;
@@ -560,6 +562,7 @@ vkField [VKParseBlockContext block]
     ( columns = vkFieldColumns[] )?
   |
     ( align = vkFieldAlign[] )?
+    ( dropList = vkFieldDropList[] )?
     opts = vkFieldOptions[]
     ( columns = vkFieldColumns[] )?
     ( vkModeAndCommands[access, context] )?
@@ -568,6 +571,11 @@ vkField [VKParseBlockContext block]
   "END" "FIELD"
     {
       if (multiField > 1) {
+        if (dropList != null) {
+          reportTrouble(new PositionedError(sourceRef,
+                  FormMessages.MULTIFIELD_DROP_LIST,
+                  name));
+        }
         VKMultiField.generateFields(block,
                                     sourceRef,
                                     name,
@@ -584,19 +592,41 @@ vkField [VKParseBlockContext block]
                                     context.getTriggers(),
                                     alias);
       } else {
-        block.addField(new VKField(sourceRef,
-                                   name,
-                                   pos,
-                                   label == null ? null : (String)label.get(0),
-                                   help,
-                                   type,
-                                   align,
-                                   opts,
-                                   columns,
-                                   access,
-                                   context.getCommands(),
-                                   context.getTriggers(),
-                                   alias));
+        VKField field = new VKField(sourceRef,
+                                    name,
+                                    pos,
+                                    label == null ? null : (String)label.get(0),
+                                    help,
+                                    type,
+                                    align,
+                                    opts,
+                                    columns,
+                                    access,
+                                    context.getCommands(),
+                                    context.getTriggers(),
+                                    alias);
+        if (dropList == null) {
+          block.addField(field);
+        } else {
+          if (!(type.getDef() instanceof VKStringType)
+              && !(type.getDef() instanceof VKImageType))
+          {
+            reportTrouble(new PositionedError(sourceRef,
+                  FormMessages.UNSUPPORTED_DROP_FIELD_TYPE,
+                  name));
+          } else {
+            String	flavor = block.addDropList(dropList, field);
+
+            if (flavor == null) {
+              block.addField(field);
+            } else {
+              reportTrouble(new PositionedError(sourceRef,
+                    FormMessages.DUPLICATE_DROP_FLAVOR,
+                    flavor,
+                    block.getDropListMap().get(flavor)));
+            }
+          }
+        }
       }
       context.release();
    }
@@ -621,12 +651,12 @@ vkFieldColumn []
 :
   ( "KEY" { isKey = true; } )?
   ("NULLABLE" { nullable = true; } )?
-  name = vkSQLIdent[] 
+  name = vkSQLIdent[]
   DOT ident = vkSQLIdent[]
-  ( DOT 
+  ( DOT
     { name += "." + ident; }
-    ident = vkSQLIdent[] 
-  )? 
+    ident = vkSQLIdent[]
+  )?
     { self = new VKFieldColumn(sourceRef, name, ident, isKey, nullable); }
 ;
 
@@ -646,8 +676,8 @@ vkFieldColumnList []
     if (((VKFieldColumn)(self.get(0))).isNullable()) {
                     reportTrouble(new PositionedError(buildTokenReference(),
                             FormMessages.FIRST_COLUMN_NULLABLE));
-    } 
-  } 
+    }
+  }
 }
 ;
 
@@ -759,6 +789,11 @@ vkFieldLabel [String name]
   )
 ;
 
+vkFieldDropList []
+  returns [String[] self]
+:
+  "DROPPABLE" LPAREN self = vkStringList[] RPAREN
+;
 
 vkFieldAlign []
   returns [int self]
@@ -788,7 +823,7 @@ vkFieldOptions []
   |
     "TRANSIENT" { self |= com.kopiright.vkopi.lib.form.VConstants.FDO_TRANSIENT; }
   |
-    "NO" 
+    "NO"
     (
       "DELETE" "ON" "UPDATE" { self |= com.kopiright.vkopi.lib.form.VConstants.FDO_DO_NOT_ERASE_ON_LOOKUP; }
     |
@@ -917,11 +952,11 @@ vkForm []
 
 vkFormOptions []
   returns [int self]
-{ 
-  self = 0; 
+{
+  self = 0;
 }
 :
-    "NO" 
+    "NO"
     (
       "MOVE"
         { self |= com.kopiright.vkopi.lib.form.VConstants.FMO_NOMOVE; }
@@ -1021,7 +1056,7 @@ vkNewpage [int count]
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
-  "NEW" "PAGE" 
+  "NEW" "PAGE"
   ( ident = vkSimpleIdent[])?
     {
       if (ident == null) {

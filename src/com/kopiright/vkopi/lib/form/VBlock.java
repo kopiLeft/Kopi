@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.form;
 import java.awt.Component;
 import java.sql.SQLException;
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
@@ -63,6 +64,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public VBlock(VForm form) {
     this.form = form;
+    dropListMap = new HashMap();
     blockListener = new EventListenerList();
     orderModel = new OrderModel();
   }
@@ -205,6 +207,18 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
   public boolean isDetailMode() {
     return detailMode;
+  }
+
+  protected boolean isDroppable() {
+    return !dropListMap.isEmpty();
+  }
+
+  protected boolean isAccepted(String flavor) {
+    return dropListMap.containsKey(flavor.toLowerCase());
+  }
+
+  public VField getDropTarget(String flavor) {
+    return getField((String)dropListMap.get(flavor.toLowerCase()));
   }
 
   // ----------------------------------------------------------------------
@@ -4274,4 +4288,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected int                 maxRowPos;
   protected int                 maxColumnPos;
   protected int                 displayedFields;
+
+  protected HashMap		 dropListMap;
 }

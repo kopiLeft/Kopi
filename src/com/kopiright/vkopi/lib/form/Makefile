@@ -29,7 +29,7 @@ PACKAGE =	com/kopiright/vkopi/lib/form
 
 JAVAFILES +=	BlockAlignment Commands					\
 		DBlock DColorField DField				\
-		DForm DImage DImageField DImageFieldDropTarget		\
+		DForm DImage DImageField DBlockDropTargetHandler	\
 		DLabel	DChartBlock DMultiBlock DObjectField DPage	\
 		DTextEditor DTextField DateChooser			\
 		ImageFileChooser KopiAlignment				\

@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.comp.form;
 
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.Stack;
 
@@ -47,6 +48,7 @@ public class VKParseBlockContext extends VKParseContext {
     tables.setSize(0);
     fields.setSize(0);
     interfaces.setSize(0);
+    dropListMap.clear();
   }
 
   // ----------------------------------------------------------------------
@@ -63,6 +65,25 @@ public class VKParseBlockContext extends VKParseContext {
 
   public void addInterface(CReferenceType inter) {
     interfaces.addElement(inter);
+  }
+
+  /**
+   * Adds a field drop list. A check if performed to test if the dropped extension
+   * id associated to another field. In this case, the conflicted drop extension is
+   * returned. otherwise null is returned.
+   */
+  public String addDropList(String[] dropList, VKField field) {
+    for (int i = 0; i < dropList.length; i++) {
+      String	extension = dropList[i].toLowerCase();
+
+      if (dropListMap.get(extension) != null) {
+	return extension;
+      }
+
+      dropListMap.put(extension, field.getIdent());
+    }
+
+    return null;
   }
 
   // ----------------------------------------------------------------------
@@ -85,15 +106,20 @@ public class VKParseBlockContext extends VKParseContext {
     return (CReferenceType[])Utils.toArray(interfaces, CReferenceType.class);
   }
 
+  public HashMap getDropListMap() {
+    return dropListMap;
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private Vector                tables = new Vector();
-  private Vector                fields = new Vector();
-  private Vector                interfaces = new Vector();
+  private Vector               tables = new Vector();
+  private Vector               fields = new Vector();
+  private Vector               interfaces = new Vector();
+  private HashMap		dropListMap = new HashMap();
 
   private CParseClassContext	classContext = new CParseClassContext();
 
-  private static Stack          stack = new Stack();
+  private static Stack        stack = new Stack();
 }

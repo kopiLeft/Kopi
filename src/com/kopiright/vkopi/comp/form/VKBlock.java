@@ -20,16 +20,58 @@
 package com.kopiright.vkopi.comp.form;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
-import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.CWarning;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.vkopi.comp.base.*;
-import com.kopiright.vkopi.lib.form.VConstants;
+import com.kopiright.kopi.comp.kjc.CLineError;
+import com.kopiright.kopi.comp.kjc.CParseClassContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CStdType;
+import com.kopiright.kopi.comp.kjc.CTypeVariable;
+import com.kopiright.kopi.comp.kjc.JArrayAccessExpression;
+import com.kopiright.kopi.comp.kjc.JAssignmentExpression;
+import com.kopiright.kopi.comp.kjc.JBlock;
+import com.kopiright.kopi.comp.kjc.JClassDeclaration;
+import com.kopiright.kopi.comp.kjc.JConstructorBlock;
+import com.kopiright.kopi.comp.kjc.JConstructorCall;
+import com.kopiright.kopi.comp.kjc.JConstructorDeclaration;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JExpressionListStatement;
+import com.kopiright.kopi.comp.kjc.JExpressionStatement;
+import com.kopiright.kopi.comp.kjc.JFieldAccessExpression;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JIntLiteral;
+import com.kopiright.kopi.comp.kjc.JLocalVariable;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JMethodDeclaration;
+import com.kopiright.kopi.comp.kjc.JNameExpression;
+import com.kopiright.kopi.comp.kjc.JNewArrayExpression;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JStringLiteral;
+import com.kopiright.kopi.comp.kjc.JThisExpression;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.Utils;
+import com.kopiright.vkopi.comp.base.Commandable;
+import com.kopiright.vkopi.comp.base.VKCommand;
+import com.kopiright.vkopi.comp.base.VKCommandBody;
+import com.kopiright.vkopi.comp.base.VKConstants;
+import com.kopiright.vkopi.comp.base.VKContext;
+import com.kopiright.vkopi.comp.base.VKDefaultCommand;
+import com.kopiright.vkopi.comp.base.VKDefinitionCollector;
+import com.kopiright.vkopi.comp.base.VKExternAction;
+import com.kopiright.vkopi.comp.base.VKLocalizationWriter;
+import com.kopiright.vkopi.comp.base.VKPrettyPrinter;
+import com.kopiright.vkopi.comp.base.VKStdType;
+import com.kopiright.vkopi.comp.base.VKTrigger;
+import com.kopiright.vkopi.comp.base.VKUtils;
+import com.kopiright.vkopi.comp.base.VKWindow;
+import com.kopiright.vkopi.lib.form.VConstants;
 
 /**
  * A block on a form
@@ -86,7 +128,8 @@ public class VKBlock
 		 int[] access,
 		 VKCommand[] commands,
 		 VKTrigger[] triggers,
-		 VKField[] fields)
+		 VKField[] fields,
+		 HashMap dropListMap)
     {
       super(where, pkg, ident, shortcut);
 
@@ -107,6 +150,7 @@ public class VKBlock
       this.commands = commands;
       this.triggers = triggers;
       this.fields = fields;
+      this.dropListMap = dropListMap;
     }
 
   // ----------------------------------------------------------------------
@@ -116,7 +160,7 @@ public class VKBlock
   public void addDefaultCommands(TokenReference where) {
     if (hasDetailView()) {
       VKCommand[]  old = commands;
-      
+
       commands = new VKCommand[commands.length + 1];
       for (int i = 0; i < old.length; i++) {
         commands[i + 1] = old[i];
@@ -182,7 +226,7 @@ public class VKBlock
     }
     throw new InconsistencyException();
   }
-  
+
   /**
    * Verifies that each table shortcut is different
    */
@@ -292,7 +336,7 @@ public class VKBlock
     } else {
       return ((VKBlockInsert)window).getBlock().getField(ident.substring(i + 1));
     }
-    
+
     return null;
   }
   // ----------------------------------------------------------------------
@@ -313,13 +357,13 @@ public class VKBlock
                             this.context,
                             context.getFullName() + "/" + getIdent());
     this.window = window;
-    
+
     check(isSingle() || visible <= buffer, FormMessages.MORE_VISIBLE_THAN_BUFFERED);
     check(getShortcut() != null, FormMessages.BLOCK_NO_SHORTCUT, getIdent());
-    
+
     // check that there is no duplicated shortcut table.
     checkDuplicateTableShortcuts();
-    
+
     // check that defined lookup tables are used.
     for (int i = 1; i < tables.length; i++) {
       if (!isUsedTable(tables[i])) {
@@ -331,7 +375,7 @@ public class VKBlock
       } // else {
 //         // check that lookup tables has not only internal fields.
 //         boolean  hasOnlyInternalFields;
-        
+
 //         hasOnlyInternalFields = true;
 //         for (int j = 0; j < fields.length; j++) {
 //           if (fields[j].fetchColumn(tables[i]) != -1 && !fields[j].isInternal()) {
@@ -348,10 +392,10 @@ public class VKBlock
 //         }
 //       }
     }
-    
+
     //check that each trigger is used only once
     int         usedTriggers = 0;
-    
+
     for (int i = 0; i < triggers.length; i++) {
       if ((triggers[i].getEvents() & usedTriggers) > 0) {
         throw new PositionedError(triggers[i].getTokenReference(), FormMessages.TRIGGER_USED_TWICE);
@@ -420,15 +464,15 @@ public class VKBlock
         freePositions[i][k] = null;
       }
     }
-    
+
     // ALIAS CHECK
     for (int i = 0; i < fields.length; i++) {
       String fieldAlias;
-      
+
       fieldAlias = fields[i].getAlias();
       if(fieldAlias != null) {
         VKField alias;
-        
+
         alias = getField(fieldAlias);
         if(alias != null) {
           if(fields[i].getFieldType().getDef().getType() != alias.getFieldType().getDef().getType()) {
@@ -438,7 +482,7 @@ public class VKBlock
                                                fields[i].getFieldType().getDef().getType()));
           }
         }
-        
+
       }
     }
 
@@ -583,11 +627,16 @@ public class VKBlock
     body.addElement(VKUtils.assign(ref, "page", VKUtils.toExpression(ref, getPageNumber())));
     body.addElement(VKUtils.assign(ref, "options", VKUtils.toExpression(ref, options)));
 
-    
+
     body.addElement(VKUtils.assign(ref, "border", VKUtils.toExpression(ref, border)));
     body.addElement(VKUtils.assign(ref, "maxRowPos", VKUtils.toExpression(ref, maxRowPos)));
     body.addElement(VKUtils.assign(ref, "maxColumnPos", VKUtils.toExpression(ref, maxColumnPos)));
     body.addElement(VKUtils.assign(ref, "displayedFields", VKUtils.toExpression(ref, displayedFields)));
+
+    // DROP LIST
+    if (!dropListMap.isEmpty()) {
+      body.add(buildDropList());
+    }
 
     // TRIGGER HANDLING
     commandable.genCode(ref, body, !isInner(), true);
@@ -689,6 +738,26 @@ public class VKBlock
 				       null,
 				       null,
                                        factory);
+  }
+
+  private JExpressionListStatement buildDropList() {
+    TokenReference	ref = getTokenReference();
+    Iterator		extensions = dropListMap.keySet().iterator();
+    Vector		expressions = new Vector(dropListMap.size());
+
+    while (extensions.hasNext()) {
+      String		extension = (String)extensions.next();
+
+      expressions.add(VKUtils.call(ref,
+	                           new JNameExpression(ref, "dropListMap"),
+	                           "put",
+	                           new JExpression[] {VKUtils.toExpression(ref, extension),
+                                                      VKUtils.toExpression(ref, (String)dropListMap.get(extension))}));
+    }
+
+    return new JExpressionListStatement(ref,
+	                                (JExpression[])Utils.toArray(expressions, JExpression.class),
+	                                null);
   }
 
   private JMethodDeclaration buildSetInfo(TypeFactory factory) {
@@ -804,7 +873,7 @@ public class VKBlock
 
   private boolean isUsedTable(VKBlockTable table) {
     boolean usedTable;
-    
+
     usedTable = false;
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].fetchColumn(table) != -1) {
@@ -833,6 +902,7 @@ public class VKBlock
   private VKCommand[]		commands;
   private VKTrigger[]		triggers;
   private VKField[]		fields;
+  private HashMap 		dropListMap;
 
   private int			indicesUsed;
   private int			countSyntheticName;
@@ -847,5 +917,4 @@ public class VKBlock
   private int			maxRowPos;
   private int			maxColumnPos;
   private int			displayedFields ;
-  
 }

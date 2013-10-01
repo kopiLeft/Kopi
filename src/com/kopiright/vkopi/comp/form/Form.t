@@ -69,6 +69,7 @@
 @literal	VALUE
 @literal	VISIT
 @literal	NULLABLE
+@literal	DROPPABLE
 
 @operator	GT	">"
 @operator	LT	"<"

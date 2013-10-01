@@ -21,6 +21,8 @@ package com.kopiright.vkopi.lib.form;
 
 import java.awt.Component;
 import java.awt.Insets;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
 
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -69,6 +71,9 @@ public class DBlock extends JPanel implements BlockListener {
     setLayout(layout = createLayoutManager());
     rebuildCachedInfos();
     createFields();
+    if (model.isDroppable()) {
+      setDropTarget(new DropTarget(null, DnDConstants.ACTION_COPY, new DBlockDropTargetHandler(model)));
+    }
   }
 
   protected void createFields() {
@@ -230,7 +235,7 @@ public class DBlock extends JPanel implements BlockListener {
 
       assert recno != -1;
 */
-      
+
       rebuildCachedInfos();
       // !!redisplay!! lackner 07.08.2003
       // only necessary if valid-recordChanged
@@ -252,7 +257,7 @@ public class DBlock extends JPanel implements BlockListener {
       // scroll some more, if there are some (non deleted) records
       int     i = recno -1;
       int     scrollMore =  model.getDisplaySize() / 4;
-      
+
       while (scrollMore > 0 && i > 0) {
         // is there a non deleted record to see?
         if (! model.isSortedRecordDeleted(i)) {
@@ -287,7 +292,7 @@ public class DBlock extends JPanel implements BlockListener {
         // scroll some more, if there are some (non deleted) records
         int     i = recno +1;
         int     scrollMore =  model.getDisplaySize() / 4;
-        
+
         while (scrollMore > 0 && i < model.getBufferSize()) {
             // is there a non deleted record to see?
           if (! model.isSortedRecordDeleted(i)) {
@@ -368,7 +373,7 @@ public class DBlock extends JPanel implements BlockListener {
 	}
 	recno++;
       }
-    
+
       if (model.getActiveField() != null) {
 	int             lastVisibleRec = recno;
 	int             nbDisplay = model.getDisplaySize() - 1;

@@ -61,4 +61,7 @@
 <msg identifier="NOT_USED_TABLE" format="The table &lt;{0}, {1}&gt; is declared in the block {2} but is never used." reference="FORM" level="2" />
 <msg identifier="DUPLICATE_TABLE_SHORTCUT" format="The table shortcut \&quot;{1}\&quot; occurs more than once in the block \&quot;{2}\&quot;." reference= "FORM" level="0" />
 <msg identifier="INCORRECT_ALIAS_TYPE" format="The Alias type: {0}, is different from field type: {1}." reference="FORM" level="2" />
+<msg identifier="MULTIFIELD_DROP_LIST" format="The field: {0} cannot be defined as a drop target because it is a multifield." reference="FORM" level="0" />
+<msg identifier="DUPLICATE_DROP_FLAVOR" format="The extension {0} is already defined as a drop target for field: {1}." reference="FORM" level="0" />
+<msg identifier="UNSUPPORTED_DROP_FIELD_TYPE" format="The field {0} is droppable but its type is not supported as a drop target." reference="FORM" level="0" />
 </messages>
