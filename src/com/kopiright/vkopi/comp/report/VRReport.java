@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.comp.report;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -229,7 +230,7 @@ class VRReport
    */
   private String getSource() {
     String      basename;
-    
+
     basename = getTokenReference().getName().substring(0, getTokenReference().getName().lastIndexOf('.'));
     return pkg == null ? basename : pkg + "/" + basename;
   }
@@ -409,13 +410,19 @@ class VRReport
   public void genLocalization(String destination) {
     if (getLocale() != null) {
       String        baseName;
-      
+
       baseName = getTokenReference().getFile();
-      baseName = baseName.substring(0, baseName.lastIndexOf(".vr"));
-      
+
+      baseName = getTokenReference().getFile();
+      if (baseName.lastIndexOf(File.separatorChar) != -1) {
+	baseName = baseName.substring(baseName.lastIndexOf(File.separatorChar) + 1, baseName.lastIndexOf(".vr"));
+      } else {
+	baseName = baseName.substring(0, baseName.lastIndexOf(".vr"));
+      }
+
       try {
         VRReportLocalizationWriter        writer;
-        
+
         writer = new VRReportLocalizationWriter();
         genLocalization(writer);
         writer.write(destination, baseName, getLocale());
@@ -425,7 +432,7 @@ class VRReport
       }
     }
   }
-  
+
   /**
    * !!! COMMENT ME
    */
@@ -435,7 +442,7 @@ class VRReport
                                                    getDefinitionCollector(),
                                                    fields);
   }
-  
+
   // ----------------------------------------------------------------------
   // PRIVATE CONSTANTS
   // ----------------------------------------------------------------------

@@ -160,7 +160,7 @@ class VKBlockInsert extends VKWindow {
    */
   public void genVKCode(VKPrettyPrinter p) {
   }
-  
+
   public VKBlock getBlock() {
     return block;
   }
@@ -174,13 +174,19 @@ class VKBlockInsert extends VKWindow {
   public void genLocalization(String destination) {
     if (getLocale() != null) {
       String        baseName;
-      
+
       baseName = getTokenReference().getFile();
-      baseName = baseName.substring(0, baseName.lastIndexOf(".vf"));
-      
+
+      baseName = getTokenReference().getFile();
+      if (baseName.lastIndexOf(File.separatorChar) != -1) {
+	baseName = baseName.substring(baseName.lastIndexOf(File.separatorChar) + 1, baseName.lastIndexOf(".vf"));
+      } else {
+	baseName = baseName.substring(0, baseName.lastIndexOf(".vf"));
+      }
+
       try {
         VKFormLocalizationWriter        writer;
-        
+
         writer = new VKFormLocalizationWriter();
         genLocalization(writer);
         writer.write(destination, baseName, getLocale());
@@ -190,7 +196,7 @@ class VKBlockInsert extends VKWindow {
       }
     }
   }
-  
+
   /**
    * !!!FIX
    */
@@ -198,7 +204,7 @@ class VKBlockInsert extends VKWindow {
     ((VKFormLocalizationWriter)writer).genBlockInsert(getDefinitionCollector(),
                                                       block);
   }
-  
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

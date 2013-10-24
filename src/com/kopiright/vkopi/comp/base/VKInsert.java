@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.comp.base;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.kopiright.compiler.base.Compiler;
@@ -190,13 +191,19 @@ public class VKInsert
    */
   public void genLocalization(String directory) {
     String        baseName;
-    
+
     baseName = getTokenReference().getFile();
-    baseName = baseName.substring(0, baseName.lastIndexOf("."));
-      
+
+    baseName = getTokenReference().getFile();
+    if (baseName.lastIndexOf(File.separatorChar) != -1) {
+	baseName = baseName.substring(baseName.lastIndexOf(File.separatorChar) + 1, baseName.lastIndexOf("."));
+    } else {
+	baseName = baseName.substring(0, baseName.lastIndexOf("."));
+    }
+
     try {
       final VKLocalizationWriter writer;
-        
+
       writer = new VKLocalizationWriter();
       genLocalization(writer);
       writer.write(directory, baseName, locale);
@@ -205,14 +212,14 @@ public class VKInsert
       System.err.println("cannot write : " + baseName);
     }
   }
-  
+
   /**
    * !!!FIX:taoufik
    */
   public void genLocalization(VKLocalizationWriter writer) {
     writer.genInsert(coll);
   }
-  
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
