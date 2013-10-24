@@ -88,6 +88,9 @@ public class KjcSignatureParser implements SignatureParser {
     case 'T': // JSR 14: TypeVariable
       type = new CTypeVariableAlias(signature.substring(from + 1, to - 1));
       break;
+    case '*':
+      type = new CTypeVariableAlias("*");
+      break;
     default:
       throw new InconsistencyException("Unknown signature: " + signature.charAt(from) + " in " + signature);
     }
