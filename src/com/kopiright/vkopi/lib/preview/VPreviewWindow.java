@@ -48,7 +48,7 @@ public class VPreviewWindow extends VWindow {
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_PREVIEW, new WindowBuilder() {
 
-      @Override
+      
       public UWindow createWindow(VWindow model) {
 	return (UWindow)UIFactory.getUIFactory().createView(model);
       }

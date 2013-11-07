@@ -205,7 +205,7 @@ public class DBlock extends JPanel implements UBlock {
     }
   }
 
-  @Override
+  
   public void add(UComponent comp, KopiAlignment constraints) {
     super.add((Component)comp, constraints);
   }
@@ -436,7 +436,7 @@ public class DBlock extends JPanel implements UBlock {
     refresh(true);
   }
 
-  @Override
+  
   public UForm getFormView() {
     return formView;
   }

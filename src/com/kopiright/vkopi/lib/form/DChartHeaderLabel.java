@@ -47,17 +47,17 @@ public class DChartHeaderLabel extends DLabel implements UChartLabel {
     });
   }
 
-  @Override
+  
   public void repaint() {
     super.repaint();
   }
 
-  @Override
+  
   public void orderChanged() {
     repaint();
   }
 
-  @Override
+  
   public void paint(Graphics g) {
     super.paint(g);
 

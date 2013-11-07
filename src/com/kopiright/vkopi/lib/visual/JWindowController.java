@@ -40,7 +40,7 @@ public class JWindowController extends WindowController {
   // WINDOWCONTROLLER IMPLEMENTATION
   //----------------------------------------------------------------------
 
-  @Override
+  
   public boolean doModal(VWindow model) {
     final ModalViewRunner     viewStarter = new ModalViewRunner(model);
 
@@ -91,7 +91,7 @@ public class JWindowController extends WindowController {
     return (viewStarter.getView() == null) ? false : viewStarter.getView().getReturnCode() == VWindow.CDE_VALIDATE;
   }
 
-  @Override
+  
   public void doNotModal(final VWindow model) {
     SwingThreadHandler.start(new Runnable() {
       public void run() {

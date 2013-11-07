@@ -105,7 +105,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
     originalWordTextField.setMinimumSize(new Dimension(200, originalWordTextField.getPreferredSize().height));
     originalWordTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, originalWordTextField.getPreferredSize().height));
 
-    suggestionsList = new JList<Object>(); //suggestions.toArray());
+    suggestionsList = new JList(); //suggestions.toArray());
     suggestionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     suggestionsList.addListSelectionListener( new MyListSelectionListener());
     suggestionsList.setMinimumSize(new Dimension(200, 300 ));
@@ -155,12 +155,12 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   }
 
   private void initSuggestionElements() {
-      DefaultComboBoxModel<Object>      model;
+      DefaultComboBoxModel              model;
       Suggestions               	result;
 
       result = spellChecker.getSuggestions();
       suggestions = result.getSuggestions();
-      model= new DefaultComboBoxModel<Object>(result.getSuggestions().toArray());
+      model= new DefaultComboBoxModel(result.getSuggestions().toArray());
       suggestionsList.setModel(model);
       originalWordTextField.setText(result.getOriginalWord());
       if (suggestions.size() > 0) {
@@ -277,7 +277,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   private List<String>          suggestions;
   private JTextField            changeTo;
   private JTextField            originalWordTextField;
-  private JList<Object>         suggestionsList;
+  private JList                 suggestionsList;
   /**
 	 * Comment for <code>serialVersionUID</code>
 	 */

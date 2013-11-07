@@ -40,7 +40,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   // ----------------------------------------------------------------------
   
   /**
-   * @Override
+   * 
    */
   public boolean predefinedFill() throws VException {
     boolean     filled;
@@ -54,7 +54,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public void enter() {
     // this is the correct thread to calculate the display of the
@@ -72,7 +72,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public void leave() {
     // this is the correct thread to calculate the display of the
@@ -90,7 +90,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public void labelChanged() {
     SwingThreadHandler.startEnqueued(new Runnable() {
@@ -101,7 +101,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public void searchOperatorChanged() {
     int               operator = getModel().getSearchOperator();
@@ -120,7 +120,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public void valueChanged(int r) {
     final int         dispRow = getRowController().getBlockView().getDisplayLine(r);
@@ -140,7 +140,7 @@ public class JFieldHandler extends AbstractFieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public void accessChanged(final int row) {
     if (getRowController().getBlockView().getDisplayLine(row) != -1) {

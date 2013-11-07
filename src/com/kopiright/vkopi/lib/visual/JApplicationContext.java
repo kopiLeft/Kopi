@@ -25,7 +25,7 @@ package com.kopiright.vkopi.lib.visual;
  */
 public class JApplicationContext extends ApplicationContext {
 
-  @Override
+  
   public Application getApplication() {
     return JApplication.getInstance();
   }

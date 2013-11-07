@@ -280,7 +280,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
     }
   }
 
-  @Override
+  
   public void addSelectedElement() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
@@ -290,7 +290,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
     }
   }
 
-  @Override
+  
   public void setMenu() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
@@ -323,7 +323,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
     }
   }
 
-  @Override
+  
   public void removeSelectedElement() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
@@ -333,7 +333,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
     }
   }
 
-  @Override
+  
   public void run() throws VException {
     setVisible(true);
   }
@@ -385,17 +385,17 @@ public class DMenuTree extends DWindow implements UMenuTree {
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  @Override
+  
   public UTree getTree() {
     return tree;
   }
 
-  @Override
+  
   public UBookmarkPanel getBookmark() {
     return toolbar;
   }
 
-  @Override
+  
   public VMenuTree getModel() {
     return (VMenuTree) super.getModel();
   }
@@ -421,17 +421,17 @@ public class DMenuTree extends DWindow implements UMenuTree {
       super(root);
     }
 
-    @Override
+    
     public boolean isExpanded(Object path) {
       return super.isExpanded((TreePath) path);
     }
 
-    @Override
+    
     public boolean isCollapsed(Object path) {
       return super.isCollapsed((TreePath) path);
     }
 
-    @Override
+    
     public int getSelectionRow() {
       return super.getSelectionRows()[0];
     }

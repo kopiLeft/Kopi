@@ -51,7 +51,7 @@ public abstract class AbstractFieldHandler implements FieldHandler {
   // ----------------------------------------------------------------------
   
   /**
-   * @Override
+   * 
    */
   public VFieldUI getRowController() {
     return rowController;
@@ -62,7 +62,7 @@ public abstract class AbstractFieldHandler implements FieldHandler {
   // ----------------------------------------------------------------------
   
   /**
-   * @Override
+   * 
    */
   public void updateModel() throws VException {
     if (getModel().isChanged() && (getModel().hasFocus())) {
@@ -71,7 +71,7 @@ public abstract class AbstractFieldHandler implements FieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public Object getDisplayedValue(boolean trim) throws VException {
     final UField 	field;
@@ -92,21 +92,21 @@ public abstract class AbstractFieldHandler implements FieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public UField getCurrentDisplay() {
     return rowController.getDisplay();
   }
 
   /**
-   * @Override
+   * 
    */
   public void fieldError(String message) {
     rowController.displayFieldError(message);
   }
 
   /**
-   * @Override
+   * 
    */
   public boolean requestFocus() throws VException {
     rowController.transferFocus(getCurrentDisplay());
@@ -114,7 +114,7 @@ public abstract class AbstractFieldHandler implements FieldHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public boolean loadItem(int mode) throws VException {
     int	id = -1;

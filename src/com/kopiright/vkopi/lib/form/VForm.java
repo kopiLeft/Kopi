@@ -53,7 +53,7 @@ public abstract class VForm extends VWindow implements VConstants {
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_FORM, new WindowBuilder() {
 
-      @Override
+      
       public UWindow createWindow(VWindow model) {
 	return (UForm)UIFactory.getUIFactory().createView(model);
       }

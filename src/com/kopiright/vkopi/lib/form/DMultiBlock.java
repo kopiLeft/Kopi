@@ -106,7 +106,7 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
     chartPane.add(c, o);
   }
 
-  @Override
+  
   public void addToDetail(UComponent comp, KopiAlignment constraint) {
     detailPane.add((Component)comp, constraint);
   }
@@ -142,7 +142,7 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
     }
   }
 
-  @Override
+  
   public void add(UComponent comp, KopiAlignment constraints) {
     chartPane.add((Component)comp, constraints);
   }

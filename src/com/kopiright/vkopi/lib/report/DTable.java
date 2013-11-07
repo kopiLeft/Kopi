@@ -45,14 +45,14 @@ public class DTable extends JTable implements UTable {
   //--------------------------------------------------
 
   /**
-   * @Override
+   * 
    */
   public int convertColumnIndexToModel(int viewColumnIndex) {
     return super.convertColumnIndexToModel(viewColumnIndex);
   }
 
   /**
-   * @Override
+   * 
    */
   public int convertColumnIndexToView(int modelColumnIndex) {
     return super.convertColumnIndexToView(modelColumnIndex);

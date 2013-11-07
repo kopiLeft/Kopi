@@ -137,21 +137,21 @@ public class DReport extends DWindow implements UReport, TableCellRenderer {
   }
 
   /**
-   * @Override
+   * 
    */
   public void addColumn() {
     addColumn(table.getColumnCount());
   }
 
   /**
-   * @Override
+   * 
    */
   public UTable getTable() {
     return table;
   }
 
   /**
-   * @Override
+   * 
    */
   public void columnMoved(final int[] pos) {
     SwingUtilities.invokeLater (new Runnable() {
@@ -164,7 +164,7 @@ public class DReport extends DWindow implements UReport, TableCellRenderer {
   }
 
   /**
-   * @Override
+   * 
    */
   public void contentChanged() {
     if (table != null) {

@@ -39,7 +39,7 @@ public class JUIFactory extends UIFactory {
    * compiler UForm and UListDialog classes
    */
 
-  @Override
+  
   public UComponent createView(VModel model) {
     UComponent		view;
 

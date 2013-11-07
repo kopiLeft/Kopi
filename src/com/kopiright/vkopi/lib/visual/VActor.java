@@ -107,12 +107,12 @@ public class VActor implements VModel {
     this.display = display;
   }
 
-  @Override
+  
   public UActor getDisplay() {
     return display;
   }
 
-  @Override
+  
   public void setDisplay(UComponent display) {
     assert display instanceof UActor : "VActor display should be UActor";
 

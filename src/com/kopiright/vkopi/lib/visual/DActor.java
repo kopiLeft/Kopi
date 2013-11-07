@@ -46,35 +46,35 @@ public class DActor implements UActor {
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  @Override
+  
   public boolean isEnabled() {
     return action.isEnabled();
   }
 
-  @Override
+  
   public void setEnabled(boolean enabled) {
     action.setEnabled(enabled);
   }
 
-  @Override
+  
   public boolean isVisible() {
     return button != null && button.isVisible();
   }
 
-  @Override
+  
   public void setVisible(boolean visible) {
     if (button != null) {
       button.setVisible(visible);
     }
   }
 
-  @Override
+  
   public void setModel(VActor model) {
     this.model = model;
     init();
   }
 
-  @Override
+  
   public VActor getModel() {
     return model;
   }

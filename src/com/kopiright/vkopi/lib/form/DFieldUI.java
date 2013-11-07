@@ -41,7 +41,7 @@ public class DFieldUI extends VFieldUI {
   // ----------------------------------------------------------------------
   
   /**
-   * @Override
+   * 
    */
   protected UField createDisplay(ULabel label, VField model, boolean detail) {
     UField      	field;
@@ -67,21 +67,21 @@ public class DFieldUI extends VFieldUI {
   }
   
   /**
-   * @Override
+   * 
    */
   protected FieldHandler createFieldHandler() {
     return new JFieldHandler(this);
   }
 
   /**
-   * @Override
+   * 
    */
   protected ULabel createLabel(String text, String help) {
     return new DLabel(text, help);
   }
 
   /**
-   * @Override
+   * 
    */
   protected UChartLabel createChartHeaderLabel(String text, String help, int index, OrderModel model) {
     return new DChartHeaderLabel(text, help, index, model);

@@ -24,7 +24,7 @@ public class JPredefinedValueHandler extends AbstractPredefinedValueHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public Color selectColor(Color color) {
     Color       f = JColorChooser.showDialog((Component)form.getDisplay(),
@@ -35,14 +35,14 @@ public class JPredefinedValueHandler extends AbstractPredefinedValueHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public Date selectDate(Date date) {
     return DateChooser.getDate((Container)form.getDisplay(), (Component)field.getDisplay(), date);
   }
 
   /**
-   * @Override
+   * 
    */
   public byte[] selectImage() throws VException {
     File        f = ImageFileChooser.chooseFile((Component)form.getDisplay());

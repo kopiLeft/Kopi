@@ -119,14 +119,14 @@ public abstract class FileHandler {
   public static class PdfFilter implements FileFilter {
 
     /**
-     * @Override
+     * 
      */
     public boolean accept(File pathname) {
       return pathname != null && pathname.getName().toUpperCase().endsWith(".PDF");
     }
 
     /**
-     * @Override
+     * 
      */
     public String getDescription() {
       return "All PDF files";

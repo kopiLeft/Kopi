@@ -439,12 +439,12 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   // VMODEL IMPLEMENTATION
   //----------------------------------------------------------------------
 
-  @Override
+  
   public UWindow getDisplay() {
     return display;
   }
 
-  @Override
+  
   public void setDisplay(UComponent display) {
     assert display instanceof UWindow : "VWindow display should be instance of UWindow";
 

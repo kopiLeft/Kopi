@@ -28,21 +28,21 @@ import com.kopiright.vkopi.lib.ui.base.Image;
 public class JImageHandler extends ImageHandler {
 
   /**
-   * @Override
+   * 
    */
   public Image getImage(String image) {
     return new JImage(Utils.getImage(image).getImage());
   }
 
   /**
-   * @Override
+   * 
    */
   public Image getImage(byte[] image) {
     return new JImage(image);
   }
 
   /**
-   * @Override
+   * 
    */
   public String getURL(String image) {
     return Utils.getURLFromResource(image).toString();
@@ -99,28 +99,28 @@ public class JImageHandler extends ImageHandler {
     //------------------------------------------------------------------
 
     /**
-     * @Override
+     * 
      */
     public int getWidth() {
       return getIconWidth();
     }
 
     /**
-     * @Override
+     * 
      */
     public int geteight() {
       return getIconHeight();
     }
 
     /**
-     * @Override
+     * 
      */
     public String getDescription() {
       return super.getDescription();
     }
 
     /**
-     * @Override
+     * 
      */
     public Image getScaledInstance(int width, int height, int hints) {
       return new JImage(getImage().getScaledInstance(width, height, hints));

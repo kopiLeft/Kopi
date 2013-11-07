@@ -203,7 +203,7 @@ public abstract class DField extends JPanel implements UField {
   }
 
   /**
-   * @Override
+   * 
    */
   public UBlock getBlockView() {
     return model.getBlockView();

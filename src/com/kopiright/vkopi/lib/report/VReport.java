@@ -53,7 +53,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   static {
     WindowController.getWindowController().registerWindowBuilder(com.kopiright.vkopi.lib.visual.Constants.MDL_REPORT, new WindowBuilder() {
 
-      @Override
+      
       public UWindow createWindow(VWindow model) {
 	return (UReport)UIFactory.getUIFactory().createView(model);
       }

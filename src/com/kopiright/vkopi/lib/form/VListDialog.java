@@ -258,14 +258,14 @@ public class VListDialog implements VModel {
   // VMODEL IMPLEMENTATION
   // --------------------------------------------------------------------
 
-  @Override
+  
   public void setDisplay(UComponent display) {
     assert display instanceof UListDialog : "Display must be UListDialog";
 
     this.display = (UListDialog)display;
   }
 
-  @Override
+  
   public UListDialog getDisplay() {
     return display;
   }

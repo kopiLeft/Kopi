@@ -39,7 +39,7 @@ public class VMenuTree extends VWindow {
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_MENU_TREE, new WindowBuilder() {
 
-      @Override
+      
       public UWindow createWindow(VWindow model) {
 	return (UMenuTree)UIFactory.getUIFactory().createView(model);
       }
@@ -540,7 +540,7 @@ public class VMenuTree extends VWindow {
     return Constants.MDL_MENU_TREE;
   }
 
-  @Override
+  
   public UMenuTree getDisplay() {
     return (UMenuTree) super.getDisplay();
   }

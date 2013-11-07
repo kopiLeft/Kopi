@@ -31,7 +31,7 @@ public class JFileHandler extends FileHandler {
   // ----------------------------------------------------------------------
 
   /**
-   * @Override
+   * 
    */
   public File chooseFile(UWindow window, String defaultName) {
     File dir = new File(System.getProperty("user.home"));
@@ -39,7 +39,7 @@ public class JFileHandler extends FileHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public File chooseFile(UWindow window, File dir, String defaultName) {
     JFileChooser filechooser = new JFileChooser(dir);
@@ -60,7 +60,7 @@ public class JFileHandler extends FileHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public File openFile(UWindow window, String defaultName) {
     File dir = new File(System.getProperty("user.home"));
@@ -68,7 +68,7 @@ public class JFileHandler extends FileHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public File openFile(UWindow window, final FileFilter filter) {
     JFileChooser filechooser = new JFileChooser(new File(System.getProperty("user.home")));
@@ -76,14 +76,14 @@ public class JFileHandler extends FileHandler {
     filechooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
 
       /**
-       * @Override
+       * 
        */
       public String getDescription() {
 	return filter.getDescription();
       }
 
       /**
-       * @Override
+       * 
        */
       public boolean accept(File f) {
 	return filter.accept(f);
@@ -101,7 +101,7 @@ public class JFileHandler extends FileHandler {
   }
 
   /**
-   * @Override
+   * 
    */
   public File openFile(UWindow window, File dir, String defaultName) {
     JFileChooser filechooser = new JFileChooser(dir);

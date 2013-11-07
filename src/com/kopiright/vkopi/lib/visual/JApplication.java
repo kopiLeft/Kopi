@@ -78,7 +78,7 @@ public abstract class JApplication implements Application {
   // APPLICATION IMPLEMENTATION
   // ---------------------------------------------------------------------
 
-  @Override
+  
   public void startApplication() {
     if (options.form != null) {
       String    form;
@@ -100,7 +100,7 @@ public abstract class JApplication implements Application {
 	if (module instanceof VWindow) {
 	  ((VWindow) module).addModelCloseListener(new ModelCloseListener() {
 
-	    @Override
+	    
 	    public void modelClosed(int type) {
 	      exitWithError(type);
 	    }
@@ -127,7 +127,7 @@ public abstract class JApplication implements Application {
     removeSplashScreen();
   }
 
-  @Override
+  
   public boolean allowQuit() {
     return true;
   }
@@ -329,57 +329,57 @@ public abstract class JApplication implements Application {
   // ACCESSORS
   // ---------------------------------------------------------------------
 
-  @Override
+  
   public boolean isNobugReport() {
     return options != null && options.nobugreport;
   }
 
-  @Override
+  
   public Date getStartupTime() {
     return startupTime;
   }
 
-  @Override
+  
   public VMenuTree getMenu() {
     return menuTree;
   }
 
-  @Override
+  
   public void setGeneratingHelp() {
     isGeneratingHelp = true;
   }
 
-  @Override
+  
   public boolean isGeneratingHelp() {
     return isGeneratingHelp;
   }
 
-  @Override
+  
   public DBContext getDBContext() {
     return context;
   }
 
-  @Override
+  
   public String getUserName() {
     return context.getDefaultConnection().getUserName();
   }
 
-  @Override
+  
   public Registry getRegistry() {
     return registry;
   }
 
-  @Override
+  
   public Locale getDefaultLocale() {
     return defaultLocale;
   }
 
-  @Override
+  
   public LocalizationManager getLocalizationManager() {
     return localizationManager;
   }
 
-  @Override
+  
   public void displayError(UComponent parent, String message) {
     DWindow.displayError((Component)parent, message);
   }
@@ -388,28 +388,28 @@ public abstract class JApplication implements Application {
   // MESSAGE LISTENER IMPLEMENTATION
   // ---------------------------------------------------------------------
 
-  @Override
+  
   public void notice(String message) {
     // use model, because we are outside
     // swing event-dispatch-thread
     menuTree.notice(message);
   }
 
-  @Override
+  
   public void error(String message) {
     // use model, because we are outside
     // swing event-dispatch-thread
     menuTree.error(message);
   }
 
-  @Override
+  
   public void warn(String message) {
     // use model, because we are outside
     // swing event-dispatch-thread
     menuTree.warn(message);
   }
 
-  @Override
+  
   public int ask(String message, boolean yesIsDefault) {
     return AWR_UNDEF;
   }

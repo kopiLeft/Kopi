@@ -81,12 +81,12 @@ public class DListDialog extends JPanel implements UListDialog {
   // IMPLEMENTATIONS
   // --------------------------------------------------------------------
 
-  @Override
+  
   public int selectFromDialog(UWindow window, UField field, boolean showSingleEntry) {
     return selectFromDialogIn((Component)field, showSingleEntry);
   }
 
-  @Override
+  
   public int selectFromDialog(UWindow window, boolean showSingleEntry) {
     try {
       return selectFromJDialog(window != null ? (Component)window : DObject.phantom, showSingleEntry);
