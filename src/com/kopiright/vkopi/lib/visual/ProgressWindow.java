@@ -25,15 +25,12 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -69,18 +66,18 @@ public class ProgressWindow {
       }
     }
   }
-  
+
   public void setTotalJobs(int totalJobs) {
     this.totalJobs = totalJobs;
   }
-  
+
   public void setCurrentJob(int jobNumber) {
     if (jobNumber > totalJobs) {
       jobNumber = totalJobs;
     }
     this.jobNumber = jobNumber;
   }
-  
+
   /**
    * setWaitInfo
    */
@@ -95,24 +92,24 @@ public class ProgressWindow {
       progressBar.setStringPainted(true);
 
       text = new JLabel(message);
-      
+
       JPanel            panel = new JPanel();
-      
+
       panel.setLayout(new BorderLayout());
       panel.add(new JLabel("<html><b> " + MessageCode.getMessage("VIS-00067") + " </b><br>" + message), BorderLayout.NORTH);
       panel.add(progressBar, BorderLayout.SOUTH);
       panel.setBorder(new CompoundBorder(new LineBorder(Color.black, 1), new EmptyBorder(2,2,2,2)));
-      
+
       waitDialog.getContentPane().add(panel);
       setTotalJobs(totalJobs);
-      
+
       p = new ProgressThread();
       p.start();
-      
+
       Dimension         screen = Toolkit.getDefaultToolkit().getScreenSize();
       Point		parentPos = new Point(0, 0);
 
-      waitDialog.pack(); 
+      waitDialog.pack();
       SwingUtilities.convertPointToScreen(parentPos, frame);
 
       int		posx = parentPos.x + frame.getSize().width / 2 - waitDialog.getSize().width / 2;
@@ -137,7 +134,7 @@ public class ProgressWindow {
       final JDialog  wd = waitDialog;
       SwingThreadHandler.start(new Runnable() {
           public void run () {
-            wd.show();
+            wd.setVisible(true);
           }
         });
     } else {
@@ -146,22 +143,22 @@ public class ProgressWindow {
       progressBar.setMaximum(100);
     }
   }
-  
+
   /**
    * change mode to free state
    */
   public final void unsetProgressDialog() {
     waitDialog.setVisible(false);
-    p.stop();
+    p.interrupt();
     waitDialog.dispose();
     waitDialog = null;
   }
-  
+
   int           jobNumber = 0;
   int           totalJobs;
-  
+
   ProgressThread p;
-  
+
   Frame         frame;
   JDialog       waitDialog;
   JProgressBar  progressBar;

@@ -28,6 +28,7 @@ import java.io.OutputStream;
  * Remote execution client
  */
 
+@SuppressWarnings("deprecation")
 public class RPrinter extends AbstractPrinter implements CachePrinter {
 
   /**
@@ -72,11 +73,11 @@ public class RPrinter extends AbstractPrinter implements CachePrinter {
 
     exec.open(user, pass, command+ " " + tray);
     output = exec.getOutputStream();
-    
+
     while ((length = data.read(buffer)) != -1) {
       output.write(buffer, 0, length);
     }
-    
+
     exec.close();
     return "NYI";
   }

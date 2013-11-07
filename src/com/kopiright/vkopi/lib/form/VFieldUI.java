@@ -19,21 +19,21 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
-import java.awt.event.*;
 import java.util.Vector;
-import javax.swing.UIManager;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.util.base.Utils;
-import com.kopiright.xkopi.lib.base.KopiUtils;
+import com.kopiright.vkopi.lib.visual.ActionHandler;
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.*;
+import com.kopiright.vkopi.lib.visual.VCommand;
+import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VExecFailedException;
 
 /**
  * This class implements all UI actions on fields
  */
-public class VFieldUI implements VConstants, ActionHandler {
+public abstract class VFieldUI implements VConstants, ActionHandler {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -42,13 +42,11 @@ public class VFieldUI implements VConstants, ActionHandler {
   /**
    * Constructor
    */
-  public VFieldUI(DBlock blockView, VField model)
-  {
-    SwingThreadHandler.verifyRunsInEventThread("VField <init>");
+  public VFieldUI(UBlock blockView, VField model) {
     this.blockView = blockView;
     this.model = model;
-    activeCommands = new Vector();
-    fieldHandler = new FieldHandler();
+    activeCommands = new Vector<VCommand>();
+    fieldHandler = createFieldHandler();
     model.addFieldListener(fieldHandler);
     model.addFieldChangeListener(fieldHandler);
 
@@ -89,31 +87,42 @@ public class VFieldUI implements VConstants, ActionHandler {
     return model.getList() != null && model.getList().hasShortcut();
   }
 
+  // ----------------------------------------------------------------------
+  // ABSTRACT METHOD
+  // ----------------------------------------------------------------------
+
   /**
-   * Create a display widget for this field
+   * Creates a display widget for this row controller.
+   * @param label The field label.
+   * @param model The field model.
+   * @param detail Is this field is in detail mode ?
+   * @return The {@link UField} display component of this field.
    */
-  private DField createDisplay(DLabel label, VField model, boolean detail) {
-    DField      field = null;
+  protected abstract UField createDisplay(ULabel label, VField model, boolean detail);
 
-    switch (model.getType()) {
-    case VField.MDL_FLD_COLOR:
-      field = new DColorField(this, label, model.getAlign(), 0, detail);
-      break;
-    case VField.MDL_FLD_IMAGE:
-      field = new DImageField(this, label, model.getAlign(), 0, ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight(), detail);
-      break;
-    case VField.MDL_FLD_EDITOR:
-      field = new DTextEditor(this, label, model.getAlign(), 0, ((VTextField) model).getHeight(), detail);
-      break;
-    case VField.MDL_FLD_TEXT:
-      field = new DTextField(this, label, model.getAlign(), model.getOptions(), detail);
-      break;
-    default:
-      throw new InconsistencyException("Type of model " + model.getType() + " not supported.");
-    }
-    return field;
-  }
+  /**
+   * Creates a {@link FieldHandler} for this row controller.
+   * @return The created {@link FieldHandler}.
+   */
+  protected abstract FieldHandler createFieldHandler();
 
+  /**
+   * Creates a {@link ULabel} for this row controller.
+   * @param text The label text.
+   * @param help The label help
+   * @return The created {@link ULabel}.
+   */
+  protected abstract ULabel createLabel(String text, String help);
+
+  /**
+   * Creates a {@link UChartLabel} for this row controller.
+   * @param text The label text.
+   * @param help The label help.
+   * @param index The chart label index.
+   * @param model The chart label sort model.
+   * @return The created {@link UChartLabel}
+   */
+  protected abstract UChartLabel createChartHeaderLabel(String text, String help, int index, VBlock.OrderModel model);
 
   // ----------------------------------------------------------------------
   // ACCESSORS
@@ -123,12 +132,13 @@ public class VFieldUI implements VConstants, ActionHandler {
   /**
    * Display error
    */
+  @SuppressWarnings("deprecation")
   public void displayFieldError(String message) {
     if (blockView.getDisplayLine(getBlock().getActiveRecord()) == -1) {
       model.getForm().error(message);
       return;
     }
-    DField	display = displays[blockView.getDisplayLine(getBlock().getActiveRecord())];
+    UField	display = displays[blockView.getDisplayLine(getBlock().getActiveRecord())];
     display.setBlink(true);
     model.getForm().error(message);
     display.setBlink(false);
@@ -139,37 +149,38 @@ public class VFieldUI implements VConstants, ActionHandler {
     }
   }
 
-  private void resetCommands() {
+  @SuppressWarnings("deprecation")
+  public void resetCommands() {
     for (int i = 0; i < activeCommands.size(); i++) {
-      ((VCommand)activeCommands.elementAt(i)).setEnabled(false);
+      activeCommands.elementAt(i).setEnabled(false);
     }
     activeCommands.setSize(0);
     if (model.hasFocus()) {
       if (hasEditItem_S()) { // TRY TO REMOVE !!!!
-        VCommand      command = blockView.getFormView().cmdEditItem_S;
+        VCommand      command = model.getForm().cmdEditItem_S;
 
         activeCommands.addElement(command);
         command.setEnabled(true);
       } else if (hasAutofill) {
-        VCommand      command = blockView.getFormView().cmdAutofill;
-        
+        VCommand      command = model.getForm().cmdAutofill;
+
         activeCommands.addElement(command);
         command.setEnabled(true);
       }
       if (hasNewItem) {
-        VCommand      command = blockView.getFormView().cmdNewItem;
-        
+        VCommand      command = model.getForm().cmdNewItem;
+
         activeCommands.addElement(command);
         command.setEnabled(true);
       }
       if (hasEditItem) {
-        VCommand      command = blockView.getFormView().cmdEditItem;
-        
+        VCommand      command = model.getForm().cmdEditItem;
+
         activeCommands.addElement(command);
         command.setEnabled(true);
       }
       VCommand[]      localCommands = model.getCommand();
-      
+
       if (localCommands != null) {
         for (int i = 0; i < localCommands.length; i++) {
           if (localCommands[i].isActive(getBlock().getMode())) {
@@ -188,26 +199,26 @@ public class VFieldUI implements VConstants, ActionHandler {
       getDisplay().getAutofillButton().setEnabled(autofillCommand.isActive(model.getBlock().getMode()));
     }
   }
-  
+
   /**
    *
    */
   public VCommand[] getAllCommands() {
-    Vector	cmds = new Vector();
+    Vector<VCommand>	cmds = new Vector<VCommand>();
 
     for (int i = 0; commands != null && i < commands.length; i++) {
       cmds.addElement(commands[i]);
     }
     if (hasEditItem_S()) {
-      cmds.addElement(blockView.getFormView().cmdEditItem_S);
+      cmds.addElement(model.getForm().cmdEditItem_S);
     } else if (hasAutofill) {
-      cmds.addElement(blockView.getFormView().cmdAutofill);
+      cmds.addElement(model.getForm().cmdAutofill);
     }
     if (hasNewItem) {
-      cmds.addElement(blockView.getFormView().cmdNewItem);
+      cmds.addElement(model.getForm().cmdNewItem);
     }
     if (hasEditItem) {
-      cmds.addElement(blockView.getFormView().cmdEditItem);
+      cmds.addElement(model.getForm().cmdEditItem);
     }
 
     return (VCommand[])Utils.toArray(cmds, VCommand.class);
@@ -218,7 +229,7 @@ public class VFieldUI implements VConstants, ActionHandler {
    */
   /*package*/ void close() {
     for (int i = 0; i < activeCommands.size(); i++) {
-      ((VCommand)activeCommands.elementAt(i)).setEnabled(false);
+      activeCommands.elementAt(i).setEnabled(false);
     }
     activeCommands.setSize(0);
   }
@@ -226,7 +237,7 @@ public class VFieldUI implements VConstants, ActionHandler {
   /**
    * resetLabel
    */
-  /*package*/ void resetLabel() {
+  public void resetLabel() {
     if (dl != null) {
       dl.init(model.getLabel(), model.getToolTip());
     }
@@ -234,7 +245,6 @@ public class VFieldUI implements VConstants, ActionHandler {
       dl.init(model.getLabel(), model.getToolTip());
     }
   }
-
 
   /**
    *
@@ -334,11 +344,11 @@ public class VFieldUI implements VConstants, ActionHandler {
     // building
     if (model.isSortable()) {
       // !!! override dl ist not good
-      dl = new ChartHeaderLabel(model.getLabel(), model.getToolTip(), getBlock().getFieldIndex(model),getBlock().getOrderModel());
+      dl = createChartHeaderLabel(model.getLabel(), model.getToolTip(), getBlock().getFieldIndex(model),getBlock().getOrderModel());
     } else {
-      dl = new DLabel(model.getLabel(), model.getToolTip());
+      dl = createLabel(model.getLabel(), model.getToolTip());
     }
- 
+
     if (!model.isInternal()) {
       // no hidden field (in all modes):
       if (getBlock().isMulti() && !getBlock().noChart()) {
@@ -365,12 +375,12 @@ public class VFieldUI implements VConstants, ActionHandler {
           // create the second label for the detail view
           dlDetail = new DLabel(model.getLabel(), model.getToolTip());
           if (columnEnd >= 0) {
-            ((DMultiBlock) getBlock().getDisplay()).addToDetail(dlDetail,
+            ((UMultiBlock) getBlock().getDisplay()).addToDetail(dlDetail,
                                                                 new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
           }
           // field for the value in the detail view
           detailDisplay = createDisplay(dlDetail, model, true);
-          ((DMultiBlock) getBlock().getDisplay()).addToDetail(detailDisplay,
+          ((UMultiBlock) getBlock().getDisplay()).addToDetail(detailDisplay,
                                                               new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, false));
           detailDisplay.setPosition(0);
           detailDisplay.setInDetail(true);
@@ -389,7 +399,7 @@ public class VFieldUI implements VConstants, ActionHandler {
         // multifields (special fields)
         // take care that in this row is only this multifield
 	blockView.add(dl, new MultiFieldAlignment(columnEnd * 2 - 1, line - 1, 1, true));
-	displays = new DField[] {createDisplay(dl, model, false)};
+	displays = new UField[] {createDisplay(dl, model, false)};
 	blockView.add(displays[0], new MultiFieldAlignment(columnEnd * 2 - 1,
 									 line,
 									 1, false));
@@ -400,7 +410,7 @@ public class VFieldUI implements VConstants, ActionHandler {
 	  // not an info field => show label
 	  blockView.add(dl, new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
 	}
-	displays = new DField[] {createDisplay(dl, model, false)};
+	displays = new UField[] {createDisplay(dl, model, false)};
 	blockView.add(displays[0], new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, false));
 	displays[0].setPosition(0);
         displays[0].updateText();
@@ -418,7 +428,8 @@ public class VFieldUI implements VConstants, ActionHandler {
   /**
    *
    */
-  /*package*/ DField getDisplay() {
+  @SuppressWarnings("deprecation")
+  /*package*/ UField getDisplay() {
     if (blockView.getDisplayLine() == -1) {
       return null;
     } else {
@@ -438,7 +449,7 @@ public class VFieldUI implements VConstants, ActionHandler {
    * Transfers focus to next accessible field (tab typed)
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised in leave()
    */
-  public void transferFocus(DField display) throws VException {
+  public void transferFocus(UField display) throws VException {
     int		recno = blockView.getRecordFromDisplayLine(display.getPosition());
 
     // go to the correct block if necessary
@@ -447,7 +458,7 @@ public class VFieldUI implements VConstants, ActionHandler {
 	throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
       }
       model.getForm().gotoBlock(getBlock());
-    } 
+    }
 
     // go to the correct record if necessary
     // but only if we are in the correct block now
@@ -462,7 +473,7 @@ public class VFieldUI implements VConstants, ActionHandler {
     // but only if we are in the correct record now
     if (getBlock() == model.getForm().getActiveBlock()
         && recno == getBlock().getActiveRecord()
-        && model != getBlock().getActiveField() 
+        && model != getBlock().getActiveField()
         && display.getAccess() >= ACS_VISIT) {
       getBlock().gotoField(model);
     }
@@ -570,12 +581,6 @@ public class VFieldUI implements VConstants, ActionHandler {
     getBlock().executeVoidTrigger(VKT_Type);
   }
 
-  // ----------------------------------------------------------------------
-  // F2
-  // ----------------------------------------------------------------------
-
-
-
   /**
    * return the block of the model
    */
@@ -598,304 +603,61 @@ public class VFieldUI implements VConstants, ActionHandler {
     }
   }
 
+  // ----------------------------------------------------------------------
+  // ACCESSORS
+  // ----------------------------------------------------------------------
+
   public final VField getModel() {
     return model;
   }
 
-  public DBlock getBlockView() {
+  public UBlock getBlockView() {
     return blockView;
   }
 
-  // ----------------------------------------------------------------------
-  // FieldListener messages called in any thread
-  // ----------------------------------------------------------------------
-
-  class FieldHandler implements FieldListener, FieldChangeListener {
-  /**
-   * Gets the displayed value.
-   *
-   * @param	trim		Should the text be trimmed ?
-   */
-  public Object getDisplayedValue(boolean trim) {
-    final DField field;
-
-    field = (DField) getCurrentDisplay();
-    if (field instanceof DTextField) {
-      String	text = ((DTextField)field).getText();
-      if (!trim){
-	return text;
-      } else if (model.getHeight() == 1) {
-	return KopiUtils.trimString(text);
-      } else {
-	return KopiUtils.trailString(text);
-      }
-    } else {
-      return field.getObject();
-    }
+  public final UField[] getDisplays() {
+    return displays;
   }
 
-
-
-  /**
-   * Fill this field with an appropriate value according to present text
-   * and ask the user if there is multiple choice
-   * @exception	VException	an exception may occur in gotoNextField
-   */
-  public boolean predefinedFill() throws VException {
-    boolean     filled;
-
-    filled = model.fillField(new GUIPredefinedValueHandler(VFieldUI.this, blockView.getFormView(), getDisplay()));
-    if (filled) {
-      model.getBlock().gotoNextField();
-    }
-    return filled;
+  public final ULabel getLabel() {
+    return dl;
   }
 
-
-  // ---------------------------------------------------------------------
-  // IMPLEMENTATION FieldListener
-  // ---------------------------------------------------------------------
-
-  /**
-   * enter a field
-   */
-  public void enter() {
-    // this is the correct thread to calculate the display of the
-    // field NOT later in the event thread
-    final DField      enterMe = getDisplay();
-
-    if (enterMe != null) {
-      SwingThreadHandler.start(new Runnable() {
-          public void run() {
-            resetCommands();
-            enterMe.enter(true);
-          }
-        });
-    }
+  public final ULabel getDetailLabel() {
+    return dlDetail;
   }
 
-  /**
-   * leaves field on the desktop
-   */
-  public void leave() {
-    // this is the correct thread to calculate the display of the
-    // field NOT later in the event thread
-    final DField      leaveMe = getDisplay();
-
-    if (leaveMe != null) {
-      SwingThreadHandler.start(new Runnable() {
-          public void run() {
-            resetCommands();
-            leaveMe.leave();
-          }
-        });
-    }
+  public final UField getDetailDisplay() {
+    return detailDisplay;
   }
-
-    /**
-     *
-     */
-  public boolean loadItem(int mode) throws VException {
-    int	id = -1;
-
-    if (mode == VForm.CMD_NEWITEM) {
-      id = ((VDictionaryForm)Module.getKopiExecutable(model.getList().getNewForm())).newRecord(model.getForm());
-    } else if (mode == VForm.CMD_EDITITEM) {
-      try {
-	updateModel();
-	if (!model.isNull(model.getBlock().getActiveRecord())) {
-	  int	val = model.getListID();
-	  if  (val != -1) {
-	    id = ((VDictionaryForm)Module.getKopiExecutable(model.getList().getNewForm())).editWithID(model.getForm(), val);
-	  } else {
-	    mode = VForm.CMD_EDITITEM_S;
-	  }
-	} else {
-	  mode = VForm.CMD_EDITITEM_S;
-	}
-      } catch (VException e) {
-	mode = VForm.CMD_EDITITEM_S;
-      }
-    }
-    if (mode == VForm.CMD_EDITITEM_S) {
-      id = ((VDictionaryForm)Module.getKopiExecutable(model.getList().getNewForm())).openForQuery(model.getForm());
-    }
-    if (id == -1) {
-      if (mode == VForm.CMD_EDITITEM || mode == VForm.CMD_EDITITEM_S) {
-	model.setNull(model.getBlock().getActiveRecord());
-      }
-      throw new VExecFailedException();	// no message needed
-    }
-    model.setValueID(id);
-    return true;
-  }
-
-    public void fieldError(String message) {
-      displayFieldError(message);
-    }
-
-    public void labelChanged() {
-      SwingThreadHandler.startEnqueued(new Runnable() {
-          public void run() {
-            resetLabel();
-          }
-        });
-    }
-
-    public void searchOperatorChanged() {
-      int               operator = model.getSearchOperator();
-      final String      info = operator == SOP_EQ ? null : OPERATOR_NAMES[operator];
-
-      SwingThreadHandler.startEnqueued(new Runnable() {
-          public void run() {
-            if (dl != null) {
-              dl.setInfoText(info);
-            }
-            if (dlDetail != null) {
-              dl.setInfoText(info);
-            }
-          }
-        });
-    }
-
-    public void valueChanged(int r) {
-      final int         dispRow = blockView.getDisplayLine(r);
-
-      if (dispRow != -1) {
-        SwingThreadHandler.startEnqueued(new Runnable() {
-            public void run() {
-              if (displays != null) {
-                displays[dispRow].updateText();
-              }
-              if (detailDisplay != null) {
-                detailDisplay.updateText();
-              }
-            }
-          });
-      }
-    }
-
-    public void accessChanged(final int row) {
-      if (blockView.getDisplayLine(row) != -1) {
-        SwingThreadHandler.startEnqueued(new Runnable() {
-            public void run() {
-              fireAccessHasChanged(row);
-            }
-          });
-      }
-    }
-
-    public void updateModel()  throws VException {
-      if (model.isChanged() && (model.hasFocus())) {
-        model.checkType(getDisplayedValue(true));
-      }
-    }
-
-    /**
-     * @deprecated
-     */
-    public void updateText() throws VException {
-      updateModel();
-    }
-
-    public boolean requestFocus() throws VException {
-      transferFocus(getDisplay());
-      return true;
-    }
-
-    public Component getCurrentDisplay() {
-      return getDisplay();
-    }
-  }
-
-  class ChartHeaderLabel extends DLabel implements VBlock.OrderListener {
-    
-	ChartHeaderLabel(String text, String help, int index, VBlock.OrderModel model) {
-      super(text, help);
-
-      fieldIndex = index;
-      sortModel = model;
-
-      sortModel.addSortingListener(this);
-
-      addMouseListener(new MouseAdapter() {
-          public void mouseClicked(MouseEvent e) {
-            sortModel.sortColumn(fieldIndex);
-          }
-        });
-    }
-
-    public void orderChanged() {
-      repaint();
-    }
-
-     public void paint(Graphics g) {
-       super.paint(g);
-
-       int      w = getSize().width;
-       int      order = sortModel.getColumnOrder(fieldIndex);
-
-       switch (order) {
-       case VBlock.OrderModel.STE_INC:
-         g.setColor(color_active);
-         g.fillPolygon(new int[]{w-6, w-1, w-11}, new int[]{1, 8, 8}, 3);           
-         g.setColor(color_mark);
-         g.fillPolygon(new int[]{w-6, w-1, w-11}, new int[]{16, 10, 10}, 3);           
-         break;
-       case VBlock.OrderModel.STE_DESC:
-         g.setColor(color_mark);
-         g.fillPolygon(new int[]{w-6, w-1, w-11}, new int[]{1, 8, 8}, 3);           
-         g.setColor(color_active);
-         g.fillPolygon(new int[]{w-6, w-1, w-11}, new int[]{16, 10, 10}, 3);           
-         break;
-       case VBlock.OrderModel.STE_UNORDERED:
-       default:
-         g.setColor(color_mark);
-         g.fillPolygon(new int[]{w-6, w-1, w-11}, new int[]{1, 8, 8}, 3);           
-         g.fillPolygon(new int[]{w-6, w-1, w-11}, new int[]{16, 10, 10}, 3);           
-       }
-    }
-    
-    int                 fieldIndex;
-    VBlock.OrderModel   sortModel;
-    /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 8142184714004772529L;
-  }
-
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final FieldHandler    fieldHandler;
+  private final FieldHandler    	fieldHandler;
 
   // static (compiled) data
-  private final boolean		hasAutofill;	// RE
-  private	boolean		hasNewItem;	// MO
-  private	boolean		hasEditItem;	// VE
-  //private	boolean		hasEditItem_S;	// IT !!!!
+  private final boolean		        hasAutofill;	// RE
+  private	boolean			hasNewItem;	// MO
+  private	boolean			hasEditItem;	// VE
+  //private	boolean			hasEditItem_S;	// IT !!!!
 
-  private	VCommand[]	commands;	// commands
-  private	DField[]	displays;	// the object displayed on screen
-  private	DLabel		dl;		// label text
-  private	DLabel		dlDetail;	// label text (chart)
-  private	DField          detailDisplay;	// the object displayed on screen (detail)
-  private	int		line;		// USE A VPosition !!!!
-  private	int		column;
-  private	int		columnEnd;
-  private	int		chartPos;
+  private	VCommand[]		commands;	// commands
+  private	UField[]		displays;	// the object displayed on screen
+  private	ULabel			dl;		// label text
+  private	ULabel			dlDetail;	// label text (chart)
+  private	UField          	detailDisplay;	// the object displayed on screen (detail)
+  private	int			line;		// USE A VPosition !!!!
+  private	int			column;
+  private	int			columnEnd;
+  private	int			chartPos;
 
-  private       DBlock          blockView;
+  private      	UBlock          	blockView;
   // dynamic data
-  private	VField		model;	        // The corresponding VField
-  private	Vector		activeCommands;	// commands currently actives
-  private	VCommand	incrementCommand;
-  private	VCommand	decrementCommand;
-  private	VCommand	autofillCommand;
-
-
-  private static final Color    color_mark = UIManager.getColor("KopiField.ul.chart");
-  private static final Color    color_active = UIManager.getColor("KopiField.ul.chart.active");
+  private	VField			model;	        // The corresponding VField
+  private	Vector<VCommand>	activeCommands;	// commands currently actives
+  private	VCommand		incrementCommand;
+  private	VCommand		decrementCommand;
+  private	VCommand		autofillCommand;
 }

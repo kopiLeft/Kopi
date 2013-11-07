@@ -19,11 +19,19 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.net.URL;
 import java.util.ArrayList;
+
 import javax.swing.JPopupMenu;
 
 /**
@@ -34,14 +42,14 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   /**
    * Returns the version of this build
    */
+  @SuppressWarnings("deprecation")
   public static String[] getVersion() {
     try {
-      DataInputStream   in;
-      FileInputStream   fstream;
-      ArrayList         list = new ArrayList();
+      DataInputStream   	in;
+      ArrayList<String>         list = new ArrayList<String>();
 
       in = new DataInputStream(Utils.class.getClassLoader().getResourceAsStream(APPLICATION_DIR + "/version"));
-      
+
       while (in.available() != 0) {
         list.add(in.readLine());
       }
@@ -51,23 +59,23 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
     } catch (Exception e) {
       System.err.println("Error while reading version informations.\n" + e);
     }
-    
+
     return DEFAULT_VERSION;
   }
-  
-  public static Component getRoot (Component c, Class type) {
+
+  public static Component getRoot (Component c, Class<?> type) {
     Component   root = null;
 
     for(Component p = c; p != null;) {
       if (type.isAssignableFrom(p.getClass())) {
         root = p;
-      }		
+      }
       if (p instanceof Window) {
         return root;
       }
       if (p instanceof JPopupMenu) {
         p = ((JPopupMenu)p).getInvoker();
-      } else { 
+      } else {
         p = p.getParent();
       }
     }
@@ -77,7 +85,7 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
   public static Window getWindowAncestor (Component c) {
     return (Window)getRoot (c, Window.class);
   }
-	
+
   public static Frame getFrameAncestor (Component c) {
     return (Frame)getRoot (c, Frame.class);
   }
@@ -93,12 +101,12 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
     location = new Rectangle();
 
     // not the whole screen is usable e.g. System-Toolbar
-    insets = getScreenInsets(); 
+    insets = getScreenInsets();
     // component size
     componentSize = component.getPreferredSize();
-    // screen size 
+    // screen size
     screen = Toolkit.getDefaultToolkit().getScreenSize();
-    
+
     // minimum / maximum sizes
     minX = insets.left;
     minY = insets.top;
@@ -160,7 +168,7 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
     } else {
       // the provide position is too big
       location.y = maxY - componentSize.height;
-    }    
+    }
 
     // witdh
     location.width = Math.min(maxWidth, componentSize.width);
@@ -189,9 +197,9 @@ public class Utils extends com.kopiright.vkopi.lib.util.Utils {
         tk = Toolkit.getDefaultToolkit();
         ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-        
+
         insets = tk.getScreenInsets(gc);
-        
+
         return insets;
       }
 

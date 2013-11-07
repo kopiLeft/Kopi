@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="src/com/kopiright" />
+  <property name="node" value="yes"/>
+
+
+  <!--==============================================================
+      Default target:	builds node
+      ==============================================================-->
+
+  <target name="node.build" depends="init"
+	  description="--> Runs subbuild files ">
+    <ant dir="src" inheritAll="false" target="${target}" />
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

@@ -89,7 +89,7 @@ public class Fax {
    * RETURNS A VECTOR OF STRINGS
    * ----------------------------------------------------------------------
    */
-  public static Vector readSendQueue(String host, String user) throws FaxException {
+  public static Vector<FaxStatus> readSendQueue(String host, String user) throws FaxException {
     return readQueue(host, user, "sendq");
   }
 
@@ -99,7 +99,7 @@ public class Fax {
    * RETURNS A VECTOR OF FAXSTATUS
    * ----------------------------------------------------------------------
    */
-  public static Vector readDoneQueue(String host, String user) throws FaxException {
+  public static Vector<FaxStatus> readDoneQueue(String host, String user) throws FaxException {
     return readQueue(host, user, "doneq");
   }
 
@@ -109,7 +109,7 @@ public class Fax {
    * RETURNS A VECTOR OF FAXSTATUS
    * ----------------------------------------------------------------------
    */
-  public static Vector readRecQueue(String host, String user) throws FaxException {
+  public static Vector<FaxStatus> readRecQueue(String host, String user) throws FaxException {
     return readQueue(host, user, "recvq");
   }
 
@@ -119,8 +119,8 @@ public class Fax {
    * HANDLE THE SERVER AND MODEM STATE
    * ----------------------------------------------------------------------
    */
-  public static Vector readServerState(String host, String user) throws FaxException {
-    Vector	queue = new Vector();
+  public static Vector<String> readServerState(String host, String user) throws FaxException {
+    Vector<String>	queue = new Vector<String>();
     try {
       String            ret = getQueue(HFAX_PORT, host, user, "status");
       StringTokenizer   token = new StringTokenizer(ret, "\n");
@@ -175,7 +175,7 @@ public class Fax {
   /**
    * Convenience method
    */
-  public static void clearJob(String host, 
+  public static void clearJob(String host,
                               String user,
                               String job)
     throws IOException, PROTOException
@@ -476,8 +476,8 @@ public class Fax {
    * RETURNS A VECTOR OF STRINGS
    * ----------------------------------------------------------------------
    */
-  private static Vector readQueue(String host, String user, String qname) throws FaxException  {
-    Vector	queue = new Vector();
+  private static Vector<FaxStatus> readQueue(String host, String user, String qname) throws FaxException  {
+    Vector<FaxStatus>	queue = new Vector<FaxStatus>();
 
     try {
       String		ret = getQueue(HFAX_PORT, host, user, qname);
@@ -508,7 +508,7 @@ public class Fax {
                                            prozess.nextToken().trim()));	// ERRORTEXT %e
 	  }
 	} catch (Exception e) {
-          throw new FaxException(e.getMessage(), e);	  
+          throw new FaxException(e.getMessage(), e);
 	}
       }
     } catch (ConnectException e) {
@@ -625,7 +625,7 @@ public class Fax {
       rtc = 0;
     }
 
-    for (int i = st.countTokens(); i > 0; i--) { 
+    for (int i = st.countTokens(); i > 0; i--) {
       message.append(st.nextToken() + " ");
     }
 
@@ -740,7 +740,7 @@ public class Fax {
    * fuer die Protokollabhaengigen Fehler
    */
   public class PROTOException extends FaxException {
-    
+
 	public PROTOException(String s, int number) {
       super(s);
       this.number = number;
@@ -791,7 +791,7 @@ public class Fax {
     // ----------------------------------------------------------------------
     // DATA MEMBERS
     // ----------------------------------------------------------------------
-    
+
     private final boolean               debug1;
 
     protected final int                 port;
@@ -896,7 +896,7 @@ public class Fax {
   }
 
   public static void main(String[] argv) throws Exception  {
-    Vector      vec = Fax.readDoneQueue("vie.kopiright.com", "KOPI");
+    Vector<FaxStatus>      vec = Fax.readDoneQueue("vie.kopiright.com", "KOPI");
 
     System.out.println(vec.size());
   }

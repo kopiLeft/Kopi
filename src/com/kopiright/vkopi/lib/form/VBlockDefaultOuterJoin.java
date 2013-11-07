@@ -30,10 +30,10 @@ public class VBlockDefaultOuterJoin {
     this.block = block;
     this.fields = block.getFields();
     this.tables = block.getBlockTables();
-    this.joinedTables = new ArrayList();
-    this.processedFields = new ArrayList();
+    this.joinedTables = new ArrayList<String>();
+    this.processedFields = new ArrayList<String>();
   }
-  
+
   /**
    * constructs an outer join tree.
    */
@@ -59,7 +59,7 @@ public class VBlockDefaultOuterJoin {
             for (int j = 0; j < field.getColumnCount(); j++) {
               if (j != tableColumn) {
                 if (isJoinedTable(field.getColumn(j).getTable()) ) {
-                  // the table for this column is present in the outer join tree, can't do another outer join for this table ===> add an AND condition 
+                  // the table for this column is present in the outer join tree, can't do another outer join for this table ===> add an AND condition
                   // !!! wael 20070523: if the table for this column was used in another outer join tree, this will give a wrong outer join expression.
                   // must signal an error.
                     joinBuffer.append(" AND " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
@@ -111,7 +111,7 @@ public class VBlockDefaultOuterJoin {
     }
     return buffer.toString();
   }
-  
+
   public static StringBuffer getSearchCondition(VField fld, StringBuffer buffer) {
     if (fld.hasNullableCols()) {
       for(int j = 1; j < fld.getColumnCount(); j++) {
@@ -140,7 +140,7 @@ public class VBlockDefaultOuterJoin {
     }
     return buffer;
   }
-  
+
   public static String getFetchRecordCondition(VField[] fields) {
     String tailbuf = "";
 
@@ -169,7 +169,7 @@ public class VBlockDefaultOuterJoin {
     }
     return tailbuf;
   }
-  
+
   private void addToJoinedTables(int table) {
     joinedTables.add(Integer.toString(table));
   }
@@ -185,10 +185,10 @@ public class VBlockDefaultOuterJoin {
   private boolean isProcessedField(int field) {
     return processedFields.contains(Integer.toString(field));
   }
-  
-  private VBlock                block; 
+
+  private VBlock                block;
   private VField[]              fields;
-  private ArrayList             joinedTables;
-  private ArrayList             processedFields;
+  private ArrayList<String>     joinedTables;
+  private ArrayList<String>     processedFields;
   private String[]              tables;
 }

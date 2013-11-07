@@ -51,7 +51,7 @@ public class PParagraphStyle extends PBodyStyle {
     this.noBackground = noBackground;
     tabArray = stops;
     if (stops != null) {
-      tabs = new Hashtable();
+      tabs = new Hashtable<String, PTabStop>();
       for (int i = 0; i < stops.length; i++) {
         tabs.put(stops[i].getIdent(), stops[i]);
       }
@@ -63,7 +63,7 @@ public class PParagraphStyle extends PBodyStyle {
   // ----------------------------------------------------------------------
 
   /**
-   * Sets the style 
+   * Sets the style
    */
   public void setStyle(PTextBlock list, PLayoutEngine engine, boolean hasBang) {
     engine.setParagraphStyle(list, this, hasBang);
@@ -181,7 +181,7 @@ public class PParagraphStyle extends PBodyStyle {
     return border;
   }
   /**
-   * Returns the border 
+   * Returns the border
    */
   protected int getBorderMode() {
     return borderMode;
@@ -204,26 +204,26 @@ public class PParagraphStyle extends PBodyStyle {
     return superStyle;
   }
 
-  
+
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
  // ---------------------------------------------------------------------
 
-  public static final   int     BRD_TOP         = 1 << 0;
-  public static final   int     BRD_BOTTOM      = 1 << 1;
-  public static final   int     BRD_LEFT        = 1 << 2;
-  public static final   int     BRD_RIGHT       = 1 << 3;
-  public static final   int     BRD_ALL         = BRD_TOP + BRD_BOTTOM + BRD_LEFT + BRD_RIGHT;
+  public static final   int     		BRD_TOP         = 1 << 0;
+  public static final   int     		BRD_BOTTOM      = 1 << 1;
+  public static final   int     		BRD_LEFT        = 1 << 2;
+  public static final   int     		BRD_RIGHT       = 1 << 3;
+  public static final   int     		BRD_ALL         = BRD_TOP + BRD_BOTTOM + BRD_LEFT + BRD_RIGHT;
 
-  private String        superStyleIdent;
-  private PParagraphStyle       superStyle;
-  private boolean       noBackground;
-  private PTabStop[]    tabArray;
-  private int           align;
-  private int           indentLeft;
-  private float         border;
-  private int           borderMode;
-  private Color         color;
-  private Hashtable     tabs;
+  private String        			superStyleIdent;
+  private PParagraphStyle       		superStyle;
+  private boolean       			noBackground;
+  private PTabStop[]    			tabArray;
+  private int           			align;
+  private int           			indentLeft;
+  private float         			border;
+  private int           			borderMode;
+  private Color         			color;
+  private Hashtable<String, PTabStop>     	tabs;
 }

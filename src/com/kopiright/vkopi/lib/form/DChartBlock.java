@@ -40,9 +40,6 @@ public class DChartBlock extends DBlock {
    * ----------------------------------------------------------------------
    */
 
-/**
-   * Constructor
-   */
   public DChartBlock(DForm form, VBlock model) {
     super(form, model);
     if (getModel().getDisplaySize() < getModel().getBufferSize()) {
@@ -64,10 +61,10 @@ public class DChartBlock extends DBlock {
                                getModel().getDisplaySize(),
                                0,
                                getModel().getBufferSize() - 1);
-    
+
     adjustmentListener = new AdjustmentListener() {
         public void adjustmentValueChanged(final AdjustmentEvent e) {
-          if (getFormView().getInAction()) {
+          if (((DForm)getFormView()).getInAction()) {
             // do not change the rows if there is currently a
             // another command executed
             return;
@@ -77,7 +74,7 @@ public class DChartBlock extends DBlock {
                 if (!init) {
                   init = true;
                 } else {
-                  // Must be outside of event disp thread, so that 
+                  // Must be outside of event disp thread, so that
                   // the scrollbar loses focuses and stop the scroll thread
                   try {
                     setScrollPos(e.getValue());
@@ -87,7 +84,7 @@ public class DChartBlock extends DBlock {
                   }
                 }
               }
-            }); // performBasicAction : not asyncron!       
+            }); // performBasicAction : not asyncron!
         }
         private boolean		init;
       };
@@ -139,7 +136,7 @@ public class DChartBlock extends DBlock {
   // ----------------------------------------------------------------------
 
   class RNCEvent extends InvocationEvent implements Runnable {
-    
+
 	RNCEvent() {
       super(DChartBlock.this, EVT_RNC, null, null, false);
       runnable = this;
@@ -161,7 +158,7 @@ public class DChartBlock extends DBlock {
     int                 id = existingEvent.getID();
 
     switch (id) {
-    case RNCEvent.EVT_RNC: 
+    case RNCEvent.EVT_RNC:
       // coalesce updates to the scrollbar
       return existingEvent;
     default:

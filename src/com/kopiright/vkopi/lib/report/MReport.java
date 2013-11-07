@@ -19,43 +19,35 @@
 package com.kopiright.vkopi.lib.report;
 
 import java.util.Vector;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
+
+import javax.swing.event.EventListenerList;
 
 import com.graphbuilder.math.Expression;
 import com.graphbuilder.math.ExpressionTree;
 import com.graphbuilder.math.FuncMap;
 import com.graphbuilder.math.VarMap;
-
 import com.kopiright.util.base.Utils;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
-public class MReport extends AbstractTableModel implements Constants {
+public class MReport implements Constants {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
   // --------------------------------------------------------------------
 
   /**
-   * Comment for <code>serialVersionUID</code>
-   */
-  private static final long serialVersionUID = -7372702648334281245L;
-  
-  /**
    * Constructs a new report instance
    */
   public MReport() {
-    userRows = new Vector(500);
+    userRows = new Vector<VBaseRow>(500);
   }
 
   public int computeColumnWidth(int column) {
     int max = 0;
-    
-    for (int i = 0; i < baseRows.length; i++) { 
+
+    for (int i = 0; i < baseRows.length; i++) {
       if (baseRows[i].getValueAt(column) != null) {
         max = Math.max(max, baseRows[i].getValueAt(column).toString().length());
       }
@@ -88,7 +80,7 @@ public class MReport extends AbstractTableModel implements Constants {
 
     for (int i = 0; i < baseRows.length; i++) {
       Object[] data = new Object[getAccessibleColumnCount()];
-      
+
       for (int j = 0; j < position; j++) {
         data[j] = baseRows[i].getValueAt(j);
       }
@@ -99,7 +91,6 @@ public class MReport extends AbstractTableModel implements Constants {
       rows[i] = new VBaseRow(data);
     }
     baseRows = rows;
-    //fireTableChanged(new TableModelEvent(this));
   }
 
   public void  initializeAfterRemovingColumn(int position) {
@@ -129,7 +120,7 @@ public class MReport extends AbstractTableModel implements Constants {
    */
   public void addColumn(String label, int position) {
     VReportColumn[] cols = new VReportColumn[columns.length + 1];
-    
+
     // add the new column;
     cols[columns.length] = new VFixnumColumn(null,
                                              0,
@@ -144,7 +135,7 @@ public class MReport extends AbstractTableModel implements Constants {
     // copy the other columns.
     for (int i = 0; i < columns.length; i++) {
       cols[i] = columns[i];
-    }  
+    }
     columns = (VReportColumn[]) cols.clone();
     initializeAfterAddingColumn();
     VBaseRow[] rows = new VBaseRow[baseRows.length];
@@ -156,11 +147,10 @@ public class MReport extends AbstractTableModel implements Constants {
       }
       // fill the new column with  null , column data will be set by user.
       data[getAccessibleColumnCount() - 1] = null;
-      rows[i] = new VBaseRow(data); 
+      rows[i] = new VBaseRow(data);
     }
     baseRows = rows;
     //createTree();
-    //fireTableChanged(new TableModelEvent(this));
   }
 
   private void  initializeAfterAddingColumn() {
@@ -176,7 +166,7 @@ public class MReport extends AbstractTableModel implements Constants {
       newDisplayOrder[i] = displayOrder[i];
     }
     newDisplayOrder[columnCount - 1] = columnCount - 1;
-    
+
     displayOrder = newDisplayOrder;
     for (int i = 0; i < columnCount; i++) {
       reverseOrder[i] = i;
@@ -185,7 +175,7 @@ public class MReport extends AbstractTableModel implements Constants {
   }
 
   public void computeDataForColumn(int column, int[] columnIndexes, String formula) throws VExecFailedException {
-    Expression x;   
+    Expression x;
 
     try {
       x = ExpressionTree.parse(formula);
@@ -194,7 +184,7 @@ public class MReport extends AbstractTableModel implements Constants {
     }
     String[] params = x.getVariableNames();
     int[] paramColumns = new int[params.length];
-    int[] functions = new int[params.length]; 
+    int[] functions = new int[params.length];
     final int NONE = -1;
     final int MAX = 0;
     final int MIN = 1;
@@ -218,7 +208,7 @@ public class MReport extends AbstractTableModel implements Constants {
         } else if (params[i].startsWith("sumC")) {
           paramColumns[i] = Integer.parseInt(params[i].substring(4));
           functions[i] = SUM;
-        } else { 
+        } else {
           throw new VExecFailedException(MessageCode.getMessage("VIS-00061", params[i] + "\n", "Cx, maxCx, minCx, ovrCx, sumCx"));
         }
       } catch (NumberFormatException e) {
@@ -226,7 +216,7 @@ public class MReport extends AbstractTableModel implements Constants {
       }
       // test column indexes.
       boolean test = false;
-      
+
       for (int j = 0; j < columnIndexes.length; j++) {
         if (paramColumns[i] == columnIndexes[j]) {
           test = true;
@@ -237,10 +227,10 @@ public class MReport extends AbstractTableModel implements Constants {
         throw new VExecFailedException(MessageCode.getMessage("VIS-00063", params[i].substring(1)));
       }
     }
-    
+
     VarMap vm = new VarMap(false /* case sensitive */);
     FuncMap fm = null; // no functions in expression
-    
+
       for (int i = 0; i < baseRows.length; i++) {
         for (int j = 0; j < paramColumns.length; j++) {
           switch(functions[j]) {
@@ -259,7 +249,7 @@ public class MReport extends AbstractTableModel implements Constants {
               ((NotNullFixed)baseRows[0].getValueAt(paramColumns[j])).floatValue();
             // calculate max value.
             for (int k = 1; k < baseRows.length; k++) {
-              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ? 
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ?
                 0:
                 ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
               if (tmp > max) {
@@ -270,14 +260,14 @@ public class MReport extends AbstractTableModel implements Constants {
             break;
           case MIN:
             float min;
-            
+
             // init max
             min = baseRows[0].getValueAt(paramColumns[j]) == null ?
               0:
               ((NotNullFixed)baseRows[0].getValueAt(paramColumns[j])).floatValue();
             // calculate min value.
             for (int k = 1; k < baseRows.length; k++) {
-              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ? 
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ?
                 0:
                 ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
               if (tmp < min) {
@@ -288,11 +278,11 @@ public class MReport extends AbstractTableModel implements Constants {
             break;
           case OVR:
             float ovr;
-            
+
             ovr = 0;
             // calculate moyenne.
             for (int k = 1; k < baseRows.length; k++) {
-              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ? 
+              tmp = baseRows[k].getValueAt(paramColumns[j]) == null ?
                 0:
                 ((NotNullFixed)baseRows[k].getValueAt(paramColumns[j])).floatValue();
               ovr += tmp / baseRows.length;
@@ -301,7 +291,7 @@ public class MReport extends AbstractTableModel implements Constants {
             break;
           case SUM:
             float sum;
-            
+
             sum = 0;
             // calculate sum.
             for (int k = 1; k < baseRows.length; k++) {
@@ -325,7 +315,7 @@ public class MReport extends AbstractTableModel implements Constants {
         }
       }
   }
-  
+
   /**
    * Add a row to the list of rows defined by the user
    */
@@ -360,7 +350,7 @@ public class MReport extends AbstractTableModel implements Constants {
       reverseOrder[i]  = i;
       displayLevels[i] = -1;
     }
-      
+
   }
 
   // --------------------------------------------------------------------
@@ -570,7 +560,7 @@ public class MReport extends AbstractTableModel implements Constants {
       while(displayLevels[next] == displayLevels[start]){
     	  next ++;
       }
-      
+
       while (!accessiblecolumns[start].isVisible()) {
 	  // to get the first visible column of this level
 	  start++;
@@ -663,7 +653,7 @@ public class MReport extends AbstractTableModel implements Constants {
    */
   private void updateTableModel() {
     maxRowCount = addRowsInArray(root, 0);
-    fireTableChanged(new TableModelEvent(this));
+    fireContentChanged();
   }
 
   /**
@@ -814,7 +804,7 @@ public class MReport extends AbstractTableModel implements Constants {
    */
   public void setColumnFolded(int column, boolean fold) {
     accessiblecolumns[column].setFolded(fold);
-    fireTableChanged(new TableModelEvent(this));
+    fireContentChanged();
   }
 
   /**
@@ -822,7 +812,7 @@ public class MReport extends AbstractTableModel implements Constants {
    */
   public void switchColumnFolding(int column) {
     accessiblecolumns[column].setFolded(!accessiblecolumns[column].isFolded());
-    fireTableChanged(new TableModelEvent(this));
+    fireContentChanged();
   }
 
   /**
@@ -887,7 +877,6 @@ public class MReport extends AbstractTableModel implements Constants {
       reverseOrder[displayOrder[i]] = i;
     }
     createTree();
-    fireTableChanged(new TableModelEvent(this));
   }
 
   // --------------------------------------------------------------------
@@ -939,7 +928,7 @@ public class MReport extends AbstractTableModel implements Constants {
       e.printStackTrace();
     }
     return visibleRows[row].getLevel() < displayLevels[reverseOrder[column]] ?
-      null : 
+      null :
       x;
   }
 
@@ -998,14 +987,52 @@ public class MReport extends AbstractTableModel implements Constants {
   public int getBaseRowCount() {
     return baseRows.length;
   }
-  
+
   /**
    * Returns the number of visible rows.
    */
   public int getVisibleRowCount() {
     return visibleRows.length;
   }
-  
+
+  // --------------------------------------------------------------------
+  // LISTENERS HANDLING
+  // --------------------------------------------------------------------
+
+  /**
+   * Adds a listener to the list that's notified each time a change
+   * to the data model occurs.
+   *
+   * @param l The ReportListener
+   */
+  public void addReportListener(ReportListener l) {
+    listenerList.add(ReportListener.class, l);
+  }
+
+  /**
+   * Removes a listener from the list that's notified each time a
+   * change to the data model occurs.
+   *
+   * @param l The ReportListener
+   */
+  public void removeReportListener(ReportListener l) {
+    listenerList.remove(ReportListener.class, l);
+  }
+
+  /**
+   * Notifies all listeners that the report model has changed.
+   */
+  protected void fireContentChanged() {
+    Object[] listeners = listenerList.getListenerList();
+
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == ReportListener.class) {
+	((ReportListener)listeners[i+1]).contentChanged();
+      }
+    }
+  }
+
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
@@ -1021,7 +1048,7 @@ public class MReport extends AbstractTableModel implements Constants {
   // Baserows contains data give by the request of the user
   // visibleRows contains all data which will be displayed. It's like a buffer. visibleRows
   // is changed when a column move or one or more row are folded
-  private Vector		userRows;
+  private Vector<VBaseRow>	userRows;
   private VReportRow[]		baseRows;		// array of base data rows
   private VReportRow[]		visibleRows;		// array of visible rows
   private int			maxRowCount;
@@ -1033,9 +1060,17 @@ public class MReport extends AbstractTableModel implements Constants {
 
   // displayOrder contains index column model in display order
   // reverseOrder is calculate with displayOrder and contains index column display into model order
-  private int[]			displayOrder;		// column mapping from display to model
-  private int[]			reverseOrder;		// column mapping from model to display
+  private int[]		displayOrder;		// column mapping from display to model
+  private int[]		reverseOrder;		// column mapping from model to display
 
   // The displayLevels variable is a table which contains the level of each column
-  private int[]			displayLevels;		// column levels in display order
+  private int[]		displayLevels;		// column levels in display order
+
+  protected EventListenerList 	listenerList = new EventListenerList(); // List of listeners
+
+
+  /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = -7372702648334281245L;
 }

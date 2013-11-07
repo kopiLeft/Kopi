@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import com.kopiright.vkopi.lib.ui.base.FieldStates;
 import com.kopiright.vkopi.lib.ui.base.JFieldButton;
+import com.kopiright.vkopi.lib.ui.base.UComponent;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
@@ -40,15 +41,12 @@ import com.kopiright.vkopi.lib.visual.VException;
  * DField is a panel composed in a text field and an information panel
  * The text field appear as a JLabel until it is edited
  */
-public abstract class DField extends JPanel {
+public abstract class DField extends JPanel implements UField {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTION
   // ----------------------------------------------------------------------
 
-  /**
-   * Constructor
-   */
   public DField(VFieldUI model,
                 DLabel label,
                 int align,
@@ -136,7 +134,7 @@ public abstract class DField extends JPanel {
   /**
    * Field cell renderer
    */
-  void setPosition(int pos) {
+  public void setPosition(int pos) {
     this.pos = pos;
   }
 
@@ -144,10 +142,10 @@ public abstract class DField extends JPanel {
    * Field cell renderer
    * @return the position in chart (0..nbDisplay)
    */
-  int getPosition() {
+  public int getPosition() {
     return pos;
   }
-  
+
   /**
    * Returns the alignment
    */
@@ -204,14 +202,12 @@ public abstract class DField extends JPanel {
     // overridden in subclasses
   }
 
-  public DBlock getBlockView() {
+  /**
+   * @Override
+   */
+  public UBlock getBlockView() {
     return model.getBlockView();
   }
-
-  /**
-   * set blink state
-   */
-  public abstract void setBlink(boolean b);
 
   protected final boolean modelHasFocus() {
     if (getModel() == null) {
@@ -229,7 +225,7 @@ public abstract class DField extends JPanel {
       || !block.isRecordAccessible(model.getBlockView().getRecordFromDisplayLine(getPosition()));
   }
 
-  protected final int getAccess() {
+  public final int getAccess() {
     return getAccessAt(getPosition());
   }
 
@@ -296,7 +292,7 @@ public abstract class DField extends JPanel {
     }
   }
 
-  public JButton getAutofillButton() {
+  public UComponent getAutofillButton() {
     return info;
   }
 
@@ -390,9 +386,9 @@ public abstract class DField extends JPanel {
           }
         }
 
-        if (!model.getBlock().isMulti() 
+        if (!model.getBlock().isMulti()
             || model.getBlock().isDetailMode() == isInDetail()
-            || model.getBlock().noChart()) 
+            || model.getBlock().noChart())
         {
           KopiAction	action = new KopiAction("mouse1") {
               public void execute() throws VException {
@@ -414,9 +410,9 @@ public abstract class DField extends JPanel {
 
   protected	VFieldUI		model;
   public	DLabel			label;
-  protected	JButton			info;
-  protected	JButton			incr;
-  protected	JButton			decr;
+  protected	JFieldButton		info;
+  protected	JFieldButton		incr;
+  protected	JFieldButton		decr;
 
   protected	int			state;		// Display state
   protected	int			pos;
@@ -426,9 +422,11 @@ public abstract class DField extends JPanel {
   protected	boolean			isEditable;	// is this field editable
   protected	boolean			mouseInside;	// private events
 
-  private       boolean                 inDetail;
+  private      boolean             	inDetail;
 
   private static final ImageIcon listImg = Utils.getImage("list.gif");
   private static final ImageIcon rightImg = Utils.getImage("arrowright.gif");
   private static final ImageIcon leftImg = Utils.getImage("arrowleft.gif");
+
+  private static final long 		serialVersionUID = 5573115897514135654L;
 }

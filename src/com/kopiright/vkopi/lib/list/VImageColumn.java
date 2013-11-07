@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.list;
 
-import javax.swing.ImageIcon;
+import com.kopiright.vkopi.lib.visual.ImageHandler;
 
 public class VImageColumn extends VListColumn {
 
@@ -38,6 +38,6 @@ public class VImageColumn extends VListColumn {
    * Returns a string representation of value
    */
   public Object formatObject(Object value) {
-    return value == null ? VConstants.EMPTY_TEXT : (Object)new ImageIcon((byte[])value);
+    return value == null ? VConstants.EMPTY_TEXT : (Object)ImageHandler.getImageHandler().getImage((byte[])value);
   }
 }

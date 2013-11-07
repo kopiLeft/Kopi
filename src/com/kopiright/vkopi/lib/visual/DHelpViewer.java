@@ -50,7 +50,6 @@ import javax.swing.text.Document;
    */
   public DHelpViewer(VHelpViewer model) {
     super(model);
-    model.setDisplay(this);
     registerKeyboardAction(new AbstractAction() {
         /**
 		 * Comment for <code>serialVersionUID</code>

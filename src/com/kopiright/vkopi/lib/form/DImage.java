@@ -22,12 +22,11 @@ package com.kopiright.vkopi.lib.form;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import com.kopiright.vkopi.lib.visual.Utils;
 import java.awt.Component;
 
 public class DImage extends JPanel {
 
-  
+
 /**
    * Constructor
    */

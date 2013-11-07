@@ -19,7 +19,14 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Insets;
+import java.awt.Toolkit;
+
 import javax.swing.JScrollBar;
 import javax.swing.UIManager;
 
@@ -310,7 +317,7 @@ public class KopiMultiBlockLayout implements KopiLayoutManager {
 	    Dimension d1 = components[x][1].getPreferredSize();
 	    components[x][0].setBounds(aligns[x][1].alignRight ? left + sizes[x] - d1.width :
 				       left,
-				       0 * (columnHeight + vgap) + vgap + (0 == 0 ? 2 : 0) + insets.top,
+				       0 * (columnHeight + vgap) + vgap + insets.top,
 				       d1.width,
 				       columnHeight);
 	  for (int y = 1; y < components[0].length; y++) {
@@ -347,6 +354,7 @@ public class KopiMultiBlockLayout implements KopiLayoutManager {
 
   static {
     Font                font = UIManager.getFont("KopiLayout.font");
+    @SuppressWarnings("deprecation")
     FontMetrics         fm = Toolkit.getDefaultToolkit().getFontMetrics(font);
 
     textHeight = fm.getHeight()+ UIManager.getInt("FieldText.y.space");

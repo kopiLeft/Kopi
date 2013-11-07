@@ -23,13 +23,12 @@ import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.KnownBugs;
-import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VWindow;
-import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
 
@@ -84,7 +83,7 @@ public class Commands implements VConstants {
   public static void switchBlockView(final VBlock b) throws VException {
     assert b.isMulti() : "The command switchBlockView can be used only with a multi block.";
     //!!! graf 20080521 check that both chart and detail view are available
-    ((DMultiBlock)b.getDisplay()).switchView(-1);
+    ((UMultiBlock)b.getDisplay()).switchView(-1);
   }
 
   /**
@@ -483,6 +482,7 @@ public class Commands implements VConstants {
    * This method should be called after a self made save trigger
    * @exception	VException	an exception may occur during DB access
    */
+  @SuppressWarnings("deprecation")
   private static void saveDone(VBlock b, boolean single) throws VException {
     VForm	form = b.getForm();
     int		mode = b.getMode();
@@ -649,16 +649,15 @@ public class Commands implements VConstants {
     if (f != null) {
       int       v;
 
-      v = new ListDialog(VlibProperties.getString("search_operator"),
-                         new String[] {
-                           VlibProperties.getString("operator_eq"),
-                           VlibProperties.getString("operator_lt"),
-                           VlibProperties.getString("operator_gt"),
-                           VlibProperties.getString("operator_le"),
-                           VlibProperties.getString("operator_ge"),
-                           VlibProperties.getString("operator_ne")
-                         }
-                         ).selectFromDialog(b.getForm().getDisplay(), f.getDisplay());
+      v = new VListDialog(VlibProperties.getString("search_operator"),
+                          new String[] {
+                            VlibProperties.getString("operator_eq"),
+                            VlibProperties.getString("operator_lt"),
+                            VlibProperties.getString("operator_gt"),
+                            VlibProperties.getString("operator_le"),
+                            VlibProperties.getString("operator_ge"),
+                            VlibProperties.getString("operator_ne")
+                          }).selectFromDialog(b.getForm(), f);
       if (v != -1) {
         f.setSearchOperator(v);
         f.getForm().setFieldSearchOperator(f.getSearchOperator());
@@ -706,9 +705,9 @@ public class Commands implements VConstants {
       break;
 
     default:	// let user choose where to go
-      sel = new ListDialog(VlibProperties.getString("pick_in_list"),
-			   titleTable,
-			   otherBlocks).selectFromDialog(b.getForm(), null);
+      sel = new VListDialog(VlibProperties.getString("pick_in_list"),
+			    titleTable,
+			    otherBlocks).selectFromDialog(b.getForm(), null, null);
     }
 
     if (sel < 0) {

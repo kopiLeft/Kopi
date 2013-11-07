@@ -42,13 +42,13 @@ public class PixelConsumer implements ImageConsumer {
   }
 
   public boolean isComplete() {
-    return complete; 
+    return complete;
   }
 
   public void imageComplete(int status) {
     // TBR: bug as STATICIMAGEDONE is sent twice before and a break at this
     // time leads to incomplete images.
-    complete = status == IMAGEERROR;		
+    complete = status == IMAGEERROR;
   }
 
   public void setColorModel(ColorModel ignored) {
@@ -113,6 +113,7 @@ public class PixelConsumer implements ImageConsumer {
     }
   }
 
+  @SuppressWarnings("rawtypes")
   public void setProperties(java.util.Hashtable ignored) {
     // we currently ignore any properties
   }

@@ -31,11 +31,9 @@ import com.kopiright.vkopi.lib.l10n.LocalizationManager;
  */
 public class MessageCode {
 
-
   // ----------------------------------------------------------------------
   // STATIC METHODS
   // ----------------------------------------------------------------------
-
 
   /**
    * Returns a message (convenience routine).
@@ -104,39 +102,39 @@ public class MessageCode {
     String                      domain;
     String                      ident;
     String                      src;
-    
+
     if (!keyPattern.matcher(key).matches()) {
       throw new InconsistencyException("Malformed message key '" + key + "'");
     }
     domain = key.substring(0, 3);
     ident = key.substring(4, 9);
-    if (Application.getRegistry() == null) {
+    if (ApplicationContext.getRegistry() == null) {
       throw new InconsistencyException("No Registry set for this application.");
     }
-    src = Application.getRegistry().getMessageSource(domain);
+    src = ApplicationContext.getRegistry().getMessageSource(domain);
     if (src == null) {
       throw new InconsistencyException("No message source found for module '"
                                        + domain + "'");
     }
-    
+
     try {
       String            format;
-      
-      manager = new LocalizationManager(Locale.getDefault(), Application.getDefaultLocale());
+
+      manager = new LocalizationManager(Locale.getDefault(), ApplicationContext.getDefaultLocale());
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
       return (withKey? (key + ": ") : "") + MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
-      Application.reportTrouble("localize MessageCode",
-                                "com.kopiright.vkopi.lib.visual.MessageCode.getMessage(String key, Object[] params, boolean withKey)",
-                                e.getMessage(),
-                                e);
+      ApplicationContext.reportTrouble("localize MessageCode",
+                                       "com.kopiright.vkopi.lib.visual.MessageCode.getMessage(String key, Object[] params, boolean withKey)",
+                                       e.getMessage(),
+                                       e);
       System.err.println("ERROR: " + e.getMessage());
       return key + ": " + "message for !" + key + "! not found!";
     }
   }
-  
+
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

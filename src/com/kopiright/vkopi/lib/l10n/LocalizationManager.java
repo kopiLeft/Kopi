@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.l10n;
 
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -177,7 +176,7 @@ public class LocalizationManager {
     if (! documents.containsKey(source)) {
       documents.put(source, loadDocument(source));
     }
-    return (Document)documents.get(source);
+    return documents.get(source);
   }
 
   /**
@@ -219,7 +218,7 @@ public class LocalizationManager {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final Hashtable               documents = new Hashtable();
-  private final Locale                  locale;
-  private final Locale                  defaultLocale;
+  private final Hashtable<String, Document>	documents = new Hashtable<String, Document>();
+  private final Locale                  	locale;
+  private final Locale                  	defaultLocale;
 }

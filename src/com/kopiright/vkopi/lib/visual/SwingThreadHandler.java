@@ -27,13 +27,17 @@ import javax.swing.Timer;
 
 /**
  * Helps to run code in the Event dispatch Thread. Subclass it
- * and define the run Method. 
+ * and define the run Method.
  */
 public class SwingThreadHandler {
-  private SwingThreadHandler() {
-  }
-  
-  /**  
+
+  //-----------------------------------------------
+  // CONSTRCUTOR
+  //-----------------------------------------------
+
+  private SwingThreadHandler() {}
+
+  /**
    * starts it in the event dispatch Thread
    */
   private void invoke(Runnable runnable) {
@@ -58,7 +62,7 @@ public class SwingThreadHandler {
       } catch (InterruptedException ie) {
       } catch (java.lang.reflect.InvocationTargetException ite) {
         Throwable       throwable = ite.getTargetException();
-        
+
         if (throwable instanceof VRuntimeException) {
           throw (VRuntimeException) throwable;
         } if (throwable instanceof VException) {
@@ -114,12 +118,12 @@ public class SwingThreadHandler {
     if (! SwingUtilities.isEventDispatchThread()) {
       System.out.println("Must be called in event disp, Thread. " + message);
       Thread.dumpStack();
-      if (!Application.getDefaults().isDebugModeEnabled()) {
+      if (!ApplicationContext.getDefaults().isDebugModeEnabled()) {
         try {
-          Application.reportTrouble("SwingThreadHandler " + Thread.currentThread(), 
-                                    "verifyRunsInEventThread", 
-                                    "message", 
-                                    new RuntimeException(message));
+          ApplicationContext.reportTrouble("SwingThreadHandler " + Thread.currentThread(),
+                                           "verifyRunsInEventThread",
+                                           "message",
+                                           new RuntimeException(message));
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -138,7 +142,7 @@ public class SwingThreadHandler {
     } else {
       synchronized (queue) {
         queue.add(runner);
-      } 
+      }
     }
   }
 
@@ -167,38 +171,38 @@ public class SwingThreadHandler {
     }
   }
 
-  private static final void sendDebugMail(final String where, 
-                                          final String data, 
+  private static final void sendDebugMail(final String where,
+                                          final String data,
                                           final Throwable failure)
   {
-    if (!Application.getDefaults().isDebugModeEnabled()) {
-      // send the mail NOT in the awt-event-thread 
+    if (!ApplicationContext.getDefaults().isDebugModeEnabled()) {
+      // send the mail NOT in the awt-event-thread
       Runnable  localRunner = new Runnable() {
           public void run() {
-            Application.reportTrouble("Event Handling Queue",
-                                      where,
-                                      data,
-                                      failure);
+            ApplicationContext.reportTrouble("Event Handling Queue",
+                                             where,
+                                             data,
+                                             failure);
           }
         };
       new Thread(localRunner).start();
     } else {
       failure.printStackTrace();
     }
-  } 
+  }
 
   // ----------------------------------------------------------------------
   // Invocation Event Handling
   // ----------------------------------------------------------------------
-    
+
   private void addDebugableEventToQueue(Runnable runnable) {
     EventQueue  eq = Toolkit.getDefaultToolkit().getSystemEventQueue();
 
     eq.postEvent(new DebugableEvent(Toolkit.getDefaultToolkit(), runnable));
   }
 
-  class DebugableEvent extends InvocationEvent {
-    
+  /*package*/ class DebugableEvent extends InvocationEvent {
+
 	DebugableEvent(Object source, Runnable runnable) {
       super(source, runnable);
     }
@@ -225,11 +229,11 @@ public class SwingThreadHandler {
   private static final int                      INTERVAL = 80;
   private static final QueueHandler             queueHandler = new QueueHandler();
   private static final Timer                    swingTimer = new Timer(INTERVAL, queueHandler);
-  private static final ArrayList                queue = new ArrayList(2000);
+  private static final ArrayList<Runnable>      queue = new ArrayList<Runnable>(2000);
   static {
     swingTimer.setInitialDelay(0);
-    swingTimer.setCoalesce(true);    
-    swingTimer.start();    
+    swingTimer.setCoalesce(true);
+    swingTimer.start();
   }
 
   private static final SwingThreadHandler       runner = new SwingThreadHandler();

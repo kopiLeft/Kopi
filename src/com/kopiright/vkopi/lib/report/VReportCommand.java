@@ -19,15 +19,14 @@
 
 package com.kopiright.vkopi.lib.report;
 
-import com.kopiright.vkopi.lib.visual.VCommand;
-import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.print.DefaultPrintManager;
+import com.kopiright.vkopi.lib.print.PrintManager;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.VActor;
-import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.PrinterManager;
-import com.kopiright.vkopi.lib.print.PrintManager;
-import com.kopiright.vkopi.lib.print.DefaultPrintManager;
+import com.kopiright.vkopi.lib.visual.VActor;
+import com.kopiright.vkopi.lib.visual.VCommand;
+import com.kopiright.vkopi.lib.visual.VException;
 
 public class VReportCommand extends VCommand implements ActionHandler {
 
@@ -82,6 +81,7 @@ public class VReportCommand extends VCommand implements ActionHandler {
    * @param	VKT_Type	the number of the trigger
    */
 
+  @SuppressWarnings("deprecation")
   public void executeVoidTrigger(final int type) throws VException {
     switch (type) {
     case Constants.CMD_QUIT:

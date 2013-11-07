@@ -19,13 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.vkopi.lib.util.PreviewPrinter;
 import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.Rexec;
-import com.kopiright.vkopi.lib.util.IPPPrinter;
-import com.kopiright.vkopi.lib.util.LpRPrinter;
-import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.RPrinter;
 
 /**
  *
@@ -44,18 +38,18 @@ public abstract class PrinterManager {
    * Returns a print for previewing document
    */
   public abstract Printer getPreviewPrinter();
-    
+
   /**
    * Property print.server
    * Returns the name of the print server to use. for printing
    */
   public abstract String getPrintServer() throws PropertyException;
-  
+
   /**
    * Returns the preferred printer for the STANDARD_MEDIA
    */
   public abstract Printer getCurrentPrinter();
-  
+
   /**
    * Returns the preferredPrinter for the specified media.
    */
@@ -79,6 +73,6 @@ public abstract class PrinterManager {
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
-  
+
   private static PrinterManager         printerManager;
 }

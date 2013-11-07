@@ -20,7 +20,9 @@
 package com.kopiright.vkopi.lib.spellchecker;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class Suggestions {
@@ -46,7 +48,7 @@ public class Suggestions {
     return type;
   }
 
-  public List getSuggestions() {
+  public List<String> getSuggestions() {
     return suggestions;
   }
 
@@ -71,14 +73,14 @@ public class Suggestions {
   private void processError(String line) {
     offset = 0;
     type = RLT_ERROR;
-    suggestions = new ArrayList();
+    suggestions = new ArrayList<String>();
     originalWord = "";
   }
 
   private void processOk(String line) {
     offset = 0;
     type = RLT_OK;
-    suggestions = new ArrayList();
+    suggestions = new ArrayList<String>();
     originalWord = "";
   }
 
@@ -86,7 +88,7 @@ public class Suggestions {
     StringTokenizer     st = new StringTokenizer(line);
 
     type = RLT_NONE;
-    suggestions = new ArrayList();
+    suggestions = new ArrayList<String>();
 
     st.nextToken(); // skip '#'
     originalWord = st.nextToken();
@@ -102,7 +104,7 @@ public class Suggestions {
 
     int                 count = Integer.parseInt(st.nextToken().trim());
 
-    suggestions = new ArrayList(count);
+    suggestions = new ArrayList<String>(count);
     offset = Integer.parseInt(st.nextToken(":").trim());
 
     st = new StringTokenizer(st.nextToken(":"), ",");
@@ -111,10 +113,10 @@ public class Suggestions {
     }
   }
 
-  private  int     offset;
-  private  String  type;
-  private  List    suggestions;
-  private  String  originalWord;
+  private  int     		offset;
+  private  String  		type;
+  private  List<String>    	suggestions;
+  private  String  		originalWord;
 
   public static final String RLT_ERROR      = new String( "Error" );
   public static final String RLT_OK         = new String( "OK " );

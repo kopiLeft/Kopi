@@ -31,11 +31,11 @@ import java.util.Hashtable;
  * one or a space separated list of parents.
  */
 public class PropertyManager {
-  
+
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
    * Constructor
    * @param file               the properties file name
@@ -43,7 +43,7 @@ public class PropertyManager {
   public PropertyManager(String file) {
     this.file = file;
   }
-  
+
   /**
    * Gets a string for the given key from the resource bundle of this property manager
    * or one of its parents.
@@ -51,10 +51,10 @@ public class PropertyManager {
    * @return                   the string for the given key
    */
   public String getString(String key) {
-    return getString(file, new ArrayList(), key);
+    return getString(file, new ArrayList<String>(), key);
   }
-  
-  
+
+
   /**
    * Gets a string for the given key from the resource bundle of this property manager
    * or one of its parents.
@@ -63,9 +63,9 @@ public class PropertyManager {
    * @param key                the key for the desired string
    * @return                   the string for the given key
    */
-  public String getString(String resourceName, ArrayList visitedResources, String key) {
+  public String getString(String resourceName, ArrayList<String> visitedResources, String key) {
     ResourceBundle resource;
-    
+
     if (resourceName == null) {
       return null;
     } else if (resources.containsKey(resourceName)) {
@@ -86,37 +86,37 @@ public class PropertyManager {
         resource = null;
       }
     }
-    
+
     if (resource == null) {
       return null;
     } else {
       String value;
-      
+
       try {
         value = resource.getString(key);
       } catch (Exception e) {
         value = null;
       }
-      
-      if (value != null) { 
+
+      if (value != null) {
         return value;
       } else {
         // lookup on parents resources
         StringTokenizer st;
         String          p;
-        
+
         // mark the current resource as visited
         visitedResources.add(resourceName);
-        
+
         try {
           st = new StringTokenizer(resource.getString("parent"));
         } catch (Exception e) {
           return null;
         }
-        
+
         while (value == null && st.hasMoreTokens()) {
           p = st.nextToken();
-          
+
           // check this resource (p) if not already visited
           if(!visitedResources.contains(p)) {
             try {
@@ -131,21 +131,21 @@ public class PropertyManager {
     }
   }
 
-  
+
   // ----------------------------------------------------------------------
   // DEBUGGING ACCESSORS
   // ----------------------------------------------------------------------
-  
+
   public String getResourecsFileName() {
     return file;
   }
-  
-  
+
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  
-  private String                     file;
-  
-  private static Hashtable           resources = new Hashtable();
+
+  private String                     			file;
+
+  private static Hashtable<String, Object>           	resources = new Hashtable<String, Object>();
 }

@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Component;
 import java.util.EventListener;
 
 public interface BlockListener extends EventListener {
@@ -34,5 +33,5 @@ public interface BlockListener extends EventListener {
   void validRecordNumberChanged();
   void orderChanged();
 
-  Component getCurrentDisplay(); // please do not use!
+  UBlock getCurrentDisplay(); // please do not use!
 }

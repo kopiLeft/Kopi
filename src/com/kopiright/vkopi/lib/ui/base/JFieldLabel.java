@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 public class JFieldLabel extends JLabel implements FieldStates {
-  
+
 /**
    * Creates a <code>JFieldLabel</code> instance with the specified text.
    * The label is for fields in a form
@@ -41,11 +41,12 @@ public class JFieldLabel extends JLabel implements FieldStates {
     super();
   }
 
+  @SuppressWarnings("deprecation")
   public Dimension getPreferredSize() {
     Dimension           dim = super.getPreferredSize();
     FontMetrics         fm = Toolkit.getDefaultToolkit().getFontMetrics(getFont());
 
-    return new Dimension(dim.width + (((state & FieldStates.CHART) == 0) ? TXT_X_SPACE : 0), 
+    return new Dimension(dim.width + (((state & FieldStates.CHART) == 0) ? TXT_X_SPACE : 0),
                          fm.getHeight() + TXT_Y_SPACE);
   }
 
@@ -69,7 +70,7 @@ public class JFieldLabel extends JLabel implements FieldStates {
   public String getInfoText() {
     return infoText;
   }
-  
+
   public void setInDetailMode(boolean mode) {
     this.detailMode = mode;
   }
@@ -86,5 +87,5 @@ public class JFieldLabel extends JLabel implements FieldStates {
   /**
    * Comment for <code>serialVersionUID</code>
    */
-  private static final long serialVersionUID = -8885234047322326209L; 
+  private static final long serialVersionUID = -8885234047322326209L;
 }

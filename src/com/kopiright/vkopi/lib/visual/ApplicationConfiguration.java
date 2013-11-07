@@ -39,11 +39,11 @@ public abstract class ApplicationConfiguration {
   // --------------------------------------------------------------
 
   /**
-   * Property app.version  
+   * Property app.version
    * Returns the version of the application
    */
   public abstract String getVersion() throws PropertyException;
-  
+
   /**
    * Property app.name
    * Returns the application name
@@ -51,21 +51,21 @@ public abstract class ApplicationConfiguration {
   public abstract String getApplicationName() throws PropertyException;
 
   /**
-   * Property app.comment  
+   * Property app.comment
    * Returns the information text about this application
    */
   public abstract String getInformationText() throws PropertyException;
-  
+
   // --------------------------------------------------------------
   //   Application Debugging
   // --------------------------------------------------------------
-  
+
   /**
-   * Property debug.logfile  
+   * Property debug.logfile
    * Returns the failure file to add errors
    */
   public abstract String getLogFile() throws PropertyException;
-    
+
   /**
    * Returns the debug mode (that you can change dynamically)
    */
@@ -81,7 +81,7 @@ public abstract class ApplicationConfiguration {
   public abstract String getDebugMailRecipient() throws PropertyException;
 
   public abstract boolean mailErrors() throws PropertyException;
-  
+
   public abstract boolean logErrors() throws PropertyException;
 
   /**
@@ -94,13 +94,13 @@ public abstract class ApplicationConfiguration {
   // --------------------------------------------------------------
 
   /**
-   * Property smtp.server  
+   * Property smtp.server
    * Returns the name of the SMTP server to use
    */
   public abstract String getSMTPServer() throws PropertyException;
 
   /**
-   * Property fax.server 
+   * Property fax.server
    * Returns the name of the fax server to use.
    */
   public abstract String getFaxServer() throws PropertyException;
@@ -109,7 +109,7 @@ public abstract class ApplicationConfiguration {
    * Returns a RExec command handler
    */
   public abstract Rexec getRExec() throws PropertyException;
-  
+
   // --------------------------------------------------------------
   //   Spell checking
   // --------------------------------------------------------------
@@ -124,12 +124,12 @@ public abstract class ApplicationConfiguration {
   // --------------------------------------------------------------
 
   /**
-   * Reads the value of the property 
+   * Reads the value of the property
    *
    * @return the property
    */
   public abstract String getStringFor(String key) throws PropertyException;
-  
+
   public abstract boolean getBooleanFor(String key) throws PropertyException;
 
   public abstract int getIntFor(String key) throws PropertyException;
@@ -139,9 +139,9 @@ public abstract class ApplicationConfiguration {
    */
   public Language[] getDictionaryLanguages() {
     // no languages
-    ArrayList   langs = new ArrayList();
-    String      lang;
-    int         i=0;
+    ArrayList<Language>   	langs = new ArrayList<Language>();
+    String      		lang;
+    int         		i=0;
 
     try {
       while ((lang = getStringFor("aspell."+i+".language")) != null) {
@@ -184,7 +184,7 @@ public abstract class ApplicationConfiguration {
   }
 
   // --------------------------------------------------------------
-  // Database Encoding 
+  // Database Encoding
   // --------------------------------------------------------------
 
   public boolean isUnicodeDatabase() {

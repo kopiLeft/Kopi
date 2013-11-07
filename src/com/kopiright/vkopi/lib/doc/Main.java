@@ -36,20 +36,20 @@ import java.util.Vector;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.form.LatexPrintWriter;
+import com.kopiright.vkopi.lib.form.UForm;
 import com.kopiright.vkopi.lib.form.VForm;
-import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.Module;
-import com.kopiright.vkopi.lib.visual.Utils;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
 
 public class Main {
 
   private Main() {
-    vect = new Vector();
+    vect = new Vector<String>();
   }
 
   // ----------------------------------------------------------------------
@@ -111,11 +111,13 @@ public class Main {
     }
 
     //    Application.installLF(Application.getDefaults().getKopiLFProperties());
-    Application.setGeneratingHelp();
+    ApplicationContext.getApplicationContext().getApplication().setGeneratingHelp();
     Locale.setDefault(Locale.GERMAN); // !!! laurent 20020708 : do not force GERMAN
 
     // Load elements
     tree = createTree();
+
+    @SuppressWarnings("rawtypes")
     Enumeration         elems = tree.preorderEnumeration();
     int                 count = 0;
 
@@ -132,7 +134,7 @@ public class Main {
 	  form.genHelp(p, module.getDescription(), module.getHelp(), toAscii(module.toString()));
 	  fileWriter.close();
 	  if (genImage) {
-	    form.printSnapshot();
+	    ((UForm)form.getDisplay()).printSnapshot();
 	  }
 	  System.err.println("[" + ++count + "] " + module.getDescription());
 	} catch (Throwable e) {
@@ -223,12 +225,12 @@ public class Main {
   /**
    *
    */
-  private void genHelpFile(Vector vect, String appsName, String title) throws IOException {
-    PrintWriter         pw = new PrintWriter(new BufferedWriter(new FileWriter("help.tex")));
-    Hashtable           hash = new Hashtable();
+  private void genHelpFile(Vector<String> vect, String appsName, String title) throws IOException {
+    PrintWriter         		pw = new PrintWriter(new BufferedWriter(new FileWriter("help.tex")));
+    Hashtable<String, String>           hash = new Hashtable<String, String>();
 
     for (int i = 0; i < vect.size(); i++) {
-      hash.put((String)vect.elementAt(i), (String)vect.elementAt(i));
+      hash.put(vect.elementAt(i), vect.elementAt(i));
     }
 
     BufferedReader      fr = new BufferedReader(new FileReader("top.tex"));
@@ -238,6 +240,7 @@ public class Main {
       pw.println(s);
     }
 
+    @SuppressWarnings("rawtypes")
     Enumeration         elems = tree.preorderEnumeration();
 
     elems.nextElement(); // jump programme
@@ -258,22 +261,23 @@ public class Main {
   /**
    *
    */
-  private void genHelpForModule(Vector vect,
+  private void genHelpForModule(Vector<String> vect,
                                 String appsName,
                                 String title,
                                 Module parent,
                                 PrintWriter pw)
     throws IOException
   {
-    Hashtable   hash = new Hashtable();
+    Hashtable<String, String>   hash = new Hashtable<String, String>();
 
     pw.println("\\chapter{" + LatexPrintWriter.convert(parent.getDescription()) + "}");
     pw.println(LatexPrintWriter.convert(parent.getHelp()));
 
     for (int i = 0; i < vect.size(); i++) {
-      hash.put((String)vect.elementAt(i), (String)vect.elementAt(i));
+      hash.put(vect.elementAt(i), vect.elementAt(i));
     }
 
+    @SuppressWarnings("rawtypes")
     Enumeration                 elems = tree.preorderEnumeration();
     DefaultMutableTreeNode	node = null;
 
@@ -285,6 +289,7 @@ public class Main {
       }
     }
 
+    @SuppressWarnings("rawtypes")
     Enumeration         enum2 = node.preorderEnumeration();
 
     //enum2.nextElement(); // jump programme
@@ -406,8 +411,8 @@ public class Main {
    * Loads the accessible modules.
    */
   private Module[] loadModules(boolean isUnicode) {
-    Query	query = new Query(context.getDefaultConnection());
-    Vector	vector = new Vector();
+    Query		query = new Query(context.getDefaultConnection());
+    Vector<Module>	vector = new Vector<Module>();
 
     try {
       context.startWork();	// !!! BEGIN_SYNC
@@ -427,13 +432,13 @@ public class Main {
       query.open(QUERY_TEXT);
       int i = 0;
       while (query.next()) {
-	while (query.getInt(1) != ((Module)(vector.elementAt(i))).getId()) {
+	while (query.getInt(1) != (vector.elementAt(i)).getId()) {
 	  i++;
 	}
 	if (!query.getBoolean(2)) {
 	  vector.removeElementAt(i);
 	} else {
-	  ((Module)(vector.elementAt(i))).setAccessibility(Module.ACS_TRUE);
+	  (vector.elementAt(i)).setAccessibility(Module.ACS_TRUE);
 	  i++;
 	}
       }
@@ -487,6 +492,6 @@ public class Main {
 
   private static DBContext              context;
 
-  private Vector                        vect;	// Vector<File>
+  private Vector<String>                vect;	// Vector<File>
   private DefaultMutableTreeNode        tree;
 }

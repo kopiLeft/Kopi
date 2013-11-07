@@ -25,6 +25,7 @@ import java.io.IOException;
 /**
  * Local printer
  */
+@SuppressWarnings("deprecation")
 public class PreviewPrinter extends AbstractPrinter implements CachePrinter {
 
   /**
@@ -63,7 +64,7 @@ public class PreviewPrinter extends AbstractPrinter implements CachePrinter {
   public String print(PrintJob printData) throws IOException, PrintException {
       // execute in separte process
       File              dataFile = File.createTempFile("kopiprinter", "ps");
-      
+
       // file is used with an external program (and cache printer),
       // do not delete it
       printData.writeDataToFile(dataFile);

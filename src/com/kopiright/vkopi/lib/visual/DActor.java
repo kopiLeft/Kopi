@@ -31,7 +31,7 @@ import javax.swing.KeyStroke;
 
 import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 
-public class DActor {
+public class DActor implements UActor {
 
   // --------------------------------------------------------------------
   // CONSTRUCTOR
@@ -39,7 +39,6 @@ public class DActor {
 
   public DActor(VActor model) {
     this.model = model;
-    model.setDisplay(this);
     init();
   }
 
@@ -47,47 +46,35 @@ public class DActor {
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  /**
-   * @return The actor state (enabled or disabled)
-   */
+  @Override
   public boolean isEnabled() {
     return action.isEnabled();
   }
 
-  /**
-   * Sets the actor state (enabled or disabled)
-   */
+  @Override
   public void setEnabled(boolean enabled) {
     action.setEnabled(enabled);
   }
 
-  /**
-   * @return The actor visibility
-   */
+  @Override
   public boolean isVisible() {
     return button != null && button.isVisible();
   }
 
-  /**
-   * Sets the actor visibility
-   */
+  @Override
   public void setVisible(boolean visible) {
     if (button != null) {
       button.setVisible(visible);
     }
   }
 
-  /**
-   * Sets the actor model
-   */
+  @Override
   public void setModel(VActor model) {
     this.model = model;
     init();
   }
 
-  /**
-   * @return The actor model
-   */
+  @Override
   public VActor getModel() {
     return model;
   }

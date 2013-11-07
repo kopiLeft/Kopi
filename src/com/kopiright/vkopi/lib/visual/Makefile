@@ -27,12 +27,12 @@ PACKAGE =	com/kopiright/vkopi/lib/visual
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	ActionHandler Application 				\
+JAVAFILES +=	ActionHandler Application ApplicationContext		\
 		Constants DActor DFootPanel DInfoPanel			\
 		DMenuBar DMenuItem DMenuTree DObject DPreferences	\
 		DStatePanel DWaitPanel DWindow ProgressWindow		\
-		FileChooser DHelpViewer VHelpViewer			\
-		KopiAction KopiExecutable				\
+		JFileHandler FileHandler DHelpViewer VHelpViewer	\
+		KopiAction KopiExecutable JBookmarkPanel		\
 		MenuItemRenderer MessageCode Module 			\
 		Registry WaitDialogListener ProgressDialogListener	\
 		VActor VDefaultActor VActionListener			\
@@ -41,10 +41,13 @@ JAVAFILES +=	ActionHandler Application 				\
 		VInterruptException VMenuTree VRuntimeException		\
 		VTrigger VWindow DPositionPanel DPositionPanelListener  \
 		VDatabaseUtils WindowController SwingThreadHandler	\
-		UIBuilder WaitInfoListener MessageListener		\
+		WindowBuilder WaitInfoListener MessageListener		\
 		VerifyConfiguration ApplicationConfiguration		\
 		PrinterManager PropertyException ModelCloseListener	\
-		UserConfiguration Message VlibProperties WaitWindow
+		UserConfiguration Message VlibProperties WaitWindow	\
+		UWindow UMenuTree ImageHandler JImageHandler VModel	\
+		UIFactory JUIFactory JWindowController UActor		\
+		JApplication JApplicationContext
 
 
 OPTIONS =	ApplicationOptions

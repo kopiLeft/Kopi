@@ -16,7 +16,7 @@
 	  <property name="xfiles" 
 	            value="XBoolean.x XByte.x XCharacter.x XDate.x XDouble.x 
 	                   XFixed.x XFloat.x XInteger.x XMonth.x XShort.x 
-	                   XString.x XTime.x XWeek.x" />
+	                   XString.x XTime.x XTimestamp.x XWeek.x" />
 
   <property name="jfiles" 
             value="NullValueInComparison.java NullValueInCastOperator.java
@@ -25,7 +25,7 @@
 
   <target name="non.standard.build" >
   	<java.def classname="com.kopiright.xkopi.comp.xkjc.Main">
-  				<arg line="--verbose --nooo --xkjcpath /dev/null -d ${classroot} ${xfiles} ${jfiles}" />
+  	  <arg line="--verbose --nooo --xkjcpath /dev/null -d ${classroot} ${xfiles} ${jfiles}" />
 	</java.def>
   </target>
 

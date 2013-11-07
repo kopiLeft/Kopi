@@ -22,9 +22,10 @@ package com.kopiright.vkopi.lib.visual;
 import com.kopiright.vkopi.lib.l10n.ActorLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.MenuLocalizer;
+import com.kopiright.vkopi.lib.ui.base.UComponent;
 
 
-public class VActor {
+public class VActor implements VModel {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
@@ -102,21 +103,27 @@ public class VActor {
   /**
    * Sets the model display
    */
-  public void setDisplay(DActor display) {
+  public void setDisplay(UActor display) {
     this.display = display;
   }
 
-  /**
-   * Returns the model display
-   */
-  public DActor getDisplay() {
+  @Override
+  public UActor getDisplay() {
     return display;
+  }
+
+  @Override
+  public void setDisplay(UComponent display) {
+    assert display instanceof UActor : "VActor display should be UActor";
+
+    this.display = (UActor)display;
   }
 
   // ----------------------------------------------------------------------
   // ACTIONS HANDLING
   // ----------------------------------------------------------------------
 
+  @SuppressWarnings("deprecation")
   public void performAction() {
     handler.performAction(new KopiAction(menuItem + " in " + menuName) {
       public void execute() throws VException {
@@ -223,7 +230,7 @@ public class VActor {
 
   private String                			menuSource;  // qualified name of menu's source file
   private String                			actorSource; // qualified name of actor's source file
-  private DActor                			display;
+  private UActor                			display;
   private int                   			number;
   private ActionHandler         			handler;
 

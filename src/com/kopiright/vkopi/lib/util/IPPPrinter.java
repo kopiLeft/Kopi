@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.util;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,6 +29,7 @@ import com.kopiright.util.ipp.IPPClient;
  * IPP printer
  */
 
+@SuppressWarnings("deprecation")
 public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
 
   // --------------------------------------------------------------------
@@ -50,7 +51,7 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
                     int port,
                     String printer,
                     String user,
-                    List attributesForMedia)
+                    List<?> attributesForMedia)
   {
     super(name);
     this.host = host;
@@ -64,7 +65,7 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  public List getMediaTypes() throws IOException {
+  public List<?> getMediaTypes() throws IOException {
     IPPClient   client = new IPPClient(host, (short)port, printer, user);
 
     return client.getMediaTypes();
@@ -80,7 +81,7 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
     if (media == null) {
       return null;
     } else {
-      Iterator  it = attributesForMedia.iterator();
+      Iterator<?>  it = attributesForMedia.iterator();
 
       while (it.hasNext()) {
         String[]        att = (String[])it.next();
@@ -113,9 +114,9 @@ public class IPPPrinter extends AbstractPrinter  implements CachePrinter {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final String          user;
-  private final String          host;
-  private final String          printer;
-  private final int             port;
-  private final List            attributesForMedia;
+  private final String          		user;
+  private final String          		host;
+  private final String          		printer;
+  private final int             		port;
+  private final List<?>            		attributesForMedia;
 }

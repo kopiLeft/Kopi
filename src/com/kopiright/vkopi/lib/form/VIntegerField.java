@@ -161,8 +161,8 @@ public class VIntegerField extends VField {
    * Sets the field value of given record to a int value.
    */
   public void setInt(int r, Integer v) {
-    if (isChangedUI() 
-        || value[r] == null 
+    if (isChangedUI()
+        || value[r] == null
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -265,7 +265,7 @@ public class VIntegerField extends VField {
     Integer       sum = null;
 
     for (int i = 0; i < getBlock().getBufferSize(); i++) {
-      if (!isNullImpl(i) 
+      if (!isNullImpl(i)
           && getBlock().isRecordFilled(i)
           && (!exclude || i != getBlock().getActiveRecord())) {
         if (sum == null) {
@@ -345,15 +345,15 @@ public class VIntegerField extends VField {
   public void setCriticalMinValue(int criticalMinValue) {
     this.criticalMinValue = new Integer(criticalMinValue);
   }
-  
+
   public void setCriticalMaxValue(int criticalMaxValue) {
     this.criticalMaxValue = new Integer(criticalMaxValue);
   }
-  
+
   public void setCriticalMinValue(Integer criticalMinValue) {
     this.criticalMinValue = criticalMinValue;
   }
-  
+
   public void setCriticalMaxValue(Integer criticalMaxValue) {
     this.criticalMaxValue = criticalMaxValue;
   }
@@ -365,7 +365,7 @@ public class VIntegerField extends VField {
         return;
       }
     }
-    
+
     if (value[0] != null && criticalMaxValue != null) {
       if (value[0].compareTo(criticalMaxValue) > 0) {
         setHasCriticalValue(true);
@@ -374,13 +374,13 @@ public class VIntegerField extends VField {
     }
     setHasCriticalValue(false);
   }
-  
+
   private void setHasCriticalValue(boolean critical) {
     if (getDisplay() != null) {
-      ((DTextField)getDisplay()).setHasCriticalValue(critical);
+      ((UTextField)getDisplay()).setHasCriticalValue(critical);
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -390,8 +390,8 @@ public class VIntegerField extends VField {
   private int			maxval;		// maximum value allowed
 
   // dynamic data
-  private Integer[]	value;		// value
-  private Integer	criticalMinValue;
-  private Integer	criticalMaxValue;
+  private Integer[]		value;		// value
+  private Integer		criticalMinValue;
+  private Integer		criticalMaxValue;
 }
 

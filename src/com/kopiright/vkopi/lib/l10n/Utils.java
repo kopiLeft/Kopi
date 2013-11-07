@@ -38,33 +38,35 @@ public class Utils {
   /**
    * Returns the child with specified type and attribute = value.
    */
+  @SuppressWarnings("unchecked")
   public static Element lookupChild(Element parent,
                                     String type,
                                     String attribute,
                                     String value)
   {
-    List        childs;
-    
+    List<Element>        childs;
+
     childs = parent.getChildren(type);
-    for (Iterator i = childs.iterator(); i.hasNext(); ) {
+    for (Iterator<Element> i = childs.iterator(); i.hasNext(); ) {
       Element   e;
 
-      e = (Element)i.next();
+      e = i.next();
       if (e.getAttributeValue(attribute) != null
           && e.getAttributeValue(attribute).equals(value)) {
         return e;
       }
     }
-    throw new InconsistencyException(((parent.getDocument() == null)? "<filename not set>" : parent.getDocument().getBaseURI()) 
+    throw new InconsistencyException(((parent.getDocument() == null)? "<filename not set>" : parent.getDocument().getBaseURI())
                                      + ": " + type + " " + attribute + " = " + value + " not found");
   }
 
   /**
    * Returns the child with specified type.
    */
+  @SuppressWarnings("unchecked")
   public static Element lookupChild(Element parent, String type) {
-    List        childs;
-    
+    List<Element>       childs;
+
     childs = parent.getChildren(type);
     if (childs.size() == 0) {
       throw new InconsistencyException(parent.getDocument().getBaseURI() + ": "
@@ -73,7 +75,7 @@ public class Utils {
       throw new InconsistencyException(parent.getDocument().getBaseURI() + ": "
                                        + type + " not unique");
     } else {
-      return (Element)childs.get(0);
+      return childs.get(0);
     }
   }
 }

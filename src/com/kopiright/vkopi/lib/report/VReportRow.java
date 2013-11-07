@@ -106,6 +106,8 @@ public abstract class VReportRow extends DefaultMutableTreeNode {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  protected Object[]		data;
-  private   boolean		visible;
+  protected Object[]					data;
+  private   boolean					visible;
+
+  private static final long 				serialVersionUID = 857795567573130287L;
 }

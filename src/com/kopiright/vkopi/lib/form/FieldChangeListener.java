@@ -23,9 +23,25 @@ import java.util.EventListener;
 
 public interface FieldChangeListener extends EventListener {
 
+  /**
+   * Fired when the field label is changed.
+   */
   void labelChanged();
+  
+  /**
+   * Fires when the field search operator is changed.
+   */
   void searchOperatorChanged();
+  
+  /**
+   * Fired when field value is changed.
+   * @param r The current record.
+   */
   void valueChanged(int r);
+  
+  /**
+   * Fired when a field access is changed.
+   * @param r The current record.
+   */
   void accessChanged(int r);
-
 }

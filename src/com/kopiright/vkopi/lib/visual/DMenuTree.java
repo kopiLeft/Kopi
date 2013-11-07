@@ -27,11 +27,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
@@ -41,29 +44,30 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import com.kopiright.vkopi.lib.ui.base.JBookmarkPanel;
 import com.kopiright.xkopi.lib.base.Query;
 
-public class DMenuTree extends DWindow {
+public class DMenuTree extends DWindow implements UMenuTree {
 
   // --------------------------------------------------------------------
   // CONSTRUCTOR
   // --------------------------------------------------------------------
 
+  @SuppressWarnings("deprecation")
   public DMenuTree(VMenuTree model) {
     super(model);
-    tree = new JTree(model.getRoot());
-    shortcuts = new Hashtable();
-    orderdShorts = new ArrayList();
-    modules = new ArrayList();
+    tree = new Tree(model.getRoot());
+    shortcuts = new Hashtable<Module, Action>();
+    orderdShorts = new ArrayList<Action>();
+    modules = new ArrayList<Module>();
 
     tree.addMouseListener(new MouseAdapter() {
       private long lastClick;
 
       public void mouseClicked(MouseEvent e) {
-	if (e.getClickCount() == 2 && !getVMenuTree().isSuperUser()) {
+	if (e.getClickCount() == 2 && !getModel().isSuperUser()) {
 	  callSelectedForm();
 	} else {
 	  if (e.getWhen() - lastClick < 400) {
@@ -104,7 +108,7 @@ public class DMenuTree extends DWindow {
       }
     });
 
-    tree.setCellRenderer(new MenuItemRenderer(getVMenuTree().isSuperUser()));
+    tree.setCellRenderer(new MenuItemRenderer(getModel().isSuperUser()));
     tree.putClientProperty("JTree.lineStyle", "None");
 
     /* Make tree ask for the height of each row. */
@@ -120,21 +124,20 @@ public class DMenuTree extends DWindow {
     toolbar = new JBookmarkPanel(VlibProperties.getString("toolbar-title"));
 
 
-    for (int i = 0; i < getVMenuTree().getShortcutsID().size() ; i++) {
-      int       id = ((Integer)getVMenuTree().getShortcutsID().get(i)).intValue();
+    for (int i = 0; i < getModel().getShortcutsID().size() ; i++) {
+      int       id = ((Integer)getModel().getShortcutsID().get(i)).intValue();
 
-      for (int j = 0; j < getVMenuTree().getModuleArray().length; j++) {
-	if (getVMenuTree().getModuleArray()[j].getId() == id) {
-	  addShortcut(getVMenuTree().getModuleArray()[j]);
+      for (int j = 0; j < getModel().getModuleArray().length; j++) {
+	if (getModel().getModuleArray()[j].getId() == id) {
+	  addShortcut(getModel().getModuleArray()[j]);
 	}
       }
     }
-    if (!getVMenuTree().getShortcutsID().isEmpty()) {
+    if (!getModel().getShortcutsID().isEmpty()) {
       toolbar.show();
       toolbar.toFront();
     }
 
-    getModel().setDisplay(this);
     if (tree.getRowCount() > 0) {
       tree.setSelectionInterval(0, 0);
     }
@@ -147,11 +150,30 @@ public class DMenuTree extends DWindow {
   // --------------------------------------------------------------------
 
   /**
+   * Show Application Information
+   */
+  public void showApplicationInformation(String message) {
+    SwingThreadHandler.verifyRunsInEventThread("DWindow showApplicationInformation");
+    verifyNotInTransaction("DWindow.showApplicationInformation(" + message + ")");
+
+    Object[] options = {VlibProperties.getString("CLOSE")};
+
+    JOptionPane.showOptionDialog(getFrame(),
+                                 message,
+                                 VlibProperties.getString("Notice"),
+                                 JOptionPane.DEFAULT_OPTION,
+                                 JOptionPane.INFORMATION_MESSAGE,
+                                 com.kopiright.vkopi.lib.util.Utils.getImage("info.gif"),
+                                 options,
+                                 options[0]);
+   }
+
+  /**
    * Adds the given module to avorites
    */
   public void addShortcut(final Module module) {
     if (!shortcuts.containsKey(module)) {
-      AbstractAction    action = new AbstractAction(module.getDescription(), module.getIcon()) {
+      AbstractAction    action = new AbstractAction(module.getDescription(), (ImageIcon)module.getIcon()) {
 
 	public void actionPerformed(ActionEvent e) {
 	  setWaitInfo(VlibProperties.getString("menu_form_started"));
@@ -214,7 +236,7 @@ public class DMenuTree extends DWindow {
       try {
         getModel().getDBContext().abortWork();
       } catch (SQLException ef) {
-        // TODO handle exception
+        ef.printStackTrace();
       }
       e.printStackTrace();
     }
@@ -246,7 +268,7 @@ public class DMenuTree extends DWindow {
     if (node != null) {
       final Module      module = (Module)node.getUserObject();
 
-      if (getVMenuTree().isSuperUser()) {
+      if (getModel().isSuperUser()) {
 	module.setAccessibility((module.getAccessibility() + 1) % 3);
 	((DefaultTreeModel)tree.getModel()).nodeChanged(node);
       } else if (node.isLeaf()) {
@@ -258,9 +280,7 @@ public class DMenuTree extends DWindow {
     }
   }
 
-  /**
-   * Adds the selected module in the menu tree to favorites
-   */
+  @Override
   public void addSelectedElement() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
@@ -270,21 +290,18 @@ public class DMenuTree extends DWindow {
     }
   }
 
-  /**
-   * Sets the menu tree menu. This allows enabling and disabling menu tree actors
-   * according to the selected tree node.
-   */
+  @Override
   public void setMenu() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
-    getModel().setActorEnabled(VMenuTree.CMD_QUIT, !getVMenuTree().isSuperUser());
+    getModel().setActorEnabled(VMenuTree.CMD_QUIT, !getModel().isSuperUser());
     getModel().setActorEnabled(VMenuTree.CMD_INFORMATION, true);
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true);
 
     if (node != null) {
       Module    module = (Module)node.getUserObject();
 
-      getVMenuTree().setToolTip(module.getHelp());
+      getModel().setToolTip(module.getHelp());
       getModel().setActorEnabled(VMenuTree.CMD_SHOW, shortcuts.size() > 0);
       if (node.isLeaf()) {
 	getModel().setActorEnabled(VMenuTree.CMD_OPEN, true);
@@ -293,7 +310,7 @@ public class DMenuTree extends DWindow {
 	getModel().setActorEnabled(VMenuTree.CMD_FOLD, false);
 	getModel().setActorEnabled(VMenuTree.CMD_UNFOLD, false);
       } else {
-	getModel().setActorEnabled(VMenuTree.CMD_OPEN, getVMenuTree().isSuperUser());
+	getModel().setActorEnabled(VMenuTree.CMD_OPEN, getModel().isSuperUser());
 	getModel().setActorEnabled(VMenuTree.CMD_ADD, false);
 	if (tree.isExpanded(tree.getSelectionPath())) {
 	  getModel().setActorEnabled(VMenuTree.CMD_FOLD, true);
@@ -306,9 +323,7 @@ public class DMenuTree extends DWindow {
     }
   }
 
-  /**
-   * Removes the selected module in the menu tree from favorites
-   */
+  @Override
   public void removeSelectedElement() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
@@ -318,9 +333,7 @@ public class DMenuTree extends DWindow {
     }
   }
 
-  /**
-   * @Override
-   */
+  @Override
   public void run() throws VException {
     setVisible(true);
   }
@@ -359,10 +372,10 @@ public class DMenuTree extends DWindow {
     // ensure that it is executed in event dispatch Thread
     SwingThreadHandler.startAndWait(new Runnable() {
       public void run () {
-	if (!((VMenuTree)getModel()).isSuperUser()
+	if (!getModel().isSuperUser()
 	    && askUser(Message.getMessage("confirm_quit"), false))
 	{
-	  Application.quit();
+	  JApplication.quit();
 	}
       }
     });
@@ -372,25 +385,19 @@ public class DMenuTree extends DWindow {
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  /**
-   * @return The Tree instance
-   */
-  public JTree getTree() {
+  @Override
+  public UTree getTree() {
     return tree;
   }
 
-  /**
-   * @return The favorites panel
-   */
-  public JBookmarkPanel getBookmark() {
+  @Override
+  public UBookmarkPanel getBookmark() {
     return toolbar;
   }
 
-  /**
-   * @return The VMenuTree model
-   */
-  public VMenuTree getVMenuTree() {
-    return (VMenuTree) getModel();
+  @Override
+  public VMenuTree getModel() {
+    return (VMenuTree) super.getModel();
   }
 
   /**
@@ -400,14 +407,50 @@ public class DMenuTree extends DWindow {
     return (Action[]) orderdShorts.toArray(new Action[shortcuts.size()]);
   }
 
+  //------------------------------------------------------------
+  // UTREE IMPLEMENTATION
+  //------------------------------------------------------------
+
+  public class Tree extends JTree implements UTree {
+
+    //--------------------------------------------------------
+    // CONSTRUCTOR
+    //--------------------------------------------------------
+
+    public Tree(TreeNode root) {
+      super(root);
+    }
+
+    @Override
+    public boolean isExpanded(Object path) {
+      return super.isExpanded((TreePath) path);
+    }
+
+    @Override
+    public boolean isCollapsed(Object path) {
+      return super.isCollapsed((TreePath) path);
+    }
+
+    @Override
+    public int getSelectionRow() {
+      return super.getSelectionRows()[0];
+    }
+
+    //------------------------------------------------------------
+    // DATA MEMBERS
+    //------------------------------------------------------------
+
+    private static final long 		serialVersionUID = 6483277701915117544L;
+  }
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private JTree					tree;
+  private Tree					tree;
   private JBookmarkPanel        		toolbar;
-  private Hashtable             		shortcuts;
-  private ArrayList             		orderdShorts;
-  private List                  		modules;
+  private Map<Module, Action>              	shortcuts;
+  private List<Action>             		orderdShorts;
+  private List<Module>                  	modules;
   private static final long 			serialVersionUID = -6740174181163603800L;
 }

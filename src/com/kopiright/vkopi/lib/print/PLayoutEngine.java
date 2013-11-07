@@ -158,9 +158,9 @@ class PLayoutEngine {
     currentPhrase = null;
     currentPos = x;
   }
-  
+
   /**
-   * Gets the current x position. 
+   * Gets the current x position.
    */
   public float getPosition() {
     return currentPos;
@@ -204,7 +204,7 @@ class PLayoutEngine {
    * Sets the current x position (from tabs)
    */
   public void addPageCount(int nummer) {
-      addText(String.valueOf(nummer));        
+      addText(String.valueOf(nummer));
   }
 
   // ----------------------------------------------------------------------
@@ -277,6 +277,7 @@ class PLayoutEngine {
   /**
    * gets the length of a string in pixels
    */
+  @SuppressWarnings("deprecation")
   public float getStringWidth(String str) {
     return currentFont.getBaseFont().getWidthPoint(str,currentFont.size());
   }
@@ -432,11 +433,12 @@ class PLayoutEngine {
       return style;
     }
 
-
+    @SuppressWarnings("unused")
     public float getTranslation() {
       return translate;
     }
 
+    @SuppressWarnings("unused")
     public void translate(float translate) {
       this.translate = translate;
     }
@@ -523,19 +525,19 @@ class PLayoutEngine {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private float         currentPos;
-  private Phrase        currentPhrase;
-  private Font          currentFont = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, java.awt.Color.magenta);
+  private float         		currentPos;
+  private Phrase        		currentPhrase;
+  private Font          		currentFont = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, java.awt.Color.magenta);
 
-  private int		align;
-  private boolean	firstLine;
-  private boolean	needDescend;
-  private boolean	hasText;
-  private float		lineHeight;
-  private float		lineDescend;
-  private float		height;
+  private int				align;
+  private boolean			firstLine;
+  private boolean			needDescend;
+  private boolean			hasText;
+  private float			        lineHeight;
+  private float			        lineDescend;
+  private float			        height;
 
-  private Vector                commands = new Vector();
-  private TranslateCommand      translate;
-  private BlockPainter          blockStyle;
+  private Vector<Command>  		commands = new Vector<Command>();
+  private TranslateCommand      	translate;
+  private BlockPainter          	blockStyle;
 }

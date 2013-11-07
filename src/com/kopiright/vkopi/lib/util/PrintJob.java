@@ -35,7 +35,7 @@ import com.lowagie.text.Rectangle;
 /**
  * PPage/Report creates a PrintJob
  *
- * A Printer creates a PrintTask from a PrintJob 
+ * A Printer creates a PrintTask from a PrintJob
  */
 public class PrintJob {
 
@@ -43,7 +43,7 @@ public class PrintJob {
     this(Utils.getTempFile("kopi", "pdf"), true, format);
   }
 
-  public PrintJob(byte[] data, Rectangle format) throws IOException {    
+  public PrintJob(byte[] data, Rectangle format) throws IOException {
     this(writeToFile(new ByteArrayInputStream(data)), true, format);
   }
 
@@ -67,7 +67,7 @@ public class PrintJob {
 
   private static File writeToFile(InputStream dataStream) throws IOException {
     File              tempFile = Utils.getTempFile("kopi", "pdf");
-    
+
     writeToFile(dataStream, tempFile);
     return tempFile;
   }
@@ -76,7 +76,7 @@ public class PrintJob {
     byte[]            buffer = new byte[1024];
     OutputStream      output;
     int               length;
-    
+
     output = new FileOutputStream(outputfile);
     while ((length = dataStream.read(buffer)) != -1) {
       output.write(buffer, 0, length);
@@ -127,19 +127,19 @@ public class PrintJob {
     // the stream if necessary
     data = getInputStream();
     output = new ByteArrayOutputStream();
-    
+
     while ((length = data.read(buffer)) != -1) {
       output.write(buffer, 0, length);
     }
     return output.toByteArray();
   }
-  
+
   public void writeDataToFile(File file) throws IOException {
     writeToFile(getInputStream(), file);
   }
 
   public void setTitle(String title) {
-    this.title = title; 
+    this.title = title;
   }
 
   public void setPrintInformation(String title, Rectangle format, int numberOfPages) {
@@ -152,10 +152,12 @@ public class PrintJob {
     return format;
   }
 
+  @SuppressWarnings("deprecation")
   public int getWidth() {
     return (int)format.width();
   }
 
+  @SuppressWarnings("deprecation")
   public int getHeight() {
     return (int)format.height();
   }
@@ -189,7 +191,7 @@ public class PrintJob {
    */
   public void setMedia(String media) {
     this.media = media;
-  }  
+  }
 
   /**
    * Get the printing attribute for this object
@@ -253,10 +255,15 @@ public class PrintJob {
   public static Rectangle       FORMAT_LEGAL  = PageSize.LEGAL;
 
   // A5, A4, A3, Letter and Legal page format (landscape)
+  @SuppressWarnings("deprecation")
   public static Rectangle       FORMAT_A5_R     = new Rectangle(PageSize.A5.rotate().width(), PageSize.A5.rotate().height());
+  @SuppressWarnings("deprecation")
   public static Rectangle       FORMAT_A4_R     = new Rectangle(PageSize.A4.rotate().width(), PageSize.A4.rotate().height());
+  @SuppressWarnings("deprecation")
   public static Rectangle       FORMAT_A3_R     = new Rectangle(PageSize.A3.rotate().width(), PageSize.A3.rotate().height());
+  @SuppressWarnings("deprecation")
   public static Rectangle       FORMAT_LETTER_R = new Rectangle(PageSize.LETTER.rotate().width(), PageSize.LETTER.rotate().height());
+  @SuppressWarnings("deprecation")
   public static Rectangle       FORMAT_LEGAL_R  = new Rectangle(PageSize.LEGAL.rotate().width(), PageSize.LEGAL.rotate().height());
 
   // Raw format (Used for label printers)

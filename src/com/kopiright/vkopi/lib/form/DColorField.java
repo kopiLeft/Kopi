@@ -19,14 +19,19 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JPanel;
 import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 /**
@@ -38,9 +43,7 @@ public class DColorField extends DObjectField {
   // CONSTRUCTION
   // ----------------------------------------------------------------------
 
-  
-
-/**
+  /**
    * Constructor
    *
    * @param	model		the model for this text field
@@ -186,7 +189,7 @@ public class DColorField extends DObjectField {
 
   public void updateFocus() {
     label.update(getModel(), getPosition());
-    fireMouseHasChanged();    
+    fireMouseHasChanged();
     updateAlways();
     super.updateFocus();
   }
@@ -217,6 +220,7 @@ public class DColorField extends DObjectField {
 
   static {
     Font                font = UIManager.getFont("KopiLayout.font");
+    @SuppressWarnings("deprecation")
     FontMetrics         fm = Toolkit.getDefaultToolkit().getFontMetrics(font);
 
     textHeight = fm.getHeight();

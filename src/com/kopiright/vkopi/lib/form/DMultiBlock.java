@@ -20,30 +20,20 @@
 package com.kopiright.vkopi.lib.form;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
-import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
+import com.kopiright.vkopi.lib.ui.base.UComponent;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 
-public class DMultiBlock extends DChartBlock {
+public class DMultiBlock extends DChartBlock implements UMultiBlock {
   /**
    * Constructor
    */
@@ -54,12 +44,12 @@ public class DMultiBlock extends DChartBlock {
          * Comment for <code>serialVersionUID</code>
          */
         private static final long serialVersionUID = -3239511954723094795L;
-        
+
         public Dimension getPreferredSize() {
           Dimension dim1 = chartPane.getPreferredSize();
           Dimension dim2 = detailLayerPane.getPreferredSize();
           Dimension dim = new Dimension();
-          
+
           dim.width = Math.max(dim1.width, dim2.width);
           dim.height = Math.max(dim1.height, dim2.height);
           return dim;
@@ -82,42 +72,43 @@ public class DMultiBlock extends DChartBlock {
     setLayout(new BorderLayout());
     super.add(layeredPane, BorderLayout.CENTER);
     int         displaySize = getModel().getDisplaySize();
-    
+
     for (int i= 0; i < displaySize + 1; i++) {
       chartPane.add(new JLabel(""), new KopiAlignment(0, i, 1, false));
     }
   }
-  
+
   protected void createFields() {
     chartPane = new JPanel();
     detailPane = new JPanel();
-    detailPane.setLayout( detailLayout = new KopiSimpleBlockLayout(2 * maxColumnPos, 
-                                                                   maxRowPos, 
-                                                                   (model.getAlignment() == null) ? 
-                                                                   null : 
+    detailPane.setLayout( detailLayout = new KopiSimpleBlockLayout(2 * maxColumnPos,
+                                                                   maxRowPos,
+                                                                   (model.getAlignment() == null) ?
+                                                                   null :
                                                                    new ViewBlockAlignment(getFormView(), model.getAlignment())));
     chartPane.setLayout(chartLayout = layout = new KopiMultiBlockLayout(displayedFields + 1, getModel().getDisplaySize() +1));
     super.createFields();
   }
-  
+
   public boolean inDetailMode() {
     return getModel().isDetailMode();
   }
-  
+
   protected KopiLayoutManager createLayoutManager() {
-    return null; 
+    return null;
   }
-  
+
   protected void addScrollBar(JScrollBar bar) {
     chartPane.add(bar);
   }
-  
+
   public void addToChart(Component c, Object o) {
     chartPane.add(c, o);
   }
 
-  public void addToDetail(Component c, Object o) {
-    detailPane.add(c, o);
+  @Override
+  public void addToDetail(UComponent comp, KopiAlignment constraint) {
+    detailPane.add((Component)comp, constraint);
   }
 
   /**
@@ -135,7 +126,7 @@ public class DMultiBlock extends DChartBlock {
       try {
         getModel().getForm().gotoBlock(getModel());
       } catch (Exception ex) {
-        getFormView().reportError(new VRuntimeException(ex.getMessage(), ex));
+        ((DForm)getFormView()).reportError(new VRuntimeException(ex.getMessage(), ex));
         return;
       }
     }
@@ -150,16 +141,18 @@ public class DMultiBlock extends DChartBlock {
       layout = detailLayout;
     }
   }
-  
-  public void add(Component c, Object o) {
-    chartPane.add(c, o);
+
+  @Override
+  public void add(UComponent comp, KopiAlignment constraints) {
+    chartPane.add((Component)comp, constraints);
   }
 
+  @SuppressWarnings("deprecation")
   public void blockViewModeLeaved(VBlock block, VField activeField) {
     try {
       // take care that value of current field
       // is visible in the other mode
-      // Not field.updateText(); because the field is 
+      // Not field.updateText(); because the field is
       // maybe not visible in the Detail Mode
       if (activeField != null) {
         activeField.leave(true);
@@ -169,21 +162,22 @@ public class DMultiBlock extends DChartBlock {
     }
   }
 
+  @SuppressWarnings("deprecation")
   public void blockViewModeEntered(VBlock block, VField activeField) {
     if (inDetailMode()) {
       try {
         // Show detail view
-        
+
         // take care that value of current field
         // is visible in the other mode
-        // Not field.updateText(); because the field is 
+        // Not field.updateText(); because the field is
         // maybe not visible in the Detail Mode
         if (activeField == null) {
           //     getModel().gotoFirstField();
         } else {
           if (! activeField.noDetail()) {
             // field is visible in chartView
-            activeField.enter(); 
+            activeField.enter();
           } else {
             // field is not visible in in chart view:
             // go to the next visible field
@@ -199,18 +193,18 @@ public class DMultiBlock extends DChartBlock {
     } else {
       try {
         // show chart view
-        
+
         // take care that value of current field
         // is visible in the other mode
-        // Not field.updateText(); because the field is 
+        // Not field.updateText(); because the field is
         // maybe not visible in the Detail Mode
-                    
+
         if (activeField == null) {
           // getModel().gotoFirstField();
         } else {
           if (!activeField.noChart()) {
             // field is visible in chartView
-            activeField.enter(); 
+            activeField.enter();
           } else {
             // field is not visible in in chart view:
             // go to the next visible field
@@ -223,25 +217,21 @@ public class DMultiBlock extends DChartBlock {
       } catch (VException ex) {
         getModel().getForm().displayError(ex.getMessage());
       }
-    }    
+    }
   }
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------
-  private final JLayeredPane    layeredPane;
-  private JPanel                chartPane;  // pane with chart view
-  private JPanel                detailPane; // pane with detail view (one row of thechart)
-  private JPanel                detailLayerPane; // pane with buttons to move
-  private KopiLayoutManager     detailLayout;
-  private KopiLayoutManager     chartLayout;
 
-  private static final Color    color_border_chart = UIManager.getColor("KopiField.ul.chart");
-  private static final Color    color_border_chart_active = UIManager.getColor("KopiField.ul.chart.active");
-  private static final Color    color_back = UIManager.getColor("KopiField.background.skipped.color");
-  private static final Color    color_line = UIManager.getColor("KopiField.ul.color");
+  private final JLayeredPane    	layeredPane;
+  private JPanel              		chartPane;  // pane with chart view
+  private JPanel                	detailPane; // pane with detail view (one row of thechart)
+  private JPanel                	detailLayerPane; // pane with buttons to move
+  private KopiLayoutManager     	detailLayout;
+  private KopiLayoutManager     	chartLayout;
 
   /**
    * Comment for <code>serialVersionUID</code>
    */
-  private static final long serialVersionUID = 3830738652737328391L;
+  private static final long 		serialVersionUID = 3830738652737328391L;
 }

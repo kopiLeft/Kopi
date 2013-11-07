@@ -223,8 +223,8 @@ public abstract class VDictionaryForm extends VForm {
    */
   public void saveFilledField() {
     queryMode = true;
-    savedData = new Vector();
-    savedState = new Vector();
+    savedData = new Vector<Object>();
+    savedState = new Vector<Integer>();
     VField[] fields = block.getFields();
 
     for (int i = 0; i < fields.length; i++) {
@@ -341,14 +341,14 @@ public abstract class VDictionaryForm extends VForm {
   // QUERY SEARCH
   // ----------------------------------------------------------------------
 
-  private int		id		= -1;
-  private int		editID		= -1;
-  private boolean	queryMode	= false;
-  private boolean	menuQuery	= false;
-  private boolean	newRecord	= false;
-  private boolean	lookup		= false;
-  private boolean	closeOnSave	= false;
-  private Vector	savedData;
-  private Vector	savedState;
-  private VBlock	block;
+  private int			id		= -1;
+  private int			editID		= -1;
+  private boolean		queryMode	= false;
+  private boolean		menuQuery	= false;
+  private boolean		newRecord	= false;
+  private boolean		lookup		= false;
+  private boolean		closeOnSave	= false;
+  private Vector<Object>	savedData;
+  private Vector<Integer>	savedState;
+  private VBlock		block;
 }

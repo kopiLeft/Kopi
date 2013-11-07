@@ -27,10 +27,10 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/base
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES += JFieldLabel FieldStates JMenuButton		\
+JAVAFILES += 	JFieldLabel FieldStates JMenuButton			\
 		KopiTitledBorder JButtonPanel ListDialogCellRenderer	\
-		JFieldButton JBookmarkPanel JDisablePanel		\
-		TextSelecter Stateful
+		JFieldButton JDisablePanel TextSelecter Stateful 	\
+		UComponent Image
 
 OPTIONS =
 

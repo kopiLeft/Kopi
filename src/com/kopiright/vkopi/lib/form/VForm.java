@@ -19,37 +19,31 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Toolkit;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.Locale;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.FormLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.util.AWTToPS;
-import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.Constants;
-import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.Module;
+import com.kopiright.vkopi.lib.visual.UIFactory;
+import com.kopiright.vkopi.lib.visual.UWindow;
 import com.kopiright.vkopi.lib.visual.VActor;
-import com.kopiright.vkopi.lib.visual.VDefaultActor;
-import com.kopiright.vkopi.lib.visual.UIBuilder;
 import com.kopiright.vkopi.lib.visual.VCommand;
+import com.kopiright.vkopi.lib.visual.VDefaultActor;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VHelpViewer;
 import com.kopiright.vkopi.lib.visual.VWindow;
+import com.kopiright.vkopi.lib.visual.WindowBuilder;
 import com.kopiright.vkopi.lib.visual.WindowController;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
@@ -57,11 +51,11 @@ import com.kopiright.xkopi.lib.base.DBContextHandler;
 public abstract class VForm extends VWindow implements VConstants {
 
   static {
-    WindowController.getWindowController().registerUIBuilder(Constants.MDL_FORM, new UIBuilder() {
-      public DWindow createView(VWindow model) {
-	DForm         view = new DForm((VForm) model);
+    WindowController.getWindowController().registerWindowBuilder(Constants.MDL_FORM, new WindowBuilder() {
 
-	return view;
+      @Override
+      public UWindow createWindow(VWindow model) {
+	return (UForm)UIFactory.getUIFactory().createView(model);
       }
     });
   }
@@ -101,7 +95,7 @@ public abstract class VForm extends VWindow implements VConstants {
     for (int i = 0; i < blocks.length; i++) {
       blocks[i].initIntern();
     }
-    if (!Application.isGeneratingHelp()) {
+    if (!ApplicationContext.isGeneratingHelp()) {
       initialise();
       callTrigger(TRG_PREFORM);
     }
@@ -250,11 +244,12 @@ public abstract class VForm extends VWindow implements VConstants {
     super.setActors(actors);
   }
 
-  public Environment getEnvironment() {
-    if (environment == null) {
-      environment = new Environment();
-    }
-    return environment;
+  public boolean setTextOnFieldLeave() {
+    return false;
+  }
+
+  public boolean forceCheckList() {
+    return true;
   }
 
   // ----------------------------------------------------------------------
@@ -269,7 +264,7 @@ public abstract class VForm extends VWindow implements VConstants {
   public void localize(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, Application.getDefaultLocale());
+    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
     super.localizeActors(manager); // localizes the actors in VWindow
     localize(manager);
     manager = null;
@@ -347,10 +342,10 @@ public abstract class VForm extends VWindow implements VConstants {
       // - inserted to get information about the usage of this code
       // - can be removed if the method checkUI is removed
       try {
-        Application.reportTrouble("DForm chechUI " + Thread.currentThread(),
-                                  "Where is this code used? " + action,
-                                  this.toString(),
-                                  new RuntimeException("CHECKUI: Entered  block " + blocks[i].getName()));
+	ApplicationContext.reportTrouble("DForm chechUI " + Thread.currentThread(),
+                                         "Where is this code used? " + action,
+                                         this.toString(),
+                                         new RuntimeException("CHECKUI: Entered  block " + blocks[i].getName()));
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -408,7 +403,7 @@ public abstract class VForm extends VWindow implements VConstants {
     assert activeBlock != null : threadInfo() + "Active block is null";
 
     if (!blockMoveAllowed) {
-      Toolkit.getDefaultToolkit().beep();
+      return;
     }
 
     int		index = getBlockIndex(activeBlock);
@@ -450,6 +445,7 @@ public abstract class VForm extends VWindow implements VConstants {
    *
    * NOTE: TRG_CHANGED returns true iff form is considered changed
    */
+  @SuppressWarnings("deprecation")
   public boolean isChanged() {
     if (hasTrigger(TRG_CHANGED)) {
       Object	res;
@@ -485,6 +481,7 @@ public abstract class VForm extends VWindow implements VConstants {
    * NOTE: TRG_RESET returns true iff reset handled by trigger
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by field.leave
    */
+  @SuppressWarnings("deprecation")
   public void reset() throws VException {
     if (hasTrigger(TRG_RESET)) {
       Object	res;
@@ -758,19 +755,9 @@ public abstract class VForm extends VWindow implements VConstants {
   public void addFormListener(FormListener bl) {
     formListener.add(FormListener.class, bl);
   }
+
   public void removeFormListener(FormListener bl) {
     formListener.remove(FormListener.class, bl);
-  }
-
-  // ----------------------------------------------------------------------
-  // SHARED COMPONENT
-  // ----------------------------------------------------------------------
-
-  /**
-   * @deprecated
-   */
-  protected JFrame getFrame() {
-    return getDisplay().getFrame();
   }
 
   // ----------------------------------------------------------------------
@@ -790,6 +777,7 @@ public abstract class VForm extends VWindow implements VConstants {
   /**
    * Returns the index of the specified block in the form
    */
+  @SuppressWarnings("deprecation")
   protected int getBlockIndex(VBlock blk) {
     for (int i = 0; i < blocks.length; i++) {
       if (blk == blocks[i]) {
@@ -829,6 +817,7 @@ public abstract class VForm extends VWindow implements VConstants {
                                     code);
   }
 
+  @SuppressWarnings("deprecation")
   public String genHelp() {
     String              fileName;
     String              description = getName();
@@ -838,7 +827,7 @@ public abstract class VForm extends VWindow implements VConstants {
     VField              field;
 
     try {
-      mod = Application.getMenu().getModule(this);
+      mod = ApplicationContext.getMenu().getModule(this);
     } catch (NullPointerException npe) {
 	mod = null;
     }
@@ -877,75 +866,6 @@ public abstract class VForm extends VWindow implements VConstants {
 
   public void showHelp(VForm form) {
     new VHelpViewer().showHelp(genHelp());
-  }
-
-  // ----------------------------------------------------------------------
-  // SNAPSHOT PRINTING
-  // ----------------------------------------------------------------------
-
-  /**
-   * Print a snapshot of all blocks
-   */
-  public void printSnapshot() {
-    try {
-      // !!! fix this
-      //  new DForm(this);
-      getDisplay().createFrame();
-      getDisplay().setVisible(true);
-
-      OutputStream                      fos;
-      javax.swing.RepaintManager        rm;
-
-      rm = javax.swing.RepaintManager.currentManager(getDisplay().getContentPanel());
-      rm.setDoubleBufferingEnabled(false);
-      getDisplay().setDoubleBuffered(false);
-
-      for (int i = 0; i < blocks.length; i++) { // Walk over blocks
-	try {
-	  fos = new BufferedOutputStream(new FileOutputStream("images/" + getClass().getName().replace('.', '_') + "_" +
-							      blocks[i].getTitle().replace(' ', '_') + ".ps"));
-
-	  if (activeBlock != null) {
-	    activeBlock.leave(false);
-	  }
-	  setActiveBlock(blocks[i]);
-          // !!! find alternative correct
-// 	  getDForm().setCurrentPage(blocks[i].getPageNumber());
-// 	  getDForm().gotoPage(blocks[i].getPageNumber());
-
-	  for (int j = 0; j < blocks.length; j++) {
-	    blocks[j].prepareSnapshot(blocks[j] == blocks[i]);
-	  }
-
-          // !!! find alternative correct
-          //	  getDisplay().getFrame().pack();
-	  //getDisplay().repaint();
-	  Thread.sleep(1000);
-	  Toolkit.getDefaultToolkit().sync();
-	  Thread.sleep(1000);
-
-	  int		w = getDisplay().getSize().width / 2;
-	  int		h = getDisplay().getSize().height / 2;
-
-	  AWTToPS	ps = new AWTToPS(fos);
-	  ps.setBoundingBox(0, 0, w + 2, h + 2);
-	  ps.translate(0, 1200 - h - 1);
-	  ps.drawRect(0, 0, w + 2, h + 2);
-	  ps.translate(0, -(1200 - h - 1));
-	  ps.setScale(0.5, 0.5);
-	  ps.translate(2, 1200 - (h * 2) - 2);
-	  ps.setTransparentColor(UIManager.getColor("snapshot.background"));
-	  getDisplay().paint(ps);
-	  ps.showPage();
-	  fos.close();
-	} catch (Exception e) {
-	  e.printStackTrace();
-	}
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    close(0);
   }
 
   /*package*/ VActor getDefaultActor(int type) {
@@ -1044,7 +964,7 @@ public abstract class VForm extends VWindow implements VConstants {
   // ----------------------------------------------------------------------
 
   // static (compiled) data
-  protected String              source;         // qualified name of source file
+  protected String         	source;         // qualified name of source file
   protected VBlock[]		blocks;
   protected String[]		pages;
   protected String		help;
@@ -1057,9 +977,7 @@ public abstract class VForm extends VWindow implements VConstants {
   //  private int			currentPage = -1;
   protected VCommand[]		commands;	// commands
 
-  private EventListenerList     formListener = new EventListenerList();
-
-  protected Environment         environment;
+  private EventListenerList	formListener = new EventListenerList();
 
   // ----------------------------------------------------------------------
   // SHARED DATA MEMBERS
@@ -1073,9 +991,14 @@ public abstract class VForm extends VWindow implements VConstants {
   // ---------------------------------------------------------------------
   // PREDEFINED COMMANDS
   // ---------------------------------------------------------------------
+  //
+  /*package*/ final VCommand 	cmdAutofill = new VFieldCommand(this, CMD_AUTOFILL);
+  /*package*/ final VCommand 	cmdEditItem_S = new VFieldCommand(this, CMD_EDITITEM_S);
+  /*package*/ final VCommand 	cmdEditItem = new VFieldCommand(this, CMD_EDITITEM);
+  /*package*/ final VCommand 	cmdNewItem = new VFieldCommand(this, CMD_NEWITEM);
 
-  public static final int CMD_NEWITEM		= -2;
-  public static final int CMD_EDITITEM		= -3;
-  public static final int CMD_EDITITEM_S	= -4;
-  public static final int CMD_AUTOFILL		= -5;
+  public static final int 	CMD_NEWITEM		= -2;
+  public static final int 	CMD_EDITITEM		= -3;
+  public static final int 	CMD_EDITITEM_S		= -4;
+  public static final int 	CMD_AUTOFILL		= -5;
 }

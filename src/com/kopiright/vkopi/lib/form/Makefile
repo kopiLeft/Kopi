@@ -27,15 +27,15 @@ PACKAGE =	com/kopiright/vkopi/lib/form
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	BlockAlignment Commands					\
-		DBlock DColorField DField				\
-		DForm DImage DImageField DBlockDropTargetHandler	\
-		DLabel	DChartBlock DMultiBlock DObjectField DPage	\
-		DTextEditor DTextField DateChooser			\
-		ImageFileChooser KopiAlignment				\
+JAVAFILES +=	AbstractFieldHandler BlockAlignment Commands		\
+		DBlock DChartHeaderLabel DColorField DField DFieldUI	\
+		DForm DImage DImageField DLabel DListDialog DChartBlock	\
+		DMultiBlock DObjectField				\
+		DPage DTextEditor DTextField DateChooser FieldHandler	\
+		ImageFileChooser JFieldHandler KopiAlignment		\
 		KopiFieldDocument KopiScanDocument 	                \
 		KopiMultiBlockLayout KopiSimpleBlockLayout		\
-		LatexPrintWriter ListDialog MultiFieldAlignment		\
+		LatexPrintWriter MultiFieldAlignment			\
 		Triggers VBlock VBooleanCodeField			\
 		VBooleanField VCodeField				\
 		VColorField VConstants					\
@@ -46,7 +46,7 @@ JAVAFILES +=	BlockAlignment Commands					\
 		VFixnumField VForm					\
 		VHelpGenerator VImageField				\
 		VImportedBlock VIntegerCodeField			\
-		VIntegerField						\
+		VIntegerField VListDialog 				\
 		VMonthField VPosition BlockRecordListener		\
 		VQueryNoRowException VQueryOverflowException		\
 		VSkipRecordException					\
@@ -55,8 +55,10 @@ JAVAFILES +=	BlockAlignment Commands					\
 		VWeekField KopiLayoutManager				\
 		FieldListener FieldChangeListener			\
 		BlockListener ViewBlockAlignment FormListener		\
-		PredefinedValueHandler GUIPredefinedValueHandler	\
-		KeyNavigator Environment Accessor ModelTransformer	\
+		PredefinedValueHandler AbstractPredefinedValueHandler	\
+		JPredefinedValueHandler KeyNavigator Environment 	\
+		Accessor ModelTransformer UBlock UChartLabel UField 	\
+		UForm ULabel UMultiBlock UTextField UListDialog		\
 		VBlockDefaultOuterJoin VBlockOracleOuterJoin
 
 ## ----------------------------------------------------------------------

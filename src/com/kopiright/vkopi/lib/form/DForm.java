@@ -21,7 +21,6 @@ package com.kopiright.vkopi.lib.form;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
@@ -31,9 +30,11 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.swing.Action;
 import javax.swing.DefaultSingleSelectionModel;
@@ -44,24 +45,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.text.DefaultEditorKit;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.util.AWTToPS;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.DPositionPanel;
-import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
 import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.Utils;
-import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.type.Date;
-import com.kopiright.xkopi.lib.type.NotNullDate;
-import com.kopiright.xkopi.lib.type.NotNullTime;
 import com.kopiright.xkopi.lib.type.Time;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -80,9 +79,9 @@ import com.lowagie.text.pdf.PdfWriter;
 /**
  * This is the display class of a form.
  */
-public class DForm extends DWindow implements DPositionPanelListener, FormListener {
-  
-/**
+public class DForm extends DWindow implements UForm {
+
+  /**
    * Constructor
    */
   public DForm(VForm model) {
@@ -115,7 +114,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
       for (int i = 0; i < blockPanel.length; i++) {
 	JScrollPane     pane = new JScrollPane();
 	JPanel		inner = new JPanel();
-        final String    pageTitle = getPageTitle(i); 
+        final String    pageTitle = getPageTitle(i);
 
         inner.setFocusCycleRoot(true);
         inner.setFocusable(false);// !!! laurent
@@ -140,7 +139,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
 	  if (getCurrentPage() != index) {
 	    performBasicAction(new KopiAction("setSelectedIndex") {
 	      public void execute() throws VException {
-		getVForm().gotoPage(index);
+		getModel().gotoPage(index);
 		superSetSelectedIndex(index);
 	      }
 	    });
@@ -166,16 +165,15 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     int                 blockcount;
 
     blockListener = new BlockAccessHandler();
-    getModel().setDisplay(this);
 
-    blockcount = getVForm().getBlockCount();
+    blockcount = getModel().getBlockCount();
     blockViews = new DBlock[blockcount];
 
     for (int i = 0; i < blockcount; i++) {
       VBlock      blockModel;
       DBlock      blockView;
 
-      blockModel = getVForm().getBlock(i);
+      blockModel = getModel().getBlock(i);
       blockView = createViewForBlock(blockModel);
       blockViews[i] = blockView;
 
@@ -187,7 +185,6 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   }
 
   protected DBlock createViewForBlock(VBlock blockModel) {
-    
     DBlock                      blockView;
 
     if (! blockModel.isMulti()) {
@@ -204,10 +201,14 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
       } else {
         blockView = new DMultiBlock(this, blockModel);
       }
-    }    
+    }
     return blockView;
   }
 
+  @Override
+  public Throwable getRuntimeDebugInfo() {
+    return runtimeDebugInfo;
+  }
 
   /**
    *
@@ -276,38 +277,36 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
    * start a block and enter in the good field (rec)
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by triggers
    */
+  @SuppressWarnings("deprecation")
   protected void run() throws VException {
     if (!SwingUtilities.isEventDispatchThread()) {
       System.err.println("ERROR: run() of DForm called outside the event-dispatching-thread");
     }
-    getVForm().prepareForm();
-    
+    getModel().prepareForm();
+
     // initialize the access of the blocks
     int         blockcount;
 
-    blockcount = getVForm().getBlockCount();
+    blockcount = getModel().getBlockCount();
     for (int i = 0; i < blockcount; i++) {
       VBlock    blockModel;
 
-      blockModel = getVForm().getBlock(i);
+      blockModel = getModel().getBlock(i);
       blockModel.updateBlockAccess();
     }
 
     Window      window = Utils.getWindowAncestor(this);
 
     window.pack();
-    // is the window to big or has to be moved in the left upper edge to 
+    // is the window to big or has to be moved in the left upper edge to
     // be visible on the screen
     Rectangle   rectangle = Utils.calculateBounds(window, window.getLocation(), null);
 
     window.setBounds(rectangle);
     window.show();
 
-    getVForm().executeAfterStart();
+    getModel().executeAfterStart();
   }
-
-
-
 
   // ---------------------------------------------------------------------
   // NAVIGATION
@@ -331,7 +330,8 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
 
     field.displayFieldError(fe.getMessage());
   }
-   /**
+
+  /**
    *
    */
   public void gotoPage(int i) {
@@ -351,18 +351,18 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   public void gotoNextPosition() {
     performAsyncAction(new KopiAction("gotoNextPosition") {
         public void execute() throws VException {
-          DForm.this.getVForm().getActiveBlock().gotoNextRecord();
+          DForm.this.getModel().getActiveBlock().gotoNextRecord();
         }
       });
   }
-  
+
   /**
    * Requests to go to the previous position.
    */
   public void gotoPrevPosition() {
     performAsyncAction(new KopiAction("gotoPrevPosition") {
         public void execute() throws VException {
-          DForm.this.getVForm().getActiveBlock().gotoPrevRecord();
+          DForm.this.getModel().getActiveBlock().gotoPrevRecord();
         }
       });
   }
@@ -373,18 +373,18 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   public void gotoLastPosition() {
     performAsyncAction(new KopiAction("gotoLastPosition") {
         public void execute() throws VException {
-          DForm.this.getVForm().getActiveBlock().gotoLastRecord();
+          DForm.this.getModel().getActiveBlock().gotoLastRecord();
         }
       });
   }
-  
+
   /**
    * Requests to go to the first position.
    */
   public void gotoFirstPosition() {
     performAsyncAction(new KopiAction("gotoFirstPosition") {
         public void execute() throws VException {
-          DForm.this.getVForm().getActiveBlock().gotoFirstRecord();
+          DForm.this.getModel().getActiveBlock().gotoFirstRecord();
         }
       });
   }
@@ -395,7 +395,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   public void gotoPosition(final int posno) {
     performAsyncAction(new KopiAction("gotoPosition") {
         public void execute() throws VException {
-          DForm.this.getVForm().getActiveBlock().gotoRecord(posno - 1);
+          DForm.this.getModel().getActiveBlock().gotoRecord(posno - 1);
         }
       });
   }
@@ -404,7 +404,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
    * Returns the number of pages.
    */
   public int getPageCount() {
-    return getVForm().getPages().length;
+    return getModel().getPages().length;
   }
 
   /**
@@ -412,7 +412,7 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
    * @param	index		the index of the specified page
    */
   public String getPageTitle(int index) {
-    return getVForm().getPages()[index];
+    return getModel().getPages()[index];
   }
 
   /**
@@ -433,8 +433,8 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   // PRIVATE ACCESSORS
   // ----------------------------------------------------------------------
 
-  private VForm getVForm() {
-    return (VForm)getModel();
+  public VForm getModel() {
+    return (VForm)super.getModel();
   }
 
   // ----------------------------------------------------------------------
@@ -465,9 +465,9 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     // nothing to do
   }
 
-  public DBlock getBlockView(VBlock block) {
-    VBlock[]    blocks = getVForm().getBlocks();
-    
+  public UBlock getBlockView(VBlock block) {
+    VBlock[]    blocks = getModel().getBlocks();
+
     for (int i=0; i < blocks.length; i++) {
       if (block == blocks[i]) {
         return blockViews[i];
@@ -477,15 +477,20 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   }
 
   public void release() {
-   
-    getVForm().removeFormListener(this);
+    getModel().removeFormListener(this);
     for (int i = 0; i < blockViews.length; i++) {
-      getVForm().getBlock(i).removeBlockListener(blockListener);
+      getModel().getBlock(i).removeBlockListener(blockListener);
       //!!!!      blockViews[i].release();
     }
     super.release();
   }
 
+  public Environment getEnvironment() {
+    if (environment == null) {
+      environment = new Environment();
+    }
+    return environment;
+  }
 
   // ----------------------------------------------------------------------
   // PRIVATE CLASSSES
@@ -514,11 +519,11 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     public void blockAccessChanged(VBlock block, boolean newAccess) {
       if (tabbedBlockPanel == null) {
         // nothing to do
-        return; 
+        return;
       }
       //enable/disable tab of tabbedPane (pages)
       final int         pageNumber = block.getPageNumber();
-      final VBlock[]    blocks =getVForm().getBlocks();
+      final VBlock[]    blocks =getModel().getBlocks();
 
       if (newAccess) {
         if (!tabbedBlockPanel.isEnabledAt(pageNumber)) {
@@ -543,26 +548,96 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
 
     public void validRecordNumberChanged() {}
     public void orderChanged() {}
-    public Component getCurrentDisplay() {
+    public UBlock getCurrentDisplay() {
       // use another listener:
-      return null; 
+      return null;
     }
   }
-  
+
+  // ----------------------------------------------------------------------
+  // SNAPSHOT PRINTING
+  // ----------------------------------------------------------------------
+
+  /**
+   * Print a snapshot of all blocks
+   */
+  public void printSnapshot() {
+    try {
+      // !!! fix this
+      //  new DForm(this);
+      createFrame();
+      setVisible(true);
+
+      OutputStream                      fos;
+      javax.swing.RepaintManager        rm;
+
+      rm = javax.swing.RepaintManager.currentManager(getContentPanel());
+      rm.setDoubleBufferingEnabled(false);
+      setDoubleBuffered(false);
+
+      for (int i = 0; i < getModel().blocks.length; i++) { // Walk over blocks
+	try {
+	  fos = new BufferedOutputStream(new FileOutputStream("images/" + getClass().getName().replace('.', '_') + "_" +
+	                                                      getModel().blocks[i].getTitle().replace(' ', '_') + ".ps"));
+
+	  if (getModel().getActiveBlock() != null) {
+	    getModel().getActiveBlock().leave(false);
+	  }
+	  getModel().setActiveBlock(getModel().blocks[i]);
+          // !!! find alternative correct
+// 	  getDForm().setCurrentPage(blocks[i].getPageNumber());
+// 	  getDForm().gotoPage(blocks[i].getPageNumber());
+
+	  for (int j = 0; j < getModel().blocks.length; j++) {
+	    getModel().blocks[j].prepareSnapshot(getModel().blocks[j] == getModel().blocks[i]);
+	  }
+
+          // !!! find alternative correct
+          //	  getDisplay().getFrame().pack();
+	  //getDisplay().repaint();
+	  Thread.sleep(1000);
+	  Toolkit.getDefaultToolkit().sync();
+	  Thread.sleep(1000);
+
+	  int		w = getSize().width / 2;
+	  int		h = getSize().height / 2;
+
+	  AWTToPS	ps = new AWTToPS(fos);
+	  ps.setBoundingBox(0, 0, w + 2, h + 2);
+	  ps.translate(0, 1200 - h - 1);
+	  ps.drawRect(0, 0, w + 2, h + 2);
+	  ps.translate(0, -(1200 - h - 1));
+	  ps.setScale(0.5, 0.5);
+	  ps.translate(2, 1200 - (h * 2) - 2);
+	  ps.setTransparentColor(UIManager.getColor("snapshot.background"));
+	  paint(ps);
+	  ps.showPage();
+	  fos.close();
+	} catch (Exception e) {
+	  e.printStackTrace();
+	}
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    close(0);
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
+  @SuppressWarnings("deprecation")
   public PrintJob printForm() throws VException {
     com.lowagie.text.Rectangle  pageSize = PageSize.A4.rotate();
     Document                    document = new Document(pageSize, 50, 50, 50, 50);
     File                        file;
-    
-    try {      
+
+    try {
       file = com.kopiright.vkopi.lib.util.Utils.getTempFile("kopi", "srn");
 
       PdfWriter         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-            
+
       document.open();
 
       Frame             frame = Utils.getFrameAncestor(this);
@@ -578,9 +653,9 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
 
 
       PdfPTable       foot = new PdfPTable(2);
-                
+
       foot.addCell(createCell(((VForm)getModel()).getName(), 7, Color.black, Color.white, Element.ALIGN_LEFT, false));
-      foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"), 
+      foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"),
                               7, Color.black, Color.white, Element.ALIGN_RIGHT, false));
       foot.setTotalWidth(pageSize.width() - document.leftMargin() - document.rightMargin());
       foot.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin()+foot.getTotalHeight(), cb);
@@ -592,9 +667,9 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
     } catch(DocumentException de) {
       throw new VExecFailedException(de);
     } catch(IOException ioe) {
-      throw new VExecFailedException(ioe);      
+      throw new VExecFailedException(ioe);
     }
-        
+
     document.close();
 
     PrintJob    printJob = new PrintJob(file, true, PrintJob.FORMAT_A4);
@@ -630,21 +705,17 @@ public class DForm extends DWindow implements DPositionPanelListener, FormListen
   // ----------------------------------------------------------------------
   /*package*/ static final Insets	emptyInsets = new Insets(0, 0, 0, 0);
 
-  private BlockRecordHandler    blockRecordHandler;
-  private BlockListener         blockListener;
+  private BlockRecordHandler   		blockRecordHandler;
+  private BlockListener      		blockListener;
 
-  private int			currentPage = -1;
-  private DPage[]		blockPanel;
-  private JTabbedPane		tabbedBlockPanel;
-  private DBlock[]              blockViews;
+  private int				currentPage = -1;
+  private DPage[]			blockPanel;
+  private JTabbedPane			tabbedBlockPanel;
+  private DBlock[]             		blockViews;
+  protected Environment		environment;
 
-  // 
-  /*package*/ final VCommand cmdAutofill = new VFieldCommand(this, VForm.CMD_AUTOFILL);
-  /*package*/ final VCommand cmdEditItem_S = new VFieldCommand(this, VForm.CMD_EDITITEM_S);
-  /*package*/ final VCommand cmdEditItem = new VFieldCommand(this, VForm.CMD_EDITITEM);
-  /*package*/ final VCommand cmdNewItem = new VFieldCommand(this, VForm.CMD_NEWITEM);
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -5894823173117976720L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long 	serialVersionUID = -5894823173117976720L;
 }

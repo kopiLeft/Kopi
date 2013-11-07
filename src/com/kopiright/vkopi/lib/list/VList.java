@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.list;
 
+import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ListLocalizer;
 
@@ -56,7 +57,7 @@ public class VList implements VConstants {
                String source,
                VListColumn[] columns,
                int table,
-               Class newForm,
+               Class<VForm> newForm,
                boolean hasShortcut)
   {
     this(ident,
@@ -111,8 +112,8 @@ public class VList implements VConstants {
 
   /**
    * Localize this object.
-   * 
-   * @param     manager         
+   *
+   * @param     manager
    */
   public void localize(LocalizationManager manager) {
     ListLocalizer       loc;

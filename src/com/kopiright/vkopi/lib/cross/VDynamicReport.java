@@ -24,7 +24,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VBlock;
@@ -47,13 +46,12 @@ import com.kopiright.vkopi.lib.form.VTimeField;
 import com.kopiright.vkopi.lib.form.VTimestampField;
 import com.kopiright.vkopi.lib.form.VWeekField;
 import com.kopiright.vkopi.lib.report.Constants;
-import com.kopiright.vkopi.lib.report.DColumnStyle;
 import com.kopiright.vkopi.lib.report.MReport;
 import com.kopiright.vkopi.lib.report.PConfig;
-import com.kopiright.vkopi.lib.report.VDefaultReportActor;
 import com.kopiright.vkopi.lib.report.VBooleanCodeColumn;
 import com.kopiright.vkopi.lib.report.VBooleanColumn;
 import com.kopiright.vkopi.lib.report.VDateColumn;
+import com.kopiright.vkopi.lib.report.VDefaultReportActor;
 import com.kopiright.vkopi.lib.report.VFixnumCodeColumn;
 import com.kopiright.vkopi.lib.report.VFixnumColumn;
 import com.kopiright.vkopi.lib.report.VIntegerCodeColumn;
@@ -74,9 +72,6 @@ import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.xkopi.lib.base.DBContext;
-import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
@@ -322,7 +317,7 @@ public class VDynamicReport extends VReport {
       for (int i = 0; i < block.getBufferSize(); i++) {
         if (block.isRecordFilled(i)) {
           block.setCurrentRecord(i);
-          ArrayList list = new ArrayList();
+          ArrayList<Object> list = new ArrayList<Object>();
 
           for (int j = 0; j < fields.length; j++) {
             if (!fields[j].getName().equals(block.getIdField().getName())) {
@@ -365,7 +360,7 @@ public class VDynamicReport extends VReport {
             if(query.next()) {
               // don't  add a line when ID equals 0.
               if (!query.getObject(idColumn + 1).toString().equals("0")) {
-                List result = new ArrayList();
+                List<Object> result = new ArrayList<Object>();
                 for (int i=0; i< fields.length; i++) {
                   result.add(query.getObject(i + 1));
                 }
@@ -373,7 +368,7 @@ public class VDynamicReport extends VReport {
               }
             }
             while (query.next()) {
-              List result = new ArrayList();
+              List<Object> result = new ArrayList<Object>();
               for (int i=0; i< fields.length; i++) {
                 result.add(query.getObject(i + 1));
               }
@@ -536,20 +531,20 @@ public class VDynamicReport extends VReport {
   // Data Members
   // ----------------------------------------------------------------------
 
-  private VReportColumn[]       columns;
-  private VField[]              fields;
-  private VBlock                block;
-  private VActor[]              actorsDef;
-  private int                   number = 0;
-  private int                   idColumn = 0;
-  private static String EXPORT_ICON            = "export";
-  private static String FOLD_ICON              = "fold";
-  private static String UNFOLD_ICON            = "unfold";
-  private static String FOLD_COLUMN_ICON       = "foldColumn";
-  private static String UNFOLD_COLUMN_ICON     = "unfoldColumn";
-  private static String SERIALQUERY_ICON       = "serialquery";
-  private static String HELP_ICON              = "help";
-  private static String QUIT_ICON              = "quit";
-  private static String PRINT_ICON             = "print";
+  private VReportColumn[]       	columns;
+  private VField[]              	fields;
+  private VBlock                	block;
+  private VActor[]              	actorsDef;
+  private int                   	number = 0;
+  private int                   	idColumn = 0;
+  private static String 		EXPORT_ICON            = "export";
+  private static String 		FOLD_ICON              = "fold";
+  private static String 		UNFOLD_ICON            = "unfold";
+  private static String 		FOLD_COLUMN_ICON       = "foldColumn";
+  private static String 		UNFOLD_COLUMN_ICON     = "unfoldColumn";
+  private static String 		SERIALQUERY_ICON       = "serialquery";
+  private static String 		HELP_ICON              = "help";
+  private static String 		QUIT_ICON              = "quit";
+  private static String 		PRINT_ICON             = "print";
 }
 

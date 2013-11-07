@@ -30,11 +30,13 @@ import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 public class VHelpViewer extends VWindow {
 
   static {
-    WindowController.getWindowController().registerUIBuilder(Constants.MDL_HELP, new UIBuilder() {
-        public DWindow createView(VWindow model) {
-          return new DHelpViewer((VHelpViewer) model) ;
-        }
-      });
+    WindowController.getWindowController().registerWindowBuilder(Constants.MDL_HELP, new WindowBuilder() {
+
+      @Override
+      public UWindow createWindow(VWindow model) {
+	return (UWindow)UIFactory.getUIFactory().createView(model);
+      }
+    });
   }
 
   /**
@@ -95,7 +97,7 @@ public class VHelpViewer extends VWindow {
   public void localize(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, Application.getDefaultLocale());
+    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
 
     // localizes the actors in VWindow
     super.localizeActors(manager);

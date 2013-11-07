@@ -27,18 +27,17 @@ import java.util.List;
 
 import com.kopiright.util.mailer.Attachment;
 import com.kopiright.util.mailer.Mailer;
-import com.kopiright.vkopi.lib.visual.MessageCode;
-
-import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.PrintException;
-
 import com.kopiright.vkopi.lib.util.AbstractPrinter;
-import com.kopiright.vkopi.lib.util.CachePrinter; 
+import com.kopiright.vkopi.lib.util.CachePrinter;
+import com.kopiright.vkopi.lib.util.PrintException;
+import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 
 /**
  * Mail printer
  */
+@SuppressWarnings("deprecation")
 public class MailPrinter extends AbstractPrinter implements CachePrinter {
 
   /**
@@ -53,7 +52,7 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
 		     final String body,
 		     final String sender,
 		     final boolean sendPdf,
-		     final List attachments)
+		     final List<?> attachments)
   {
     super("MailPrinter");
     this.command = command;
@@ -75,6 +74,7 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
   /**
    * Print a file and return the output of the command
    */
+  @SuppressWarnings("unchecked")
   public String print(PrintJob printdata) throws IOException, PrintException {
     try {
       PrintJob          gsJob;
@@ -90,7 +90,7 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
 
       if (sendPdf && printdata.getDataType() == PrintJob.DAT_PS) {
         Process       process;
-        
+
         // convert if postcript
         dest = Utils.getTempFile("MAIL", "PDF");
         process = Runtime.getRuntime().exec(command + " -q -sOutputFile=" + dest + " -sDEVICE=pdfwrite " +
@@ -100,16 +100,16 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
       }
 
       // ALLE ATTACHMENTS IN EINEM VEKTOR
-      List allattachments = new ArrayList();
-      
+      List<Attachment> allattachments = new ArrayList<Attachment>();
+
       allattachments.add(new Attachment(gsJob.getTitle() + (sendPdf ? ".pdf" : ".ps"),
                                         sendPdf ? "application/pdf" : "application/postscript",
                                         new FileInputStream(dest)));
-      
+
       allattachments.addAll(attachments);
 
       Mailer          mailer = new Mailer();
-      
+
       mailer.setMailHost(mailHost);
       mailer.sendMessage(sender,
                          recipient,
@@ -137,7 +137,8 @@ public class MailPrinter extends AbstractPrinter implements CachePrinter {
   private final String		subject;
   private final String		body;
   private final String		sender;
-  private final boolean		sendPdf;
+  private final boolean	        sendPdf;
 
+  @SuppressWarnings("rawtypes")
   private List			attachments;
 }

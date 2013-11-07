@@ -40,7 +40,7 @@ public class HylaFAXUtils {
    * RETURNS A VECTOR OF STRINGS
    * ----------------------------------------------------------------------
    */
-  public static Vector readSendQueue(String host, int port, String user, String password) throws FaxException {
+  public static Vector<FaxStatus> readSendQueue(String host, int port, String user, String password) throws FaxException {
     return readQueue(host, port, user, password, "sendq");
   }
 
@@ -50,7 +50,7 @@ public class HylaFAXUtils {
    * RETURNS A VECTOR OF FAXSTATUS
    * ----------------------------------------------------------------------
    */
-  public static Vector readDoneQueue(String host, int port, String user, String password) throws FaxException {
+  public static Vector<FaxStatus> readDoneQueue(String host, int port, String user, String password) throws FaxException {
     return readQueue(host, port, user, password, "doneq");
   }
 
@@ -60,7 +60,7 @@ public class HylaFAXUtils {
    * RETURNS A VECTOR OF FAXSTATUS
    * ----------------------------------------------------------------------
    */
-  public static Vector readRecQueue(String host, int port, String user, String password) throws FaxException {
+  public static Vector<FaxStatus> readRecQueue(String host, int port, String user, String password) throws FaxException {
     return readQueue(host, port, user, password, "recvq");
   }
 
@@ -70,8 +70,8 @@ public class HylaFAXUtils {
    * ----------------------------------------------------------------------
    */
 
-  public static Vector readServerStatus(String host, int port, String user, String password) throws FaxException {
-    Vector	status;
+  public static Vector<String> readServerStatus(String host, int port, String user, String password) throws FaxException {
+    Vector<String>	status;
 
     try{
       status = getQueue(host, port, user, password, "status");
@@ -106,7 +106,7 @@ public class HylaFAXUtils {
   {
     try {
       HylaFAXClient       faxClient;
-      
+
       faxClient =  new HylaFAXClient();
       faxClient.open(host);
 
@@ -114,7 +114,7 @@ public class HylaFAXUtils {
         // need password
         faxClient.pass(password);
       }
-      
+
       faxClient.jkill(job);
       Utils.log("Fax", "Kill 1: " + job);
       faxClient.quit();
@@ -137,7 +137,7 @@ public class HylaFAXUtils {
   {
     try {
       HylaFAXClient       faxClient;
-    
+
       faxClient =  new HylaFAXClient();
       faxClient.open(host);
       
@@ -161,11 +161,12 @@ public class HylaFAXUtils {
    * HANDLE THE QUEUES --- ALL QUEUES ARE HANDLED BY THAT METHOD
    * ----------------------------------------------------------------------
    */
-  private static Vector getQueue(String host, int port, String user, String password, String qname)
+  @SuppressWarnings("unchecked")
+  private static Vector<String> getQueue(String host, int port, String user, String password, String qname)
     throws IOException, ServerResponseException
   {
-    HylaFAXClient       faxClient;
-    Vector              entries;
+    HylaFAXClient       	faxClient;
+    Vector<String>              entries;
 
     faxClient =  new HylaFAXClient();
     faxClient.open(host);
@@ -180,7 +181,7 @@ public class HylaFAXUtils {
     faxClient.jobfmt("%j| %J| %o| %e| %a| %P| %D| %.25s");
     faxClient.mdmfmt("Modem %m (%n): %s");
 
-    entries = faxClient.getList(qname); 
+    entries = faxClient.getList(qname);
 
     faxClient.quit();
 
@@ -194,17 +195,17 @@ public class HylaFAXUtils {
    * RETURNS A VECTOR OF STRINGS
    * ----------------------------------------------------------------------
    */
-  private static Vector readQueue(String host, int port, String user, String password, String qname) throws FaxException  {
-    Vector	queue = new Vector();
+  private static Vector<FaxStatus> readQueue(String host, int port, String user, String password, String qname) throws FaxException  {
+    Vector<FaxStatus>	queue = new Vector<FaxStatus>();
 
     try {
-      Vector		result = getQueue(host, port, user, password, qname);
+      Vector<String>		result = getQueue(host, port, user, password, qname);
 
       Utils.log("Fax", "READ " + qname + " : host " + host + " / user " + user);
 
       for (int i=0; i < result.size(); i++) {
         try {
-          String                str = (String) result.elementAt(i);
+          String                str = result.elementAt(i);
 	  StringTokenizer       prozess = new StringTokenizer(str, "|");
 
 	  if (!qname.equals("recvq")) {
@@ -225,7 +226,7 @@ public class HylaFAXUtils {
                                            prozess.nextToken().trim()));	// ERRORTEXT %e
 	  }
 	} catch (Exception e) {
-          throw new FaxException(e.getMessage(), e);	  
+          throw new FaxException(e.getMessage(), e);
 	}
       }
     } catch (ConnectException e) {

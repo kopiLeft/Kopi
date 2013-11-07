@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {

@@ -147,8 +147,8 @@ public class PRecursiveBlock extends PBlock {
   private	int			from;
   private	int			to;
   private	boolean			isFullyPrinted;
-  private       float			currentHeight;
-  private       PBlock[]		blocks;
+  private      float			currentHeight;
+  private      PBlock[]			blocks;
   private	String[]		blockIdents;
-  private	Vector			sizes = new Vector();
+  private	Vector<Float>		sizes = new Vector<Float>();
 }

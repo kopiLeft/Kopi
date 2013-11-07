@@ -23,26 +23,23 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 
-import javax.swing.ImageIcon;
 import javax.swing.event.EventListenerList;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.undo.UndoManager;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.ui.base.Image;
+import com.kopiright.vkopi.lib.ui.base.UComponent;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.XInterruptProtectedException;
 
-public abstract class VWindow implements DBContextHandler, KopiExecutable, ActionHandler {
+public abstract class VWindow implements DBContextHandler, KopiExecutable, ActionHandler, VModel {
 
   /**
    * Creates a window without DB context
    */
   protected VWindow() {
-    setDBContext(Application.getDBContext());
+    setDBContext(ApplicationContext.getDBContext());
     init();
   }
 
@@ -74,8 +71,6 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     f12.setHandler(this);
     setActors(new VActor[] {f12});
   }
-
-
 
   // ----------------------------------------------------------------------
   // DISPLAY INTERFACE
@@ -172,29 +167,18 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
 	context.abortWork();
       }
     } catch (Exception e) {
-      Application.reportTrouble("VWindow can not abort transaction", line, (data != null) ? data.toString() : "<no info about>", e);
+      ApplicationContext.reportTrouble("VWindow can not abort transaction", line, (data != null) ? data.toString() : "<no info about>", e);
       e.printStackTrace();
     }
-    if (Application.getDefaults().isDebugModeEnabled()) {
+    if (ApplicationContext.getDefaults().isDebugModeEnabled()) {
       error("FATAL ERROR: " + reason.getMessage());
       reason.printStackTrace(System.err);
     } else {
-      Application.reportTrouble("VWindow", line, (data != null) ? data.toString() : "<no info about>", reason);
+      ApplicationContext.reportTrouble("VWindow", line, (data != null) ? data.toString() : "<no info about>", reason);
       error(com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
     }
 
     close(1);
-  }
-
-  /**
-   * Update undo menu
-   */
-  public void setUndoManager(UndoManager undo) {
-    getDisplay().setUndoManager(undo);
-  }
-
-  public UndoableEditListener getUndoableEditListener() {
-    return getDisplay() != null ? getDisplay().getUndoableEditListener() : null;
   }
 
   /**
@@ -239,7 +223,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       // use a 'default listener' that the message is
       // not lost (e.g .because this is happend in the
       // constructor)
-      Application.getApplication().notice(message);
+      ApplicationContext.getApplicationContext().getApplication().notice(message);
     }
   }
 
@@ -264,7 +248,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       // use a 'default listener' that the message is
       // not lost (e.g .because this is happend in the
       // constructor)
-      Application.getApplication().error(message);
+      ApplicationContext.getApplicationContext().getApplication().error(message);
     }
   }
 
@@ -292,7 +276,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       // use a 'default listener' that the message is
       // not lost (e.g .because this is happend in the
       // constructor)
-      Application.getApplication().warn(message);
+      ApplicationContext.getApplicationContext().getApplication().warn(message);
     }
   }
 
@@ -451,18 +435,20 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     }
   }
 
-  /**
-   * Returns the display associated with this window (if shown)
-   */
-  public DWindow getDisplay() {
+  //----------------------------------------------------------------------
+  // VMODEL IMPLEMENTATION
+  //----------------------------------------------------------------------
+
+  @Override
+  public UWindow getDisplay() {
     return display;
   }
 
-  /**
-   * Sets the display associated with this window
-   */
-  public void setDisplay(DWindow display) {
-    this.display = display;
+  @Override
+  public void setDisplay(UComponent display) {
+    assert display instanceof UWindow : "VWindow display should be instance of UWindow";
+
+    this.display = (UWindow)display;
     setTitle(title);
   }
 
@@ -583,11 +569,11 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
 
 
   public void enableCommands() {
-     f12.setEnabled(true);
+    f12.setEnabled(true);
   }
 
   public void setCommandsEnabled(boolean enable) {
-     f12.setEnabled(enable);
+    f12.setEnabled(enable);
   }
   /**
    * Performs a void trigger
@@ -597,7 +583,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void executeVoidTrigger(final int VKT_Type) throws VException {
     if (VKT_Type == Constants.CMD_GOTO_SHORTCUTS) {
       try {
-        Application.getMenu().getDMenuTree().gotoShortcuts();
+	ApplicationContext.getMenu().getDisplay().gotoShortcuts();
       } catch (NullPointerException npe) {
         throw new VExecFailedException(VlibProperties.getString("shortcuts-not-available"));
       }
@@ -674,10 +660,10 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
         }
       }
     } catch (SQLException s) {
-      Application.reportTrouble("VWindow (not thrown but reported)",
-                                "abortProtected(" + interrupt + ")",
-                                this.toString(),
-                                s);
+      ApplicationContext.reportTrouble("VWindow (not thrown but reported)",
+                                       "abortProtected(" + interrupt + ")",
+                                       this.toString(),
+                                       s);
     } finally {
       isProtected = false;
       unsetWaitInfo();
@@ -731,18 +717,11 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     return context.getDefaultConnection().getUserID();
   }
 
-  /**
-   * Returns the application default configuration
-   */
-  public ApplicationConfiguration getDefaults() {
-    return Application.getDefaults();
-  }
-
-  public void setSmallIcon(ImageIcon smallIcon) {
+  public void setSmallIcon(Image smallIcon) {
     this.smallIcon = smallIcon;
   }
 
-  public ImageIcon getSmallIcon() {
+  public Image getSmallIcon() {
     return smallIcon;
   }
 
@@ -806,20 +785,20 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  public static final int       CDE_QUIT = 0;
-  public static final int       CDE_ESCAPED = 1;
-  public static final int       CDE_VALIDATE = 2;
-  public static final String    WINDOW_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Window";
+  public static final int   		CDE_QUIT = 0;
+  public static final int       	CDE_ESCAPED = 1;
+  public static final int       	CDE_VALIDATE = 2;
+  public static final String    	WINDOW_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Window";
 
-  private final Object          transactionMonitor = new Object();
-  private EventListenerList     modelListener = new EventListenerList();
-  private String                extraTitle;
+  private final Object          	transactionMonitor = new Object();
+  private EventListenerList     	modelListener = new EventListenerList();
+  private String                	extraTitle;
 
-  protected VActor              f12;
-  protected DWindow             display;
-  protected DBContext           context;
-  protected boolean             isProtected;
-  protected VActor[]            actors;
-  protected String              title;
-  protected ImageIcon           smallIcon;
+  protected VActor              	f12;
+  protected UWindow             	display;
+  protected DBContext           	context;
+  protected boolean             	isProtected;
+  protected VActor[]            	actors;
+  protected String              	title;
+  protected Image           		smallIcon;
 }

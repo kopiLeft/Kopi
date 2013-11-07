@@ -35,10 +35,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalToolTipUI;
 
 /**
- * 
+ *
  */
 public class MultiLineToolTipUI extends MetalToolTipUI {
 
+  @SuppressWarnings("deprecation")
   public void paint(Graphics g, JComponent c) {
     FontMetrics metrics = Toolkit.getDefaultToolkit().getFontMetrics(g.getFont());
     Dimension size = c.getSize();
@@ -52,6 +53,7 @@ public class MultiLineToolTipUI extends MetalToolTipUI {
     }
   }
 
+  @SuppressWarnings("deprecation")
   public Dimension getPreferredSize(JComponent c) {
     FontMetrics metrics = Toolkit.getDefaultToolkit().getFontMetrics(c.getFont());
     String tipText = ((JToolTip)c).getTipText();
@@ -76,7 +78,7 @@ public class MultiLineToolTipUI extends MetalToolTipUI {
     BufferedReader br = new BufferedReader(new StringReader(tip.toString()));
     String line;
     int maxWidth = 0;
-    Vector v = new Vector();
+    Vector<String> v = new Vector<String>();
     try {
       while ((line = br.readLine()) != null) {
         int width = SwingUtilities.computeStringWidth(metrics,line);
@@ -94,8 +96,8 @@ public class MultiLineToolTipUI extends MetalToolTipUI {
     } else {
       strs = new String[lines];
       int i=0;
-      for (Enumeration e = v.elements(); e.hasMoreElements() ;i++) {
-        strs[i] = (String)e.nextElement();
+      for (Enumeration<String> e = v.elements(); e.hasMoreElements() ;i++) {
+        strs[i] = e.nextElement();
       }
     }
     int height = metrics.getHeight() * lines;

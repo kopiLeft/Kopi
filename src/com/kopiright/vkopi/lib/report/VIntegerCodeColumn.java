@@ -31,6 +31,7 @@ public class VIntegerCodeColumn extends VCodeColumn {
    * @param     groups          The index of the column grouped by this one or -1
    * @param     function        An (optional) summation function
    */
+  @SuppressWarnings("deprecation")
   public VIntegerCodeColumn(String ident,
                             String type,
                             String source,
@@ -44,7 +45,7 @@ public class VIntegerCodeColumn extends VCodeColumn {
 			    Integer[] codes)
   {
     super(ident, type, source, options, align, groups, function, width, format, names);
-    
+
     this.codes = new int[codes.length];
     throw new InconsistencyException();
     //for (int i = 0; i < codes.length; i++) // !!! what about null value

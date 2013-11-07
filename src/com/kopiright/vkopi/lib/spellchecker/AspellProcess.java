@@ -19,19 +19,22 @@
 
 package com.kopiright.vkopi.lib.spellchecker;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Models a spelling checker
  *<p>
  *
  */
-public class AspellProcess
-{
+public class AspellProcess {
 
-  public AspellProcess(String aSpellCommandLine) throws SpellException
-  {
+  public AspellProcess(String aSpellCommandLine) throws SpellException {
     try {
       String            aspellVersionMsg;
       String            fehler = "";
@@ -54,19 +57,19 @@ public class AspellProcess
     }
   }
 
-  
+
   private void verifyStartup(String startupMsg, String fehler) throws SpellException {
     if (startupMsg == null || ! startupMsg.startsWith("@(#)")) {
       throw new SpellException("Wrong configuration of Aspell:"
-                               + ((startupMsg !=null) ? startupMsg : "" ) 
+                               + ((startupMsg !=null) ? startupMsg : "" )
                                + " " + fehler);
     }
   }
 
-  public List checkText(String text) throws SpellException {
+  public List<Suggestions> checkText(String text) throws SpellException {
     try {
-      String            response;
-      List              results = new ArrayList();
+      String            	response;
+      List<Suggestions>         results = new ArrayList<Suggestions>();
       final String      spellCheckLinePrefix = "^";
 
       aspellOutput.write( spellCheckLinePrefix + text );
@@ -77,7 +80,7 @@ public class AspellProcess
       while(response != null && !response.equals( "" )) {
         Suggestions          result = new Suggestions(response);
 
-        results.add( result );
+        results.add(result);
         response = aspellInput.readLine();
       }
 

@@ -19,10 +19,8 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.util.ArrayList;
-
 public class VBlockOracleOuterJoin {
-  
+
   /**
    * search from-clause condition
    */
@@ -40,7 +38,7 @@ public class VBlockOracleOuterJoin {
     }
     return buffer.toString();
   }
-    
+
   public static StringBuffer getSearchCondition(VField fld, StringBuffer buffer) {
     for(int j = 1; j < fld.getColumnCount(); j++) {
       if (!fld.getColumn(j).isNullable()) {
@@ -51,27 +49,27 @@ public class VBlockOracleOuterJoin {
         }
         buffer.append(fld.getColumn(j).getQualifiedName());
         buffer.append(" = ");
-        buffer.append(fld.getColumn(0).getQualifiedName());        
+        buffer.append(fld.getColumn(0).getQualifiedName());
       } else {
         if (buffer == null) {
           buffer = new StringBuffer(" WHERE ");
         } else {
           buffer.append(" AND ");
         }
-        buffer.append(fld.getColumn(j).getQualifiedName());        
+        buffer.append(fld.getColumn(j).getQualifiedName());
         buffer.append(" = ");
         buffer.append(fld.getColumn(0).getQualifiedName() + " (+)");
       }
     }
     return buffer;
   }
-  
+
   public static String getFetchRecordCondition(VField[] fields) {
     String tailbuf = "";
-    
+
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
-      
+
       for (int j = 1; j < fld.getColumnCount(); j++) {
         if (!fld.getColumn(j).isNullable()) {
           tailbuf +=

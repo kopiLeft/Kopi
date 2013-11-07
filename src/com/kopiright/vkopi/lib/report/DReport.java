@@ -19,11 +19,34 @@
 
 package com.kopiright.vkopi.lib.report;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Frame;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
-import javax.swing.event.*;
+
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -35,11 +58,11 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
- * This is the display class of a report. 
+ * This is the display class of a report.
  */
-public class DReport extends DWindow implements TableCellRenderer {
-  
-/**
+public class DReport extends DWindow implements UReport, TableCellRenderer {
+
+  /**
    * Constructs a new report view
    *
    * @param	model		the report model
@@ -48,14 +71,15 @@ public class DReport extends DWindow implements TableCellRenderer {
     super(report);
 
     this.report = report;
-    this.model = report.getModel();
+    model = report.getModel();
+    model.addReportListener(this);
   }
 
   public void setColumnLabel(int column, String label) {
     table.getColumnModel().getColumn(table.convertColumnIndexToView(column)).setHeaderValue(label);
     table.getTableHeader().resizeAndRepaint();
   }
-  
+
   public void removeColumn(int position) {
     int index = position;
     position = table.convertColumnIndexToModel(position);
@@ -74,7 +98,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     tablecolumns = newTableColumns;
     // set new order.
     int[] pos = new int[model.getAccessibleColumnCount()];
-    
+
      for (int i = 0; i < model.getAccessibleColumnCount(); i ++) {
        pos[i] = (model.getDisplayOrder(i) > position ) ? model.getDisplayOrder(i) - 1 :  model.getDisplayOrder(i);
      }
@@ -84,7 +108,7 @@ public class DReport extends DWindow implements TableCellRenderer {
   public void addColumn(int position) {
     String headerLabel;
     TableColumn column;
-    
+
     table.setAutoCreateColumnsFromModel(false);
     column = new TableColumn(model.getColumnCount());
     headerLabel ="col" + (model.getColumnCount());
@@ -112,26 +136,52 @@ public class DReport extends DWindow implements TableCellRenderer {
     report.columnMoved(pos);
   }
 
+  /**
+   * @Override
+   */
   public void addColumn() {
     addColumn(table.getColumnCount());
   }
 
   /**
-   *
+   * @Override
    */
-  public JTable getTable() {
+  public UTable getTable() {
     return table;
+  }
+
+  /**
+   * @Override
+   */
+  public void columnMoved(final int[] pos) {
+    SwingUtilities.invokeLater (new Runnable() {
+      public void run() {
+	reorder(pos);
+	model.columnMoved(pos);
+	redisplay();
+      }
+    });
+  }
+
+  /**
+   * @Override
+   */
+  public void contentChanged() {
+    if (table != null) {
+      ((VTable)table.getModel()).fireTableDataChanged();
+    }
   }
 
   /**
    * run
    */
+  @SuppressWarnings("deprecation")
   public void build() {
     // load personal configuration
     parameters = new DParameters(Color.blue);
 
     // create table view
-    table = new JTable(model);
+    table = new DTable(new VTable(model));
 
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -143,7 +193,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     table.getTableHeader().setUpdateTableInRealTime(true);
 
     buildCellRenderers();
-    
+
     // set row height
     FontMetrics         fontmetrics = getFontMetrics(parameters.getFont());
     int                 nbLinesMax = 1;
@@ -194,16 +244,6 @@ public class DReport extends DWindow implements TableCellRenderer {
   }
 
   /**
-   * Notifies the view that the model has changed
-   */
-  public void tableChanged() {
-    if (table != null) {
-      table.tableChanged(new TableModelEvent(model));
-    }
-    report.setMenu();
-  }
-
-  /**
    * Return the new columns order
    */
   public int[] getDisplayOrder() {
@@ -250,7 +290,7 @@ public class DReport extends DWindow implements TableCellRenderer {
   public void run(final boolean visible) throws VException {
     report.initReport();
     report.setMenu();
-    
+
     Frame       frame;
     Rectangle   bounds;
 
@@ -263,7 +303,7 @@ public class DReport extends DWindow implements TableCellRenderer {
     // there are 50 lines
     bounds.height = Math.max(bounds.height, 500); // 500 is aprox. 15 lines
     frame.setBounds(bounds);
-    frame.show();
+    frame.setVisible(true);
     setInfoTable();
     // Focus this panel to dispatch the key-events to the menu.
     // If "table" is focused, it will handle "esc" and "F2"
@@ -405,7 +445,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 	int	mod = e.getModifiers();
 	int	column	= table.columnAtPoint(e.getPoint());
 
-        if ((mod & InputEvent.BUTTON2_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) { 
+        if ((mod & InputEvent.BUTTON2_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) {
           if (e.getClickCount() == 2) {
             if (currentModel.isRowLine(row)) {
               try {
@@ -427,17 +467,17 @@ public class DReport extends DWindow implements TableCellRenderer {
               }
             }
           }
-        } else if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) { 
+        } else if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON3_MASK) == 0) {
           setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
           int index = table.convertColumnIndexToModel(column);
-          
+
           if (currentModel.isColumnFold(index)) {
             currentModel.unfoldingColumn(index);
           } else {
             currentModel.foldingColumn(index);
-          }  
+          }
           setCursor(Cursor.getDefaultCursor());
-        } else if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON2_MASK) == 0) { 
+        } else if ((mod & InputEvent.BUTTON1_MASK) == 0 && (mod & InputEvent.BUTTON2_MASK) == 0) {
           if (row >= 0) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int index = table.convertColumnIndexToModel(column);
@@ -461,7 +501,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 	  if ((mod & InputEvent.CTRL_MASK) != 0 && (mod & InputEvent.SHIFT_MASK) != 0) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int index = table.convertColumnIndexToModel(column);
-            
+
             currentModel.sortColumn(index);
             setCursor(Cursor.getDefaultCursor());
 	  } else if ((mod & InputEvent.CTRL_MASK) != 0) {
@@ -479,12 +519,12 @@ public class DReport extends DWindow implements TableCellRenderer {
 	  } else if ((mod & InputEvent.SHIFT_MASK) != 0) {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             int index = table.convertColumnIndexToModel(column);
-            
+
             if (currentModel.isColumnFold(index)) {
               currentModel.unfoldingColumn(index);
             } else {
               currentModel.foldingColumn(index);
-            }  
+            }
             setCursor(Cursor.getDefaultCursor());
           }
 	}
@@ -566,7 +606,7 @@ public class DReport extends DWindow implements TableCellRenderer {
               }
             });
           labelPopupMenu.add(item);
-          item = new JMenuItem(VlibProperties.getString("add_column")); 
+          item = new JMenuItem(VlibProperties.getString("add_column"));
           item.addActionListener(new  java.awt.event.ActionListener() {
               public void actionPerformed(java.awt.event.ActionEvent e) {
                 setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -579,7 +619,7 @@ public class DReport extends DWindow implements TableCellRenderer {
             });
           labelPopupMenu.add(item);
           if (model.getAccessibleColumn(table.convertColumnIndexToModel(column)).isAddedAtRuntime()) {
-            item = new JMenuItem(VlibProperties.getString("remove_column")); 
+            item = new JMenuItem(VlibProperties.getString("remove_column"));
             item.addActionListener(new  java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                   setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -593,7 +633,7 @@ public class DReport extends DWindow implements TableCellRenderer {
             labelPopupMenu.add(item);
           }
           if (model.getAccessibleColumn(table.convertColumnIndexToModel(column)).isAddedAtRuntime()) {
-            item = new JMenuItem(VlibProperties.getString("set_column_data")); 
+            item = new JMenuItem(VlibProperties.getString("set_column_data"));
             item.addActionListener(new  java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                   setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -639,7 +679,7 @@ public class DReport extends DWindow implements TableCellRenderer {
 	    int index = 0;
 	    int hiddenColumnsCount = 0;
 	    columnOrderChanged = true;
-            
+
 	    for (int i = 0; i < newColumnOrder.length; i++) {
 	      if (!model.getAccessibleColumn(i).isVisible()) {
 		hiddenColumnsCount += 1;
@@ -713,12 +753,12 @@ public class DReport extends DWindow implements TableCellRenderer {
 
     return width;
   }
-  
+
   /**
    * Display table informations in the footer of the table
    */
   private void setInfoTable() {
-    setStatisticsText("<html><font color=#736AFF>" 
+    setStatisticsText("<html><font color=#736AFF>"
                       + table.getRowCount()
                       + "/"
                       + model.getBaseRowCount()
@@ -732,7 +772,7 @@ public class DReport extends DWindow implements TableCellRenderer {
    * the DefaultTableCellRenderer class overwrites border setting
    */
   class HeaderRenderer extends DefaultTableCellRenderer {
-    
+
     public HeaderRenderer() {
       setHorizontalAlignment(SwingConstants.CENTER);
       setOpaque(true);
@@ -743,18 +783,18 @@ public class DReport extends DWindow implements TableCellRenderer {
       super.updateUI();
       setBorder(UIManager.getBorder("TableHeader.cellBorder"));
     }
-    
+
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       JTableHeader header;
-    
+
       if (table == null) {
         header = null;
       } else {
         header = table.getTableHeader();
       }
-      
+
       if (header != null) {
-        setEnabled(header.isEnabled());         
+        setEnabled(header.isEnabled());
         setComponentOrientation(header.getComponentOrientation());
         setForeground(header.getForeground());
         setBackground(header.getBackground());
@@ -766,7 +806,7 @@ public class DReport extends DWindow implements TableCellRenderer {
         setBackground(UIManager.getColor("TableHeader.background"));
         setFont(UIManager.getFont("TableHeader.font"));
       }
-    
+
       setValue(value);
       setInfoTable();
       return this;
@@ -774,38 +814,39 @@ public class DReport extends DWindow implements TableCellRenderer {
     /**
      * Comment for <code>serialVersionUID</code>
      */
-    private static final long serialVersionUID = 565901305687203629L; 
+    private static final long serialVersionUID = 565901305687203629L;
   }
- 
+
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
-  
+
   private static CellRenderer foldedCell = new CellRenderer(Constants.STA_FOLDED);
   public static final Dimension interCellSpacing = new Dimension(1, 1);
-  
+
   // Here are the different components linked to the DReport :
-  private final MReport		model;			// report model
-  private final VReport		report;			// direct access to the model (VWindow)
-  private JTable		table;			// table view
-  
+  private final MReport	model;			// report model
+  private final VReport	report;			// direct access to the model (VWindow)
+  private DTable		table;			// table view
+
   // These variable contains personalisation parameters for the Report
   private DParameters		parameters;		// report personalisation
-  
+
   // This variable contain information to render each columns
   private CellRenderer[][]	cellRenderers;		// table cell renderers
-  
+
   // Here, we store each column of the DReport
   private TableColumn[]		tablecolumns;		// table of tablecolumns
-  
+
   // Cache and hack variables
   private boolean		columnMove;		// true if a column moved
   private int			fromIndex;		// from index column
   private int			toIndex;		// to index column
   private int			tableWidth;		// Table width
+
   /**
    * Comment for <code>serialVersionUID</code>
    */
-  private static final long serialVersionUID = -6833408762223390823L;
+  private static final long	serialVersionUID = -6833408762223390823L;
 }
 

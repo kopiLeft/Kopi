@@ -31,8 +31,8 @@ import com.kopiright.vkopi.lib.util.MultiLineToolTip;
 /**
  * !!! NEED COMMENTS
  */
-public class DLabel extends JFieldLabel {
-  
+public class DLabel extends JFieldLabel implements ULabel {
+
 /**
    * Constructor
    */
@@ -41,7 +41,7 @@ public class DLabel extends JFieldLabel {
   }
 
   /**
-   * 
+   *
    */
   public void init(String text, String help) {
     setText(text == null ? "" : text);
@@ -69,7 +69,7 @@ public class DLabel extends JFieldLabel {
       newState |= NOEDIT;
     }
     if (model.getBlock().isMulti() && !model.getBlock().noChart()) {
-      newState |= CHART;        
+      newState |= CHART;
     }
 
     switch (model.getAccess(row)) {

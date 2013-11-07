@@ -104,6 +104,7 @@ public class DColumnStyle implements Constants {
    *
    * @return	color	The color to become this component's background color.
    */
+  @SuppressWarnings("deprecation")
   public Color getBackground() {
     switch (background) {
     case CLR_WHITE:
@@ -133,6 +134,7 @@ public class DColumnStyle implements Constants {
    *
    * @return	color	The color to become this component's foreground color.
    */
+  @SuppressWarnings("deprecation")
   public Color getForeground() {
     switch (foreground) {
     case CLR_WHITE:
@@ -162,6 +164,7 @@ public class DColumnStyle implements Constants {
    *
    * @return	font	The font to become this component's font.
    */
+  @SuppressWarnings("deprecation")
   public Font getFont() {
     String	font;
     switch (fontName) {

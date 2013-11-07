@@ -38,8 +38,8 @@ import com.kopiright.util.base.InconsistencyException;
 public class KopiSimpleBlockLayout implements KopiLayoutManager {
   Component[][]		components;
   KopiAlignment[][]	aligns;
-  Vector		follows;
-  Vector		followsAligns;
+  Vector<Component>	follows;
+  Vector<KopiAlignment>	followsAligns;
   int[]			minStart;
   int[]			sizes;
 //   int[]                 minY;
@@ -62,8 +62,8 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
     sizes = new int[col];
     minStart = new int[components.length + 2];
 //     minY = new int[line];
-    follows = new Vector();
-    followsAligns = new Vector();
+    follows = new Vector<Component>();
+    followsAligns = new Vector<KopiAlignment>();
     this.align = align;
   }
 
@@ -234,13 +234,13 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
     int         height = dim.height;
 
     for (int i = 0; i < follows.size(); i++) {
-      KopiAlignment         align = (KopiAlignment)followsAligns.elementAt(i);
+      KopiAlignment         align = followsAligns.elementAt(i);
 
       if (align.x != x || align.y != y) {
         continue;
       }
 
-      Component         comp = (Component)follows.elementAt(i);
+      Component         comp = follows.elementAt(i);
       Dimension         dim2 = comp.getPreferredSize();
 
       width += dim2.width + hgap;
@@ -443,6 +443,7 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
 
   static {
     Font                font = UIManager.getFont("KopiLayout.font");
+    @SuppressWarnings("deprecation")
     FontMetrics         fm = Toolkit.getDefaultToolkit().getFontMetrics(font);
 
     textHeight = fm.getHeight();

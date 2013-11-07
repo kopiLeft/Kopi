@@ -139,12 +139,12 @@ public abstract class VCodeField extends VField {
       case -1:	/* no match */
 	throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
       case -2:	/* two (or more) exact matches: cannot choose */
-        final ListDialog    listDialog;
-        final int           selected;
+        final VListDialog	listDialog;
+        final int            	selected;
         int count;
         int[] selectedToModel;
         Object[] codes;
-        
+
         count = 0;
         for (int i = 0; i < labels.length; i++) {
           if (labels[i].toLowerCase().startsWith(s)) {
@@ -162,9 +162,9 @@ public abstract class VCodeField extends VField {
             j++;
           }
         }
-        listDialog = new ListDialog(new VListColumn[] {getListColumn()},
+        listDialog = new VListDialog(new VListColumn[] {getListColumn()},
                                     new Object[][]{ codes });
-        selected = listDialog.selectFromDialog(getForm(), (DField)getDisplay());
+        selected = listDialog.selectFromDialog(getForm(), null, this);
         if (selected != -1) {
           setCode(block.getActiveRecord(), selectedToModel[selected]);
         } else {
@@ -177,9 +177,9 @@ public abstract class VCodeField extends VField {
     }
   }
 
-  public boolean fillField(PredefinedValueHandler handler) 
+  public boolean fillField(PredefinedValueHandler handler)
     throws VException
-  {    
+  {
     if (handler != null) {
       String    selected;
 
@@ -295,6 +295,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns the field value of given record as a bigdecimal value.
    */
+  @SuppressWarnings("deprecation")
   public com.kopiright.xkopi.lib.type.Fixed getFixed(int r) {
     throw new InconsistencyException();
   }
@@ -302,6 +303,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns the field value of given record as a boolean value.
    */
+  @SuppressWarnings("deprecation")
   public Boolean getBoolean(int r) {
     throw new InconsistencyException();
   }
@@ -309,6 +311,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns the field value of given record as a int value.
    */
+  @SuppressWarnings("deprecation")
   public Integer getInt(int r) {
     throw new InconsistencyException();
   }
@@ -316,6 +319,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns the field value of given record as a string value.
    */
+  @SuppressWarnings("deprecation")
   public String getString(int r) {
     throw new InconsistencyException();
   }
@@ -355,6 +359,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns a string representation of a bigdecimal value wrt the field type.
    */
+  @SuppressWarnings("deprecation")
   protected String formatFixed(com.kopiright.xkopi.lib.type.Fixed value) {
     throw new InconsistencyException();
   }
@@ -362,6 +367,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns a string representation of a boolean value wrt the field type.
    */
+  @SuppressWarnings("deprecation")
   protected String formatBoolean(boolean value) {
     throw new InconsistencyException();
   }
@@ -369,6 +375,7 @@ public abstract class VCodeField extends VField {
   /**
    * Returns a string representation of a int value wrt the field type.
    */
+  @SuppressWarnings("deprecation")
   protected String formatInt(int value) {
     throw new InconsistencyException();
   }

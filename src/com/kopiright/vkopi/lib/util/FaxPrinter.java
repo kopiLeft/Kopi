@@ -24,15 +24,16 @@ import java.io.IOException;
 /**
  * Fax printer
  */
- class FaxPrinter extends AbstractPrinter implements CachePrinter {
+ @SuppressWarnings("deprecation")
+class FaxPrinter extends AbstractPrinter implements CachePrinter {
 
-  
+
 /**
    * Constructs a fax printer
    */
- 	
+
   // never used locally but must be implemented.
- 
+
   private FaxPrinter(final String faxHost,
 		    final String nummer,
 		    final String user,
@@ -44,7 +45,7 @@ import java.io.IOException;
     this.user = user;
     this.id = id;
   }
-  
+
   /**
    * Gets the phone nummer
    */
@@ -65,7 +66,7 @@ import java.io.IOException;
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
+
     return "NYI";
   }
 

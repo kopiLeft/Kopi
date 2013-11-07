@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Component;
 import java.io.InputStream;
 import java.sql.SQLException;
 
@@ -31,22 +30,22 @@ import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.list.VColumn;
 import com.kopiright.vkopi.lib.list.VList;
 import com.kopiright.vkopi.lib.list.VListColumn;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Month;
 import com.kopiright.xkopi.lib.type.Time;
-import com.kopiright.xkopi.lib.type.Week;
 import com.kopiright.xkopi.lib.type.Timestamp;
+import com.kopiright.xkopi.lib.type.Week;
 
 /**
  * A field is a column in the the database (a list of rows)
@@ -412,15 +411,15 @@ public abstract class VField implements VConstants {
             getBlock().getForm().getActiveBlock().gotoNextField();
           }
         };
-      ((DField) getDisplay()).getBlockView().getFormView().performAsyncAction(action);
+      ((UField) getDisplay()).getBlockView().getFormView().performAsyncAction(action);
     }
   }
 
   /**
    * Return the display
    */
-  public Component getDisplay() {
-    Component           value = null;
+  public UField getDisplay() {
+    UField           value = null;
 
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -557,7 +556,7 @@ public abstract class VField implements VConstants {
           e.resetValue();
           throw e;
         }
-      } else if (getForm().getEnvironment().setTextOnFieldLeave()) {
+      } else if (getForm().setTextOnFieldLeave()) {
         if (changed && changedUI && hasListener) {
           checkType(getDisplayedValue(true));
         }
@@ -715,6 +714,7 @@ public abstract class VField implements VConstants {
   /**
    * Sets default values
    */
+  @SuppressWarnings("deprecation")
   public void setDefault() {
     if (isNull(block.getActiveRecord())) {
       try {
@@ -806,6 +806,7 @@ public abstract class VField implements VConstants {
   /**
    * Returns the search conditions for this field.
    */
+  @SuppressWarnings("deprecation")
   public String getSearchCondition() {
     if (isNull(block.getActiveRecord())) {
       if (getSearchOperator() == SOP_EQ) {
@@ -1057,6 +1058,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setFixed(int r, Fixed v) {
     throw new InconsistencyException();
   }
@@ -1066,6 +1068,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setBoolean(int r, Boolean v) {
     throw new InconsistencyException();
   }
@@ -1075,6 +1078,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setDate(int r, Date v) {
     throw new InconsistencyException();
   }
@@ -1084,6 +1088,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setMonth(int r, Month v) {
     throw new InconsistencyException();
   }
@@ -1093,6 +1098,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setWeek(int r, Week v) {
     throw new InconsistencyException();
   }
@@ -1102,6 +1108,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setInt(int r, Integer v) {
     throw new InconsistencyException();
   }
@@ -1118,6 +1125,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setString(int r, String v) {
     throw new InconsistencyException();
   }
@@ -1125,6 +1133,7 @@ public abstract class VField implements VConstants {
   /**
    * Sets the field value of given record to a date value.
    */
+  @SuppressWarnings("deprecation")
   public void setImage(int r, byte[] v) {
     throw new InconsistencyException();
   }
@@ -1134,6 +1143,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setTime(int r, Time v) {
     throw new InconsistencyException();
   }
@@ -1143,6 +1153,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setTimestamp(int r, Timestamp v) {
     throw new InconsistencyException();
   }
@@ -1152,6 +1163,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public void setColor(int r, java.awt.Color v) {
     throw new InconsistencyException();
   }
@@ -1368,6 +1380,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Fixed getFixed(int r) {
     throw new InconsistencyException();
   }
@@ -1377,6 +1390,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Boolean getBoolean(int r) {
     throw new InconsistencyException();
   }
@@ -1386,6 +1400,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Date getDate(int r) {
     throw new InconsistencyException();
   }
@@ -1395,6 +1410,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Month getMonth(int r) {
     throw new InconsistencyException();
   }
@@ -1404,6 +1420,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Week getWeek(int r) {
     throw new InconsistencyException();
   }
@@ -1413,6 +1430,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Integer getInt(int r) {
     throw new InconsistencyException();
   }
@@ -1420,6 +1438,7 @@ public abstract class VField implements VConstants {
   /**
    * Returns the field value of given record as a date value.
    */
+  @SuppressWarnings("deprecation")
   public byte[] getImage(int r) {
     throw new InconsistencyException();
   }
@@ -1429,6 +1448,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public String getString(int r) {
     throw new InconsistencyException();
   }
@@ -1438,6 +1458,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Time getTime(int r) {
     throw new InconsistencyException();
   }
@@ -1447,6 +1468,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public Timestamp getTimestamp(int r) {
     throw new InconsistencyException();
   }
@@ -1456,6 +1478,7 @@ public abstract class VField implements VConstants {
    * Warning:   This method will become inaccessible to kopi users in next release
    * @kopi      inaccessible
    */
+  @SuppressWarnings("deprecation")
   public java.awt.Color getColor(int r) {
     throw new InconsistencyException();
   }
@@ -1636,7 +1659,7 @@ public abstract class VField implements VConstants {
    * Checks that field value exists in list
    */
   private void checkList() throws VException {
-    if (!getForm().getEnvironment().forceCheckList()) {
+    if (!getForm().forceCheckList()) {
       // Oracle doesn't force the value to be in the list
       return;
     }
@@ -1935,10 +1958,10 @@ public abstract class VField implements VConstants {
         if (lineCount == 1 && ! SHOW_SINGLE_ENTRY) {
           selected = 0;
         } else {
-          final ListDialog      ld;
+          final VListDialog      ld;
 
-          ld = new ListDialog(columns, lines, lineCount, newForm);
-          selected = ld.selectFromDialog(getForm(), getDisplay());
+          ld = new VListDialog(columns, lines, lineCount, newForm);
+          selected = ld.selectFromDialog(getForm(), null, this);
         }
       }
 
@@ -2102,6 +2125,7 @@ public abstract class VField implements VConstants {
   /**
    * Returns the list table.
    */
+  @SuppressWarnings("deprecation")
   private String evalListTable() {
     try {
       return (String)getBlock().executeObjectTrigger(list.getTable());

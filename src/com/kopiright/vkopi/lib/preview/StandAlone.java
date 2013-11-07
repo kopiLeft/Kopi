@@ -33,7 +33,7 @@ import javax.swing.UIManager;
 
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.JApplication;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.lowagie.text.Rectangle;
@@ -129,12 +129,12 @@ public class StandAlone {
       System.exit(1);
     }
 
-    new Application(null) {
+    new JApplication(null) {
       /**
        * Comment for <code>serialVersionUID</code>
        */
       private static final long serialVersionUID = 4431252746433071286L;
-      
+
       public DBContext login(String database, String driver, String username, String password, String schema) {
         return null;
       }

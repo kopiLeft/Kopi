@@ -24,10 +24,10 @@ import java.awt.Point;
 /**
  * !!! Not used in Kopi. Check if used by an application
  */
-public class DPreferences extends java.util.Hashtable {
+public class DPreferences extends java.util.Hashtable<String, Object> {
 
-  
-/**
+
+  /**
    *
    */
   public void setButtonSize(boolean small) {

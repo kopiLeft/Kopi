@@ -31,6 +31,7 @@ public class VBooleanCodeColumn extends VCodeColumn {
    * @param     groups          The index of the column grouped by this one or -1
    * @param     function        An (optional) summation function
    */
+  @SuppressWarnings("deprecation")
   public VBooleanCodeColumn(String ident,
                             String type,
                             String source,

@@ -22,11 +22,11 @@ package com.kopiright.vkopi.lib.visual;
 import java.util.Hashtable;
 
 public class Registry {
-  
+
   // ---------------------------------------------------------------------
   // CONSTRUCTOR
   // ---------------------------------------------------------------------
-  
+
   /**
    * Constructor
    *
@@ -36,34 +36,34 @@ public class Registry {
   protected Registry(String domain, Registry[] parents) {
     this.domain = domain;
     this.parents = parents;
-    dependencies.put(VISUAL_KOPI_DOMAIN,"com.kopiright.vkopi.lib.resource" + ".Messages");
+    dependencies.put(VISUAL_KOPI_DOMAIN, "com.kopiright.vkopi.lib.resource" + ".Messages");
  }
-  
-  
+
+
   // ---------------------------------------------------------------------
   // ACCESSORS
   // ---------------------------------------------------------------------
-  
+
   /**
    * Returns the domain of this registry.
    */
   public String getDomain() {
     return domain;
   }
-  
+
   /**
-   * Builds the dependencies of this registry. 
+   * Builds the dependencies of this registry.
    */
   /*package*/ void buildDependencies() {
     buildDependencies(dependencies);
   }
-  
+
   /**
    * Builds the dependencies of this registry.
    *
    * @param     deps            the dependency hashtable.
    */
-  private void buildDependencies(Hashtable deps) {
+  private void buildDependencies(Hashtable<String, String> deps) {
     if (! deps.containsKey(domain)) {
       deps.put(domain, this.getClass().getPackage().getName() + ".Messages");
     }
@@ -73,23 +73,23 @@ public class Registry {
       }
     }
   }
-  
+
   /**
    * Returns the message source for the given key.
    *
    * @param     key             a 3 upper-case letter registry identifier.
    */
   public String getMessageSource(String key) {
-    return (String)dependencies.get(key);
+    return dependencies.get(key);
   }
-  
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------
-  
+
   private final String                  domain;
   private final Registry[]              parents;
-  private Hashtable                     dependencies = new Hashtable();
-  
+  private Hashtable<String, String>     dependencies = new Hashtable<String, String>();
+
   private static String                 VISUAL_KOPI_DOMAIN = "VIS";
 }

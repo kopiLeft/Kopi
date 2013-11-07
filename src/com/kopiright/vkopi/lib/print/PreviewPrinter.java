@@ -52,12 +52,11 @@ public class PreviewPrinter extends AbstractPrinter {
 
   public String print(PrintJob data) throws IOException, PrintException {
     if (ApplicationConfiguration.getConfiguration().useAcroread()) {
-      Process p;
       try {
         if (System.getProperty("os.name").startsWith("Linux")) {
-          p = Runtime.getRuntime().exec("acroread " + data.getDataFile());
+          Runtime.getRuntime().exec("acroread " + data.getDataFile());
         } else if (System.getProperty("os.name").startsWith("Windows")) {
-          p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " +  data.getDataFile());
+          Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " +  data.getDataFile());
         }
       } catch (IOException e) {
         System.out.println("Acroread failed: " + e.getMessage());
@@ -69,7 +68,7 @@ public class PreviewPrinter extends AbstractPrinter {
          throw new PSPrintException("PreviewPrinter.PrintTaskImpl::print()", e);
        }
     }
-    
+
     return "NYI";
   }
 

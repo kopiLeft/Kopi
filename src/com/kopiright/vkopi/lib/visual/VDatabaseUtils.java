@@ -21,15 +21,16 @@ package com.kopiright.vkopi.lib.visual;
 
 import java.sql.SQLException;
 
-import com.kopiright.xkopi.lib.base.*;
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.xkopi.lib.base.DBContextHandler;
+import com.kopiright.xkopi.lib.base.Query;
 
 public class VDatabaseUtils {
 
   /*
-   * Checks if a foreign key is referenced 
+   * Checks if a foreign key is referenced
    */
+  @SuppressWarnings("deprecation")
   public static void checkForeignKeys(DBContextHandler ctxt, int id, String table)
     throws VException, SQLException
   {
@@ -100,9 +101,9 @@ public class VDatabaseUtils {
    * Is like DeleteChecked in Aegis
    */
   public static  void deleteRecords(DBContextHandler ctxt,
-                                    String table, 
-                                    String condition) 
-    throws VException, SQLException 
+                                    String table,
+                                    String condition)
+    throws VException, SQLException
   {
     Query       query;
 

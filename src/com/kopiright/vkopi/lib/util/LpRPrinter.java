@@ -148,7 +148,9 @@ public class LpRPrinter implements Printer {
   private final String          user;
 
 
+  @SuppressWarnings("unused")
   private int                   tray;
+  @SuppressWarnings("unused")
   private String                paperFormat;
- 
+
 }

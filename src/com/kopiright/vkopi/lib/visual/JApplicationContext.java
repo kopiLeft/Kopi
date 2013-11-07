@@ -19,6 +19,14 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-public interface UIBuilder {
-  DWindow createView(VWindow model);
+/**
+ * {@code JApplicationContext} is an application context
+ * for swing applications.
+ */
+public class JApplicationContext extends ApplicationContext {
+
+  @Override
+  public Application getApplication() {
+    return JApplication.getInstance();
+  }
 }

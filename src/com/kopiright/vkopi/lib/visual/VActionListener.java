@@ -22,5 +22,10 @@ package com.kopiright.vkopi.lib.visual;
 import java.util.EventListener;
 
 public interface VActionListener extends EventListener {
+
+  /**
+   * Performs the appropriate action asynchronously.
+   * @param action The {@link KopiAction} to be performed
+   */
   void performAsyncAction(final KopiAction action);
 }

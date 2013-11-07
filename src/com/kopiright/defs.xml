@@ -22,13 +22,13 @@
 	</path>
 
 	<presetdef name="java.def">
-		<java classpath="classpath" fork="yes">
+		<java classpath="classpath" fork="yes" failonerror="yes">
 			<jvmarg line="-Djava.ext.dirs=${extdirs}" />
 		</java>
 	</presetdef>
 
 	<presetdef name="javac.def">
-		<javac srcdir="${src}" destdir="${classroot}" classpathref="classpath" includes="${javafiles}" compiler="javac1.4" source="1.4" includeAntRuntime="no" extdirs="${extdirs}">
+		<javac failonerror="yes" fork="yes" srcdir="${src}" destdir="${classroot}" classpathref="classpath" includes="${javafiles}" deprecation="yes" sourcepath="${topdir}/../.." includeAntRuntime="no" extdirs="${extdirs}">
 			<compilerarg line="-encoding utf-8" />
 		</javac>
 	</presetdef>

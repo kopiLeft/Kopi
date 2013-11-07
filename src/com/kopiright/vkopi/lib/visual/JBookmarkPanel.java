@@ -17,24 +17,36 @@
  * $Id$
  */
 
-package com.kopiright.vkopi.lib.ui.base;
+package com.kopiright.vkopi.lib.visual;
 
 import java.awt.GridLayout;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Hashtable;
-import javax.swing.*;
 
-public class JBookmarkPanel extends JFrame  {
-  
-public JBookmarkPanel(String title) {
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+import com.kopiright.vkopi.lib.visual.UMenuTree.UBookmarkPanel;
+
+public class JBookmarkPanel extends JFrame implements UBookmarkPanel {
+
+  //-------------------------------------------------------------------
+  // CONSTRUCTOR
+  //-------------------------------------------------------------------
+
+  public JBookmarkPanel(String title) {
     super(title);
 
     buttons = new JPanel();
     buttons.setLayout(new GridLayout(1, 1));
     getContentPane().add(buttons);
-    shortcuts = new Hashtable();
-    pack(); 
+    shortcuts = new Hashtable<Action, JComponent>();
+    pack();
   }
 
   public void addShortcut(Action action) {
@@ -45,7 +57,7 @@ public JBookmarkPanel(String title) {
     }
     buttons.add(button);
     shortcuts.put(action, button);
-    
+
     int         countShortcut = shortcuts.size();
 
     buttons.setLayout(new GridLayout(countShortcut, 1));
@@ -53,7 +65,7 @@ public JBookmarkPanel(String title) {
   }
 
   public void removeShortcut(Action action) {
-    buttons.remove((JComponent)shortcuts.remove(action));
+    buttons.remove(shortcuts.remove(action));
 
     int         countShortcut = shortcuts.size();
 
@@ -65,10 +77,15 @@ public JBookmarkPanel(String title) {
     pack();
   }
 
-  private JPanel                buttons;
-  private Hashtable		shortcuts;
+  //-------------------------------------------------------------------
+  // DATA MEMBERS
+  //-------------------------------------------------------------------
+
+  private JPanel                		buttons;
+  private Hashtable<Action, JComponent>		shortcuts;
+
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-  private static final long serialVersionUID = -349948284157504110L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long 			serialVersionUID = -349948284157504110L;
 }

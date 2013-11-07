@@ -24,18 +24,16 @@ import java.util.Locale;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.visual.Application;
-
 
 /**
  * This class handles localized messages
  */
 public class Message {
-  
+
   // ----------------------------------------------------------------------
   // STATIC METHODS
   // ----------------------------------------------------------------------
-  
+
   /**
    * Returns a message (convenience routine).
    *
@@ -57,7 +55,7 @@ public class Message {
   public static String getMessage(String ident, Object param) {
     return getMessage(ident, new Object[] {param});
   }
-  
+
   /**
    * Returns a message (convenience routine).
    *
@@ -73,9 +71,9 @@ public class Message {
   public static String getMessage(String ident, Object[] params) {
     LocalizationManager         manager;
     String                      format;
-    
-    if (Application.getApplication() != null) {
-      manager = Application.getLocalizationManager();
+
+    if (ApplicationContext.getApplicationContext().getApplication() != null) {
+      manager = ApplicationContext.getLocalizationManager();
     } else {
       manager = new LocalizationManager(Locale.getDefault(), null);
     }
@@ -88,10 +86,10 @@ public class Message {
       return "!" + ident + "!";
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  
+
   private static final String   VISUAL_KOPI_MESSAGES_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/VKMessages";
 }

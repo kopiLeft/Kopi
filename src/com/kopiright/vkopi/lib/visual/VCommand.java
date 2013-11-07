@@ -33,7 +33,6 @@ public class VCommand {
    */
   public void setEnabled(boolean enabled) {
     if (actor != null && !killed) {
-      SwingThreadHandler.verifyRunsInEventThread("enabling of commands");
       actor.setEnabled(enabled);
       actor.setNumber(trigger);
       actor.setHandler(handler);

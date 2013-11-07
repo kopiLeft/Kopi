@@ -25,7 +25,12 @@ import com.kopiright.vkopi.lib.visual.ActionHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 
 public class VFieldCommand extends VCommand implements ActionHandler {
-  public VFieldCommand(DForm form, int type) {
+
+  // ----------------------------------------------------------------------
+  // CONSTRUCTOR
+  // ----------------------------------------------------------------------
+
+  public VFieldCommand(VForm form, int type) {
     super(0xFFFF, null, null, type, "Standard " + type);
     this.form = form;
   }
@@ -36,7 +41,7 @@ public class VFieldCommand extends VCommand implements ActionHandler {
   public void setEnabled(boolean enabled) {
     if (actor == null) {
       handler = this;
-      actor = ((VForm) form.getModel()).getDefaultActor(getTrigger());
+      actor = form.getDefaultActor(getTrigger());
     }
     actor.setEnabled(enabled);
     actor.setNumber(trigger);
@@ -51,7 +56,7 @@ public class VFieldCommand extends VCommand implements ActionHandler {
    *
    * @param	action		the action to perform.
    * @param	block		This action should block the UI thread ?
-   * @deprecated                use method performAsyncAction 
+   * @deprecated                use method performAsyncAction
    */
   public void performAction(final KopiAction action, boolean block) {
     form.performAsyncAction(action);
@@ -83,16 +88,16 @@ public class VFieldCommand extends VCommand implements ActionHandler {
     switch (type) {
     case VForm.CMD_AUTOFILL:
       //      form.getActiveBlock().getActiveField().autofill(true, true);
-      ((VForm) form.getModel()).getActiveBlock().getActiveField().predefinedFill();
+      form.getActiveBlock().getActiveField().predefinedFill();
       break;
     case VForm.CMD_EDITITEM:
     case VForm.CMD_EDITITEM_S:
       //      form.getActiveBlock().getActiveField().getUI().loadItem(VForm.CMD_EDITITEM);
-      ((VForm) form.getModel()).getActiveBlock().getActiveField().loadItem(VForm.CMD_EDITITEM);
+      form.getActiveBlock().getActiveField().loadItem(VForm.CMD_EDITITEM);
       break;
     case VForm.CMD_NEWITEM:
       //      form.getActiveBlock().getActiveField().getUI().loadItem(VForm.CMD_NEWITEM);
-      ((VForm) form.getModel()).getActiveBlock().getActiveField().loadItem(VForm.CMD_EDITITEM);
+      form.getActiveBlock().getActiveField().loadItem(VForm.CMD_EDITITEM);
       break;
     }
   }
@@ -103,7 +108,7 @@ public class VFieldCommand extends VCommand implements ActionHandler {
   public int getKey() {
     if (actor == null) {
       handler = this;
-      actor = ((VForm)form.getModel()).getDefaultActor(getTrigger());
+      actor = form.getDefaultActor(getTrigger());
     }
 
     return super.getKey();
@@ -116,7 +121,7 @@ public class VFieldCommand extends VCommand implements ActionHandler {
   public void helpOnCommand(com.kopiright.vkopi.lib.visual.VHelpGenerator help) {
     if (actor == null) {
       handler = this;
-      actor = ((VForm)form.getModel()).getDefaultActor(getTrigger());
+      actor = form.getDefaultActor(getTrigger());
     }
     if (actor == null) {
       return;
@@ -128,5 +133,5 @@ public class VFieldCommand extends VCommand implements ActionHandler {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private DForm	form;
+  private VForm						form;
 }

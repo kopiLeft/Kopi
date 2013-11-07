@@ -15,7 +15,7 @@
             value="JFieldLabel.java FieldStates.java JMenuButton.java
                    KopiTitledBorder.java JButtonPanel.java ListDialogCellRenderer.java 
                    JFieldButton.java JBookmarkPanel.java JDisablePanel.java
-                   TextSelecter.java Stateful.java" />
+                   TextSelecter.java Stateful.java JFieldButton.java UComponent.java Image.java" />
 
   <import file="${topdir}/defs.xml" />
 

@@ -25,11 +25,9 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.util.LineBreaker;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.visual.Message;
-import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.Query;
 
 public class VStringField extends VField {
@@ -115,6 +113,7 @@ public class VStringField extends VField {
    * verify that value is valid (on exit)
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised if text is bad
    */
+  @SuppressWarnings("deprecation")
   public void checkType(Object o) throws VException {
     String s = (String)o;
 
@@ -150,7 +149,7 @@ public class VStringField extends VField {
   /**
    * Convert the first letter in each word in the source text into upper case.
    *
-   * @param	source		the source text. 
+   * @param	source		the source text.
    */
   private String convertName(String source) {
     char[]      chars = source.toLowerCase().toCharArray();
@@ -166,7 +165,7 @@ public class VStringField extends VField {
     }
     return String.valueOf(chars);
   }
-  
+
   // ----------------------------------------------------------------------
   // INTERFACE BD/TRIGGERS
   // ----------------------------------------------------------------------
@@ -188,7 +187,7 @@ public class VStringField extends VField {
 //     if(!checkText(v == null ? "" : v)) {
 //       throw new IllegalArgumentException(MessageCode.getMessage("VIS-00065", Integer.toString(width), Integer.toString(height)));
 //     }
-    if (isChangedUI() 
+    if (isChangedUI()
         || value[r] == null
         || (value[r] != null && !value[r].equals(modelVal))) {
       // trails (backup) the record if necessary

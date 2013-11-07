@@ -86,14 +86,14 @@ public class WaitWindow {
 
       waitDialog.getContentPane().add(panel);
 
-      timer = new Timer(250, new TimerListener()); 
+      timer = new Timer(250, new TimerListener());
       timer.start();
       time = System.currentTimeMillis();
 
       Dimension         screen = Toolkit.getDefaultToolkit().getScreenSize();
       Point		parentPos = new Point(0, 0);
 
-      waitDialog.pack(); 
+      waitDialog.pack();
       SwingUtilities.convertPointToScreen(parentPos, frame);
 
       int		posx = parentPos.x + frame.getSize().width / 2 - waitDialog.getSize().width / 2;
@@ -117,10 +117,10 @@ public class WaitWindow {
 
       final JDialog  wd = waitDialog;
       SwingThreadHandler.start(new Runnable() {
-          public void run () {
-            wd.show();
-          }
-        });
+	public void run () {
+	  wd.setVisible(true);
+	}
+      });
     } else {
       // change dialog text
       text.setText("<html><b> " + MessageCode.getMessage("VIS-00067") + " </b><br>" + message);
@@ -133,7 +133,7 @@ public class WaitWindow {
       text.setText("<html><b> " + MessageCode.getMessage("VIS-00067") + " </b><br>" + message);
     }
   }
-  
+
   /**
    * change mode to free state
    */

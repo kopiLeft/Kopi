@@ -67,12 +67,12 @@ public abstract class GroupHandler {
   /**
    * This method is called at the end of a group, with body containing all elements
    */
-  public abstract void foot(Object key, Vector body) throws Exception;
+  public abstract void foot(Object key, Vector<Object> body) throws Exception;
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
   private Object		key;
-  private Vector		elems = new Vector();
+  private Vector<Object>	elems = new Vector<Object>();
 }

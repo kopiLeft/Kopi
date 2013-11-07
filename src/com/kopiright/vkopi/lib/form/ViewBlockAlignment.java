@@ -20,14 +20,22 @@
 package com.kopiright.vkopi.lib.form;
 
 /**
- * A class to specifie alignment in KopiLayout
+ * A class to specify alignment in KopiLayout
  */
 public class ViewBlockAlignment {
 
-  public ViewBlockAlignment(DForm formView, BlockAlignment align) {
+  //------------------------------------------------------------
+  // CONSTRUCTOR
+  //------------------------------------------------------------
+
+  public ViewBlockAlignment(UForm formView, BlockAlignment align) {
     this.align = align;
     this.formView = formView;
   }
+
+  //------------------------------------------------------------
+  // ACCESSORS
+  //------------------------------------------------------------
 
   public boolean isChart() {
     return align.isChart();
@@ -38,8 +46,8 @@ public class ViewBlockAlignment {
   }
 
   public int getMinStart(int x) {
-    int         target;
-    DBlock      view;
+    int         	target;
+    UBlock      	view;
 
     x--; // we want to align middle
     target = align.getTargetAt(x);
@@ -59,8 +67,8 @@ public class ViewBlockAlignment {
   }
 
   public int getLabelMinStart(int x) {
-    int         target;
-    DBlock      view;
+    int         	target;
+    UBlock      	view;
 
     x--; // we want to align middle
     target = align.getTargetAt(x);
@@ -76,7 +84,10 @@ public class ViewBlockAlignment {
     return 0;
   }
 
+  //------------------------------------------------------------
+  // DATA MEMBERS
+  //------------------------------------------------------------
 
-  DForm                 formView;
-  BlockAlignment        align;
+  /*package*/ UForm                 		formView;
+  /*package*/ BlockAlignment        		align;
 }

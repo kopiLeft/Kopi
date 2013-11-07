@@ -48,7 +48,6 @@ import javax.swing.DefaultFocusManager;
 import javax.swing.FocusManager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -67,17 +66,14 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 import com.kopiright.vkopi.lib.ui.base.JButtonPanel;
-import com.kopiright.vkopi.lib.ui.base.JMenuButton;
 import com.kopiright.vkopi.lib.util.KnownBugs;
 import com.kopiright.vkopi.lib.util.LineBreaker;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.visual.PropertyException;
 
 /**
  * This class displays a window with a menu, a tool bar, a content panel
  * and a footbar
  */
-public abstract class DWindow extends JPanel implements VActionListener, ModelCloseListener, WaitDialogListener, ProgressDialogListener {
+public abstract class DWindow extends JPanel implements UWindow, VActionListener, ModelCloseListener, WaitDialogListener, ProgressDialogListener {
 
   /**
    * Constructor
@@ -85,6 +81,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   protected DWindow(VWindow model) {
     this.model = model;
     setName(model.getTitle());
+    model.setDisplay(this);
 
     for (int i=0; i<10; i++) {
       registerKeyboardAction(BOOKMARKS[i],
@@ -373,7 +370,6 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     displayError(frame, message);
   }
 
-
   public static void displayError(Component parent, String message) {
     Object[]    options = { VlibProperties.getString("CLOSE")};
 
@@ -409,7 +405,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     pane.setComponentOrientation(parent.getComponentOrientation());
     dialog = pane.createDialog(parent, current +  " " + VlibProperties.getString("from") + " " + total);
 
-    dialog.show();
+    dialog.setVisible(true);
     dialog.dispose();
 
     obj = pane.getInputValue();
@@ -476,25 +472,6 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 				 options[yesIsDefault ? 0 : 1]);
   }
 
-  /**
-   * Show Application Information
-   */
-  public void showApplicationInformation(String message) {
-    SwingThreadHandler.verifyRunsInEventThread("DWindow showApplicationInformation");
-    verifyNotInTransaction("DWindow.showApplicationInformation(" + message + ")");
-
-    Object[] options = { VlibProperties.getString("CLOSE")};
-
-    JOptionPane.showOptionDialog(getFrame(),
-                                 message,
-                                 VlibProperties.getString("Notice"),
-                                 JOptionPane.DEFAULT_OPTION,
-                                 JOptionPane.INFORMATION_MESSAGE,
-                                 com.kopiright.vkopi.lib.util.Utils.getImage("info.gif"),
-                                 options,
-                                 options[0]);
-   }
-
   // ---------------------------------------------------------------------
   // UNDO / REDO / CUT / COPY / PASTE
   // ---------------------------------------------------------------------
@@ -532,8 +509,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
   // The following two methods allow us to find an
   // action provided by the editor kit by its name.
-  private static Hashtable createActionTable(JTextComponent textComponent) {
-    Hashtable actions = new Hashtable();
+  private static Hashtable<Object, Action> createActionTable(JTextComponent textComponent) {
+    Hashtable<Object, Action> actions = new Hashtable<Object, Action>();
     Action[] actionsArray = textComponent.getActions();
     for (int i = 0; i < actionsArray.length; i++) {
       Action a = actionsArray[i];
@@ -687,17 +664,17 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
       KnownBugs.paintIconReload = null;
       KnownBugs.paintIconFailure = false;
-      Application.reportTrouble("DWindow",
-                                "DWindow.performActionImpl(" + action + ", "+asynch+")",
-                                text,
-                                new RuntimeException("Painting Error - Load retried (Never Thrown)"));
+      ApplicationContext.reportTrouble("DWindow",
+                                       "DWindow.performActionImpl(" + action + ", "+asynch+")",
+                                       text,
+                                       new RuntimeException("Painting Error - Load retried (Never Thrown)"));
 
     } else if (KnownBugs.paintIconFailure) {
       KnownBugs.paintIconFailure = false;
-      Application.reportTrouble("DWindow",
-                                "DWindow.performActionImpl(" + action + ", "+asynch+")",
-                                "no more info",
-                                new RuntimeException("Painting Error (Never Thrown)"));
+      ApplicationContext.reportTrouble("DWindow",
+                                       "DWindow.performActionImpl(" + action + ", "+asynch+")",
+                                       "no more info",
+                                       new RuntimeException("Painting Error (Never Thrown)"));
     }
     // -- DEBUGGING END
 
@@ -764,7 +741,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       try {
         Runnable actionSetter = new Runnable() {
             public void run() {
-              final LinkedList        eventList = currentEventQueue;
+              final LinkedList<AWTEvent>        eventList = currentEventQueue;
 
               currentEventQueue = null;
               currentAction = null;
@@ -1001,7 +978,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       for (int i = 0; i < actorDefs.length; i++) {
 	DActor		actorView;
 
-	actorView = new DActor(actorDefs[i]);
+	actorView = (DActor)UIFactory.getUIFactory().createView(actorDefs[i]);
         addButton(buttonPanel, actorView);
         menuBar.addItem(actorView);
       }
@@ -1024,7 +1001,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       f.setTitle(getModel().getTitle());
 
       if (DObject.windowIcon != null || getModel().getSmallIcon() != null) {
- 	f.setIconImage(getModel().getSmallIcon() == null ? DObject.windowIcon : getModel().getSmallIcon().getImage());
+ 	f.setIconImage(getModel().getSmallIcon() == null ? DObject.windowIcon : ((ImageIcon)getModel().getSmallIcon()).getImage());
       }
 
       f.getContentPane().setLayout(new BorderLayout());
@@ -1135,13 +1112,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   /**
    * Reports iff a message is shown while in a transaction.
    */
-  private void verifyNotInTransaction(String message) {
+  /*package*/ void verifyNotInTransaction(String message) {
     if (getModel().inTransaction() && debugMessageInTransaction()) {
       try {
-        Application.reportTrouble("DWindow",
-                                  message + " IN TRANSACTION",
-                                  this.toString(),
-                                  new RuntimeException("displayNotice in Transaction"));
+	ApplicationContext.reportTrouble("DWindow",
+                                         message + " IN TRANSACTION",
+                                         this.toString(),
+                                         new RuntimeException("displayNotice in Transaction"));
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -1156,7 +1133,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     boolean     debugMessageInTransaction;
 
     try {
-      debugMessageInTransaction = Application.getDefaults().debugMessageInTransaction();
+      debugMessageInTransaction = ApplicationContext.getDefaults().debugMessageInTransaction();
     } catch (PropertyException e) {
       debugMessageInTransaction = false;
     }
@@ -1170,6 +1147,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   /**
    * Show a dialog with a key assignated to each button (the first letter)
    */
+  @SuppressWarnings("unused")
   public static int showOptionDialog(JFrame frame,
 				     Object message,
 				     String title,
@@ -1195,9 +1173,9 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       /**
        * Comment for <code>serialVersionUID</code>
        */
-        private static final long serialVersionUID = 8837346594485054607L;
+      private static final long serialVersionUID = 8837346594485054607L;
 
-	public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 	closeOptionPaneWith = 0;
 	dialog.dispose();
       }},
@@ -1207,11 +1185,11 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
     pane.registerKeyboardAction(new AbstractAction() {
       /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = -2466568795023067881L;
+       * Comment for <code>serialVersionUID</code>
+       */
+      private static final long serialVersionUID = -2466568795023067881L;
 
-	public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 	closeOptionPaneWith = 1;
 	dialog.dispose();
       }},
@@ -1219,7 +1197,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       KeyStroke.getKeyStroke(((String)options[1]).charAt(0), 0),
       JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-    dialog.show();
+    dialog.setVisible(true);
 
     Object        selectedValue = pane.getValue();
 
@@ -1237,7 +1215,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       return JOptionPane.CLOSED_OPTION;
     }
     for (int counter = 0, maxCounter = options.length;
-	counter < maxCounter; counter++) {
+    counter < maxCounter; counter++) {
       if (options[counter].equals(selectedValue)) {
 	return counter;
       }
@@ -1245,7 +1223,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     return JOptionPane.CLOSED_OPTION;
   }
 
-  class MessageHandler implements MessageListener {
+  /*package*/ class MessageHandler implements MessageListener {
     /**
      * Displays a notice.
      */
@@ -1379,46 +1357,46 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   // for debugging
-  public Exception           runtimeDebugInfo;
+  public Exception           			runtimeDebugInfo;
 
   // set/access inAction ONLY in the event-disp.-Thread
-  private boolean		inAction;
+  private boolean				inAction;
   // set/access these fields ONLY in the event-disp.-Thread
-  private KopiAction		currentAction;
-  private LinkedList            currentEventQueue;
+  private KopiAction				currentAction;
+  private LinkedList<AWTEvent>            	currentEventQueue;
 
-  private int                   returnCode = -1;
+  private int                   		returnCode = -1;
 
-  private final ActionRunner    actionRunner = new ActionRunner();
+  private final ActionRunner    		actionRunner = new ActionRunner();
 
-  private static int			closeOptionPaneWith;
+  private static int				closeOptionPaneWith;
 
-  private VWindow			model;
+  private VWindow				model;
 
-  private ProgressWindow		progressWindow;
-  private WaitWindow                    waitWindow;
-  private DMenuBar			menuBar;
-  private DFootPanel			footPanel;
-  private JPanel			buttonPanel;
-  private JPanel			contentPanel;
+  private ProgressWindow			progressWindow;
+  private WaitWindow                    	waitWindow;
+  private DMenuBar				menuBar;
+  private DFootPanel				footPanel;
+  private JPanel				buttonPanel;
+  private JPanel				contentPanel;
 
-  private boolean			firstTime;
-  private boolean			dialog;
+  private boolean				firstTime;
+  private boolean				dialog;
 
-  private Frame				frame;
-  private Frame                         parentFrame;
-  private JFrame			self;
+  private Frame					frame;
+  private Frame                         	parentFrame;
+  private JFrame				self;
 
-  private WindowHandler                 windowhandler;
-  private WaitInfoHandler               waitInfoHandler;
-  private MessageHandler                messageHandler;
+  private WindowHandler                 	windowhandler;
+  private WaitInfoHandler               	waitInfoHandler;
+  private MessageHandler                	messageHandler;
 
-  private DUndoableEditListener 	undoableListener;
-  private UndoManager			undo;
-  protected UndoAction			undoAction;
-  protected RedoAction			redoAction;
+  private DUndoableEditListener 		undoableListener;
+  private UndoManager				undo;
+  protected UndoAction				undoAction;
+  protected RedoAction				redoAction;
 
-  private static Hashtable		actions = createActionTable(new JTextField());
+  private static Hashtable<Object, Action>	actions = createActionTable(new JTextField());
 
   public static final ImageIcon		ICN_WAIT = com.kopiright.vkopi.lib.util.Utils.getImage("wait.gif");
   public static final ImageIcon		ICN_ERROR = com.kopiright.vkopi.lib.util.Utils.getImage("error.gif");
@@ -1426,11 +1404,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
   public static final ImageIcon		ICN_ASK = com.kopiright.vkopi.lib.util.Utils.getImage("ask.gif");
   public static final ImageIcon		ICN_NOTICE = com.kopiright.vkopi.lib.util.Utils.getImage("notice.gif");
 
-  public static final KopiFocusManager  focusManager;
+  public static final KopiFocusManager	focusManager;
 
-// ---------------------------------------------------------------------
-// Bookmarks
-// ---------------------------------------------------------------------
+  private static final long 			serialVersionUID = -354641750611433552L;
+
+  // ---------------------------------------------------------------------
+  // Bookmarks
+  // ---------------------------------------------------------------------
 
   static class Bookmarks extends AbstractAction {
 
@@ -1440,8 +1420,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
 
     public void actionPerformed(ActionEvent e) {
       // Bookmarks (Shortcuts)
-      if (Application.getMenu() != null) {
-        Action[]    bookmarks = Application.getMenu().getDMenuTree().getBookmarkActions();
+      if (ApplicationContext.getMenu() != null) {
+        Action[]    bookmarks = ((DMenuTree)ApplicationContext.getMenu().getDisplay()).getBookmarkActions();
 
         if ( item < bookmarks.length) {
           bookmarks[item].actionPerformed(e);
@@ -1457,7 +1437,7 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     private static final long serialVersionUID = -836013840309056928L;
   }
 
-  static Bookmarks[]      BOOKMARKS;
+  /*package*/ static Bookmarks[]      BOOKMARKS;
 
   static {
     BOOKMARKS = new Bookmarks[10];
@@ -1465,14 +1445,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
     for (int i=0; i < 10; i++) {
       BOOKMARKS[i] = new Bookmarks(i);
     }
-
   }
 
-  static class KopiFocusManager extends DefaultFocusManager {
+  /*package*/ static class KopiFocusManager extends DefaultFocusManager {
     /**
      * Dispatch all enqueued events to the current focus owner
      */
-    protected void dequeueKeyEvents(final LinkedList enqueuedEvents) {
+    protected void dequeueKeyEvents(final LinkedList<AWTEvent> enqueuedEvents) {
       // process all enqueued events
       // but only if there is still the same queue
       if (enqueuedEvents == enqueuedKeyEvents) {
@@ -1481,8 +1460,8 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
           dispatchEnqueued = false;
 
           if (enqueuedEvents != null) {
-            for (Iterator iter = enqueuedEvents.iterator(); iter.hasNext(); ) {
-              super.dispatchEvent((AWTEvent)(iter.next()));
+            for (Iterator<AWTEvent> iter = enqueuedEvents.iterator(); iter.hasNext(); ) {
+              super.dispatchEvent(iter.next());
             }
           }
         }
@@ -1494,12 +1473,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
      * dequeueKeyEvents is called or the focus changes to another
      * window (dialog, listdialog, optionpanel, other form, ...).
      */
-    protected LinkedList enqueueKeyEvents() {
+    protected LinkedList<AWTEvent> enqueueKeyEvents() {
       // enqueue all key events
       if (enqueuedKeyEvents != null) {
-        return enqueuedKeyEvents = new LinkedList(enqueuedKeyEvents);
+        return enqueuedKeyEvents = new LinkedList<AWTEvent>(enqueuedKeyEvents);
       } else {
-        return enqueuedKeyEvents = new LinkedList();
+        return enqueuedKeyEvents = new LinkedList<AWTEvent>();
       }
     }
 
@@ -1520,13 +1499,13 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
               // if an element has gained the focus, which is in an other window
               // than the one which enqued the keys, STOP ENQUEUEING
               if (enqueuedKeyEvents != null) {
-                final LinkedList  enqueuedEvents = enqueuedKeyEvents;
+                final LinkedList<AWTEvent>  enqueuedEvents = enqueuedKeyEvents;
 
                 enqueuedKeyEvents = null;
                 dispatchEnqueued = false;
 
-                for (Iterator iter = enqueuedEvents.iterator(); iter.hasNext(); ) {
-                  super.dispatchEvent((AWTEvent)(iter.next()));
+                for (Iterator<AWTEvent> iter = enqueuedEvents.iterator(); iter.hasNext(); ) {
+                  super.dispatchEvent(iter.next());
                 }
               }
             }
@@ -1544,8 +1523,12 @@ public abstract class DWindow extends JPanel implements VActionListener, ModelCl
       return super.dispatchEvent(e);
     }
 
-    private LinkedList          enqueuedKeyEvents;
-    private boolean             dispatchEnqueued = false;
+    //-----------------------------------------------------------------
+    // DATA MEMBERS
+    //-----------------------------------------------------------------
+
+    private LinkedList<AWTEvent>          	enqueuedKeyEvents;
+    private boolean             		dispatchEnqueued = false;
   }
 
   static {

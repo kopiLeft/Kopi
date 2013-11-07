@@ -25,21 +25,21 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import javax.swing.JTable;
+import com.kopiright.vkopi.lib.report.UReport.UTable;
 
 public abstract class PExport {
 
   /**
    * Constructor
    */
-  public PExport(JTable table, MReport model, PConfig pconfig, String title) {
+  public PExport(UTable table, MReport model, PConfig pconfig, String title) {
     this(table, model, pconfig, title, false);
   }
 
   /**
    * Constructor
    */
-  public PExport(JTable table, MReport model, PConfig pconfig, String title, boolean tonerSaveMode) {
+  public PExport(UTable table, MReport model, PConfig pconfig, String title, boolean tonerSaveMode) {
     this.model = model;
     this.table = table;
     this.pconfig = pconfig;
@@ -122,10 +122,10 @@ public abstract class PExport {
   private int getMinLevel(VReportRow row) {
     if (row.isVisible() || !pconfig.visibleRows) {
       int       curr = row.getLevel();
-      
+
       for (int i = 0; i < row.getChildCount(); i++) {
         int     childMinLevel =  getMinLevel((VReportRow)row.getChildAt(i));
-        
+
         if (childMinLevel < curr) {
           curr = childMinLevel;
         }
@@ -139,7 +139,7 @@ public abstract class PExport {
   private void addTree(VReportRow row) {
     boolean     restrictedrow = pconfig.visibleRows;
 
-    if (row.isVisible() || !restrictedrow) { 
+    if (row.isVisible() || !restrictedrow) {
       if (pconfig.groupFormfeed && row.getLevel() == maxLevel-1) {
         VReportColumn   column = model.getAccessibleColumn(firstVisibleColumn);
 
@@ -150,7 +150,7 @@ public abstract class PExport {
         // show sum first
         exportRow(row, false);
       }
-      
+
       for (int i = 0; i < row.getChildCount(); i++) {
 	addTree((VReportRow)row.getChildAt(i));
       }
@@ -165,7 +165,7 @@ public abstract class PExport {
   protected void exportRow(VReportRow row, boolean tail) {
     exportRow(row, tail, false);
   }
-  
+
   protected void exportRow(VReportRow row, boolean tail, boolean lineBreak) {
     int         index  = 0;
     String[]    newrow = new String[columnCount];
@@ -191,18 +191,18 @@ public abstract class PExport {
         index += 1;
       }
     }
-    
-    if (tail && row.getParent() != null 
-        &&  ((VReportRow) row.getParent()).getFirstChild() == row 
+
+    if (tail && row.getParent() != null
+        &&  ((VReportRow) row.getParent()).getFirstChild() == row
         && row.getChildCount() == 0) {
       // if the sums are at the end, at the the first row of the group
       // the group information
       VReportRow        child	= row;
       VReportRow        parent	= (VReportRow)row.getParent();
-      
+
       while (parent != null && parent.getFirstChild() == child) {
         index = 0;
-        
+
         for (int i = 0; i < model.getAccessibleColumnCount(); i++) {
           int           visibleColumn = table.convertColumnIndexToModel(i);
           VReportColumn column = model.getAccessibleColumn(visibleColumn);
@@ -262,7 +262,7 @@ public abstract class PExport {
   }
 
   public String getColumnLabel(int column) {
-    return model.getAccessibleColumn(table.convertColumnIndexToModel(column)).getLabel();    
+    return model.getAccessibleColumn(table.convertColumnIndexToModel(column)).getLabel();
   }
 
   public PConfig getPrintConfig() {
@@ -282,14 +282,18 @@ public abstract class PExport {
     return tonerSaveMode;
   }
 
-  private MReport               model;
-  private JTable		table;
-  protected PConfig		pconfig;
-  private String                title;
-  private int                   columnCount;      
-  private int                   firstVisibleColumn;
-  private int                   maxLevel;
-  private int                   minLevel;
-  private DParameters           parameters;
-  private boolean               tonerSaveMode;
+  //------------------------------------------------------------------------
+  // DATA MEMBERS
+  //------------------------------------------------------------------------
+
+  private MReport               		model;
+  private UTable				table;
+  protected PConfig				pconfig;
+  private String                		title;
+  private int                   		columnCount;
+  private int                   		firstVisibleColumn;
+  private int                   		maxLevel;
+  private int                   		minLevel;
+  private DParameters           		parameters;
+  private boolean               		tonerSaveMode;
 }

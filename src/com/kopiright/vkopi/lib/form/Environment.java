@@ -25,7 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
 public class Environment {
-  
+
   public void addDefaultTextKey(JComponent comp, boolean isMulti) {
     addKeyAction(comp, KeyNavigator.KEY_NEXT_BLOCK);
     addKeyAction(comp, KeyNavigator.KEY_EMPTY_FIELD);
@@ -84,13 +84,5 @@ public class Environment {
     KeyStroke	keyStroke = KeyStroke.getKeyStroke(key, mod);
 
     comp.getInputMap().put(keyStroke, "KopiAction" + code);
-  }
-
-  public boolean setTextOnFieldLeave() {
-    return false;
-  }
-
-  public boolean forceCheckList() {
-    return true;
   }
 }

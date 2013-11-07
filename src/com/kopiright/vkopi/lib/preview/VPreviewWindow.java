@@ -27,16 +27,17 @@ import java.util.Locale;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.Constants;
-import com.kopiright.vkopi.lib.visual.DWindow;
+import com.kopiright.vkopi.lib.visual.UIFactory;
+import com.kopiright.vkopi.lib.visual.UWindow;
 import com.kopiright.vkopi.lib.visual.VActor;
-import com.kopiright.vkopi.lib.visual.UIBuilder;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VWindow;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.WindowBuilder;
 import com.kopiright.vkopi.lib.visual.WindowController;
 
 /**
@@ -45,11 +46,13 @@ import com.kopiright.vkopi.lib.visual.WindowController;
 public class VPreviewWindow extends VWindow {
 
   static {
-    WindowController.getWindowController().registerUIBuilder(Constants.MDL_PREVIEW, new UIBuilder() {
-        public DWindow createView(VWindow model) {
-          return new DPreviewWindow((VPreviewWindow) model);
-        }
-      });
+    WindowController.getWindowController().registerWindowBuilder(Constants.MDL_PREVIEW, new WindowBuilder() {
+
+      @Override
+      public UWindow createWindow(VWindow model) {
+	return (UWindow)UIFactory.getUIFactory().createView(model);
+      }
+    });
   }
 
   public int getType() {
@@ -323,7 +326,7 @@ public class VPreviewWindow extends VWindow {
   public void localize(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, Application.getDefaultLocale());
+    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
 
     // localizes the actors in VWindow
     super.localizeActors(manager);

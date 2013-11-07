@@ -42,7 +42,6 @@ import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -62,23 +61,21 @@ import com.kopiright.vkopi.lib.visual.VException;
 /**
  * A window with an html pane
  */
-class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewListener {
+public class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewListener {
 
-  
-/**
+  /**
    *
    */
   public DPreviewWindow(VPreviewWindow model) {
     super(model);
     this.model = model;
-    model.setDisplay(this);
     registerKeyboardAction(new AbstractAction() {
       /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = -3945777720296639744L;
+       * Comment for <code>serialVersionUID</code>
+       */
+      private static final long serialVersionUID = -3945777720296639744L;
 
-	public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 	closeWindow();
       }},
       null,
@@ -137,7 +134,7 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
     Rectangle   bounds;
 
     setTitle(model.getTitle());
-    label.setIcon(createIcon(1));    
+    label.setIcon(createIcon(1));
 
     frame = getFrame();
     frame.pack(); // layout frame; get preferred size
@@ -152,22 +149,22 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
         public void windowStateChanged(WindowEvent evt) {
           int   oldState = evt.getOldState();
           int   newState = evt.getNewState();
-          
+
           if ((oldState & Frame.MAXIMIZED_BOTH) == 0
               && (newState & Frame.MAXIMIZED_BOTH) != 0) {
             getFrame().invalidate();
             getFrame().validate();
-            
+
             UserConfiguration   userConfig = ApplicationConfiguration.getConfiguration().getUserConfiguration();
 
             zoomFit(userConfig == null ? PreviewListener.FIT_BOTH : userConfig.getPreviewMode());
-          } 
+          }
         }
       };
-    
+
     frame.addWindowStateListener(listener);
 
-    frame.show();
+    frame.setVisible(true);
     label.requestFocusInWindow();
 
     UserConfiguration   userConfig = ApplicationConfiguration.getConfiguration().getUserConfiguration();
@@ -228,16 +225,16 @@ class DPreviewWindow extends DWindow implements DPositionPanelListener, PreviewL
   public void zoomChanged() {
     setIcon(model.getCurrentPage());
   }
- 
+
   public void zoomFit(int type) {
     Dimension         dim = bodypane.getSize(); // size of view
     float             ratio;
 
     switch (type) {
       case FIT_BOTH:
-        // round the ratio with 0.99f, so that there are definitly no 
+        // round the ratio with 0.99f, so that there are definitly no
         // scrollbars
-        ratio = Math.min((float) dim.height / model.getHeight(), 
+        ratio = Math.min((float) dim.height / model.getHeight(),
                          (float) dim.width / model.getWidth()) * 0.99f;
         break;
       case FIT_HEIGHT:

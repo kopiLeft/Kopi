@@ -19,14 +19,41 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullMonth;
@@ -42,11 +69,11 @@ import com.kopiright.xkopi.lib.type.Week;
 public class DateChooser extends JPanel implements ActionListener {
 
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 8823525349311235417L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = 8823525349311235417L;
 
-/**
+  /**
    * Construct a new <code>DateChooser</code>. The date for the chooser will
    * be initialized to the current date.
    */
@@ -332,12 +359,12 @@ public class DateChooser extends JPanel implements ActionListener {
 	if (key == KeyEvent.VK_ESCAPE) {
 	  okay = false;
 	  dispose();
-	} else if (key == KeyEvent.VK_SPACE 
+	} else if (key == KeyEvent.VK_SPACE
                    || (key == KeyEvent.VK_ENTER && !k.isShiftDown())) {
 	  okay = true;
 	  dispose();
 	} else {
-	  if (key == KeyEvent.VK_LEFT 
+	  if (key == KeyEvent.VK_LEFT
               || (key == KeyEvent.VK_TAB && k.isShiftDown())) {
 	    incrementDay(-1);
 	  } else if (key == KeyEvent.VK_RIGHT

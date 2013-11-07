@@ -16,9 +16,6 @@
                    OptionDefinition.java OptgenMessages.java 
                    OptgenOptions.java " />
 
-  <property name="messages" value="OptgenMessages" />
-  <property name="buildmessages" value="yes" />
-
   <import file="${topdir}/defs.xml" />
 
 

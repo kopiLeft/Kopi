@@ -25,15 +25,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import javax.swing.JTable;
-
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.report.UReport.UTable;
 import com.kopiright.vkopi.lib.util.PPaperType;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Utils;
 import com.kopiright.xkopi.lib.type.Date;
-import com.kopiright.xkopi.lib.type.NotNullDate;
-import com.kopiright.xkopi.lib.type.NotNullTime;
 import com.kopiright.xkopi.lib.type.Time;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -56,21 +53,22 @@ public class  PExport2PDF extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader) {
+  public PExport2PDF(UTable table, MReport model, PConfig pconfig, String title, String firstPageHeader) {
     this(table, model, pconfig, title, firstPageHeader, false);
   }
-  
+
   /**
    * Constructor
    */
-  public PExport2PDF(JTable table, MReport model, PConfig pconfig, String title, String firstPageHeader, boolean tonerSaveMode) {
+  public PExport2PDF(UTable table, MReport model, PConfig pconfig, String title, String firstPageHeader, boolean tonerSaveMode) {
     super(table, model, pconfig, title, tonerSaveMode);
     this.firstPageHeader = firstPageHeader;
     widths = new float[getColumnCount()];
   }
 
+  @SuppressWarnings("deprecation")
   public PrintJob export() {
-    try {  
+    try {
       PrintJob        printJob;
       Rectangle       page;
       File            file = Utils.getTempFile("kopi", "pdf");
@@ -86,9 +84,10 @@ public class  PExport2PDF extends PExport implements Constants {
       return printJob;
     } catch (Exception e) {
       throw new InconsistencyException(e);
-    } 
+    }
   }
 
+  @SuppressWarnings("deprecation")
   public void export(OutputStream out ) {
     try {
       PPaperType	paper = PPaperType.getPaperTypeFromCode(pconfig.papertype);
@@ -102,18 +101,18 @@ public class  PExport2PDF extends PExport implements Constants {
 
       firstPage = true;
 
-      PdfPTable       head = createHeader(); 
+      PdfPTable       head = createHeader();
       PdfPTable       firstPageHead = createFirstPageHeader();
       PdfPTable       foot = createFooter(0, 0);
       if (firstPageHeader != null && !firstPageHeader.equals("")) {
         firstPageHead.setTotalWidth((paperSize.width() - pconfig.leftmargin - pconfig.rightmargin));
       }
       head.setTotalWidth((paperSize.width() - pconfig.leftmargin - pconfig.rightmargin));
-      document = new Document(paperSize, 
-                              pconfig.leftmargin, 
-                              pconfig.rightmargin, 
-                              pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin + firstPageHead.getTotalHeight(), 
-                              pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin+2); 
+      document = new Document(paperSize,
+                              pconfig.leftmargin,
+                              pconfig.rightmargin,
+                              pconfig.topmargin + head.getTotalHeight() + pconfig.headermargin + firstPageHead.getTotalHeight(),
+                              pconfig.bottommargin + foot.getTotalHeight()+ pconfig.footermargin+2);
       // 2 to be sure to print the border
       if (pconfig.reportScale == PConfig.MIN_REPORT_SCALE) {
         scale = (float) getScale(PConfig.MIN_REPORT_SCALE, PConfig.MAX_REPORT_SCALE, 0.1);
@@ -122,18 +121,18 @@ public class  PExport2PDF extends PExport implements Constants {
         scale = pconfig.reportScale;
         formatColumns();
       }
-      
+
       File      tempFile = Utils.getTempFile("kopiexport", "pdf");
       PdfWriter writer = PdfWriter.getInstance(document,
                                                new FileOutputStream(tempFile));
-      
-      
+
+
       writer.setPageEvent(new PdfPageEventHelper() {
           public void onEndPage(PdfWriter writer, Document document) {
             try {
               Rectangle       page = document.getPageSize();
-              PdfPTable       head = createHeader(); 
-              
+              PdfPTable       head = createHeader();
+
               head.setTotalWidth((page.width() - document.leftMargin() - document.rightMargin()));
               head.writeSelectedRows(0,
                                      -1,
@@ -145,7 +144,7 @@ public class  PExport2PDF extends PExport implements Constants {
             }
           }
         });
-      
+
       document.open();
       if (firstPageHeader != null && !firstPageHeader.equals("")) {
         try {
@@ -153,7 +152,7 @@ public class  PExport2PDF extends PExport implements Constants {
           firstPageHead.writeSelectedRows(0,
                                           -1,
                                           document.leftMargin(),
-                                          page.height() - document.topMargin() + head.getTotalHeight() + 
+                                          page.height() - document.topMargin() + head.getTotalHeight() +
                                           getPrintConfig().headermargin +  firstPageHead.getTotalHeight(),
                                           writer.getDirectContent());
           document.setMargins(document.leftMargin(),
@@ -170,9 +169,10 @@ public class  PExport2PDF extends PExport implements Constants {
       addFooter(tempFile, out);
     } catch (Exception e) {
       throw new InconsistencyException(e);
-    } 
+    }
   }
 
+  @SuppressWarnings("deprecation")
   private void addFooter(File tempfile, OutputStream out) {
     // write footer;
     try {
@@ -191,12 +191,12 @@ public class  PExport2PDF extends PExport implements Constants {
       stamper.close();
     } catch (Exception e) {
       throw new InconsistencyException(e);
-    } 
+    }
   }
-  
+
   private PdfPTable createFirstPageHeader() {
     PdfPTable       head = new PdfPTable(1);
-    
+
     head.addCell(createCell(firstPageHeader,
                             14,
                             Color.black,
@@ -205,10 +205,10 @@ public class  PExport2PDF extends PExport implements Constants {
                             false));
     return head;
   }
-  
+
   private PdfPTable createHeader() {
     PdfPTable       head = new PdfPTable(1);
-    
+
     head.addCell(createCell((currentSubtitle == null) ? getTitle() : getTitle() + "  " + getColumnLabel(0) + " : " + currentSubtitle,
                             14,
                             Color.black,
@@ -221,9 +221,9 @@ public class  PExport2PDF extends PExport implements Constants {
 
   private PdfPTable createFooter(int page, int allpages) {
     PdfPTable       foot = new PdfPTable(2);
-                
+
     foot.addCell(createCell(getTitle() + " - Seite " + page +"/"+allpages, 7, Color.black, Color.white, ALG_LEFT, false));
-    foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " " + Time.now().format("HH:mm"), 
+    foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " " + Time.now().format("HH:mm"),
                             7,
                             Color.black,
                             Color.white,
@@ -257,7 +257,7 @@ public class  PExport2PDF extends PExport implements Constants {
       firstPage = false;
     } catch (Exception e) {
       throw new InconsistencyException(e);
-    } 
+    }
   }
 
   protected void exportHeader(String[] data) {
@@ -269,20 +269,20 @@ public class  PExport2PDF extends PExport implements Constants {
                                    ALG_CENTER,
                                    true));
     }
-    datatable.setHeaderRows(1); 
+    datatable.setHeaderRows(1);
   }
-  
-  
+
+
   protected void exportRow(VReportRow row, boolean tail) {
     exportRow(row, tail, true);
   }
-  
+
   protected void exportRow(int level, String[] strings, Object[] orig, int[] alignments) {
     int       cell = 0;
-    
+
     datatable.getDefaultCell().setBorderWidth(BORDER_WIDTH);
     datatable.getDefaultCell().setBackgroundColor(Color.white);
-    
+
     for (int j = 0; j < strings.length; j++) {
       if (strings[j] != null) {
         datatable.addCell(createCell(strings[j],
@@ -340,23 +340,23 @@ public class  PExport2PDF extends PExport implements Constants {
    * Gets the scale to be used for this report
    */
   private double getScale(double min, double max, double precision) {
-   
+
     int         width;
-    
+
     // setting format parameters
     PPaperType	paper = PPaperType.getPaperTypeFromCode(pconfig.papertype);
 
     if (pconfig.paperlayout.equals("Landscape")) {
       width = paper.getHeight();
-    
+
     } else {
       width = paper.getWidth();
-     
+
     }
 
     double      widthSumMin;
     double      widthSumMax;
- 
+
     widthSum = 0;
     scale = max;
     formatColumns();
@@ -380,7 +380,7 @@ public class  PExport2PDF extends PExport implements Constants {
     formatColumns();
     widthSum = widthSum + getColumnCount()*2*BORDER_PADDING + getColumnCount() *1;
 
-    if (widthSumMin <= (width - document.leftMargin() - document.rightMargin() - 2 * pconfig.border) 
+    if (widthSumMin <= (width - document.leftMargin() - document.rightMargin() - 2 * pconfig.border)
         && widthSum  >= (width - document.leftMargin() - document.rightMargin() - 2 * pconfig.border)) {
       return getScale(min, min + (max - min)/2, precision);
     } else {
@@ -390,7 +390,7 @@ public class  PExport2PDF extends PExport implements Constants {
 
 
   protected void formatStringColumn(VReportColumn column, int index) {
-    // maximum of length of titel AND width of column 
+    // maximum of length of titel AND width of column
     widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
 			     new Chunk("X", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint() * column.getWidth());
     widthSum += widths[index];
@@ -401,7 +401,7 @@ public class  PExport2PDF extends PExport implements Constants {
                              new Chunk("00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
     widthSum += widths[index];
   }
-  
+
   protected void formatDateColumn(VReportColumn column, int index) {
     widths[index] = Math.max(new Chunk(column.getLabel(), FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint(),
                              new Chunk("00.00.0000", FontFactory.getFont(FontFactory.HELVETICA, (float) scale)).getWidthPoint());
@@ -444,7 +444,7 @@ public class  PExport2PDF extends PExport implements Constants {
     widthSum += widths[index];
   }
 
-  private PdfPTable             datatable;  
+  private PdfPTable             datatable;
   private int                   pages;
   private Document              document;
   private String                currentSubtitle;

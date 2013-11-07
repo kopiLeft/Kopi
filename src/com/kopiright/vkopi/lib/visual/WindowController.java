@@ -19,176 +19,89 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.awt.AWTEvent;
-import java.awt.ActiveEvent;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Frame;
-import java.awt.MenuComponent;
-import java.awt.Window;
-
-import javax.swing.FocusManager;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import com.kopiright.util.base.InconsistencyException;
 
 /**
  * Creates the GUI, opens the window, form, ...
  * Handles actions initialized by the user
  */
-public class WindowController {
+public abstract class WindowController {
 
+  //------------------------------------------------------------------
+  // ACCESSORS
+  //------------------------------------------------------------------
+
+  /**
+   * Returns the {@code WindowController} instance.
+   * @return The WindowController instance.
+   */
   public static WindowController getWindowController() {
-    if (windowController == null) {
-      windowController = new WindowController();
-    }
     return windowController;
   }
 
-  private WindowController() {
+  /**
+   * Sets the {@code WindowController} instance.
+   * @param controller The WindowController instance.
+   */
+  public static void setWindowController(WindowController controller) {
+    assert controller != null : "WindowController cannot be null";
+
+    windowController = controller;
   }
 
-  class ModalViewRunner implements Runnable {
-    ModalViewRunner(final VWindow model) {
-      this.model = model;
-    }
+  //------------------------------------------------------------------
+  // UTILS
+  //------------------------------------------------------------------
 
-    public void run() {
-      try {
-        UIBuilder   builder;
-        Window      focus = FocusManager.getCurrentManager().getFocusedWindow();
-        
-        builder = getUIBuilder(model);
-        view = builder.createView(model);
-        
-        if (focus instanceof JFrame) {
-          view.createModalDialog((Frame) focus);
-        } else {
-          view.createFrame();
-        }
-        
-        view.run();
-      } catch (VException e) {
-        throw new VRuntimeException(e.getMessage(), e);
-      }
-    }
+  /**
+   * Registers {@link WindowBuilder} for a given model type.
+   * @param type The model type.
+   * @param uiBuilder The given WindowBuilder.
+   * @return The old registered {@link WindowBuilder} for the model type.
+   */
+  public WindowBuilder registerWindowBuilder(int type, WindowBuilder uiBuilder) {
+    WindowBuilder   old = builder[type];
 
-    public DWindow getView() {
-      return view;
-    }
-
-    private DWindow       view;
-    private VWindow       model;
-  }
-
-  public boolean doModal(final VWindow model) {
-    final ModalViewRunner     viewStarter = new ModalViewRunner(model);
-
-    synchronized(model) {
-      SwingThreadHandler.startAndWait(viewStarter);
-      try {
-        if (SwingUtilities.isEventDispatchThread()) {
-          // !! prevent that these code is executed
-          // Real event handling is much more sophisticated
-          DWindow       view;
-          EventQueue    eventQueue;
-
-          view = viewStarter.getView();
-          if (view == null) {
-            return false;
-          }
-          eventQueue = view.getToolkit().getSystemEventQueue();          
-
-          while (view.isShowing()) {
-            AWTEvent    event = eventQueue.getNextEvent();
-            Object      source = event.getSource();
-
-            try {
-              if (event instanceof ActiveEvent) {
-                ((ActiveEvent)event).dispatch();
-              } else if (source instanceof Component) {
-                ((Component)source).dispatchEvent(event);
-              } else if (source instanceof MenuComponent) {
-                ((MenuComponent)source).dispatchEvent(event);
-              } else {
-                System.err.println("unable to dispatch event: " + event);
-              }
-            } catch (RuntimeException e) {
-              // is ignored
-              Application.reportTrouble("WindowController", 
-                                        "WindowController.dispatch (I should not be here!)", 
-                                        event.toString(), 
-                                        e);
-            }
-          }
-        } else {
-          model.wait();
-        }
-      } catch (InterruptedException e) {
-        // wait interrupted
-      }
-    }
-    return (viewStarter.getView() == null) ? false : viewStarter.getView().getReturnCode() == VWindow.CDE_VALIDATE;
-  }
-
-  public void doNotModal(final VWindow model) {
-    SwingThreadHandler.start(new Runnable() {
-        public void run() {
-          try {
-            DWindow     view;
-            UIBuilder   builder;
-
-            builder = getUIBuilder(model);
-            view = builder.createView(model);
-            view.createFrame();
-            view.run();
-          } catch (VException e) {
-            // report error to user
-            // this is called in the event-handling-thread
-            // so this exceptions have not to be forwarded
-            reportError(e);            
-          } catch (VRuntimeException e) {
-            // report error to user
-            // this is called in the event-handling-thread
-            // so this exceptions have not to be forwarded
-            reportError(e);
-          } 
-        }
-      });
-  }
-
-  public void reportError(Exception e) {
-    if (e.getMessage() != null) {
-      DWindow.displayError(null,
-                           e.getMessage());
-    }
-  }
-
-  public boolean doNotModal(DWindow view) {
-    view.createFrame();
-
-    SwingThreadHandler.start(view);
-    return true;
-  }
-
-  public UIBuilder registerUIBuilder(int typ, UIBuilder uiBuilder) {
-    UIBuilder   old = builder[typ];
-
-    builder[typ] = uiBuilder;
+    builder[type] = uiBuilder;
     return old;
   }
 
-  private UIBuilder getUIBuilder(VWindow model) {
+  /**
+   * Returns the {@link WindowBuilder} registered to a given model.
+   * @param model The window model.
+   * @return The corresponding WindowBuilder
+   */
+  protected WindowBuilder getWindowBuilder(VWindow model) {
     if (model.getType() > builder.length || builder[model.getType()] == null) {
       // programm should never reach here.
       Thread.dumpStack();
-      throw new InconsistencyException("WindowController: UIBuilder not found");
+      throw new InconsistencyException("WindowController: WindowBuilder not found");
     } else {
       return builder[model.getType()];
     }
   }
 
-  private UIBuilder[]                   builder = new UIBuilder[256];
-  private static WindowController       windowController;
-} 
+  //------------------------------------------------------------------
+  // ABSTRACT METHODS
+  //------------------------------------------------------------------
+
+  /**
+   * Shows the {@link UWindow} and block the executing thread. The model should
+   * wait until the view is closed.
+   * @param model The {@link UWindow} model.
+   */
+  public abstract boolean doModal(VWindow model);
+
+  /**
+   * Shows the {@link UWindow} without blocking the executing thread.
+   * @param model The {@link UWindow} model.
+   */
+  public abstract void doNotModal(VWindow model);
+
+  //------------------------------------------------------------------
+  // DATA MEMBERS
+  //------------------------------------------------------------------
+
+  private WindowBuilder[]                   	builder = new WindowBuilder[256];
+  private static WindowController       	windowController;
+}

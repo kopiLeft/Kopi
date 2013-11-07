@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Component;
 import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
-import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
@@ -41,8 +40,6 @@ import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VDatabaseUtils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.xkopi.lib.base.Connection;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
@@ -50,7 +47,6 @@ import com.kopiright.xkopi.lib.base.DBForeignKeyException;
 import com.kopiright.xkopi.lib.base.DBInterruptionException;
 import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.Query;
-import com.kopiright.xkopi.lib.base.SapdbDriverInterface;
 
 
 public abstract class VBlock implements VConstants, DBContextHandler, ActionHandler {
@@ -73,7 +69,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Build everything after construction
    */
   protected void buildCstr() {
-    activeCommands = new Vector();
+    activeCommands = new Vector<VCommand>();
     if (bufferSize == 1) {
       this.fetchSize = displaySize;
       this.displaySize = 1;
@@ -109,8 +105,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * @return The corresponding display associated to this model.
    */
-  protected Component getDisplay() {
-    Component           view = null;
+  protected UBlock getDisplay() {
+    UBlock           	view = null;
     Object[]            listeners = blockListener.getListenerList();
 
     for (int i = listeners.length - 2; i >= 0 && view == null; i -= 2) {
@@ -437,6 +433,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private int compareIt(Object obj1, Object obj2) {
     if (obj1 instanceof Comparable) {
       return ((Comparable) (obj1)).compareTo((Comparable) obj2);
@@ -684,6 +681,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
   }
 
+  @SuppressWarnings("deprecation")
   protected void changeActiveRecord(int record) throws VException  {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
 
@@ -1087,6 +1085,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * enter a new block
    */
+  @SuppressWarnings("deprecation")
   public void enter() {
     assert form.getActiveBlock() == null : "current block = " + form.getActiveBlock();
     if (isMulti()) {
@@ -1342,6 +1341,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * check that user has proper UI with focus on a field on the good page
    */
+  @SuppressWarnings("deprecation")
   public void checkBlock() {
     if (getForm().getActiveBlock() == this) {
       if (activeField == null) {
@@ -1360,10 +1360,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           // lackner 2003.07.31
           // - inserted to get information about the usage of this code
           // - can be removed if the method checkBlock is removed
-          if (Application.getDefaults() != null
-              && Application.getDefaults().isDebugModeEnabled()) {
-            if (((DForm) getForm().getDisplay()).runtimeDebugInfo != null) {
-              ((DForm) getForm().getDisplay()).runtimeDebugInfo.printStackTrace();
+          if (ApplicationContext.getDefaults() != null
+              && ApplicationContext.getDefaults().isDebugModeEnabled()) {
+            if (((UForm) getForm().getDisplay()).getRuntimeDebugInfo() != null) {
+              ((UForm) getForm().getDisplay()).getRuntimeDebugInfo().printStackTrace();
             }
             System.out.println("INFO: VBlock checkBlock " + Thread.currentThread());
           }
@@ -1395,6 +1395,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Clears the entire block.
    */
+  @SuppressWarnings("deprecation")
   public void clear() {
     if (this == form.getActiveBlock()) {
       if (!isMulti()) {
@@ -1815,6 +1816,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception VException      an exception may be raised by triggers
    * @exception SQLException            an exception may be raised DB access
    */
+  @SuppressWarnings("deprecation")
   public void save() throws VException, SQLException {
     assert !isMulti() || getActiveRecord() == -1 : "Is multi and activeRecord = " + getActiveRecord();
 
@@ -1893,6 +1895,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception VException      an exception may be raised by triggers
    * @exception SQLException    an exception may be raised DB access
    */
+  @SuppressWarnings("deprecation")
   public void delete() throws VException, SQLException {
     if (this == form.getActiveBlock()) {
       if (!isMulti()) {
@@ -1933,6 +1936,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Searches the field holding the ID of the block's base table.
    * May be overridden by actual form.
    */
+  @SuppressWarnings("deprecation")
   public VField getIdField() {
     VField      f = getBaseTableField("ID");
 
@@ -1945,6 +1949,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Returns the name of the DB column of the ID field.
    */
+  @SuppressWarnings("deprecation")
   public String getIdColumn() {
     String    column = getIdField().lookupColumn(0);
 
@@ -2366,7 +2371,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public int singleMenuQuery(boolean showSingleEntry) {
     assert !isMulti() : getName() + " is a multiblock";
 
-    ListDialog  dialog = null;
+    VListDialog  dialog = null;
 
     try {
       for (;;) {
@@ -2421,7 +2426,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     } else {
       // !! jdk 1.4.1 lackner 07.08.2003
       // if the second parameter is null, it is slower
-      return dialog.selectFromDialog(form.getDisplay(), null, showSingleEntry);
+      return dialog.selectFromDialog(form, null, showSingleEntry);
     }
   }
 
@@ -2429,7 +2434,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Warning, you should use this method under a protected statement
    */
 
-  public ListDialog buildQueryDialog() throws SQLException {
+  public VListDialog buildQueryDialog() throws SQLException {
     VField[]            query_tab = new VField[fields.length];
     int                 query_cnt = 0;
 
@@ -2552,14 +2557,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (rows == 0) {
       return null;
     } else {
-      ListDialog        dialog;
+      VListDialog        dialog;
       VListColumn[]     cols;
 
       cols = new VListColumn[query_cnt];
       for (int i = 0; i < cols.length; i++) {
         cols[i] = query_tab[i].getListColumn();
       }
-      dialog = new ListDialog(cols, values, ids, rows);
+      dialog = new VListDialog(cols, values, ids, rows);
       if (rows == fetchSize) {
         dialog.setTooManyRows();
       }
@@ -3016,6 +3021,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Returns the index of field in block
    */
+  @SuppressWarnings("deprecation")
   protected int getFieldIndex(VField fld) {
     for (int i = 0; i < fields.length; i++) {
       if (fld == fields[i]) {
@@ -3864,6 +3870,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /*
    * Checks if a foreign key is referenced in the view SYSTEMREFERENZEN
    */
+  @SuppressWarnings("deprecation")
   protected VExecFailedException convertForeignKeyException(String name) {
     try {
       Query             query;
@@ -4229,65 +4236,65 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  protected int[]               sortedRecords;
+  protected int[]               	sortedRecords;
 
-  protected boolean             blockAccess;
+  protected boolean             	blockAccess;
   // prevent that the access of a field is updated
   // (performance in big charts)
-  protected boolean             ignoreAccessChange;
+  protected boolean             	ignoreAccessChange;
 
   // record info flags
-  protected static final int RCI_FETCHED                = 0x00000001;
-  protected static final int RCI_CHANGED                = 0x00000002;
-  protected static final int RCI_DELETED                = 0x00000004;
-  protected static final int RCI_TRAILED                = 0x00000008;
+  protected static final int 	RCI_FETCHED                = 0x00000001;
+  protected static final int 	RCI_CHANGED                = 0x00000002;
+  protected static final int 	RCI_DELETED                = 0x00000004;
+  protected static final int 	RCI_TRAILED                = 0x00000008;
 
   // static (compiled) data
-  protected  VForm              form;           // enclosing form
+  protected  VForm              	form;           // enclosing form
 
-  protected int                 bufferSize;     // max number of buffered records
-  protected int                 fetchSize;      // max number of buffered IDs
-  protected int                 displaySize;    // max number of displayed records
-  protected int                 page;           // page number
+  protected int                 	bufferSize;     // max number of buffered records
+  protected int                 	fetchSize;      // max number of buffered IDs
+  protected int                 	displaySize;    // max number of displayed records
+  protected int                 	page;           // page number
 
-  protected String              source;         // qualified name of source file
-  protected String              name;           // block name
-  protected String              shortcut;       // block short name
-  protected String              title;          // block title
-  protected BlockAlignment      align;
-  protected String              help;           // the help on this block
-  protected String[]            tables;         // names of database tables
-  protected int                 options;        // block options
-  protected int[]               access;         // access flags for each mode
-  protected String[]            indices;        // error messages for violated indices
+  protected String              	source;         // qualified name of source file
+  protected String              	name;           // block name
+  protected String              	shortcut;       // block short name
+  protected String              	title;          // block title
+  protected BlockAlignment      	align;
+  protected String              	help;           // the help on this block
+  protected String[]            	tables;         // names of database tables
+  protected int                 	options;        // block options
+  protected int[]               	access;         // access flags for each mode
+  protected String[]            	indices;        // error messages for violated indices
 
-  protected VCommand[]          commands;       // commands
-  protected VActor[]            actors;         // actors to send to form (move to block import)
-  protected VField[]            fields;         // fields
-  protected int[][]             VKT_Triggers;
+  protected VCommand[]          	commands;       // commands
+  protected VActor[]            	actors;         // actors to send to form (move to block import)
+  protected VField[]            	fields;         // fields
+  protected int[][]             	VKT_Triggers;
 
   // dynamic data
-  protected int                 activeRecord;   // current record
-  protected VField              activeField;
-  protected boolean             detailMode;
-  protected int                 recordCount;    // number of active records
-  protected Vector              activeCommands; // commands currently active
+  protected int                 	activeRecord;   // current record
+  protected VField              	activeField;
+  protected boolean             	detailMode;
+  protected int                 	recordCount;    // number of active records
+  protected Vector<VCommand>		activeCommands; // commands currently active
 
-  protected int                 currentRecord;
+  protected int                 	currentRecord;
 
-  protected int                 mode;           // current mode
-  protected int[]               recordInfo;     // status vector for records
-  protected int[]               fetchBuffer;    // holds Id's of fetched records
-  protected int                 fetchCount;     // # of fetched records
-  protected int                 fetchPosition;  // position of current record
+  protected int                 	mode;           // current mode
+  protected int[]               	recordInfo;     // status vector for records
+  protected int[]               	fetchBuffer;    // holds Id's of fetched records
+  protected int                 	fetchCount;     // # of fetched records
+  protected int                 	fetchPosition;  // position of current record
 
-  protected EventListenerList   blockListener;
-  protected OrderModel          orderModel;
+  protected EventListenerList   	blockListener;
+  protected OrderModel          	orderModel;
 
-  protected int                 border;
-  protected int                 maxRowPos;
-  protected int                 maxColumnPos;
-  protected int                 displayedFields;
+  protected int                 	border;
+  protected int                 	maxRowPos;
+  protected int                 	maxColumnPos;
+  protected int                 	displayedFields;
 
-  protected HashMap		 dropListMap;
+  protected HashMap		        dropListMap;
 }

@@ -25,8 +25,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
-import javax.swing.JTable;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -40,11 +38,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.report.UReport.UTable;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.Month;
-import com.kopiright.xkopi.lib.type.NotNullDate;
-import com.kopiright.xkopi.lib.type.NotNullTime;
 import com.kopiright.xkopi.lib.type.Time;
 import com.kopiright.xkopi.lib.type.Timestamp;
 import com.kopiright.xkopi.lib.type.Week;
@@ -54,7 +51,7 @@ public class PExport2XLS extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2XLS(JTable table, MReport model, PConfig pconfig, String title) {
+  public PExport2XLS(UTable table, MReport model, PConfig pconfig, String title) {
     super(table, model, pconfig, title);
 
     datatype = new int[getColumnCount()];
@@ -68,8 +65,8 @@ public class PExport2XLS extends PExport implements Constants {
 
     try {
       colorindex = 10;
-      colorpalete = new Hashtable();
-      
+      colorpalete = new Hashtable<Color, HSSFColor>();
+
 
       wb = new HSSFWorkbook();
 
@@ -83,7 +80,7 @@ public class PExport2XLS extends PExport implements Constants {
       out.close();
     } catch (Exception e) {
       e.printStackTrace();
-    } 
+    }
   }
 
   protected void startGroup(String subTitle) {
@@ -114,16 +111,16 @@ public class PExport2XLS extends PExport implements Constants {
     HSSFHeader header = sheet.getHeader();
 
     header.setLeft(getTitle() + "  " + getColumnLabel(0) + " : " + subTitle);
-    
+
     footer.setLeft(getTitle() + " - Seite " + HSSFFooter.page() + " / " + HSSFFooter.numPages() );
     footer.setRight(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"));
     sheetIndex += 1;
 
     HSSFPrintSetup ps = sheet.getPrintSetup();
-    
+
     sheet.setAutobreaks(true);
-    ps.setFitWidth((short)1);  
-    ps.setFitHeight((short)999);  
+    ps.setFitWidth((short)1);
+    ps.setFitHeight((short)999);
     ps.setLandscape(getPrintConfig().paperlayout.equals("Landscape"));
     ps.setPaperSize(HSSFPrintSetup.A4_PAPERSIZE); /// !!! no always A4
   }
@@ -141,8 +138,8 @@ public class PExport2XLS extends PExport implements Constants {
     HSSFRow         row = sheet.createRow((short) (rowNumber+1));
     String[]	    strings = data;
     Color           color = getBackgroundForLevel(level);
-    HSSFColor       rowCol = (HSSFColor) colorpalete.get(color);
-    int             cellPos;    
+    HSSFColor       rowCol = colorpalete.get(color);
+    int             cellPos;
 
     if (rowCol == null) {
       palette.setColorAtIndex(colorindex, (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue());
@@ -185,24 +182,24 @@ public class PExport2XLS extends PExport implements Constants {
             // myabe reportIdenticalValue Trigger used
             // nothing
           } else {
-            throw new InconsistencyException("Type not supported: datatype=" + datatype[j] 
-                                             + "  " + " j= " + j 
+            throw new InconsistencyException("Type not supported: datatype=" + datatype[j]
+                                             + "  " + " j= " + j
                                              + " " + orig[j].getClass() + " of " + orig[j]);
           }
         }
         cell.setCellType(datatype[j]);
       } else {
-        cell.setCellType(HSSFCell.CELL_TYPE_BLANK);        
+        cell.setCellType(HSSFCell.CELL_TYPE_BLANK);
       }
 
       // taoufik 20060602: make wrapping, the text overflows otherwise. [RT #29653]
       // set vertical alignment to top, default was buttom
       cellStyle.setWrapText(true);
       cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
-      
+
       cellStyle.setFillForegroundColor(rowCol.getIndex());
       cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-      
+
       cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
       cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
       cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
@@ -246,14 +243,14 @@ public class PExport2XLS extends PExport implements Constants {
     cal.set(Calendar.YEAR, value.getYear());
     cal.set(Calendar.MONTH, value.getMonth() - 1);
     cal.set(Calendar.DAY_OF_MONTH, value.getDay());
-    
+
     cell.setCellValue(cal);
   }
 
   private int computeColumnWidth(VReportColumn column) {
     return (column.getLabel().length() < column.getWidth()) ? column.getWidth() : column.getLabel().length() + 2;
   }
-  
+
   protected void formatStringColumn(VReportColumn column, int index) {
     dataformats[index] = 0;
     datatype[index] = HSSFCell.CELL_TYPE_STRING;
@@ -280,7 +277,7 @@ public class PExport2XLS extends PExport implements Constants {
 
   protected void formatFixedColumn(VReportColumn column, int index) {
     String fixnumFormat = "#,##0";
-    
+
     for (int i= 0; i < ((VFixnumColumn)column).getMaxScale(); i ++) {
       fixnumFormat += (i == 0 ? ".0" : "0");
     }
@@ -313,16 +310,20 @@ public class PExport2XLS extends PExport implements Constants {
     widths[index] = (short) (256 * computeColumnWidth(column));
   }
 
-  private HSSFPalette           palette;
-  private short                 colorindex;
-  private int                   rowNumber;
- 
-  private Hashtable             colorpalete;
-  private HSSFWorkbook          wb;
-  private HSSFSheet             sheet;
-  private HSSFDataFormat        format;
-  private int[]                 datatype;
-  private short[]               dataformats;
-  private short[]               widths;
-  private int                   sheetIndex;
+  //-----------------------------------------------------------
+  // DATA MEMBERS
+  //-----------------------------------------------------------
+
+  private HSSFPalette           		palette;
+  private short                 		colorindex;
+  private int                   		rowNumber;
+
+  private Hashtable<Color, HSSFColor>           colorpalete;
+  private HSSFWorkbook          		wb;
+  private HSSFSheet             		sheet;
+  private HSSFDataFormat        		format;
+  private int[]                 		datatype;
+  private short[]               		dataformats;
+  private short[]               		widths;
+  private int                   		sheetIndex;
 }

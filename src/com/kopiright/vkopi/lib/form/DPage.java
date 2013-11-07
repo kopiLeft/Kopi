@@ -27,9 +27,7 @@ import javax.swing.Box;
 
 public class DPage extends JPanel {
 
-  
-
-public DPage(boolean align) {
+  public DPage(boolean align) {
     super(true);
     setLayout(new BoxLayout(this, align ? BoxLayout.X_AXIS : BoxLayout.Y_AXIS));
   }
@@ -45,15 +43,15 @@ public DPage(boolean align) {
   public void addFollowBlock(Component block) {
     if (last != null) {
       JPanel	temp = new JPanel() {
-	  /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = 4802353020694430279L;
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 4802353020694430279L;
 
 	public Dimension getMaximumSize() {
-	    return this.getPreferredSize();
-	  }
-	};
+	  return this.getPreferredSize();
+	}
+      };
       temp.setLayout(new BoxLayout(temp, BoxLayout.Y_AXIS));
       remove(last);
       temp.add(last);

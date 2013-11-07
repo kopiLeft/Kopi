@@ -19,23 +19,29 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import java.awt.Component;
 import java.io.File;
-import java.awt.Frame;
-import javax.swing.filechooser.FileFilter;
+
 import javax.swing.JFileChooser;
 
-public class FileChooser {
+public class JFileHandler extends FileHandler {
 
   // ----------------------------------------------------------------------
-  // FILE CHOOSER
+  // FILE HANDLER IMPLEMENTATION
   // ----------------------------------------------------------------------
 
-  public static File chooseFile(Frame frame, String defaultName) {
+  /**
+   * @Override
+   */
+  public File chooseFile(UWindow window, String defaultName) {
     File dir = new File(System.getProperty("user.home"));
-    return chooseFile(frame, dir, defaultName);
+    return chooseFile(window, dir, defaultName);
   }
 
-  public static File chooseFile(Frame frame, File dir, String defaultName) {
+  /**
+   * @Override
+   */
+  public File chooseFile(UWindow window, File dir, String defaultName) {
     JFileChooser filechooser = new JFileChooser(dir);
 
     // Init our preferences
@@ -44,7 +50,7 @@ public class FileChooser {
     //filechooser.setDialogTitle("XXXTITLE");
     filechooser.setSelectedFile(new File(defaultName));
 
-    int returnVal = filechooser.showSaveDialog(frame);
+    int returnVal = filechooser.showSaveDialog((Component)window);
 
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       return filechooser.getSelectedFile();
@@ -53,45 +59,61 @@ public class FileChooser {
     }
   }
 
-  public static File openFile(Frame frame, String defaultName) {
+  /**
+   * @Override
+   */
+  public File openFile(UWindow window, String defaultName) {
     File dir = new File(System.getProperty("user.home"));
-    return openFile(frame, dir, defaultName);
+    return openFile(window, dir, defaultName);
   }
 
-  public static File openFile(Frame frame, FileFilter filter) {
+  /**
+   * @Override
+   */
+  public File openFile(UWindow window, final FileFilter filter) {
     JFileChooser filechooser = new JFileChooser(new File(System.getProperty("user.home")));
 
-    filechooser.setFileFilter(filter);
+    filechooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
 
-    int returnVal = filechooser.showOpenDialog(frame);
+      /**
+       * @Override
+       */
+      public String getDescription() {
+	return filter.getDescription();
+      }
+
+      /**
+       * @Override
+       */
+      public boolean accept(File f) {
+	return filter.accept(f);
+      }
+    });
+
+    int returnVal = filechooser.showOpenDialog((Component)window);
 
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       return filechooser.getSelectedFile();
     } else {
       return null;
     }
-    
+
   }
-  public static File openFile(Frame frame, File dir, String defaultName) {
+
+  /**
+   * @Override
+   */
+  public File openFile(UWindow window, File dir, String defaultName) {
     JFileChooser filechooser = new JFileChooser(dir);
 
     filechooser.setSelectedFile(new File(defaultName));
 
-    int returnVal = filechooser.showOpenDialog(frame);
+    int returnVal = filechooser.showOpenDialog((Component)window);
 
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       return filechooser.getSelectedFile();
     } else {
       return null;
-    }
-  }
-
-  public static class PdfFilter extends FileFilter {
-    public boolean accept(File f) {
-      return f != null && f.getName().toUpperCase().endsWith(".PDF"); 
-    }
-    public String getDescription() {
-      return "Alle Pdf-Dateien";
     }
   }
 }

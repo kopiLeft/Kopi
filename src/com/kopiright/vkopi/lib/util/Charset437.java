@@ -29,7 +29,7 @@ import java.nio.charset.CoderResult;
 /**
  * Charset used to convert from UTF-16 to IBM437
  */
-public class Charset437 extends Charset implements java.lang.Comparable {
+public class Charset437 extends Charset {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
@@ -53,14 +53,6 @@ public class Charset437 extends Charset implements java.lang.Comparable {
 
   public CharsetEncoder newEncoder() {
     return new Encoder437(this);
-  }
-
-  // ----------------------------------------------------------------------
-  // INTERFACES
-  // ----------------------------------------------------------------------
-
-  public int compareTo(Object ob) {
-    return this.compareTo((Charset)ob);
   }
 }
 

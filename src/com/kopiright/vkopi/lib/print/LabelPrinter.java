@@ -22,15 +22,16 @@ package com.kopiright.vkopi.lib.print;
 import java.io.IOException;
 import java.io.StringBufferInputStream;
 
-import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.Filter;
-import com.kopiright.vkopi.lib.visual.VlibProperties; 
+import com.kopiright.vkopi.lib.util.PrintException;
+import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.util.Printer;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * Create a new empty document to print with a label printer
  */
+@SuppressWarnings("deprecation")
 public class LabelPrinter {
 
   /**
@@ -155,9 +156,9 @@ public class LabelPrinter {
 
   /**
    * Prints the document immeditely. DO NOT USE this method in
-   * a transaction (use createPrintTask instead and print it 
+   * a transaction (use createPrintTask instead and print it
    * after finishing the transaction.
-   */ 
+   */
   public void printImmediately(Printer printer) throws IOException, PrintException {
     printer.print(createPrintJob());
   }

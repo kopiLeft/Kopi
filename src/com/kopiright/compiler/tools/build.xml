@@ -24,8 +24,8 @@
       ==============================================================-->
   <target name="buildtools" description="-->  Runs subbuild files ">
     <ant dir="antlr"   inheritAll="false" target="buildtools" />
-  	<ant dir="jperf"   inheritAll="false" />
-  	<ant dir="optgen"  inheritAll="false" target="buildtools" />
+    <ant dir="jperf"   inheritAll="false" />
+    <ant dir="optgen"  inheritAll="false" target="buildtools" />
     <ant dir="msggen"  inheritAll="false" target="buildtools" />
     <ant dir="lexgen"  inheritAll="false" />
     <ant dir="include" inheritAll="false" />

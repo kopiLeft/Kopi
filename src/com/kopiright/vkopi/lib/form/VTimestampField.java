@@ -23,12 +23,11 @@ import java.sql.SQLException;
 
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VTimestampColumn;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.Query;
-import com.kopiright.xkopi.lib.type.NotNullTimestamp;
 import com.kopiright.xkopi.lib.type.Timestamp;
 
 /**
@@ -130,7 +129,7 @@ public class VTimestampField extends VField {
    * Sets the field value of given record to a timestamp value.
    */
   public void setTimestamp(int r, Timestamp v) {
-    if (isChangedUI() 
+    if (isChangedUI()
         || value[r] == null
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary

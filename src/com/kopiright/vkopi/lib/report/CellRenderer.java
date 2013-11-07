@@ -26,15 +26,12 @@ import java.awt.*;
  * @version 1.0 11/09/98
  */
 public class CellRenderer extends JComponent {
-  
-  /**
-   * Comment for <code>serialVersionUID</code>
-   */
-  private static final long serialVersionUID = 6813974260529631662L;
+
   protected CellRenderer(int state) {
     this.state = state;
   }
 
+  @SuppressWarnings("deprecation")
   protected CellRenderer(int state,
 			 int align,
 			 Color back,
@@ -128,4 +125,9 @@ public class CellRenderer extends JComponent {
   private	Color		level;
   private	boolean		selected;
   private	String		str;
+
+  /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long	serialVersionUID = 6813974260529631662L;
 }

@@ -48,12 +48,6 @@
                    ZeroOrMoreBlock.java AntlrMessages.java 
                    AntlrOptions.java" />
 
-  <property name="messages" value="AntlrMessages" />
-  <property name="buildmessages" value="yes" />
-  
-  <property name="options" value="AntlrOptions" />
-  <property name="buildoptions" value="yes" />
-
   <target name="buildtools" >
     <antcall target="classes" />
   </target>

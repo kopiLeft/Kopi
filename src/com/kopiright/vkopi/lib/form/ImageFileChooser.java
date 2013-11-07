@@ -19,20 +19,20 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.io.File;
-import java.awt.Frame;
-import java.awt.Graphics;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileView;
 import javax.swing.filechooser.FileFilter;
-import com.kopiright.vkopi.lib.visual.Utils;
+import javax.swing.filechooser.FileView;
 
 public class ImageFileChooser {
 
@@ -40,13 +40,13 @@ public class ImageFileChooser {
   // FILE CHOOSER
   // ----------------------------------------------------------------------
 
-  public static File chooseFile(Frame frame) {
+  public static File chooseFile(Component parent) {
     JFileChooser filechooser = new JFileChooser();
     filechooser.addChoosableFileFilter(new ImageFilter());
     filechooser.setFileView(new ImageFileView());
     filechooser.setAccessory(new ImagePreview(filechooser));
 
-    int returnVal = filechooser.showOpenDialog(frame);
+    int returnVal = filechooser.showOpenDialog(parent);
 
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       return filechooser.getSelectedFile();
@@ -97,8 +97,8 @@ public class ImageFileChooser {
   // ----------------------------------------------------------------------
 
   private static class ImagePreview extends JComponent implements PropertyChangeListener {
-  
-	
+
+
 	ImageIcon thumbnail = null;
     File f = null;
 

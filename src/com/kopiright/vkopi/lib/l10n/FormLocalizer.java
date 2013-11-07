@@ -47,7 +47,7 @@ public class FormLocalizer {
       throw new InconsistencyException("bad root element " + root.toString());
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
@@ -64,14 +64,15 @@ public class FormLocalizer {
    *
    * @param             position                the position of the page
    */
+  @SuppressWarnings("unchecked")
   public String getPage(int position) {
-    List        pages;
+    List<Element>        pages;
 
     pages = root.getChildren("page");
-    for (Iterator i = pages.iterator(); i.hasNext(); ) {
+    for (Iterator<Element> i = pages.iterator(); i.hasNext(); ) {
       Element   p;
 
-      p = (Element)i.next();
+      p = i.next();
       if (p.getAttributeValue("ident").equals("Id$" + position)) {
         return p.getAttributeValue("title");
       }
@@ -82,6 +83,6 @@ public class FormLocalizer {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  
+
   private final Element         root;
 }

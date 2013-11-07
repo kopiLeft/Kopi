@@ -19,13 +19,10 @@
 
 package com.kopiright.vkopi.lib.report;
 
-import java.awt.Point;
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Vector;
-import java.text.MessageFormat;
-
-import javax.swing.SwingUtilities;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VConstants;
@@ -33,34 +30,34 @@ import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ReportLocalizer;
 import com.kopiright.vkopi.lib.print.Printable;
-import com.kopiright.vkopi.lib.visual.Message;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
-import com.kopiright.vkopi.lib.visual.DWindow;
-import com.kopiright.vkopi.lib.visual.FileChooser;
-import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
-import com.kopiright.vkopi.lib.visual.UIBuilder;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
+import com.kopiright.vkopi.lib.visual.FileHandler;
+import com.kopiright.vkopi.lib.visual.Message;
+import com.kopiright.vkopi.lib.visual.UIFactory;
+import com.kopiright.vkopi.lib.visual.UWindow;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VHelpViewer;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VWindow;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.vkopi.lib.visual.WindowBuilder;
 import com.kopiright.vkopi.lib.visual.WindowController;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 
-public abstract class VReport extends VWindow
-  implements Constants, VConstants, Printable {
+public abstract class VReport extends VWindow implements Constants, VConstants, Printable {
 
   static {
-    WindowController.getWindowController().registerUIBuilder(com.kopiright.vkopi.lib.visual.Constants.MDL_REPORT, new UIBuilder() {
-        public DWindow createView(VWindow model) {
-          ((VReport) model).buildDisplay();
-          return model.getDisplay();
-        }
-      });
+    WindowController.getWindowController().registerWindowBuilder(com.kopiright.vkopi.lib.visual.Constants.MDL_REPORT, new WindowBuilder() {
+
+      @Override
+      public UWindow createWindow(VWindow model) {
+	return (UReport)UIFactory.getUIFactory().createView(model);
+      }
+    });
   }
 
   public int getType() {
@@ -77,7 +74,7 @@ public abstract class VReport extends VWindow
   protected VReport(DBContextHandler ctxt) throws VException {
     model = new MReport();
     pconfig = new PConfig();
-    activeCommands = new Vector();
+    activeCommands = new Vector<VCommand>();
 
     if (ctxt != null) {
       setDBContext(ctxt.getDBContext());
@@ -96,24 +93,17 @@ public abstract class VReport extends VWindow
     this(null);
   }
 
-  /**
-   * Build the display
-   */
-  protected void buildDisplay() {
-    setDisplay(new DReport(this));
-  }
-
    /**
     * Redisplay the report after change in formating
-    * @deprecated call method in display; model must not be refreshed 
+    * @deprecated call method in display; model must not be refreshed
     */
    public void redisplay() {
-     ((DReport)getDisplay()).redisplay();
+     ((UReport)getDisplay()).redisplay();
    }
 
    /**
     * Close window
-    * @deprecated call method in display; model must not be closed 
+    * @deprecated call method in display; model must not be closed
     */
   public void  close () {
     getDisplay().closeWindow();
@@ -141,7 +131,7 @@ public abstract class VReport extends VWindow
   protected void build() {
     model.build();
     model.createTree();
-    ((DReport)getDisplay()).build();
+    ((UReport)getDisplay()).build();
     built = true;
 
     // all commands are by default enabled
@@ -168,34 +158,29 @@ public abstract class VReport extends VWindow
           cmdEditColumn = command;
         } else {
           setCommandEnabled(commands[i], true);
-        } 
+        }
       }
     }
   }
-    
-  public void columnMoved(final int[] pos) {
-    SwingUtilities.invokeLater (new Runnable() {
-        public void run() {
-          ((DReport)getDisplay()).reorder(pos);
-          getModel().columnMoved(pos);
-          ((DReport)getDisplay()).redisplay();
-        }});
+
+  public void columnMoved(int[] pos) {
+    ((UReport)getDisplay()).columnMoved(pos);
   }
 
   // ----------------------------------------------------------------------
   // LOCALIZATION
   // ----------------------------------------------------------------------
-  
+
   /**
    * Localizes this report
-   * 
+   *
    * @param     locale  the locale to use
    */
   public void localize(Locale locale) {
     LocalizationManager         manager;
-      
-    manager = new LocalizationManager(locale, Application.getDefaultLocale());
-    
+
+    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
+
     // localizes the actors in VWindow
     super.localizeActors(manager);
 
@@ -262,24 +247,20 @@ public abstract class VReport extends VWindow
    * Enables/disables the actor.
    */
   public void setCommandEnabled(final VCommand command, final boolean enable) {
-    SwingThreadHandler.start(new Runnable () {
-        public void run() {
-          command.setEnabled(enable);
-        }
-      });
+    command.setEnabled(enable);
 
-     if (enable) {
-       activeCommands.addElement(command);
-     } else {
-       activeCommands.removeElement(command);
-     }
+    if (enable) {
+      activeCommands.addElement(command);
+    } else {
+      activeCommands.removeElement(command);
+    }
   }
 
   public PrintJob createPrintJob() throws PrintException, VException {
       PExport2PDF       exporter;
       PrintJob          printJob;
 
-      exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
+      exporter = new PExport2PDF(((UReport)getDisplay()).getTable(),
 				 model,
 				 pconfig,
                                  pageTitle,
@@ -317,9 +298,9 @@ public abstract class VReport extends VWindow
       throw new InconsistencyException("Export type unkown");
     }
 
-    File file = FileChooser.chooseFile(getDisplay().getFrame(),
-                                       ApplicationConfiguration.getConfiguration().getDefaultDirectory(),
-                                       "report"+ext);
+    File file = FileHandler.getFileHandler().chooseFile(getDisplay(),
+                                                        ApplicationConfiguration.getConfiguration().getDefaultDirectory(),
+                                                        "report"+ext);
     if (file != null) {
       export(file, type);
     }
@@ -339,20 +320,20 @@ public abstract class VReport extends VWindow
 
     switch (type) {
     case TYP_CSV:
-      exporter = new PExport2CSV(((DReport)getDisplay()).getTable(),
+      exporter = new PExport2CSV(((UReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
                                  pageTitle);
       break;
     case TYP_PDF:
-      exporter = new PExport2PDF(((DReport)getDisplay()).getTable(),
+      exporter = new PExport2PDF(((UReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
                                  pageTitle,
                                  firstPageHeader);
       break;
     case TYP_XLS:
-      exporter = new PExport2XLS(((DReport)getDisplay()).getTable(),
+      exporter = new PExport2XLS(((UReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
                                  pageTitle);
@@ -397,11 +378,11 @@ public abstract class VReport extends VWindow
   public void setPageTitleParams(Object[] params) {
     setPageTitle(MessageFormat.format(pageTitle, params));
   }
-  
+
   public void setFirstPageHeader(String firstPageHeader) {
     this.firstPageHeader = firstPageHeader;
   }
-  
+
   public VReportColumn getColumn(int i) {
     return model.getModelColumn(i);
   }
@@ -441,7 +422,7 @@ public abstract class VReport extends VWindow
     if (column != -1) {
       model.setColumnFolded(column, true);
     }
-    ((DReport)getDisplay()).resetWidth();
+    ((UReport)getDisplay()).resetWidth();
 
     setMenu();
   }
@@ -451,7 +432,7 @@ public abstract class VReport extends VWindow
     if (column != -1) {
       model.setColumnFolded(column, false);
     }
-    ((DReport)getDisplay()).resetWidth();
+    ((UReport)getDisplay()).resetWidth();
 
     setMenu();
   }
@@ -477,13 +458,13 @@ public abstract class VReport extends VWindow
       executeVoidTrigger(cmdEditColumn.getTrigger());
     }
   }
-  
+
   public void setColumnInfo() throws VException {
     if (cmdColumnInfo != null) {
       executeVoidTrigger(cmdColumnInfo.getTrigger());
     }
   }
- 
+
   public MReport getModel() {
     return model;
   }
@@ -518,12 +499,12 @@ public abstract class VReport extends VWindow
       return id;
     }
   }
-  
+
   /**
    * Return the value of a field in the selected row
    * by passing its name(key)
    */
-  
+
   public Object getValueOfField(Object key) {
     int         col = -1;
 
@@ -543,9 +524,9 @@ public abstract class VReport extends VWindow
   // ----------------------------------------------------------------------
 
   /**
-   * creates an SQL condition, so that the column have to fit the 
+   * creates an SQL condition, so that the column have to fit the
    * requirements (value and search operator) of the field.
-   */  
+   */
   protected String buildSQLCondition(String column, VField field) {
     String      condition;
 
@@ -667,14 +648,14 @@ public abstract class VReport extends VWindow
    * Returns the selected column or -1 if no column is selected.
    */
   private int getSelectedColumn() {
-    return ((DReport)getDisplay()).getSelectedColumn();
+    return ((UReport)getDisplay()).getSelectedColumn();
   }
 
   /**
    * Returns the selected cell or !!! ??? if no cell is selected.
    */
   private Point getSelectedCell() {
-    return ((DReport)getDisplay()).getSelectedCell();
+    return ((UReport)getDisplay()).getSelectedCell();
   }
 
   // ----------------------------------------------------------------------
@@ -689,10 +670,11 @@ public abstract class VReport extends VWindow
     this.help = help;
   }
 
+  @SuppressWarnings("deprecation")
   public String genHelp() {
     String              fileName;
     StringBuffer        surl = new StringBuffer();
-   
+
     fileName = new VHelpGenerator().helpOnReport(getTitle(),
                                                  commands,
                                                  model,
@@ -715,30 +697,30 @@ public abstract class VReport extends VWindow
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private VCommand              cmdFold;
-  private VCommand              cmdUnfold;
-  private VCommand              cmdSort;
-  private VCommand              cmdOpenLine;
-  private VCommand              cmdFoldColumn;
-  private VCommand              cmdUnfoldColumn;
-  private VCommand              cmdColumnInfo;
-  private VCommand              cmdEditColumn;
+  private VCommand             cmdFold;
+  private VCommand             cmdUnfold;
+  private VCommand             cmdSort;
+  private VCommand             cmdOpenLine;
+  private VCommand             cmdFoldColumn;
+  private VCommand             cmdUnfoldColumn;
+  private VCommand             cmdColumnInfo;
+  private VCommand             cmdEditColumn;
 
-  private String                source;
-  protected MReport             model;
-  private boolean               built;
-  private String                pageTitle = "";
-  private String                firstPageHeader = "";
-  private String                help;
+  private String             	source;
+  protected MReport        	model;
+  private boolean             built;
+  private String             	pageTitle = "";
+  private String             	firstPageHeader = "";
+  private String               help;
 
-  protected int[][]             VKT_Triggers;	// trigger list
-  protected VCommand[]          commands;	// commands
-  private Vector                activeCommands;
+  protected int[][]          	VKT_Triggers;	// trigger list
+  protected VCommand[]      	commands;	// commands
+  private Vector<VCommand>	activeCommands;
 
-  protected PConfig             pconfig;	// print configuration object
-  private String                media;
+  protected PConfig        	pconfig;	// print configuration object
+  private String         	media;
 
-  public static final int       TYP_CSV = 1;
-  public static final int       TYP_PDF = 2;
-  public static final int       TYP_XLS = 3;
+  public static final int    TYP_CSV = 1;
+  public static final int    TYP_PDF = 2;
+  public static final int    TYP_XLS = 3;
 }

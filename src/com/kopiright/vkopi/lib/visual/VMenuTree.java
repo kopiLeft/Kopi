@@ -37,11 +37,11 @@ import com.kopiright.xkopi.lib.base.Query;
 public class VMenuTree extends VWindow {
 
   static {
-    WindowController.getWindowController().registerUIBuilder(Constants.MDL_MENU_TREE, new UIBuilder() {
-      public DWindow createView(VWindow model) {
-	DMenuTree         view = new DMenuTree((VMenuTree) model);
+    WindowController.getWindowController().registerWindowBuilder(Constants.MDL_MENU_TREE, new WindowBuilder() {
 
-	return view;
+      @Override
+      public UWindow createWindow(VWindow model) {
+	return (UMenuTree)UIFactory.getUIFactory().createView(model);
       }
     });
   }
@@ -92,8 +92,8 @@ public class VMenuTree extends VWindow {
     this.userName = userName;
     this.groupName = groupName;
     actors = new VActor[9];
-    items = new ArrayList();
-    shortcutsID = new ArrayList();
+    items = new ArrayList<Module>();
+    shortcutsID = new ArrayList<Integer>();
     createActor(CMD_QUIT, "File", "Close", "quit", 0 /*KeyEvent.VK_ESCAPE*/, 0);
     createActor(CMD_OPEN, "Edit", "Open", "open", KeyEvent.VK_ENTER, 0);
     createActor(CMD_SHOW, "Edit", "Show", null, 0, 0);
@@ -122,14 +122,14 @@ public class VMenuTree extends VWindow {
   public void localizeActors(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, Application.getDefaultLocale());
+    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
     try {
       super.localizeActors(manager); // localizes the actors in VWindow
     } catch (InconsistencyException e) {
-      Application.reportTrouble("MenuTree Actor localization",
-                                "MenuTreeModel.localize",
-                                e.getMessage(),
-                                e);
+      ApplicationContext.reportTrouble("MenuTree Actor localization",
+                                       "MenuTreeModel.localize",
+                                       e.getMessage(),
+                                       e);
       System.exit(1);
     }
     manager = null;
@@ -177,7 +177,7 @@ public class VMenuTree extends VWindow {
    * @return  true if an action was found for the specified number
    */
   public void executeVoidTrigger(final int key) throws VException {
-    DMenuTree  currentDisplay = getDMenuTree();
+    UMenuTree  currentDisplay = getDisplay();
 
     switch (key) {
     case CMD_QUIT:
@@ -199,10 +199,10 @@ public class VMenuTree extends VWindow {
       currentDisplay.setMenu();
       break;
     case CMD_FOLD:
-      currentDisplay.getTree().collapseRow(currentDisplay.getTree().getSelectionRows()[0]);
+      currentDisplay.getTree().collapseRow(currentDisplay.getTree().getSelectionRow());
       break;
     case CMD_UNFOLD:
-      currentDisplay.getTree().expandRow(currentDisplay.getTree().getSelectionRows()[0]);
+      currentDisplay.getTree().expandRow(currentDisplay.getTree().getSelectionRow());
       break;
     case CMD_INFORMATION:
       {
@@ -213,12 +213,13 @@ public class VMenuTree extends VWindow {
         }
         String informationText;
         try {
-          informationText = Application.getDefaults().getInformationText();
+          informationText = ApplicationContext.getDefaults().getInformationText();
         } catch (PropertyException e) {
           e.printStackTrace();
           informationText = "";
         }
-        getDisplay().showApplicationInformation(informationText + version);
+
+        ((UMenuTree)getDisplay()).showApplicationInformation(informationText + version);
       }
       break;
     case CMD_HELP:
@@ -239,13 +240,13 @@ public class VMenuTree extends VWindow {
   public void localizeModules(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, Application.getDefaultLocale());
+    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
 
     // localizes the modules
-    for (ListIterator i = items.listIterator(); i.hasNext(); ) {
+    for (ListIterator<Module> i = items.listIterator(); i.hasNext(); ) {
       Module          item;
 
-      item = (Module)i.next();
+      item = i.next();
       item.localize(manager);
     }
 
@@ -255,6 +256,7 @@ public class VMenuTree extends VWindow {
   /**
    * Builds the module tree.
    */
+  @SuppressWarnings("deprecation")
   private void createTree(boolean loadFavorites) {
     Module[]                    localModules;
     DefaultMutableTreeNode      localTree;
@@ -320,9 +322,9 @@ public class VMenuTree extends VWindow {
   /**
    * Fetches the modules from the database.
    */
-  private List fetchModules(boolean isUnicode) throws SQLException {
-    Query       getModules = new Query(getDBContext().getDefaultConnection());
-    List        localModules = new ArrayList();
+  private List<Module> fetchModules(boolean isUnicode) throws SQLException {
+    Query       	getModules = new Query(getDBContext().getDefaultConnection());
+    List<Module>        localModules = new ArrayList<Module>();
 
     getModules.open(SELECT_MODULES);
     while (getModules.next()) {
@@ -355,19 +357,19 @@ public class VMenuTree extends VWindow {
     return localModules;
   }
 
-  private void fetchGroupRightsByUserId(List modules) throws SQLException {
+  private void fetchGroupRightsByUserId(List<Module> modules) throws SQLException {
     fetchRights(modules, SELECT_GROUP_RIGHTS_BY_USERID);
   }
 
-  private void fetchGroupRightsByGroupId(List modules) throws SQLException {
+  private void fetchGroupRightsByGroupId(List<Module> modules) throws SQLException {
     fetchRights(modules, SELECT_GROUP_RIGHTS_BY_GROUPID);
   }
 
-  private void fetchUserRights(List modules) throws SQLException {
+  private void fetchUserRights(List<Module> modules) throws SQLException {
     fetchRights(modules, SELECT_USER_RIGHTS);
   }
 
-  private void fetchRights(List modules, String queryText) throws SQLException {
+  private void fetchRights(List<Module> modules, String queryText) throws SQLException {
     Query       getRights = new Query(getDBContext().getDefaultConnection());
 
     if (groupName != null) {
@@ -389,9 +391,9 @@ public class VMenuTree extends VWindow {
     getRights.close();
   }
 
-  private Module findModuleById(List modules, int id) {
+  private Module findModuleById(List<Module> modules, int id) {
     for (int i = 0; i < modules.size(); i++) {
-      Module    module = (Module)modules.get(i);
+      Module    module = modules.get(i);
 
       if (module.getId() == id) {
         return module;
@@ -422,7 +424,7 @@ public class VMenuTree extends VWindow {
    * Loads the accessible modules.
    */
   private Module[] loadModules(boolean loadFavorites) {
-    List        localModules = new ArrayList();
+    List<Module>        localModules = new ArrayList<Module>();
 
     try {
       getDBContext().startWork(); // !!! BEGIN_SYNC
@@ -452,10 +454,10 @@ public class VMenuTree extends VWindow {
 
     if (! isSuperUser()) {
       // walk downwards because we remove elements
-      ListIterator      iterator = localModules.listIterator(localModules.size() - 1);
+      ListIterator<Module>      iterator = localModules.listIterator(localModules.size() - 1);
 
       while (iterator.hasPrevious()) {
-        Module  module = (Module)iterator.previous();
+        Module  module = iterator.previous();
 
         // remove all modules where access is explicitly denied
         if (module.getAccessibility() == Module.ACS_FALSE) {
@@ -500,15 +502,15 @@ public class VMenuTree extends VWindow {
     this.isSuperUser = isSuperUser;
   }
 
-  public List getModules() {
+  public List<Module> getModules() {
     return items;
   }
 
   public Module getModule(KopiExecutable ke) {
-    ListIterator        iterator = items.listIterator();
+    ListIterator<Module>        iterator = items.listIterator();
 
     while (iterator.hasNext()) {
-      Module    item = (Module)iterator.next();
+      Module    item = iterator.next();
 
       if (item.getObject() != null && item.getObject().equals(ke.getClass().getName())) {
         return item;
@@ -526,7 +528,7 @@ public class VMenuTree extends VWindow {
     return root;
   }
 
-  public List getShortcutsID() {
+  public List<Integer> getShortcutsID() {
     return shortcutsID;
   }
 
@@ -538,8 +540,9 @@ public class VMenuTree extends VWindow {
     return Constants.MDL_MENU_TREE;
   }
 
-  public DMenuTree getDMenuTree() {
-    return (DMenuTree) getDisplay();
+  @Override
+  public UMenuTree getDisplay() {
+    return (UMenuTree) super.getDisplay();
   }
 
   // --------------------------------------------------------------------
@@ -550,10 +553,10 @@ public class VMenuTree extends VWindow {
   private VActor[]       		actors;
   private boolean               	isSuperUser;
   private Module[]              	array;
-  private List                  	items;
+  private List<Module>                 items;
   private String                	userName;
   private String                	groupName;
-  private List                  	shortcutsID;
+  private List<Integer>                shortcutsID;
 
   private static final String   	SELECT_MODULES =
     " SELECT    M.ID, M.Vater, M.Kurzname, M.Quelle, M.Objekt, M.Prioritaet, M.Symbol" +

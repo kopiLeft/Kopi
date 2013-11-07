@@ -50,39 +50,44 @@ import javax.swing.undo.UndoManager;
 import com.kopiright.vkopi.lib.spellchecker.SpellChecker;
 import com.kopiright.vkopi.lib.spellchecker.SpellException;
 import com.kopiright.vkopi.lib.ui.base.TextSelecter;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
+import com.kopiright.vkopi.lib.visual.DMenuTree;
+import com.kopiright.vkopi.lib.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * DTextField is a panel composed in a text field and an information panel
  * The text field appear as a JLabel until it is edited
  */
-public class DTextField extends DField implements VConstants {
+public class DTextField extends DField implements UTextField, VConstants {
 
+  // ----------------------------------------------------------------------
+  // CONSTRUCTOR
+  // ----------------------------------------------------------------------
 
-
-public DTextField(VFieldUI model,
-                    DLabel label,
-                    int align,
-                    int options,
-                    boolean detail) {
+  public DTextField(VFieldUI model,
+                     DLabel label,
+                     int align,
+                     int options,
+                     boolean detail)
+  {
     super(model, label, align, options, detail);
 
     noEdit = (options & VConstants.FDO_NOEDIT) != 0;
     scanner = (options & VConstants.FDO_NOECHO) != 0 && getModel().getHeight() > 1;
 
     if (getModel().getHeight() == 1
-        || (!scanner && ((getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0))) {
+	|| (!scanner && ((getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0))) {
       transformer = new DefaultTransformer(getModel().getWidth(),
-                                           getModel().getHeight());
+	  getModel().getHeight());
     } else if (!scanner) {
       transformer = new NewlineTransformer(getModel().getWidth(),
-                                           getModel().getHeight());
+	  getModel().getHeight());
     } else {
       transformer = new ScannerTransformer(this);
     }
@@ -96,28 +101,28 @@ public DTextField(VFieldUI model,
     undoManager = new UndoManager();
 
     listener = new DocumentListener() {
-        public void insertUpdate(DocumentEvent e) {
-          DTextField.this.getModel().setChanged(true);
-        }
-        public void removeUpdate(DocumentEvent e) {
-          DTextField.this.getModel().setChanged(true);
-        }
-        public void changedUpdate(DocumentEvent e) {
-          DTextField.this.getModel().setChanged(true);
-        }
-      };
+      public void insertUpdate(DocumentEvent e) {
+	DTextField.this.getModel().setChanged(true);
+      }
+      public void removeUpdate(DocumentEvent e) {
+	DTextField.this.getModel().setChanged(true);
+      }
+      public void changedUpdate(DocumentEvent e) {
+	DTextField.this.getModel().setChanged(true);
+      }
+    };
 
     JComponent  comp;
 
     comp = createFieldGUI(getModel().getWidth(),
-                          getModel().getHeight(),
-                          (getModel().getHeight() == 1) ?
-                          1 :
-                          ((VStringField)getModel()).getVisibleHeight(),
-                          (options & VConstants.FDO_NOECHO) != 0,
-                          scanner,
-                          new DFieldMouseListener(),
-                          align);
+	getModel().getHeight(),
+	(getModel().getHeight() == 1) ?
+	    1 :
+	      ((VStringField)getModel()).getVisibleHeight(),
+	      (options & VConstants.FDO_NOECHO) != 0,
+	      scanner,
+	      new DFieldMouseListener(),
+	      align);
     if (model.hasAutofill() && getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
       document.setAutofill(true);
     }
@@ -131,14 +136,14 @@ public DTextField(VFieldUI model,
       popup.add(new ListAction());
     }
     if ((options & VConstants.FDO_NOEDIT) == 0) {
-      Action      redo = getModel().getForm().getDisplay().getRedoAction();
-      Action      undo = getModel().getForm().getDisplay().getUndoAction();
+      Action      redo = ((DWindow)getModel().getForm().getDisplay()).getRedoAction();
+      Action      undo = ((DWindow)getModel().getForm().getDisplay()).getUndoAction();
 
       if (redo != null) {
-        popup.add(redo);
+	popup.add(redo);
       }
       if (undo != null) {
-        popup.add(undo);
+	popup.add(undo);
       }
     }
 
@@ -160,51 +165,51 @@ public DTextField(VFieldUI model,
       languages = appDefaults.getDictionaryLanguages();
 
       if (languages.length > 0) {
-        JMenu           menu = new JMenu(VlibProperties.getString("aspell-menu-title"));
+	JMenu           menu = new JMenu(VlibProperties.getString("aspell-menu-title"));
 
-        for (int i=0; i < languages.length; i++) {
-          final String  spellCommand;
-          Action        spellChecker;
+	for (int i=0; i < languages.length; i++) {
+	  final String  spellCommand;
+	  Action        spellChecker;
 
-          spellCommand = dictionaryServer+" " + languages[i].options;
-          spellChecker = new AbstractAction(VlibProperties.getString(languages[i].language)) {
-            /**
-             * Comment for <code>serialVersionUID</code>
-             */
-            private static final long serialVersionUID = 5656229829162013955L;
+	  spellCommand = dictionaryServer+" " + languages[i].options;
+	  spellChecker = new AbstractAction(VlibProperties.getString(languages[i].language)) {
+	    /**
+	     * Comment for <code>serialVersionUID</code>
+	     */
+	     private static final long serialVersionUID = 5656229829162013955L;
 
-            public void actionPerformed(ActionEvent e) {
-              if (field.isEditable()) {
-                SpellChecker  spellChecker = new SpellChecker(spellCommand,
-                                                                Utils.getFrameAncestor(field),
-                                                                document);
+	     public void actionPerformed(ActionEvent e) {
+	       if (field.isEditable()) {
+		 SpellChecker  spellChecker = new SpellChecker(spellCommand,
+		     Utils.getFrameAncestor(field),
+		     document);
 
-                try {
-                  spellChecker.check();
-                } catch (SpellException se) {
-                  se.printStackTrace();
-                }
-              }
-            }
-          };
-          menu.add(spellChecker);
-        }
-        popup.add(menu);
+		 try {
+		   spellChecker.check();
+		 } catch (SpellException se) {
+		   se.printStackTrace();
+		 }
+	       }
+	     }
+	  };
+	  menu.add(spellChecker);
+	}
+	popup.add(menu);
       }
     }
     // Bookmarks (Shortcuts)
-    if (Application.getMenu() != null) {
-      Action[]          bookmarks = Application.getMenu().getDMenuTree().getBookmarkActions();
+    if (ApplicationContext.getMenu() != null) {
+      Action[]          bookmarks = ((DMenuTree) ApplicationContext.getMenu().getDisplay()).getBookmarkActions();
 
       if (bookmarks.length > 0) {
-        popup.addSeparator();
+	popup.addSeparator();
 
-        JMenu           menu = new JMenu(VlibProperties.getString("toolbar-title"));
+	JMenu           menu = new JMenu(VlibProperties.getString("toolbar-title"));
 
-        for (int i = 0; i < bookmarks.length; i++) {
-          menu.add(bookmarks[i]);
-        }
-        popup.add(menu);
+	for (int i = 0; i < bookmarks.length; i++) {
+	  menu.add(bookmarks[i]);
+	}
+	popup.add(menu);
       }
     }
     return popup;
@@ -270,16 +275,16 @@ public DTextField(VFieldUI model,
       // user, so don't inform the model (that the value is changed, ...)
       document.removeDocumentListener(listener);
       document.removeUndoableEditListener(undoManager);
-      document.removeUndoableEditListener(getModel().getForm().getUndoableEditListener());
+      document.removeUndoableEditListener(((DWindow)getModel().getForm().getDisplay()).getUndoableEditListener());
 
       document.setModelText(newModelTxt);
 
       if (inside) {
-        document.addDocumentListener(listener);
-        document.addUndoableEditListener(undoManager);
-        if (field.isEditable()) {
-          document.addUndoableEditListener(getModel().getForm().getUndoableEditListener());
-        }
+	document.addDocumentListener(listener);
+	document.addUndoableEditListener(undoManager);
+	if (field.isEditable()) {
+	  document.addUndoableEditListener(((DWindow)getModel().getForm().getDisplay()).getUndoableEditListener());
+	}
       }
     }
 
@@ -293,8 +298,8 @@ public DTextField(VFieldUI model,
     // the focus-gained event is in the queue after the
     // updateText-event.
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {
-         TextSelecter.TEXT_SELECTOR.selectText(field);
-         selectionAfterUpdateDisabled = false;
+      TextSelecter.TEXT_SELECTOR.selectText(field);
+      selectionAfterUpdateDisabled = false;
     }
   }
 
@@ -304,13 +309,13 @@ public DTextField(VFieldUI model,
     fireMouseHasChanged();
     if (!modelHasFocus()) {
       if (inside) {
-        inside = false;
-        leaveMe();
+	inside = false;
+	leaveMe();
       }
     } else {
       if (!inside) {
-        inside = true;
-        enterMe();
+	inside = true;
+	enterMe();
       }
     }
     super.updateFocus();
@@ -326,9 +331,9 @@ public DTextField(VFieldUI model,
     field.setEditable(!noEdit);
     field.setFocusable(true);
 
-    model.getForm().setUndoManager(undoManager);
+    ((DWindow)model.getForm().getDisplay()).setUndoManager(undoManager);
     if (!noEdit) {
-      document.addUndoableEditListener(model.getForm().getUndoableEditListener());
+      document.addUndoableEditListener(((DWindow)model.getForm().getDisplay()).getUndoableEditListener());
     }
 
     document.addDocumentListener(listener);
@@ -336,17 +341,17 @@ public DTextField(VFieldUI model,
     // request the focus, must be done later, otherwise it
     // does not work
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-          field.requestFocusInWindow();
-        }
-      });
+      public void run() {
+	field.requestFocusInWindow();
+      }
+    });
   }
 
   private void leaveMe() {
     VField      model = getModel();
 
     if (!noEdit) {
-      document.removeUndoableEditListener(model.getForm().getUndoableEditListener());
+      document.removeUndoableEditListener(((DWindow)model.getForm().getDisplay()).getUndoableEditListener());
     }
 
     document.removeDocumentListener(listener);
@@ -390,87 +395,89 @@ public DTextField(VFieldUI model,
   class ListAction extends AbstractAction {
 
 
-	ListAction() {
+    ListAction() {
       super(VlibProperties.getString("item-index"));
     }
 
     public void actionPerformed(ActionEvent e) {
       getModel().getForm().performAsyncAction(new KopiAction() {
-          public void execute() throws VException {
-            model.transferFocus(DTextField.this);
-            model.autofillButton();
-          }
-        });
+	public void execute() throws VException {
+	  model.transferFocus(DTextField.this);
+	  model.autofillButton();
+	}
+      });
     }
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 410472821803045205L;
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 410472821803045205L;
   }
 
   // ----------------------------------------------------------------------
   // Create field ui
   // ----------------------------------------------------------------------
 
+  @SuppressWarnings("unchecked")
   private JComponent createFieldGUI(int col,
-                                    int rows,
-                                    int visibleRows,
-                                    boolean noEcho,
-                                    boolean scanner,
-                                    MouseListener mouseListener,
-                                    int align) {
+                                     int rows,
+                                     int visibleRows,
+                                     boolean noEcho,
+                                     boolean scanner,
+                                     MouseListener mouseListener,
+                                     int align)
+  {
     JTextComponent      textfield;
 
     if (noEcho && rows == 1) {
       textfield = new JPasswordField(col) {
-            /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = -6305606934554696596L;
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -6305606934554696596L;
 
-			public Dimension getPreferredSize() {
-              // lackner 29.09.2004
-              // the default calkulation is one pixel too small
-              Dimension         dim = super.getPreferredSize();
+	public Dimension getPreferredSize() {
+	  // lackner 29.09.2004
+	  // the default calkulation is one pixel too small
+	  Dimension         dim = super.getPreferredSize();
 
-              dim.width += 1;
-              return dim;
-            }
-          };
+	  dim.width += 1;
+	  return dim;
+	}
+      };
     } else {
       if (rows > 1) {
-        if (scanner) {
-          // scanner fields have a witdh of 40
-          col = 40;
-        }
+	if (scanner) {
+	  // scanner fields have a witdh of 40
+	  col = 40;
+	}
 
-        textfield = new JTextArea(visibleRows, col);
-        ((JTextArea) textfield).setLineWrap(true);
-        ((JTextArea) textfield).setWrapStyleWord(true);
+	textfield = new JTextArea(visibleRows, col);
+	((JTextArea) textfield).setLineWrap(true);
+	((JTextArea) textfield).setWrapStyleWord(true);
       } else {
-        textfield = new JTextField(col) {
-            /**
-			 * Comment for <code>serialVersionUID</code>
-			 */
-			private static final long serialVersionUID = -2960748127356900841L;
+	textfield = new JTextField(col) {
+	  /**
+	   * Comment for <code>serialVersionUID</code>
+	   */
+	  private static final long serialVersionUID = -2960748127356900841L;
 
-			public Dimension getPreferredSize() {
-              // lackner 29.09.2004
-              // the default calkulation is one pixel too small
-              // lackner 05.11.2004
-              // jdk 1.4.1 does not use the insets (fixed in 1.4.2)
-              Dimension         size = super.getPreferredSize();
+	  public Dimension getPreferredSize() {
+	    // lackner 29.09.2004
+	    // the default calkulation is one pixel too small
+	    // lackner 05.11.2004
+	    // jdk 1.4.1 does not use the insets (fixed in 1.4.2)
+	    Dimension         size = super.getPreferredSize();
 
-              if (getColumns() != 0) {
-                Insets          insets = getInsets();
+	    if (getColumns() != 0) {
+	      Insets          insets = getInsets();
 
-                size.width = 1
-                  + getColumns() * getColumnWidth() + insets.left + insets.right;
-              }
-              return size;
-            }
-          };
-        ((JTextField) textfield).setHorizontalAlignment(align);
+	      size.width = 1
+	      + getColumns() * getColumnWidth() + insets.left + insets.right;
+	    }
+	    return size;
+	  }
+	};
+	((JTextField) textfield).setHorizontalAlignment(align);
       }
     }
 
@@ -480,9 +487,9 @@ public DTextField(VFieldUI model,
     // Tab is used for the default traversal keys. But these do not
     // work with the concept of kopi so we remove that default behavior
     textfield.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-                          Collections.EMPTY_SET);
+	Collections.EMPTY_SET);
     textfield.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-                          Collections.EMPTY_SET);
+	Collections.EMPTY_SET);
 
     textfield.setDocument(document);
 
@@ -507,7 +514,7 @@ public DTextField(VFieldUI model,
       scroller.setBorder(null);
       scroller.setFocusable(false);
       if (mouseListener != null) {
-        scroller.addMouseListener(mouseListener);
+	scroller.addMouseListener(mouseListener);
       }
       scroller.setViewportBorder(textfield.getBorder());
       textfield.setBorder(null);
@@ -516,20 +523,20 @@ public DTextField(VFieldUI model,
     }
 
     textfield.addFocusListener(new java.awt.event.FocusListener() {
-        public void focusGained(FocusEvent e) {
-          invalidate();
-          validate();
-          repaint();
-        }
-        public void focusLost(FocusEvent e) {
-          // don't forget to repaint the kopi textfield
-          invalidate();
-          validate();
-          repaint();
-       }
-      });
+      public void focusGained(FocusEvent e) {
+	invalidate();
+	validate();
+	repaint();
+      }
+      public void focusLost(FocusEvent e) {
+	// don't forget to repaint the kopi textfield
+	invalidate();
+	validate();
+	repaint();
+      }
+    });
     field = textfield;
-    getModel().getForm().getEnvironment().addDefaultTextKey(textfield, rows > 1);
+    ((DForm)getModel().getForm().getDisplay()).getEnvironment().addDefaultTextKey(textfield, rows > 1);
     if (scroller != null) {
       return scroller;
     } else {
@@ -565,14 +572,14 @@ public DTextField(VFieldUI model,
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  protected JTextComponent              field;		// the text component
-  protected boolean                     inside;
-  protected boolean                     noEdit;
-  protected boolean			scanner;
-  protected KopiFieldDocument           document;
-  protected ModelTransformer            transformer;
-  protected DocumentListener            listener;
-  private   UndoManager                 undoManager;
+  protected JTextComponent              	field;		// the text component
+  protected boolean                     	inside;
+  protected boolean                     	noEdit;
+  protected boolean				scanner;
+  protected KopiFieldDocument           	document;
+  protected ModelTransformer            	transformer;
+  protected DocumentListener            	listener;
+  private UndoManager                 		undoManager;
 
   // ----------------------------------------------------------------------
   // INITIALIZERS
@@ -582,7 +589,7 @@ public DTextField(VFieldUI model,
     inside = false;
   }
 
-  static class DefaultTransformer implements ModelTransformer {
+  /*package*/ static class DefaultTransformer implements ModelTransformer {
     public DefaultTransformer(int col, int row) {
       this.col = col;
       this.row = row;
@@ -602,18 +609,18 @@ public DTextField(VFieldUI model,
     int         row;
   }
 
-  static class ScannerTransformer implements ModelTransformer {
+  /*package*/ static class ScannerTransformer implements ModelTransformer {
     public ScannerTransformer(DTextField field) {
       this.field = field;
     }
 
     public String toGui(String modelTxt) {
       if (modelTxt == null || "".equals(modelTxt)) {
-        return VlibProperties.getString("scan-ready");
+	return VlibProperties.getString("scan-ready");
       } else if (field.field.isEditable()) {
-        return VlibProperties.getString("scan-read") + " " + modelTxt;
+	return VlibProperties.getString("scan-read") + " " + modelTxt;
       } else {
-        return VlibProperties.getString("scan-finished");
+	return VlibProperties.getString("scan-finished");
       }
     }
 
@@ -628,7 +635,7 @@ public DTextField(VFieldUI model,
     private DTextField field;
   }
 
-  static class NewlineTransformer implements ModelTransformer {
+  /*package*/ static class NewlineTransformer implements ModelTransformer {
     public NewlineTransformer(int col, int row) {
       this.col = col;
       this.row = row;
@@ -644,24 +651,24 @@ public DTextField(VFieldUI model,
       int               usedRows = 1;
 
       for (int start = 0; start < length; start += col) {
-        String          line = source.substring(start, Math.min(start + col, length));
-        int             last = -1;
+	String          line = source.substring(start, Math.min(start + col, length));
+	int             last = -1;
 
-        for (int i = line.length() - 1; last == -1 && i >= 0; --i) {
-          if (! Character.isWhitespace(line.charAt(i))) {
-            last = i;
-          }
-        }
+	for (int i = line.length() - 1; last == -1 && i >= 0; --i) {
+	  if (! Character.isWhitespace(line.charAt(i))) {
+	    last = i;
+	  }
+	}
 
-        if (last != -1) {
-          target.append(line.substring(0, last + 1));
-        }
-        if (usedRows < row) {
-          if (start+col < length) {
-            target.append('\n');
-          }
-          usedRows++;
-        }
+	if (last != -1) {
+	  target.append(line.substring(0, last + 1));
+	}
+	if (usedRows < row) {
+	  if (start+col < length) {
+	    target.append('\n');
+	  }
+	  usedRows++;
+	}
       }
       return target.toString();
     }
@@ -685,20 +692,19 @@ public DTextField(VFieldUI model,
 
     private void maybeShowPopup(MouseEvent e) {
       if (e.isPopupTrigger()) {
-        if (menu != null) {
-          // do nothing
-        } else {
-          if (listener != null) {
-            menu = createPopupMenu();
-            menu.addPopupMenuListener(this);
-            menu.show(e.getComponent(), e.getX(), e.getY());
-          }
-        }
+	if (menu != null) {
+	  // do nothing
+	} else {
+	  if (listener != null) {
+	    menu = createPopupMenu();
+	    menu.addPopupMenuListener(this);
+	    menu.show(e.getComponent(), e.getX(), e.getY());
+	  }
+	}
       }
     }
 
-    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    }
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
 
     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
       // necessary for garbage collection
@@ -707,12 +713,10 @@ public DTextField(VFieldUI model,
       menu = null;
     }
 
-    public void popupMenuCanceled(PopupMenuEvent e) {
-    }
+    public void popupMenuCanceled(PopupMenuEvent e) {}
 
     JPopupMenu      menu;
   }
-
 
   public static String convertToSingleLine(String source, int col, int row) {
     StringBuffer      target = new StringBuffer();
@@ -724,45 +728,45 @@ public DTextField(VFieldUI model,
       int             index = source.indexOf('\n', start);
 
       if (index-start < col && index != -1) {
-        target.append(source.substring(start, index));
-        for (int j = index - start; j < col; j++) {
-          target.append(' ');
-        }
-        start = index+1;
-        if (start == length) {
-          // last line ends with a "new line" -> add an empty line
-          for (int j = 0; j < col; j++) {
-            target.append(' ');
-          }
-        }
+	target.append(source.substring(start, index));
+	for (int j = index - start; j < col; j++) {
+	  target.append(' ');
+	}
+	start = index+1;
+	if (start == length) {
+	  // last line ends with a "new line" -> add an empty line
+	  for (int j = 0; j < col; j++) {
+	    target.append(' ');
+	  }
+	}
       } else {
-        if (start+col >= length) {
-          target.append(source.substring(start, length));
-          for (int j = length; j < start+col; j++) {
-            target.append(' ');
-          }
-          start = length;
-        } else {
-          // find white space to break line
-          int   i;
+	if (start+col >= length) {
+	  target.append(source.substring(start, length));
+	  for (int j = length; j < start+col; j++) {
+	    target.append(' ');
+	  }
+	  start = length;
+	} else {
+	  // find white space to break line
+	  int   i;
 
-          for (i = start+col-1; i > start; i--) {
-            if (Character.isWhitespace(source.charAt(i))) {
-              break;
-            }
-          }
-          if (i == start) {
-            index = start+col;
-          } else {
-            index = i+1;
-          }
+	  for (i = start+col-1; i > start; i--) {
+	    if (Character.isWhitespace(source.charAt(i))) {
+	      break;
+	    }
+	  }
+	  if (i == start) {
+	    index = start+col;
+	  } else {
+	    index = i+1;
+	  }
 
-          target.append(source.substring(start, index));
-          for (int j = (index - start)%col; j != 0 && j < col; j++) {
-            target.append(' ');
-          }
-          start = index;
-        }
+	  target.append(source.substring(start, index));
+	  for (int j = (index - start)%col; j != 0 && j < col; j++) {
+	    target.append(' ');
+	  }
+	  start = index;
+	}
       }
       lines++;
     }
@@ -779,45 +783,45 @@ public DTextField(VFieldUI model,
       int             index = source.indexOf('\n', start);
 
       if (index-start < col && index != -1) {
-        target.append(source.substring(start, index));
-        for (int j = index - start; j < col; j++) {
-          target.append(' ');
-        }
-        start = index+1;
-        if (start == length) {
-          // last line ends with a "new line" -> add an empty line
-          for (int j = 0; j < col; j++) {
-            target.append(' ');
-          }
-        }
+	target.append(source.substring(start, index));
+	for (int j = index - start; j < col; j++) {
+	  target.append(' ');
+	}
+	start = index+1;
+	if (start == length) {
+	  // last line ends with a "new line" -> add an empty line
+	  for (int j = 0; j < col; j++) {
+	    target.append(' ');
+	  }
+	}
       } else {
-        if (start+col >= length) {
-          target.append(source.substring(start, length));
-          for (int j = length; j < start+col; j++) {
-            target.append(' ');
-          }
-          start = length;
-        } else {
-          // find white space to break line
-          int   i;
+	if (start+col >= length) {
+	  target.append(source.substring(start, length));
+	  for (int j = length; j < start+col; j++) {
+	    target.append(' ');
+	  }
+	  start = length;
+	} else {
+	  // find white space to break line
+	  int   i;
 
-          for (i = start+col; i > start; i--) {
-            if (Character.isWhitespace(source.charAt(i))) {
-              break;
-            }
-          }
-          if (i == start) {
-            index = start+col;
-          } else {
-            index = i;
-          }
+	  for (i = start+col; i > start; i--) {
+	    if (Character.isWhitespace(source.charAt(i))) {
+	      break;
+	    }
+	  }
+	  if (i == start) {
+	    index = start+col;
+	  } else {
+	    index = i;
+	  }
 
-          target.append(source.substring(start, index));
-          for (int j = (index - start); j < col; j++) {
-            target.append(' ');
-          }
-          start = index + 1;
-        }
+	  target.append(source.substring(start, index));
+	  for (int j = (index - start); j < col; j++) {
+	    target.append(' ');
+	  }
+	  start = index + 1;
+	}
       }
       lines++;
     }
@@ -827,6 +831,7 @@ public DTextField(VFieldUI model,
   public void setSelectionAfterUpdateDisabled(boolean disable) {
     selectionAfterUpdateDisabled = disable;
   }
+
   /**
    * Comment for <code>serialVersionUID</code>
    */

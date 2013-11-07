@@ -37,6 +37,7 @@ import com.kopiright.util.base.InconsistencyException;
 /**
  * Fax printer
  */
+@SuppressWarnings("deprecation")
 public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
 
   /**
@@ -45,7 +46,7 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
   public HylaFAXPrinter(final String faxHost,
                         final String number,
                         final String user,
-                        final List attachments)
+                        final List<?> attachments)
   {
     super("FaxPrinter "+number);
     this.faxHost = faxHost;
@@ -72,9 +73,9 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
     // get down to business, send the FAX already
 
     // List with names of temporary files on the server side
-    ArrayList         documents = new ArrayList();
+    ArrayList<Object>         	documents = new ArrayList<Object>();
     // fax client
-    HylaFAXClient     faxClient = new HylaFAXClient();
+    HylaFAXClient     		faxClient = new HylaFAXClient();
 
     try{
       faxClient.setDebug(false);      // no debug messages
@@ -82,19 +83,19 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
       faxClient.user(user);           // hyla fax user
       // necessary for pdf documents to keep the correct file size
       faxClient.type(FtpClientProtocol.TYPE_IMAGE);
-      faxClient.noop();	
+      faxClient.noop();
       faxClient.tzone(HylaFAXClientProtocol.TZONE_LOCAL);
 
       // add fax document
       documents.add(faxClient.putTemporary(printdata.getInputStream()));
-      
+
       // put attachments to server
       if (attachments != null) {
-        Iterator      attachmentInterator = attachments.iterator();
-        
+        Iterator<?>      attachmentInterator = attachments.iterator();
+
         while (attachmentInterator.hasNext()) {
           InputStream dataSource = (InputStream) attachmentInterator.next();
-          
+
           // put data to the hylafax server
           documents.add(faxClient.putTemporary(dataSource));
         }
@@ -102,7 +103,7 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
       // all file to send are at the server
       // create a job to send them
       Job             job = faxClient.createJob();
-      
+
       // set job properties
       job.setFromUser(user);
       job.setNotifyAddress(user);
@@ -115,10 +116,10 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
       job.setPageDimension((Dimension) Job.pagesizes.get("a4"));
       job.setNotifyType(HylaFAXClientProtocol.NOTIFY_NONE);
       job.setChopThreshold(3);
-      
+
       // add documents to the job
-      Iterator        docIterator = documents.iterator();
-      
+      Iterator<?>        docIterator = documents.iterator();
+
       while (docIterator.hasNext()) {
         job.addDocument((String)docIterator.next());
       }
@@ -145,8 +146,8 @@ public class HylaFAXPrinter extends AbstractPrinter implements CachePrinter {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private final String		faxHost;
-  private final String		number;
-  private final String		user;
-  private final List            attachments;
+  private final String				faxHost;
+  private final String				number;
+  private final String				user;
+  private final List<?>       			attachments;
 }

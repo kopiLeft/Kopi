@@ -16,9 +16,6 @@
                    MessageDefinition.java MsggenMessages.java 
                    MsggenOptions.java" />
 
-  <property name="messages" value="MsggenMessages" />
-  <property name="buildmessages" value="yes" />
-
   <property name="options"  value="MsggenOptions" />
 
 

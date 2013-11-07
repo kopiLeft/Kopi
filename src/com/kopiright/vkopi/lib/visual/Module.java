@@ -19,12 +19,9 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import java.util.Hashtable;
-
-import javax.swing.ImageIcon;
-
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ModuleLocalizer;
+import com.kopiright.vkopi.lib.ui.base.Image;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 
@@ -56,10 +53,10 @@ public class Module {
     //!!! graf 2006.01.30: end
     this.access = access;
     if (icon != null) {
-      this.icon = com.kopiright.vkopi.lib.util.Utils.getImage(icon);
-      smallIcon = (ImageIcon)icons.get(icon);
+      this.icon = ImageHandler.getImageHandler().getImage(icon);
+      smallIcon = ImageHandler.getImageHandler().getImage(icon);
       if (smallIcon == null) {
-        icons.put(icon, smallIcon = new ImageIcon(this.icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH)));
+        smallIcon = smallIcon.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
       }
     }
   }
@@ -105,14 +102,14 @@ public class Module {
   /**
    * return the mnemonic
    */
-  public ImageIcon getIcon() {
+  public Image getIcon() {
     return icon;
   }
 
   /**
    * return the mnemonic
    */
-  public ImageIcon getSmallIcon() {
+  public Image getSmallIcon() {
     return smallIcon;
   }
 
@@ -168,13 +165,13 @@ public class Module {
    *
    */
   public static KopiExecutable startForm(DBContext ctxt,
-                                  String object,
-                                  String description,
-                                  ImageIcon icon)
+                                         String object,
+                                         String description,
+                                         Image icon)
     throws VException
   {
     try {
-      if (Application.getDefaults().isDebugModeEnabled()) {
+      if (ApplicationContext.getDefaults().isDebugModeEnabled()) {
         System.gc();
 	Thread.yield();
       }
@@ -191,12 +188,11 @@ public class Module {
       v.printStackTrace();
       throw v;
     } catch (Throwable t) {
-      Application.reportTrouble("Form loading",
-                                "Module.startForm(DBContext ctxt, String object, String description, ImageIcon icon)",
-                                t.getMessage(),
-                                t);
-      DWindow.displayError(Application.getMenu().getDisplay(),
-                           com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
+      ApplicationContext.reportTrouble("Form loading",
+                                       "Module.startForm(DBContext ctxt, String object, String description, ImageIcon icon)",
+                                       t.getMessage(),
+                                       t);
+      ApplicationContext.displayError(ApplicationContext.getMenu().getDisplay(), com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
       return null;
     }
   }
@@ -227,10 +223,10 @@ public class Module {
       help = loc.getHelp();
     } catch (com.kopiright.util.base.InconsistencyException e) {
       // If the module localization is not found, report it
-      Application.reportTrouble(shortname,
-                                source,
-                                "Module '" + shortname + "' was not found in '" + source + "'",
-                                e);
+      ApplicationContext.reportTrouble(shortname,
+                                       source,
+                                       "Module '" + shortname + "' was not found in '" + source + "'",
+                                       e);
       description = "!!! " + shortname + " !!!";
       help = description;
     }
@@ -241,20 +237,18 @@ public class Module {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  public static final int       ACS_PARENT = 0;
-  public static final int       ACS_TRUE   = 1;
-  public static final int       ACS_FALSE  = 2;
+  public static final int       	ACS_PARENT = 0;
+  public static final int       	ACS_TRUE   = 1;
+  public static final int       	ACS_FALSE  = 2;
 
-  private int                   id;
-  private int                   parent;
-  private String                shortname;
-  private String                description;
-  private String                object;
-  private String                help;
-  private String                source;
-  private int                   access;
-  private ImageIcon             icon;
-  private ImageIcon             smallIcon;
-
-  private static Hashtable      icons = new Hashtable();
+  private int                   	id;
+  private int                   	parent;
+  private String                	shortname;
+  private String                	description;
+  private String                	object;
+  private String               	 	help;
+  private String                	source;
+  private int                   	access;
+  private Image             		icon;
+  private Image             		smallIcon;
 }

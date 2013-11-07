@@ -65,4 +65,10 @@ public abstract class VException extends Exception {
   public VException(Throwable cause) {
     super(cause);
   }
+
+  //------------------------------------------------------------------
+  // DATA MEMBERS
+  //------------------------------------------------------------------
+
+  private static final long 			serialVersionUID = 7712388808355579815L;
 }

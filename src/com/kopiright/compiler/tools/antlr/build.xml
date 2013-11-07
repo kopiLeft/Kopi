@@ -21,8 +21,8 @@
       ==============================================================-->
   <target name="buildtools" description="  Runs subbuild files ">
     <ant dir="runtime"  inheritAll="false" />
-  	<ant dir="compiler" inheritAll="false" target="buildtools" />
-  	<ant dir="extra"    inheritAll="false" />
+    <ant dir="compiler" inheritAll="false" target="buildtools" />
+    <ant dir="extra"    inheritAll="false" />
   </target>
 
   <import file="${topdir}/defs.xml" />

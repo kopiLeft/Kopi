@@ -40,9 +40,10 @@ public class SpellChecker {
     this.document = document;
   }
 
+  @SuppressWarnings("deprecation")
   public void check() throws SpellException {
-    AspellProcess       spellChecker = new AspellProcess(aspell);
-    List                results = null;
+    AspellProcess       	spellChecker = new AspellProcess(aspell);
+    List<Suggestions>           results = null;
 
     try {
       results = spellChecker.checkText(document.getText(0, document.getLength()));
@@ -51,7 +52,7 @@ public class SpellChecker {
     resultIterator = results.iterator();
 
     if (checkNext()) {
-      SpellcheckerDialog  spellDialog = new SpellcheckerDialog(parent, 
+      SpellcheckerDialog  spellDialog = new SpellcheckerDialog(parent,
                                                                VlibProperties.getString("aspell-dialog-title"),
                                                                this);
       spellDialog.show();
@@ -67,7 +68,7 @@ public class SpellChecker {
 				 ICN_NOTICE,
 				 options,
 				 options[0]);
-    
+
     //    return check(text, results);
   }
 
@@ -75,7 +76,7 @@ public class SpellChecker {
     if (! resultIterator.hasNext()) {
       return false;
     } else {
-      result = (Suggestions)resultIterator.next();
+      result = resultIterator.next();
 
       if(result.getType() != Suggestions.RLT_OK) {
         String          replacementWord;
@@ -141,7 +142,7 @@ public class SpellChecker {
   {
     String              originalWord;
     int                 originalIndex;
-   
+
     originalWord = result.getOriginalWord();
     originalIndex = result.getOffset();
     try {
@@ -151,16 +152,16 @@ public class SpellChecker {
     }
     offset += replacementWord.length() - originalWord.length();
   }
-  
-  private Suggestions           result;
-  private Iterator              resultIterator;
-  private int                   offset = 0;
 
-  private final Document        document;
-  private final String          aspell;  
-  private final Frame           parent;  
-  private final HashMap         changeAllMap = new HashMap();
-  private final HashSet         ignoreAllSet = new HashSet();
+  private Suggestions           		result;
+  private Iterator<Suggestions>              	resultIterator;
+  private int                   		offset = 0;
 
-  public static final ImageIcon	ICN_NOTICE = Utils.getImage("notice.gif");
+  private final Document        		document;
+  private final String          		aspell;
+  private final Frame           		parent;
+  private final HashMap<String, String> 	changeAllMap = new HashMap<String, String>();
+  private final HashSet<String>         	ignoreAllSet = new HashSet<String>();
+
+  public static final ImageIcon		ICN_NOTICE = Utils.getImage("notice.gif");
 }

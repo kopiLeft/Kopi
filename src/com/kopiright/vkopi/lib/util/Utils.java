@@ -129,7 +129,7 @@ public class Utils extends com.kopiright.util.base.Utils {
    * @return an imageIcon
    */
   public static ImageIcon getImage(String image) {
-    ImageIcon	img = (ImageIcon)cache.get(image);
+    ImageIcon	img = cache.get(image);
     if (img == null) {
       img = getImageImpl(image);
       cache.put(image, img);
@@ -309,7 +309,7 @@ public class Utils extends com.kopiright.util.base.Utils {
   // PRIVATE DATA
   // ----------------------------------------------------------------------
 
-  private static Hashtable	cache = new Hashtable();
+  private static Hashtable<String, ImageIcon>	cache = new Hashtable<String, ImageIcon>();
 
   public static final String    APPLICATION_DIR = "resources";
   public static final ImageIcon UKN_IMAGE = new ImageIcon("unknown");

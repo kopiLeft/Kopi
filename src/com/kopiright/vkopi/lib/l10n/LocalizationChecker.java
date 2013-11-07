@@ -56,7 +56,7 @@ public class LocalizationChecker {
     this.candidate = candidate;
     this.modelDoc = loadDocument(model);
     this.candidateDoc = loadDocument(candidate);
-    
+
     initWriter();
   }
 
@@ -71,7 +71,7 @@ public class LocalizationChecker {
     format.setLineSeparator("\n");
     writer = new XMLOutputter(format);
   }
-  
+
   // ----------------------------------------------------------------------
   // MAIN
   // ----------------------------------------------------------------------
@@ -81,14 +81,14 @@ public class LocalizationChecker {
    */
   public static void main(String[] args) {
     LocalizationCheckerOptions options = new LocalizationCheckerOptions();
-    
+
     if (!options.parseCommandLine(args)) {
       options.usage();
       System.exit(1);
     }
     String[] infiles = options.nonOptions;
     LocalizationChecker checker;
-    
+
     if (options.locales != null) {
       for (int i = 0; i < infiles.length; i++) {
         for (int j = 0; j < options.locales.length; j++) {
@@ -101,7 +101,7 @@ public class LocalizationChecker {
       }
     }
   }
-  
+
   /**
    * Runs the check process.
    *
@@ -110,7 +110,7 @@ public class LocalizationChecker {
   private void run(String outFile) {
     check();
     if (modified) {
-      write(outFile);      
+      write(outFile);
       System.out.println("warning: " + candidate + " not compatible with " + model
                          + ", a new file : " + outFile + " is auto-generated." );
     }
@@ -124,22 +124,22 @@ public class LocalizationChecker {
     Element model;
     Element candidate;
     Element validated;
-    
+
     model = modelDoc.getRootElement();
     candidate = candidateDoc.getRootElement();
-    
+
     // check we have the same root name
     if(! model.getName().equals(candidate.getName())) {
       fail("warning : The given documents doen't have the same root element");
     }
-    
+
     validated = checkAttributes(model, candidate);
-    
+
     checkChildren(model, candidate, validated);
-    
+
     validatedDoc = new Document(validated);
   }
-  
+
   /**
    * Checks the children of the given elements.
    *
@@ -147,16 +147,17 @@ public class LocalizationChecker {
    * @param             candidate       the candidate element
    * @param             validated       the element to generate
    */
+  @SuppressWarnings("unchecked")
   private void checkChildren(Element model, Element candidate, Element validated) {
-    List        children;
-    
+    List<Element>        children;
+
     children = model.getChildren();
-    for (Iterator i = children.iterator(); i.hasNext(); ) {
+    for (Iterator<Element> i = children.iterator(); i.hasNext(); ) {
       Element   em; // model
       Element   ec; // candidate
       Element   ev; // validated
 
-      em = (Element)i.next();
+      em = i.next();
       // elements with no identifier
       if (candidate == null) {
         ec = null;
@@ -184,15 +185,15 @@ public class LocalizationChecker {
         && candidate.getChildren().size() != 0) {
       modified = true;
       children = candidate.getChildren();
-      for (Iterator i = children.iterator(); i.hasNext(); ) {
+      for (Iterator<Element> i = children.iterator(); i.hasNext(); ) {
         Element e;
-        
-        e = (Element)i.next();
+
+        e = i.next();
         validated.addContent(toComment(e));
       }
     }
   }
-  
+
   /**
    * Constructs a comment content from an element.
    *
@@ -205,23 +206,24 @@ public class LocalizationChecker {
 
   /**
    * Checks the attributes of the given elements and return a valid one.
-   * 
+   *
    * @param             model           the model element
    * @param             candidate       the candidate element
    * @return            a valid element
    */
+  @SuppressWarnings("unchecked")
   private Element checkAttributes(Element model, Element candidate) {
-    Element     e;
-    List        attributes;
-    
+    Element     	e;
+    List<Attribute>     attributes;
+
     e = new Element(model.getName());
     attributes = model.getAttributes();
-    for (Iterator i = attributes.iterator(); i.hasNext(); ) {
+    for (Iterator<Attribute> i = attributes.iterator(); i.hasNext(); ) {
       Attribute am; // model
       Attribute ac; // candidate
-      
+
       am = (Attribute)i.next();
-      if (candidate != null 
+      if (candidate != null
           && (ac = candidate.getAttribute(am.getName())) != null) {
         e.setAttribute((Attribute)ac.clone());
         // remove this attribute
@@ -232,7 +234,7 @@ public class LocalizationChecker {
                        (am.getName().equals(getIdentOf(e.getName()))? "" : "!!! ") + am.getValue());
       }
     }
-    
+
     if (candidate == null) {
       modified = true;
     }
@@ -243,10 +245,10 @@ public class LocalizationChecker {
       // the remaining attributes may contain useful data
       e.addContent(toComment(candidate));
     }
-    
+
     return e;
   }
-  
+
   /**
    * Writes the XML tree to the specified file.
    *
@@ -259,11 +261,11 @@ public class LocalizationChecker {
       fail("warning : cannot write file " + fileName + ": " + e.getMessage());
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
-  
+
   /**
    * Used on a failure.
    *
@@ -274,7 +276,7 @@ public class LocalizationChecker {
     // signal an error, don't stop compilation process.
     //System.exit(1);
   }
-  
+
   /**
    * Returns the attribute used for the identification of an element.
    *
@@ -309,23 +311,23 @@ public class LocalizationChecker {
 
     // the URI is used to report the file name when a child lookup fails
     document.setBaseURI(fileName);
-    
+
     return document;
   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  private String model;
-  private String candidate;
-  private Document                      modelDoc;
-  private Document                      candidateDoc;
-  private Document                      validatedDoc;
-  private boolean                       modified = false;
-  private XMLOutputter                  writer;
+  private String 				model;
+  private String 				candidate;
+  private Document                      	modelDoc;
+  private Document                      	candidateDoc;
+  private Document                      	validatedDoc;
+  private boolean                      	modified = false;
+  private XMLOutputter                  	writer;
 
-  private static Hashtable              idents = new Hashtable();
-  
+  private static Hashtable<String, String>    idents = new Hashtable<String, String>();
+
   static {
     // sets the identifier name of each element
     idents.put("actor",    "ident");

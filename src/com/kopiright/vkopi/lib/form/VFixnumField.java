@@ -285,7 +285,7 @@ public class VFixnumField extends VField {
    *
    * @param     scale           the scale value.
    * @param     record          the record value.
-   */  
+   */
   public void setScale(int record, int scale) throws VExecFailedException {
     if (scale > maxScale) {
       throw new InconsistencyException(MessageCode.getMessage("VIS-00060", String.valueOf(scale), String.valueOf(maxScale)));
@@ -336,7 +336,7 @@ public class VFixnumField extends VField {
    */
   public void clear(int r) {
     super.clear(r);
-    
+
     for (int i = 0; i < currentScale.length; i++) {
       currentScale[i] = maxScale;
     }
@@ -360,7 +360,7 @@ public class VFixnumField extends VField {
    */
   public void setFixed(int r, Fixed v) {
     // trails (backup) the record if necessary
-    if (isChangedUI() 
+    if (isChangedUI()
         || value[r] == null
         || (value[r] != null && !value[r].equals(v))) {
       trail(r);
@@ -444,13 +444,13 @@ public class VFixnumField extends VField {
    */
   public String getTextImpl(int r) {
     String      res;
-    
+
     if (value[r] == null) {
       return "";
     }
 
     res = toText(value[r].setScale(currentScale[r]));
-           
+
     // append spaces until the max scale is reached to make commas aligned.
     // append an extra space to replace the missing comma if the current scale is zero.
     if (block.isMulti()) {
@@ -497,6 +497,7 @@ public class VFixnumField extends VField {
   /**
    * Parses the string argument as a fixed number in human-readable format.
    */
+  @SuppressWarnings("deprecation")
   private static Fixed scanFixed(String str) {
     boolean     negative = false;
     int         state = 0;
@@ -699,10 +700,10 @@ public class VFixnumField extends VField {
    */
   public static NotNullFixed calculateUpperBound(int digits, int scale) {
     char[]      asciiBound;
-    
+
     if (scale == 0) {
-      asciiBound = new char[digits]; 
-      
+      asciiBound = new char[digits];
+
       for (int i = 0; i < digits; i++) {
         asciiBound[i] = '9';
       }
@@ -729,7 +730,6 @@ public class VFixnumField extends VField {
   public static int computeWidth(int digits, int scale, Fixed minVal, Fixed maxVal) {
     Fixed       upperBound;
     Fixed       lowerBound;
-    int         width;
 
     upperBound = calculateUpperBound(digits, scale);
     lowerBound = upperBound.negate();
@@ -832,7 +832,7 @@ public class VFixnumField extends VField {
 
   private void setHasCriticalValue(boolean critical) {
     if (getDisplay() != null) {
-      ((DTextField)getDisplay()).setHasCriticalValue(critical);
+      ((UTextField)getDisplay()).setHasCriticalValue(critical);
     }
   }
 
@@ -844,15 +844,16 @@ public class VFixnumField extends VField {
    */
 
   // static (compiled) data
-  private final boolean         fraction; // display as fraction
-  private final int             digits;
-  private final int             fieldMaxScale;
+  private final boolean         	fraction; // display as fraction
+  @SuppressWarnings("unused")
+  private final int             	digits;
+  private final int             	fieldMaxScale;
   // dynamic data
-  private  Fixed           maxval;   // maximum value allowed
-  private  Fixed           minval;   // minimum value allowed
-  private  int             maxScale; 
-  private int[]            currentScale; // number of digits after dot
-  private Fixed[]          value;
-  protected Fixed criticalMinValue;
-  protected Fixed criticalMaxValue;
+  private  Fixed          		maxval;   // maximum value allowed
+  private  Fixed           		minval;   // minimum value allowed
+  private  int             		maxScale;
+  private int[]            		currentScale; // number of digits after dot
+  private Fixed[]          		value;
+  protected Fixed 			criticalMinValue;
+  protected Fixed 			criticalMaxValue;
 }

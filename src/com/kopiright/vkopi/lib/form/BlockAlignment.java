@@ -29,6 +29,7 @@ public class BlockAlignment {
     this.ori = ori;
   }
 
+  @SuppressWarnings("deprecation")
   public boolean isChart() {
     return (ori != null) && ori.isChart();
   }

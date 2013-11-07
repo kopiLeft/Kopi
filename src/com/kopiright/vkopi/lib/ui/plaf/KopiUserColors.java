@@ -19,8 +19,6 @@
 
 package com.kopiright.vkopi.lib.ui.plaf;
 
-import java.awt.Color;
-
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 
@@ -33,7 +31,7 @@ public class KopiUserColors {
    */
   public KopiUserColors() {
     // resources = new PropertyManager(USR_COLOR_FILE);
-    
+
     COLOR_1 = getUserColor("color1", COLOR_1);
     COLOR_2 = getUserColor("color2", COLOR_2);
     COLOR_3 = getUserColor("color3", COLOR_3);
@@ -58,13 +56,13 @@ public class KopiUserColors {
     } catch (Exception e) {
       value = def;
     }
-    
+
     table.put(name, value);
   }
-  
+
   public ColorUIResource getUserColor(String key, ColorUIResource def) {
     //String               val = resources.getString(key);
-    
+
     //return  (val == null)? def : new ColorUIResource(Color.decode(val));
     return def;
   }

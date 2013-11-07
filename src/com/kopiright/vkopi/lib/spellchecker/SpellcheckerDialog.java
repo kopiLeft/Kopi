@@ -47,7 +47,7 @@ import javax.swing.event.ListSelectionListener;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 public class SpellcheckerDialog extends JDialog {
-  
+
 public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker) {
     super( owner );
     this.spellChecker = spellchecker;
@@ -98,14 +98,14 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
     changeTo = new JTextField();
     changeTo.setMinimumSize( new Dimension(200, changeTo.getPreferredSize().height));
     changeTo.setMaximumSize( new Dimension(Integer.MAX_VALUE, changeTo.getPreferredSize().height));
-   
+
     originalWordTextField = new JTextField(); //originalWord);
 
-   
+
     originalWordTextField.setMinimumSize(new Dimension(200, originalWordTextField.getPreferredSize().height));
     originalWordTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, originalWordTextField.getPreferredSize().height));
 
-    suggestionsList = new JList(); //suggestions.toArray());
+    suggestionsList = new JList<Object>(); //suggestions.toArray());
     suggestionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     suggestionsList.addListSelectionListener( new MyListSelectionListener());
     suggestionsList.setMinimumSize(new Dimension(200, 300 ));
@@ -155,12 +155,12 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   }
 
   private void initSuggestionElements() {
-      DefaultComboBoxModel      model;
-      Suggestions               result;
+      DefaultComboBoxModel<Object>      model;
+      Suggestions               	result;
 
       result = spellChecker.getSuggestions();
       suggestions = result.getSuggestions();
-      model= new DefaultComboBoxModel(result.getSuggestions().toArray());
+      model= new DefaultComboBoxModel<Object>(result.getSuggestions().toArray());
       suggestionsList.setModel(model);
       originalWordTextField.setText(result.getOriginalWord());
       if (suggestions.size() > 0) {
@@ -170,7 +170,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   }
 
   private class CancelAction extends AbstractAction {
-    
+
 	private CancelAction() {
       super(VlibProperties.getString("aspell-dialog-cancel"));
     }
@@ -179,13 +179,13 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
       dispose();
     }
     /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 9054956716054138769L;
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 9054956716054138769L;
   }
 
   private class ChangeAction extends AbstractAction {
-    
+
 	private ChangeAction() {
       super(VlibProperties.getString("aspell-dialog-change"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
@@ -203,7 +203,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   }
 
   private class ChangeAllAction extends AbstractAction {
-    
+
 	private ChangeAllAction() {
       super(VlibProperties.getString("aspell-dialog-change-all"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
@@ -217,11 +217,11 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
     /**
 	 * Comment for <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = 8492059401975099177L;  
+	private static final long serialVersionUID = 8492059401975099177L;
   }
 
   private class IgnoreAction extends AbstractAction {
-    
+
 	private IgnoreAction() {
       super(VlibProperties.getString("aspell-dialog-ignore"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
@@ -239,7 +239,7 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
   }
 
   private class IgnoreAllAction extends AbstractAction {
-    
+
 	private IgnoreAllAction() {
       super(VlibProperties.getString("aspell-dialog-ignore-all"));
       putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
@@ -268,16 +268,16 @@ public SpellcheckerDialog(Frame owner, String title,  SpellChecker spellchecker)
       int       selectedIndex = suggestionsList.getSelectedIndex();
 
       if( selectedIndex  >= 0 ) {
-        changeTo.setText( (String)suggestions.get(selectedIndex));
+        changeTo.setText(suggestions.get(selectedIndex));
       }
     }
   }
 
   private SpellChecker          spellChecker;
-  private List                  suggestions;
+  private List<String>          suggestions;
   private JTextField            changeTo;
   private JTextField            originalWordTextField;
-  private JList                 suggestionsList;
+  private JList<Object>         suggestionsList;
   /**
 	 * Comment for <code>serialVersionUID</code>
 	 */

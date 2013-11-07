@@ -19,23 +19,67 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.awt.Component;
 import java.util.EventListener;
 
 import com.kopiright.vkopi.lib.visual.VException;
 
 public interface FieldListener extends EventListener {
 
+  /**
+   * Updates the field model.
+   * @throws VException Update operation may fail.
+   */
   void updateModel() throws VException;
-  Object getDisplayedValue(boolean trim) throws VException;
-  Component getCurrentDisplay(); // please do not use!
 
+  /**
+   * Returns the displayed value in the field.
+   * @param trim Should be the text be trim ?
+   * @return The displayed value in the field.
+   * @throws VException May fail when retrieving value.
+   */
+  Object getDisplayedValue(boolean trim) throws VException;
+
+  /**
+   * Returns the current {@link UField} display.
+   * @return The current {@link UField} display.
+   */
+  UField getCurrentDisplay(); // please do not use!
+
+  /**
+   * Display a field error.
+   * @param message The error to be displayed.
+   */
   void fieldError(String message);
 
+  /**
+   * Requests the focus on this field.
+   * @return True if the focus has been gained.
+   * @throws VException Focus may have not been gained.
+   */
   boolean requestFocus() throws VException;
-  boolean loadItem(int i) throws VException;
+
+  /**
+   * Loads an item from a given mode {@code mode}.
+   * @param mode The load mode.
+   * @return True if the item was loaded.
+   * @throws VException Load operation may fail.
+   */
+  boolean loadItem(int mode) throws VException;
+
+  /**
+   * Predefined value fill for this field.
+   * @return True if value is loaded.
+   * @throws VException Fill operation may fail.
+   */
   boolean predefinedFill() throws VException;
 
+  /**
+   * Enters the field. This operation leads to a focus gain.
+   */
   void enter();
+
+  /**
+   * Leaves the field. This operation leads to a focus loss.
+   */
   void leave();
 }

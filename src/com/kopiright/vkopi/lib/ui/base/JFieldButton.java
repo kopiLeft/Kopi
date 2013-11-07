@@ -30,7 +30,7 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
-public class JFieldButton extends JButton {
+public class JFieldButton extends JButton implements UComponent {
 
   /**
    * Constructor
@@ -45,16 +45,16 @@ public class JFieldButton extends JButton {
   }
 
   static class ButtonLineBorder extends LineBorder {
-    
+
 		public ButtonLineBorder(Color color, Color disabledColor)  {
       super(color, 1, true);
 
       this.disabledColor = disabledColor;
-    }    
+    }
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
       Color oldColor = g.getColor();
-            
+
       if (c.isEnabled()) {
         g.setColor(lineColor);
       } else {

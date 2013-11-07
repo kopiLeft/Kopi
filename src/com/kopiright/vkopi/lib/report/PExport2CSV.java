@@ -24,15 +24,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import javax.swing.JTable;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.report.UReport.UTable;
 
 public class  PExport2CSV extends PExport implements Constants {
   /**
    * Constructor
    */
-  public PExport2CSV(JTable table, MReport model, PConfig pconfig, String title) {
+  public PExport2CSV(UTable table, MReport model, PConfig pconfig, String title) {
     super(table, model, pconfig, title);
   }
 
@@ -44,7 +44,7 @@ public class  PExport2CSV extends PExport implements Constants {
       writer.close();
     } catch (IOException e) {
       throw new InconsistencyException(e);
-    } 
+    }
   }
 
   protected void startGroup(String subTitle) {
@@ -53,11 +53,11 @@ public class  PExport2CSV extends PExport implements Constants {
   protected void exportHeader(String[] data) {
     writeData(data);
   }
-  
+
   protected void exportRow(int level, String[] data,  Object[] orig, int[] alignments) {
-    writeData(data); 
+    writeData(data);
   }
-    
+
   private void writeData(String[] data) {
     try {
       boolean   first = true;
@@ -71,7 +71,7 @@ public class  PExport2CSV extends PExport implements Constants {
         }
         first = false;
       }
-      writer.write("\n"); 
+      writer.write("\n");
     } catch (IOException e) {
       throw new InconsistencyException(e);
     }

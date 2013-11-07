@@ -24,23 +24,21 @@ import java.util.Locale;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.visual.Application;
-
 
 /**
  * This class handles localized properties
  */
 public class VlibProperties {
-  
+
   // ----------------------------------------------------------------------
   // STATIC METHODS
   // ----------------------------------------------------------------------
-  
+
   /**
    * Returns the value of the property for the given key.
    *
    * @param     key             the property key
-   * @return    the requested property value 
+   * @return    the requested property value
    */
   public static String getString(String key) {
     return getString(key, null);
@@ -52,14 +50,14 @@ public class VlibProperties {
    *
    * @param     key             the property key
    * @param     param           property parameter
-   * @return    the requested property value 
+   * @return    the requested property value
    */
   public static String getString(String key, Object param) {
     return getString(key, new Object[] {param});
   }
-  
+
   /**
-   * Returns the value of the property for the given key.      
+   * Returns the value of the property for the given key.
    *
    * @param     key             the property key
    * @param     param1          the first property parameter
@@ -74,26 +72,26 @@ public class VlibProperties {
     LocalizationManager         manager;
     String                      format;
 
-    if (Application.getApplication() != null) {
-      manager = Application.getLocalizationManager();
+    if (ApplicationContext.getApplicationContext().getApplication() != null) {
+      manager = ApplicationContext.getLocalizationManager();
     } else {
       manager = new LocalizationManager(Locale.getDefault(), null);
     }
-    
+
     try {
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getPropertyLocalizer(VLIB_PROPERTIES_RESOURCE_FILE, key).getValue().replaceAll("'", "''");
       return MessageFormat.format(format, params);
     } catch (InconsistencyException e) {
-      Application.reportTrouble("localize Property",
-                                "com.kopiright.vkopi.lib.visual.VlibProperties.getString(String key, Object[] params)",
-                                e.getMessage(),
-                                e);
+      ApplicationContext.reportTrouble("localize Property",
+                                       "com.kopiright.vkopi.lib.visual.VlibProperties.getString(String key, Object[] params)",
+                                       e.getMessage(),
+                                       e);
       System.err.println("ERROR: " + e.getMessage());
       return "!" + key + "!";
     }
   }
- 
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

@@ -95,9 +95,9 @@ class MenuItemRenderer extends JLabel implements TreeCellRenderer {
       } else if (!leaf) {
 	setIcon(collapsedIcon);
       } else if (hasFocus) {
-	setIcon(module.getSmallIcon() == null ? selectedFormIcon : module.getSmallIcon());
+	setIcon(module.getSmallIcon() == null ? selectedFormIcon : (ImageIcon)module.getSmallIcon());
       } else {
-	setIcon(module.getSmallIcon() == null ? formIcon : module.getSmallIcon());
+	setIcon(module.getSmallIcon() == null ? formIcon : (ImageIcon)module.getSmallIcon());
       }
     }
 
@@ -108,26 +108,26 @@ class MenuItemRenderer extends JLabel implements TreeCellRenderer {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  public static ImageIcon	formIcon;
-  private static ImageIcon	rootIcon;
-  private static ImageIcon	collapsedIcon;
-  private static ImageIcon	expandedIcon;
-  private static ImageIcon	selectedFormIcon;
-  private static ImageIcon	collapsedIcon_F;
-  private static ImageIcon	expandedIcon_F;
-  private static ImageIcon	formIcon_F;
-  private static ImageIcon	selectedFormIcon_F;
-  private static ImageIcon	collapsedIcon_T;
-  private static ImageIcon	expandedIcon_T;
-  private static ImageIcon	formIcon_T;
-  private static ImageIcon	selectedFormIcon_T;
+  public static ImageIcon			formIcon;
+  private static ImageIcon			rootIcon;
+  private static ImageIcon			collapsedIcon;
+  private static ImageIcon			expandedIcon;
+  private static ImageIcon			selectedFormIcon;
+  private static ImageIcon			collapsedIcon_F;
+  private static ImageIcon			expandedIcon_F;
+  private static ImageIcon			formIcon_F;
+  private static ImageIcon			selectedFormIcon_F;
+  private static ImageIcon			collapsedIcon_T;
+  private static ImageIcon			expandedIcon_T;
+  private static ImageIcon			formIcon_T;
+  private static ImageIcon			selectedFormIcon_T;
 
-  private boolean		superUser;
+  private boolean				superUser;
 
-  private static Color          CLR_PARENT;
-  private static Color          CLR_UNSELECT;
-  private static Color          CLR_FOCUS;
-  private static Color          CLR_FOCUS_BACK;
+  private static Color          		CLR_PARENT;
+  private static Color          		CLR_UNSELECT;
+  private static Color          		CLR_FOCUS;
+  private static Color          		CLR_FOCUS_BACK;
 
   static {
     collapsedIcon = com.kopiright.vkopi.lib.util.Utils.getImage("collapsed.gif");

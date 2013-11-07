@@ -24,16 +24,18 @@ import java.awt.Insets;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 
+
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.ui.base.KopiTitledBorder;
+import com.kopiright.vkopi.lib.ui.base.UComponent;
 import com.kopiright.vkopi.lib.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 
-public class DBlock extends JPanel implements BlockListener {
+public class DBlock extends JPanel implements UBlock {
 
   /*
    * ----------------------------------------------------------------------
@@ -118,6 +120,7 @@ public class DBlock extends JPanel implements BlockListener {
   /**
    *
    */
+  @SuppressWarnings("deprecation")
   private void setBorder(int style, String title) {
     if (style == VConstants.BRD_NONE) {
       border = KopiTitledBorder.BRD_EMPTY;
@@ -149,12 +152,11 @@ public class DBlock extends JPanel implements BlockListener {
     }
   }
 
-
   private VFieldUI createFieldDisplays(VField model) {
     if (!model.isInternal() /*hidden field */) {
       VFieldUI  ui;
 
-      ui = new VFieldUI(this, model);
+      ui = new DFieldUI(this, model);
       return ui;
     } else {
       return null;
@@ -203,6 +205,10 @@ public class DBlock extends JPanel implements BlockListener {
     }
   }
 
+  @Override
+  public void add(UComponent comp, KopiAlignment constraints) {
+    super.add((Component)comp, constraints);
+  }
 
   /**
    * Refreshes the block on screen.
@@ -430,7 +436,8 @@ public class DBlock extends JPanel implements BlockListener {
     refresh(true);
   }
 
-  public DForm getFormView() {
+  @Override
+  public UForm getFormView() {
     return formView;
   }
 
@@ -471,7 +478,7 @@ public class DBlock extends JPanel implements BlockListener {
   public void validRecordNumberChanged() {
   }
 
-  public Component getCurrentDisplay() {
+  public UBlock getCurrentDisplay() {
     return this;
   }
 
@@ -479,22 +486,27 @@ public class DBlock extends JPanel implements BlockListener {
     return false;
   }
 
-  private final	DForm		formView;
-  protected final VBlock	model;
-  private VFieldUI[]            columnViews;
-  protected KopiLayoutManager   layout;
+  //---------------------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------------------
 
-  protected final int		maxRowPos;
-  protected final int		maxColumnPos;
-  protected final int		displayedFields;
-  protected       Border	border;
+  private final DForm				formView;
+  protected final VBlock			model;
+  private VFieldUI[]           			columnViews;
+  protected KopiLayoutManager  		        layout;
+
+  protected final int				maxRowPos;
+  protected final int				maxColumnPos;
+  protected final int				displayedFields;
+  protected       Border			border;
   // cached infos
-  private  int			sortedToprec;		// first record displayed
-  private  int[]		sortedRecToDisplay;
-  private  int[]		displayToSortedRec;
+  private  int					sortedToprec;		// first record displayed
+  private  int[]				sortedRecToDisplay;
+  private  int[]				displayToSortedRec;
+
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-  private static final long serialVersionUID = -8665529498396399382L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long 	serialVersionUID = -8665529498396399382L;
 
 }

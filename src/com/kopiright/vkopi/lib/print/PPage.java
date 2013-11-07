@@ -31,7 +31,7 @@ import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Printer;
 import com.kopiright.vkopi.lib.util.Utils;
-import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
@@ -48,11 +48,11 @@ public abstract class PPage {
    * Construct a new Page description
    */
   public PPage() {
-    this.styles = new Hashtable();
-    this.blockStyles = new Hashtable();
-    this.innerBlocks = new Hashtable();
-    this.blocks = new Vector();
-    this.blocksByName = new Hashtable();
+    this.styles = new Hashtable<String, PStyle>();
+    this.blockStyles = new Hashtable<String, PBlockStyle>();
+    this.innerBlocks = new Hashtable<String, String>();
+    this.blocks = new Vector<PBlock>();
+    this.blocksByName = new Hashtable<String, PBlock>();
     this.title = "untitled";
 
     internalInitLoadDefinition();
@@ -80,6 +80,7 @@ public abstract class PPage {
   /**
    * @return the height
    */
+  @SuppressWarnings("deprecation")
   protected final int getHeight() {
     return (int)format.height();
   }
@@ -87,6 +88,7 @@ public abstract class PPage {
   /**
    * @return the width
    */
+  @SuppressWarnings("deprecation")
   protected final int getWidth() {
     return (int)format.width();
   }
@@ -165,7 +167,7 @@ public abstract class PPage {
     }
     currentPage = restartPageFromOne ? 0 : printJob.getNumberOfPages();
     printBlocks(printJob);
-    printJob.setNumberOfPages(printJob.getNumberOfPages() + reportPageCount); 
+    printJob.setNumberOfPages(printJob.getNumberOfPages() + reportPageCount);
   }
 
   /**
@@ -176,7 +178,7 @@ public abstract class PPage {
                               int startpage,
                               int allpages)
     throws PSPrintException
-  { 
+  {
     pageCount = restartPageFromOne ? reportPageCount : allpages;
     printHeaderFooter(stamper, startpage,  startpage + reportPageCount -1, pageCount);
     return startpage + reportPageCount; // = last page used + 1
@@ -215,7 +217,7 @@ public abstract class PPage {
    * Returns a block from a name
    */
   public PBlock getBlock(String ident) {
-    return (PBlock)blocksByName.get(ident);
+    return blocksByName.get(ident);
   }
 
   /**
@@ -228,7 +230,7 @@ public abstract class PPage {
   protected abstract boolean showBlock(int index);
 
   // ----------------------------------------------------------------------
-  // ACCESSORS 
+  // ACCESSORS
   // ----------------------------------------------------------------------
   /**
    *
@@ -299,15 +301,15 @@ public abstract class PPage {
   }
 
   public void setWatermark(String watermarkResource) {
-    try {  
+    try {
       watermark = new PdfReader(Utils.getURLFromResource(watermarkResource, Utils.APPLICATION_DIR).toString());
     } catch (Exception e) {
-      throw new InconsistencyException("Load " + watermarkResource, e);	
+      throw new InconsistencyException("Load " + watermarkResource, e);
     }
   }
 
   private void addWatermark(PdfPrintJob printJob) throws PSPrintException {
-    if (watermark != null) {  
+    if (watermark != null) {
       PdfContentByte    cbwater =  printJob.getWriter().getDirectContent();
 
       if (getWidth() > getHeight()) {
@@ -345,6 +347,7 @@ public abstract class PPage {
     }
   }
 
+  @SuppressWarnings("deprecation")
   protected void  printHeaderFooter(PdfStamper stamper, int startpage, int endpage, int pageCount) throws PSPrintException {
     try {
       Rectangle           page = document.getPageSize();
@@ -368,7 +371,7 @@ public abstract class PPage {
           header.doPrint(this);
           cb.restoreState();
 	}
-        if (footer != null) { 
+        if (footer != null) {
           float     size;
           PPosition p = footer.getPosition();
 
@@ -378,7 +381,7 @@ public abstract class PPage {
           size = footer.fill(5000);
 
           cb.concatCTM(1,0,0,1, document.leftMargin()+p.getX()+border, size+document.bottomMargin()+p.getY()+border) ;
-          footer.doPrint(this);      
+          footer.doPrint(this);
           cb.restoreState();
 	}
       }
@@ -391,12 +394,13 @@ public abstract class PPage {
   /**
    *
    */
+  @SuppressWarnings("deprecation")
   protected void printBlocks(PdfPrintJob printJob) throws PSPrintException {
     // Remove innerblocks from list
-    Vector	blocks = new Vector(this.blocks.size());
+    Vector<PBlock>	blocks = new Vector<PBlock>(this.blocks.size());
 
     for (int i = 0; i < this.blocks.size(); i++) {
-      PBlock    block = (PBlock)this.blocks.elementAt(i);
+      PBlock    block = this.blocks.elementAt(i);
 
       if (block == header || block == footer) {
         // nothing
@@ -410,7 +414,7 @@ public abstract class PPage {
     }
 
     boolean	fullyPrinted = false;
-    Vector	sizes = new Vector(blocks.size());
+    Vector<Float>	sizes = new Vector<Float>(blocks.size());
 
     document = printJob.getDocument();
     writer = printJob.getWriter();
@@ -422,7 +426,7 @@ public abstract class PPage {
       fullyPrinted = true;
       newPage();
       addWatermark(printJob);
-      
+
       for (int i = 0; i < blocks.size(); i++) {
 	// fill all blocks
 	PBlock  block = (PBlock)blocks.elementAt(i);
@@ -460,7 +464,7 @@ public abstract class PPage {
    * FATAL ERROR HANDLING
    */
   public static final void fatalError(Object data, String line, Exception reason) {
-    Application.reportTrouble("PPage", line, data.toString(), reason);
+    ApplicationContext.reportTrouble("PPage", line, data.toString(), reason);
   }
 
   public String toString() {
@@ -506,25 +510,25 @@ public abstract class PPage {
   private Document  document;
   private PdfWriter writer;
 
-  private int                   reportPageCount;
-  private int                   pageCount;
-  private boolean               pageCountAvailable;
-  private PdfContentByte        cb;
-  private PBlock                header;
-  private PBlock                footer;
-  private Hashtable		styles;
-  private Hashtable		blockStyles;
-  private Hashtable		innerBlocks;
-  private Vector		blocks;
-  private Hashtable		blocksByName;
-  private String		title;
-  private int			border;
+  private int                   		reportPageCount;
+  private int                   		pageCount;
+  private boolean               		pageCountAvailable;
+  private PdfContentByte        		cb;
+  private PBlock                		header;
+  private PBlock                		footer;
+  private Hashtable<String, PStyle>		styles;
+  private Hashtable<String, PBlockStyle>	blockStyles;
+  private Hashtable<String, String>		innerBlocks;
+  private Vector<PBlock>			blocks;
+  private Hashtable<String, PBlock>		blocksByName;
+  private String				title;
+  private int					border;
 //  protected int			height;
 //  protected int			width;
-  private Rectangle             format;
+  private Rectangle             		format;
 
-  private int			currentPage;
-  private boolean		isLastPage;
+  private int					currentPage;
+  private boolean				isLastPage;
 
-  private PdfReader             watermark;
+  private PdfReader             		watermark;
 }

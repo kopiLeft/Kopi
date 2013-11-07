@@ -45,7 +45,7 @@ public abstract class PTextBlock extends PBlock {
   }
 
   // ----------------------------------------------------------------------
-  // ACCESSORS 
+  // ACCESSORS
   // ----------------------------------------------------------------------
 
 
@@ -201,7 +201,7 @@ public abstract class PTextBlock extends PBlock {
     if (o == null) {
       return;
     }
-    
+
     if (o instanceof Boolean) {
       addText(VBooleanField.toText((Boolean)o));
     } else if (o instanceof javax.swing.ImageIcon) {
@@ -216,11 +216,11 @@ public abstract class PTextBlock extends PBlock {
         }
       }
       addText(o.toString());
-    } else {      
+    } else {
       addText(o.toString());
     }
   }
-  
+
 
   /**
    *
@@ -269,7 +269,7 @@ public abstract class PTextBlock extends PBlock {
    * Adds a text in current layout engine
    */
   public void addText(String s) throws PSPrintException {
-    
+
     if (newLine) {
       newLine = false;
       float	pos = paragraphStyle.getIndentLeft();
@@ -420,14 +420,14 @@ public abstract class PTextBlock extends PBlock {
     engine.setAlignment(align);
     newLine = false;
   }
-  
+
   // ---------------------------------------------------------------------
   // LAYOUT ENGINE
   // ---------------------------------------------------------------------
 
   protected boolean addToCurrentPage(PLayoutEngine engine, boolean last) {
     return engine.getHeight() > 0 && engine.getHeight() + currentHeight < getMaxHeight();
-  } 
+  }
 
   protected void fillBlock() throws PSPrintException {
     boolean	doStart = worker == null;
@@ -503,24 +503,24 @@ public abstract class PTextBlock extends PBlock {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private static final String           DEFAULT_FONT = "Courier";
-  private static final int              DEFAULT_STYLE = 0;
-  private static final int              DEFAULT_SIZE = 12;
-  private static final PParagraphStyle  DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
+  private static final String          	        DEFAULT_FONT = "Courier";
+  private static final int              	DEFAULT_STYLE = 0;
+  private static final int              	DEFAULT_SIZE = 12;
+  private static final PParagraphStyle  	DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
 
-  private Thread                worker;
-  private String                lastTab;
-  private boolean               autoBreak = false;
+  private Thread                		worker;
+  private String                		lastTab;
+  private boolean               		autoBreak = false;
 
-  protected Vector              engines = new Vector();
-  protected boolean             fixed;
-  protected Throwable           error;
-  protected boolean             isFilled;
-  protected boolean             pending;
-  protected boolean             isFullyPrinted;
-  protected boolean             newLine = true;
-  protected PLayoutEngine       engine;
-  protected PParagraphStyle     paragraphStyle;
-  protected float               currentHeight;
-  protected float               maxSize;
+  protected Vector<PLayoutEngine>               engines = new Vector<PLayoutEngine>();
+  protected boolean             		fixed;
+  protected Throwable           		error;
+  protected boolean             		isFilled;
+  protected boolean             		pending;
+  protected boolean             		isFullyPrinted;
+  protected boolean             		newLine = true;
+  protected PLayoutEngine       		engine;
+  protected PParagraphStyle     		paragraphStyle;
+  protected float               		currentHeight;
+  protected float               		maxSize;
 }

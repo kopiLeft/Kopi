@@ -263,6 +263,7 @@ public class AWTToPS extends Graphics {
    * @see #getFont
    * @see #getFontMetrics
    */
+  @SuppressWarnings("deprecation")
   public FontMetrics getFontMetrics(Font f) {
     return toolkit.getFontMetrics(f);
   }
@@ -968,7 +969,7 @@ public class AWTToPS extends Graphics {
 
 
   public boolean doColorImage(Image img, int x, int y, int width, int height,
-                              ImageObserver observer, Color bgcolor) 
+                              ImageObserver observer, Color bgcolor)
   {
     // This class fetches the pixels in its constructor.
     PixelConsumer pc = new PixelConsumer(img);
@@ -987,7 +988,7 @@ public class AWTToPS extends Graphics {
     PixelGrabber        pg = new PixelGrabber(img, 0, 0, imgWidth, imgHeight, pix, 0, imgWidth);
     boolean             result = false;
 
-    try {      
+    try {
         result = pg.grabPixels();
     } catch (InterruptedException ie) {
         // nothing
@@ -1042,7 +1043,7 @@ public class AWTToPS extends Graphics {
 
       for (int j=0; j < imgWidth; j++) {
         int     coord = i * imgWidth + j;
-        int     n = pix[coord];        
+        int     n = pix[coord];
         int     alpha = n & 0xFF000000;
 
         if (alpha == 0) {
@@ -1055,27 +1056,27 @@ public class AWTToPS extends Graphics {
         sb[offset++] = hd[(n & 0xF00)    >>  8];
         sb[offset++] = hd[(n & 0xF0)     >>  4];
         sb[offset++] = hd[(n & 0xF)           ];
-        
+
         if (offset >= charsPerRow) {
 	  stream.println(String.copyValueOf(sb, 0, offset));
           stream.println();
           offset = 0;
         }
       }
-        
-      if (offset != 0) {            
+
+      if (offset != 0) {
         stream.println(String.copyValueOf(sb, 0, offset));
         stream.println();
       }
     }
-    
+
     stream.println();
     stream.println("end");
     grestore();
-    
+
     return true;
   }
-  
+
 
 
   public boolean doImage(Image img, int x, int y, int width, int height, ImageObserver observer, Color bgcolor) {
