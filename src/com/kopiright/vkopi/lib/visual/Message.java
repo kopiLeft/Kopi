@@ -72,7 +72,8 @@ public class Message {
     LocalizationManager         manager;
     String                      format;
 
-    if (ApplicationContext.getApplicationContext().getApplication() != null) {
+    if (ApplicationContext.getApplicationContext() != null
+        && ApplicationContext.getApplicationContext().getApplication() != null) {
       manager = ApplicationContext.getLocalizationManager();
     } else {
       manager = new LocalizationManager(Locale.getDefault(), null);
