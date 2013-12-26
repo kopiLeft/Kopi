@@ -475,12 +475,14 @@ public class Console extends Compiler implements Constants {
   private void executeOther(String sqlCode)
     throws SQLException
   {
-    Statement   stmt = connection.createStatement();
     int         count = -1;
 
     synchronized (this) {
+      Statement         stmt = connection.createStatement();
+
       inTransaction = true;
       count = stmt.executeUpdate(sqlCode);
+      stmt.close();
     }
         
     // Print summary
