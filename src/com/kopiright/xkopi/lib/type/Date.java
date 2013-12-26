@@ -19,13 +19,13 @@
 
 package com.kopiright.xkopi.lib.type;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * This class represents kopi date types
@@ -162,6 +162,7 @@ public class Date extends Type {
     calendar.set(Calendar.DAY_OF_MONTH, getDay());
     return calendar;
   }
+
   // ----------------------------------------------------------------------
   // COMPILER METHODS - DO NOT USE OUTSIDE OF THE LIBRARY
   // ----------------------------------------------------------------------

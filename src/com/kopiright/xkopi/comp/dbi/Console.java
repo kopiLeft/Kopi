@@ -120,6 +120,7 @@ public class Console extends Compiler implements Constants {
 
     stmt = connection.createStatement();
     stmt.executeUpdate("SET SCHEMA " + name);
+    stmt.close();
   }
 
   // --------------------------------------------------------------------
@@ -467,6 +468,7 @@ public class Console extends Compiler implements Constants {
     output.println(" selected.");
     
     rset.close();
+    stmt.close();
   }
 
   /**
