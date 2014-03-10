@@ -385,6 +385,7 @@ public class KopiUtils {
       stmt = conn.createStatement();
       rset = stmt.executeQuery(conn.convertSql(getSeqNextVal));
       if (!rset.next()) {
+        stmt.close();
         throw new DBRuntimeException("Database Internal Error");
       }
       id = rset.getInt(1);

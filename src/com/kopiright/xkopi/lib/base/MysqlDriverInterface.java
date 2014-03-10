@@ -149,6 +149,7 @@ public class MysqlDriverInterface extends DriverInterface {
     stmt = conn.createStatement();
     rset = stmt.executeQuery("SELECT  (MAX(ID) + 1) FROM " + table);
     if (!rset.next()) {
+      stmt.close();
       throw new DBRuntimeException("Database Internal Error");
     }
     id = rset.getInt(1);

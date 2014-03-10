@@ -112,6 +112,7 @@ public class DBUtils {
 
 	stmt = conn.createStatement();
 	stmt.executeUpdate("UPDATE " + table + " SET " + column + " = " + val + " WHERE ID = " + id);
+        stmt.close();
 	System.err.println("UPDATE " + table + " SET " + column + " = " + val + " WHERE ID = " + id);
 	count++;
       }

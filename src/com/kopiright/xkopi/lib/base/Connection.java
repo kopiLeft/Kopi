@@ -328,6 +328,7 @@ public class Connection {
 
       stmt = conn.createStatement();
       stmt.executeUpdate("SET SCHEMA " + name);
+      stmt.close();
     } catch (SQLException e) {
       throw convertException(e);
     }
