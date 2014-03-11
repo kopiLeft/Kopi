@@ -66,7 +66,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * @return    the name of the system table DUAL.
    */
   public String getDualTableName() {
-    throw new InconsistencyException("not implemented");
+    return "DUAL";
   }
 
   /**
@@ -394,7 +394,7 @@ public class PostgresDriverInterface extends DriverInterface {
 	return "TIME";
 
       case 28:	// CURRENTTIMESTAMP
-	return "TIMESTAMP";
+	return "CURRENT_TIMESTAMP";
 
       case 29:	// WEEK/2
 	return "((" + arguments.elementAt(0) + ") * 100 + (" + arguments.elementAt(1) + "))";
@@ -404,7 +404,10 @@ public class PostgresDriverInterface extends DriverInterface {
 
       case 31: // COALESCE/2
 	return "COALESCE(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
-
+      
+      case 32: // NEXTVAL/1
+	return "NEXTVAL('" + arguments.elementAt(0) + "')";
+	
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
 				   "/" + arguments.size());
@@ -452,5 +455,6 @@ public class PostgresDriverInterface extends DriverInterface {
     functions.put("WEEK/2", new Integer(29));
     functions.put("DATEDIFF/2", new Integer(30));
     functions.put("COALESCE/2", new Integer(31));
-    }
+    functions.put("NEXTVAL/1", new Integer(32));
+  }
 }
