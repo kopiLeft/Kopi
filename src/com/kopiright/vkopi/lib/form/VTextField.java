@@ -32,6 +32,7 @@ import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VTextColumn;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.xkopi.lib.base.PostgresDriverInterface;
 import com.kopiright.xkopi.lib.base.Query;
 
 /**
@@ -106,24 +107,28 @@ public class VTextField extends VStringField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    Blob        blob = query.getBlob(column);
-
-    if (blob != null) {
-      InputStream               is = blob.getBinaryStream();
-      ByteArrayOutputStream     out = new ByteArrayOutputStream();
-      byte[]                    buf = new byte[2048];
-      int                       nread;
-
-      try {
-        while ((nread = is.read(buf)) != -1) {
-          out.write(buf, 0, nread);
-        }
-        return out.toByteArray();
-      } catch (IOException e) {
-        throw new VRuntimeException(e);
-      }
+    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      return super.retrieveQuery(query, column);
     } else {
-      return null;
+      Blob        blob = query.getBlob(column);
+
+      if (blob != null) {
+	InputStream               is = blob.getBinaryStream();
+	ByteArrayOutputStream     out = new ByteArrayOutputStream();
+	byte[]                    buf = new byte[2048];
+	int                       nread;
+
+	try {
+	  while ((nread = is.read(buf)) != -1) {
+	    out.write(buf, 0, nread);
+	  }
+	  return out.toByteArray();
+	} catch (IOException e) {
+	  throw new VRuntimeException(e);
+	}
+      } else {
+	return null;
+      }
     }
   }
 
@@ -141,7 +146,7 @@ public class VTextField extends VStringField {
    */
   public Object getObjectImpl(int r) {
     String	c = (String) super.getObjectImpl(r);
-
+    
     if (c == null) {
       return null;
     } else {
@@ -174,7 +179,11 @@ public class VTextField extends VStringField {
    * @kopi	inaccessible
    */
   public boolean hasBinaryLargeObject(int r) {
-    return true;
+    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
