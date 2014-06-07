@@ -135,6 +135,41 @@ public class InnerClassInfo implements Constants {
   }
 
   // --------------------------------------------------------------------
+  // STANDARD METHODS
+  // --------------------------------------------------------------------
+
+  /**
+   * Compares with another object for equality.
+   */
+  public boolean equals(Object other) {
+    if (other == null || !(other instanceof InnerClassInfo)) {
+      return false;
+    } else {
+      InnerClassInfo    otherClassInfo = (InnerClassInfo)other;
+
+      return innerClass.equals(otherClassInfo.innerClass)
+        && outerClass.equals(otherClassInfo.outerClass)
+        && simpleName.equals(otherClassInfo.simpleName)
+        && modifiers == otherClassInfo.modifiers
+        ;
+    }
+  }
+
+  /**
+   * Returns a hash code of this object.
+   */
+  public int hashCode() {
+    return innerClass.hashCode() + outerClass.hashCode() + simpleName.hashCode() + modifiers;
+  }
+
+  /**
+   * Returns a string representation of this object.
+   */
+  public String toString() {
+    return "InnerClassInfo[" + innerClass + ", " + outerClass + ", " + simpleName + ", " + modifiers + "]";
+  }
+
+  // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 

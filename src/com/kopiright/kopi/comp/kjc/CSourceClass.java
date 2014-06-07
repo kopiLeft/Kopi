@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.HashSet;
 
 import com.kopiright.bytecode.classfile.ClassConstant;
 import com.kopiright.bytecode.classfile.ClassFileFormatException;
@@ -476,47 +477,41 @@ public class CSourceClass extends CClass {
    * Builds information about inner classes to be stored in a class file.
    */
   private InnerClassInfo[] genInnerClasses() {
+    HashSet             inners = new HashSet();
     CReferenceType[]	source = getInnerClasses();
     CReferenceType[]	refs   = getInnerReferences();
-    int			count;
 
-    count = source.length + refs.length;
+    for (int i = 0; i < source.length; i++) {
+      // add inners infos
+      CClass	clazz = source[i].getCClass();
+      
+      inners.add(new InnerClassInfo(clazz.getQualifiedName(),
+                                    getQualifiedName(),
+                                    clazz.getIdent(),
+                                    (short)clazz.getModifiers()));
+    }
+    for (int i = 0; i < refs.length; i++) {
+      // add inner refs infos
+      CClass	clazz = refs[i].getCClass();
+      
+      inners.add(new InnerClassInfo(clazz.getQualifiedName(),
+                                    clazz.getOwner().getQualifiedName(),
+                                    clazz.getIdent(),
+                                    (short)clazz.getModifiers()));
+    }      
+
     if (isNested()) {
-      count += 1;
+      // add outer class info
+      inners.add(new InnerClassInfo(getQualifiedName(),
+                                    getOwner().getQualifiedName(),
+                                    getIdent(),
+                                    (short)getModifiers()));
     }
 
-    if (count == 0) {
+    if (inners.size() == 0) {
       return null;
     } else {
-      InnerClassInfo[]	result;
-
-      result = new InnerClassInfo[count];
-      for (int i = 0; i < source.length; i++) {
-        // add inners infos
-        CClass	clazz = source[i].getCClass();
-
-        result[i] = new InnerClassInfo(clazz.getQualifiedName(),
-                                       getQualifiedName(),
-                                       clazz.getIdent(),
-                                       (short)clazz.getModifiers());
-      }
-      for (int i = 0; i < refs.length; i++) {
-        // add inner refs infos
-        CClass	clazz = refs[i].getCClass();
-
-        result[i+source.length] = new InnerClassInfo(clazz.getQualifiedName(),
-                                                     clazz.getOwner().getQualifiedName(),
-                                                     clazz.getIdent(),
-                                                     (short)clazz.getModifiers());
-      }      
-      if (isNested()) {
-        // add outer class info
-        result[result.length - 1] = new InnerClassInfo(getQualifiedName(),
-                                                       getOwner().getQualifiedName(),
-                                                       getIdent(),
-                                                       (short)getModifiers());
-      }
-      return result;
+      return (InnerClassInfo[])inners.toArray(new InnerClassInfo[inners.size()]);
     }
   }
 

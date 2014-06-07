@@ -89,6 +89,13 @@ public class ClassConstant extends PooledConstant {
       ((ClassConstant)o).name.equals(name);
   }
 
+  /**
+   * Returns a string representation of this object.
+   */
+  public String toString() {
+    return "ClassConstant[" + name + "]";
+  }
+
   // --------------------------------------------------------------------
   // WRITE
   // --------------------------------------------------------------------
