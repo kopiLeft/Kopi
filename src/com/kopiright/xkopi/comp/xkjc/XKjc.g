@@ -230,8 +230,9 @@ jIfStatement []
       }
       self = new JIfStatement(sourceRef, cond, thenClause, elseClause, getStatementComment());
     }
+;
 
-;jAdditiveExpression []
+jAdditiveExpression []
   returns [JExpression self = null]
 {
   JExpression		right;
