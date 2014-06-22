@@ -112,6 +112,7 @@ public class PExport2XLS extends PExport implements Constants {
 
     header.setLeft(getTitle() + "  " + getColumnLabel(0) + " : " + subTitle);
 
+    //!!!FIXME graf 20140622 - language specific
     footer.setLeft(getTitle() + " - Seite " + HSSFFooter.page() + " / " + HSSFFooter.numPages() );
     footer.setRight(Date.now().format("dd.MM.yyyy") + " "+ Time.now().format("HH:mm"));
     sheetIndex += 1;
@@ -135,7 +136,7 @@ public class PExport2XLS extends PExport implements Constants {
   }
 
   protected void exportRow(int level, String[] data, Object[] orig, int[] alignments) {
-    HSSFRow         row = sheet.createRow((short) (rowNumber+1));
+    HSSFRow         row = sheet.createRow(rowNumber + 1);
     String[]	    strings = data;
     Color           color = getBackgroundForLevel(level);
     HSSFColor       rowCol = colorpalete.get(color);
