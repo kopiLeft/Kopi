@@ -19,9 +19,8 @@
 
 TOPDIR =	../..
 
-SUBDIRS =	l10n util ui visual spellchecker  list			\
-		form preview print report				\
-		cross doc resource
+SUBDIRS =	base l10n util visual list form preview print report 	\
+		cross doc ui resource
 
 ## ----------------------------------------------------------------------
 ## GOALS

@@ -22,7 +22,7 @@ package com.kopiright.vkopi.lib.visual;
 import com.kopiright.vkopi.lib.l10n.ActorLocalizer;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.MenuLocalizer;
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 
 
 public class VActor implements VModel {

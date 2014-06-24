@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.VCommand;
 
 /**
@@ -98,7 +98,7 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
       p.println("<BR>");
       p.println("<ADDRESS>");
       p.println("<I>kopiRight Managed Solutions GmbH</I><BR>");
-      version = com.kopiright.vkopi.lib.visual.Utils.getVersion();
+      version = com.kopiright.vkopi.lib.base.Utils.getVersion();
       for (int i=0; i<version.length; i++) {
 	p.println("<I>" + version[i] + "</I><BR>");
       }

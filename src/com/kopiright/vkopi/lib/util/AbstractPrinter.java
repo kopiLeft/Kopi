@@ -26,6 +26,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.kopiright.vkopi.lib.base.Utils;
+
 /**
  * DefaultPrinter
  */

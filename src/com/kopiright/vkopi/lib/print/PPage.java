@@ -30,7 +30,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;

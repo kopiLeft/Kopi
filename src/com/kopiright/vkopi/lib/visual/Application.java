@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 /**

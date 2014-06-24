@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.visual.VException;
 
 /**

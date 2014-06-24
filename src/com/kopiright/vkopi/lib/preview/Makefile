@@ -27,8 +27,7 @@ PACKAGE =	com/kopiright/vkopi/lib/preview
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	DPreviewWindow VPreviewWindow StandAlone		\
-		PreviewListener
+JAVAFILES +=	VPreviewWindow PreviewListener
 
 
 ## ----------------------------------------------------------------------

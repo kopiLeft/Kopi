@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 
 /**
  * {@code UIFactory} is visual components factory for model classes.

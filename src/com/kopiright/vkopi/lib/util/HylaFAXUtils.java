@@ -28,6 +28,8 @@ import gnu.hylafax.HylaFAXClient;
 import gnu.hylafax.HylaFAXClientProtocol;
 import gnu.inet.ftp.ServerResponseException;
 
+import com.kopiright.vkopi.lib.base.Utils;
+
 public class HylaFAXUtils {
 
   // ----------------------------------------------------------------------

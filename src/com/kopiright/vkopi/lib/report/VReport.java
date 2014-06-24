@@ -52,7 +52,6 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
 
   static {
     WindowController.getWindowController().registerWindowBuilder(com.kopiright.vkopi.lib.visual.Constants.MDL_REPORT, new WindowBuilder() {
-
       
       public UWindow createWindow(VWindow model) {
 	return (UReport)UIFactory.getUIFactory().createView(model);
@@ -602,7 +601,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     return VKT_Triggers[index][event] != 0;
   }
 
-  protected void setMenu() {
+  public void setMenu() {
     if (!built) {
       // only when commands are displayed
       return;

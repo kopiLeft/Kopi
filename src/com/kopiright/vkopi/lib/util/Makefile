@@ -31,14 +31,14 @@ JAVAFILES +=	AWTToPS AbstractPrinter CachePrinter Charset437		\
 		FPrinter Fax						\
 		FaxException FaxPrinter FaxStatus			\
 		Filter GroupHandler HylaFAXPrinter IPPPrinter		\
-		KnownBugs LPrinter 					\
+		LPrinter	 					\
 		LpRPrinter 		  		  		\
-		MultiLineToolTip MultiLineToolTipUI PPaperType		\
+		PPaperType						\
 		PixelConsumer PlatformFileWriter			\
 		PreviewPrinter PrintException				\
 		PrintInformation PrintJob Printer			\
 		RPrinter Rexec To437 ToLatin1				\
-		Utils HylaFAXUtils LineBreaker 
+		HylaFAXUtils LineBreaker 
 
 #		Label EPSLabel
 

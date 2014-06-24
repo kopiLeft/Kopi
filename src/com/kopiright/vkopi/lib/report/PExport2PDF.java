@@ -29,7 +29,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.report.UReport.UTable;
 import com.kopiright.vkopi.lib.util.PPaperType;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Time;
 import com.lowagie.text.Chunk;

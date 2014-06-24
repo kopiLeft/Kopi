@@ -13,7 +13,7 @@
   <property name="src" value="." />
   <property name="javafiles" 
             value="VReportSelectionForm.java VPrintSelectionForm.java
-                   VMultiPrintSelectionForm.java" />
+                   VMultiPrintSelectionForm.java VDynamicReport.java" />
 
 
   <import file="${topdir}/defs.xml" />

@@ -39,7 +39,6 @@ public class Registry {
     dependencies.put(VISUAL_KOPI_DOMAIN, "com.kopiright.vkopi.lib.resource" + ".Messages");
  }
 
-
   // ---------------------------------------------------------------------
   // ACCESSORS
   // ---------------------------------------------------------------------
@@ -54,7 +53,7 @@ public class Registry {
   /**
    * Builds the dependencies of this registry.
    */
-  /*package*/ void buildDependencies() {
+  public void buildDependencies() {
     buildDependencies(dependencies);
   }
 

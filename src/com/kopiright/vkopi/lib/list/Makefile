@@ -35,7 +35,7 @@ JAVAFILES +=	VBooleanCodeColumn VBooleanColumn			\
 		VIntegerColumn VList VListColumn			\
 		VMonthColumn  VStringCodeColumn VStringColumn		\
 		VTextColumn VTimeColumn					\
-		VWeekColumn VTimestampColumn
+		VWeekColumn VTimestampColumn ObjectFormater
 
 ## ----------------------------------------------------------------------
 ## GOALS

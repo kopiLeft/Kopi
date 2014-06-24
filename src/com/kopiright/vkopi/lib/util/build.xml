@@ -13,14 +13,13 @@
   <property name="src" value="." />
   <property name="javafiles" 
             value="Rexec.java LPrinter.java RPrinter.java EpsonLQ.java Filter.java FPrinter.java 
-                   FileWriter.java DBUtils.java PreviewPrinter.java GroupHandler.java 
-                   LabelPrinter.java PropertyManager.java Message.java Utils.java MultiLineToolTip.java 
-                   MultiLineToolTipUI.java PixelConsumer.java AWTToPS.java 
+                   FileWriter.java PreviewPrinter.java GroupHandler.java 
+                   LabelPrinter.java PropertyManager.java Message.java PixelConsumer.java AWTToPS.java 
                    LpRPrinter.java CachePrinter.java AbstractPrinter.java Printer.java 
                    To437.java ToLatin1.java FaxException.java 
                    PrintInformation.java PrintException.java MailPrinter.java FaxPrinter.java 
                    Fax.java FaxStatus.java PPaperType.java UnixFileWriter.java 
-                   EltronEPL2.java Laserjet.java IPPPrinter.java KnownBugs.java 
+                   EltronEPL2.java Laserjet.java IPPPrinter.java  PlatformFileWriter.java
                    Charset437.java PrintJob.java HylaFAXPrinter.java HylaFAXUtils.java LineBreaker.java" />
 
   <property name="properties" 

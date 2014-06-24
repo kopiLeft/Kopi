@@ -372,7 +372,7 @@ public abstract class VField implements VConstants {
    * @param     s               the text to check
    * @return    true if the text is valid
    */
-  protected abstract boolean checkText(String s);
+  public abstract boolean checkText(String s);
 
   /**
    * verify that value is valid (on exit)
@@ -385,7 +385,7 @@ public abstract class VField implements VConstants {
   /**
    * text has changed (key typed on a display)
    */
-  protected void onTextChange(String text) {
+  public void onTextChange(String text) {
     changed = true;
     changedUI = true;
     autoLeave(text);
@@ -494,7 +494,7 @@ public abstract class VField implements VConstants {
     }
   }
 
-  protected boolean fillField(PredefinedValueHandler handler) throws VException {
+  public boolean fillField(PredefinedValueHandler handler) throws VException {
     if (handler != null) {
       return handler.selectDefaultValue();
     } else {

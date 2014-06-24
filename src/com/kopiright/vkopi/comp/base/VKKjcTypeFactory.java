@@ -39,15 +39,13 @@ public class VKKjcTypeFactory
 
     VFieldType = createType(com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/'), false);
     VBlockType = createType(com.kopiright.vkopi.lib.form.VBlock.class.getName().replace('.','/'), false);
-    DBlockType = createType(com.kopiright.vkopi.lib.form.DBlock.class.getName().replace('.','/'), false);
-    DMultiBlockType = createType(com.kopiright.vkopi.lib.form.DMultiBlock.class.getName().replace('.','/'), false);
     VDictionaryFormType = createType(com.kopiright.vkopi.lib.form.VDictionaryForm.class.getName().replace('.','/'), false);
     VFormType = createType(com.kopiright.vkopi.lib.form.VForm.class.getName().replace('.','/'), false);
     VReportType = createType(com.kopiright.vkopi.lib.report.VReport.class.getName().replace('.','/'), false);
     VReportColumnType = createType(com.kopiright.vkopi.lib.report.VReportColumn.class.getName().replace('.','/'), false);
 
-    SActorType = createType(com.kopiright.vkopi.lib.visual.VActor.class.getName().replace('.','/'), false);
-    SDefaultActorType = createType(com.kopiright.vkopi.lib.visual.VDefaultActor.class.getName().replace('.','/'), false);
+    VActorType = createType(com.kopiright.vkopi.lib.visual.VActor.class.getName().replace('.','/'), false);
+    VDefaultActorType = createType(com.kopiright.vkopi.lib.visual.VDefaultActor.class.getName().replace('.','/'), false);
     VListType = createType(com.kopiright.vkopi.lib.list.VList.class.getName().replace('.','/'), false);
     VExceptionType = createType(com.kopiright.vkopi.lib.visual.VException.class.getName().replace('.','/'), false);
     VRuntimeExceptionType = createType(com.kopiright.vkopi.lib.visual.VRuntimeException.class.getName().replace('.','/'), false);
@@ -74,15 +72,12 @@ public class VKKjcTypeFactory
     try {
       VFieldType = (CReferenceType) VFieldType.checkType(context);
       VBlockType = (CReferenceType) VBlockType.checkType(context);
-      DBlockType = (CReferenceType) DBlockType.checkType(context);
-      DMultiBlockType = (CReferenceType) DMultiBlockType.checkType(context);
       VDictionaryFormType = (CReferenceType) VDictionaryFormType.checkType(context);
       VFormType = (CReferenceType) VFormType.checkType(context);
       VReportType =  (CReferenceType) VReportType.checkType(context);
       VReportColumnType = (CReferenceType) VReportColumnType.checkType(context);
-
-      SActorType = (CReferenceType) SActorType.checkType(context);
-      SDefaultActorType = (CReferenceType) SDefaultActorType.checkType(context);
+      VActorType = (CReferenceType) VActorType.checkType(context);
+      VDefaultActorType = (CReferenceType) VDefaultActorType.checkType(context);
       VListType = (CReferenceType) VListType.checkType(context);
       VExceptionType = (CReferenceType) VExceptionType.checkType(context);
       VRuntimeExceptionType = (CReferenceType) VRuntimeExceptionType.checkType(context);
@@ -121,19 +116,14 @@ public class VKKjcTypeFactory
       return VFormType;
     case RFT_VBLOCK:
       return VBlockType;
-    case RFT_DBLOCK:
-      return DBlockType;
-    case RFT_DMULTIBLOCK:
-      return DMultiBlockType;
     case RFT_VFIELD:
       return VFieldType;
     case RFT_VREPORTCOLUMN:
       return VReportColumnType;
-
     case RFT_SACTOR:
-      return SActorType;
+      return VActorType;
     case RFT_SDEFAULTACTOR:
-      return SDefaultActorType;
+      return VDefaultActorType;
     case RFT_VLIST:
       return VListType;
     case RFT_VCOLUMN:
@@ -193,13 +183,11 @@ public class VKKjcTypeFactory
   private CReferenceType         VReportType;
   private CReferenceType         VFormType;
   private CReferenceType         VBlockType;
-  private CReferenceType         DBlockType;
-  private CReferenceType         DMultiBlockType;
   private CReferenceType         VFieldType;
   private CReferenceType         VReportColumnType;
 
-  private CReferenceType         SActorType;
-  private CReferenceType         SDefaultActorType;
+  private CReferenceType         VActorType;
+  private CReferenceType         VDefaultActorType;
   private CReferenceType         VListType;
   private CReferenceType         VColumnType;
   private CReferenceType         VPositionType;

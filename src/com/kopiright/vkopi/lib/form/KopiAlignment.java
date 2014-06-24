@@ -39,9 +39,9 @@ public class KopiAlignment {
     this.useAll = useAll;
   }
 
-  /* package */ int		x;		// position in x
-  /* package */ int		y;		// position in y
-  /* package */ int		width;		// number of column
-  /* package */ boolean		alignRight;	// position in alignRight
-  /* package */ boolean		useAll;         // use the whole possible width of the column
+  public int		x;		// position in x
+  public int		y;		// position in y
+  public int		width;		// number of column
+  public boolean	alignRight;	// position in alignRight
+  public boolean	useAll;         // use the whole possible width of the column
 }

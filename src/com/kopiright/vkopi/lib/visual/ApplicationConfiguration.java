@@ -198,6 +198,18 @@ public abstract class ApplicationConfiguration {
   public UserConfiguration getUserConfiguration() {
     return null;
   }
+  
+  //---------------------------------------------------------------------
+  // Window size
+  //---------------------------------------------------------------------
+  
+  public int getDefaultModalWindowWidth() {
+    return 0;
+  }
+  
+  public int getDefaultModalWindowHeight() {
+    return 0;
+  }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

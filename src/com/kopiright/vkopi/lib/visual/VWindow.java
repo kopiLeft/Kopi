@@ -26,8 +26,8 @@ import java.sql.SQLException;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.ui.base.Image;
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.Image;
+import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
@@ -381,7 +381,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     return actors[at + 1];
   }
 
-  /*package*/ VActor[] getActors() {
+  public VActor[] getActors() {
     return actors;
   }
 

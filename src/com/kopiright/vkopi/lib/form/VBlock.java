@@ -205,11 +205,11 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return detailMode;
   }
 
-  protected boolean isDroppable() {
+  public boolean isDroppable() {
     return !dropListMap.isEmpty();
   }
 
-  protected boolean isAccepted(String flavor) {
+  public boolean isAccepted(String flavor) {
     return dropListMap.containsKey(flavor.toLowerCase());
   }
 
@@ -682,7 +682,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   @SuppressWarnings("deprecation")
-  protected void changeActiveRecord(int record) throws VException  {
+  public void changeActiveRecord(int record) throws VException  {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
 
     if (!isMulti()) {
@@ -4106,9 +4106,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     private EventListenerList   orderListener;
 
-    static final int    STE_UNORDERED = 1;
-    static final int    STE_INC = 2;
-    static final int    STE_DESC = 4;
+    public static final int    STE_UNORDERED = 1;
+    public static final int    STE_INC = 2;
+    public static final int    STE_DESC = 4;
   }
 
   // ----------------------------------------------------------------------

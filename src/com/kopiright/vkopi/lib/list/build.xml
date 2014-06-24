@@ -20,7 +20,7 @@
   	           VList.java VListColumn.java VMonthColumn.java
   	           VStringCodeColumn.java VStringColumn.java
   	           VTextColumn.java VTimeColumn.java 
-  	           VTimestampColumn.java VWeekColumn.java" />
+  	           VTimestampColumn.java VWeekColumn.java ObjectFormater.java" />
 
   <import file="${topdir}/defs.xml" />
 

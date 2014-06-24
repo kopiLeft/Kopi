@@ -22,7 +22,7 @@ package com.kopiright.vkopi.lib.form;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.visual.UIFactory;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VModel;

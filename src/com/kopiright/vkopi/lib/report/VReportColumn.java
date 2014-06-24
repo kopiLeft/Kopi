@@ -93,7 +93,6 @@ public abstract class VReportColumn {
     return addedAtRuntime;
   }
 
-  
   /**
    * Sets the column label
    */
@@ -229,19 +228,19 @@ public abstract class VReportColumn {
    */
   public abstract int compareTo(Object o1, Object o2);
 
-  public DColumnStyle[] getStyles() {
+  public ColumnStyle[] getStyles() {
     if (styles == null) {
-      DColumnStyle style = new DColumnStyle();
+      ColumnStyle style = new ColumnStyle();
       style.setFont(0);
       style.setBackground(Constants.CLR_WHITE);
       style.setForeground(Constants.CLR_BLACK);
-      return new DColumnStyle[] {style};
+      return new ColumnStyle[] {style};
     } else {
       return styles;
     }
   }
 
-  public void setStyles(DColumnStyle[] styles) {
+  public void setStyles(ColumnStyle[] styles) {
     this.styles = styles;
   }
 
@@ -273,7 +272,6 @@ public abstract class VReportColumn {
     }
   }
 
-    
   /**
    * Localizes this field
    *
@@ -299,7 +297,7 @@ public abstract class VReportColumn {
   private	boolean			folded;
   private       boolean                 addedAtRuntime;
   private       boolean                 userDefinedLabel;
-  private	DColumnStyle[]		styles;
+  private	ColumnStyle[]		styles;
   protected	int			width;
   protected	int			height;
 }

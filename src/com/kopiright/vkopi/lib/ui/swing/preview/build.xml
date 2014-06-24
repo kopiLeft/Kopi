@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.ui.swing.preview
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../../../.." />
+
+  <property name="package" value="com/kopiright/vkopi/lib/ui/swing/preview" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.ui.swing.preview" />
+  <property name="src" value="." />
+  <property name="javafiles" value="DPreviewWindow.java StandAlone.java" />
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

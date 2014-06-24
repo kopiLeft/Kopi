@@ -24,8 +24,7 @@ PACKAGE =	com/kopiright/vkopi/lib/report
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	CellRenderer Constants DColumnStyle DTable		\
-		DParameters DReport MReport PConfig ReportListener	\
+JAVAFILES +=	Constants MReport PConfig ReportListener		\
 	        Triggers VBaseRow VBooleanCodeColumn			\
 		VBooleanColumn	VCCDepthFirstCircuitN			\
 		VCalculateColumn VCellFormat VCodeColumn		\
@@ -36,7 +35,8 @@ JAVAFILES +=	CellRenderer Constants DColumnStyle DTable		\
 		VTimeColumn VTimestampColumn VWeekColumn		\
 		VNoRowException VSeparatorColumn VHelpGenerator	Point	\
 		PExport PExport2XLS PExport2PDF PExport2CSV UReport 	\
-		VDefaultReportActor VReportCommand VTable
+		VDefaultReportActor VReportCommand VTable ColumnStyle	\
+		Parameters 
 
 ## ----------------------------------------------------------------------
 ## GOALS

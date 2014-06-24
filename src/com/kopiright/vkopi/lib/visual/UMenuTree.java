@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 
 /**
  * {@code UMenuTree} is the top-level interface that represents the application

@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.base
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="com/kopiright/vkopi/lib/base" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.base" />
+  <property name="src" value="." />
+  <property name="javafiles" value="UComponent.java Image.java Utils.java" />
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

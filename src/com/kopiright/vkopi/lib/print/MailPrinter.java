@@ -31,7 +31,7 @@ import com.kopiright.vkopi.lib.util.AbstractPrinter;
 import com.kopiright.vkopi.lib.util.CachePrinter;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 
 /**

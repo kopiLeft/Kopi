@@ -33,8 +33,8 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 import com.kopiright.util.mailer.Mailer;
+import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.ui.base.UComponent;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 /**
@@ -158,11 +158,11 @@ public abstract class ApplicationContext {
       String                    applicationName;
       String                    version;
       String                    logFile;
-      boolean                  sendMail;
-      boolean                  writeLog;
+      boolean                   sendMail;
+      boolean                   writeLog;
       String                    revision = null;
       String                    releaseDate = null;
-      String[]                  versionArray = Utils.getVersion();
+      String[]                  versionArray = com.kopiright.vkopi.lib.base.Utils.getVersion();
 
       for (int i = 0; i < versionArray.length; i++) {
         if (versionArray[i].startsWith("Revision: ")) {

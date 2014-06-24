@@ -31,6 +31,8 @@ import java.io.OutputStream;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
+import com.kopiright.vkopi.lib.base.Utils;
+
 
 /**
  * PPage/Report creates a PrintJob

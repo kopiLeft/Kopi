@@ -25,7 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.VCommand;
 
 /**
@@ -96,7 +96,7 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
       p.println("<BR>");
       p.println("<ADDRESS>");
       p.println("<I>kopiRight Managed Solutions GmbH</I><BR>");
-      version = com.kopiright.vkopi.lib.visual.Utils.getVersion();
+      version = Utils.getVersion();
       for (int i=0; i<version.length; i++) {
 	p.println("<I>" + version[i] + "</I><BR>");
       }
@@ -110,7 +110,6 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
     }
     return file.getPath();
   }
-
 
   /**
    * printlns a compilation unit
@@ -128,6 +127,4 @@ public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerato
       p.println("<P>" + help + "</P>");
     }
   }
-
-
 }

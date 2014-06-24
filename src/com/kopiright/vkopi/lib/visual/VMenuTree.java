@@ -39,7 +39,6 @@ public class VMenuTree extends VWindow {
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_MENU_TREE, new WindowBuilder() {
 
-      
       public UWindow createWindow(VWindow model) {
 	return (UMenuTree)UIFactory.getUIFactory().createView(model);
       }
@@ -206,7 +205,7 @@ public class VMenuTree extends VWindow {
       break;
     case CMD_INFORMATION:
       {
-        String[]      versionArray = Utils.getVersion();
+        String[]      versionArray = com.kopiright.vkopi.lib.base.Utils.getVersion();
         String      version = "";
         for (int i=0; i<versionArray.length; i++) {
           version += "\n" + versionArray[i];
@@ -553,7 +552,7 @@ public class VMenuTree extends VWindow {
   private VActor[]       		actors;
   private boolean               	isSuperUser;
   private Module[]              	array;
-  private List<Module>                 items;
+  private List<Module>                  items;
   private String                	userName;
   private String                	groupName;
   private List<Integer>                shortcutsID;

@@ -33,12 +33,12 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Vector;
 
-import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.kopiright.vkopi.lib.form.LatexPrintWriter;
 import com.kopiright.vkopi.lib.form.UForm;
 import com.kopiright.vkopi.lib.form.VForm;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.Module;
@@ -103,12 +103,12 @@ public class Main {
     System.err.println("Makefile help generator");
     File	file = new File(System.getProperty("user.dir"));
 
-    try {
-      UIManager.setLookAndFeel(new com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel());//UIManager.getSystemLookAndFeelClassName());
-    } catch (Exception e) {
-      System.err.println("Undefined look and feel: Kopi Look & Feel must be installed!");
-      System.exit(1);
-    }
+//    try {
+//      UIManager.setLookAndFeel(new com.kopiright.vkopi.lib.ui.plaf.KopiLookAndFeel());//UIManager.getSystemLookAndFeelClassName());
+//    } catch (Exception e) {
+//      System.err.println("Undefined look and feel: Kopi Look & Feel must be installed!");
+//      System.exit(1);
+//    }
 
     //    Application.installLF(Application.getDefaults().getKopiLFProperties());
     ApplicationContext.getApplicationContext().getApplication().setGeneratingHelp();
@@ -167,7 +167,7 @@ public class Main {
   private void genUtilFiles(String title) throws IOException {
     String              s;
 
-    BufferedReader      i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("titlepage.sty")));
+    BufferedReader      i = new BufferedReader(new InputStreamReader(Utils.getFile("titlepage.sty")));
     PrintWriter         pw = new PrintWriter(new BufferedWriter(new FileWriter("titlepage.sty")));
 
     while ( (s = i.readLine()) != null) {
@@ -175,28 +175,28 @@ public class Main {
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("top.tex")));
+    i = new BufferedReader(new InputStreamReader(Utils.getFile("top.tex")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("top.tex")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("macros.tex")));
+    i = new BufferedReader(new InputStreamReader(Utils.getFile("macros.tex")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("macros.tex")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("general.tex")));
+    i = new BufferedReader(new InputStreamReader(Utils.getFile("general.tex")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("general.tex")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
     }
     pw.close();
 
-    i = new BufferedReader(new InputStreamReader(com.kopiright.vkopi.lib.util.Utils.getFile("german.ps")));
+    i = new BufferedReader(new InputStreamReader(Utils.getFile("german.ps")));
     pw = new PrintWriter(new BufferedWriter(new FileWriter("german.ps")));
     while ( (s = i.readLine()) != null) {
       pw.println(s);
@@ -239,6 +239,8 @@ public class Main {
     while ((s = fr.readLine()) != null) {
       pw.println(s);
     }
+    
+    fr.close();
 
     @SuppressWarnings("rawtypes")
     Enumeration         elems = tree.preorderEnumeration();

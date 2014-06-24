@@ -21,7 +21,7 @@ package com.kopiright.vkopi.lib.visual;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ModuleLocalizer;
-import com.kopiright.vkopi.lib.ui.base.Image;
+import com.kopiright.vkopi.lib.base.Image;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 

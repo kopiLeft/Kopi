@@ -15,11 +15,11 @@
             value="PPage.java PBlock.java PPosition.java PSize.java PRectangleBlock.java 
                    PStyle.java PBlockStyle.java PTextStyle.java PTabStop.java PTextBlock.java 
                    PLayoutEngine.java Metrics.java PParagraphStyle.java PBodyStyle.java 
-                   PRecursiveBlock.java PListBlock.java 
+                   PRecursiveBlock.java PListBlock.java LabelPrinter.java
                    PProtectedPage.java PHorizontalBlock.java 
                    PreviewPrinter.java Printable.java PrintManager.java 
-                   DefaultPrintManager.java PSPrintException.java PdfPrintJob.java" />
-
+                   DefaultPrintManager.java PSPrintException.java PdfPrintJob.java MailPrinter.java
+  		   Laserjet.java EpsonLQ.java" />
 
   <import file="${topdir}/defs.xml" />
 

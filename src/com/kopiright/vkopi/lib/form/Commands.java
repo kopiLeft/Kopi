@@ -22,7 +22,7 @@ package com.kopiright.vkopi.lib.form;
 import java.sql.SQLException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.KnownBugs;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -134,7 +134,7 @@ public class Commands implements VConstants {
     VForm	form = b.getForm();
     int		id;
 
-    KnownBugs.freeMemory();
+    Utils.freeMemory();
 
     b.validate();
 
@@ -184,7 +184,7 @@ public class Commands implements VConstants {
 	}
       }
     }
-    KnownBugs.freeMemory();
+    Utils.freeMemory();
   }
 
 
@@ -196,7 +196,7 @@ public class Commands implements VConstants {
     VDictionaryForm	form = (VDictionaryForm)b.getForm();
     int		id;
 
-    KnownBugs.freeMemory();
+    Utils.freeMemory();
 
     b.validate();
 
@@ -320,7 +320,7 @@ public class Commands implements VConstants {
 
     b.validate();
 
-    KnownBugs.freeMemory();
+    Utils.freeMemory();
 
     try {
       for (;;) {
@@ -412,7 +412,7 @@ public class Commands implements VConstants {
   public static void saveBlock(VBlock b) throws VException {
     VForm	form = b.getForm();
 
-    KnownBugs.freeMemory();
+    Utils.freeMemory();
 
     assert !b.isMulti() : "saveBlock can be used only with a single block.";
 
@@ -672,7 +672,7 @@ public class Commands implements VConstants {
   public static void changeBlock(VBlock b) throws VException {
     b.validate();
 
-    KnownBugs.freeMemory();
+    Utils.freeMemory();
 
     int		blockCount = b.getForm().getBlockCount();
     VBlock[]	blockTable = new VBlock[blockCount - 1];

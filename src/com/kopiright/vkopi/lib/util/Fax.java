@@ -37,6 +37,8 @@ import java.util.Vector;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
+import com.kopiright.vkopi.lib.base.Utils;
+
 /**
  * @deprecated  replaced by the class HylaFAXUtils
  */

@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.vkopi.lib.ui.base.Image;
+import com.kopiright.vkopi.lib.base.Image;
 
 public abstract class ImageHandler {
 

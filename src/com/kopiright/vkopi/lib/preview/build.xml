@@ -12,8 +12,7 @@
   <property name="package.name" value="com.kopiright.vkopi.lib.preview" />
   <property name="src" value="." />
   <property name="javafiles" 
-            value="DPreviewWindow.java VPreviewWindow.java StandAlone.java 
-                   PreviewListener.java" />
+            value="VPreviewWindow.java PreviewListener.java" />
 
 
   <import file="${topdir}/defs.xml" />

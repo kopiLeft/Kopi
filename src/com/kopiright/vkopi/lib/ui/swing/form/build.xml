@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.ui.swing.form
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../../../.." />
+
+
+  <property name="package" value="com/kopiright/vkopi/lib/ui/swing/form" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.ui.swing.form" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="DBlock.java DColorField.java DField.java
+                   DForm.java DImage.java DImageField.java DLabel.java 
+  		   DChartBlock.java DMultiBlock.java DObjectField.java 
+                   DPage.java DTextEditor.java DTextField.java DateChooser.java
+  	           DFieldUI.java DChartHeaderLabel.java DListDialog.java 
+  		   ImageFileChooser.java JFieldHandler.java
+                   KopiFieldDocument.java KopiScanDocument.java 
+                   KopiMultiBlockLayout.java KopiSimpleBlockLayout.java
+                   JPredefinedValueHandler.java KeyNavigator.java Environment.java" />
+	
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

@@ -23,7 +23,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 
 /**
  * This class implements a Kopi pretty printer

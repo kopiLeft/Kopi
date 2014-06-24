@@ -28,13 +28,7 @@ PACKAGE =	com/kopiright/vkopi/lib/form
 ## FILES
 
 JAVAFILES +=	AbstractFieldHandler BlockAlignment Commands		\
-		DBlock DChartHeaderLabel DColorField DField DFieldUI	\
-		DForm DImage DImageField DLabel DListDialog DChartBlock	\
-		DMultiBlock DObjectField				\
-		DPage DTextEditor DTextField DateChooser FieldHandler	\
-		ImageFileChooser JFieldHandler KopiAlignment		\
-		KopiFieldDocument KopiScanDocument 	                \
-		KopiMultiBlockLayout KopiSimpleBlockLayout		\
+		FieldHandler  KopiAlignment				\
 		LatexPrintWriter MultiFieldAlignment			\
 		Triggers VBlock VBooleanCodeField			\
 		VBooleanField VCodeField				\
@@ -56,7 +50,6 @@ JAVAFILES +=	AbstractFieldHandler BlockAlignment Commands		\
 		FieldListener FieldChangeListener			\
 		BlockListener ViewBlockAlignment FormListener		\
 		PredefinedValueHandler AbstractPredefinedValueHandler	\
-		JPredefinedValueHandler KeyNavigator Environment 	\
 		Accessor ModelTransformer UBlock UChartLabel UField 	\
 		UForm ULabel UMultiBlock UTextField UListDialog		\
 		VBlockDefaultOuterJoin VBlockOracleOuterJoin

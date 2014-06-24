@@ -27,7 +27,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;

@@ -53,7 +53,6 @@ public abstract class VForm extends VWindow implements VConstants {
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_FORM, new WindowBuilder() {
 
-      
       public UWindow createWindow(VWindow model) {
 	return (UForm)UIFactory.getUIFactory().createView(model);
       }
@@ -108,8 +107,7 @@ public abstract class VForm extends VWindow implements VConstants {
   /**
    * load form (from compiler)
    */
-  protected void init() {
-  }
+  protected void init() {}
 
   public int getType() {
     return Constants.MDL_FORM;
@@ -299,7 +297,7 @@ public abstract class VForm extends VWindow implements VConstants {
     }
   }
 
-  protected void prepareForm() throws VException {
+  public void prepareForm() throws VException {
     final VBlock        block = getActiveBlock();
 
     if (block != null) {
@@ -703,7 +701,7 @@ public abstract class VForm extends VWindow implements VConstants {
   /**
    * Returns the number of blocks.
    */
-  protected int getBlockCount() {
+  public int getBlockCount() {
     return blocks.length;
   }
 
@@ -956,7 +954,7 @@ public abstract class VForm extends VWindow implements VConstants {
   }
 
   public PrintJob printFormScreen() throws VException {
-    return ((DForm) getDisplay()).printForm();
+    return ((UForm) getDisplay()).printForm();
   }
 
   // ----------------------------------------------------------------------
@@ -965,16 +963,16 @@ public abstract class VForm extends VWindow implements VConstants {
 
   // static (compiled) data
   protected String         	source;         // qualified name of source file
-  protected VBlock[]		blocks;
+  public VBlock[]		blocks;
   protected String[]		pages;
   protected String		help;
   protected int[]		VKT_Triggers;
 
   // dynamic data
   private boolean		blockMoveAllowed = true;
-  //  private VForm			caller;
+  //  private VForm		caller;
   private VBlock		activeBlock;
-  //  private int			currentPage = -1;
+  //  private int		currentPage = -1;
   protected VCommand[]		commands;	// commands
 
   private EventListenerList	formListener = new EventListenerList();

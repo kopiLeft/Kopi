@@ -20,12 +20,11 @@
 package com.kopiright.vkopi.lib.list;
 
 import com.kopiright.vkopi.lib.l10n.ListLocalizer;
-import com.kopiright.vkopi.lib.ui.base.ListDialogCellRenderer;
 
 /**
  * !!! NEED COMMENTS
  */
-public abstract class VListColumn implements VConstants, ListDialogCellRenderer.ObjectFormater {
+public abstract class VListColumn implements VConstants, ObjectFormater {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION

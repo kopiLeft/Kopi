@@ -6,8 +6,6 @@
 <project default="build" basedir=".">
 
   <property name="topdir" value="../../.." />
-
-
   <property name="package" value="com/kopiright/vkopi/lib/visual" />
   <property name="package.name" value="com.kopiright.vkopi.lib.visual" />
   <property name="src" value="." />
@@ -15,32 +13,25 @@
             value="ActionHandler.java Application.java ApplicationDefaults.java 
                    ApplicationDefaultsAdapter.java 
                    ApplicationDefaultsProperties.java 
-                   Constants.java DFootPanel.java DInfoPanel.java 
-                   DMenuBar.java DMenuItem.java DObject.java DPreferences.java DStatePanel.java 
-                   DWaitPanel.java DWindow.java ProgressWindow.java
-                   FileChooser.java DHelpViewer.java VHelpViewer.java 
-                   KopiAction.java KopiExecutable.java 
-                   MenuItemRenderer.java MenuTree.java WaitDialogListener.java
+                   Constants.java FileChooser.java VHelpViewer.java 
+                   KopiAction.java KopiExecutable.java DPositionPanelListener.java
+                   MenuTree.java WaitDialogListener.java 
                    Module.java SActor.java SDefaultActor.java VActionListener.java 
-                   SplashScreen.java Utils.java VCommand.java VException.java 
-                   VExecFailedException.java VHelpGenerator.java  VActor.java DActor.java
+                   VCommand.java VException.java 
+                   VExecFailedException.java VHelpGenerator.java  VActor.java 
                    VInterruptException.java VRuntimeException.java UActor.java
-                   VTrigger.java VWindow.java DPositionPanel.java DPositionPanelListener.java 
-                   VDatabaseUtils.java WindowController.java SwingThreadHandler.java 
+                   VTrigger.java VWindow.java VDatabaseUtils.java WindowController.java  
                    UIBuilder.java WaitInfoListener.java MessageListener.java 
                    VerifyConfiguration.java ApplicationConfiguration.java
                    PrinterManager.java PropertyException.java ModelCloseListener.java 
 		   UserConfiguration.java ApplicationOptions.java VlibProperties.java 
   		   Registry.java ProgressDialogListener.java MessageCode.java 
-  		   WaitWindow.java Message.java VModel.java UWindow.java WindowBuilder.java
-  		   ApplicationContext.java UIFactory.java JApplication.java JApplicationContext.java
-  		   ImageHandler.java JWindowController.java FileHandler.java JImageHandler.java
-  		   JUIFactory.java UWindow.java VMenuTree.java DMenuTree.java UMenuTree.java
-		   UBookmarkPanel.java JBookmarkPanel.java UTree.java " />
-
-  <property name="options" value="ApplicationOptions" />
+  		   Message.java VModel.java UWindow.java WindowBuilder.java
+  		   ApplicationContext.java UIFactory.java 
+  		   ImageHandler.java FileHandler.java 
+  		   UWindow.java VMenuTree.java UMenuTree.java
+		   UBookmarkPanel.java UTree.java " />
 
   <import file="${topdir}/defs.xml" />
-
 
 </project>

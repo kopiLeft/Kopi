@@ -30,8 +30,8 @@ public interface VKTypeFactory extends com.kopiright.vkopi.comp.trig.GTypeFactor
   int           RFT_VREPORT             = (MIN_TYPE_ID + 1);
   int           RFT_VFORM               = (MIN_TYPE_ID + 2);
   int           RFT_VBLOCK              = (MIN_TYPE_ID + 3);
-  int           RFT_DBLOCK              = (MIN_TYPE_ID + 4);
-  int           RFT_DMULTIBLOCK         = (MIN_TYPE_ID + 5);
+//  int           RFT_DBLOCK              = (MIN_TYPE_ID + 4);
+//  int           RFT_DMULTIBLOCK         = (MIN_TYPE_ID + 5);
   int           RFT_VFIELD              = (MIN_TYPE_ID + 6);
   int           RFT_VREPORTCOLUMN       = (MIN_TYPE_ID + 7);
 

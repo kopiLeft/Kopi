@@ -25,7 +25,7 @@ package com.kopiright.vkopi.lib.form;
  * Used for example to convert the newlines in a multiline
  * field to a lot of spaces.
  */
-interface ModelTransformer {
+public interface ModelTransformer {
   String toGui(String modelTxt);
  
   String toModel(String guiTxt);

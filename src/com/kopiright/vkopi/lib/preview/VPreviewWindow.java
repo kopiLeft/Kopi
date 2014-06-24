@@ -28,7 +28,7 @@ import javax.swing.event.EventListenerList;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.util.Utils;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.UIFactory;
@@ -430,10 +430,10 @@ public class VPreviewWindow extends VWindow {
   // the following commands *MUST* be in the same order than
   // in 'actors' field set in the contructor of the current class.
   protected static final int    CMD_QUIT        =  0;
-  protected static final int    CMD_FIRST       =  1;
-  protected static final int    CMD_LEFT        =  2;
-  protected static final int    CMD_RIGHT       =  3;
-  protected static final int    CMD_LAST        =  4;
+  public static final int    	CMD_FIRST       =  1;
+  public static final int    	CMD_LEFT        =  2;
+  public static final int    	CMD_RIGHT       =  3;
+  public static final int    	CMD_LAST        =  4;
   protected static final int    CMD_ZOOM_FIT    =  5;
   protected static final int    CMD_ZOOM_FIT_W  =  6;
   protected static final int    CMD_ZOOM_FIT_H  =  7;

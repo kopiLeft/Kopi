@@ -325,14 +325,14 @@ public abstract class VFieldUI implements VConstants, ActionHandler {
   /**
    * @return the associated incrementCommand
    */
-  /*package*/ VCommand getIncrementCommand() {
+  public VCommand getIncrementCommand() {
     return incrementCommand;
   }
 
   /**
    * @return the associated decrementCommand
    */
-  /*package*/ VCommand getDecrementCommand() {
+  public VCommand getDecrementCommand() {
     return decrementCommand;
   }
 
@@ -361,7 +361,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler {
           blockView.add(dl, new KopiAlignment(chartPos + leftOffset, 0, 1, false));
 
           // the fields for the values
-          displays = new DField[getBlock().getDisplaySize()];
+          displays = new UField[getBlock().getDisplaySize()];
           for (int i = 0; i < getBlock().getDisplaySize(); i++) {
             displays[i] = createDisplay(dl, model, false);
             blockView.add(displays[i], new KopiAlignment(chartPos + leftOffset, i + 1, 1, false));
@@ -373,7 +373,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler {
 
         if (!getBlock().noDetail() && !model.noDetail()) {
           // create the second label for the detail view
-          dlDetail = new DLabel(model.getLabel(), model.getToolTip());
+          dlDetail = createLabel(model.getLabel(), model.getToolTip());
           if (columnEnd >= 0) {
             ((UMultiBlock) getBlock().getDisplay()).addToDetail(dlDetail,
                                                                 new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
@@ -509,7 +509,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler {
   /**
    * Clears all display fields.
    */
-  /*package*/ void scrollTo(int toprec) {
+  public void scrollTo(int toprec) {
     if (displays != null) {
       for (int i = 0; i < displays.length; i++) {
         displays[i].updateFocus();

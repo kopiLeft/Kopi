@@ -21,8 +21,8 @@ package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.PositionedError;
-import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.kopi.comp.kjc.CBinaryTypeContext;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
@@ -32,8 +32,6 @@ public class VKStdType {
   public static CReferenceType VReport;
   public static CReferenceType VForm;
   public static CReferenceType VBlock;
-  public static CReferenceType DBlock;
-  public static CReferenceType DMultiBlock;
   public static CReferenceType VField;
   public static CReferenceType VReportColumn;
 
@@ -82,8 +80,6 @@ public class VKStdType {
 
     VField = tf.createType(com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/'), false);
     VBlock = tf.createType(com.kopiright.vkopi.lib.form.VBlock.class.getName().replace('.','/'), false);
-    DBlock = tf.createType(com.kopiright.vkopi.lib.form.DBlock.class.getName().replace('.','/'), false);
-    DMultiBlock = tf.createType(com.kopiright.vkopi.lib.form.DMultiBlock.class.getName().replace('.','/'), false);
     VDictionaryForm = tf.createType(com.kopiright.vkopi.lib.form.VDictionaryForm.class.getName().replace('.','/'), false);
     VForm = tf.createType(com.kopiright.vkopi.lib.form.VForm.class.getName().replace('.','/'), false);
     VReport = tf.createType(com.kopiright.vkopi.lib.report.VReport.class.getName().replace('.','/'), false);
@@ -117,8 +113,6 @@ public class VKStdType {
     try {
       VField = (CReferenceType) VField.checkType(context);
       VBlock = (CReferenceType) VBlock.checkType(context);
-      DBlock = (CReferenceType) DBlock.checkType(context);
-      DMultiBlock = (CReferenceType) DMultiBlock.checkType(context);
       VDictionaryForm = (CReferenceType) VDictionaryForm.checkType(context);
       VForm = (CReferenceType) VForm.checkType(context);
       VReport =  (CReferenceType) VReport.checkType(context);

@@ -19,7 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
-import com.kopiright.vkopi.lib.ui.base.UComponent;
+import com.kopiright.vkopi.lib.base.UComponent;
 
 /**
  * {@code VModel} is the top level interface that all model classes should implement.

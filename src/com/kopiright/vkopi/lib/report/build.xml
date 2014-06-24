@@ -12,8 +12,8 @@
   <property name="package.name" value="com.kopiright.vkopi.lib.report" />
   <property name="src" value="." />
   <property name="javafiles" 
-            value="CellRenderer.java Constants.java DColumnStyle.java 
-                   DParameters.java DReport.java MReport.java PConfig.java
+            value="CellRenderer.java Constants.java ColumnStyle.java 
+                   Parameters.java DReport.java MReport.java PConfig.java
                    Triggers.java VBaseRow.java VBooleanCodeColumn.java 
                    VBooleanColumn.java VCCDepthFirstCircuitN.java 
                    VCalculateColumn.java VCellFormat.java VCodeColumn.java 

@@ -46,7 +46,8 @@ public abstract class PExport {
     this.title = title;
     this.tonerSaveMode = tonerSaveMode;
 
-    this.parameters = new DParameters(Color.blue);
+    this.parameters = new Parameters(Color.blue);
+    
     this.firstVisibleColumn = -1;
 
     for (int j = 0; j < model.getAccessibleColumnCount(); j++) {
@@ -294,6 +295,6 @@ public abstract class PExport {
   private int                   		firstVisibleColumn;
   private int                   		maxLevel;
   private int                   		minLevel;
-  private DParameters           		parameters;
+  private Parameters           		        parameters;
   private boolean               		tonerSaveMode;
 }
