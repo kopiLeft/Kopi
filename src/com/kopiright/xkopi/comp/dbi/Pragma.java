@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id: Key.java 27892 2007-02-16 16:09:48Z graf $
+ * $Id$
  */
 
 package com.kopiright.xkopi.comp.dbi;

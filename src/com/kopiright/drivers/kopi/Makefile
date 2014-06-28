@@ -14,7 +14,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
-## $Id: Makefile,v 1.2 2001/05/24 19:28:05 graf Exp $
+## $Id$
 ##
 
 TOPDIR =	../..

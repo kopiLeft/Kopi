@@ -14,7 +14,7 @@
 ## License along with this library; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
-## $Id: Makefile,v 1.41 2001/06/23 13:59:26 graf Exp $
+## $Id$
 ##
 
 TOPDIR =	../..
