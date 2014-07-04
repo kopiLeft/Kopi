@@ -1,0 +1,730 @@
+= Visual Kopi documentation	
+:doctype: book
+
+[preface]
+PREFACE
+-------
+As mentioned previously, the Visual Kopi framework makes it easy to set up form based applications connected to databases. +
+A form is a program written in a VF file with a specefic structure and may contain various items.
+By the end of this chapter, we would have detailed the skelton of a Kopi form and explained how to create one.
+
+== Generalities
+
+The aim of Kopi is to enable you to create applications. An application is made up of forms. A *form* is a set of *pages* consisting of *blocks*. A *block* is nothing else than a table which is divided into columns (vertical) and rows (horizontal). A row is made up of *fields*, and each *field* contains a data value at the intersection of a row and a column that can be of different *Types*. Here are some general terms you will often use when creating a form: 
+
+=== The Simple And The Qualified Names
+
+When setting up your own application, you will often have to enter a name in order to define either a field, a block, a page or a form. You will then have to make use of either a simple or a qualified name.
+
+A SimpleName consists of a character row in which neither spaces nor points are permitted.
+
+*Syntax:*
+[source,java]
+-----------------
+SimpleName: 
+-----------------
+*Example*
+[source,java]
+-----------------
+StudentGroup2
+-----------------
+A QualifiedName is a row of characters in which points are allowed.
+[source,java]
+-----------------
+QualifiedName: SimpleName [.[.QualifiedName ]
+QualifiedNameList: QualifiedName  [,QualifiedNameList,,QualifiedNameList]
+------------------
+*Example*
+[source,java]
+------------------
+StudentGroup2.ViennaUniversity
+------------------
+
+=== Predifined Field Types 
+
+In visual kopi, a field's type can be one of the 12 ready to use predifined types : 
+
+[source,java]
+----
+- Fixnum Field Type
+- Image Field Type
+- Integer Field Type
+- String Field Type
+- Text Field Type
+- DATE
+- BOOL
+- COLOR
+- MONTH
+- TIME
+- TIMESTAMP
+- WEEK
+----
+
+==== The STRING Field Type
+
+A STRING is used to enter characters which can be either letters, numbers or both. The width has always to be given. Moreover, you can optionaly indicate how many lines it will contain and how many will finally be displayed on the form. If these optional arguments are used, you have to indicate the carraige return method by specifying either the FIXED ON or the FIXED OFF option to avoid compilation errors. +
+There are also three other options you can use in order to modify the String's case : 
+
+- CONVERT NAME  (Converts the first letter of each word to capital letter)
+- CONVERT UPPER (Convert the whole text to capital letters)
+- CONVERT LOWER (Converts the whole text to normal letters)
+
+*Syntax:*
+ 	
+[source,java]
+----
+StringType:  STRING (integer width ,integer height ,integer visible height)
+             [FixedOption]
+             [StringFormat] 
+              
+FixedOption:  FIXED ON
+              FIXED OFF             
+
+StringFormat:   CONVERT UPPER
+                CONVERT LOWER
+                CONVERT NAME 
+----
+
+*Example*
+ 	
+[source,java]
+----
+STRING (40,10,4)
+FIXED ON
+CONVERT UPPER
+----
+
+In this example, the text inserted will contain up to 40 characters and up to 10 lines. However, only the first 4 lines will be displayed on the form. Moreover, All the letters in the text will be converted to capital letters.
+
+==== The TEXT Field Type
+
+A Text and a String are similar apart from the fact that in a text, two parameters have always to be given: namely the width and the height of the field whereas you only need to determine the width in a string.
+
+*Syntax:*
+ 	
+[source,java]
+----
+TextType:   TEXT (integer width ,integer  height,integer visible height )
+             [FixedOption]
+
+[FixedOption]: FIXED ON
+               FIXED OFF
+----
+
+For example, you can write STRING (40, 10, 4) or STRING (40) but you have to write TEXT (40, 10) or TEXT (40, 10, 4).
+
+==== The IMAGE Field Type
+
+This fieldtype is used to insert an illustration or a picture. When introducing an IMAGE, you have to determine its width and height. These values have to be integers and are measured in pixel. In this case, the two attributes are compulsory.
+
+*Syntax:*
+ 	
+[source,java]
+----
+ImageType:   IMAGE (integer whidth , integer height )
+----
+*Example:*
+ 	
+[source,java]
+----
+IMAGE(20,10) 
+----
+In this field, the image will have a width of 20 pixel and a height of 10 pixel.
+
+==== The Fixnum Field Type 
+
+A FIXNUM is used to insert numbers, integers, fixed point numbers. Fraction numbers are entered with the fieldtype FRACTION. The maximal width has to be determined for all them. In case of a fixed point number FIXNUM, the maximal scale i.e the number of characters standing after the comma has also to be defined. Also the comma has to be counted as a character. Only the width is to be defined in a FRACTION.
+You can also set the minimum and the maximum values for the fixnum field with the optional parameters MINVAL and MAXVAL.
+
+*Syntax:*
+ 	
+[source,java]
+----
+FixedType:   FIXED (integer width,integer scale )
+             [MINVAL fixed]
+             [MAXVAL fixed]   
+             
+             FRACTION (integer width )
+             [MINVAL fixed]
+             [MAXVAL fixed]   
+----
+
+*Example*
+ 	
+[source,java]
+----
+FIXED(4,2)       for 1,25
+  MINVAL 0
+  MAXVAL 3.0 
+    
+ 
+FRACTION(7)      for 1 35/64 
+  MINVAL 0
+  MAXVAL 25
+----
+
+==== The Integer Field Type
+
+Integer field type is  LONG is used to insert integers. Only the text width is to be defined. The MINVAL and MAXVAL options are also available for this type.
+
+*Syntax:*
+ 	
+[source,java]
+----
+IntegerType:   LONG (integer width )
+               [MINVAL integer ]
+               [MAXVAL integer ]   
+----
+
+*Example*
+ 	
+[source,java]
+----
+LONG(6)
+MINVAL 0
+MAXVAL 100 
+----
+
+indexterm:[DATE]
+
+==== The Type DATE
+
+This type is used to insert a date.
+indexterm:[BOOL]
+
+==== The Type BOOL
+
+This type is used to insert a true or false value.
+indexterm:[COLOR]
+
+==== The Type COLOR
+
+This type is used to determine the field color.
+indexterm:[MONTH]
+
+==== The Type MONTH
+
+This type is used to insert months.
+indexterm:[TIME]
+
+==== The Type TIME
+
+This type is used to insert a hour:minutes time value
+indexterm:[WEEK]
+
+==== The Type TIMESTAMP
+
+This type is used to insert a timestamp value.
+indexterm:[WEEK]
+
+==== The Type WEEK
+
+This type is used to insert the different weeks of the year.
+indexterm:[LIST]
+
+=== Code Field Types
+
+In addition to the predifined field types already available in visual kopi, you can define more specific types which are the ENUM type and the CODE type. Unlike the predifined field types, these types have to be set in the Type definition type of the form before you can use them in the fields.
+
+==== The Type ENUM
+
+An ENUM means enumeration or listing. An enum definition is made up of one or several strings and only the strings you have listed can be entered in the field.
+
+*Syntax:*
+ 	
+[source,java]
+----
+EnumType:   ENUM (EnumList )
+
+EnumList:   String [, EnumList ]
+----
+
+*Example*
+ 	
+[source,java]
+----
+ENUM ("X-Small","Small","Medium", "Large", "X-Large" )
+----
+indexterm:[CODE]
+
+==== The Type CODE 
+
+There are four different sorts of CODE: ::
+* The CODE BOOL
+* The CODE LONG
+* The CODE FIXED 
+* The CODE STRING
+
+These codes enable you tpare place in your database. Actually, only the values you have assigned to each item you have entered will be saved in the database.
+
+===== The Type CODE BOOL
+
+In a CODE BOOL or BOOLEAN you have to assign a Boolean value to the item you have entered. Boolean values are such unvariable values like "True" or "False" and "Yes" or "No".
+
+*Syntax:*
+ 	
+[source,java]
+----
+CodeBooleanType:   CODE BOOL IS CodeBooleanList  END CODE
+
+CodeBooleanList:   CodeBoolean  [CodeBooleanList]
+
+CodeBoolean:   String code  = Boolean value
+----
+
+*Example*
+ 	
+[source,java]
+----
+CODE BOOL IS
+  "married" = true
+  "single" = false
+END CODE
+----
+
+===== The Type CODE LONG
+
+In a CODE LONG, you assign to each item you have entered a LONG value.
+
+*Syntax:*
+ 	
+[source,java]
+----
+CodeIntegerType:   CODE LONG IS CodeIntegerList  END CODE
+
+CodeIntegerList:   CodeInteger  [CodeIntegerList]
+
+CodeInteger:   String code  = Integer value 
+----
+
+*Example*
+ 	
+[source,java]
+----
+CODE LONG IS
+    "Monday" = 1
+    "Tuesday" = 2
+    "Wednesday" = 3
+    "Thursday" = 4
+    "Friday" = 5
+    "Saturday" = 6
+    "Sunday" = 7
+END CODE
+----
+
+===== The Type CODE FIXED
+
+In a CODE FIXED, each item you have entered will get a FIXED value, i.e integers, fixed point numbers and fraction numbers.
+
+*Syntax:*
+ 	
+[source,java]
+----
+CodeFixedType:   CODE FIXED IS [CodeFixedList] END CODE
+
+CodeFixedList:   CodeFixed  [CodeFixedList]
+  
+CodeFixed:   String code  = Fixed value
+----
+*Example*
+ 	
+[source,java]
+----
+CODE FIXED IS
+  "piece" = 1.00
+  "per cent" = 0.01
+END CODE
+----
+
+
+===== The Type CODE STRING
+
+In a CODE STRING, each item you have entered will get a STRING value, this can be useful for abreviations of long strings for example.
+
+*Syntax:*
+ 	
+[source,java]
+----
+CodeStringType:   CODE STRING IS [CodeStringType] END CODE
+
+CodeStringType:   CodeString  [CodeStringType]
+  
+CodeString:   String code = String value
+----
+*Example*
+ 	
+[source,java]
+----
+CODE STRING IS
+  "JDK" = "Java Development Kit"
+  "JRE" = "Java Runtime Environment"
+END CODE
+----
+
+=== The LIST command
+
+Once you have defined a fieldtype, you can make use of the LIST command in order to refer the user to a list or a table in the database which will help him when filling in the form in question. If you refer a fieldtype to a certain table, the field will get an icon on which you can click in order to retrieve this table. As this command connects the user with a certain table, you have to enumerate all columns of the table which information could be helpful for the user. In so doing, you will then have to enter at least one column. The information contained in the first element of the list must have the same standard type as the defined type as it is the one which will be entered in the field in question. In addition, you may choose to refer to an existing form (that should extend the VDictionaryForm class) using either the NEW command to get a button on buttom of the list allowing you to get to the refered form, or the ACCESS command to bypass the list and get directly to the refered form.
+
+
+
+*Syntax:*
+ 	
+[source,java]
+----
+
+List:   LIST TableReference [NEW | ACESS QualifiedName ] 
+        IS ListColumns 
+        END LIST
+        
+
+        
+TableReference: SimpleName table
+
+ListColumns:   ListColumn  [ListColumns]
+
+ListColumn:   String field = SimpleName column : Predifined Field Type   
+
+----
+
+This command is usualy used when defining a new type, here is an example where we define the Lecturer Type as a STRING(8) value from the Symbol field of the "Lecturer" table on the database, when clicking on a field of Type Lecturer, you will have a list with three columns (Symbol, Surname and Lesson) retreived from the "Lecturer table". Selecting a line from this list will put the symbol value in the field.
+
+*Example*
+ 	
+[source,java]
+----
+TYPE Lecturer IS
+  STRING (8)
+  CONVERT UPPER
+
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
+  END LIST
+...
+END TYPE
+----
+
+=== The SELECT command
+
+As you had the possibility to call up a list or a table from the database with the option LIST, you now can make Kopi sort out information from a whole list or a table which the option SELECT and this, according to criteria you have to define. Let’s say you want to view the degrees which can be achieved in a certain year. For this, you have to use the SELECT command as you see in the following lines:
+
+*Example*
+ 	
+[source,java]
+----
+TYPE CurrentDegree (Integer year) IS
+     STRING (8)
+       CONVERT UPPER
+  LIST{(
+        SELECT Symbol, Description
+        FROM   Degree
+        WHERE Year = : (year)
+        )} IS
+
+        "Symbol" = Symbol : STRING (8)
+        "Description" = Description : STRING (40)
+  END LIST
+END TYPE
+----
+"Degree" is the database table to which we have to access in order to select the information. The command SELECT is used in order to enter the columns in which Kopi has to make its research. After FROM, you have to enter the table from which these columns are to be selected and after WHERE, you have to enter the conditions according to which this selection has to be carried out.
+
+The sign "=" means the value of the data delivered after the selection must correspond to the conditions you have entered.
+The sign ":" inserts one Java expression. After this Java expression, you can insert a SQL expression again. (See JLS 15.27)
+Finally, you have to define for each of them the fieldtype. 
+
+As a result of your selection, you will then have a table with two columns which will contain the different sorts of degrees achievable in the year you have entered.
+
+
+== Visual Kopi forms
+
+There are actualy two types of forms in kopi, normal forms and BLOC INSERT forms wich are special forms containing blocks that you may insert in other forms. + 
+A form begins always with FORM and ends with END FORM, while a BLOC INSERT form begins with BLOC INSERT and ends with END INSERT. When creating a form, you will have to include the block and the field definitions. Moreover, you will have to define the menus as well as the different commands. Finally, you can also define some form triggers. Concretely, the structure is the following:
+
+
+*Syntax:*
+[source,java] 
+-----------------
+[LOCALE String formLocalization]
+
+FORM:  FORM String formTitle [  IS  QualifiedName  IMPLEMENTES QualifiedName[,[,QualifiedName]  ]
+
+    {
+      PackageDeclaration;
+      [ImportDeclaration];
+    }
+
+    [MenuDefinition]
+
+    [ActorDefinition]
+
+    [TypeDefinition]
+
+    [CommandDefinition]
+
+[InsertDefinition]
+
+BEGIN
+
+    [FormOptions]
+
+    [FormCommands]
+
+    [FormsTriggers]
+
+    [BlocksDefinition]
+
+  {
+    ContextFooter
+  }
+
+END FORM
+
+----
+=== Form Localization
+
+This is an optional step in wich you may define the language of your forms menus and messages, the latter have to be defined in xml files.
+
+*Syntaxe:*
+[source,java]
+----
+LOCALE String formLocalization
+----
+*Example:*
+[source,java]
+----
+LOCALE "en_EN"
+-----
+
+=== Form Title
+
+Every form have to begin with the keywork FORM that you can follow with a title (optional).
+
+*Syntaxe:*
+[source,java]
+----
+FORM String formTitle 
+----
+
+*Example*
+ 	
+[source,java]
+----  
+FORM "List of the Lecturers"
+  ...
+  END FORM
+----
+
+=== Form Superclass And Interfaces
+
+==== Superclass
+
+*Syntax:*
+ 	
+[source,java]
+----  
+SuperForm:   IS QualifiedName 
+----
+Every form is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
+
+*Example:*
+ 	
+[source,java]
+----  
+FORM "Service Register" IS VReportSelectionForm
+----
+In another words, the class declaration you have just made specifies the direct superclass of the current class.
+
+==== Interfaces
+
+You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superinterfaces of the class being declared. Thus, you will have the following structure:
+
+*Syntaxe:*
+
+[source,java]
+----
+FORM String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
+----
+
+*Example:*
+ 	
+[source,java]
+----  
+FORM "Record registering" IS VPrintSelectionForm
+  IMPLEMENTS Constants
+  ...
+END FORM
+----
+
+=== Form Header
+
+*Syntax:*
+ 	
+[source,java]
+----  
+ContextHeader:   { PackageDeclaration  ImportDeclarations  }
+
+PackageDeclaration:   <As defined in JLS 7.4> 
+ImportDeclarations:   <As defined in JLS 7.5> 
+----
+The package definition is contained in the header. It consists in defining where this form belongs to i.e which application, which firm or which person it is related to.
+
+*Example*
+ 	
+[source,java]
+----  
+FORM "List of the Lecturers"
+  {
+  package at.dms.apps.timetable;
+  }
+  ...
+END FORM
+----
+In this example, the form belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+
+*Example*
+ 	
+[source,java]
+----  
+FORM "List of the Lecturers"
+  {
+    package at.dms.apps.tb;
+
+    import java.util.Hashtable
+    import java.util.Vector
+  }
+   ...
+END FORM
+----
+
+=== Menu Definition
+
+Defining a menu means adding an entry to the menu bar in the top of the form, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
+
+*Syntax:*
+ 	
+[source,java]
+----  
+MenuDefinition:   MENU SimpleName [LABEL String label]   END MENU 
+----
+
+*Example*
+ 	
+[source,java]
+---- 
+FORM "List of the Lecturers"
+
+  {
+    package at.dms.apps.tb;
+  }
+  
+  MENU File
+    LABEL "file"
+  END MENU
+...
+END FORM
+----
+
+=== Actor Definition
+
+An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accecible from the menu bar.
+ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.
+
+
+*Syntax:*
+ 	
+[source,java]
+----  
+ActorDefinition:  ACTOR SimpleName  MENU  SimpleName  [LABEL String label]
+                  HELP  String helpText  [KEY   String key]     [ICON  String icon]
+                  END ACTOR
+----
+
+*Example*
+ 	
+[source,java]
+---- 
+FORM "List of the Lecturers"
+
+  {
+    package at.dms.apps.tb;
+  }
+  
+  MENU File
+    LABEL "file"
+  END MENU
+  
+  
+  ACTOR cut
+    MENU  File
+    LABEL "cut"
+    HELP  "cut element" 
+    ICON	"CutIcon"
+  END ACTOR
+...
+END FORM
+----
+
+=== Type Definition
+
+After having defined your menus and actor, you can enter the different field types and field lists definitions.
+
+*Syntax:*
+----
+TypeDefinition:  TYPE SimplName IS FieldType [FieldList] END TYPE
+----
+
+*Example*
+ 	
+[source,java]
+----  
+FORM "List of the Lecturers"
+  {
+    package at.dms.apps.tb;
+  }
+  TYPE Name IS
+    STRING (20,10,4)
+    CONVERT UPPER
+  END TYPE
+
+  TYPE Lesson IS
+    LONG (11)
+    MINVAL 0
+    MAXVAL 100
+  END TYPE
+  
+  TYPE Answer IS
+    CODE BOOL IS
+    	"Yes"	= TRUE
+    	"No"  = FALSE
+    END CODE
+  END TYPE
+  
+  TYPE Months IS
+    ENUM("January", "February", "March", "April")
+  END TYPE 
+  
+  TYPE CurrentDegree (Integer year) IS
+     STRING (8)
+       CONVERT UPPER
+  LIST{(
+        SELECT Symbol, Description
+        FROM   Degree
+        WHERE Year = : (year)
+        )} IS
+
+        "Symbol" = Symbol : STRING (8)
+        "Description" = Description : STRING (40)
+  END LIST
+END TYPE
+    
+  ...
+END FORM
+----
+
+=== Command Definition
+
+
+
+
