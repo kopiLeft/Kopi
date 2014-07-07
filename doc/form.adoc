@@ -406,7 +406,7 @@ TYPE Lecturer IS
 END TYPE
 ----
 
-=== The SELECT command
+==== The SELECT command
 
 As you had the possibility to call up a list or a table from the database with the option LIST, you now can make Kopi sort out information from a whole list or a table which the option SELECT and this, according to criteria you have to define. Let’s say you want to view the degrees which can be achieved in a certain year. For this, you have to use the SELECT command as you see in the following lines:
 
@@ -437,7 +437,7 @@ Finally, you have to define for each of them the fieldtype.
 As a result of your selection, you will then have a table with two columns which will contain the different sorts of degrees achievable in the year you have entered.
 
 
-== Visual Kopi forms
+== Visual Kopi Forms
 
 There are actualy two types of forms in kopi, normal forms and BLOC INSERT forms wich are special forms containing blocks that you may insert in other forms. + 
 A form begins always with FORM and ends with END FORM, while a BLOC INSERT form begins with BLOC INSERT and ends with END INSERT. When creating a form, you will have to include the block and the field definitions. Moreover, you will have to define the menus as well as the different commands. Finally, you can also define some form triggers. Concretely, the structure is the following:
@@ -476,13 +476,15 @@ BEGIN
     [BlocksDefinition]
 
   {
-    ContextFooter
+    [ContextFooter]
   }
 
 END FORM
 
 ----
-=== Form Localization
+=== Form Definition
+
+==== Form Localization
 
 This is an optional step in wich you may define the language of your forms menus and messages, the latter have to be defined in xml files.
 
@@ -497,7 +499,7 @@ LOCALE String formLocalization
 LOCALE "en_EN"
 -----
 
-=== Form Title
+==== Form Title
 
 Every form have to begin with the keywork FORM that you can follow with a title (optional).
 
@@ -516,9 +518,9 @@ FORM "List of the Lecturers"
   END FORM
 ----
 
-=== Form Superclass And Interfaces
+==== Form Superclass And Interfaces
 
-==== Superclass
+===== Superclass
 
 *Syntax:*
  	
@@ -536,7 +538,7 @@ FORM "Service Register" IS VReportSelectionForm
 ----
 In another words, the class declaration you have just made specifies the direct superclass of the current class.
 
-==== Interfaces
+===== Interfaces
 
 You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superinterfaces of the class being declared. Thus, you will have the following structure:
 
@@ -557,7 +559,7 @@ FORM "Record registering" IS VPrintSelectionForm
 END FORM
 ----
 
-=== Form Header
+==== Form Header
 
 *Syntax:*
  	
@@ -598,7 +600,7 @@ FORM "List of the Lecturers"
 END FORM
 ----
 
-=== Menu Definition
+==== Menu Definition
 
 Defining a menu means adding an entry to the menu bar in the top of the form, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
 
@@ -626,7 +628,7 @@ FORM "List of the Lecturers"
 END FORM
 ----
 
-=== Actor Definition
+==== Actor Definition
 
 An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accecible from the menu bar.
 ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.
@@ -637,7 +639,7 @@ ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign t
 [source,java]
 ----  
 ActorDefinition:  ACTOR SimpleName  MENU  SimpleName  [LABEL String label]
-                  HELP  String helpText  [KEY   String key]     [ICON  String icon]
+                  HELP  String helpText  [KEY   String key] [ICON  String icon]
                   END ACTOR
 ----
 
@@ -666,13 +668,14 @@ FORM "List of the Lecturers"
 END FORM
 ----
 
-=== Type Definition
+==== Type Definition
 
-After having defined your menus and actor, you can enter the different field types and field lists definitions.
+After having defined your menus and actor, you enter different field types and field lists definitions based on the predifined field types or code field types, you can also use the LIST and SELECT commands
+to customize these new types. 
 
 *Syntax:*
 ----
-TypeDefinition:  TYPE SimplName IS FieldType [FieldList] END TYPE
+TypeDefinition:  TYPE SimplName IS FieldType  [FieldList] END TYPE
 ----
 
 *Example*
@@ -705,25 +708,217 @@ FORM "List of the Lecturers"
     ENUM("January", "February", "March", "April")
   END TYPE 
   
-  TYPE CurrentDegree (Integer year) IS
-     STRING (8)
-       CONVERT UPPER
-  LIST{(
-        SELECT Symbol, Description
-        FROM   Degree
-        WHERE Year = : (year)
-        )} IS
+TYPE Lecturer IS
+  STRING (8)
+  CONVERT UPPER
 
-        "Symbol" = Symbol : STRING (8)
-        "Description" = Description : STRING (40)
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
   END LIST
+...
 END TYPE
     
   ...
 END FORM
 ----
 
-=== Command Definition
+==== Command Definition
+
+In this section you may want to define new commands, to do so, all you need is an already defined Actor from wich you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
+every command have a effective ray of action (VField, VBlock, VForm)
+
+ * Calling a function with the CALL command
+ * Calling a function outside of the form using the EXTERN command
+ * Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VField, VBlock, VForm. 
+
+Command Defined in this section can be form level commands, block level commands or field level commands, this will depend on the action called by the command and where the command is actualy called.
+ 
+*Syntax*
+[source,java]
+----
+commandDefinition: COMMAND QualifiedName ITEM SimpleName commandBody END COMMAND
+
+commandBody: CALL SimpleName || EXTERN QualifiedName || ACTION [(VField SimpleName || VBlock SimpleName || VForm SimpleName)] {KOPI_JAVA statements}
+----
+
+
+*Example*
+
+Calling a local action :
+
+[source,java]
+----
+COMMAND Preveiw
+  ITEM  Preview
+  CALL  previewForm
+END COMMAND
+----
+
+*Example*
+Calling an extern action : 
+
+[source,java]
+----
+COMMAND SaveBlock
+  ITEM Save
+  EXTERN com.company.vlib.form.Commands.SaveBlock
+END COMMAND
+----
+
+*Example*
+Writing the action's body :
+
+[source,java]
+----
+COMMAND PrintBlock
+  ITEM  PrintBlock
+  ACTION (VBlock b){
+    b.validate();
+    b.getForm().close (VForm.CDE-Validate);  
+  }
+END COMMAND
+----
+
+==== Insert Definition
+This command allows you to actualy define your types, menus, actors, commands in a seperate file, and then insert it in any form you want, thus avoiding rewriting recurent definitions. You still can add definition before or after using the INSERT command.
+
+*Syntax* 
+[source,java]
+----
+Insert Definition : INSERT String filePath
+----
+
+*Example*
+[source,java]
+----
+FORM "List of Students"
+ 
+  {
+  package at.dms.app.application
+  }
+   
+  INSERT "Global.vf"
+  
+  TYPE Lesson IS
+    LONG(11)
+  END TYPE
+
+...  
+END FORM    
+  
+----
+
+=== Form Declaration
+
+After the different definitions we have made (types, menus, actors,commands), we need to begin the declaration of our form.Here, we will set up the structure and the behaviour of the form throw 4 sections :
+
+ * Form Options
+ * Form Commands
+ * Form Triggers
+ * Blocks
+
+==== Form Options Declaration
+
+There is currently only two form option in Visual Kopi, namely the NO MOVE and the NO BLOCK MOVE OPTION.
+
+NOTE: to be completed 
+
+==== Form Command Declaration
+
+In this section you may call the commands you want your form to have.You can call commands you already defined in the command definition section :
+
+*Example*
+[source,java]
+----
+BEGIN
+
+COMMAND Preview
+COMMAND PrintBlock
+----
+
+You can also make use of Kopi's ready command such as :
+
+----
+BEGIN
+
+COMMAND HelpForm
+COMMAND QuitForm
+----
+
+Moreover, you can define your command in this section the same way you did in the command definition section, it will be both a definition and a declaration.
+
+There still one more think to know about form command declaration, in fact, you can also control the accecibility to a command by the Mode of the form.+
+A form have 3 possible Modes :
+
+ *QUERY  : When inquiring the database
+ *INSERT : When inserting a row in the database
+ *UPDATE : When updating a row in the database
+
+The Syntax to use command with modes is the following :
+
+*Syntax*
+----
+ON ModeName [,[,ModeName] COMMAND SimpleName
+----
+NOTE : untested, to verify !!
+
+==== Form Triggers Definition
+Form Triggers are special events that once switched on you can execute a set of actions defined by the following syntax :
+
+*Syntax*
+----
+FormTrigger:    FormEventList TriggerAction
+FormEventList:  FormEvent [,[,FormEvent]
+----
+
+Kopi actualy defines 6 Form Triggers or Form Events : 
+ 
+ * INIT      : executed when initializing the form and before the PREFORM Trigger, also executed at ResetForm command
+ * PREFORM   : executed before the form is displayed and after the INIT Trigger, not executed at ResetForm command
+ * POSTFORM  : executed when closing the form
+ * QUITFORM  : executed (to be completed)
+ * RESET     : executed upon ResetForm command
+ * CHANGED   : a special trigger that returns a boolean value of wether the form have been changed or not, you can use it to bypass the system control for changes this way : 
+----
+ Changed {
+ return false;
+ }
+----
+
+*Example*
+----
+INIT{
+System.out.println("Trigger INIT fired");
+// KOPI_JAVA statements
+}
+----
+
+NOTE: To be completed !! 
+
+==== Form Pages 
+
+You can create Pages in your form using the NEW PAGES command after the trigger declaration section,this is optional and will create a Tab for each page you create under the form's toolbar.
+You can put as much blocks you want in each page, the same goes for form without pages.
+
+*Example*
+----
+ NEW PAGE "Page1"
+----
+ 
+==== Form Blocks
+
+After the Triggers declaration section you will have to define your forms blocks.
+
+ 
+
+
+
+
+
+
 
 
 
