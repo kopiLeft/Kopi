@@ -4,8 +4,8 @@
 [preface]
 PREFACE
 -------
-As mentioned previously, the Visual Kopi framework makes it easy to set up form based applications connected to databases. +
-A form is a program written in a VF file with a specefic structure and may contain various items.
+The Visual Kopi framework makes it easy to set up form based applications connected to databases. +
+A form is a program written in file with the vf extension that have a specefic structure and may contain various items.
 By the end of this chapter, we would have detailed the skelton of a Kopi form and explained how to create one.
 
 == Generalities
@@ -51,13 +51,13 @@ In visual kopi, a field's type can be one of the 12 ready to use predifined type
 - Integer Field Type
 - String Field Type
 - Text Field Type
-- DATE
-- BOOL
-- COLOR
-- MONTH
-- TIME
-- TIMESTAMP
-- WEEK
+- DATE       // used to insert a date value
+- BOOL       // used to insert a true or false value 
+- COLOR      // used to set the fields color
+- MONTH      // used to insert years months value
+- TIME       // used to insert a hours:minutes time value
+- TIMESTAMP  // used to insert a timestamp value
+- WEEK       // used to insert years weeks  value
 ----
 
 ==== The STRING Field Type
@@ -115,7 +115,7 @@ For example, you can write STRING (40, 10, 4) or STRING (40) but you have to wri
 
 ==== The IMAGE Field Type
 
-This fieldtype is used to insert an illustration or a picture. When introducing an IMAGE, you have to determine its width and height. These values have to be integers and are measured in pixel. In this case, the two attributes are compulsory.
+This fieldtype is used to insert an illustration or a picture. When introducing an IMAGE, you have to determine its width and height. These values have to be integers and are measured in pixel. In this case, the two attributes are compulsory.The field will look like a file chooser that lets you choose and image file to show in the field.
 
 *Syntax:*
  	
@@ -185,42 +185,6 @@ MINVAL 0
 MAXVAL 100 
 ----
 
-indexterm:[DATE]
-
-==== The Type DATE
-
-This type is used to insert a date.
-indexterm:[BOOL]
-
-==== The Type BOOL
-
-This type is used to insert a true or false value.
-indexterm:[COLOR]
-
-==== The Type COLOR
-
-This type is used to determine the field color.
-indexterm:[MONTH]
-
-==== The Type MONTH
-
-This type is used to insert months.
-indexterm:[TIME]
-
-==== The Type TIME
-
-This type is used to insert a hour:minutes time value
-indexterm:[WEEK]
-
-==== The Type TIMESTAMP
-
-This type is used to insert a timestamp value.
-indexterm:[WEEK]
-
-==== The Type WEEK
-
-This type is used to insert the different weeks of the year.
-indexterm:[LIST]
 
 === Code Field Types
 
@@ -335,7 +299,6 @@ CODE FIXED IS
   "per cent" = 0.01
 END CODE
 ----
-
 
 ===== The Type CODE STRING
 
@@ -467,8 +430,6 @@ FORM:  FORM String formTitle [  IS  QualifiedName  IMPLEMENTES QualifiedName[,[,
 
 BEGIN
 
-    [FormOptions]
-
     [FormCommands]
 
     [FormsTriggers]
@@ -540,7 +501,7 @@ In another words, the class declaration you have just made specifies the direct 
 
 ===== Interfaces
 
-You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superinterfaces of the class being declared. Thus, you will have the following structure:
+You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
 
 *Syntaxe:*
 
@@ -554,7 +515,7 @@ FORM String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName
 [source,java]
 ----  
 FORM "Record registering" IS VPrintSelectionForm
-  IMPLEMENTS Constants
+  IMPLEMENTS VConstants
   ...
 END FORM
 ----
@@ -820,12 +781,6 @@ After the different definitions we have made (types, menus, actors,commands), we
  * Form Triggers
  * Blocks
 
-==== Form Options Declaration
-
-There is currently only two form option in Visual Kopi, namely the NO MOVE and the NO BLOCK MOVE OPTION.
-
-NOTE: to be completed 
-
 ==== Form Command Declaration
 
 In this section you may call the commands you want your form to have.You can call commands you already defined in the command definition section :
@@ -891,12 +846,12 @@ Kopi actualy defines 6 Form Triggers or Form Events :
 *Example*
 ----
 INIT{
-System.out.println("Trigger INIT fired");
+System.out.println("Trigger INIT activated");
 // KOPI_JAVA statements
 }
 ----
 
-NOTE: To be completed !! 
+NOTE: To be completed for QUITFORM Trigger !! 
 
 ==== Form Pages 
 
@@ -910,15 +865,137 @@ You can put as much blocks you want in each page, the same goes for form without
  
 ==== Form Blocks
 
-After the Triggers declaration section you will have to define your forms blocks.
+After the Triggers declaration section you will have to define your forms blocks, as you already know, a form is composed of blocks. A block is a set of data which are stocked in the database and shown on a form. A block is created in order to either view the content of a database, to insert new data in the database or to update existing data in the database. A Block will always begin with BLOCK and end with BLOCK END, when defining a block, you have to proceed according to the following structure.
 
+*Syntax*
+[source,java]
+----
+BlockDeclaration:  BLOCK (Integer buffer, Integer rows) SimpleName:SimpleName String blockTitle
+                   [IS QualifiedName] [IMPLEMENTS  [,[QualifiedName]]
+                   blockBodyDeclaration
+                   END BLOCK
+  
+blockBodyDeclaration:  [blockBoder] [blockAlignement] [blockHelp] [blockOptions] [blockTables]  
+                       [blocIndices] [blockCommands] [blockTriggers] blocFields
+                       [blockContextFooter]                     
+----
+
+===== Block Types
+
+There are actualy two types of blocks in Visual Kopi, the only diffrence between them in the definition syntax is the buffer Integer.
+
+ * single blocks
+ * Multiple Blocks
  
+A single block is a block in which only one single row of a database table is displayed on the form. Each time, the computer will memorize only one entire row and a certain quantity of ID numbers through which it will retrieve another rows from the database if you want to view them.
+
+*Example*
+[source,java]
+----
+BLOCK (1,5)
+...
+END BLOCK
+----
+The first integer indicates the block type. In case of a single block, the first integer will always be 1. The second integer indicates the maximal number of the automatically memorized IDs.
+
+A multiple block is a block in which more than one row are displayed on the form. These rows are retrieved all at once from the database and are memorized by the computer. Actually, you can define the number of the displayed rows which can be less than this of the memorized rows. In this case, there will be no need anymore to retrieve the hidden rows from the database when you want to view them.
+
+*Example*
+[source,java]
+----
+BLOCK (10,5)
+...
+END BLOCK
+----
+The first integer indicates the number of rows to be automatically memorized while the second defines the number of displayed rows. Notice the first integer value must always be greater than 1.
+ 
+===== Block Names
+
+The name of the block is composed  SimpleName name followed by a colon and a SimpleName shortcut, finaly, you have to specify a String for the Block title.
+
+*Example*
+[source,java] 
+----
+BLOCK (10,5) Degree:D "Degree Block"
+----
+
+===== Block superClass and Interface
+
+A Block may extend a superClass and implements one or more Interface.
+
+*Example*
+[source,java]
+----
+BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock IMPLEMENTS VConstants
+----
+
+===== Block Border
+
+After the Block name and implementation clause, you can insert the optional border statment that defines the Block's frame type. Besides, the Title of the block will appear only if the Block's Border type has been specified. There are actualy four Border options :
+
+* BORDER LINE to frame the block with lines.
+* BORDER RAISED to enhance a block by setting it on the foreground.
+* BORDER LOWERED to put it at the background.
+* BORDER ETCHED to carve a frame in the form.
+
+NOTE : To be Modified 
 
 
+*Example*
+[source,java]
+----
+BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock IMPLEMENTS VConstants
+BORDER RAISED
+----
 
+===== Block Alignement
 
+Alignement statments are usuful to align a block(source block) refering to another one(target block), after the keyword ALIGN, you have to specifiy the refered block name folowed by one or many sets of two integers separated by a minus, the sets are separated by a comma. As for the integers signification, the one in the left of the minus is the source block column number while the other one is for the target block column number.
+For Example, let us suppose we have a multiple block Prices with 4 columns, with column 3 filled with Quanitities and Column 4 whith Prices, we also have a single block TotalPrices with two fields totalQuantity and TotalPrices, we want these fields to be aligned with the correct columns of the Prices block:
 
+ *Example*
+ [source,java]
+----
+BLOCK (10,5) Prices : P "Prices Block"
+BORDER LINE
+...
+END BLOCK
 
+BLOCK (1,1) TotalPrices : TP "TotalPrice"
+BORDER LINE
+ALIGN Prices <1-3, 2-4>
+...
+END BLOCK
+----
+
+===== Block Help
+
+This optional command is used to define the help-text for each field of the block. The different texts are to be entered after the word HELP.
+
+*Example*
+ 	
+[source,java]
+----
+BLOCK (10,5) Degree: D "Degree Block"
+  BORDER LINE
+  HELP "The degree the student will target at the end of a year"
+  ...
+END BLOCK
+----
+
+===== Block Options
+
+In this optional section you can insert commands with restrictional functions towards the users, the available commands that you can use are :
+
+ * NO CHART : Disables the chart(grid) rendering of a multiple bloc to make it look like a single block.Only possible on multiple blocks displaying only one line, Besides the fields must be positioned with the AT command.
+  * NO DETAIL : Disables the positioning of fields and displays the block as a chart (grid), Only possible on multiple blocks, the fields should not be positioned with the AT command.
+ * NO DELETE :  Prevent the user from removing fields centent.
+ * NO INSERT :  Prevent the user from inserting data in fields.
+ * NO MOVE   :  Prevent the user from moving between records.
+ * ACCESS ON SKIPPED : Makes the block accessible even if or its fields have SKIPPED access. 
+ * UPDATE INDEX : If used, saving a block would delete all its rows and reinsert them one by one, by doing so, you can update the table rows even when you change the index fields without worrying about the "row already exist exception".
+ 
+ NOTE : To test UPDATE INDEX, To check NO DELETE 
 
 
 
