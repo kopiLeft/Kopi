@@ -901,7 +901,6 @@ vkForm []
   String                title = null;
   String                ident;
   CReferenceType        superForm = null;
-  int                   opt = 0;
   TokenReference        sourceRef = buildTokenReference();	// !!! add comments;
   VKParseFormContext    context = VKParseFormContext.getInstance(environment);
 }
@@ -925,7 +924,6 @@ vkForm []
   vkContextHeader[context.getCompilationUnitContext()]
   vkDefinitions[context.getDefinitionCollector(), context.getCompilationUnitContext().getPackageName().getName()]
   "BEGIN"
-  ( opt = vkFormOptions[] )?
   ( vkFormCommands[context] )?
   ( vkFormTriggers[context] )?
   vkBlocks[context]
@@ -941,29 +939,12 @@ vkForm []
                         getLocale(),
                         superForm,
                         context.getInterfaces(),
-                        opt,
                         context.getCommands(),
                         context.getTriggers(),
                         context.getElements(),
                         context.getPages());
       context.release();
     }
-;
-
-vkFormOptions []
-  returns [int self]
-{
-  self = 0;
-}
-:
-    "NO"
-    (
-      "MOVE"
-        { self |= com.kopiright.vkopi.lib.form.VConstants.FMO_NOMOVE; }
-    |
-      "BLOCK" "MOVE"
-        { self |= com.kopiright.vkopi.lib.form.VConstants.FMO_NOBLOCKMOVE; }
-    )
 ;
 
 vkFormEvent []

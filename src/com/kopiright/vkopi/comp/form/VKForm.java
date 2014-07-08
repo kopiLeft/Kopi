@@ -65,7 +65,6 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 		String locale,
 		CReferenceType superForm,
 		CReferenceType[] interfaces,
-		int options,
 		VKCommand[] commands,
 		VKTrigger[] triggers,
 		VKFormElement[] blocks,
@@ -79,7 +78,7 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
           locale,
 	  superForm == null ? CReferenceType.lookup(VKConstants.VKO_FORM) : superForm,
 	  interfaces,
-	  options,
+	  0,  // forms have no options
 	  commands,
 	  triggers);
 
@@ -126,10 +125,6 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
 
     for (int i = 0; i < blocks.length; i++) {
       blocks[i].checkCode(context, this);
-    }
-
-    if ((getOptions() & com.kopiright.vkopi.lib.form.VConstants.FMO_NOBLOCKMOVE) > 0) {
-      throw new InconsistencyException("OLD AND NOT HANDLED");
     }
   }
 
