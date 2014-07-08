@@ -996,6 +996,156 @@ In this optional section you can insert commands with restrictional functions to
  * UPDATE INDEX : If used, saving a block would delete all its rows and reinsert them one by one, by doing so, you can update the table rows even when you change the index fields without worrying about the "row already exist exception".
  
  NOTE : To test UPDATE INDEX, To check NO DELETE 
+ 
+ ===== Block Tables
+ 
+ When making use of this option, you have to type the command TABLE and enter the table name followed by a comma and by the synomym of this table name. This synonym will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called "look-up tables", i.e tables that are associated with the first one.
+
+*Syntax:*
+ 	
+[source,java]
+----
+BlockTables:   TABLE <SimpleName  , SimpleName > [BlockTables]
+----
+
+*Example*
+ 	
+[source,java]
+----
+TABLE <Lessons,L>
+TABLE <Lecturers, P>
+TABLE <Rooms, R>
+----
+
+The user will make use of these look-up tables as references
+when bringing in changes in the principal table.
+
+===== Block Indexes
+
+If you plan to enter one index or more when defining your fields, you also have to define one index text or more which will appear if you make a mistake by entering an indexed data or a data combination twice. This command can be followed by an error message contained in a string.
+
+*Syntax:*
+ 	
+[source,java]
+----
+BlockIndices:   INDEX String message  [BlockIndices]
+----
+
+*Example*
+ 	
+[source,java]
+----
+BLOCK (10,5) Degree : D "Degree"
+ BORDER LINE
+ INDEX "This data already exists"
+ ...
+END BLOCK
+
+===== Block Commands
+
+Block commands are commands accessible only from the bloc where they are called. There are Three ways to call block commands:
+
+====== Calling A Standard Command
+
+There are 5 possible structures:
+
+* COMMAND QualifiedName : to call commands defined in the Command Definition form or Kopi predifined commands +
+
+*Example
+[source,java]
+----
+    COMMAND ResetBlock
+----
+* COMMAND ITEM SimpleName CALL SimpleName END COMMAND : to create a command that calls an internal function +
+
+*Example*
+[source,java]
+----    	
+    COMMAND
+      ITEM Save
+      CALL Save
+    END COMMAND
+----
+* COMMAND ITEM SimpleName EXTERN Qualified Name END COMMAND : to create a command that calls a function located in onother form +
+
+*Example*
+     	
+[source,java]
+----
+    COMMAND
+      ITEM SharesOfExpenses
+      EXTERN Costing
+    END COMMAND
+----
+* COMMAND ITEM SimpleName ACTION (VBlock SimpleName) {Kopi-Java Code} END COMMAND : to create a command and fill its Action body with KOPI_JAVA code +
+
+*Example*
+[source,java]
+----
+    COMMAND
+      ITEM End
+      ACTION (VBlock b) {
+       b.validate ();
+       close (CDE_VALIDATE)
+      }
+    END COMMAND
+----
+* COMMAND ITEM SimpleName ACTION {Kopi-Java Code} END COMMAND : to create a command and fill its Action body with KOPI_JAVA code +
+
+*Example*
+[source,java]
+----    	
+    COMMAND
+      ITEM Validate
+      ACTION {
+       validate ();
+      }
+    END COMMAND
+----
+
+====== Calling The Block Commands With The Modes
+
+Blocks have 3 possible Modes: 
+ * QUERY  : When querying the database
+ * INSERT : When inserting a new row in the database
+ * UPDATE : When updating rows in the database
+
+You can combine these modes with the previous block command structure to have more controle over your command
+*Syntax*
+[source,java]
+----
+ON BlockMode COMMAND
+----
+This means that the command called is only accessible when the block is in the specified Mode.
+
+*Example*
+[source,java]
+----
+ON QUERY, UPDATE COMMAND InsertMode
+----
+
+====== Calling The Block Commands With The Modes And An Access Modifier
+
+in Kopi, a field have different access types:
+ 
+ * HIDDEN : HIDDEN field are invisible in the form, they are used to store hidden operations and database joins.
+ * SKIPPED : SKIPPED fields are read only fields, you can read the value but you can't modify it.
+ * MUSTFILL : MUSTFILL fields are accessible fields that the user must fill with a value.
+ * VISIT : fields with this access type are accessible, can be modified but not necessary.
+
+If you use this method, you have to replace the command with the access modifier so that you will have the following structure: ON Mode(s) AccessModifier. Considering the hierarchical classification of a block (MUSTFILL, VISIT, SKIPPED and at last HIDDEN), you can define the highest level the fields in a block can have according to the mode in which the block would be.
+
+*Example*
+[source,java]
+----
+ON QUERY, UPDATE SKIPPED
+----
+
+In this example, all fields in the block will be either SKIPPED or HIDDEN in the query and update modes and can neither be MUSTFILL nor VISIT.
+
+===== Block Triggers
+
+
 
 
 
