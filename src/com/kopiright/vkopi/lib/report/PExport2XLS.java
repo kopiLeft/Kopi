@@ -57,6 +57,7 @@ public class PExport2XLS extends PExport implements Constants {
     datatype = new int[getColumnCount()];
     dataformats = new short[getColumnCount()];
     widths = new short[getColumnCount()];
+    cellStyleCacheManager = new CellStyleCacheManager();
   }
 
   public void export(OutputStream out ) {
@@ -151,7 +152,7 @@ public class PExport2XLS extends PExport implements Constants {
 
     cellPos = 0;
     for (int j = 0; j < strings.length; j++) {
-      HSSFCellStyle       cellStyle =  wb.createCellStyle();
+      HSSFCellStyle       cellStyle =  cellStyleCacheManager.getDefaultStyle(wb);
       HSSFCell            cell = row.createCell((short)cellPos);
 
       if (strings[j] != null && orig[j] != null) {
@@ -228,7 +229,8 @@ public class PExport2XLS extends PExport implements Constants {
       default:
         throw new InconsistencyException("Unkown alignment");
       }
-      cell.setCellStyle(cellStyle);
+      
+      cellStyleCacheManager.setCellStyle(wb, cell, cellStyle);
       cellPos++;
     }
     rowNumber += 1;
@@ -327,4 +329,7 @@ public class PExport2XLS extends PExport implements Constants {
   private short[]               		dataformats;
   private short[]               		widths;
   private int                   		sheetIndex;
+  
+  // cell style cache
+  private CellStyleCacheManager			cellStyleCacheManager;
 }
