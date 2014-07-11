@@ -1,0 +1,616 @@
+= Visual Kopi documentation	: Dynamic Reports
+:doctype: book
+
+== Visual Kopi Reports
+
+Visual Kopi allows you to create dynamic reports. These are  files with the ".vr" extension that have a very simple structure, in fact, all you have to do to create such reports
+is to list the definitions of all the fields you need, then you will have to write a constructor that will load data into these fields.
+The so created reports will have dynamic functions such as sorting and group making, you will also be able to print it or export to different file formats.You can even add other fields
+to the report after it's generated, do more calculus, customize the report columns...
+The Visual Kopi Reports are generated from Visual Kopi form files with the "vf" extension by different methods that we will see in this chapter, along with the process of making a
+dynamic report.
+
+=== Creating Report Fields
+
+As we said in the introduction, the report structure is based on report fields, these fields begin with FIELD  and a SimpleName and ends with END FIELD and have the following syntax :
+
+*Syntax*
+[source,java]
+----
+ReportFieldDefinition: FIELD [(Integer MultiField)] SimpleName [FieldLabel]
+                       [HelpText] FieldType [FieldAlign] [FieldOptions] [GroupCommand]
+                       [FieldCommands] [FieldTriggers]
+                       END FIELD
+GroupCommands        : GROUP SimpleName
+----
+
+==== Single Field and Multiple Fields
+
+When you define a news report field, you have the choice to make it multiple by adding an integer (i) just after the FIELD command, doing so will create i fields.
+The generated fields will have the SimpleName indicated after the FIELD command plus a number from 1 to i.
+
+*Example*
+[source,java]
+----
+FIELD(3) Name
+...
+END FIELD
+----
+In this example we have created 3 fields (Name1, Name2 and Name3).
+
+====  Report Field Label
+
+The field label is the name that will be shown in the dynamic report, you can define a label by entering the LABEL command followed by String separated with a comma. If you omit the Strings after the LABEL command, the field 
+will have its SimpleName as label. You can also specify NO LABEL if you want your field to have no label at all.
+If you specify more than one String after the LABEL command, then if your field is Single it will have the first String as label, otherwise, if it's a multiple field each generated field will have a label 
+from the Strings by order.
+
+*Example*
+[source,java]
+----
+FIELD Name
+LABEL "Person Name"
+...
+END FIELD
+
+
+FIELD(3) LastName
+LABEL "Name1", "Name2", "Name3"
+...
+END FIELD
+
+
+FIELD Age
+LABEL
+...
+END FIELD
+
+
+FIELD ID
+NO LABEL
+...
+END FIELD
+---- 
+
+==== Report Field Help Text
+
+HELP is used to insert an explanation text for the application user . This Help text will then be displayed when the user places the mouse on the report field.
+
+*Example*
+[source,java]
+----
+FIELD Name
+  LABEL
+  HELP *"The Person's First Name"
+  ...
+END FIELD
+----
+
+==== Report Field Type
+
+The field type is a required entry, you may enter a predifined field type :
+
+*Example*
+[source,java]
+----
+FIELD Name
+  LABEL
+  STRING(10)
+END FIELD
+
+
+FIELD Age
+  LONG(3)
+END FIELD
+----
+
+You can also use self defined field types that you have previously defined in the type definition section of your report.
+
+*Example*
+[source,java]
+----
+FIELD objectList
+  LABEL
+  TYPE Objects
+END FIELD
+----
+
+In this example, Objects is a type you should have defined previously in type definition section of the report using standard types, CODE types, ENUM types, LIST and SELECT command ...
+
+==== Report Field Alignment
+
+This command is used to define the localization of the field's content inside the field. There are three types of alignment.
+
+* ALIGN RIGHT the value is displayed at the right inside the field
+* ALIGN LEFT the value is displayed at the left inside the field
+* ALIGN CENTER the value is centered in the field
+
+*Example*
+[source,java]
+----
+FIELD Name
+  LABEL
+  STRING(10)
+  ALIGN CENTER
+END FIELD
+----
+
+==== Report Field Options
+
+There is actually only one option for the dynamic report fields in Kopi: the HIDDEN OPTION , if this option is used on a field, he will not be visible the the report.
+This options have to be used on the last visible field of the report to avoid rendering bugs.
+
+*Example*
+[source,java]
+----
+FIELD Name
+  LABEL
+  STRING(10)
+  HIDDEN
+END FIELD
+----
+
+The field Name will not be visible on the report.
+
+==== Report Field Group
+
+You can create clickable groups in your report by using the keyword GROUP in you field followed by the field you want to be grouped by the actual field.
+
+*Example*
+[source,java]
+----
+FIELD Customers
+  LABEL
+  STRING(5)
+END FIELD
+
+FIELD Articles
+  LABEL
+  STRING(10)
+END FIELD
+
+FIELD InvoiceNum
+  LABEL
+  STRING(10)
+  GROUP Articles
+  GROUP Customers
+END FIELD
+----
+
+In this report, you can click on the InvoiceNum field to group customers and articles.
+
+==== Report Field Command
+
+In report Fields, you can call commands with one of the following syntaxes :
+
+
+[source,java]
+----
+    COMMAND QualifiedName  // can be a Kopi predifined command or a new defined one in the+
+                              report command definition section  
+    Example
+    
+    COMMAND ExportCsv 
+----
+
+Or: 
+   
+[source,java]
+---- 
+    COMMAND ITEM SimpleName CALL SimpleName END COMMAND
+
+    Example
+     	
+    COMMAND
+      ITEM Export
+      CALL function
+    END COMMAND
+----
+Or: 
+   
+[source,java]
+----
+    COMMAND ITEM SimpleName EXTERN QualifiedName END COMMAND
+    
+    Example
+    
+    COMMAND 
+      ITEM Export
+      EXTERN function
+    END COMMAND
+----
+Or:
+
+[source,java]
+----
+    COMMAND ITEM SimpleName ACTION (VReportColulmn SimpleName) {Kopi-Java Code} 
+    END COMMAND
+----
+Or:
+[source,java]
+----
+    COMMAND ITEM SimpleName ACTION {Kopi-Java Code} 
+    END COMMAND 
+----
+
+==== Report Field Triggers
+
+Report field triggers are special events that you can catch to execute other actions.
+
+*Syntax*
+[source,java]
+----
+Trigger      : EventList TrigerAction
+
+EventList    : Event [,EventList]
+
+TrigerAction : SimpleName | EXTERN QualifiedName | {KOPI_JAVA code} |
+                         (VReportColulmn SimpleNAme){KOPI_JAVA code} 
+----
+
+Here is the two triggers available for report fields :
+
+ * FORMAT  : 
+ * COMPUTE : executed when the report is displayed and can be used to compute expressions on the report columns and show the result.
+
+*Example*
+[source,java]
+----
+FIELD Price
+  LABEL
+  FIXNUM(9, 4)
+  COMPUTE  EXTERN ReportTriggers.sumFixed	
+END FIELD
+  
+FIELD 
+  LABEL
+  STRING(10)
+  FORMAT 
+END FIELD  
+----
+NOTE : To complete for FORMAT TRIGGER
+
+=== Creating Reports
+
+Visual Kopi Dynamic reports have a unique structure that begin with REPORT and ends with END REPORT as described by the following syntax :
+
+*Syntax*
+[source,java]
+----
+ReportDefinition  : [ReportLocalization] REPORT ReportTitle [IS QualifiedName] 
+                   [IMPLEMENTS  [,[QualifiedName]]
+                   [ContextHeader] [ReportHelp] [ReportDefinitions]
+                   BEGIN [ReportCommands] [ReportTriggers] [ReportFields]
+                   [ContextFooter]
+                   END FIELD
+
+ReportTitle       :  String Title
+
+ReportDefinitions : [MenuDefinition] [ActorDefinition] [TypeDefinition]
+                    [CommandDefinition]
+                    [InsertDefinition]
+----
+
+ 
+===== Report Localization
+
+This is an optional step in which you may define the language of your forms menus and messages, the latter have to be defined in xml files.
+
+*Example:*
+[source,java]
+----
+LOCALE *  en_EN"
+-----
+
+===== Report Title
+
+Every Report have to begin with the keyword REPORT that you have to follow with a title.
+
+
+*Example*
+ 	
+[source,java]
+----  
+REPORT "Invoices"
+  ...
+END REPORT
+----
+
+===== Form Superclass And Interfaces
+
+-*Superclass:*
+
+*Syntax:*
+ 	
+[source,java]
+----  
+SuperClass:   IS QualifiedName 
+----
+Every Report is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
+
+*Example:*
+ 	
+[source,java]
+----  
+FORM *  Service Register" IS VReport
+----
+In other words, the class declaration you have just made specifies the direct superclass of the current class.
+
+-*Interfaces:*
+
+You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
+
+*Syntaxe:*
+
+[source,java]
+----
+FORM String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
+----
+
+*Example:*
+ 	
+[source,java]
+----  
+FORM *  Record registering" IS VPrintSelectionForm
+  IMPLEMENTS VConstants
+  ...
+END FORM
+----
+
+===== Form Header
+
+*Syntax:*
+ 	
+[source,java]
+----  
+ContextHeader:   { PackageDeclaration  ImportDeclarations  }
+
+PackageDeclaration:   <As defined in JLS 7.4> 
+ImportDeclarations:   <As defined in JLS 7.5> 
+----
+The package definition is contained in the header. It consists in defining where this form belongs to i.e which application, which firm or which person it is related to.
+
+*Example*
+ 	
+[source,java]
+----  
+FORM *  List of the Lecturers"
+  {
+  package at.dms.apps.timetable;
+  }
+  ...
+END FORM
+----
+In this example, the form belongs to the DMS firm and is a part of the application called *  timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+
+*Example*
+ 	
+[source,java]
+----  
+FORM *  List of the Lecturers"
+  {
+    package at.dms.apps.tb;
+
+    import java.util.Hashtable
+    import java.util.Vector
+  }
+   ...
+END FORM
+----
+
+===== Menu Definition
+
+Defining a menu means adding an entry to the menu bar in the top of the form, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
+
+*Syntax:*
+ 	
+[source,java]
+----  
+MenuDefinition:   MENU SimpleName [LABEL String label]   END MENU 
+----
+
+*Example*
+ 	
+[source,java]
+---- 
+FORM *  List of the Lecturers"
+
+  {
+    package at.dms.apps.tb;
+  }
+  
+  MENU File
+    LABEL *  file"
+  END MENU
+...
+END FORM
+----
+
+===== Actor Definition
+
+An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accecible from the menu bar.
+ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.
+
+
+*Syntax:*
+ 	
+[source,java]
+----  
+ActorDefinition:  ACTOR SimpleName  MENU  SimpleName  [LABEL String label]
+                  HELP  String helpText  [KEY   String key] [ICON  String icon]
+                  END ACTOR
+----
+
+*Example*
+ 	
+[source,java]
+---- 
+FORM *  List of the Lecturers"
+
+  {
+    package at.dms.apps.tb;
+  }
+  
+  MENU File
+    LABEL *  file"
+  END MENU
+  
+  
+  ACTOR cut
+    MENU  File
+    LABEL *  cut"
+    HELP  *  cut element" 
+    ICON	"CutIcon"
+  END ACTOR
+...
+END FORM
+----
+
+===== Type Definition
+
+After having defined your menus and actor, you enter different field types and field lists definitions based on the predifined field types or code field types, you can also use the LIST and SELECT commands
+to customize these new types. 
+
+*Syntax:*
+----
+TypeDefinition:  TYPE SimplName IS FieldType  [FieldList] END TYPE
+----
+
+*Example*
+ 	
+[source,java]
+----  
+FORM *  List of the Lecturers"
+  {
+    package at.dms.apps.tb;
+  }
+  TYPE Name IS
+    STRING (20,10,4)
+    CONVERT UPPER
+  END TYPE
+
+  TYPE Lesson IS
+    LONG (11)
+    MINVAL 0
+    MAXVAL 100
+  END TYPE
+  
+  TYPE Answer IS
+    CODE BOOL IS
+    	"Yes"	= TRUE
+    	"No"  = FALSE
+    END CODE
+  END TYPE
+  
+  TYPE Months IS
+    ENUM("January", *  February", *  March", *  April")
+  END TYPE 
+  
+TYPE Lecturer IS
+  STRING (8)
+  CONVERT UPPER
+
+  LIST *  Lecturer" IS
+    *  Symbol" = Symbol : STRING (8)
+    *  Name" = Name : STRING (40)
+    *  Surname" = Surname : STRING (40)
+    *  Lesson" = Lesson : STRING (20)
+  END LIST
+...
+END TYPE
+    
+  ...
+END FORM
+----
+
+===== Command Definition
+
+In this section you may want to define new commands, to do so, all you need is an already defined Actor from wich you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
+every command have a effective ray of action (VField, VBlock, VForm)
+
+ * Calling a function with the CALL command
+ * Calling a function outside of the form using the EXTERN command
+ * Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VField, VBlock, VForm. 
+
+Command Defined in this section can be form level commands, block level commands or field level commands, this will depend on the action called by the command and where the command is actualy called.
+ 
+*Syntax*
+[source,java]
+----
+commandDefinition: COMMAND QualifiedName ITEM SimpleName commandBody END COMMAND
+
+commandBody: CALL SimpleName || EXTERN QualifiedName || ACTION [(VField SimpleName || VBlock SimpleName || VForm SimpleName)] {KOPI_JAVA statements}
+----
+
+
+*Example*
+
+Calling a local action :
+
+[source,java]
+----
+COMMAND Preveiw
+  ITEM  Preview
+  CALL  previewForm
+END COMMAND
+----
+
+*Example*
+Calling an extern action : 
+
+[source,java]
+----
+COMMAND SaveBlock
+  ITEM Save
+  EXTERN com.company.vlib.form.Commands.SaveBlock
+END COMMAND
+----
+
+*Example*
+Writing the action's body :
+
+[source,java]
+----
+COMMAND PrintBlock
+  ITEM  PrintBlock
+  ACTION (VBlock b){
+    b.validate();
+    b.getForm().close (VForm.CDE-Validate);  
+  }
+END COMMAND
+----
+
+===== Insert Definition
+This command allows you to actualy define your types, menus, actors, commands in a seperate file, and then insert it in any form you want, thus avoiding rewriting recurent definitions. You still can add definition before or after using the INSERT command.
+
+*Syntax* 
+[source,java]
+----
+Insert Definition : INSERT String filePath
+----
+
+*Example*
+[source,java]
+----
+FORM *  List of Students"
+ 
+  {
+  package at.dms.app.application
+  }
+   
+  INSERT *  Global.vf"
+  
+  TYPE Lesson IS
+    LONG(11)
+  END TYPE
+
+...  
+END FORM    
+  
+----
+
+
+
+
+
+
