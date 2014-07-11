@@ -6,7 +6,7 @@
 The aim of Kopi is to enable you to create applications. An application is made up of forms. A *form* is a set of *pages* consisting of *blocks*. A *block* is nothing else than a table which is divided into columns (vertical) and rows (horizontal). A row is made up of *fields*, and each *field* contains a data value at the intersection of a row and a column that can be of different *Types*.
 By the end of this chapter, you will learn how to create a form, but before, you need to learn how to create a field and how to form blocks.
 
-=== Creating Fields
+=== Creating Form Fields
 
 In Visual Kopi, a fields are containers in wich you can define different types of data. A field definition begins with an access modifier followed by an optional SimpleName and ends with END FIELD.
 
@@ -159,7 +159,7 @@ HelpText:   String HelpText
 ----
 MUSTFILL Lesson
   LABEL
-  HELP *  The lesson you would like to attend"
+  HELP   "The lesson you would like to attend"
   ...
 END FIELD
 ----
@@ -193,22 +193,22 @@ SKIPPED objectList
 END FIELD
 ----
 
-In this example, Objects is a type you should have defined previouslyin type definition section of the form using standard types, CODE types, ENUM types, LIST and SELECT command ...
+In this example, Objects is a type you should have defined previously in type definition section of the form using standard types, CODE types, ENUM types, LIST and SELECT command ...
 
 ==== Field Alignment
 
-This command is used to define the localization of the field on the form. There are three types of alignment.
+This command is used to define the localization of the field's content inside the field. There are three types of alignment.
 
-* ALIGN RIGHT in order to shift the field into the right side of the form,
-* ALIGN LEFT to move it to the left side,
-* ALIGN CENTER to place it in the middle. 
+* ALIGN RIGHT the value is displayed at the right inside the field
+* ALIGN LEFT the value is displayed at the left inside the field
+* ALIGN CENTER the value is centered in the field
 
 *Example*
 [source,java]
 ----
 VISIT field
 LABEL
-TYPE FIXNUM(9, 4)
+FIXNUM(9, 4)
 ALIGN CENTER
 ----
 
@@ -228,34 +228,34 @@ ExtentionList      :  String extension [,[ExtenstionList]
 VISIT images
 LABEL
 STRING(20)
-DROPPABLE("pdf", *  jpeg", *  tif", *  tiff")
+DROPPABLE("pdf", "jpeg", "tif", "tiff")
 END FIELD
 ----
-In this example, you can drag image files and drop them in the fiel named *  images".
+In this example, you can drag image files and drop them in the field named "images".
 
 
 ==== Field Options
  
-In this part of the field definintion, you can use one or more option from the 10 options available for fields in Kopi, here is the a list of these field options.
+In this part of the field definition, you can use one or more option from the 10 options available for fields in Kopi, here is the a list of these field options.
 
  * NOECHO               : If this option is used, characters typed in the field will not be displayed and a star(*) will be displayed instead, this option is useful for password fields.
  * NOEDIT               : This option makes it impossible to change the data of the field or to overwrite it.
  * SORTABLE             : This option adds two opposed arrows icons(up and down) just before the field, clicking on the icon changes the way data are sorted in the field, you can click the icon three times to have ascending sort, descending sort and default sort, 
  * TRANSIENT            : This option make the field transient, meaning intrailable, if a transaction  calls this field and then this transaction is aborted, the field will not be able to backup or rollback to its original value, besides this option makes changes ignored for this field.
  * NO DELETE ON UPDATE  : If the field is a lookup is a column of a lookup table, using this option prevent the system to clear the field when inserting new rows or updating rows.
- * NO DETAIL            : If the block is in detailed, using this option on a field make it invesible in the detail.
+ * NO DETAIL            : If the block is in detailed, using this option on a field make it invisible in the detail.
  * NO CHART             : If the block is multiple, using this option on a field exclude it from the chart. 
- * QUERY UPPER          : Whatever the string you inuput, this option will make kopi transform it to capital letters.
- * QUERY LOWER          : the oposite of the previous option it transform strings to lowercase.
+ * QUERY UPPER          : Whatever the string you input, this option will make kopi transform it to capital letters.
+ * QUERY LOWER          : the oposit of the previous option it transform strings to lowercase.
 
 *Example*
 [source,java]
 ----
 VISIT name
-LABEL
-STRING(10)
-QUERY LOWER
-NOECHO
+  LABEL
+  STRING(10)
+  QUERY LOWER
+  NOECHO
 END FIELD
 ----
 
@@ -407,7 +407,7 @@ Once you have defined the columns , you may define the field commands. There are
 
  * Standard Field Commands (no Modes)
  * Commands using Modes
- * Access modifers using Modes 
+ * Access modifiers using Modes 
 
 *Syntax:*
  	
@@ -623,7 +623,7 @@ END FIELD
 IS is used to equate a field with another one. In this example, the field "Firm" is equated with the field "F.ID".That means that the Firm field will always have the same value as the F.ID field. 
 
 
-=== Creating Blocks
+=== Creating Form Blocks
 
 As you already know, a form is composed of blocks. A block is a set of data which are stocked in the database and shown on a form. A block is created in order to either view the content of a database, to insert new data in the database or to update existing data in the database. A Block will always begin with BLOCK and end with BLOCK END, when defining a block, you have to proceed according to the following structure.
 
@@ -1034,7 +1034,7 @@ END FORM
 
 ===== Form Localization
 
-This is an optional step in wich you may define the language of your forms menus and messages, the latter have to be defined in xml files.
+This is an optional step in which you may define the language of your forms menus and messages, the latter have to be defined in xml files.
 
 *Syntaxe:*
 [source,java]
@@ -1044,12 +1044,12 @@ LOCALE String formLocalization
 *Example:*
 [source,java]
 ----
-LOCALE *  en_EN"
+LOCALE "en_EN"
 -----
 
 ===== Form Title
 
-Every form have to begin with the keywork FORM that you can follow with a title (optional).
+Every form have to begin with the keyword FORM that you can follow with a title (optional).
 
 *Syntaxe:*
 [source,java]
@@ -1061,7 +1061,7 @@ FORM String formTitle
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+FORM  "Lecturers List"
   ...
   END FORM
 ----
@@ -1084,7 +1084,7 @@ Every form is a class that may extend another Java class by using the optional k
 ----  
 FORM *  Service Register" IS VReportSelectionForm
 ----
-In another words, the class declaration you have just made specifies the direct superclass of the current class.
+In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
 -*Interfaces:*
 
