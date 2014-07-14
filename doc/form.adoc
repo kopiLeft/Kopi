@@ -113,7 +113,7 @@ VISIT Email
   ...
 END FIELD
 ----
-If you enter a new field with this option (in this case it would be the field *  Email"), it means that this field will be placed directly next to the first field defined by the FOLLOW command (field *  Name") on the same row. The two fields will then form one single column.
+If you enter a new field with this option (in this case it would be the field "Email"), it means that this field will be placed directly next to the first field defined by the FOLLOW command (field "Name") on the same row. The two fields will then form one single column.
 
 ===== Field label
 
@@ -137,7 +137,7 @@ END FIELD
 
 SKIPPED secondName
 FOLLOW firstName
-LABEL *  The second Name","Onother Label for this field"
+LABEL "The second Name","Onother Label for this field"
 ...
 END FIELD
 
@@ -317,22 +317,22 @@ Integers:   Integer index  [Integers]
 
 If two or more fields are given the same index value, it means that two similar combinations of these field values will not be accepted.
 
-For example, two different lessons cannot be given in the same room. In this case, the three fields, namely the fields *  professor", *  time" and *  lesson" are to be attributed the same index. Thus, at least one of the three values needs to be changed so that the combination can be accepted by the machine. 
+For example, two different lessons cannot be given in the same room. In this case, the three fields, namely the fields "professor", "time" and "lesson" are to be attributed the same index. Thus, at least one of the three values needs to be changed so that the combination can be accepted by the machine. 
 
 *Example*
  	
 [source,java]
 ----
-MUSTFILL *  Lesson"
+MUSTFILL "Lesson"
   LABEL 
-  HELP *  The lesson you have to attend to"
+  HELP "The lesson you have to attend to"
   LONG (11)
   COLUMN (LEC.Lesson)  
   INDEX 0
 END FIELD
 
 
-VISIT *  Lecturer"
+VISIT "Lecturer"
   LABEL
   LONG(11)
   COLUMN (LES.Lecturer)
@@ -340,40 +340,40 @@ VISIT *  Lecturer"
 END FIELD
 
 
-MUSTFILL *  Time"
+MUSTFILL "Time"
   STRING(11)
   COLUMN (LES.Time)
   INDEX 0
 END FIELD
 ----
-However, this example would implicate a professor can give two different lessons at the same time. In order to avoid such errors, you can attribute one field two or more indexes. So you can associate the two fields *  professor" and *  time" together. Thus, you will have: 
+However, this example would implicate a professor can give two different lessons at the same time. In order to avoid such errors, you can attribute one field two or more indexes. So you can associate the two fields "professor" and "time" together. Thus, you will have: 
 
 *Example*
  	
 [source,java]
 ----
-MUSTFILL *  Lesson"
+MUSTFILL "Lesson"
   LABEL 
-  HELP *  The lesson you have to attend to"
+  HELP "The lesson you have to attend to"
   LONG (11)
   COLUMN (LEC.Lesson)
 INDEX 0
 END FIELD
 
-VISIT *  Lecturer"
+VISIT "Lecturer"
   LABEL
   LONG
   COLUMN (T.Lecturer)
   INDEX 0 1
 END FIELD
 
-MUSTFILL *  Time"
+MUSTFILL "Time"
   STRING
   COLUMN (LEC.Time)
   INDEX 1
 END FIELD
 ----
-In this case, notice that the *  Lecturer"-field has been associated 
+In this case, notice that the "Lecturer"-field has been associated 
 with two indexes: 0 and 1.
 
 NOTE: The index value is ascendant. When attributing an index value to a field combination, you shall always take the value nexting that you have taken the last.
@@ -393,9 +393,9 @@ We shall notice that negative values are also permitted in this option. However,
 *Example*
  	
 
-If columns *  Surname", *  Name" and *  Date of Birth" are 
-respectively given the priorities 3,4 and 1, *  Name" will come
-first and will be followed by *  Surname" and *  Date of Birth".
+If columns "Surname", "Name" and "Date of Birth" are 
+respectively given the priorities 3,4 and 1, "Name" will come
+first and will be followed by "Surname" and "Date of Birth".
 The same order applies with the values 3, -4 and 1, with the only
 difference that the names will be sorted out from Z to A.
 
@@ -676,7 +676,7 @@ The name of the block is composed  SimpleName name followed by a colon and a Sim
 *Example*
 [source,java] 
 ----
-BLOCK (10,5) Degree:D *  Degree Block"
+BLOCK (10,5) Degree:D "Degree Block"
 ----
 
 ==== Block superClass and Interface
@@ -686,7 +686,7 @@ A Block may extend a superClass and implements one or more Interface.
 *Example*
 [source,java]
 ----
-BLOCK (10,5) Degree:D *  Degree Block" IS VImportedBlock IMPLEMENTS VConstants
+BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock IMPLEMENTS VConstants
 ----
 
 ==== Block Border
@@ -704,7 +704,7 @@ NOTE : To be Modified
 *Example*
 [source,java]
 ----
-BLOCK (10,5) Degree:D *  Degree Block" IS VImportedBlock IMPLEMENTS VConstants
+BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock IMPLEMENTS VConstants
 BORDER RAISED
 ----
 
@@ -716,12 +716,12 @@ For Example, let us suppose we have a multiple block Prices with 4 columns, with
  *Example*
  [source,java]
 ----
-BLOCK (10,5) Prices : P *  Prices Block"
+BLOCK (10,5) Prices : P "Prices Block"
 BORDER row
 ...
 END BLOCK
 
-BLOCK (1,1) TotalPrices : TP *  TotalPrice"
+BLOCK (1,1) TotalPrices : TP "TotalPrice"
 BORDER row
 ALIGN Prices <1-3, 2-4>
 ...
@@ -736,9 +736,9 @@ This optional command is used to define the help-text for each field of the bloc
  	
 [source,java]
 ----
-BLOCK (10,5) Degree: D *  Degree Block"
+BLOCK (10,5) Degree: D "Degree Block"
   BORDER row
-  HELP *  The degree the student will target at the end of a year"
+  HELP "The degree the student will target at the end of a year"
   ...
 END BLOCK
 ----
@@ -753,13 +753,13 @@ In this optional section you can insert commands with restrictional functions to
  * NO INSERT :  Prevent the user from inserting data in fields.
  * NO MOVE   :  Prevent the user from moving between records.
  * ACCESS ON SKIPPED : Makes the block accessible even if or its fields have SKIPPED access. 
- * UPDATE INDEX : If used, saving a block would delete all its rows and reinsert them one by one, by doing so, you can update the table rows even when you change the index fields without worrying about the *  row already exist exception".
+ * UPDATE INDEX : If used, saving a block would delete all its rows and reinsert them one by one, by doing so, you can update the table rows even when you change the index fields without worrying about the "row already exist exception".
  
  NOTE : To test UPDATE INDEX, To check NO DELETE 
  
  ==== Block Tables
  
- When making use of this option, you have to type the command TABLE and enter the table name followed by a comma and by the synomym of this table name. This synonym will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called *  look-up tables", i.e tables that are associated with the first one.
+ When making use of this option, you have to type the command TABLE and enter the table name followed by a comma and by the synomym of this table name. This synonym will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called "look-up tables", i.e tables that are associated with the first one.
 
 *Syntax:*
  	
@@ -795,9 +795,9 @@ BlockIndices:   INDEX String message  [BlockIndices]
  	
 [source,java]
 ----
-BLOCK (10,5) Degree : D *  Degree"
+BLOCK (10,5) Degree : D "Degree"
  BORDER row
- INDEX *  This data already exists"
+ INDEX "This data already exists"
  ...
 END BLOCK
 ----
@@ -918,10 +918,10 @@ The block triggers are the same as form triggers on the block level. There are a
  BlocEventList: BlockEvent [,[BlockEvent]
  ----
 
-Concerning the trigger action, wich is the action to execute when the trigger is activated they can by :
+Concerning the trigger action, which is the action to execute when the trigger is activated they can by :
 
  * a local function   : SimpleName
- * an extern function : EXTERN QualifiedName
+ * an external function : EXTERN QualifiedName
  * {KOPI_JAVA code}
  * (VBlock SimpleName){KOPI_JAVA code} 
 
@@ -953,7 +953,7 @@ Here is a list of all available block trigger in Kopi.
  }
  ----
 
- * ACCESS  : defines wether a block can or not be accessed, it must always return a boolean value
+ * ACCESS  : defines whether a block can or not be accessed, it must always return a boolean value
  
  ----
   ACCESS{
@@ -965,9 +965,9 @@ Here is a list of all available block trigger in Kopi.
   *Examples*
  [source,java]
  ----
- BLOCK (10,5) Degree : D *  Degree"
+ BLOCK (10,5) Degree : D "Degree"
  BORDER row
- INDEX *  This data already exists"
+ INDEX "This data already exists"
  COMMAND ResetForm
  
  INIT,PREBLK{
@@ -981,15 +981,20 @@ Here is a list of all available block trigger in Kopi.
 END BLOCK
  ----
  
+==== Block Fields Declaration
+
+In this section, all you have to do is to write at least on block field definition that begins with an access modifier and ends with END FIELD, you can enter as much fields as you may need
+following the field definition we saw in the previous chapter.
+ 
 ==== Block Context Footer
 
 In this section of the block, you can write local functions, define inner classes, override command actions, define your data members.
-The elements you write in the block Context Footer are accessible in the concerned block and are writen in KOPI_JAVA code.
+The elements you write in the block Context Footer are accessible in the concerned block and are written in KOPI_JAVA code.
   
  
 === Creating Forms 
 
-There are actualy two types of forms in kopi, normal forms and BLOC INSERT forms wich are special forms containing blocks that you may insert in other forms. + 
+There are actualy two types of forms in kopi, normal forms and BLOC INSERT forms which are special forms containing blocks that you may insert in other forms. + 
 A form begins always with FORM and ends with END FORM, while a BLOC INSERT form begins with BLOC INSERT and ends with END INSERT. When creating a form, you will have to include the block and the field definitions. Moreover, you will have to define the menus as well as the different commands. Finally, you can also define some form triggers. Concretely, the structure is the following:
 
 
@@ -1082,13 +1087,13 @@ Every form is a class that may extend another Java class by using the optional k
  	
 [source,java]
 ----  
-FORM *  Service Register" IS VReportSelectionForm
+FORM "Service Register" IS VReportSelectionForm
 ----
 In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
 -*Interfaces:*
 
-You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
+You can also specify interfaces which the form may implement by using the IMPLEMENTS option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
 
 *Syntaxe:*
 
@@ -1101,7 +1106,7 @@ FORM String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName
  	
 [source,java]
 ----  
-FORM *  Record registering" IS VPrintSelectionForm
+FORM "Record registering" IS VPrintSelectionForm
   IMPLEMENTS VConstants
   ...
 END FORM
@@ -1124,20 +1129,20 @@ The package definition is contained in the header. It consists in defining where
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+FORM "List of the Lecturers"
   {
   package at.dms.apps.timetable;
   }
   ...
 END FORM
 ----
-In this example, the form belongs to the DMS firm and is a part of the application called *  timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+In this example, the form belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
 
 *Example*
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+FORM "List of the Lecturers"
   {
     package at.dms.apps.tb;
 
@@ -1148,7 +1153,7 @@ FORM *  List of the Lecturers"
 END FORM
 ----
 
-===== Menu Definition
+===== Menus Definition
 
 Defining a menu means adding an entry to the menu bar in the top of the form, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
 
@@ -1163,20 +1168,20 @@ MenuDefinition:   MENU SimpleName [LABEL String label]   END MENU
  	
 [source,java]
 ---- 
-FORM *  List of the Lecturers"
+FORM "List of the Lecturers"
 
   {
     package at.dms.apps.tb;
   }
   
   MENU File
-    LABEL *  file"
+    LABEL "file"
   END MENU
 ...
 END FORM
 ----
 
-===== Actor Definition
+===== Actors Definition
 
 An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accecible from the menu bar.
 ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.
@@ -1195,30 +1200,30 @@ ActorDefinition:  ACTOR SimpleName  MENU  SimpleName  [LABEL String label]
  	
 [source,java]
 ---- 
-FORM *  List of the Lecturers"
+FORM "List of the Lecturers"
 
   {
     package at.dms.apps.tb;
   }
   
   MENU File
-    LABEL *  file"
+    LABEL "file"
   END MENU
   
   
   ACTOR cut
     MENU  File
-    LABEL *  cut"
-    HELP  *  cut element" 
+    LABEL "cut"
+    HELP  "cut element" 
     ICON	"CutIcon"
   END ACTOR
 ...
 END FORM
 ----
 
-===== Type Definition
+===== Types Definition
 
-After having defined your menus and actor, you enter different field types and field lists definitions based on the predifined field types or code field types, you can also use the LIST and SELECT commands
+After having defined your menus and actor, you can enter different field types definitions based on the standard field types or code field types, you can also use the LIST and SELECT commands
 to customize these new types. 
 
 *Syntax:*
@@ -1230,7 +1235,7 @@ TypeDefinition:  TYPE SimplName IS FieldType  [FieldList] END TYPE
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+FORM "List of the Lecturers"
   {
     package at.dms.apps.tb;
   }
@@ -1253,18 +1258,18 @@ FORM *  List of the Lecturers"
   END TYPE
   
   TYPE Months IS
-    ENUM("January", *  February", *  March", *  April")
+    ENUM("January", "February", "March", "April")
   END TYPE 
   
 TYPE Lecturer IS
   STRING (8)
   CONVERT UPPER
 
-  LIST *  Lecturer" IS
-    *  Symbol" = Symbol : STRING (8)
-    *  Name" = Name : STRING (40)
-    *  Surname" = Surname : STRING (40)
-    *  Lesson" = Lesson : STRING (20)
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
   END LIST
 ...
 END TYPE
@@ -1273,9 +1278,9 @@ END TYPE
 END FORM
 ----
 
-===== Command Definition
+===== Commands Definition
 
-In this section you may want to define new commands, to do so, all you need is an already defined Actor from wich you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
+In this section you may want to define new commands, to do so, all you need is an already defined Actor from which you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
 every command have a effective ray of action (VField, VBlock, VForm)
 
  * Calling a function with the CALL command
@@ -1306,7 +1311,7 @@ END COMMAND
 ----
 
 *Example*
-Calling an extern action : 
+Calling an external action : 
 
 [source,java]
 ----
@@ -1331,7 +1336,7 @@ END COMMAND
 ----
 
 ===== Insert Definition
-This command allows you to actualy define your types, menus, actors, commands in a seperate file, and then insert it in any form you want, thus avoiding rewriting recurent definitions. You still can add definition before or after using the INSERT command.
+This command allows you to actually define your types, menus, actors, commands in another file, and then insert it in any form you want, thus avoiding rewriting recurrent definitions. You still can add definition before or after using the INSERT command.
 
 *Syntax* 
 [source,java]
@@ -1342,13 +1347,13 @@ Insert Definition : INSERT String filePath
 *Example*
 [source,java]
 ----
-FORM *  List of Students"
+FORM "List of Students"
  
   {
   package at.dms.app.application
   }
    
-  INSERT *  Global.vf"
+  INSERT "Global.vf"
   
   TYPE Lesson IS
     LONG(11)
@@ -1368,7 +1373,7 @@ After the different definitions we have made (types, menus, actors,commands), we
  * Form Triggers
  * Blocks
 
-===== Form Command Declaration
+===== Form Commands Declaration
 
 In this section you may call the commands you want your form to have.You can call commands you already defined in the command definition section :
 
@@ -1390,9 +1395,9 @@ COMMAND HelpForm
 COMMAND QuitForm
 ----
 
-Moreover, you can define your command in this section the same way you did in the command definition section, it will be both a definition and a declaration.
+Moreover, you can define your command in this section the same way you did in the command definition section, but with no command name, it will be both a definition and a declaration.
 
-There still one more think to know about form command declaration, in fact, you can also control the accecibility to a command by the Mode of the form.+
+There still one more think to know about form command declaration, in fact, you can also control the accessibility to a command by the Mode of the form.+
 A form have 3 possible Modes :
 
  *QUERY  : When inquiring the database
@@ -1416,14 +1421,14 @@ FormTrigger:    FormEventList TriggerAction
 FormEventList:  FormEvent [,[,FormEvent]
 ----
 
-Kopi actualy defines 6 Form Triggers or Form Events : 
+Kopi actually defines 6 Form Triggers or Form Events : 
  
  * INIT      : executed when initializing the form and before the PREFORM Trigger, also executed at ResetForm command
  * PREFORM   : executed before the form is displayed and after the INIT Trigger, not executed at ResetForm command
  * POSTFORM  : executed when closing the form
  * QUITFORM  : executed (to be completed)
  * RESET     : executed upon ResetForm command
- * CHANGED   : a special trigger that returns a boolean value of wether the form have been changed or not, you can use it to bypass the system control for changes this way : 
+ * CHANGED   : a special trigger that returns a boolean value of whether the form have been changed or not, you can use it to bypass the system control for changes this way : 
 ----
  CHANGED {
    return false;
@@ -1451,7 +1456,7 @@ You can put as much blocks you want in each page, the same goes for form without
 
 *Example*
 ----
- NEW PAGE *  Page1"
+ NEW PAGE "Page1"
 ----
  
 ===== Form Blocks
@@ -1465,7 +1470,7 @@ You can also youse the block import command in order to import block units (pred
 BlockImport: INSERT QualifiedName
 ----
 
-As for the Block Unit definition, you can create one by creating a new form file begining with this Syntax:
+As for the Block Unit definition, you can create one by creating a new form file beginning with this Syntax:
 
 *Syntax*
 [source,java]
