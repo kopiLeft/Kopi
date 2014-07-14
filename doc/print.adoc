@@ -1,0 +1,215 @@
+= Visual Kopi documentation	: Prints
+:doctype: book
+
+== Visual Kopi Prints
+
+Visual Prints are static reports that you can create with the Kopi framework, such reports are written in files with the (.vp) extension and have a lot of differences from the dynamic reports we have seen earlier.
+In fact, prints are more complicated to create since you have to take care of the design, the positions and the style details of the report.
+The result is what we call a static report that you cannot modify or interact with. We also call these reports Pages.
+
+=== Print Page Structure
+When writing a static report, you have to define the data structures, then you insert the data in the report using the defined structures, finally you need to write the print constructor.
+A print always begins with PAGE and ends with END PAGE.
+Here is the global syntax of a page :
+
+*Syntax*
+[source,java]
+----
+PageDefinition :  PAGE IS QualfiedName IMPLEMENTS QualifiedName[,[,QualifiedName] ]
+                  {
+                    PackageDeclaration;
+                    [ImportDeclaration];
+                  }
+                  PrintDefinition 
+                  BEGIN 
+                  PrintProlog
+                  [PageHeaderFooter]
+                  [ContextFooter]
+                  END PAGE
+               
+----
+
+==== Page Superclass And Interfaces
+
+-*Superclass:*
+
+*Syntax:*
+ 	
+[source,java]
+----  
+SuperPage:   IS QualifiedName 
+----
+Every Page is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
+
+*Example:*
+ 	
+[source,java]
+----  
+PAGE IS PProtectedPage
+----
+
+*Interfaces*
+
+You can also specify interfaces which the Page may implement by using the IMPLEMENTS option. 
+*Syntax*
+
+[source,java]
+----
+PAGE IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
+----
+
+==== Page Header
+
+*Syntax:*
+ 	
+[source,java]
+----  
+ContextHeader:   { PackageDeclaration  ImportDeclarations  }
+
+PackageDeclaration:   <As defined in JLS 7.4> 
+ImportDeclarations:   <As defined in JLS 7.5> 
+----
+The package definition is contained in the header. It consists in defining where this Page belongs to i.e which application, which firm or which person it is related to.
+
+*Example*
+ 	
+[source,java]
+----  
+PAGE IS PProtectedPage
+  {
+  package at.dms.apps.timetable;
+  
+  import java.util.Hashtable
+  import java.util.Vector
+  }
+  ...
+END PAGE
+----
+In this example, the Page belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+
+==== Print Definitions
+
+In this part of the Page, you have to define the structure and the styles of your page, you can define 3 types of styles:
+
+ * BLOCK STYLES
+ * TEXT STYLES
+ * PARAGRAPH STYLES
+ 
+You have also the possibility to import styles using the INSERT command.
+
+===== BLOCK STYLES
+
+Block styles are simple structures that only have Border and Background parameters to set :
+*Syntax*
+[source,java]
+----
+BlockStyle : "BLOCK" "STYLE" SimpleName ["IS" SimpleName]
+             ["BORDER" Integer border
+             |
+             "BACKGROUND" Integer r Integer g Integer b]*
+             "END" "STYLE"
+----
+the BORDER statement sets the thickness of the block's border, while the BACKGROUND sets the color of the block's background by setting the RGB color parameters.
+
+*Example*
+[source,java]
+----
+
+
+
+
+===== TEXT STYLES
+
+Text styles are structures that set text data properties :
+*Syntax*
+[source,java]
+----
+TextStyle  : "TEXT" "STYLE" SimpleName ["IS" SimpleName]
+             ["BACKGROUND" Integer r Integer g Integer b
+             |
+             "FOREGROUND" Integer r Integer g Integer b
+             |
+             ["BOLD"] | ["ITALIC"] | ["SUBSCRIPT"] | ["SUPERSCRIPT"
+             |
+             "UNDERLINE"
+             |
+             "FONT" String font 
+             |
+             "SIZE" Integer size
+             |
+             "STRIKETHROUGH"]*
+             
+             "END" ""STYLE
+----
+
+*Example*
+[source,java]
+----
+TEXT STYLE texte
+  BOLD
+  SIZE 22
+  UNDERLINE
+END STYLE
+----
+             
+===== PARAGRAPH SYLES
+
+Paragraph styles are structures for table like data entries:
+
+*Syntax*
+[source,java]
+----
+ParagraphStyle : "PARAGRAPH" "STYLE" SimpleName ["IS" SimpleName]
+                 ["ALIGN" PositionAlign
+                  |
+                 "IDENT" PositionIdent 
+                 |
+                 "FIRST" "LINE" "IDENT" Integer firstlineIdent
+                  |
+                 "LINE" "SPACING" Fixed spaces 
+                 |
+                 "ORIENTATION"
+                  |
+                 "SPACE" PositionSpace 
+                  |
+                 "MARGIN" PositionMargin  
+                 |
+                 "BORDER" Integer border  [TOP | BOTTOM | LEFT | RIGHT]* 
+                  |
+                 "BACKGROUND" Integer r Integer g Integer b
+                   |
+                 "NO BACKGROUND" 
+                 |
+                 TABSET PrintTabset]*
+                 
+                 "END" "STYLE"
+                 
+                 
+                 
+PositionAlign  : "LEFT"  | "RIGHT"  | "CENTER"  | "JUSTIFIED"       
+PositionIdent  : "LEFT" Integer left   |  "RIGHT" Integer right 
+PositionMargin : "LEFT" Integer left   |  "RIGHT" Integer right  
+PositionSpace  : "ABOVE" Integer above | "BELOW" Integer below    
+PrintTabset    : 
+                 
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
