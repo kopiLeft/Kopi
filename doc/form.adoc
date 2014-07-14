@@ -1083,7 +1083,7 @@ SuperForm:   IS QualifiedName
 ----
 Every form is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
 
-*Example:*
+*Example*
  	
 [source,java]
 ----  
@@ -1091,11 +1091,11 @@ FORM "Service Register" IS VReportSelectionForm
 ----
 In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
--*Interfaces:*
+*Interfaces*
 
 You can also specify interfaces which the form may implement by using the IMPLEMENTS option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
 
-*Syntaxe:*
+*Syntax*
 
 [source,java]
 ----
