@@ -27,13 +27,16 @@
 ## GOALS
 
 
-default:		form.pdf general.pdf report.pdf
+default:		form.pdf general.pdf report.pdf print.pdf
 
 general.xml:		general.adoc 
 			asciidoc -d book -b docbook  general.adoc 
 
 form.xml:		form.adoc 
 			asciidoc -d book -b docbook  form.adoc 
+			
+print.xml:		print.adoc 
+			asciidoc -d book -b docbook  print.adoc 
 			
 report.xml:		report.adoc 
 			asciidoc -d book -b docbook  report.adoc 
@@ -74,6 +77,23 @@ report.fo:		report.xml
 			--stringparam  section.label.includes.component.label 1  				\
 			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
 			$(STYLESHEETS_DIR)/fo/docbook.xsl report.xml
+			
+
+print.fo:		print.xml
+			xsltproc -o print.fo --stringparam l10n.gentext.language "fr"			\
+			--stringparam body.font.family "concrete" --stringparam title.font.family "sansserif"	\
+			--stringparam body.font.size "10" --stringparam body.font.master "8" 			\
+			--stringparam toc.section.depth 4 --stringparam admon.graphics 1 			\
+			--stringparam admon.graphics.path "/etc/asciidoc/images/icons/" 			\
+			--stringparam default.image.width 200pt --stringparam body.start.indent 20pt 		\
+			--stringparam  section.autolabel 1  --stringparam book.titlepage.color "#0268A4" 	\
+			--stringparam  section.label.includes.component.label 1  				\
+			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
+			$(STYLESHEETS_DIR)/fo/docbook.xsl print.xml
+						
+			
+			
+			
 
 general.pdf:		general.fo
 			fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf general.pdf -fo general.fo
@@ -84,9 +104,13 @@ form.pdf:		form.fo
 			
 report.pdf:		report.fo
 			fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf report.pdf -fo report.fo
+			
+			
+print.pdf:		print.fo
+			fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf print.pdf -fo print.fo
 
 clean:
-			rm -rf form.pdf form.fo  form.xml general.pdf general.xml general.fo  report.pdf report.xml report.fo *~
+			rm -rf form.pdf form.fo  form.xml general.pdf general.xml general.fo  report.pdf report.xml report.fo print.pdf print.fo print.xml *~
 
 ## ----------------------------------------------------------------------
 ## GLOBAL DEFINITIONS
