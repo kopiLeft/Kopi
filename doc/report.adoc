@@ -280,7 +280,7 @@ Visual Kopi Dynamic reports have a unique structure that begin with REPORT and e
 ReportDefinition  : [ReportLocalization] REPORT ReportTitle [IS QualifiedName] 
                    [IMPLEMENTS  [,[QualifiedName]]
                    [ContextHeader] [ReportHelp] [ReportDefinitions]
-                   BEGIN [ReportCommands] [ReportTriggers] [ReportFields]
+                   BEGIN [ReportCommands] [ReportTriggers] (ReportFields)
                    [ContextFooter]
                    END FIELD
 
@@ -292,17 +292,17 @@ ReportDefinitions : [MenuDefinition] [ActorDefinition] [TypeDefinition]
 ----
 
  
-===== Report Localization
+==== Report Localization
 
 This is an optional step in which you may define the language of your forms menus and messages, the latter have to be defined in xml files.
 
 *Example:*
 [source,java]
 ----
-LOCALE *  en_EN"
+LOCALE "en_EN"
 -----
 
-===== Report Title
+==== Report Title
 
 Every Report have to begin with the keyword REPORT that you have to follow with a title.
 
@@ -316,7 +316,7 @@ REPORT "Invoices"
 END REPORT
 ----
 
-===== Form Superclass And Interfaces
+==== Report Superclass And Interfaces
 
 -*Superclass:*
 
@@ -332,32 +332,32 @@ Every Report is a class that may extend another Java class by using the optional
  	
 [source,java]
 ----  
-FORM *  Service Register" IS VReport
+REPORT  "Orders Report" IS VReport
 ----
 In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
 -*Interfaces:*
 
-You can also specify interfaces which the form may implement by using the IMPLEMENT option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
+You can also specify interfaces which the report may implement by using the IMPLEMENTS option. 
 
-*Syntaxe:*
+*Syntax*
 
 [source,java]
 ----
-FORM String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
+REPORT String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
 ----
 
 *Example:*
  	
 [source,java]
 ----  
-FORM *  Record registering" IS VPrintSelectionForm
-  IMPLEMENTS VConstants
+REPORT "Orders Report" IS VReport
+  IMPLEMENTS UReport
   ...
-END FORM
+END REPORT
 ----
 
-===== Form Header
+==== Report Header
 
 *Syntax:*
  	
@@ -368,26 +368,26 @@ ContextHeader:   { PackageDeclaration  ImportDeclarations  }
 PackageDeclaration:   <As defined in JLS 7.4> 
 ImportDeclarations:   <As defined in JLS 7.5> 
 ----
-The package definition is contained in the header. It consists in defining where this form belongs to i.e which application, which firm or which person it is related to.
+The package definition is contained in the header. It consists in defining where this report belongs to i.e which application, which firm or which person it is related to.
 
 *Example*
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+REPORT "List of the Lecturers"
   {
   package at.dms.apps.timetable;
   }
   ...
-END FORM
+END REPORT
 ----
-In this example, the form belongs to the DMS firm and is a part of the application called *  timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+In this example, the report belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
 
 *Example*
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+REPORT "List of the Lecturers"
   {
     package at.dms.apps.tb;
 
@@ -395,12 +395,43 @@ FORM *  List of the Lecturers"
     import java.util.Vector
   }
    ...
-END FORM
+END REPORT
 ----
 
-===== Menu Definition
 
-Defining a menu means adding an entry to the menu bar in the top of the form, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
+==== Report Help Text
+
+After the report header, you can enter a help text for the report using the following syntax:
+
+*Syntax*
+[source,java]
+----
+HELP String helpText
+----
+Actually every report has a help menu that tries to describe the structure of the report by giving information about its commands and fields in a document, the help text will be on the top of this help menu document.
+
+*Example*
+[source,java]
+----
+REPORT "Orders Report"
+
+  {
+    package at.dms.apps.tb;
+
+    import java.util.Hashtable
+    import java.util.Vector
+  }
+  
+HELP "This report lists purchase orders"
+...
+
+END REPORT
+
+----
+
+==== Report Menus Definition
+
+Defining a menu means adding an entry to the menu bar in the top of the report, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
 
 *Syntax:*
  	
@@ -413,22 +444,22 @@ MenuDefinition:   MENU SimpleName [LABEL String label]   END MENU
  	
 [source,java]
 ---- 
-FORM *  List of the Lecturers"
+REPORT "List of the Lecturers"
 
   {
     package at.dms.apps.tb;
   }
   
-  MENU File
-    LABEL *  file"
+  MENU newMenu
+    LABEL "newMenu"
   END MENU
 ...
-END FORM
+END REPORT
 ----
 
-===== Actor Definition
+==== Report Actors Definition
 
-An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accecible from the menu bar.
+An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accessible from the menu bar.
 ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.
 
 
@@ -445,30 +476,30 @@ ActorDefinition:  ACTOR SimpleName  MENU  SimpleName  [LABEL String label]
  	
 [source,java]
 ---- 
-FORM *  List of the Lecturers"
+FORM "List of the Lecturers"
 
   {
     package at.dms.apps.tb;
   }
   
-  MENU File
-    LABEL *  file"
+  MENU newMenu
+    LABEL "newMenu"
   END MENU
   
   
-  ACTOR cut
-    MENU  File
-    LABEL *  cut"
-    HELP  *  cut element" 
-    ICON	"CutIcon"
+  ACTOR printReport
+    MENU  newMenu
+    LABEL "Print"
+    HELP  "Print the report" 
+    ICON  "printerIcon"
   END ACTOR
 ...
-END FORM
+END REPORT
 ----
 
-===== Type Definition
+==== Report Types Definition
 
-After having defined your menus and actor, you enter different field types and field lists definitions based on the predifined field types or code field types, you can also use the LIST and SELECT commands
+After having defined your menus and actor, you can enter different field types definitions based on the standard field types or code field types, you can also use the LIST and SELECT commands
 to customize these new types. 
 
 *Syntax:*
@@ -480,7 +511,7 @@ TypeDefinition:  TYPE SimplName IS FieldType  [FieldList] END TYPE
  	
 [source,java]
 ----  
-FORM *  List of the Lecturers"
+REPORT "List of the Lecturers"
   {
     package at.dms.apps.tb;
   }
@@ -503,36 +534,34 @@ FORM *  List of the Lecturers"
   END TYPE
   
   TYPE Months IS
-    ENUM("January", *  February", *  March", *  April")
+    ENUM("January", "February", "March", "April")
   END TYPE 
   
 TYPE Lecturer IS
   STRING (8)
   CONVERT UPPER
 
-  LIST *  Lecturer" IS
-    *  Symbol" = Symbol : STRING (8)
-    *  Name" = Name : STRING (40)
-    *  Surname" = Surname : STRING (40)
-    *  Lesson" = Lesson : STRING (20)
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
   END LIST
 ...
 END TYPE
     
   ...
-END FORM
+END REPORT
 ----
 
-===== Command Definition
+==== Report Commands Definition
 
-In this section you may want to define new commands, to do so, all you need is an already defined Actor from wich you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
-every command have a effective ray of action (VField, VBlock, VForm)
+In this section you may want to define new commands, to do so, all you need is an already defined Actor from which you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
+every command have an effective ray of action (VRField, VReport)
 
  * Calling a function with the CALL command
- * Calling a function outside of the form using the EXTERN command
- * Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VField, VBlock, VForm. 
-
-Command Defined in this section can be form level commands, block level commands or field level commands, this will depend on the action called by the command and where the command is actualy called.
+ * Calling a function outside of the report using the EXTERN command
+ * Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VRField or VReport. 
  
 *Syntax*
 [source,java]
@@ -549,20 +578,20 @@ Calling a local action :
 
 [source,java]
 ----
-COMMAND Preveiw
-  ITEM  Preview
-  CALL  previewForm
+COMMAND print
+  ITEM  printActor
+  CALL  printReport
 END COMMAND
 ----
 
 *Example*
-Calling an extern action : 
+Calling an external action : 
 
 [source,java]
 ----
-COMMAND SaveBlock
+COMMAND doAction
   ITEM Save
-  EXTERN com.company.vlib.form.Commands.SaveBlock
+  EXTERN com.company.vkopi.lib.report.Actions
 END COMMAND
 ----
 
@@ -571,17 +600,16 @@ Writing the action's body :
 
 [source,java]
 ----
-COMMAND PrintBlock
-  ITEM  PrintBlock
-  ACTION (VBlock b){
-    b.validate();
-    b.getForm().close (VForm.CDE-Validate);  
+COMMAND PrintReport
+  ITEM  PrintReport
+  ACTION (VReport report){
+    // KOPI_JAVA code
   }
 END COMMAND
 ----
 
-===== Insert Definition
-This command allows you to actualy define your types, menus, actors, commands in a seperate file, and then insert it in any form you want, thus avoiding rewriting recurent definitions. You still can add definition before or after using the INSERT command.
+==== Report Insert Definition
+This command allows you to actually define your types, menus, actors, commands in another file, and then insert it in any report you want, thus avoiding rewriting recurrent definitions. You still can add definition before or after using the INSERT command.
 
 *Syntax* 
 [source,java]
@@ -592,22 +620,184 @@ Insert Definition : INSERT String filePath
 *Example*
 [source,java]
 ----
-FORM *  List of Students"
+REPORT "List of Students"
  
   {
   package at.dms.app.application
   }
    
-  INSERT *  Global.vf"
+  INSERT "ReportDefault.vr"
   
   TYPE Lesson IS
     LONG(11)
   END TYPE
 
 ...  
-END FORM    
-  
+END REPORT    
 ----
+
+==== Report Commands Declaration
+
+After the Definitions section of the report, you have to enter the BEGIN keyword in order to begin the report declaration part where you can optionally call report commands and triggers, and where you have to enter the report's fields.
+Concerning the commands declaration, you can start by the REPORT COMMAND statement that add all the default report commands to your report that include printing and exporting the report.
+Now you may call other commands using the COMMAND keyword followed by a defined command name from those who already exist or the ones you defined in the command definition section.
+
+*Example*
+[source,java]
+----
+COMMAND Sort
+COMMAND PrintReport
+----
+
+You can also define your command when declaring it instead of defining it in the command definition section of the report, simply write the command definition like explained before, but with no name, in the command declaration section of the report.
+
+*Example*
+[source,java]
+----
+COMMAND
+ITEM actorName
+ACTION {
+KOPI_JAVA code
+}
+END COMMAND
+
+
+COMMAND 
+ITEM actorName
+CALL localFunction
+END COMMAND
+----
+
+==== Report Triggers Declaration
+
+Report Triggers are special events that once switched on you can execute a set of actions defined by the following syntax :
+
+*Syntax*
+----
+ReportTrigger:    ReportEventList TriggerAction
+ReportEventList:  ReportEvent [,[,FormEvent]
+----
+
+Kopi actually defines 2 report Triggers or report Events : 
+
+ * PREREPORT  : executed before the report is displayed.
+ * POSTREPORT : executed after the report is closed.
+
+*Example*
+[source, java]
+----
+REPORT "Orders Report"
+{
+  package at.dms.app.application
+}
+
+INSERT "ReportDefault.vr"
+
+BEGIN
+
+REPORT COMMAND
+
+PREREPORT{
+System.out.println("This message is displayed before the report appears");
+}
+...
+END REPORT
+----
+
+==== Report Fields Declaration 
+
+As you already know, a dynamic report is based on field that will be shown as report columns, in this section you have to write at least on field definition or more following 
+the definition and the structure we saw in the previous chapter.
+
+==== Report Context Footer:
+
+This section should follow the report fields declaration and have to be placed between curly braces, here you may define all the functions, data, classes you need in your report, written in KOPI_JAVA code.
+But most important, you need to define the constructor of you report, this constructor will be responsible of filling the report's lines or rows.
+All you need to do is importing your data (a List or vector parameter, database query cursors ...) , declaring a row in the report then add the Add(); statement to add the row to the report.
+The constructor may have different parameters but a DBContextHandler object is compulsory (a form most of the time)
+For example here is the constructor of a dynamic report named UserList with 3 fields (FirstName, LastName, Age).We will retrieve data from the User table on the database. 
+
+*Example*
+[source,java]
+----
+void UserList(DBContextHandler context) throws VException {
+  super(context);
+  #protected () {
+    try {
+      #cursor (){
+        SELECT int U.age,
+               String U.firstname,
+               String U.lastname,
+    
+        FROM    User U
+  
+      } cursor;
+    
+      cursor.open();
+    
+      while (cursor.next()) 
+      {
+        FirstName = cursor.U.firstname;
+        LastName  = cursor.U.lastname;
+        Age       = cursor.U.age;
+        add();
+      }
+      cursor.close();
+   } catch (DBNoRowException) {
+        System.out.println("DBNoRowException");
+      }
+  }
+}
+
+----
+
+=== Calling reports
+
+A report is always called from a form, if the caller form extends from the VDictionaryForm class you have to do the following steps :
+
+ * Change VDictionaryForm to VReportSelectionForm
+ * Add the CreateReport command to the caller form
+ * Implement the createReport abstract method :
+
+*Example*
+[source,java]
+----
+ protected VReport createReport() throws VException{
+   return new USerList(this);
+ }
+----
+
+Otherwise you can create a normal form or block command that executes the following code :
+
+[source,java]
+----
+   WindowController.getWindowController().doNotModal(new UserList(this));
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
