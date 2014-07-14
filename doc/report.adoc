@@ -1,4 +1,4 @@
-= Visual Kopi documentation	: Dynamic Reports
+= Visual Kopi documentation	: Reports
 :doctype: book
 
 == Visual Kopi Reports
