@@ -1,7 +1,17 @@
+// ----------------------------------------------------------------------
+// Copyright (c) 2013-2014 kopiLeft Services SARL, Tunisia
+// ----------------------------------------------------------------------
+// All rights reserved.
+// ----------------------------------------------------------------------
+// $Id$
+// ----------------------------------------------------------------------
+
+
+
 = Visual Kopi documentation	: Print Pages
 :doctype: book
 
-== Visual Kopi Prints
+== Visual Kopi Print Pages
 
 Visual Prints are static reports that you can create with the Kopi framework, such reports are written in files with the (.vp) extension and have a lot of differences from the dynamic reports we have seen earlier.
 In fact, prints are more complicated to create since you have to take care of the design, the positions and the style details of the report.
