@@ -1,0 +1,35 @@
+// ----------------------------------------------------------------------
+// Copyright (c) 2013-2014 kopiLeft Services SARL, Tunisia
+// ----------------------------------------------------------------------
+// All rights reserved.
+// ----------------------------------------------------------------------
+// $Id$
+// ----------------------------------------------------------------------
+
+
+
+= Kopi documentation
+:doctype: book
+
+[preface]
+Preface
+-------
+The Kopi Project is a Java software project from DMS which provides a framework for developing database applications using Java, JDBC and SWING.
+
+Kopi contains a set of tools which allow you to edit and generate classfiles: dis (Java disassembler), KSM (Java assembler) and KJC. KJC compiles Java source code to bytecode, with all the same plus even more features as commercial compilers. KJC is available for free under the terms of the GNU Public License.
+
+The Kopi Project also includes XKJC, a compiler for embedded SQL in Java. Built over JDBC, it allows the execution of Java-typed SQL statements and the mixing of expressions from both SQL and Java.
+
+The last tool provided by DMS is Visual Kopi. Visual Kopi is an application framework using JDBC and JFC/Swing which lets you create database applications in a high level specification language. It also provides the ability to write triggers and commands in Java with seamlessly embedded SQL statements. 
+
+Organization of This Document
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This documentation includes two main Chapters: +
+
+* ‘CHAPTER 1’ +
+XKJC - The Kopi EXtended Java Compiler: XKJC is a compiler for embedded SQL in Java. This language is a super set of Java; i.e., it is compatible with Java source code. This allows the execution of Java-typed SQL statements and the mixing of expressions from both SQL and Java.
+
+* ‘CHAPTER 2’ +
+VLIB - The Visual Kopi: VLIB is an application framework using SWING which lets you create database applications in a high level specification language. 
+
+
