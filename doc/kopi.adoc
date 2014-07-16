@@ -33,3 +33,18 @@ XKJC - The Kopi EXtended Java Compiler: XKJC is a compiler for embedded SQL in J
 VLIB - The Visual Kopi: VLIB is an application framework using SWING which lets you create database applications in a high level specification language. 
 
 
+== The extended kopi java language
+
+This language extends the java language's capabilities and offer a set of additional tools, meaning that the java language is a part of the kopi extended language.
+The most important additions of the xkjc are the new types introduced and the SQL integration to java code.
+
+=== The new Types
+Kopi introduces 6 types to the basic types available in the java language : 
+
+==== Date and date types
+==== Fixed and fixed types
+==== Month and month types
+==== Week and week types
+==== Time and time types
+==== Timestamp and timestamp types
+
