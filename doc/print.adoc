@@ -1,11 +1,12 @@
-= Visual Kopi documentation	: Prints
+= Visual Kopi documentation	: Print Pages
 :doctype: book
 
 == Visual Kopi Prints
 
 Visual Prints are static reports that you can create with the Kopi framework, such reports are written in files with the (.vp) extension and have a lot of differences from the dynamic reports we have seen earlier.
 In fact, prints are more complicated to create since you have to take care of the design, the positions and the style details of the report.
-The result is what we call a static report that you cannot modify or interact with. We also call these reports Pages.
+The result is what we call a static report that you cannot modify or interact with in the PDF format, but you can print, save send ..
+ We also call these printable Pages.
 
 === Print Page Structure
 When writing a static report, you have to define the data structures, then you insert the data in the report using the defined structures, finally you need to write the print constructor.
@@ -20,9 +21,11 @@ PageDefinition :  PAGE IS QualfiedName IMPLEMENTS QualifiedName[,[,QualifiedName
                     PackageDeclaration;
                     [ImportDeclaration];
                   }
-                  PrintDefinition 
+                  [InsertDefinition]
+                  StylesDefinition 
                   BEGIN 
-                  PrintProlog
+                  PageFormat
+                  PageBlocks
                   [PageHeaderFooter]
                   [ContextFooter]
                   END PAGE
@@ -87,17 +90,28 @@ END PAGE
 ----
 In this example, the Page belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
 
-==== Print Definitions
+==== Insert Definitions
 
-In this part of the Page, you have to define the structure and the styles of your page, you can define 3 types of styles:
+You can user other files to write your print pages styles and then have them inserted in your print page definition file (.vp) using the INSERT command.
+
+*Example*
+[source,java]
+----
+INSERT "PrintDefault.vp"
+----
+
+==== Styles Definitions
+
+In this part of the Page, you have to define the structures and the styles of your page, you can use the following 3 types of styles to define as much structures as you need.
+
+The Style types are :
 
  * BLOCK STYLES
  * TEXT STYLES
  * PARAGRAPH STYLES
  
-You have also the possibility to import styles using the INSERT command.
 
-===== BLOCK STYLES
+===== Block Styles
 
 Block styles are simple structures that only have Border and Background parameters to set :
 *Syntax*
@@ -114,11 +128,13 @@ the BORDER statement sets the thickness of the block's border, while the BACKGRO
 *Example*
 [source,java]
 ----
+    BLOCK STYLE whiteBlock
+     	BORDER 5
+    END STYLE
+----
 
 
-
-
-===== TEXT STYLES
+===== Text Styles
 
 Text styles are structures that set text data properties :
 *Syntax*
@@ -129,7 +145,13 @@ TextStyle  : "TEXT" "STYLE" SimpleName ["IS" SimpleName]
              |
              "FOREGROUND" Integer r Integer g Integer b
              |
-             ["BOLD"] | ["ITALIC"] | ["SUBSCRIPT"] | ["SUPERSCRIPT"
+             "BOLD" 
+             |
+             "ITALIC"
+             |
+             "SUBSCRIPT"
+             |
+             "SUPERSCRIPT"
              |
              "UNDERLINE"
              |
@@ -145,16 +167,17 @@ TextStyle  : "TEXT" "STYLE" SimpleName ["IS" SimpleName]
 *Example*
 [source,java]
 ----
-TEXT STYLE texte
+TEXT STYLE text
   BOLD
   SIZE 22
+  FONT "Courier"
   UNDERLINE
 END STYLE
 ----
              
-===== PARAGRAPH SYLES
+===== Paragraph Styles
 
-Paragraph styles are structures for table like data entries:
+Paragraph styles are structures for table columns like data entries with :
 
 *Syntax*
 [source,java]
@@ -163,23 +186,23 @@ ParagraphStyle : "PARAGRAPH" "STYLE" SimpleName ["IS" SimpleName]
                  ["ALIGN" PositionAlign
                   |
                  "IDENT" PositionIdent 
-                 |
+                  |
                  "FIRST" "LINE" "IDENT" Integer firstlineIdent
                   |
                  "LINE" "SPACING" Fixed spaces 
-                 |
+                  |
                  "ORIENTATION"
                   |
                  "SPACE" PositionSpace 
                   |
                  "MARGIN" PositionMargin  
-                 |
+                  |
                  "BORDER" Integer border  [TOP | BOTTOM | LEFT | RIGHT]* 
                   |
                  "BACKGROUND" Integer r Integer g Integer b
-                   |
+                  |
                  "NO BACKGROUND" 
-                 |
+                  |
                  TABSET PrintTabset]*
                  
                  "END" "STYLE"
@@ -190,17 +213,504 @@ PositionAlign  : "LEFT"  | "RIGHT"  | "CENTER"  | "JUSTIFIED"
 PositionIdent  : "LEFT" Integer left   |  "RIGHT" Integer right 
 PositionMargin : "LEFT" Integer left   |  "RIGHT" Integer right  
 PositionSpace  : "ABOVE" Integer above | "BELOW" Integer below    
-PrintTabset    : 
+PrintTabset    : (["TAB"] SimpleName "AT" Integer position "ALIGN" alignType)*
+alignType      : LEFT | CENTER | RIGHT | DECIMAL
                  
 ----
 
+*Example*
+[source,java]
+----
+PARAGRAPH STYLE table
+  ALIGN LEFT
+  INDENT LEFT 5
+  TABSET
+    Article AT 10 ALIGN LEFT
+    Quantity AT 140 ALIGN RIGHT
+    Price AT 260 ALIGN RIGHT
+    Discount AT 360 ALIGN RIGHT
+    Total AT 490 ALIGN RIGHT
+  BORDER 3 TOP
+END STYLE
 
 
+PARAGRAPH STYLE total IS posTabs
+  BORDER 5
+  BACKGROUND 200 190 210
+END STYLE
+
+----
+
+==== Page Format Definition
+
+This section is optional, here you can define the page format :
+
+*Syntax*
+[source,java]
+----
+FormatDefinition : [  "LANDSCAPE" | "PORTRAIT"  [String formatValue]   ]
+
+formatValue      : (Integer width  Integer height  Integer border )  | A5 | A4 | A3 | legal | letter
+----
+
+All you have to do is to insert the keyword that sets the orientation of the page (PORTRAIT or LANDSCAPE), this keyword can be followed by a string that defines the format of the page.
+This String can be one of the defined Strings (A5,A4,A3,letter,legal) or you can define the width, the height and the border of the page in a string with the 3 parameters in the mentioned order.
+If you don't define this section, the default values will be PORTRAIT "A4"
 
 
+*Example*
+[source,java]
+----
+PORTRAIT "A4"
+
+LANDSCAPE "A5"
+
+PORTRAIT "letter"
+
+PORTRAIT "592 842 25"
+----
+
+==== Page Blocks Definition
+
+This section of the page is where you will insert your data in the form of blocks that can inherit the styles you have defined in the styles definition section of the page.
+There are 5 types of blocks you can use to insert you data:
+
+ * Text Blocks
+ * Recursive Blocks
+ * Horizontal Blocks
+ * List Blocks
+ * Rectangle Blocks
+ 
+There is also another method that consist on inserting already defined Blocks with the INSERT command.
+Before explaining every block type, there are some common properties that are used in most of these blocks which are :
+
+*BlockPosition*
+[source,java]
+----
+BlockPosition   : [ "POS" Integer posx (Integer posy | "BELOW")]
+                  [ "SIZE" (Integer width | String WidthString)  (Integer height| String HeightString) ]
+                  [ "SHOW" "IF" KOPI_JAVA code]
+                  
+WidthString     : "PAGE_WIDTH"  | "MAX"
+HeightString    : "PAGE_HEIGHT" | "MAX"
+----
+
+The block position property sets the block's position by specifying the x and y Integer values, the y value can be replaced by the keyword "BELOW" and the text will be placed in the first available position in the y axis.
+You can also specify the size of the text block using the SIZE command followed by the width and the height integers, there are also special String values that you can use for the size,
+the MAX String can be used for the width or the height, it is equal to 1000.
+Width also can be PAGE_WIDTH and height can be PAGE_HEIGHT.
+After the size definition you can enter a display condition with the command SHOW IF followed by a condition statement, for example SHOW IF getCurrentPage() == 1; means that the text will be displayed only on the first page.
 
 
+*BlockTriggers*
+[source,java]
+----
+PrintTriggers       : SimpleName [(ParameterList)] { TrigSource }
 
+TrigSource          : [String line | <TAB StyleName> | <StyleName> | "PAGE_COUNT" | (KOPI_JAVA code) | {( (KOPI_JAVA code) => (TrigSource)* }]*
+----
+
+
+To insert the data into the block, you need to create what we call print triggers, a kind of method that defines the way you fill your block.
+These triggers can optionally have a parameter list like any JAVA method and must have a body that can contain various elements:
+
+ * Simple String texts
+ * Styles : to use a style all you need to do is to insert it between "<" and ">", if the style has a TABSET , you have to insert TAB before the name of its elements.
+ * Kopi_Java code between parentheses
+ * kopi_java condition between parentheses followed by "=>" then one or more trigger, all this statement shave to be inserted into "{}" and means that the the condition have to be fulfilled in order to activate the trigger placed after the "=>".
+ 
+
+*BlockBody*
+[source,java]
+----
+BlockBody  : "BODY" { KOPI_JAVA code } 
+----
+ 
+After the triggers, you can have a body block that have to implement the print() abstract method in kopi_java code in which you can use the triggers defined in the same block, it is optional in a text block but you will have to implement it in some of the other blocks like the recursive block.
+ 
+===== Text Blocks Definition
+
+Text blocks are data blocks that can be used to show simple text on the print page : 
+*Syntax*
+[source,java]
+----
+TextBlockDefinition : ["REC"] "TEXT" SimpleName
+                      BlockPosition
+                      ["STYLE" SimpleName]
+                      (PrintTriggers)*
+                      [BlockBody]
+                      END BLOCK
+               
+----
+
+A text Block begins by "TEXT" and ends by "END BLOCK", it can have the optional keyword "REC" before "TEXT" to make the text block recurrent.
+
+
+*Example*
+[source,java]
+----
+REC TEXT Invoice
+POS 60 160
+SIZE 290 MAX
+SOURCE {
+<alignLeft><helvetica9> <bold> "Invoice N° " (inv.NumInvoice) "\n"
+}
+END BLOCK
+----
+
+[source,java]
+----
+REC TEXT Details
+POS 60 190
+SIZE 200 100
+
+line(String title, Object description)
+{
+  <details><helvetica7><!bold> (titel) ":" 
+<TAB TAB1><helvetica8><!bold> (description)
+}
+
+boldline(String title, Object description) 
+{
+  <details><helvetica7><bold> (title) ":"
+<TAB TAB1><helvetica8><bold> (description)
+}
+
+newLine 
+{
+<helvetica4> "\n"
+}
+
+BODY 
+{
+Remise
+ protected void print() throws Exception
+ 
+ {
+  line("Page", ""+getCurrentPage());
+  boldline("Date", inv.DateInvoice);
+  boldline("Client", inv.Customer );
+  line("Adress", inv.Adress);
+  line("Payment Mode", inv.PaymentMode);
+  line("Delivery Mode", inv.DeliveryMode);
+  }
+}
+END BLOCK
+----
+===== List Blocks Definition 
+
+List blocks are used to insert tables of based on TABSET styles in the page:
+
+*Syntax*
+[source,java]
+----
+ListBlockDefinition  : "LIST" [SimpleName]
+                       [BlockPosition]
+                       "STYLE" SimpleName
+                       (PrintTriggers)*
+                       [BlockBody]
+                       "END" "BLOCK"           
+----
+The STYLE section only accepts block styles.
+
+*Example*
+[source,java]
+----
+  //STYLES DEFINITIONS
+  
+  
+  PARAGRAPH STYLE posTabs 
+    ALIGN LEFT
+    INDENT LEFT 5
+    TABSET
+      Article AT 10 ALIGN LEFT
+      Quantity AT 140 ALIGN RIGHT
+      Price AT 260 ALIGN RIGHT
+      Discount AT 360 ALIGN RIGHT
+      Total AT 490 ALIGN RIGHT
+    BORDER 3 TOP
+  END STYLE
+
+
+  PARAGRAPH STYLE posTabsHead IS posTabs
+    BORDER 5
+    BACKGROUND 200 190 210
+  END STYLE
+ 
+ //INSERTING DATA
+ 
+  LIST Loop1
+  SIZE 500 480
+
+  LISTHEADER 
+  {
+    <posTabsHead> <helvetica9><bold>
+    <TAB Article> ("Article")
+    <TAB Quantity> ("Quantity")
+    <TAB Price> ("Price")
+    <TAB Discount> ("Discount")
+    <TAB Total> ("Total")
+   }
+  line(InvoicePos invpos) 
+  {
+    <posTabs>
+    <helvetica4> "\n" <helvetica9>
+    <TAB Article> (invpos.Article)
+    <TAB Quantity> (invpos.Quantity)
+    <bold>
+    <TAB Price> (invpos.Price)
+    <TAB Discount> (invpos.Discount) " %"
+    <TAB Total> (invpos.Quantity * (invpos.Price -((invpos.Price * invpos.Discount)/100)))
+    <helvetica4> "\n"
+  }
+  BODY  
+  {
+    protected void print() throws Exception
+      {
+        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.open(id);
+        while (invpos.next())
+        {
+          line(invpos);
+          addBreak();
+        }
+        invpos.close();
+    }
+  }
+  END BLOCK
+
+----
+
+===== Recursive Blocks Definition
+
+Also called vertical blocks, they are used to contain multiple blocks and displaying them vertically, you can use one of the block styles that you have defined in this block definition after the keyword STYLE, but no text styles and paragraph styles are allowed.
+
+*Syntax*
+[source,java]
+----
+RecursiveBlockDefinition : "VERTICAL" "BLOCK" [SimpleName]
+                           [BlockPosition]
+                           ["STYLE" SimpleName]
+                           (PageBlocks).
+                           "END" "BLOCK"
+----
+
+
+*Example*
+[source,java]
+----
+VERTICAL BLOCK Loop
+  POS 60 280
+  SIZE 150 400
+  STYLE darkGreyBlock
+
+  LIST Loop1
+  SIZE 500 480
+
+  LISTHEADER 
+  {
+    <posTabsHead> <helvetica9><bold>
+    <TAB Article> ("Article")
+    <TAB Quantity> ("Quantity")
+    <TAB Price> ("Price")
+    <TAB Discount> ("Discount")
+    <TAB Total> ("Total")
+   }
+  line(InvoicePos invpos) 
+  {
+    <posTabs>
+    <helvetica4> "\n" <helvetica9>
+    <TAB Article> (invpos.Article)
+    <TAB Quantity> (invpos.Quantity)
+    <bold>
+    <TAB Price> (invpos.Price)
+    <TAB Discount> (invpos.Discount) " %"
+    <TAB Total> (invpos.Quantity * (invpos.Price -((invpos.Price * invpos.Discount)/100)))
+    <helvetica4> "\n"
+  }
+  BODY  
+  {
+    protected void print() throws Exception
+      {
+        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.open(id);
+        while (invpos.next())
+        {
+          line(invpos);
+          addBreak();
+        }
+        invpos.close();
+    }
+  }
+  END BLOCK
+END BLOCK
+----
+
+
+===== Horizontal Blocks Definition
+
+Horizontal Blocks are the same as vertical blocks (recursive blocks), they do contain other blocks but they display them horizontally, you can use one of the block styles that you have defined in this block definition after the keyword STYLE, but no text styles and paragraph styles are allowed.
+
+*Syntax*
+[source,java]
+----
+RecursiveBlockDefinition : "HORIZONTAL" "BLOCK" [SimpleName]
+                           [BlockPosition]
+                           ["STYLE" SimpleName]
+                           (PageBlocks).
+                           "END" "BLOCK"
+----
+
+
+*Example*
+[source,java]
+----
+HORIZONTAL BLOCK texts
+  POS 60 280
+  SIZE 150 400
+  TEXT text1
+  ... 
+  END BLOCK
+  
+  TEXT text2
+  ...
+  END BLOCK
+END BLOCK
+----
+
+
+===== Rectangle Blocks Definition
+
+This Type of blocks just insert a rectangle with the parameters of position, size and block style to set.
+
+*Syntax*
+[source,java]
+----
+RectangleBlockDefinition : "RECT" SimpleName
+                           [BlockPosition]
+                           "STYLE" SimpleName
+                           "END" "BLOCK"
+----
+*Example*
+[source,java]
+----
+RECT Rectangle
+  POS     50 120
+  SIZE    100 150
+  STYLE   greyBlock
+END BLOCK
+----
+
+===== Imported Blocks Definition
+
+You can import already defined blocks using the INSERT keyword
+
+*Syntax*
+[source,java]
+----
+ImportedBlockDefinition : "INSERT" BlockType QualifiedName
+
+BlockType               : "RECT" | "VERTICAL" "BLOCK" | "HORIZONTAL" "BLOCK" | "TEXT" | "LIST" 
+----
+
+*Example*
+[source,java]
+----
+INSERT TEXT OtherReport.BlockText
+----
+==== Page Header and Footer 
+
+After defining the page blocks , you can define the header and the footer,to do so you can just create a trigger named PAGEFOOTER or PAGEHEADER, or you can import a block as a header/footer.
+*Examples*
+[source,java]
+----
+PAGEFOOTER {
+  <landscape> <helvetica8> "Invoice N° " (numInvoice)   "  -  Page " (getCurrentPage()) " / " (getPageCount()) "\n"
+     <helvetica8> (Date.now()) " " (Time.now())
+}
+
+
+PAGEFOOTER AnotherPageFile.definedBlock
+----
+
+
+==== Page Context Footer
+
+In this section is inserted between curly brackets after you will have to define the page's constructor and initializers, the data members and the types definitions and other methods.
+
+Here is an example named InvoicePage, notice the use of cursor for types definitions, the initPage() method sets the connection to the database.
+This static report prints a page of an invoice by its id:
+*Example*
+[source,java]
+----
+//TYPES DEFINITION
+#cursor Invoice (int id)
+{
+  SELECT int NumInvoice,
+         String Customer,
+         String Adress,
+         String PaymentMode,
+         String DeliveryMode,
+         date DateInvoice,
+         fixed Amount
+  FROM   Invoices I
+  WHERE  I.ID = :(id)
+}
+
+#cursor InvoicePos (int id) 
+{
+  SELECT String Article,
+         int Quantity,
+         fixed Price,
+         nullable int Discount
+  FROM   InvoicesPos IP
+  WHERE  IP.Invoice = :(id)
+}
+
+//INITIALIZERS
+
+public InvoicePage(DBContextHandler handler, int id) 
+{
+  super(handler);
+  this.id = id;
+}
+public void initPage() throws SQLException
+{
+  inv.setDefaultConnection(getDBContext().getDefaultConnection());
+  inv.open(id);
+  inv.next();
+
+}
+public void closePage() throws SQLException
+{
+inv.close();
+}
+
+// DATA MEMBERS
+
+private int id;
+private Invoice inv = new Invoice();
+private InvoicePos invpos = new InvoicePos();
+----
+
+==== Calling Print Pages
+
+Print pages are only available when called from a form that extends the VPrintSelectionForm class, besides, this class have to to implement
+the abstract method createReport and the command print.
+
+*Example*
+[source,java]
+----
+FORM IS VPrintSelectionForm
+...
+
+{
+  public PProtectedPage createReport(DBContextHandler handler){
+  return new InvoicePage (handler , @!I.ID);
+  }
+}
+END FORM
+----
 
 
 
