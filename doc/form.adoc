@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------------
 
 
-= Visual Kopi documentation	: Forms
+= Visual Kopi documentation : Forms
 :doctype: book
 
 == Visual Kopi Forms
