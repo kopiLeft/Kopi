@@ -1,39 +1,39 @@
-= Visual Kopi documentation : Forms
-:doctype: book
-
-== Visual Kopi Forms
+=== Visual Kopi Forms
 
 The aim of Kopi is to enable you to create applications. An application is made up of forms. A *form* is a set of *pages* consisting of *blocks*. A *block* is nothing else than a table which is divided into columns (vertical) and rows (horizontal). A row is made up of *fields*, and each *field* contains a data value at the intersection of a row and a column that can be of different *Types*.
 By the end of this chapter, you will learn how to create a form, but before, you need to learn how to create a field and how to form blocks.
 
-=== Creating Form Fields
+==== Creating Form Fields
 
-In Visual Kopi, a fields are containers in wich you can define different types of data. A field definition begins with an access modifier followed by an optional SimpleName and ends with END FIELD.
+In Visual Kopi, a fields are containers in which you can define different types of data. A field definition begins with an access modifier followed by an optional SimpleName and ends with END FIELD.
 
 *Syntax*
 [source,java]
 ----
 FieldDeclaration  : AccessModifier [FieldHeader] [HelpText] FieldType
                     FieldBody
-                    END FIELD
+                    "END" "FIELD"
                     
-AccessModifier    : HIDDEN | SKIPPED | VISIT | MUSTFILL
 FieldHeader       : [(Integer multiField)] [SimpleName] [FieldPosition]
                     [FieldLabel]
-FieldBody         : IS QualifiedName [FieldColumns] | [FieldAligement] [FieldDropList] 
-                    [FieldOptions]   [FieldColumns] [FieldCommands] [FieldTriggers]
+FieldBody         : "IS" QualifiedName [FieldColumns] | [FieldAligement]
+                    [FieldDropList]     [FieldOptions]    [FieldColumns] 
+                    [FieldCommands] [FieldTriggers]
 ----
 
-==== Field Access Modfiers
+===== Field Access Modifiers
 An access modifier determines the way the application user will have to handle each field in a form as well as the field accessibility. This command is compulsory. There are 4 sorts of access modifier:
 
 *Syntax:*
 [source,java]
 ----
-AccessModifier:   MUSTFILL
-                  VISIT
-                  SKIPPED
-                  HIDDEN
+AccessModifier:   "MUSTFILL"
+                  |
+                  "VISIT"
+                  |
+                  "SKIPPED"
+                  |
+                  "HIDDEN"
 ----
 
  * MUSTFILL : As indicated, a MUSTFILL field has to be filled by the user. This field will be colored in blue.
@@ -41,68 +41,71 @@ AccessModifier:   MUSTFILL
  * SKIPPED  : A SKIPPED field is a field which is displayed on the form but which the user can not overwrite. A field is skipped if the user needs to know the information written in it. This field is always colored in black.
  * HIDDEN   : A HIDDEN field that is not displayed on the form as the information it provides is of no importance for the user, this kind of fields is usualy used for database table join operations or for ID fields.
 
-NOTE: As the user moves from a field to another when filling the form, the current field is always colored in red.
+As the user moves from a field to another when filling the form, the current field is always colored in red.
 
 *Example*
  	
 [source,java]
 ----
 MUSTFILL Year
-...
+  ...
 END FIELD
    
 HIDDEN ID
-...
+  ...
 END FIELD
 ----
 
-==== Multi fields and Signle fields
+===== Multiple fields and Single fields
 
-After specifying the field's Access modifier, you can use an integer to transform the field to a multi field, meaning that the field is displayed as much times as the integer you defined.  
-
+After specifying the field's Access modifier, you can use an integer to transform the field to a multiple field, meaning that the field is displayed as much times as the integer you defined.  
+The fields created will have the same name plus the number of the field.
 *Example*
 ----
 VISIT (3) Email
-....
+  ....
 END FIELD
 ----
 
-This means that the Email field will be displayed 3 times on the form.
+This means that the Email field will be displayed 3 times on the form with the names Email1 Email2 and Email3.
 
-==== Field Position
+===== Field Position
 
-This entry defines the position of the field in the current block.+
-HIDDEN fields does not have positions, and in multiple block (Defined in the  Blocks creation Section of this document) you may use the NO DETAIL Block option to pass positioning fields.
+This entry defines the position of the field in the current block. HIDDEN fields does not have positions, and in multiple block (Defined in the  Blocks creation Section of this document) you may use the NO DETAIL Block option to pass positioning fields.
 There are two possibilities to define the field position.
 
 *Syntax:*
 [source,java]
 ----
-FieldPosition:  AT <Integer row  [, Integer column [- Integer multifield ]]>
-                | FOLLOW SimpleName 
+FieldPosition : "AT" "<"Integer row  [,Integer column [-Integer multi]]">"
+                | "FOLLOW" SimpleName 
 ----
 
-===== Absolute Position With AT
+ * *Absolute Position With AT*
 
 You can define it according to one integer or more: ::
 
-* AT <Integer row>
-* AT <Integer row , Integer column>
-* AT <Integer row, Integer column-Integer multifield> 
+ ** AT <Integer row>
+ ** AT <Integer row , Integer column>
+ ** AT <Integer row, Integer column-Integer multifield>
 
 *Example*
  	
 [source,java]
 ----
-AT <1, 1-2>
+VISIT (4) Customer AT <1, 1-4>
+  ...
+END FIELD
 ----
-The first integer indicates the row number while the second defines the column. In fact, Kopi automatically divides up the window in rows and columns when setting up a form. When defining the width of a column, thus, it always adopts the width of the longest field. Since the form wide is not unlimited, you can put a long field in two or more columns in order to spare place as it is the case in the example above.
+The first integer indicates the row number while the second defines the column. 
+In fact, Kopi automatically divides up the window in rows and columns when setting up a form. + 
+ When defining the width of a column, thus,
+it always adopts the width of the longest field. Since the form wide is not unlimited,
+you can put a long field in two or more columns in order to spare place as it is the case in the example above and it is usually used for multiple fields.
 
-===== Relative Position With FOLLOW
+ * *Relative Position With FOLLOW*
 
-You can also make use of the following structure:
-
-FOLLOW SimpleName
+You can also make use of the following structure : FOLLOW SimpleName
 
 *Example*
  	
@@ -122,28 +125,28 @@ The field label is optional, you declare it with the LABEL command that comes ju
 *Syntax*
 [source,java]
 ----
-FieldLabel: NO LABEL | LABEL String label [,String labels]
+FieldLabel : "NO" "LABEL" | "LABEL" [ String label [,String labels]* ]
 ----
 
-If you dont want your field to have a label, you can use the NO LABEL command, otherwise use the LABEL command, in this case, either you specify a list of String separated by a comma so the first one will be the field's label, or you do not specify any String and the SimpleName that comes after the field's access modifier will be the field's label.
+If you don't want your field to have a label, you can use the NO LABEL command, otherwise use the LABEL command, in this case, either you specify a list of String separated by a comma so the first one will be the field's label, or you do not specify any String and the SimpleName that comes after the field's access modifier will be the field's label.
 
 *Example*
 [source,java]
 ----
 VISIT firstName  AT <1 , 1-2>
-LABEL
-...
+  LABEL
+  ...
 END FIELD
 
 SKIPPED secondName
-FOLLOW firstName
-LABEL "The second Name","Onother Label for this field"
-...
+  FOLLOW firstName
+  LABEL "The second Name","another Label for this field"
+  ...
 END FIELD
 
 ----
 
-==== Field Help Text
+===== Field Help Text
 
 HELP is used to insert an explanation text for the application user in order to help him filling in the form. This Help text will then be displayed when the user places the mouse on the field.
 
@@ -164,9 +167,9 @@ MUSTFILL Lesson
 END FIELD
 ----
 
-==== Field Types
+===== Field Types
 
-The field type is a required entry, you may enter a predifined field type :
+The field type is a required entry, you may enter a predefined field type :
 
 *Example*
 [source,java]
@@ -195,7 +198,7 @@ END FIELD
 
 In this example, Objects is a type you should have defined previously in type definition section of the form using standard types, CODE types, ENUM types, LIST and SELECT command ...
 
-==== Field Alignment
+===== Field Alignment
 
 This command is used to define the localization of the field's content inside the field. There are three types of alignment.
 
@@ -207,46 +210,47 @@ This command is used to define the localization of the field's content inside th
 [source,java]
 ----
 VISIT field
-LABEL
-FIXNUM(9, 4)
-ALIGN CENTER
+  LABEL
+  FIXNUM(9, 4)
+  ALIGN CENTER
+  ...
+END FIELD
 ----
 
-====  Field Drop files
+=====  Field Drop files
 
-This command is used to make a field droppable, meaning you can drag files and drop them in your field.
+This command is used to make a field accept to drop files into it, meaning you can drag files and drop them in your field.
 
 *Syntax:*
 [source,java]
 ----
-DroppableDefinition:  DROPPABLE ExtensionList
-ExtentionList      :  String extension [,[ExtenstionList]
+DroppableDefinition : "DROPPABLE" ExtensionList
+ExtentionList       : String extension [,ExtenstionList]
 ----
 *Example*
 [source,java]
 ----
 VISIT images
-LABEL
-STRING(20)
-DROPPABLE("pdf", "jpeg", "tif", "tiff")
+  LABEL
+  STRING(20)
+  DROPPABLE("pdf", "jpeg", "tif", "tiff")
 END FIELD
 ----
 In this example, you can drag image files and drop them in the field named "images".
 
-
-==== Field Options
+===== Field Options
  
 In this part of the field definition, you can use one or more option from the 10 options available for fields in Kopi, here is the a list of these field options.
 
  * NOECHO               : If this option is used, characters typed in the field will not be displayed and a star(*) will be displayed instead, this option is useful for password fields.
  * NOEDIT               : This option makes it impossible to change the data of the field or to overwrite it.
  * SORTABLE             : This option adds two opposed arrows icons(up and down) just before the field, clicking on the icon changes the way data are sorted in the field, you can click the icon three times to have ascending sort, descending sort and default sort, 
- * TRANSIENT            : This option make the field transient, meaning intrailable, if a transaction  calls this field and then this transaction is aborted, the field will not be able to backup or rollback to its original value, besides this option makes changes ignored for this field.
+ * TRANSIENT            : This option make the field transient, meaning that the system can no trail it, if a transaction  calls this field and then this transaction is aborted, the field will not be able to backup or roll-back to its original value, besides this option makes changes ignored for this field.
  * NO DELETE ON UPDATE  : If the field is a lookup is a column of a lookup table, using this option prevent the system to clear the field when inserting new rows or updating rows.
  * NO DETAIL            : If the block is in detailed, using this option on a field make it invisible in the detail.
  * NO CHART             : If the block is multiple, using this option on a field exclude it from the chart. 
  * QUERY UPPER          : Whatever the string you input, this option will make kopi transform it to capital letters.
- * QUERY LOWER          : the oposit of the previous option it transform strings to lowercase.
+ * QUERY LOWER          : the opposite of the previous option it transform strings to lower case.
 
 *Example*
 [source,java]
@@ -259,26 +263,32 @@ VISIT name
 END FIELD
 ----
 
-==== Field Columns
+===== Field Columns
 
-The COLUMNS field option is used to establish a connection between a certain column in the database with the field.Once such connextion established, the field will have a direct access to the database column allowing insertions, modification ...+
-You may enter this option in order to specify which table and which column the field refers. You can also use the KEY option to specify a key clumn in the database or the NULLABLE option to specify an outer joint.+
+The COLUMNS field option is used to establish a connection between a certain column in the database with the field.Once such connection established, the field will have a direct access to the database column allowing insertions, modification ...+
+You may enter this option in order to specify which table and which column the field refers. +
+The same field can refer to more than one column.
+ You can also use the KEY option to specify a key column in the database or the NULLABLE option to specify an outer joint.+
 Two more option are available with the COLUMNS command, the index and the priority options.
 
 *Syntax:*
  	
 [source,java]
 ----
-FieldColumns:   COLUMNS (ColumnList) [ColumnIndex] [ColumnPriority]
-ColumnList:   Column  [, Column ]
-Column:   [KEY] [NULLABLE] QualifiedName
+FieldColumns : "COLUMNS" (ColumnList) [ColumnIndex] [ColumnPriority]
+ColumnList   : Column  [, Column ]
+Column       : ["KEY"] ["NULLABLE"] QualifiedName
 ----
 *Example*
  	
 [source,java]
 ----
-COLUMNS(A.x)
-where A is the Table and x the Column.
+VISIT Invoice AT <1, 2>
+  LABEL "Invoice Number"
+  STRING(10)
+  COLUMNS(I.NumInvoice) //I is the invoices table for example
+  ....
+END FIELD
 ----
 
 Note that a field can be connected to more than one table and column. In this case, the formula you will type will be:
@@ -287,32 +297,27 @@ Note that a field can be connected to more than one table and column. In this ca
  	
 [source,java]
 ----
-COLUMNS(KEY A.x, B.y)
-
-Table A and Table B have been connected to each other through columns 
-x and y.
-
-
-COLUMNS (NULLABLE A.x, B,y)
-
-Table A and Table B have now an outer join connection throw columns x and y.
+VISIT Invoice AT <1, 2>
+  LABEL "Invoice Number"
+  STRING(10)
+  COLUMNS(KEY I.NumInvoice, ID.Invoice) //
+  ....
+END FIELD
 ----
+In this example, I is the invoices table  and IP is the invoice details table and they have an outer join connection throw columns NumInvoice and Invoice.
 
-===== Indexes
+ * *Indexes*
 
 This option is used to define a value in the database which is to remain unique so that it can not appear anymore in another field of the same column. An INDEX is always to be followed by one or more integers. This integer can take a value between 0 and 31,both minimal and maximal values are also included.
 
-Let’s sum up with the following formula:
+Let’s sum up with the following syntax:
 
 *Syntax:*
  	
 [source,java]
 ----
-ColumnIndex:   INDEX Integers 
-Integers:   Integer index  [Integers]
-
-    INDEX Integer ...
-    and 0<=Integer<32 >
+ColumnIndex : "INDEX" Integers 
+Integers    : Integer index  [Integers]
 ----
 
 If two or more fields are given the same index value, it means that two similar combinations of these field values will not be accepted.
@@ -373,18 +378,18 @@ MUSTFILL "Time"
   INDEX 1
 END FIELD
 ----
-In this case, notice that the "Lecturer"-field has been associated 
+In this case, notice that the "Lecturer" field has been associated 
 with two indexes: 0 and 1.
 
-NOTE: The index value is ascendant. When attributing an index value to a field combination, you shall always take the value nexting that you have taken the last.
+The index value is ascendant. When attributing an index value to a field combination, you shall always take the value nexting that you have taken the last.
 
-===== Priority
+ * *Priority*
 
 *Syntax:*
  	
 [source,java]
 ----
-ColumnPriority:   PRIORITY [-] IntegerLiteral 
+ColumnPriority:   "PRIORITY" ["-"] Integer priority 
 ----
 This option is used in order to define the column order within a list when this list is displayed. A PRIORITY is always followed by an integer according to the structure given above. The column with the biggest priority value will appear on the extreme left side of the table and the one with the least value will be on the extreme right side.
 
@@ -401,7 +406,7 @@ difference that the names will be sorted out from Z to A.
 
 Moreover, two columns with the same priority will be displayed according to the same order in which the user has listed them.
 
-==== Field Commands
+===== Field Commands
 
 Once you have defined the columns , you may define the field commands. There are three types of field command:
 
@@ -413,97 +418,94 @@ Once you have defined the columns , you may define the field commands. There are
  	
 [source,java]
 ----
-ModeAndCommands:   ModeList  AccessModifier | [ModeList] Command 
+ModeAndCommands : ModeList  AccessModifier | [ModeList] Command 
 
-Command:   COMMAND QualifiedName | COMMAND CommandBody  END COMMAND
+Command         : "COMMAND" QualifiedName | "COMMAND" CommandBody
+                  "END" "COMMAND"
 
-CommandBody:   ITEM SimpleName  CommandAction 
+CommandBody     : "ITEM" SimpleName  CommandAction 
 
-CommandAction:   ACTION [(Parameter)] { KopiJavaCode  } | EXTERN QualifiedName | CALL SimpleName 
+CommandAction   : "ACTION" [(Parameter)] { KopiJavaCode  }
+                  |
+                  "EXTERN" QualifiedName | "CALL" SimpleName 
 
-ModeList:   ON Modes 
+ModeList        : "ON" Modes 
 
-Modes:   Mode  [, Modes ]
+Modes           : Mode  [, Modes ]
 
-Mode:   QUERY | INSERT | UPDATE
+Mode            : "QUERY" | "INSERT" | "UPDATE"
 ----
 
-==== Standard Field Command
+===== Standard Field Command
 
-There are five ways in calling a standard command:
-[NOTE] 
-At the beginning of a form definition, you can make new Actors and commands you can use in the field command definition.
-
-
+The command QualifiedNames that we will can be kopi predefined commands or you can make new Actors and commands you can use in the field command definition.
+There are five ways in calling a standard command
 
 [source,java]
 ----
-    COMMAND QualifiedName  // can be a Kopi predifined command or a new defined one in the+
-                              form command definition section
-    
-    Example
-    
-    COMMAND FormReset 
+"COMMAND" QualifiedName  
+
+Example :
+COMMAND FormReset 
 ----
 
 Or: 
    
 [source,java]
 ---- 
-    COMMAND ITEM SimpleName CALL SimpleName END COMMAND
+"COMMAND" "ITEM" SimpleName "CALL" SimpleName "END" "COMMAND"
 
-    Example
-     	
-    COMMAND
-      ITEM Autofill
-      CALL function
-    END COMMAND
+Example     	
+COMMAND
+  ITEM Autofill
+  CALL function
+END COMMAND
 ----
+
 Or: 
    
 [source,java]
 ----
-    COMMAND ITEM SimpleName EXTERN QualifiedName END COMMAND
+"COMMAND" "ITEM" SimpleName "EXTERN" QualifiedName "END" "COMMAND"
     
-    Example
-    
-    COMMAND 
-      ITEM Autofill
-      EXTERN Toto
-    END COMMAND
+Example  
+COMMAND 
+  ITEM Autofill
+  EXTERN filepath.function
+END COMMAND
 ----
 Or:
 
 [source,java]
 ----
-    COMMAND ITEM SimpleName ACTION (VField SimpleName) {Kopi-Java Code} 
-    END COMMAND
+"COMMAND" "ITEM" SimpleName "ACTION" (VField SimpleName) {Kopi-Java Code} 
+"END" "COMMAND"
 
-    Example
-     	
-    COMMAND
-      ITEM Clear
-       ACTION (VField f) {
-         f.setDefault ();
-      }
-    END COMMAND
+Example     	
+COMMAND
+  ITEM Clear
+  ACTION (VField f) {
+    f.setDefault ();
+  }
+END COMMAND
 ----
+
 Or:
 [source,java]
 ----
-    COMMAND ITEM SimpleName ACTION {Kopi-Java Code} 
-    END COMMAND 
+"COMMAND" "ITEM" SimpleName "ACTION" {Kopi-Java Code} 
+"END" "COMMAND" 
 ----
 
-==== Field Command using Modes
+===== Field Command using Modes
 
 All the previous command definition ways can be preceded by one mode ore more. There are three sorts of mode which are to be sorted according to the following hierarchy:
 
-    QUERY to start an inquiry within the database
-    INSERT to create a new row in the database
-    UPDATE to enter new information within a row 
+ * QUERY to start an inquiry within the database
+ * INSERT to create a new row in the database
+ * UPDATE to enter new information within a row 
 
-So you will have: ON Mode COMMAND...
+So you will have: ON Mode COMMAND, ON MODE QualifiedName ...
 
 *Example*
  	
@@ -514,21 +516,21 @@ ON QUERY, UPDATE COMMAND InsertMode
 
 If you have entered a mode before the COMMAND, it means this COMMAND can only be invoked if the block is in the mode you have determined.
 
-==== Field Access modifiers using Modes
+===== Field Access modifiers using Modes
 
-This command type is used to change the access to the field using the block Mode
+This command type is used to change the access to the field using the block Mode. In fact the access is not changed directly but the higher access possible is set to the indicated access.
 
 *Example*
 [source,java]
 ----
 ON QUERY,INSERT HIDDEN
-In this example, we have determined that the field will be invisible
-if the block is in the QUERY mode.
 ----
+In this example, we have determined that the field will be invisible
+if the block is in the QUERY  or the INSERT mode.
 
-==== Field Triggers
+===== Field Triggers
 
-Trigers are events that you can use to execute actions when they occur, there are field triggers, block triggers and form triggers that you can use following this syntax : 
+Triggers are events that you can use to execute actions when they occur, there are field triggers, block triggers and form triggers that you can use following this syntax : 
 
 *Syntax*
 [source,java]
@@ -537,11 +539,11 @@ Trigger      : EventList TrigerAction
 
 EventList    : Event [,EventList]
 
-TrigerAction : SimpleName | EXTERN QualifiedName | {KOPI_JAVA code} |
-                         (VField SimpleNAme){KOPI_JAVA code} 
+TrigerAction : SimpleName | "EXTERN" QualifiedName | {KOPI_JAVA code} 
+               | (VField SimpleNAme){KOPI_JAVA code} 
 ----
 
-Field Triggers are events that concern the fields behaviour, here is a list of all kopi field triggers available : 
+Field Triggers are events that concern the fields behavior, here is a list of all kopi field triggers available : 
 
   * PREFLD     : is executed upon entry of field
 
@@ -555,9 +557,9 @@ Field Triggers are events that concern the fields behaviour, here is a list of a
 
   * VALIDATE   : this is the same trigger as VALFLD
 
-  * DEFAULT    : Defines the default value of the field to be set if the setDefault() method is called (this method is automaticaly called when the user choose the insert command)
+  * DEFAULT    : Defines the default value of the field to be set if the setDefault() method is called (this method is automatically called when the user choose the insert command)
 
-  * FORMAT     : Not defined actualy
+  * FORMAT     : Not defined actually
 
   * ACCESS     : ACCESS is a special trigger that defines how a field can be accessed. This trigger must return one of these values ACS_SKIPPED, ACS_HIDDEN, ACS_VISIT or ACS_MUSTFILL.
 
@@ -580,32 +582,32 @@ Field Triggers are events that concern the fields behaviour, here is a list of a
 [source,java]
 ----
 VISIT EMail 
-LABEL "EMail"
-HELP "The electronic address of the lecturer"
-STRING 40
-COLUMNS (B.Mail)
-DEFAULT {
-@N.EMail = "@";
-}
-END FIELD
-The "N" means
-
-//the "@N.EMail" expression means : bloc N, field EMail
-
-
-MUSTFILL Lecturer
-LABEL
-FIXED (5,2)
-MINVAL 0
-COLUMNS (T.Lecturer)
-PRIORITY 1
-ACCESS {
-return (T.Art.getInt()==0? ACS_HIDDEN; ACS_MUSTFILL);
-}
+  LABEL "Email"
+  HELP "The electronic address of the lecturer"
+  STRING 40
+  COLUMNS (B.Mail)
+  DEFAULT {
+    @N.EMail = "@";
+  }
 END FIELD
 ----
 
-==== Field Definition from another Field
+the "@N.EMail" expression means : bloc N, field EMail
+
+----
+MUSTFILL Lecturer
+  LABEL
+  FIXED (5,2)
+  MINVAL 0
+  COLUMNS (T.Lecturer)
+  PRIORITY 1
+  ACCESS {
+    return (T.Art.getInt()==0? ACS_HIDDEN; ACS_MUSTFILL);
+  }
+END FIELD
+----
+
+===== Field Definition from another Field
 
 
 You can also create a field without declaring any field alignment, field option, mode, command or field trigger. However, the column, index and priority definitions are permitted.
@@ -617,46 +619,49 @@ You can also create a field without declaring any field alignment, field option,
 HIDDEN Firm
   LONG (11)
   IS F.ID
-
 END FIELD
 ----
+
 IS is used to equate a field with another one. In this example, the field "Firm" is equated with the field "F.ID".That means that the Firm field will always have the same value as the F.ID field. 
 
 
-=== Creating Form Blocks
+==== Creating Form Blocks
 
 As you already know, a form is composed of blocks. A block is a set of data which are stocked in the database and shown on a form. A block is created in order to either view the content of a database, to insert new data in the database or to update existing data in the database. A Block will always begin with BLOCK and end with BLOCK END, when defining a block, you have to proceed according to the following structure.
 
 *Syntax*
 [source,java]
 ----
-BlockDeclaration:  BLOCK (Integer buffer, Integer rows) SimpleName:SimpleName String blockTitle
-                   [IS QualifiedName] [IMPLEMENTS  [,[QualifiedName]]
-                   blockBodyDeclaration
-                   END BLOCK
+BlockDefinition : "BLOCK" (Integer buffer, Integer rows)
+                  SimpleName[:SimpleName] [String blockTitle]
+                  ["IS" QualifiedName] ["IMPLEMENTS"  [,QualifiedName]*]
+                  BlockBody
+                  "END" "BLOCK"
   
-blockBodyDeclaration:  [blockBoder] [blockAlignement] [blockHelp] [blockOptions] [blockTables]  
-                       [blocIndices] [blockCommands] [blockTriggers] blockFields
-                       [blockContextFooter]                     
+BlockBody       : [blockBoder] [blockAlignement] [blockHelp]
+                  [blockOptions] [blockTables]  
+                  [blocIndices] [blockCommands] [blockTriggers] blockFields
+                  [blockContextFooter]                     
 ----
 
-==== Block Types
+===== Block Types
 
-There are actualy two types of blocks in Visual Kopi, the only diffrence between them in the definition syntax is the buffer Integer.
+There are actually two types of blocks in Visual Kopi, the only difference between them in the definition syntax is the buffer Integer.
 
  * single blocks
- * Multiple Blocks
- 
+  
 A single block is a block in which only one single row of a database table is displayed on the form. Each time, the computer will memorize only one entire row and a certain quantity of ID numbers through which it will retrieve another rows from the database if you want to view them.
 
 *Example*
 [source,java]
 ----
 BLOCK (1,5)
-...
+  ...
 END BLOCK
 ----
 The first integer indicates the block type. In case of a single block, the first integer will always be 1. The second integer indicates the maximal number of the automatically memorized IDs.
+
+* Multiple Blocks
 
 A multiple block is a block in which more than one row are displayed on the form. These rows are retrieved all at once from the database and are memorized by the computer. Actually, you can define the number of the displayed rows which can be less than this of the memorized rows. In this case, there will be no need anymore to retrieve the hidden rows from the database when you want to view them.
 
@@ -664,14 +669,14 @@ A multiple block is a block in which more than one row are displayed on the form
 [source,java]
 ----
 BLOCK (10,5)
-...
+  ...
 END BLOCK
 ----
 The first integer indicates the number of rows to be automatically memorized while the second defines the number of displayed rows. Notice the first integer value must always be greater than 1.
  
-==== Block Names
+===== Block Names
 
-The name of the block is composed  SimpleName name followed by a colon and a SimpleName shortcut, finaly, you have to specify a String for the Block title.
+The name of the block is composed  SimpleName name optionally followed by a colon and a SimpleName shortcut, finally, you can specify a String for the Block title but it's not compulsory.
 
 *Example*
 [source,java] 
@@ -679,58 +684,55 @@ The name of the block is composed  SimpleName name followed by a colon and a Sim
 BLOCK (10,5) Degree:D "Degree Block"
 ----
 
-==== Block superClass and Interface
+===== Block superClass and Interface
 
 A Block may extend a superClass and implements one or more Interface.
 
 *Example*
 [source,java]
 ----
-BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock IMPLEMENTS VConstants
+BLOCK (10,5) Degree:D "Degrees" IS VImportedBlock IMPLEMENTS VConstants
 ----
 
-==== Block Border
+===== Block Border
 
-After the Block name and implementation clause, you can insert the optional border statment that defines the Block's frame type. Besides, the Title of the block will appear only if the Block's Border type has been specified. There are actualy four Border options :
+After the Block name and implementation clause, you can insert the optional border statement that defines the Block's frame type. Besides, the Title of the block will appear only if the Block's Border type has been specified. There are actualy four Border options :
 
-* BORDER row to frame the block with rows.
+* BORDER LINE to frame the block with lines.
 * BORDER RAISED to enhance a block by setting it on the foreground.
 * BORDER LOWERED to put it at the background.
 * BORDER ETCHED to carve a frame in the form.
 
-NOTE : To be Modified 
+*Example*
+[source,java]
+----
+BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock
+BORDER RAISED
+----
 
+===== Block Alignment
+
+Alignment statements are useful to align a block(source block) referring to another one(target block), after the keyword ALIGN, you have to specify the referred block name followed by one or many sets of two integers separated by a minus, the sets are separated by a comma. As for the integers signification, the one in the left of the minus is the source block column number while the other one is for the target block column number.
+For Example, let us suppose we have a multiple block Prices with 4 columns, with column 3 filled with Quantities and Column 4 with Prices, we also have a single block TotalPrices with two fields totalQuantity and TotalPrices, we want these fields to be aligned with the correct columns of the Prices block:
 
 *Example*
 [source,java]
 ----
-BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock IMPLEMENTS VConstants
-BORDER RAISED
-----
-
-==== Block Alignement
-
-Alignement statments are usuful to align a block(source block) refering to another one(target block), after the keyword ALIGN, you have to specifiy the refered block name folowed by one or many sets of two integers separated by a minus, the sets are separated by a comma. As for the integers signification, the one in the left of the minus is the source block column number while the other one is for the target block column number.
-For Example, let us suppose we have a multiple block Prices with 4 columns, with column 3 filled with Quanitities and Column 4 whith Prices, we also have a single block TotalPrices with two fields totalQuantity and TotalPrices, we want these fields to be aligned with the correct columns of the Prices block:
-
- *Example*
- [source,java]
-----
 BLOCK (10,5) Prices : P "Prices Block"
-BORDER row
+ BORDER row
 ...
 END BLOCK
 
 BLOCK (1,1) TotalPrices : TP "TotalPrice"
-BORDER row
-ALIGN Prices <1-3, 2-4>
+  BORDER row
+  ALIGN Prices <1-3, 2-4>
 ...
 END BLOCK
 ----
 
-==== Block Help
+===== Block Help
 
-This optional command is used to define the help-text for each field of the block. The different texts are to be entered after the word HELP.
+This optional command is used to define the help text for each field of the block. The different texts are to be entered after the word HELP.
 
 *Example*
  	
@@ -743,29 +745,27 @@ BLOCK (10,5) Degree: D "Degree Block"
 END BLOCK
 ----
 
-==== Block Options
+===== Block Options
 
-In this optional section you can insert commands with restrictional functions towards the users, the available commands that you can use are :
+In this optional section you can insert commands with restriction functions towards the users, the available commands that you can use are :
 
  * NO CHART : Disables the chart(grid) rendering of a multiple bloc to make it look like a single block.Only possible on multiple blocks displaying only one row, Besides the fields must be positioned with the AT command.
-  * NO DETAIL : Disables the positioning of fields and displays the block as a chart (grid), Only possible on multiple blocks, the fields should not be positioned with the AT command.
- * NO DELETE :  Prevent the user from removing fields centent.
+ * NO DETAIL : Disables the positioning of fields and displays the block as a chart (grid), Only possible on multiple blocks, the fields should not be positioned with the AT command.
+ * NO DELETE :  Prevent the user from removing fields content.
  * NO INSERT :  Prevent the user from inserting data in fields.
  * NO MOVE   :  Prevent the user from moving between records.
  * ACCESS ON SKIPPED : Makes the block accessible even if or its fields have SKIPPED access. 
  * UPDATE INDEX : If used, saving a block would delete all its rows and reinsert them one by one, by doing so, you can update the table rows even when you change the index fields without worrying about the "row already exist exception".
  
- NOTE : To test UPDATE INDEX, To check NO DELETE 
+===== Block Tables
  
- ==== Block Tables
- 
- When making use of this option, you have to type the command TABLE and enter the table name followed by a comma and by the synomym of this table name. This synonym will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called "look-up tables", i.e tables that are associated with the first one.
+When making use of this section, you have to type the command TABLE and enter the table name followed by a comma and by the shortcut to this table name. This shortcut will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called "look-up tables", i.e tables that are associated with the first one.
 
 *Syntax:*
  	
 [source,java]
 ----
-BlockTables:   TABLE <SimpleName  , SimpleName > [BlockTables]
+BlockTables:   "TABLE"  "<"SimpleName  , SimpleName > [BlockTables]*
 ----
 
 *Example*
@@ -780,7 +780,7 @@ TABLE <Rooms, R>
 The user will make use of these look-up tables as references
 when bringing in changes in the principal table.
 
-==== Block Indexes
+===== Block Indexes
 
 If you plan to enter one index or more when defining your fields, you also have to define one index text or more which will appear if you make a mistake by entering an indexed data or a data combination twice. This command can be followed by an error message contained in a string.
 
@@ -788,7 +788,7 @@ If you plan to enter one index or more when defining your fields, you also have 
  	
 [source,java]
 ----
-BlockIndices:   INDEX String message  [BlockIndices]
+BlockIndices:   "INDEX" String message  [BlockIndices]*
 ----
 
 *Example*
@@ -801,90 +801,99 @@ BLOCK (10,5) Degree : D "Degree"
  ...
 END BLOCK
 ----
-==== Block Commands
+===== Block Commands
 
 Block commands are commands accessible only from the block where they are called. There are Three ways to call block commands:
 
-===== Calling A Standard Command
+ * *Calling A Standard Command*
 
 There are 5 possible structures:
 
-* COMMAND QualifiedName : to call commands defined in the Command Definition form or Kopi predifined commands +
+----
+"COMMAND" QualifiedName 
 
-*Example
-[source,java]
- ----
-    COMMAND ResetBlock
- ----
-* COMMAND ITEM SimpleName CALL SimpleName END COMMAND : to create a command that calls an internal function +
+Example
+COMMAND ResetBlock
+----
 
-*Example*
-[source,java]
- ----    	
-    COMMAND
-      ITEM Save
-      CALL Save
-    END COMMAND
- ----
-* COMMAND ITEM SimpleName EXTERN Qualified Name END COMMAND : to create a command that calls a function located in onother form +
+Or:
 
-*Example*
-     	
-[source,java]
- ----
-    COMMAND
-      ITEM SharesOfExpenses
-      EXTERN Costing
-    END COMMAND
- ----
-* COMMAND ITEM SimpleName ACTION (VBlock SimpleName) {Kopi-Java Code} END COMMAND : to create a command and fill its Action body with KOPI_JAVA code +
+----
+"COMMAND" "ITEM" SimpleName "CALL" SimpleName "END" "COMMAND"
 
-*Example*
-[source,java]
- ----
-    COMMAND
-      ITEM End
-      ACTION (VBlock b) {
-       b.validate ();
-       close (CDE_VALIDATE)
-      }
-    END COMMAND
- ----
-* COMMAND ITEM SimpleName ACTION {Kopi-Java Code} END COMMAND : to create a command and fill its Action body with KOPI_JAVA code +
+Example
+COMMAND
+  ITEM Save
+  CALL Save
+END COMMAND
+----
 
-*Example*
-[source,java]
- ----    	
-    COMMAND
-      ITEM Validate
-      ACTION {
-       validate ();
-      }
-    END COMMAND
- ----
+Or:
 
-===== Calling The Block Commands With The Modes
+----
+"COMMAND" "ITEM" SimpleName "EXTERN" QualifiedName "END" "COMMAND"
+
+Example     	
+COMMAND
+  ITEM SharesOfExpenses
+  EXTERN Costing
+END COMMAND
+----
+
+Or:
+
+----
+"COMMAND" "ITEM" SimpleName "ACTION" (VBlock SimpleName) {Kopi-Java Code}
+"END" "COMMAND"
+
+Example
+COMMAND
+  ITEM End
+  ACTION (VBlock b) {
+    b.validate ();
+    close (CDE_VALIDATE)
+   }
+END COMMAND
+----
+
+Or:
+
+----
+"COMMAND" "ITEM" SimpleName "ACTION" {Kopi-Java Code} "END" "COMMAND"
+
+Example    	
+COMMAND
+  ITEM Validate
+  ACTION {
+    validate ();
+  }
+END COMMAND
+----
+
+ *  *Calling The Block Commands With Modes*
 
 Blocks have 3 possible Modes: 
+
  * QUERY  : When querying the database
  * INSERT : When inserting a new row in the database
  * UPDATE : When updating rows in the database
 
-You can combine these modes with the previous block command structure to have more controle over your command
+You can combine these modes with the previous block command structure to have more control over your command
+
 *Syntax*
 [source,java]
- ----
- ON BlockMode COMMAND
- ----
+----
+ ON BlockMode SimpleName
+----
 This means that the command called is only accessible when the block is in the specified Mode.
 
 *Example*
 [source,java]
- ----
+----
  ON QUERY, UPDATE COMMAND InsertMode
- ----
+----
 
-===== Calling The Block Commands With The Modes And An Access Modifier
+ * *Calling The Block Commands With Modes And An Access Modifier*
 
 in Kopi, a field can have different access types or modifiers, here is the definition of the four available access modifiers listed by ascending level.
  
@@ -893,158 +902,136 @@ in Kopi, a field can have different access types or modifiers, here is the defin
  * VISIT : fields with this access type are accessible, can be modified but not necessary.
  * MUSTFILL : MUSTFILL fields are accessible fields that the user must fill with a value.
   
- In the block command section, you can set the highest access level for the block fields according to the mode in wich the block would beording to the mode in which the block would be.
+In the block command section, you can set the highest access level for the block fields according to the mode in wich the block would beording to the mode in which the block would be.
 
 *Example*
 [source,java]
- ----
+----
  ON QUERY, UPDATE SKIPPED
  ON UPDATE HIDDEN
  ON QUERY VISIT
- ----
+----
 
 In the first example, all fields in the block will be either SKIPPED or HIDDEN in the query and update modes and can neither be MUSTFILL nor VISIT.
 For the second example, all the fields in the block will be HIDDEN when the block is in update mode.
 In the last example, all the fields in the block will be either VISIT, SKIPPED or HIDDEN in the query mode and can not be MUSTFILL.
 
-==== Block Triggers
+===== Block Triggers
 
 The block triggers are the same as form triggers on the block level. There are actually 20 block triggers you can use to execute actions once they are fired.
 
 *Syntax*
 [source,java]
- ----
+----
  BlocTrigger: BlocEventList TriggerAction
- BlocEventList: BlockEvent [,[BlockEvent]
- ----
+
+ BlocEventList: BlockEvent [,BlockEvent]*
+----
 
 Concerning the trigger action, which is the action to execute when the trigger is activated they can by :
 
- * a local function   : SimpleName
- * an external function : EXTERN QualifiedName
- * {KOPI_JAVA code}
- * (VBlock SimpleName){KOPI_JAVA code} 
+ ** a local function   : SimpleName
+ ** an external function : EXTERN QualifiedName
+ ** {KOPI_JAVA code}
+ ** (VBlock SimpleName){KOPI_JAVA code} 
 
 
-Here is a list of all available block trigger in Kopi.
+Here is a list of all available block triggers or block events in Kopi.
 
- * PREQRY  : executed before querying the database
- * POSTQRY : executed after querying the database
- * PREDEL  : executed before a row is deleted
- * POSTDEL : executed after a row is deleted
- * PREINS  : executed before a row is inserted
- * POSTINS : executed after a row is inserted
- * PREUPD  : executed before a row is updated
- * POSTUPD : executed after a row is updated
- * PRESAVE : executed before saving a row
- * PREREC  : executed upon record entry		
- * POSTREC : executed upon record exit
- * PREBLK  : executed upon block entry
- * POSTBLK : executed upon block exit
- * VALBLK  : executed upon block validation
- * VALREC  : executed upon record validation
- * DEFAULT : is executed when the block is in the InsertMode. This trigger becomes active when the user presses the key F4. It will then enable the system to load standard values which will be proposed to the user if he wishes to enter new data.
- * INIT    : executed upon block initialization
- * RESET   : executed upon Reset command (ResetForm)
- * CHANGED : a special trigger that returns a boolean value of wether the block have been changed or not, you can use it to bypass the system control for changes this way : 
- ----
+ ** PREQRY  : executed before querying the database
+ ** POSTQRY : executed after querying the database
+ ** PREDEL  : executed before a row is deleted
+ ** POSTDEL : executed after a row is deleted
+ ** PREINS  : executed before a row is inserted
+ ** POSTINS : executed after a row is inserted
+ ** PREUPD  : executed before a row is updated
+ ** POSTUPD : executed after a row is updated
+ ** PRESAVE : executed before saving a row
+ ** PREREC  : executed upon record entry		
+ ** POSTREC : executed upon record exit
+ ** PREBLK  : executed upon block entry
+ ** POSTBLK : executed upon block exit
+ ** VALBLK  : executed upon block validation
+ ** VALREC  : executed upon record validation
+ ** DEFAULT : is executed when the block is in the InsertMode. This trigger becomes active when the user presses the key F4. It will then enable the system to load standard values which will be proposed to the user if he wishes to enter new data.
+ ** INIT    : executed upon block initialization
+ ** RESET   : executed upon Reset command (ResetForm)
+ ** CHANGED : a special trigger that returns a boolean value of wether the block have been changed or not, you can use it to bypass the system control for changes this way : 
+----
  CHANGED {
    return false;
  }
- ----
+----
 
- * ACCESS  : defines whether a block can or not be accessed, it must always return a boolean value
+ ** ACCESS  : defines whether a block can or not be accessed, it must always return a boolean value
  
- ----
+----
   ACCESS{
     return Block.getMode == MOD_QUERY  
-    // Tests if the block is in query mode, this block is only accessible on query mode
+    // Tests if the block is in query mode,
+    this block is only accessible on query mode
   }
- ----
+----
  
-  *Examples*
- [source,java]
- ----
- BLOCK (10,5) Degree : D "Degree"
- BORDER row
- INDEX "This data already exists"
- COMMAND ResetForm
+*Examples*
+[source,java]
+----
+BLOCK (10,5) Degree : D "Degree"
+  BORDER row
+  INDEX "This data already exists"
+  COMMAND ResetForm
  
- INIT,PREBLK{
- KOPI_JAVA code
- }
- PREINS{
- System.out.print("Inserting date");
- ...
- }
+  INIT,PREBLK{
+   KOPI_JAVA code
+  }
+  PREINS{
+   System.out.print("Inserting date");
+   ...
+  }
   ...
 END BLOCK
- ----
+----
  
-==== Block Fields Declaration
+===== Block Fields Declaration
 
 In this section, all you have to do is to write at least on block field definition that begins with an access modifier and ends with END FIELD, you can enter as much fields as you may need
 following the field definition we saw in the previous chapter.
  
-==== Block Context Footer
+===== Block Context Footer
 
 In this section of the block, you can write local functions, define inner classes, override command actions, define your data members.
 The elements you write in the block Context Footer are accessible in the concerned block and are written in KOPI_JAVA code.
   
  
-=== Creating Forms 
+==== Creating Forms 
 
-There are actualy two types of forms in kopi, normal forms and BLOC INSERT forms which are special forms containing blocks that you may insert in other forms. + 
+There are actually two types of forms in kopi, normal forms and BLOC INSERT forms which are special forms containing blocks that you may insert in other forms. + 
 A form begins always with FORM and ends with END FORM, while a BLOC INSERT form begins with BLOC INSERT and ends with END INSERT. When creating a form, you will have to include the block and the field definitions. Moreover, you will have to define the menus as well as the different commands. Finally, you can also define some form triggers. Concretely, the structure is the following:
 
 
 *Syntax:*
 [source,java] 
 ----
- [LOCALE String formLocalization]
-
-FORM:  FORM String formTitle [  IS  QualifiedName  IMPLEMENTES QualifiedName[,[,QualifiedName]  ]
-
-    {
-      PackageDeclaration;
-      [ImportDeclaration];
-    }
-setDefault
-    [MenuDefinition]
-
-    [ActorDefinition]
-
-    [TypeDefinition]
-
-    [CommandDefinition]
-
- [InsertDefinition]
-
-BEGIN
-
-    [FormCommands]
-
-    [FormsTriggers]
-
-    [BlocksDefinition]
-
-  {
-    [ContextFooter]
-  }
-
-END FORM
-
+FormDef : ["LOCALE" String formLocalization]
+          "FORM" String formTitle
+          ["IS" QualifiedName "IMPLEMENTS" QualifiedName[,QualifiedName]*]
+          [FormHeader]  [MenuDefinition] 
+          [ActorDefinition] [TypeDefinition]
+          [CommandDefinition] [InsertDefinition]
+          "BEGIN"
+          [FormCommands] [FormsTriggers] [BlocksDefinition]
+          [ContextFooter]
+          "END" "FORM"
 ----
-==== Form Definition
 
 ===== Form Localization
 
 This is an optional step in which you may define the language of your forms menus and messages, the latter have to be defined in xml files.
 
-*Syntaxe:*
+*Syntax*
 [source,java]
 ----
-LOCALE String formLocalization
+"LOCALE" String formLocalization
 ----
 *Example:*
 [source,java]
@@ -1056,10 +1043,10 @@ LOCALE "en_EN"
 
 Every form have to begin with the keyword FORM that you can follow with a title (optional).
 
-*Syntaxe:*
+*Syntax*
 [source,java]
 ----
-FORM String formTitle 
+"FORM" String formTitle 
 ----
 
 *Example*
@@ -1068,18 +1055,18 @@ FORM String formTitle
 ----  
 FORM  "Lecturers List"
   ...
-  END FORM
+END FORM
 ----
 
 ===== Form Superclass And Interfaces
 
--*Superclass:*
+ * *Superclass:*
 
 *Syntax:*
  	
 [source,java]
 ----  
-SuperForm:   IS QualifiedName 
+SuperForm:   "IS" QualifiedName 
 ----
 Every form is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
 
@@ -1091,7 +1078,7 @@ FORM "Service Register" IS VReportSelectionForm
 ----
 In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
-*Interfaces*
+ * *Interfaces*
 
 You can also specify interfaces which the form may implement by using the IMPLEMENTS option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:
 
@@ -1099,7 +1086,7 @@ You can also specify interfaces which the form may implement by using the IMPLEM
 
 [source,java]
 ----
-FORM String formTitle IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
+Interface :  "IMPLEMENTS" QualifiedName [,QualifiedName]*
 ----
 
 *Example:*
@@ -1145,8 +1132,6 @@ In this example, the form belongs to the DMS firm and is a part of the applicati
 FORM "List of the Lecturers"
   {
     package at.dms.apps.tb;
-
-    import java.util.Hashtable
     import java.util.Vector
   }
    ...
@@ -1161,7 +1146,9 @@ Defining a menu means adding an entry to the menu bar in the top of the form, yo
  	
 [source,java]
 ----  
-MenuDefinition:   MENU SimpleName [LABEL String label]   END MENU 
+MenuDefinition:   "MENU" SimpleName 
+                  ["LABEL" String label]
+                  "END" "MENU" 
 ----
 
 *Example*
@@ -1191,9 +1178,13 @@ ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign t
  	
 [source,java]
 ----  
-ActorDefinition:  ACTOR SimpleName  MENU  SimpleName  [LABEL String label]
-                  HELP  String helpText  [KEY   String key] [ICON  String icon]
-                  END ACTOR
+ActorDefinition:  "ACTOR" SimpleName
+                  "MENU"  SimpleName
+                  ["LABEL" String label]
+                  "HELP"  String helpText 
+                  ["KEY"   String key]
+                  ["ICON"  String icon]
+                  "END" "ACTOR"
 ----
 
 *Example*
@@ -1228,7 +1219,9 @@ to customize these new types.
 
 *Syntax:*
 ----
-TypeDefinition:  TYPE SimplName IS FieldType  [FieldList] END TYPE
+TypeDefinition:  "TYPE" SimplName "IS" FieldType
+                 [TypeList]
+                 "END" "TYPE"
 ----
 
 *Example*
@@ -1292,9 +1285,13 @@ Command Defined in this section can be form level commands, block level commands
 *Syntax*
 [source,java]
 ----
-commandDefinition: COMMAND QualifiedName ITEM SimpleName commandBody END COMMAND
+cmdDef  : "COMMAND" QualifiedName 
+          "ITEM" SimpleName commandBody
+          "END" "COMMAND"
 
-commandBody: CALL SimpleName || EXTERN QualifiedName || ACTION [(VField SimpleName || VBlock SimpleName || VForm SimpleName)] {KOPI_JAVA statements}
+cmddBody: "CALL" SimpleName | "EXTERN" QualifiedName 
+     |"ACTION" [(VField SimpleName | VBlock SimpleName | VForm SimpleName)]
+           {KOPI_JAVA statements}
 ----
 
 
@@ -1304,7 +1301,7 @@ Calling a local action :
 
 [source,java]
 ----
-COMMAND Preveiw
+COMMAND Preview
   ITEM  Preview
   CALL  previewForm
 END COMMAND
@@ -1341,7 +1338,7 @@ This command allows you to actually define your types, menus, actors, commands i
 *Syntax* 
 [source,java]
 ----
-Insert Definition : INSERT String filePath
+Insert Definition : "INSERT" String filePath
 ----
 
 *Example*
@@ -1364,7 +1361,6 @@ END FORM
   
 ----
 
-==== Form Declaration
 
 After the different definitions we have made (types, menus, actors,commands), we need to begin the declaration of our form.Here, we will set up the structure and the behaviour of the form throw 4 sections :
 
@@ -1382,8 +1378,8 @@ In this section you may call the commands you want your form to have.You can cal
 ----
 BEGIN
 
-COMMAND Preview
-COMMAND PrintBlock
+  COMMAND Preview
+  COMMAND PrintBlock
 ----
 
 You can also make use of Kopi's ready command such as :
@@ -1391,8 +1387,8 @@ You can also make use of Kopi's ready command such as :
 ----
 BEGIN
 
-COMMAND HelpForm
-COMMAND QuitForm
+  COMMAND HelpForm
+  COMMAND QuitForm
 ----
 
 Moreover, you can define your command in this section the same way you did in the command definition section, but with no command name, it will be both a definition and a declaration.
@@ -1400,25 +1396,24 @@ Moreover, you can define your command in this section the same way you did in th
 There still one more think to know about form command declaration, in fact, you can also control the accessibility to a command by the Mode of the form.+
 A form have 3 possible Modes :
 
- *QUERY  : When inquiring the database
- *INSERT : When inserting a row in the database
- *UPDATE : When updating a row in the database
+ * QUERY  : When inquiring the database
+ * INSERT : When inserting a row in the database
+ * UPDATE : When updating a row in the database
 
 The Syntax to use command with modes is the following :
 
 *Syntax*
 ----
-ON ModeName [,[,ModeName] COMMAND SimpleName
+"ON" ModeName [,ModeName]* "COMMAND" SimpleName
 ----
-NOTE : untested, to verify !!
 
 ===== Form Triggers Definition
 Form Triggers are special events that once switched on you can execute a set of actions defined by the following syntax :
 
 *Syntax*
 ----
-FormTrigger:    FormEventList TriggerAction
-FormEventList:  FormEvent [,[,FormEvent]
+FormTrigger  :    FormEventList TriggerAction
+FormEventList:  FormEvent [,FormEvent]*
 ----
 
 Kopi actually defines 6 Form Triggers or Form Events : 
@@ -1426,7 +1421,7 @@ Kopi actually defines 6 Form Triggers or Form Events :
  * INIT      : executed when initializing the form and before the PREFORM Trigger, also executed at ResetForm command
  * PREFORM   : executed before the form is displayed and after the INIT Trigger, not executed at ResetForm command
  * POSTFORM  : executed when closing the form
- * QUITFORM  : executed (to be completed)
+ * QUITFORM  : actually not available
  * RESET     : executed upon ResetForm command
  * CHANGED   : a special trigger that returns a boolean value of whether the form have been changed or not, you can use it to bypass the system control for changes this way : 
 ----
@@ -1438,20 +1433,18 @@ Kopi actually defines 6 Form Triggers or Form Events :
 *Examples*
 ----
 INIT{
-System.out.println("Trigger INIT activated");
-// KOPI_JAVA statements
+  System.out.println("Trigger INIT activated");
+  // KOPI_JAVA statements
 }
 
 INIT,PREFORM{
-//KOPI_JAVA statements
+  //KOPI_JAVA statements
 }
 ----
 
-NOTE: To be completed for QUITFORM Trigger !! 
-
 ===== Form Pages 
 
-You can create Pages in your form using the NEW PAGES command after the trigger declaration section,this is optional and will create a Tab for each page you create under the form's toolbar.
+You can create Pages in your form using the NEW PAGE command after the trigger declaration section,this is optional and will create a Tab for each page you create under the form's toolbar.
 You can put as much blocks you want in each page, the same goes for form without pages.
 
 *Example*
@@ -1461,22 +1454,25 @@ You can put as much blocks you want in each page, the same goes for form without
  
 ===== Form Blocks
 
-You can have several blocks in one form, you just have to stack them in your form, using the definition presented in the Second chapter of this document, after the form triggers definiton, you can also group them in pages.
+You can have several blocks in one form, you just have to stack them in your form, using the definition presented in the Second chapter of this document, after the form triggers definition, you can also group them in pages.
 
-You can also youse the block import command in order to import block units (predifined blocks) in your form :
+You can also use the block import command in order to import block units (predefined blocks) in your form :
 
 *Syntax*
 ----
-BlockImport: INSERT QualifiedName
+BlockImport: "INSERT" QualifiedName
 ----
 
-As for the Block Unit definition, you can create one by creating a new form file beginning with this Syntax:
+As for the Block Unit definition, you can create one by creating a new form file using with this Syntax:
 
 *Syntax*
 [source,java]
 ----
-BlockUnit: BLOCK INSERT ContextHeader Definitions BlockDeclaration
-           END INSERT
+BlockUnit: "BLOCK" "INSERT" ContextHeader
+          [MenuDefinition] 
+          [ActorDefinition] [TypeDefinition]
+          [CommandDefinition] [InsertDefinition] BlockDeclaration
+          "END" "INSERT"
 ----
 
 You can see that a Block Unit has the same structure of a normal Form, with the absence of the form declaration Section, replaced by a Block Declaration Section. Moreover, a Block Unit does not have a Context Footer.
@@ -1486,36 +1482,33 @@ You can see that a Block Unit has the same structure of a normal Form, with the 
 ----
 BLOCK INSERT
 {
-package at.dms.apps.tb;
+  package at.dms.apps.tb;
 }
 
 //Here you can add Types, commands, actors definitions
 
-INSERT "Global.vf"
+  INSERT "Global.vf"
 
-BLOCK (10, 5) Lecturer.L "Lecturers"
-  BORDER LINE
-  ALIGN Name<1-3>
-  TABLE <Lecturers, L>
-  TABLE <Lessons, C>
+  BLOCK (10, 5) Lecturer.L "Lecturers"
+    BORDER LINE
+    ALIGN Name<1-3>
+    TABLE <Lecturers, L>
+    TABLE <Lessons, C>
 
-  VISIT lecturers
-    LABEL
-    STRING(10)
-    COLUMNS(L.lecturers)
-  END FIELD
+      VISIT lecturers
+        LABEL
+        STRING(10)
+        COLUMNS(L.lecturers)
+      END FIELD
   
   
-  VISIT lessons
-    LABEL
-    STRING(10)
-    COLUMNS(C.lessons)
-  END FIELD
-  
+      VISIT lessons
+        LABEL
+        STRING(10)
+        COLUMNS(C.lessons)
+      END FIELD
 
-END BLOCK
-
-//Other Blocks...
+  END BLOCK
 ...
 
 END INSERT
