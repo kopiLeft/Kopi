@@ -1,68 +1,73 @@
-// ----------------------------------------------------------------------
-// Copyright (c) 2013-2014 kopiLeft Services SARL, Tunisia
-// ----------------------------------------------------------------------
-// All rights reserved.
-// ----------------------------------------------------------------------
-// $Id$
-// ----------------------------------------------------------------------
+
+=== Generalities
+
+In this section we will provide the definitions you may need in order to fully understand the syntax explanations in the rest of the chapter.
+We will also provide the standard types used in the visual kopi framework. 
+
+==== Syntax terms
+
+During this chapter, you will have many *Syntax* sections containing different keywords and special characters :
 
 
-
-= Visual Kopi documentation	: Generalities
-:doctype: book
-
-
-[preface]
-PREFACE
--------
-NOTE : To complete with a preface on visual kopi capabilitites
-
-
-== Generalities
-
-NOTE : To complete !!
-
- Here are some general terms you will often use when creating a form: 
-
-=== The Simple And The Qualified Names
+ * *'SimpleName and QualifiedName'*
 
 When setting up your own application, you will often have to enter a name in order to define either a field, a block, a page or a form. You will then have to make use of either a simple or a qualified name.
 
 A SimpleName consists of a character row in which neither spaces nor points are permitted.
 
-*Syntax:*
-[source,java]
------------------
-SimpleName: 
------------------
 *Example*
 [source,java]
 -----------------
 StudentGroup2
 -----------------
+
 A QualifiedName is a row of characters in which points are allowed.
-[source,java]
------------------
-QualifiedName: SimpleName [.[.QualifiedName ]
-QualifiedNameList: QualifiedName  [,QualifiedNameList,,QualifiedNameList]
-------------------
+
 *Example*
 [source,java]
 ------------------
 StudentGroup2.ViennaUniversity
 ------------------
 
-=== Predifined Field Types 
+ * *'Parameters'*
 
-In visual kopi, a field's type can be one of the 12 ready to use predifined types : 
+You can also find parameters with types in the syntax blocks; 
+
+*Example*
+[source,java]
+----
+Integer x
+String name
+Fixed y
+----
+
+ * *'Special Characters'*
+ 
+These characters may be found ins syntax block and defines the rules of the syntax:
+
+[ ]  : if an element in put between [ ] that means it's optional. +
+*    : if an element or expression is followed by *, then it can be inserted zero or more times +
++    : if an element or expression is followed by +, then this element need to be inserted at least one time, or more +
+|    : means Or +
+" "  : if and element or expression is put between " ", then it's a keyword of the language. 
+
+*Example*
+----
+ItemDefinition  : "FORM" String formTitle ["IS" QualifiedName]
+                  ["IMPLEMENTS" QualfiedName [,QualifiedName]* ] 
+----
+
+==== Predefined Field Types 
+
+Every form or report field In visual kopi have field type that can be one of the 12 ready to use predefined types : 
 
 [source,java]
 ----
-- Fixnum Field Type
-- Image Field Type
-- Integer Field Type
-- String Field Type
-- Text Field Type
+- FIXED     // used to insert fixed values
+- IMAGE      // used to insert images
+- INTEGER    // used to insert integer values
+- STRING     // used to insert string values
+- TEXT       // used to insert text values
 - DATE       // used to insert a date value
 - BOOL       // used to insert a true or false value 
 - COLOR      // used to set the fields color
@@ -72,7 +77,7 @@ In visual kopi, a field's type can be one of the 12 ready to use predifined type
 - WEEK       // used to insert years weeks  value
 ----
 
-==== The STRING Field Type
+===== The STRING Field Type
 
 A STRING is used to enter characters which can be either letters, numbers or both. The width has always to be given. Moreover, you can optionaly indicate how many rows it will contain and how many will finally be displayed on the form. If these optional arguments are used, you have to indicate the carraige return method by specifying either the FIXED ON or the FIXED OFF option to avoid compilation errors. +
 There are also three other options you can use in order to modify the String's case : 
@@ -85,16 +90,16 @@ There are also three other options you can use in order to modify the String's c
  	
 [source,java]
 ----
-StringType:  STRING (integer width ,integer height ,integer visible height)
-             [FixedOption]
-             [StringFormat] 
+StringType   : "STRING" (Integer width ,Integer height ,Integer visible)
+               [FixOption]
+               [StringFormat] 
               
-FixedOption:  FIXED ON
-              FIXED OFF             
+FixOption    : "FIXED" "ON"
+               "FIXED" "OFF"             
 
-StringFormat:   CONVERT UPPER
-                CONVERT LOWER
-                CONVERT NAME 
+StringFormat : "CONVERT" "UPPER"
+               "CONVERT" "LOWER"
+               "CONVERT" "NAME" 
 ----
 
 *Example*
@@ -108,7 +113,7 @@ CONVERT UPPER
 
 In this example, the text inserted will contain up to 40 characters and up to 10 rows. However, only the first 4 rows will be displayed on the form. Moreover, All the letters in the text will be converted to capital letters.
 
-==== The TEXT Field Type
+===== The TEXT Field Type
 
 A Text and a String are similar apart from the fact that in a text, two parameters have always to be given: namely the width and the height of the field whereas you only need to determine the width in a string.
 
@@ -116,24 +121,24 @@ A Text and a String are similar apart from the fact that in a text, two paramete
  	
 [source,java]
 ----
-TextType:   TEXT (integer width ,integer  height,integer visible height )
-             [FixedOption]
+TextType      : "TEXT" (Integer width ,Integer height ,Integer visible)
+                [FixOption]
 
-[FixedOption]: FIXED ON
-               FIXED OFF
+[FixOption]   : "FIXED" "ON"
+                "FIXED" "OFF"
 ----
 
 For example, you can write STRING (40, 10, 4) or STRING (40) but you have to write TEXT (40, 10) or TEXT (40, 10, 4).
 
-==== The IMAGE Field Type
+===== The IMAGE Field Type
 
-This fieldtype is used to insert an illustration or a picture. When introducing an IMAGE, you have to determine its width and height. These values have to be integers and are measured in pixel. In this case, the two attributes are compulsory.The field will look like a file chooser that lets you choose and image file to show in the field.
+This field type is used to insert an illustration or a picture. When introducing an IMAGE, you have to determine its width and height. These values have to be integers and are measured in pixel. In this case, the two attributes are compulsory.The field will look like a file chooser that lets you choose and image file to show in the field.
 
 *Syntax:*
  	
 [source,java]
 ----
-ImageType:   IMAGE (integer whidth , integer height )
+ImageType : "IMAGE" (Integer width , Integer height)
 ----
 *Example:*
  	
@@ -143,39 +148,44 @@ IMAGE(20,10)
 ----
 In this field, the image will have a width of 20 pixel and a height of 10 pixel.
 
-==== The Fixnum Field Type 
+===== The FIXED Field Type 
 
-A FIXNUM is used to insert numbers, integers, fixed point numbers. Fraction numbers are entered with the fieldtype FRACTION. The maximal width has to be determined for all them. In case of a fixed point number FIXNUM, the maximal scale i.e the number of characters standing after the comma has also to be defined. Also the comma has to be counted as a character. Only the width is to be defined in a FRACTION.
-You can also set the minimum and the maximum values for the fixnum field with the optional parameters MINVAL and MAXVAL.
+A FIXED is used to insert numbers, integers, fixed point numbers. Fraction numbers are entered with the field type FRACTION. 
+The maximal width has to be determined for all them. In case of a fixed point number FIXNUM, the maximal scale i.e the number of characters standing after the comma has also to be defined. 
+Also the comma has to be counted as a character. Only the width is to be defined in a FRACTION. 
+You can also set the minimum and the maximum values for the FIXNUM field with the optional parameters MINVAL and MAXVAL. 
+
 
 *Syntax:*
  	
 [source,java]
 ----
-FixedType:   FIXED (integer width,integer scale )
-             [MINVAL fixed]
-             [MAXVAL fixed]   
-             
-             FRACTION (integer width )
-             [MINVAL fixed]
-             [MAXVAL fixed]   
-----
+FixedType   :  "FIXNUM" (Integer width ,Integer scale)
+               ["MINVAL" Fixed minValue]
+               ["MAXVAL" Fixed maxValue]   
 
-*Example*
+FractionType : "FRACTION" (Integer width)
+               ["MINVAL" Fixed minValue]
+               ["MAXVAL" Fixed maxValue]   
+               
+---- 
+
+
+*Example:*
  	
 [source,java]
 ----
-FIXED(4,2)       for 1,25
+FIXED(4,2)      // for 1,25
   MINVAL 0
   MAXVAL 3.0 
     
  
-FRACTION(7)      for 1 35/64 
+FRACTION(7)    //  for 1 35/64 
   MINVAL 0
   MAXVAL 25
 ----
 
-==== The Integer Field Type
+===== The INTEGER Field Type
 
 Integer field type is  LONG is used to insert integers. Only the text width is to be defined. The MINVAL and MAXVAL options are also available for this type.
 
@@ -183,9 +193,9 @@ Integer field type is  LONG is used to insert integers. Only the text width is t
  	
 [source,java]
 ----
-IntegerType:   LONG (integer width )
-               [MINVAL integer ]
-               [MAXVAL integer ]   
+IntegerType:   "LONG" (Integer width)
+               ["MINVAL" Integer minValue]
+               ["MAXVAL" Integer maxValue]   
 ----
 
 *Example*
@@ -193,26 +203,25 @@ IntegerType:   LONG (integer width )
 [source,java]
 ----
 LONG(6)
-MINVAL 0
-MAXVAL 100 
+  MINVAL 0
+  MAXVAL 100 
 ----
 
+==== Code Field Types
 
-=== Code Field Types
+In addition to the predefined field types already available in visual kopi, you can define more specific types which are the ENUM type and the CODE type. Unlike the predefined field types, these types have to be set in the Type definition type of the form before you can use them in the fields.
 
-In addition to the predifined field types already available in visual kopi, you can define more specific types which are the ENUM type and the CODE type. Unlike the predifined field types, these types have to be set in the Type definition type of the form before you can use them in the fields.
+===== The ENUM Type
 
-==== The Type ENUM
-
-An ENUM means enumeration or listing. An enum definition is made up of one or several strings and only the strings you have listed can be entered in the field.
+The ENUM type means enumeration or listing. An enumeration definition is made up of one or several strings and only the strings you have listed can be entered in the field.
 
 *Syntax:*
  	
 [source,java]
 ----
-EnumType:   ENUM (EnumList )
+EnumType:   "ENUM" (EnumList)
 
-EnumList:   String [, EnumList ]
+EnumList:   String member [,EnumList]
 ----
 
 *Example*
@@ -221,31 +230,32 @@ EnumList:   String [, EnumList ]
 ----
 ENUM ("X-Small","Small","Medium", *  Large", *  X-Large" )
 ----
-indexterm:[CODE]
 
-==== The Type CODE 
+===== The CODE types 
 
-There are four different sorts of CODE: ::
+There are four different sorts of CODE :
 * The CODE BOOL
 * The CODE LONG
 * The CODE FIXED 
 * The CODE STRING
 
-These codes enable you tpare place in your database. Actually, only the values you have assigned to each item you have entered will be saved in the database.
+These types enable you to have a list of item-value pairs, the items will be displayed in the field and the values will be assigned instead. 
 
-===== The Type CODE BOOL
+ *  *The Type CODE BOOL*
 
-In a CODE BOOL or BOOLEAN you have to assign a Boolean value to the item you have entered. Boolean values are such unvariable values like *  True" or *  False" and *  Yes" or *  No".
+In a CODE BOOL or BOOLEAN you have to assign a Boolean value to the item you have entered. Boolean values are values like "True" or "False" and "Yes" or "No".
 
 *Syntax:*
  	
 [source,java]
 ----
-CodeBooleanType:   CODE BOOL IS CodeBooleanList  END CODE
+CodeBooleanType : "CODE" "BOOL" "IS"
+                  CodeBooleanList  
+                  "END" "CODE"
 
-CodeBooleanList:   CodeBoolean  [CodeBooleanList]
+CodeBooleanList : CodeBoolean  [CodeBooleanList]
 
-CodeBoolean:   String code  = Boolean value
+CodeBoolean     : String code "=" Boolean value
 ----
 
 *Example*
@@ -253,24 +263,26 @@ CodeBoolean:   String code  = Boolean value
 [source,java]
 ----
 CODE BOOL IS
-  *  married" = true
-  *  single" = false
+  "married" = true
+  "single"  = false
 END CODE
 ----
 
-===== The Type CODE LONG
+ * *The Type CODE LONG*
 
-In a CODE LONG, you assign to each item you have entered a LONG value.
+In a CODE LONG, you assign to each String item you have entered a LONG value.
 
 *Syntax:*
  	
 [source,java]
 ----
-CodeIntegerType:   CODE LONG IS CodeIntegerList  END CODE
+CodeIntegerType : "CODE" "LONG" "IS" 
+                  CodeIntegerList
+                  "END" "CODE"
+                  
+CodeIntegerList : CodeInteger  [CodeIntegerList]
 
-CodeIntegerList:   CodeInteger  [CodeIntegerList]
-
-CodeInteger:   String code  = Integer value 
+CodeInteger     : String code "=" Integer value 
 ----
 
 *Example*
@@ -278,17 +290,17 @@ CodeInteger:   String code  = Integer value
 [source,java]
 ----
 CODE LONG IS
-    *  Monday" = 1
-    *  Tuesday" = 2
-    *  Wednesday" = 3
-    *  Thursday" = 4
-    *  Friday" = 5
-    *  Saturday" = 6
-    *  Sunday" = 7
+  "Monday" = 1
+  "Tuesday" = 2
+  "Wednesday" = 3
+  "Thursday" = 4
+  "Friday" = 5
+  "Saturday" = 6
+  "Sunday" = 7
 END CODE
 ----
 
-===== The Type CODE FIXED
+ * *The Type CODE FIXED*
 
 In a CODE FIXED, each item you have entered will get a FIXED value, i.e integers, fixed point numbers and fraction numbers.
 
@@ -296,50 +308,55 @@ In a CODE FIXED, each item you have entered will get a FIXED value, i.e integers
  	
 [source,java]
 ----
-CodeFixedType:   CODE FIXED IS [CodeFixedList] END CODE
+CodeFixedType : "CODE" "FIXED" "IS"
+                [CodeFixedList]
+                "END" "CODE"
 
-CodeFixedList:   CodeFixed  [CodeFixedList]
+CodeFixedList : CodeFixed  [CodeFixedList]
   
-CodeFixed:   String code  = Fixed value
+CodeFixed     : String code "=" Fixed value
 ----
 *Example*
  	
 [source,java]
 ----
 CODE FIXED IS
-  *  piece" = 1.00
-  *  per cent" = 0.01
+  "piece" = 1.00
+  "per cent" = 0.01
 END CODE
 ----
 
-===== The Type CODE STRING
+ * *The Type CODE STRING*
 
-In a CODE STRING, each item you have entered will get a STRING value, this can be useful for abreviations of long strings for example.
+In a CODE STRING, each item you have entered will get a STRING value, this can be useful for shortcut of long strings for example.
 
 *Syntax:*
  	
 [source,java]
 ----
-CodeStringType:   CODE STRING IS [CodeStringType] END CODE
+CodeStringType : "CODE" "STRING" "IS"
+                 [CodeStringType]
+                 "END" "CODE"
 
-CodeStringType:   CodeString  [CodeStringType]
+CodeStringType : CodeString  [CodeStringType]
   
-CodeString:   String code = String value
+CodeString     : String code "=" String value
 ----
 *Example*
  	
 [source,java]
 ----
 CODE STRING IS
-  *  JDK" = *  Java Development Kit"
-  *  JRE" = *  Java Runtime Environment"
+  "JDK" = "Java Development Kit"
+  "JRE" = "Java Runtime Environment"
 END CODE
 ----
 
-=== The LIST command
+==== The LIST command
 
-Once you have defined a fieldtype, you can make use of the LIST command in order to refer the user to a list or a table in the database which will help him when filling in the form in question. If you refer a fieldtype to a certain table, the field will get an icon on which you can click in order to retrieve this table. As this command connects the user with a certain table, you have to enumerate all columns of the table which information could be helpful for the user. In so doing, you will then have to enter at least one column. The information contained in the first element of the list must have the same standard type as the defined type as it is the one which will be entered in the field in question. In addition, you may choose to refer to an existing form (that should extend the VDictionaryForm class) using either the NEW command to get a button on buttom of the list allowing you to get to the refered form, or the ACCESS command to bypass the list and get directly to the refered form.
-
+Once you have defined a field type, you can make use of the LIST command in order to refer the user to a list or a table in the database which will help him when filling in the form in question. +
+If you refer a field type to a certain table, the field will get an icon on which you can click in order to retrieve this table. As this command connects the user with a certain table, you have to enumerate all columns of the table which information could be helpful for the user. +
+In so doing, you will then have to enter at least one column. The information contained in the first element of the list must have the same standard type as the defined type as it is the one which will be entered in the field in question. In addition, you may choose to refer to an existing form (that should extend the VDictionaryForm class) using either the NEW command to get a button on the bottom of the list allowing you to get to the referred form, or the ACCESS command to bypass the list and get directly to the referred form.
 
 
 *Syntax:*
@@ -347,21 +364,17 @@ Once you have defined a fieldtype, you can make use of the LIST command in order
 [source,java]
 ----
 
-List:   LIST TableReference [NEW | ACESS QualifiedName ] 
-        IS ListColumns 
-        END LIST
-        
+List        : "LIST" String tableName ["NEW" | "ACESS" QualifiedName ] 
+              "IS" ListColumns 
+              "END" "LIST"     
 
-        
-TableReference: SimpleName table
+ListColumns : ListColumn  [ListColumns]
 
-ListColumns:   ListColumn  [ListColumns]
-
-ListColumn:   String field = SimpleName column : Predifined Field Type   
+ListColumn  : [String field "="] SimpleName ":" Predefined Field Type   
 
 ----
 
-This command is usualy used when defining a new type, here is an example where we define the Lecturer Type as a STRING(8) value from the Symbol field of the *  Lecturer" table on the database, when clicking on a field of Type Lecturer, you will have a list with three columns (Symbol, Surname and Lesson) retreived from the *  Lecturer table". Selecting a row from this list will put the symbol value in the field.
+This command is usually used when defining a new type, here is an example where we define the Lecturer Type as a STRING(8) value from the Symbol field of the "Lecturer" table on the database, when clicking on a field of Type Lecturer, you will have a list with three columns (Symbol, Surname and Lesson) retrieved from the "Lecturer" table. Selecting a row from this list will put the symbol value in the field.
 
 *Example*
  	
@@ -371,17 +384,17 @@ TYPE Lecturer IS
   STRING (8)
   CONVERT UPPER
 
-  LIST *  Lecturer" IS
-    *  Symbol" = Symbol : STRING (8)
-    *  Name" = Name : STRING (40)
-    *  Surname" = Surname : STRING (40)
-    *  Lesson" = Lesson : STRING (20)
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
   END LIST
 ...
 END TYPE
 ----
 
-==== The SELECT command
+===== The SELECT command
 
 As you had the possibility to call up a list or a table from the database with the option LIST, you now can make Kopi sort out information from a whole list or a table which the option SELECT and this, according to criteria you have to define. Let’s say you want to view the degrees which can be achieved in a certain year. For this, you have to use the SELECT command as you see in the following rows:
 
@@ -398,16 +411,16 @@ TYPE CurrentDegree (Integer year) IS
         WHERE Year = : (year)
         )} IS
 
-        *  Symbol" = Symbol : STRING (8)
-        *  Description" = Description : STRING (40)
+        "Symbol" = Symbol : STRING (8)
+        "Description" = Description : STRING (40)
   END LIST
 END TYPE
 ----
 "Degree" is the database table to which we have to access in order to select the information. The command SELECT is used in order to enter the columns in which Kopi has to make its research. After FROM, you have to enter the table from which these columns are to be selected and after WHERE, you have to enter the conditions according to which this selection has to be carried out.
 
-The sign *  =" means the value of the data delivered after the selection must correspond to the conditions you have entered.
-The sign *  :" inserts one Java expression. After this Java expression, you can insert a SQL expression again. (See JLS 15.27)
-Finally, you have to define for each of them the fieldtype. 
+The sign "=" means the value of the data delivered after the selection must correspond to the conditions you have entered.
+The sign ":" inserts one Java expression. After this Java expression, you can insert a SQL expression again. (See JLS 15.27)
+Finally, you have to define for each of them the field type. 
 
 As a result of your selection, you will then have a table with two columns which will contain the different sorts of degrees achievable in the year you have entered.
 
