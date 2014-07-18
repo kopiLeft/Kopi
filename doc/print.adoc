@@ -1,24 +1,12 @@
-// ----------------------------------------------------------------------
-// Copyright (c) 2013-2014 kopiLeft Services SARL, Tunisia
-// ----------------------------------------------------------------------
-// All rights reserved.
-// ----------------------------------------------------------------------
-// $Id$
-// ----------------------------------------------------------------------
 
-
-
-= Visual Kopi documentation	: Print Pages
-:doctype: book
-
-== Visual Kopi Print Pages
+=== Visual Kopi Print Pages
 
 Visual Prints are static reports that you can create with the Kopi framework, such reports are written in files with the (.vp) extension and have a lot of differences from the dynamic reports we have seen earlier.
 In fact, prints are more complicated to create since you have to take care of the design, the positions and the style details of the report.
 The result is what we call a static report that you cannot modify or interact with in the PDF format, but you can print, save send ..
  We also call these printable Pages.
 
-=== Print Page Structure
+==== Print Page Structure
 When writing a static report, you have to define the data structures, then you insert the data in the report using the defined structures, finally you need to write the print constructor.
 A print always begins with PAGE and ends with END PAGE.
 Here is the global syntax of a page :
@@ -26,31 +14,32 @@ Here is the global syntax of a page :
 *Syntax*
 [source,java]
 ----
-PageDefinition :  PAGE IS QualfiedName IMPLEMENTS QualifiedName[,[,QualifiedName] ]
+PageDefinition :  "PAGE" "IS" QualfiedName
+                  "IMPLEMENTS" QualifiedName[,QualifiedName]* ]
                   {
                     PackageDeclaration;
                     [ImportDeclaration];
                   }
                   [InsertDefinition]
                   StylesDefinition 
-                  BEGIN 
+                  "BEGIN" 
                   PageFormat
                   PageBlocks
                   [PageHeaderFooter]
                   [ContextFooter]
-                  END PAGE
+                  "END" "PAGE"
                
 ----
 
-==== Page Superclass And Interfaces
+===== Page Superclass And Interfaces
 
--*Superclass:*
+ * *Superclass:*
 
 *Syntax:*
  	
 [source,java]
 ----  
-SuperPage:   IS QualifiedName 
+SuperPage:   "IS" QualifiedName 
 ----
 Every Page is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
 
@@ -61,17 +50,17 @@ Every Page is a class that may extend another Java class by using the optional k
 PAGE IS PProtectedPage
 ----
 
-*Interfaces*
+ * *Interfaces*
 
 You can also specify interfaces which the Page may implement by using the IMPLEMENTS option. 
 *Syntax*
 
 [source,java]
 ----
-PAGE IS QualifiedName IMPLEMENTS QualifiedName[,[,QualifiedName]
+"IMPLEMENTS" QualifiedName[,QualifiedName]*
 ----
 
-==== Page Header
+===== Page Header
 
 *Syntax:*
  	
@@ -100,7 +89,7 @@ END PAGE
 ----
 In this example, the Page belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
 
-==== Insert Definitions
+===== Insert Definitions
 
 You can user other files to write your print pages styles and then have them inserted in your print page definition file (.vp) using the INSERT command.
 
@@ -110,7 +99,7 @@ You can user other files to write your print pages styles and then have them ins
 INSERT "PrintDefault.vp"
 ----
 
-==== Styles Definitions
+===== Styles Definitions
 
 In this part of the Page, you have to define the structures and the styles of your page, you can use the following 3 types of styles to define as much structures as you need.
 
@@ -121,7 +110,7 @@ The Style types are :
  * PARAGRAPH STYLES
  
 
-===== Block Styles
+ * *Block Styles*
 
 Block styles are simple structures that only have Border and Background parameters to set :
 *Syntax*
@@ -144,7 +133,7 @@ the BORDER statement sets the thickness of the block's border, while the BACKGRO
 ----
 
 
-===== Text Styles
+ * *Text Styles*
 
 Text styles are structures that set text data properties :
 *Syntax*
@@ -185,7 +174,7 @@ TEXT STYLE text
 END STYLE
 ----
              
-===== Paragraph Styles
+ * *Paragraph Styles*
 
 Paragraph styles are structures for table columns like data entries with :
 
@@ -223,8 +212,8 @@ PositionAlign  : "LEFT"  | "RIGHT"  | "CENTER"  | "JUSTIFIED"
 PositionIdent  : "LEFT" Integer left   |  "RIGHT" Integer right 
 PositionMargin : "LEFT" Integer left   |  "RIGHT" Integer right  
 PositionSpace  : "ABOVE" Integer above | "BELOW" Integer below    
-PrintTabset    : (["TAB"] SimpleName "AT" Integer position "ALIGN" alignType)*
-alignType      : LEFT | CENTER | RIGHT | DECIMAL
+PrintTabset    : (["TAB"] SimpleName "AT" Integer pos "ALIGN" alg)*
+alg            : LEFT | CENTER | RIGHT | DECIMAL
                  
 ----
 
@@ -251,7 +240,7 @@ END STYLE
 
 ----
 
-==== Page Format Definition
+===== Page Format Definition
 
 This section is optional, here you can define the page format :
 
@@ -260,7 +249,8 @@ This section is optional, here you can define the page format :
 ----
 FormatDefinition : [  "LANDSCAPE" | "PORTRAIT"  [String formatValue]   ]
 
-formatValue      : (Integer width  Integer height  Integer border )  | A5 | A4 | A3 | legal | letter
+formatValue      : (Integer width  Integer height  Integer border ) 
+                   | A5 | A4 | A3 | legal | letter
 ----
 
 All you have to do is to insert the keyword that sets the orientation of the page (PORTRAIT or LANDSCAPE), this keyword can be followed by a string that defines the format of the page.
@@ -280,7 +270,7 @@ PORTRAIT "letter"
 PORTRAIT "592 842 25"
 ----
 
-==== Page Blocks Definition
+===== Page Blocks Definition
 
 This section of the page is where you will insert your data in the form of blocks that can inherit the styles you have defined in the styles definition section of the page.
 There are 5 types of blocks you can use to insert you data:
@@ -298,7 +288,8 @@ Before explaining every block type, there are some common properties that are us
 [source,java]
 ----
 BlockPosition   : [ "POS" Integer posx (Integer posy | "BELOW")]
-                  [ "SIZE" (Integer width | String WidthString)  (Integer height| String HeightString) ]
+                  [ "SIZE" (Integer width | String WidthString) 
+                   (Integer height| String HeightString) ]
                   [ "SHOW" "IF" KOPI_JAVA code]
                   
 WidthString     : "PAGE_WIDTH"  | "MAX"
@@ -317,7 +308,9 @@ After the size definition you can enter a display condition with the command SHO
 ----
 PrintTriggers       : SimpleName [(ParameterList)] { TrigSource }
 
-TrigSource          : [String line | <TAB StyleName> | <StyleName> | "PAGE_COUNT" | (KOPI_JAVA code) | {( (KOPI_JAVA code) => (TrigSource)* }]*
+TrigSource          : [String line | <TAB StyleName> | <StyleName> 
+                      | "PAGE_COUNT" | (KOPI_JAVA code)
+                      | {( (KOPI_JAVA code) => (TrigSource)* }]*
 ----
 
 
@@ -338,7 +331,7 @@ BlockBody  : "BODY" { KOPI_JAVA code }
  
 After the triggers, you can have a body block that have to implement the print() abstract method in kopi_java code in which you can use the triggers defined in the same block, it is optional in a text block but you will have to implement it in some of the other blocks like the recursive block.
  
-===== Text Blocks Definition
+ * *Text Blocks Definition*
 
 Text blocks are data blocks that can be used to show simple text on the print page : 
 *Syntax*
@@ -349,7 +342,7 @@ TextBlockDefinition : ["REC"] "TEXT" SimpleName
                       ["STYLE" SimpleName]
                       (PrintTriggers)*
                       [BlockBody]
-                      END BLOCK
+                      "END" "BLOCK"
                
 ----
 
@@ -357,57 +350,61 @@ A text Block begins by "TEXT" and ends by "END BLOCK", it can have the optional 
 
 
 *Example*
+Using only block triggers :
+
 [source,java]
 ----
 REC TEXT Invoice
-POS 60 160
-SIZE 290 MAX
-SOURCE {
-<alignLeft><helvetica9> <bold> "Invoice N° " (inv.NumInvoice) "\n"
-}
+  POS 60 160
+  SIZE 290 MAX
+  SOURCE {
+    <alignLeft><helvetica9> <bold> "Invoice N° " (inv.NumInvoice) "\n"
+  }
 END BLOCK
 ----
+
+*Example*
+Using Body section:
 
 [source,java]
 ----
 REC TEXT Details
-POS 60 190
-SIZE 200 100
+  POS 60 190
+  SIZE 200 100
 
-line(String title, Object description)
-{
-  <details><helvetica7><!bold> (titel) ":" 
-<TAB TAB1><helvetica8><!bold> (description)
-}
-
-boldline(String title, Object description) 
-{
-  <details><helvetica7><bold> (title) ":"
-<TAB TAB1><helvetica8><bold> (description)
-}
-
-newLine 
-{
-<helvetica4> "\n"
-}
-
-BODY 
-{
-Remise
- protected void print() throws Exception
- 
- {
-  line("Page", ""+getCurrentPage());
-  boldline("Date", inv.DateInvoice);
-  boldline("Client", inv.Customer );
-  line("Adress", inv.Adress);
-  line("Payment Mode", inv.PaymentMode);
-  line("Delivery Mode", inv.DeliveryMode);
+  line(String title, Object description)
+  {
+    <details><helvetica7><!bold> (title) ":" 
+    <TAB TAB1><helvetica8><!bold> (description)
   }
-}
+
+  boldline(String title, Object description) 
+  {
+    <details><helvetica7><bold> (title) ":"
+    <TAB TAB1><helvetica8><bold> (description)
+  }
+
+  newLine 
+  {
+    <helvetica4> "\n" 
+  }
+
+  BODY 
+  {
+    Remise
+    protected void print() throws Exception
+      {
+        line("Page", ""+getCurrentPage());
+        boldline("Date", inv.DateInvoice);
+        boldline("Client", inv.Customer );
+        line("Adress", inv.Adress);
+        line("Payment Mode", inv.PaymentMode);
+        line("Delivery Mode", inv.DeliveryMode);
+      }
+  }
 END BLOCK
 ----
-===== List Blocks Definition 
+ * *List Blocks Definition* 
 
 List blocks are used to insert tables of based on TABSET styles in the page:
 
@@ -470,7 +467,8 @@ The STYLE section only accepts block styles.
     <bold>
     <TAB Price> (invpos.Price)
     <TAB Discount> (invpos.Discount) " %"
-    <TAB Total> (invpos.Quantity * (invpos.Price -((invpos.Price * invpos.Discount)/100)))
+    <TAB Total> (invpos.Quantity * (invpos.Price -
+    ((invpos.Price * invpos.Discount)/100)))
     <helvetica4> "\n"
   }
   BODY  
@@ -491,7 +489,7 @@ The STYLE section only accepts block styles.
 
 ----
 
-===== Recursive Blocks Definition
+ * *Recursive Blocks Definition*
 
 Also called vertical blocks, they are used to contain multiple blocks and displaying them vertically, you can use one of the block styles that you have defined in this block definition after the keyword STYLE, but no text styles and paragraph styles are allowed.
 
@@ -535,7 +533,8 @@ VERTICAL BLOCK Loop
     <bold>
     <TAB Price> (invpos.Price)
     <TAB Discount> (invpos.Discount) " %"
-    <TAB Total> (invpos.Quantity * (invpos.Price -((invpos.Price * invpos.Discount)/100)))
+    <TAB Total> (invpos.Quantity * (invpos.Price -
+    ((invpos.Price * invpos.Discount)/100)))
     <helvetica4> "\n"
   }
   BODY  
@@ -557,7 +556,7 @@ END BLOCK
 ----
 
 
-===== Horizontal Blocks Definition
+ * *Horizontal Blocks Definition*
 
 Horizontal Blocks are the same as vertical blocks (recursive blocks), they do contain other blocks but they display them horizontally, you can use one of the block styles that you have defined in this block definition after the keyword STYLE, but no text styles and paragraph styles are allowed.
 
@@ -589,7 +588,7 @@ END BLOCK
 ----
 
 
-===== Rectangle Blocks Definition
+ * *Rectangle Blocks Definition*
 
 This Type of blocks just insert a rectangle with the parameters of position, size and block style to set.
 
@@ -611,7 +610,7 @@ RECT Rectangle
 END BLOCK
 ----
 
-===== Imported Blocks Definition
+ * *Imported Blocks Definition*
 
 You can import already defined blocks using the INSERT keyword
 
@@ -620,7 +619,9 @@ You can import already defined blocks using the INSERT keyword
 ----
 ImportedBlockDefinition : "INSERT" BlockType QualifiedName
 
-BlockType               : "RECT" | "VERTICAL" "BLOCK" | "HORIZONTAL" "BLOCK" | "TEXT" | "LIST" 
+BlockType               : "RECT" | "VERTICAL" "BLOCK"
+                          | "HORIZONTAL" "BLOCK" | "TEXT"
+                          | "LIST" 
 ----
 
 *Example*
@@ -628,14 +629,15 @@ BlockType               : "RECT" | "VERTICAL" "BLOCK" | "HORIZONTAL" "BLOCK" | "
 ----
 INSERT TEXT OtherReport.BlockText
 ----
-==== Page Header and Footer 
+===== Page Header and Footer 
 
 After defining the page blocks , you can define the header and the footer,to do so you can just create a trigger named PAGEFOOTER or PAGEHEADER, or you can import a block as a header/footer.
 *Examples*
 [source,java]
 ----
 PAGEFOOTER {
-  <landscape> <helvetica8> "Invoice N° " (numInvoice)   "  -  Page " (getCurrentPage()) " / " (getPageCount()) "\n"
+  <landscape> <helvetica8> "Invoice N° " (numInvoice)
+  "  -  Page " (getCurrentPage()) " / " (getPageCount()) "\n"
      <helvetica8> (Date.now()) " " (Time.now())
 }
 
@@ -644,7 +646,7 @@ PAGEFOOTER AnotherPageFile.definedBlock
 ----
 
 
-==== Page Context Footer
+===== Page Context Footer
 
 In this section is inserted between curly brackets after you will have to define the page's constructor and initializers, the data members and the types definitions and other methods.
 
@@ -721,15 +723,4 @@ FORM IS VPrintSelectionForm
 }
 END FORM
 ----
-
-
-
-
-
-
-
-
-
-
-
 
