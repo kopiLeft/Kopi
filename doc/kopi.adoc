@@ -1,4 +1,4 @@
-= Kopi documentation
+= Kopi Application Generator :  User guide
 
 :doctype: book
 
@@ -17,7 +17,7 @@ Organization of This Document
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This documentation includes two main Chapters: +
 
-* CHAPTER 1 : XKJC - The Kopi EXtended Java language+
+* CHAPTER 1 : XKJC - The EXtended Kopi Java language+
 XKJC is a compiler for embedded SQL in Java. This language is a super set of Java; i.e., it is compatible with Java source code. This allows the execution of Java-typed SQL statements and the mixing of expressions from both SQL and Java.
 
 * CHAPTER 2 : VLIB - The Visual Kopi application Framework+
