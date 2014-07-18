@@ -16,7 +16,7 @@
 ## GOALS
 
 
-default:		form.pdf general.pdf report.pdf print.pdf kopi.pdf
+default:		form.pdf general.pdf report.pdf print.pdf kopi.pdf conclusion.pdf
 
 general.xml:		general.adoc 
 			asciidoc -d book -b docbook  general.adoc 
@@ -32,69 +32,158 @@ report.xml:		report.adoc
 			
 kopi.xml:		kopi.adoc 
 			asciidoc -d book -b docbook  kopi.adoc 
+			
+conclusion.xml:  	conclusion.adoc 
+			asciidoc -d book -b docbook  conclusion.adoc 		
+			
+conclusion.fo:	 conclusion.xml
+	          xsltproc -o conclusion.fo --stringparam l10n.gentext.language "fr"	\
+		--stringparam body.font.family "concrete"				\
+		--stringparam title.font.family "sansserif"				\
+		--stringparam body.font.size "10"					\
+		--stringparam body.font.master "8"					\
+		--stringparam body.start.indent 20pt					\
+		--stringparam section.autolabel 1					\
+		--stringparam default.image.width 400pt					\
+		--stringparam section.label.includes.component.label 1			\
+		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--param variablelist.term.break.after 1					\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param ulink.show 0 --stringparam book.titlepage.color "#0268A4"	\
+		--stringparam table.header.color "#2e7fa1"				\
+		--param table.row.alternate.color 1					\
+		--stringparam table.row.odd.color "#ddd"				\
+		--stringparam table.row.pair.color "#fff"				\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  conclusion.xml
+			
+				
 
-general.fo:		general.xml
-			xsltproc -o general.fo --stringparam l10n.gentext.language "fr"			\
-			--stringparam body.font.family "concrete" --stringparam title.font.family "sansserif"	\
-			--stringparam body.font.size "10" --stringparam body.font.master "8" 			\
-			--stringparam toc.section.depth 4 --stringparam admon.graphics 1 			\
-			--stringparam admon.graphics.path "/etc/asciidoc/images/icons/" 			\
-			--stringparam default.image.width 200pt --stringparam body.start.indent 20pt 		\
-			--stringparam  section.autolabel 1  --stringparam book.titlepage.color "#0268A4" 	\
-			--stringparam  section.label.includes.component.label 1  				\
-			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
-			$(STYLESHEETS_DIR)/fo/docbook.xsl general.xml
+general.fo:	general.xml
+	          xsltproc -o general.fo --stringparam l10n.gentext.language "fr"	\
+		--stringparam body.font.family "concrete"				\
+		--stringparam title.font.family "sansserif"				\
+		--stringparam body.font.size "10"					\
+		--stringparam body.font.master "8"					\
+		--stringparam body.start.indent 20pt					\
+		--stringparam section.autolabel 1					\
+		--stringparam default.image.width 400pt					\
+		--stringparam section.label.includes.component.label 1			\
+		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--param variablelist.term.break.after 1					\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param ulink.show 0 --stringparam book.titlepage.color "#0268A4"	\
+		--stringparam table.header.color "#2e7fa1"				\
+		--param table.row.alternate.color 1					\
+		--stringparam table.row.odd.color "#ddd"				\
+		--stringparam table.row.pair.color "#fff"				\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  general.xml
 
-form.fo:		form.xml
-			xsltproc -o form.fo --stringparam l10n.gentext.language "fr"			\
-			--stringparam body.font.family "concrete" --stringparam title.font.family "sansserif"	\
-			--stringparam body.font.size "10" --stringparam body.font.master "8" 			\
-			--stringparam toc.section.depth 4 --stringparam admon.graphics 1 			\
-			--stringparam admon.graphics.path "/etc/asciidoc/images/icons/" 			\
-			--stringparam default.image.width 200pt --stringparam body.start.indent 20pt 		\
-			--stringparam  section.autolabel 1  --stringparam book.titlepage.color "#0268A4" 	\
-			--stringparam  section.label.includes.component.label 1  				\
-			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
-			$(STYLESHEETS_DIR)/fo/docbook.xsl form.xml
+form.fo:	form.xml
+	          xsltproc -o form.fo --stringparam l10n.gentext.language "fr"	\
+		--stringparam body.font.family "concrete"				\
+		--stringparam title.font.family "sansserif"				\
+		--stringparam body.font.size "10"					\
+		--stringparam body.font.master "8"					\
+		--stringparam body.start.indent 20pt					\
+		--stringparam section.autolabel 1					\
+		--stringparam default.image.width 400pt					\
+		--stringparam section.label.includes.component.label 1			\
+		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--param variablelist.term.break.after 1					\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param ulink.show 0 --stringparam book.titlepage.color "#0268A4"	\
+		--stringparam table.header.color "#2e7fa1"				\
+		--param table.row.alternate.color 1					\
+		--stringparam table.row.odd.color "#ddd"				\
+		--stringparam table.row.pair.color "#fff"				\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  form.xml
 			
 			
-report.fo:		report.xml
-			xsltproc -o report.fo --stringparam l10n.gentext.language "fr"			\
-			--stringparam body.font.family "concrete" --stringparam title.font.family "sansserif"	\
-			--stringparam body.font.size "10" --stringparam body.font.master "8" 			\
-			--stringparam toc.section.depth 4 --stringparam admon.graphics 1 			\
-			--stringparam admon.graphics.path "/etc/asciidoc/images/icons/" 			\
-			--stringparam default.image.width 200pt --stringparam body.start.indent 20pt 		\
-			--stringparam  section.autolabel 1  --stringparam book.titlepage.color "#0268A4" 	\
-			--stringparam  section.label.includes.component.label 1  				\
-			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
-			$(STYLESHEETS_DIR)/fo/docbook.xsl report.xml
+report.fo:	report.xml
+	          xsltproc -o report.fo --stringparam l10n.gentext.language "fr"	\
+		--stringparam body.font.family "concrete"				\
+		--stringparam title.font.family "sansserif"				\
+		--stringparam body.font.size "10"					\
+		--stringparam body.font.master "8"					\
+		--stringparam body.start.indent 20pt					\
+		--stringparam section.autolabel 1					\
+		--stringparam default.image.width 400pt					\
+		--stringparam section.label.includes.component.label 1			\
+		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--param variablelist.term.break.after 1					\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param ulink.show 0 --stringparam book.titlepage.color "#0268A4"	\
+		--stringparam table.header.color "#2e7fa1"				\
+		--param table.row.alternate.color 1					\
+		--stringparam table.row.odd.color "#ddd"				\
+		--stringparam table.row.pair.color "#fff"				\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  report.xml
 			
 
-print.fo:		print.xml
-			xsltproc -o print.fo --stringparam l10n.gentext.language "fr"			\
-			--stringparam body.font.family "concrete" --stringparam title.font.family "sansserif"	\
-			--stringparam body.font.size "10" --stringparam body.font.master "8" 			\
-			--stringparam toc.section.depth 4 --stringparam admon.graphics 1 			\
-			--stringparam admon.graphics.path "/etc/asciidoc/images/icons/" 			\
-			--stringparam default.image.width 200pt --stringparam body.start.indent 20pt 		\
-			--stringparam  section.autolabel 1  --stringparam book.titlepage.color "#0268A4" 	\
-			--stringparam  section.label.includes.component.label 1  				\
-			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
-			$(STYLESHEETS_DIR)/fo/docbook.xsl print.xml
+print.fo:	print.xml
+	          xsltproc -o print.fo --stringparam l10n.gentext.language "fr"	\
+		--stringparam body.font.family "concrete"				\
+		--stringparam title.font.family "sansserif"				\
+		--stringparam body.font.size "10"					\
+		--stringparam body.font.master "8"					\
+		--stringparam body.start.indent 20pt					\
+		--stringparam section.autolabel 1					\
+		--stringparam default.image.width 400pt					\
+		--stringparam section.label.includes.component.label 1			\
+		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--param variablelist.term.break.after 1					\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param ulink.show 0 --stringparam book.titlepage.color "#0268A4"	\
+		--stringparam table.header.color "#2e7fa1"				\
+		--param table.row.alternate.color 1					\
+		--stringparam table.row.odd.color "#ddd"				\
+		--stringparam table.row.pair.color "#fff"				\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  print.xml
 						
 			
-kopi.fo:		kopi.xml
-			xsltproc -o kopi.fo --stringparam l10n.gentext.language "fr"			\
-			--stringparam body.font.family "concrete" --stringparam title.font.family "sansserif"	\
-			--stringparam body.font.size "10" --stringparam body.font.master "8" 			\
-			--stringparam toc.section.depth 4 --stringparam admon.graphics 1 			\
-			--stringparam admon.graphics.path "/etc/asciidoc/images/icons/" 			\
-			--stringparam default.image.width 200pt --stringparam body.start.indent 20pt 		\
-			--stringparam  section.autolabel 1  --stringparam book.titlepage.color "#0268A4" 	\
-			--stringparam  section.label.includes.component.label 1  				\
-			--stringparam chapter.autolabel 1 -param shade.verbatim 1 -param ulink.show 0 		\
-			$(STYLESHEETS_DIR)/fo/docbook.xsl kopi.xml
+kopi.fo:	kopi.xml
+	          xsltproc -o kopi.fo --stringparam l10n.gentext.language "fr"	\
+		--stringparam body.font.family "concrete"				\
+		--stringparam title.font.family "sansserif"				\
+		--stringparam body.font.size "10"					\
+		--stringparam body.font.master "8"					\
+		--stringparam body.start.indent 20pt					\
+		--stringparam section.autolabel 1					\
+		--stringparam default.image.width 400pt					\
+		--stringparam section.label.includes.component.label 1			\
+		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--param variablelist.term.break.after 1					\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param ulink.show 0 --stringparam book.titlepage.color "#0268A4"	\
+		--stringparam table.header.color "#2e7fa1"				\
+		--param table.row.alternate.color 1					\
+		--stringparam table.row.odd.color "#ddd"				\
+		--stringparam table.row.pair.color "#fff"				\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  kopi.xml
 						
 			
 
@@ -114,9 +203,12 @@ print.pdf:		print.fo
 
 kopi.pdf:		kopi.fo
 			fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf kopi.pdf -fo kopi.fo
+			
+conclusion.pdf:	        conclusion.fo
+			fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf conclusion.pdf -fo conclusion.fo
 
 clean:
-			rm -rf form.pdf form.fo  form.xml general.pdf general.xml general.fo  report.pdf report.xml report.fo print.pdf print.fo print.xml  kopi.pdf kopi.fo kopi.xml *~
+			rm -rf form.pdf form.fo  form.xml general.pdf general.xml general.fo  report.pdf report.xml report.fo print.pdf print.fo print.xml  kopi.pdf kopi.fo kopi.xml conclusion.xml conclusion.pdf conclusion.fo *~
 
 ## ----------------------------------------------------------------------
 ## GLOBAL DEFINITIONS
