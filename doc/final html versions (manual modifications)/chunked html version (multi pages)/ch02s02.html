@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.2. Visual Kopi Forms</title><link rel="stylesheet" type="text/css" href="docbook-xsl.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /><link rel="home" href="index.html" title="Kopi Application Generator : User guide" /><link rel="up" href="ch02.html" title="Chapter 2. VLIB - The Visual Kopi application framework" /><link rel="prev" href="ch02s01.html" title="2.1. Generalities" /><link rel="next" href="ch02s03.html" title="2.3. Visual Kopi Reports" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="p" href="ch02s01.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch02s03.html">Next</a></td></tr></table><hr />
+	<div class="entete_header">
+		<div class="logo_header">srd</div>
+		<div class="title_header">Kopi Application Generator : User guide</div>
+  </div>
+
+
+
+</div><div class="section" title="2.2. Visual Kopi Forms"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="_visual_kopi_forms"></a>2.2. Visual Kopi Forms</h2></div></div></div><p>The aim of Kopi is to enable you to create applications. An application is made up of forms. A <span class="strong"><strong>form</strong></span> is a set of <span class="strong"><strong>pages</strong></span> consisting of <span class="strong"><strong>blocks</strong></span>. A <span class="strong"><strong>block</strong></span> is nothing else than a table which is divided into columns (vertical) and rows (horizontal). A row is made up of <span class="strong"><strong>fields</strong></span>, and each <span class="strong"><strong>field</strong></span> contains a data value at the intersection of a row and a column that can be of different <span class="strong"><strong>Types</strong></span>.
+By the end of this chapter, you will learn how to create a form, but before, you need to learn how to create a field and how to form blocks.</p><div class="section" title="2.2.1. Creating Form Fields"><div class="titlepage"><div><div><h3 class="title"><a id="_creating_form_fields"></a>2.2.1. Creating Form Fields</h3></div></div></div><p>In Visual Kopi, a fields are containers in which you can define different types of data. A field definition begins with an access modifier followed by an optional SimpleName and ends with END FIELD.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">FieldDeclaration  : AccessModifier [FieldHeader] [HelpText] FieldType
+                    FieldBody
+                    "END" "FIELD"
+
+FieldHeader       : [(Integer multiField)] [SimpleName] [FieldPosition]
+                    [FieldLabel]
+FieldBody         : "IS" QualifiedName [FieldColumns] | [FieldAligement]
+                    [FieldDropList]     [FieldOptions]    [FieldColumns]
+                    [FieldCommands] [FieldTriggers]</pre><div class="section" title="Field Access Modifiers"><div class="titlepage"><div><div><h4 class="title"><a id="_field_access_modifiers"></a>Field Access Modifiers</h4></div></div></div><p>An access modifier determines the way the application user will have to handle each field in a form as well as the field accessibility. This command is compulsory. There are 4 sorts of access modifier:</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">AccessModifier:   "MUSTFILL"
+                  |
+                  "VISIT"
+                  |
+                  "SKIPPED"
+                  |
+                  "HIDDEN"</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+MUSTFILL : As indicated, a MUSTFILL field has to be filled by the user. This field will be colored in blue.
+</li><li class="listitem">
+VISIT    : A VISIT field is a field which the user can fill if he wants to. In Visual Kopi, this field will be colored in green.
+</li><li class="listitem">
+SKIPPED  : A SKIPPED field is a field which is displayed on the form but which the user can not overwrite. A field is skipped if the user needs to know the information written in it. This field is always colored in black.
+</li><li class="listitem">
+HIDDEN   : A HIDDEN field that is not displayed on the form as the information it provides is of no importance for the user, this kind of fields is usualy used for database table join operations or for ID fields.
+</li></ul></div><p>As the user moves from a field to another when filling the form, the current field is always colored in red.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">MUSTFILL Year
+  ...
+END FIELD
+
+HIDDEN ID
+  ...
+END FIELD</pre></div><div class="section" title="Multiple fields and Single fields"><div class="titlepage"><div><div><h4 class="title"><a id="_multiple_fields_and_single_fields"></a>Multiple fields and Single fields</h4></div></div></div><p>After specifying the field’s Access modifier, you can use an integer to transform the field to a multiple field, meaning that the field is displayed as much times as the integer you defined.
+The fields created will have the same name plus the number of the field.
+<span class="strong"><strong>Example</strong></span></p><pre class="screen">VISIT (3) Email
+  ....
+END FIELD</pre><p>This means that the Email field will be displayed 3 times on the form with the names Email1 Email2 and Email3.</p></div><div class="section" title="Field Position"><div class="titlepage"><div><div><h4 class="title"><a id="_field_position"></a>Field Position</h4></div></div></div><p>This entry defines the position of the field in the current block. HIDDEN fields does not have positions, and in multiple block (Defined in the  Blocks creation Section of this document) you may use the NO DETAIL Block option to pass positioning fields.
+There are two possibilities to define the field position.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">FieldPosition : "AT" "&lt;"Integer row  [,Integer column [-Integer multi]]"&gt;"
+                | "FOLLOW" SimpleName</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+<span class="strong"><strong>Absolute Position With AT</strong></span>
+</p><div class="variablelist"><dl><dt><span class="term">
+You can define it according to one integer or more: 
+</span></dt><dd><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+AT &lt;Integer row&gt;
+</li><li class="listitem">
+AT &lt;Integer row , Integer column&gt;
+</li><li class="listitem">
+AT &lt;Integer row, Integer column-Integer multifield&gt;
+</li></ul></div></dd></dl></div></li></ul></div><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT (4) Customer AT &lt;1, 1-4&gt;
+  ...
+END FIELD</pre><p>The first integer indicates the row number while the second defines the column.
+In fact, Kopi automatically divides up the window in rows and columns when setting up a form.
+ When defining the width of a column, thus,
+it always adopts the width of the longest field. Since the form wide is not unlimited,
+you can put a long field in two or more columns in order to spare place as it is the case in the example above and it is usually used for multiple fields.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Relative Position With FOLLOW</strong></span>
+</li></ul></div><p>You can also make use of the following structure : FOLLOW SimpleName</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT Email
+  FOLLOW Name
+  ...
+END FIELD</pre><p>If you enter a new field with this option (in this case it would be the field "Email"), it means that this field will be placed directly next to the first field defined by the FOLLOW command (field "Name") on the same row. The two fields will then form one single column.</p></div><div class="section" title="Field label"><div class="titlepage"><div><div><h4 class="title"><a id="_field_label"></a>Field label</h4></div></div></div><p>The field label is optional, you declare it with the LABEL command that comes just after the position definition, the syntax is the following :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">FieldLabel : "NO" "LABEL" | "LABEL" [ String label [,String labels]* ]</pre><p>If you don’t want your field to have a label, you can use the NO LABEL command, otherwise use the LABEL command, in this case, either you specify a list of String separated by a comma so the first one will be the field’s label, or you do not specify any String and the SimpleName that comes after the field’s access modifier will be the field’s label.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT firstName  AT &lt;1 , 1-2&gt;
+  LABEL
+  ...
+END FIELD
+
+SKIPPED secondName
+  FOLLOW firstName
+  LABEL "The second Name","another Label for this field"
+  ...
+END FIELD</pre></div><div class="section" title="Field Help Text"><div class="titlepage"><div><div><h4 class="title"><a id="_field_help_text"></a>Field Help Text</h4></div></div></div><p>HELP is used to insert an explanation text for the application user in order to help him filling in the form. This Help text will then be displayed when the user places the mouse on the field.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">HelpText:   String HelpText</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">MUSTFILL Lesson
+  LABEL
+  HELP   "The lesson you would like to attend"
+  ...
+END FIELD</pre></div><div class="section" title="Field Types"><div class="titlepage"><div><div><h4 class="title"><a id="_field_types"></a>Field Types</h4></div></div></div><p>The field type is a required entry, you may enter a predefined field type :</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">MUSTFILL
+  NO LABEL
+  LONG(10)
+END FIELD
+
+
+VISIT Name
+  STRING(20)
+END FIELD</pre><p>You can also use self defined field types that you have previously defined in the type definition section of your form.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">SKIPPED objectList
+  LABEL
+  TYPE Objects
+END FIELD</pre><p>In this example, Objects is a type you should have defined previously in type definition section of the form using standard types, CODE types, ENUM types, LIST and SELECT command …</p></div><div class="section" title="Field Alignment"><div class="titlepage"><div><div><h4 class="title"><a id="_field_alignment"></a>Field Alignment</h4></div></div></div><p>This command is used to define the localization of the field’s content inside the field. There are three types of alignment.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+ALIGN RIGHT the value is displayed at the right inside the field
+</li><li class="listitem">
+ALIGN LEFT the value is displayed at the left inside the field
+</li><li class="listitem">
+ALIGN CENTER the value is centered in the field
+</li></ul></div><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT field
+  LABEL
+  FIXNUM(9, 4)
+  ALIGN CENTER
+  ...
+END FIELD</pre></div><div class="section" title="Field Drop files"><div class="titlepage"><div><div><h4 class="title"><a id="_field_drop_files"></a>Field Drop files</h4></div></div></div><p>This command is used to make a field accept to drop files into it, meaning you can drag files and drop them in your field.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">DroppableDefinition : "DROPPABLE" ExtensionList
+ExtentionList       : String extension [,ExtenstionList]</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT images
+  LABEL
+  STRING(20)
+  DROPPABLE("pdf", "jpeg", "tif", "tiff")
+END FIELD</pre><p>In this example, you can drag image files and drop them in the field named "images".</p></div><div class="section" title="Field Options"><div class="titlepage"><div><div><h4 class="title"><a id="_field_options"></a>Field Options</h4></div></div></div><p>In this part of the field definition, you can use one or more option from the 10 options available for fields in Kopi, here is the a list of these field options.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+NOECHO               : If this option is used, characters typed in the field will not be displayed and a star(*) will be displayed instead, this option is useful for password fields.
+</li><li class="listitem">
+NOEDIT               : This option makes it impossible to change the data of the field or to overwrite it.
+</li><li class="listitem">
+SORTABLE             : This option adds two opposed arrows icons(up and down) just before the field, clicking on the icon changes the way data are sorted in the field, you can click the icon three times to have ascending sort, descending sort and default sort,
+</li><li class="listitem">
+TRANSIENT            : This option make the field transient, meaning that the system can no trail it, if a transaction  calls this field and then this transaction is aborted, the field will not be able to backup or roll-back to its original value, besides this option makes changes ignored for this field.
+</li><li class="listitem">
+NO DELETE ON UPDATE  : If the field is a lookup is a column of a lookup table, using this option prevent the system to clear the field when inserting new rows or updating rows.
+</li><li class="listitem">
+NO DETAIL            : If the block is in detailed, using this option on a field make it invisible in the detail.
+</li><li class="listitem">
+NO CHART             : If the block is multiple, using this option on a field exclude it from the chart.
+</li><li class="listitem">
+QUERY UPPER          : Whatever the string you input, this option will make kopi transform it to capital letters.
+</li><li class="listitem">
+QUERY LOWER          : the opposite of the previous option it transform strings to lower case.
+</li></ul></div><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT name
+  LABEL
+  STRING(10)
+  QUERY LOWER
+  NOECHO
+END FIELD</pre></div><div class="section" title="Field Columns"><div class="titlepage"><div><div><h4 class="title"><a id="_field_columns"></a>Field Columns</h4></div></div></div><p>The COLUMNS field option is used to establish a connection between a certain column in the database with the field.Once such connection established, the field will have a direct access to the database column allowing insertions, modification …+
+You may enter this option in order to specify which table and which column the field refers.
+The same field can refer to more than one column.
+ You can also use the KEY option to specify a key column in the database or the NULLABLE option to specify an outer joint.+
+Two more option are available with the COLUMNS command, the index and the priority options.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">FieldColumns : "COLUMNS" (ColumnList) [ColumnIndex] [ColumnPriority]
+ColumnList   : Column  [, Column ]
+Column       : ["KEY"] ["NULLABLE"] QualifiedName</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT Invoice AT &lt;1, 2&gt;
+  LABEL "Invoice Number"
+  STRING(10)
+  COLUMNS(I.NumInvoice) //I is the invoices table for example
+  ....
+END FIELD</pre><p>Note that a field can be connected to more than one table and column. In this case, the formula you will type will be:</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VISIT Invoice AT &lt;1, 2&gt;
+  LABEL "Invoice Number"
+  STRING(10)
+  COLUMNS(KEY I.NumInvoice, ID.Invoice) //
+  ....
+END FIELD</pre><p>In this example, I is the invoices table  and IP is the invoice details table and they have an outer join connection throw columns NumInvoice and Invoice.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Indexes</strong></span>
+</li></ul></div><p>This option is used to define a value in the database which is to remain unique so that it can not appear anymore in another field of the same column. An INDEX is always to be followed by one or more integers. This integer can take a value between 0 and 31,both minimal and maximal values are also included.</p><p>Let’s sum up with the following syntax:</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">ColumnIndex : "INDEX" Integers
+Integers    : Integer index  [Integers]</pre><p>If two or more fields are given the same index value, it means that two similar combinations of these field values will not be accepted.</p><p>For example, two different lessons cannot be given in the same room. In this case, the three fields, namely the fields "professor", "time" and "lesson" are to be attributed the same index. Thus, at least one of the three values needs to be changed so that the combination can be accepted by the machine.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">MUSTFILL "Lesson"
+  LABEL
+  HELP "The lesson you have to attend to"
+  LONG (11)
+  COLUMN (LEC.Lesson)
+  INDEX 0
+END FIELD
+
+
+VISIT "Lecturer"
+  LABEL
+  LONG(11)
+  COLUMN (LES.Lecturer)
+  INDEX 0
+END FIELD
+
+
+MUSTFILL "Time"
+  STRING(11)
+  COLUMN (LES.Time)
+  INDEX 0
+END FIELD</pre><p>However, this example would implicate a professor can give two different lessons at the same time. In order to avoid such errors, you can attribute one field two or more indexes. So you can associate the two fields "professor" and "time" together. Thus, you will have:</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">MUSTFILL "Lesson"
+  LABEL
+  HELP "The lesson you have to attend to"
+  LONG (11)
+  COLUMN (LEC.Lesson)
+INDEX 0
+END FIELD
+
+VISIT "Lecturer"
+  LABEL
+  LONG
+  COLUMN (T.Lecturer)
+  INDEX 0 1
+END FIELD
+
+MUSTFILL "Time"
+  STRING
+  COLUMN (LEC.Time)
+  INDEX 1
+END FIELD</pre><p>In this case, notice that the "Lecturer" field has been associated
+with two indexes: 0 and 1.</p><p>The index value is ascendant. When attributing an index value to a field combination, you shall always take the value nexting that you have taken the last.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Priority</strong></span>
+</li></ul></div><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">ColumnPriority:   "PRIORITY" ["-"] Integer priority</pre><p>This option is used in order to define the column order within a list when this list is displayed. A PRIORITY is always followed by an integer according to the structure given above. The column with the biggest priority value will appear on the extreme left side of the table and the one with the least value will be on the extreme right side.</p><p>We shall notice that negative values are also permitted in this option. However, the minus sign ("-") standing before the number does not have any influence over its value but simply indicates the way all the information will be sorted out within a column. Actually, the different fields are always sorted in the ascending way, i.e from A to Z in case of an alphabetical text and from 1 to x+1 for numbers. Now, if the integer is preceded by a minus, the column content will be sorted in the other way round.</p><p><span class="strong"><strong>Example</strong></span></p><p>If columns "Surname", "Name" and "Date of Birth" are
+respectively given the priorities 3,4 and 1, "Name" will come
+first and will be followed by "Surname" and "Date of Birth".
+The same order applies with the values 3, -4 and 1, with the only
+difference that the names will be sorted out from Z to A.</p><p>Moreover, two columns with the same priority will be displayed according to the same order in which the user has listed them.</p></div><div class="section" title="Field Commands"><div class="titlepage"><div><div><h4 class="title"><a id="_field_commands"></a>Field Commands</h4></div></div></div><p>Once you have defined the columns , you may define the field commands. There are three types of field command:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+Standard Field Commands (no Modes)
+</li><li class="listitem">
+Commands using Modes
+</li><li class="listitem">
+Access modifiers using Modes
+</li></ul></div><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">ModeAndCommands : ModeList  AccessModifier | [ModeList] Command
+
+Command         : "COMMAND" QualifiedName | "COMMAND" CommandBody
+                  "END" "COMMAND"
+
+CommandBody     : "ITEM" SimpleName  CommandAction
+
+CommandAction   : "ACTION" [(Parameter)] { KopiJavaCode  }
+                  |
+                  "EXTERN" QualifiedName | "CALL" SimpleName
+
+ModeList        : "ON" Modes
+
+Modes           : Mode  [, Modes ]
+
+Mode            : "QUERY" | "INSERT" | "UPDATE"</pre></div><div class="section" title="Standard Field Command"><div class="titlepage"><div><div><h4 class="title"><a id="_standard_field_command"></a>Standard Field Command</h4></div></div></div><p>The command QualifiedNames that we will can be kopi predefined commands or you can make new Actors and commands you can use in the field command definition.
+There are five ways in calling a standard command</p><pre class="programlisting">"COMMAND" QualifiedName
+
+Example :
+COMMAND FormReset</pre><p>Or:</p><pre class="programlisting">"COMMAND" "ITEM" SimpleName "CALL" SimpleName "END" "COMMAND"
+
+Example
+COMMAND
+  ITEM Autofill
+  CALL function
+END COMMAND</pre><p>Or:</p><pre class="programlisting">"COMMAND" "ITEM" SimpleName "EXTERN" QualifiedName "END" "COMMAND"
+
+Example
+COMMAND
+  ITEM Autofill
+  EXTERN filepath.function
+END COMMAND</pre><p>Or:</p><pre class="programlisting">"COMMAND" "ITEM" SimpleName "ACTION" (VField SimpleName) {Kopi-Java Code}
+"END" "COMMAND"
+
+Example
+COMMAND
+  ITEM Clear
+  ACTION (VField f) {
+    f.setDefault ();
+  }
+END COMMAND</pre><p>Or:</p><pre class="programlisting">"COMMAND" "ITEM" SimpleName "ACTION" {Kopi-Java Code}
+"END" "COMMAND"</pre></div><div class="section" title="Field Command using Modes"><div class="titlepage"><div><div><h4 class="title"><a id="_field_command_using_modes"></a>Field Command using Modes</h4></div></div></div><p>All the previous command definition ways can be preceded by one mode ore more. There are three sorts of mode which are to be sorted according to the following hierarchy:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+QUERY to start an inquiry within the database
+</li><li class="listitem">
+INSERT to create a new row in the database
+</li><li class="listitem">
+UPDATE to enter new information within a row
+</li></ul></div><p>So you will have: ON Mode COMMAND, ON MODE QualifiedName …</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">ON QUERY, UPDATE COMMAND InsertMode</pre><p>If you have entered a mode before the COMMAND, it means this COMMAND can only be invoked if the block is in the mode you have determined.</p></div><div class="section" title="Field Access modifiers using Modes"><div class="titlepage"><div><div><h4 class="title"><a id="_field_access_modifiers_using_modes"></a>Field Access modifiers using Modes</h4></div></div></div><p>This command type is used to change the access to the field using the block Mode. In fact the access is not changed directly but the higher access possible is set to the indicated access.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">ON QUERY,INSERT HIDDEN</pre><p>In this example, we have determined that the field will be invisible
+if the block is in the QUERY  or the INSERT mode.</p></div><div class="section" title="Field Triggers"><div class="titlepage"><div><div><h4 class="title"><a id="_field_triggers"></a>Field Triggers</h4></div></div></div><p>Triggers are events that you can use to execute actions when they occur, there are field triggers, block triggers and form triggers that you can use following this syntax :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">Trigger      : EventList TrigerAction
+
+EventList    : Event [,EventList]
+
+TrigerAction : SimpleName | "EXTERN" QualifiedName | {KOPI_JAVA code}
+               | (VField SimpleNAme){KOPI_JAVA code}</pre><p>Field Triggers are events that concern the fields behavior, here is a list of all kopi field triggers available :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+PREFLD     : is executed upon entry of field
+</li><li class="listitem">
+POSTFLD    : is executed upon exit of field
+</li><li class="listitem">
+POSTCHG    : is executed on field content change
+</li><li class="listitem">
+PREVAL     : is executed before validating any new entry
+</li><li class="listitem">
+VALFLD     : is executed after field change and validation
+</li><li class="listitem">
+VALIDATE   : this is the same trigger as VALFLD
+</li><li class="listitem">
+DEFAULT    : Defines the default value of the field to be set if the setDefault() method is called (this method is automatically called when the user choose the insert command)
+</li><li class="listitem">
+FORMAT     : Not defined actually
+</li><li class="listitem">
+ACCESS     : ACCESS is a special trigger that defines how a field can be accessed. This trigger must return one of these values ACS_SKIPPED, ACS_HIDDEN, ACS_VISIT or ACS_MUSTFILL.
+</li><li class="listitem">
+VALUE      : equates the value of two fields
+</li><li class="listitem">
+AUTOLEAVE  : must return a boolean value, if "true" the cursor will move to the next field
+</li><li class="listitem">
+PREINS     : is executed before inserting a row of the database
+</li><li class="listitem">
+PREUPD     : is executed before updating a row of the database
+</li><li class="listitem">
+PREDEL     : is executed before deleting a row of the database
+</li><li class="listitem">
+POSTINS    : is executed after inserting a row of the database
+</li><li class="listitem">
+POSTUPD    : is is executed after updating a row of the database
+</li></ul></div><p><span class="strong"><strong>Examples</strong></span></p><pre class="programlisting">VISIT EMail
+  LABEL "Email"
+  HELP "The electronic address of the lecturer"
+  STRING 40
+  COLUMNS (B.Mail)
+  DEFAULT {
+    @N.EMail = "@";
+  }
+END FIELD</pre><p>the "@N.EMail" expression means : bloc N, field EMail</p><pre class="screen">MUSTFILL Lecturer
+  LABEL
+  FIXED (5,2)
+  MINVAL 0
+  COLUMNS (T.Lecturer)
+  PRIORITY 1
+  ACCESS {
+    return (T.Art.getInt()==0? ACS_HIDDEN; ACS_MUSTFILL);
+  }
+END FIELD</pre></div><div class="section" title="Field Definition from another Field"><div class="titlepage"><div><div><h4 class="title"><a id="_field_definition_from_another_field"></a>Field Definition from another Field</h4></div></div></div><p>You can also create a field without declaring any field alignment, field option, mode, command or field trigger. However, the column, index and priority definitions are permitted.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">HIDDEN Firm
+  LONG (11)
+  IS F.ID
+END FIELD</pre><p>IS is used to equate a field with another one. In this example, the field "Firm" is equated with the field "F.ID".That means that the Firm field will always have the same value as the F.ID field.</p></div></div><div class="section" title="2.2.2. Creating Form Blocks"><div class="titlepage"><div><div><h3 class="title"><a id="_creating_form_blocks"></a>2.2.2. Creating Form Blocks</h3></div></div></div><p>As you already know, a form is composed of blocks. A block is a set of data which are stocked in the database and shown on a form. A block is created in order to either view the content of a database, to insert new data in the database or to update existing data in the database. A Block will always begin with BLOCK and end with BLOCK END, when defining a block, you have to proceed according to the following structure.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">BlockDefinition : "BLOCK" (Integer buffer, Integer rows)
+                  SimpleName[:SimpleName] [String blockTitle]
+                  ["IS" QualifiedName] ["IMPLEMENTS"  [,QualifiedName]*]
+                  BlockBody
+                  "END" "BLOCK"
+
+BlockBody       : [blockBoder] [blockAlignement] [blockHelp]
+                  [blockOptions] [blockTables]
+                  [blocIndices] [blockCommands] [blockTriggers] blockFields
+                  [blockContextFooter]</pre><div class="section" title="Block Types"><div class="titlepage"><div><div><h4 class="title"><a id="_block_types"></a>Block Types</h4></div></div></div><p>There are actually two types of blocks in Visual Kopi, the only difference between them in the definition syntax is the buffer Integer.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+single blocks
+</li></ul></div><p>A single block is a block in which only one single row of a database table is displayed on the form. Each time, the computer will memorize only one entire row and a certain quantity of ID numbers through which it will retrieve another rows from the database if you want to view them.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (1,5)
+  ...
+END BLOCK</pre><p>The first integer indicates the block type. In case of a single block, the first integer will always be 1. The second integer indicates the maximal number of the automatically memorized IDs.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+Multiple Blocks
+</li></ul></div><p>A multiple block is a block in which more than one row are displayed on the form. These rows are retrieved all at once from the database and are memorized by the computer. Actually, you can define the number of the displayed rows which can be less than this of the memorized rows. In this case, there will be no need anymore to retrieve the hidden rows from the database when you want to view them.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5)
+  ...
+END BLOCK</pre><p>The first integer indicates the number of rows to be automatically memorized while the second defines the number of displayed rows. Notice the first integer value must always be greater than 1.</p></div><div class="section" title="Block Names"><div class="titlepage"><div><div><h4 class="title"><a id="_block_names"></a>Block Names</h4></div></div></div><p>The name of the block is composed  SimpleName name optionally followed by a colon and a SimpleName shortcut, finally, you can specify a String for the Block title but it’s not compulsory.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5) Degree:D "Degree Block"</pre></div><div class="section" title="Block superClass and Interface"><div class="titlepage"><div><div><h4 class="title"><a id="_block_superclass_and_interface"></a>Block superClass and Interface</h4></div></div></div><p>A Block may extend a superClass and implements one or more Interface.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5) Degree:D "Degrees" IS VImportedBlock IMPLEMENTS VConstants</pre></div><div class="section" title="Block Border"><div class="titlepage"><div><div><h4 class="title"><a id="_block_border"></a>Block Border</h4></div></div></div><p>After the Block name and implementation clause, you can insert the optional border statement that defines the Block’s frame type. Besides, the Title of the block will appear only if the Block’s Border type has been specified. There are actualy four Border options :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+BORDER LINE to frame the block with lines.
+</li><li class="listitem">
+BORDER RAISED to enhance a block by setting it on the foreground.
+</li><li class="listitem">
+BORDER LOWERED to put it at the background.
+</li><li class="listitem">
+BORDER ETCHED to carve a frame in the form.
+</li></ul></div><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5) Degree:D "Degree Block" IS VImportedBlock
+BORDER RAISED</pre></div><div class="section" title="Block Alignment"><div class="titlepage"><div><div><h4 class="title"><a id="_block_alignment"></a>Block Alignment</h4></div></div></div><p>Alignment statements are useful to align a block(source block) referring to another one(target block), after the keyword ALIGN, you have to specify the referred block name followed by one or many sets of two integers separated by a minus, the sets are separated by a comma. As for the integers signification, the one in the left of the minus is the source block column number while the other one is for the target block column number.
+For Example, let us suppose we have a multiple block Prices with 4 columns, with column 3 filled with Quantities and Column 4 with Prices, we also have a single block TotalPrices with two fields totalQuantity and TotalPrices, we want these fields to be aligned with the correct columns of the Prices block:</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5) Prices : P "Prices Block"
+ BORDER row
+...
+END BLOCK
+
+BLOCK (1,1) TotalPrices : TP "TotalPrice"
+  BORDER row
+  ALIGN Prices &lt;1-3, 2-4&gt;
+...
+END BLOCK</pre></div><div class="section" title="Block Help"><div class="titlepage"><div><div><h4 class="title"><a id="_block_help"></a>Block Help</h4></div></div></div><p>This optional command is used to define the help text for each field of the block. The different texts are to be entered after the word HELP.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5) Degree: D "Degree Block"
+  BORDER row
+  HELP "The degree the student will target at the end of a year"
+  ...
+END BLOCK</pre></div><div class="section" title="Block Options"><div class="titlepage"><div><div><h4 class="title"><a id="_block_options"></a>Block Options</h4></div></div></div><p>In this optional section you can insert commands with restriction functions towards the users, the available commands that you can use are :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+NO CHART : Disables the chart(grid) rendering of a multiple bloc to make it look like a single block.Only possible on multiple blocks displaying only one row, Besides the fields must be positioned with the AT command.
+</li><li class="listitem">
+NO DETAIL : Disables the positioning of fields and displays the block as a chart (grid), Only possible on multiple blocks, the fields should not be positioned with the AT command.
+</li><li class="listitem">
+NO DELETE :  Prevent the user from removing fields content.
+</li><li class="listitem">
+NO INSERT :  Prevent the user from inserting data in fields.
+</li><li class="listitem">
+NO MOVE   :  Prevent the user from moving between records.
+</li><li class="listitem">
+ACCESS ON SKIPPED : Makes the block accessible even if or its fields have SKIPPED access.
+</li><li class="listitem">
+UPDATE INDEX : If used, saving a block would delete all its rows and reinsert them one by one, by doing so, you can update the table rows even when you change the index fields without worrying about the "row already exist exception".
+</li></ul></div></div><div class="section" title="Block Tables"><div class="titlepage"><div><div><h4 class="title"><a id="_block_tables"></a>Block Tables</h4></div></div></div><p>When making use of this section, you have to type the command TABLE and enter the table name followed by a comma and by the shortcut to this table name. This shortcut will further be used as a shorthand in place of the complete table name in order to access to the table. These names refer to certain tables in the database whereby the first table is the one on which the user will work. The remaining tables are the so-called "look-up tables", i.e tables that are associated with the first one.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">BlockTables:   "TABLE"  "&lt;"SimpleName  , SimpleName &gt; [BlockTables]*</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">TABLE &lt;Lessons,L&gt;
+TABLE &lt;Lecturers, P&gt;
+TABLE &lt;Rooms, R&gt;</pre><p>The user will make use of these look-up tables as references
+when bringing in changes in the principal table.</p></div><div class="section" title="Block Indexes"><div class="titlepage"><div><div><h4 class="title"><a id="_block_indexes"></a>Block Indexes</h4></div></div></div><p>If you plan to enter one index or more when defining your fields, you also have to define one index text or more which will appear if you make a mistake by entering an indexed data or a data combination twice. This command can be followed by an error message contained in a string.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">BlockIndices:   "INDEX" String message  [BlockIndices]*</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK (10,5) Degree : D "Degree"
+ BORDER row
+ INDEX "This data already exists"
+ ...
+END BLOCK</pre></div><div class="section" title="Block Commands"><div class="titlepage"><div><div><h4 class="title"><a id="_block_commands"></a>Block Commands</h4></div></div></div><p>Block commands are commands accessible only from the block where they are called. There are Three ways to call block commands:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Calling A Standard Command</strong></span>
+</li></ul></div><p>There are 5 possible structures:</p><pre class="screen">"COMMAND" QualifiedName
+
+Example
+COMMAND ResetBlock</pre><p>Or:</p><pre class="screen">"COMMAND" "ITEM" SimpleName "CALL" SimpleName "END" "COMMAND"
+
+Example
+COMMAND
+  ITEM Save
+  CALL Save
+END COMMAND</pre><p>Or:</p><pre class="screen">"COMMAND" "ITEM" SimpleName "EXTERN" QualifiedName "END" "COMMAND"
+
+Example
+COMMAND
+  ITEM SharesOfExpenses
+  EXTERN Costing
+END COMMAND</pre><p>Or:</p><pre class="screen">"COMMAND" "ITEM" SimpleName "ACTION" (VBlock SimpleName) {Kopi-Java Code}
+"END" "COMMAND"
+
+Example
+COMMAND
+  ITEM End
+  ACTION (VBlock b) {
+    b.validate ();
+    close (CDE_VALIDATE)
+   }
+END COMMAND</pre><p>Or:</p><pre class="screen">"COMMAND" "ITEM" SimpleName "ACTION" {Kopi-Java Code} "END" "COMMAND"
+
+Example
+COMMAND
+  ITEM Validate
+  ACTION {
+    validate ();
+  }
+END COMMAND</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Calling The Block Commands With Modes</strong></span>
+</li></ul></div><p>Blocks have 3 possible Modes:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+QUERY  : When querying the database
+</li><li class="listitem">
+INSERT : When inserting a new row in the database
+</li><li class="listitem">
+UPDATE : When updating rows in the database
+</li></ul></div><p>You can combine these modes with the previous block command structure to have more control over your command</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting"> ON BlockMode SimpleName</pre><p>This means that the command called is only accessible when the block is in the specified Mode.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting"> ON QUERY, UPDATE COMMAND InsertMode</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Calling The Block Commands With Modes And An Access Modifier</strong></span>
+</li></ul></div><p>in Kopi, a field can have different access types or modifiers, here is the definition of the four available access modifiers listed by ascending level.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+HIDDEN : HIDDEN field are invisible in the form, they are used to store hidden operations and database joins.
+</li><li class="listitem">
+SKIPPED : SKIPPED fields are read only fields, you can read the value but you can’t modify it.
+</li><li class="listitem">
+VISIT : fields with this access type are accessible, can be modified but not necessary.
+</li><li class="listitem">
+MUSTFILL : MUSTFILL fields are accessible fields that the user must fill with a value.
+</li></ul></div><p>In the block command section, you can set the highest access level for the block fields according to the mode in wich the block would beording to the mode in which the block would be.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting"> ON QUERY, UPDATE SKIPPED
+ ON UPDATE HIDDEN
+ ON QUERY VISIT</pre><p>In the first example, all fields in the block will be either SKIPPED or HIDDEN in the query and update modes and can neither be MUSTFILL nor VISIT.
+For the second example, all the fields in the block will be HIDDEN when the block is in update mode.
+In the last example, all the fields in the block will be either VISIT, SKIPPED or HIDDEN in the query mode and can not be MUSTFILL.</p></div><div class="section" title="Block Triggers"><div class="titlepage"><div><div><h4 class="title"><a id="_block_triggers"></a>Block Triggers</h4></div></div></div><p>The block triggers are the same as form triggers on the block level. There are actually 20 block triggers you can use to execute actions once they are fired.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting"> BlocTrigger: BlocEventList TriggerAction
+
+ BlocEventList: BlockEvent [,BlockEvent]*</pre><p>Concerning the trigger action, which is the action to execute when the trigger is activated they can by :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+a local function   : SimpleName
+</li><li class="listitem">
+an external function : EXTERN QualifiedName
+</li><li class="listitem">
+{KOPI_JAVA code}
+</li><li class="listitem">
+(VBlock SimpleName){KOPI_JAVA code}
+</li></ul></div><p>Here is a list of all available block triggers or block events in Kopi.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+PREQRY  : executed before querying the database
+</li><li class="listitem">
+POSTQRY : executed after querying the database
+</li><li class="listitem">
+PREDEL  : executed before a row is deleted
+</li><li class="listitem">
+POSTDEL : executed after a row is deleted
+</li><li class="listitem">
+PREINS  : executed before a row is inserted
+</li><li class="listitem">
+POSTINS : executed after a row is inserted
+</li><li class="listitem">
+PREUPD  : executed before a row is updated
+</li><li class="listitem">
+POSTUPD : executed after a row is updated
+</li><li class="listitem">
+PRESAVE : executed before saving a row
+</li><li class="listitem">
+PREREC  : executed upon record entry
+</li><li class="listitem">
+POSTREC : executed upon record exit
+</li><li class="listitem">
+PREBLK  : executed upon block entry
+</li><li class="listitem">
+POSTBLK : executed upon block exit
+</li><li class="listitem">
+VALBLK  : executed upon block validation
+</li><li class="listitem">
+VALREC  : executed upon record validation
+</li><li class="listitem">
+DEFAULT : is executed when the block is in the InsertMode. This trigger becomes active when the user presses the key F4. It will then enable the system to load standard values which will be proposed to the user if he wishes to enter new data.
+</li><li class="listitem">
+INIT    : executed upon block initialization
+</li><li class="listitem">
+RESET   : executed upon Reset command (ResetForm)
+</li><li class="listitem">
+CHANGED : a special trigger that returns a boolean value of wether the block have been changed or not, you can use it to bypass the system control for changes this way :
+</li></ul></div><pre class="screen"> CHANGED {
+   return false;
+ }</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+ACCESS  : defines whether a block can or not be accessed, it must always return a boolean value
+</li></ul></div><pre class="screen">  ACCESS{
+    return Block.getMode == MOD_QUERY
+    // Tests if the block is in query mode,
+    this block is only accessible on query mode
+  }</pre><p><span class="strong"><strong>Examples</strong></span></p><pre class="programlisting">BLOCK (10,5) Degree : D "Degree"
+  BORDER row
+  INDEX "This data already exists"
+  COMMAND ResetForm
+
+  INIT,PREBLK{
+   KOPI_JAVA code
+  }
+  PREINS{
+   System.out.print("Inserting date");
+   ...
+  }
+  ...
+END BLOCK</pre></div><div class="section" title="Block Fields Declaration"><div class="titlepage"><div><div><h4 class="title"><a id="_block_fields_declaration"></a>Block Fields Declaration</h4></div></div></div><p>In this section, all you have to do is to write at least on block field definition that begins with an access modifier and ends with END FIELD, you can enter as much fields as you may need
+following the field definition we saw in the previous chapter.</p></div><div class="section" title="Block Context Footer"><div class="titlepage"><div><div><h4 class="title"><a id="_block_context_footer"></a>Block Context Footer</h4></div></div></div><p>In this section of the block, you can write local functions, define inner classes, override command actions, define your data members.
+The elements you write in the block Context Footer are accessible in the concerned block and are written in KOPI_JAVA code.</p></div></div><div class="section" title="2.2.3. Creating Forms"><div class="titlepage"><div><div><h3 class="title"><a id="_creating_forms"></a>2.2.3. Creating Forms</h3></div></div></div><p>There are actually two types of forms in kopi, normal forms and BLOC INSERT forms which are special forms containing blocks that you may insert in other forms.
+A form begins always with FORM and ends with END FORM, while a BLOC INSERT form begins with BLOC INSERT and ends with END INSERT. When creating a form, you will have to include the block and the field definitions. Moreover, you will have to define the menus as well as the different commands. Finally, you can also define some form triggers. Concretely, the structure is the following:</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">FormDef : ["LOCALE" String formLocalization]
+          "FORM" String formTitle
+          ["IS" QualifiedName "IMPLEMENTS" QualifiedName[,QualifiedName]*]
+          [FormHeader]  [MenuDefinition]
+          [ActorDefinition] [TypeDefinition]
+          [CommandDefinition] [InsertDefinition]
+          "BEGIN"
+          [FormCommands] [FormsTriggers] [BlocksDefinition]
+          [ContextFooter]
+          "END" "FORM"</pre><div class="section" title="Form Localization"><div class="titlepage"><div><div><h4 class="title"><a id="_form_localization"></a>Form Localization</h4></div></div></div><p>This is an optional step in which you may define the language of your forms menus and messages, the latter have to be defined in xml files.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">"LOCALE" String formLocalization</pre><p><span class="strong"><strong>Example:</strong></span></p><pre class="programlisting">LOCALE "en_EN"</pre></div><div class="section" title="Form Title"><div class="titlepage"><div><div><h4 class="title"><a id="_form_title"></a>Form Title</h4></div></div></div><p>Every form have to begin with the keyword FORM that you can follow with a title (optional).</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">"FORM" String formTitle</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM  "Lecturers List"
+  ...
+END FORM</pre></div><div class="section" title="Form Superclass And Interfaces"><div class="titlepage"><div><div><h4 class="title"><a id="_form_superclass_and_interfaces"></a>Form Superclass And Interfaces</h4></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Superclass:</strong></span>
+</li></ul></div><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">SuperForm:   "IS" QualifiedName</pre><p>Every form is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "Service Register" IS VReportSelectionForm</pre><p>In other words, the class declaration you have just made specifies the direct superclass of the current class.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Interfaces</strong></span>
+</li></ul></div><p>You can also specify interfaces which the form may implement by using the IMPLEMENTS option. When used in a form declaration, this option then lists the names of interfaces that are direct superInterfaces of the class being declared. Thus, you will have the following structure:</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">Interface :  "IMPLEMENTS" QualifiedName [,QualifiedName]*</pre><p><span class="strong"><strong>Example:</strong></span></p><pre class="programlisting">FORM "Record registering" IS VPrintSelectionForm
+  IMPLEMENTS VConstants
+  ...
+END FORM</pre></div><div class="section" title="Form Header"><div class="titlepage"><div><div><h4 class="title"><a id="_form_header"></a>Form Header</h4></div></div></div><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">ContextHeader:   { PackageDeclaration  ImportDeclarations  }
+
+PackageDeclaration:   &lt;As defined in JLS 7.4&gt;
+ImportDeclarations:   &lt;As defined in JLS 7.5&gt;</pre><p>The package definition is contained in the header. It consists in defining where this form belongs to i.e which application, which firm or which person it is related to.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "List of the Lecturers"
+  {
+  package at.dms.apps.timetable;
+  }
+  ...
+END FORM</pre><p>In this example, the form belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "List of the Lecturers"
+  {
+    package at.dms.apps.tb;
+    import java.util.Vector
+  }
+   ...
+END FORM</pre></div><div class="section" title="Menus Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_menus_definition"></a>Menus Definition</h4></div></div></div><p>Defining a menu means adding an entry to the menu bar in the top of the form, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">MenuDefinition:   "MENU" SimpleName
+                  ["LABEL" String label]
+                  "END" "MENU"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "List of the Lecturers"
+
+  {
+    package at.dms.apps.tb;
+  }
+
+  MENU File
+    LABEL "file"
+  END MENU
+...
+END FORM</pre></div><div class="section" title="Actors Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_actors_definition"></a>Actors Definition</h4></div></div></div><p>An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accecible from the menu bar.
+ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">ActorDefinition:  "ACTOR" SimpleName
+                  "MENU"  SimpleName
+                  ["LABEL" String label]
+                  "HELP"  String helpText
+                  ["KEY"   String key]
+                  ["ICON"  String icon]
+                  "END" "ACTOR"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "List of the Lecturers"
+
+  {
+    package at.dms.apps.tb;
+  }
+
+  MENU File
+    LABEL "file"
+  END MENU
+
+
+  ACTOR cut
+    MENU  File
+    LABEL "cut"
+    HELP  "cut element"
+    ICON        "CutIcon"
+  END ACTOR
+...
+END FORM</pre></div><div class="section" title="Types Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_types_definition"></a>Types Definition</h4></div></div></div><p>After having defined your menus and actor, you can enter different field types definitions based on the standard field types or code field types, you can also use the LIST and SELECT commands
+to customize these new types.</p><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="screen">TypeDefinition:  "TYPE" SimplName "IS" FieldType
+                 [TypeList]
+                 "END" "TYPE"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "List of the Lecturers"
+  {
+    package at.dms.apps.tb;
+  }
+  TYPE Name IS
+    STRING (20,10,4)
+    CONVERT UPPER
+  END TYPE
+
+  TYPE Lesson IS
+    LONG (11)
+    MINVAL 0
+    MAXVAL 100
+  END TYPE
+
+  TYPE Answer IS
+    CODE BOOL IS
+        "Yes"   = TRUE
+        "No"  = FALSE
+    END CODE
+  END TYPE
+
+  TYPE Months IS
+    ENUM("January", "February", "March", "April")
+  END TYPE
+
+TYPE Lecturer IS
+  STRING (8)
+  CONVERT UPPER
+
+  LIST "Lecturer" IS
+    "Symbol" = Symbol : STRING (8)
+    "Name" = Name : STRING (40)
+    "Surname" = Surname : STRING (40)
+    "Lesson" = Lesson : STRING (20)
+  END LIST
+...
+END TYPE
+
+  ...
+END FORM</pre></div><div class="section" title="Commands Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_commands_definition"></a>Commands Definition</h4></div></div></div><p>In this section you may want to define new commands, to do so, all you need is an already defined Actor from which you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
+every command have a effective ray of action (VField, VBlock, VForm)</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+Calling a function with the CALL command
+</li><li class="listitem">
+Calling a function outside of the form using the EXTERN command
+</li><li class="listitem">
+Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VField, VBlock, VForm.
+</li></ul></div><p>Command Defined in this section can be form level commands, block level commands or field level commands, this will depend on the action called by the command and where the command is actualy called.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">cmdDef  : "COMMAND" QualifiedName
+          "ITEM" SimpleName commandBody
+          "END" "COMMAND"
+
+cmddBody: "CALL" SimpleName | "EXTERN" QualifiedName
+     |"ACTION" [(VField SimpleName | VBlock SimpleName | VForm SimpleName)]
+           {KOPI_JAVA statements}</pre><p><span class="strong"><strong>Example</strong></span></p><p>Calling a local action :</p><pre class="programlisting">COMMAND Preview
+  ITEM  Preview
+  CALL  previewForm
+END COMMAND</pre><p><span class="strong"><strong>Example</strong></span>
+Calling an external action :</p><pre class="programlisting">COMMAND SaveBlock
+  ITEM Save
+  EXTERN com.company.vlib.form.Commands.SaveBlock
+END COMMAND</pre><p><span class="strong"><strong>Example</strong></span>
+Writing the action’s body :</p><pre class="programlisting">COMMAND PrintBlock
+  ITEM  PrintBlock
+  ACTION (VBlock b){
+    b.validate();
+    b.getForm().close (VForm.CDE-Validate);
+  }
+END COMMAND</pre></div><div class="section" title="Insert Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_insert_definition"></a>Insert Definition</h4></div></div></div><p>This command allows you to actually define your types, menus, actors, commands in another file, and then insert it in any form you want, thus avoiding rewriting recurrent definitions. You still can add definition before or after using the INSERT command.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">Insert Definition : "INSERT" String filePath</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM "List of Students"
+
+  {
+  package at.dms.app.application
+  }
+
+  INSERT "Global.vf"
+
+  TYPE Lesson IS
+    LONG(11)
+  END TYPE
+
+...
+END FORM</pre><p>After the different definitions we have made (types, menus, actors,commands), we need to begin the declaration of our form.Here, we will set up the structure and the behaviour of the form throw 4 sections :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+Form Options
+</li><li class="listitem">
+Form Commands
+</li><li class="listitem">
+Form Triggers
+</li><li class="listitem">
+Blocks
+</li></ul></div></div><div class="section" title="Form Commands Declaration"><div class="titlepage"><div><div><h4 class="title"><a id="_form_commands_declaration"></a>Form Commands Declaration</h4></div></div></div><p>In this section you may call the commands you want your form to have.You can call commands you already defined in the command definition section :</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BEGIN
+
+  COMMAND Preview
+  COMMAND PrintBlock</pre><p>You can also make use of Kopi’s ready command such as :</p><pre class="screen">BEGIN
+
+  COMMAND HelpForm
+  COMMAND QuitForm</pre><p>Moreover, you can define your command in this section the same way you did in the command definition section, but with no command name, it will be both a definition and a declaration.</p><p>There still one more think to know about form command declaration, in fact, you can also control the accessibility to a command by the Mode of the form.+
+A form have 3 possible Modes :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+QUERY  : When inquiring the database
+</li><li class="listitem">
+INSERT : When inserting a row in the database
+</li><li class="listitem">
+UPDATE : When updating a row in the database
+</li></ul></div><p>The Syntax to use command with modes is the following :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="screen">"ON" ModeName [,ModeName]* "COMMAND" SimpleName</pre></div><div class="section" title="Form Triggers Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_form_triggers_definition"></a>Form Triggers Definition</h4></div></div></div><p>Form Triggers are special events that once switched on you can execute a set of actions defined by the following syntax :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="screen">FormTrigger  :    FormEventList TriggerAction
+FormEventList:  FormEvent [,FormEvent]*</pre><p>Kopi actually defines 6 Form Triggers or Form Events :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+INIT      : executed when initializing the form and before the PREFORM Trigger, also executed at ResetForm command
+</li><li class="listitem">
+PREFORM   : executed before the form is displayed and after the INIT Trigger, not executed at ResetForm command
+</li><li class="listitem">
+POSTFORM  : executed when closing the form
+</li><li class="listitem">
+QUITFORM  : actually not available
+</li><li class="listitem">
+RESET     : executed upon ResetForm command
+</li><li class="listitem">
+CHANGED   : a special trigger that returns a boolean value of whether the form have been changed or not, you can use it to bypass the system control for changes this way :
+</li></ul></div><pre class="screen"> CHANGED {
+   return false;
+ }</pre><p><span class="strong"><strong>Examples</strong></span></p><pre class="screen">INIT{
+  System.out.println("Trigger INIT activated");
+  // KOPI_JAVA statements
+}
+
+INIT,PREFORM{
+  //KOPI_JAVA statements
+}</pre></div><div class="section" title="Form Pages"><div class="titlepage"><div><div><h4 class="title"><a id="_form_pages"></a>Form Pages</h4></div></div></div><p>You can create Pages in your form using the NEW PAGE command after the trigger declaration section,this is optional and will create a Tab for each page you create under the form’s toolbar.
+You can put as much blocks you want in each page, the same goes for form without pages.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="screen"> NEW PAGE "Page1"</pre></div><div class="section" title="Form Blocks"><div class="titlepage"><div><div><h4 class="title"><a id="_form_blocks"></a>Form Blocks</h4></div></div></div><p>You can have several blocks in one form, you just have to stack them in your form, using the definition presented in the Second chapter of this document, after the form triggers definition, you can also group them in pages.</p><p>You can also use the block import command in order to import block units (predefined blocks) in your form :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="screen">BlockImport: "INSERT" QualifiedName</pre><p>As for the Block Unit definition, you can create one by creating a new form file using with this Syntax:</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">BlockUnit: "BLOCK" "INSERT" ContextHeader
+          [MenuDefinition]
+          [ActorDefinition] [TypeDefinition]
+          [CommandDefinition] [InsertDefinition] BlockDeclaration
+          "END" "INSERT"</pre><p>You can see that a Block Unit has the same structure of a normal Form, with the absence of the form declaration Section, replaced by a Block Declaration Section. Moreover, a Block Unit does not have a Context Footer.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">BLOCK INSERT
+{
+  package at.dms.apps.tb;
+}
+
+//Here you can add Types, commands, actors definitions
+
+  INSERT "Global.vf"
+
+  BLOCK (10, 5) Lecturer.L "Lecturers"
+    BORDER LINE
+    ALIGN Name&lt;1-3&gt;
+    TABLE &lt;Lecturers, L&gt;
+    TABLE &lt;Lessons, C&gt;
+
+      VISIT lecturers
+        LABEL
+        STRING(10)
+        COLUMNS(L.lecturers)
+      END FIELD
+
+
+      VISIT lessons
+        LABEL
+        STRING(10)
+        COLUMNS(C.lessons)
+      END FIELD
+
+  END BLOCK
+...
+
+END INSERT</pre></div></div><div class="section" title="2.2.4. Form Context Footer"><div class="titlepage"><div><div><h3 class="title"><a id="_form_context_footer"></a>2.2.4. Form Context Footer</h3></div></div></div><p>In this section of the form, you can write your local functions, define inner classes, override command actions, define your data members.
+The elements you write in the forms Context Footer are accessible in all the form and are writen in KOPI_JAVA code.</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s01.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top"> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> </td></tr></table></div></body></html>

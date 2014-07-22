@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.4. Visual Kopi Print Pages</title><link rel="stylesheet" type="text/css" href="docbook-xsl.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /><link rel="home" href="index.html" title="Kopi Application Generator : User guide" /><link rel="up" href="ch02.html" title="Chapter 2. VLIB - The Visual Kopi application framework" /><link rel="prev" href="ch02s03.html" title="2.3. Visual Kopi Reports" /><link rel="next" href="ch03.html" title="Chapter 3. The Kopi Project Future" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr />
+	<div class="entete_header">
+		<div class="logo_header">srd</div>
+		<div class="title_header">Kopi Application Generator : User guide</div>
+  </div>
+
+
+</div><div class="section" title="2.4. Visual Kopi Print Pages"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="_visual_kopi_print_pages"></a>2.4. Visual Kopi Print Pages</h2></div></div></div><p>Visual Prints are static reports that you can create with the Kopi framework, such reports are written in files with the (.vp) extension and have a lot of differences from the dynamic reports we have seen earlier.
+In fact, prints are more complicated to create since you have to take care of the design, the positions and the style details of the report.
+The result is what we call a static report that you cannot modify or interact with in the PDF format, but you can print, save send ..
+ We also call these printable Pages.</p><div class="section" title="2.4.1. Print Page Structure"><div class="titlepage"><div><div><h3 class="title"><a id="_print_page_structure"></a>2.4.1. Print Page Structure</h3></div></div></div><p>When writing a static report, you have to define the data structures, then you insert the data in the report using the defined structures, finally you need to write the print constructor.
+A print always begins with PAGE and ends with END PAGE.
+Here is the global syntax of a page :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">PageDefinition :  "PAGE" "IS" QualfiedName
+                  "IMPLEMENTS" QualifiedName[,QualifiedName]* ]
+                  {
+                    PackageDeclaration;
+                    [ImportDeclaration];
+                  }
+                  [InsertDefinition]
+                  StylesDefinition
+                  "BEGIN"
+                  PageFormat
+                  PageBlocks
+                  [PageHeaderFooter]
+                  [ContextFooter]
+                  "END" "PAGE"</pre><div class="section" title="Page Superclass And Interfaces"><div class="titlepage"><div><div><h4 class="title"><a id="_page_superclass_and_interfaces"></a>Page Superclass And Interfaces</h4></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Superclass:</strong></span>
+</li></ul></div><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">SuperPage:   "IS" QualifiedName</pre><p>Every Page is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.</p><p><span class="strong"><strong>Example:</strong></span></p><pre class="programlisting">PAGE IS PProtectedPage</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Interfaces</strong></span>
+</li></ul></div><p>You can also specify interfaces which the Page may implement by using the IMPLEMENTS option.
+<span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">"IMPLEMENTS" QualifiedName[,QualifiedName]*</pre></div><div class="section" title="Page Header"><div class="titlepage"><div><div><h4 class="title"><a id="_page_header"></a>Page Header</h4></div></div></div><p><span class="strong"><strong>Syntax:</strong></span></p><pre class="programlisting">ContextHeader:   { PackageDeclaration  ImportDeclarations  }
+
+PackageDeclaration:   &lt;As defined in JLS 7.4&gt;
+ImportDeclarations:   &lt;As defined in JLS 7.5&gt;</pre><p>The package definition is contained in the header. It consists in defining where this Page belongs to i.e which application, which firm or which person it is related to.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">PAGE IS PProtectedPage
+  {
+  package at.dms.apps.timetable;
+
+  import java.util.Hashtable
+  import java.util.Vector
+  }
+  ...
+END PAGE</pre><p>In this example, the Page belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.</p></div><div class="section" title="Insert Definitions"><div class="titlepage"><div><div><h4 class="title"><a id="_insert_definitions"></a>Insert Definitions</h4></div></div></div><p>You can user other files to write your print pages styles and then have them inserted in your print page definition file (.vp) using the INSERT command.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">INSERT "PrintDefault.vp"</pre></div><div class="section" title="Styles Definitions"><div class="titlepage"><div><div><h4 class="title"><a id="_styles_definitions"></a>Styles Definitions</h4></div></div></div><p>In this part of the Page, you have to define the structures and the styles of your page, you can use the following 3 types of styles to define as much structures as you need.</p><p>The Style types are :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+BLOCK STYLES
+</li><li class="listitem">
+TEXT STYLES
+</li><li class="listitem">
+PARAGRAPH STYLES
+</li><li class="listitem">
+<span class="strong"><strong>Block Styles</strong></span>
+</li></ul></div><p>Block styles are simple structures that only have Border and Background parameters to set :
+<span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">BlockStyle : "BLOCK" "STYLE" SimpleName ["IS" SimpleName]
+             ["BORDER" Integer border
+             |
+             "BACKGROUND" Integer r Integer g Integer b]*
+             "END" "STYLE"</pre><p>the BORDER statement sets the thickness of the block’s border, while the BACKGROUND sets the color of the block’s background by setting the RGB color parameters.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">    BLOCK STYLE whiteBlock
+        BORDER 5
+    END STYLE</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Text Styles</strong></span>
+</li></ul></div><p>Text styles are structures that set text data properties :
+<span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">TextStyle  : "TEXT" "STYLE" SimpleName ["IS" SimpleName]
+             ["BACKGROUND" Integer r Integer g Integer b
+             |
+             "FOREGROUND" Integer r Integer g Integer b
+             |
+             "BOLD"
+             |
+             "ITALIC"
+             |
+             "SUBSCRIPT"
+             |
+             "SUPERSCRIPT"
+             |
+             "UNDERLINE"
+             |
+             "FONT" String font
+             |
+             "SIZE" Integer size
+             |
+             "STRIKETHROUGH"]*
+
+             "END" ""STYLE</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">TEXT STYLE text
+  BOLD
+  SIZE 22
+  FONT "Courier"
+  UNDERLINE
+END STYLE</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Paragraph Styles</strong></span>
+</li></ul></div><p>Paragraph styles are structures for table columns like data entries with :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">ParagraphStyle : "PARAGRAPH" "STYLE" SimpleName ["IS" SimpleName]
+                 ["ALIGN" PositionAlign
+                  |
+                 "IDENT" PositionIdent
+                  |
+                 "FIRST" "LINE" "IDENT" Integer firstlineIdent
+                  |
+                 "LINE" "SPACING" Fixed spaces
+                  |
+                 "ORIENTATION"
+                  |
+                 "SPACE" PositionSpace
+                  |
+                 "MARGIN" PositionMargin
+                  |
+                 "BORDER" Integer border  [TOP | BOTTOM | LEFT | RIGHT]*
+                  |
+                 "BACKGROUND" Integer r Integer g Integer b
+                  |
+                 "NO BACKGROUND"
+                  |
+                 TABSET PrintTabset]*
+
+                 "END" "STYLE"
+
+
+
+PositionAlign  : "LEFT"  | "RIGHT"  | "CENTER"  | "JUSTIFIED"
+PositionIdent  : "LEFT" Integer left   |  "RIGHT" Integer right
+PositionMargin : "LEFT" Integer left   |  "RIGHT" Integer right
+PositionSpace  : "ABOVE" Integer above | "BELOW" Integer below
+PrintTabset    : (["TAB"] SimpleName "AT" Integer pos "ALIGN" alg)*
+alg            : LEFT | CENTER | RIGHT | DECIMAL</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">PARAGRAPH STYLE table
+  ALIGN LEFT
+  INDENT LEFT 5
+  TABSET
+    Article AT 10 ALIGN LEFT
+    Quantity AT 140 ALIGN RIGHT
+    Price AT 260 ALIGN RIGHT
+    Discount AT 360 ALIGN RIGHT
+    Total AT 490 ALIGN RIGHT
+  BORDER 3 TOP
+END STYLE
+
+
+PARAGRAPH STYLE total IS posTabs
+  BORDER 5
+  BACKGROUND 200 190 210
+END STYLE</pre></div><div class="section" title="Page Format Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_page_format_definition"></a>Page Format Definition</h4></div></div></div><p>This section is optional, here you can define the page format :</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">FormatDefinition : [  "LANDSCAPE" | "PORTRAIT"  [String formatValue]   ]
+
+formatValue      : (Integer width  Integer height  Integer border )
+                   | A5 | A4 | A3 | legal | letter</pre><p>All you have to do is to insert the keyword that sets the orientation of the page (PORTRAIT or LANDSCAPE), this keyword can be followed by a string that defines the format of the page.
+This String can be one of the defined Strings (A5,A4,A3,letter,legal) or you can define the width, the height and the border of the page in a string with the 3 parameters in the mentioned order.
+If you don’t define this section, the default values will be PORTRAIT "A4"</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">PORTRAIT "A4"
+
+LANDSCAPE "A5"
+
+PORTRAIT "letter"
+
+PORTRAIT "592 842 25"</pre></div><div class="section" title="Page Blocks Definition"><div class="titlepage"><div><div><h4 class="title"><a id="_page_blocks_definition"></a>Page Blocks Definition</h4></div></div></div><p>This section of the page is where you will insert your data in the form of blocks that can inherit the styles you have defined in the styles definition section of the page.
+There are 5 types of blocks you can use to insert you data:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+Text Blocks
+</li><li class="listitem">
+Recursive Blocks
+</li><li class="listitem">
+Horizontal Blocks
+</li><li class="listitem">
+List Blocks
+</li><li class="listitem">
+Rectangle Blocks
+</li></ul></div><p>There is also another method that consist on inserting already defined Blocks with the INSERT command.
+Before explaining every block type, there are some common properties that are used in most of these blocks which are :</p><p><span class="strong"><strong>BlockPosition</strong></span></p><pre class="programlisting">BlockPosition   : [ "POS" Integer posx (Integer posy | "BELOW")]
+                  [ "SIZE" (Integer width | String WidthString)
+                   (Integer height| String HeightString) ]
+                  [ "SHOW" "IF" KOPI_JAVA code]
+
+WidthString     : "PAGE_WIDTH"  | "MAX"
+HeightString    : "PAGE_HEIGHT" | "MAX"</pre><p>The block position property sets the block’s position by specifying the x and y Integer values, the y value can be replaced by the keyword "BELOW" and the text will be placed in the first available position in the y axis.
+You can also specify the size of the text block using the SIZE command followed by the width and the height integers, there are also special String values that you can use for the size,
+the MAX String can be used for the width or the height, it is equal to 1000.
+Width also can be PAGE_WIDTH and height can be PAGE_HEIGHT.
+After the size definition you can enter a display condition with the command SHOW IF followed by a condition statement, for example SHOW IF getCurrentPage() == 1; means that the text will be displayed only on the first page.</p><p><span class="strong"><strong>BlockTriggers</strong></span></p><pre class="programlisting">PrintTriggers       : SimpleName [(ParameterList)] { TrigSource }
+
+TrigSource          : [String line | &lt;TAB StyleName&gt; | &lt;StyleName&gt;
+                      | "PAGE_COUNT" | (KOPI_JAVA code)
+                      | {( (KOPI_JAVA code) =&gt; (TrigSource)* }]*</pre><p>To insert the data into the block, you need to create what we call print triggers, a kind of method that defines the way you fill your block.
+These triggers can optionally have a parameter list like any JAVA method and must have a body that can contain various elements:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+Simple String texts
+</li><li class="listitem">
+Styles : to use a style all you need to do is to insert it between "&lt;" and "&gt;", if the style has a TABSET , you have to insert TAB before the name of its elements.
+</li><li class="listitem">
+Kopi_Java code between parentheses
+</li><li class="listitem">
+kopi_java condition between parentheses followed by "⇒" then one or more trigger, all this statement shave to be inserted into "{}" and means that the the condition have to be fulfilled in order to activate the trigger placed after the "⇒".
+</li></ul></div><p><span class="strong"><strong>BlockBody</strong></span></p><pre class="programlisting">BlockBody  : "BODY" { KOPI_JAVA code }</pre><p>After the triggers, you can have a body block that have to implement the print() abstract method in kopi_java code in which you can use the triggers defined in the same block, it is optional in a text block but you will have to implement it in some of the other blocks like the recursive block.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Text Blocks Definition</strong></span>
+</li></ul></div><p>Text blocks are data blocks that can be used to show simple text on the print page :
+<span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">TextBlockDefinition : ["REC"] "TEXT" SimpleName
+                      BlockPosition
+                      ["STYLE" SimpleName]
+                      (PrintTriggers)*
+                      [BlockBody]
+                      "END" "BLOCK"</pre><p>A text Block begins by "TEXT" and ends by "END BLOCK", it can have the optional keyword "REC" before "TEXT" to make the text block recurrent.</p><p><span class="strong"><strong>Example</strong></span>
+Using only block triggers :</p><pre class="programlisting">REC TEXT Invoice
+  POS 60 160
+  SIZE 290 MAX
+  SOURCE {
+    &lt;alignLeft&gt;&lt;helvetica9&gt; &lt;bold&gt; "Invoice N° " (inv.NumInvoice) "\n"
+  }
+END BLOCK</pre><p><span class="strong"><strong>Example</strong></span>
+Using Body section:</p><pre class="programlisting">REC TEXT Details
+  POS 60 190
+  SIZE 200 100
+
+  line(String title, Object description)
+  {
+    &lt;details&gt;&lt;helvetica7&gt;&lt;!bold&gt; (title) ":"
+    &lt;TAB TAB1&gt;&lt;helvetica8&gt;&lt;!bold&gt; (description)
+  }
+
+  boldline(String title, Object description)
+  {
+    &lt;details&gt;&lt;helvetica7&gt;&lt;bold&gt; (title) ":"
+    &lt;TAB TAB1&gt;&lt;helvetica8&gt;&lt;bold&gt; (description)
+  }
+
+  newLine
+  {
+    &lt;helvetica4&gt; "\n"
+  }
+
+  BODY
+  {
+    Remise
+    protected void print() throws Exception
+      {
+        line("Page", ""+getCurrentPage());
+        boldline("Date", inv.DateInvoice);
+        boldline("Client", inv.Customer );
+        line("Adress", inv.Adress);
+        line("Payment Mode", inv.PaymentMode);
+        line("Delivery Mode", inv.DeliveryMode);
+      }
+  }
+END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>List Blocks Definition</strong></span>
+</li></ul></div><p>List blocks are used to insert tables of based on TABSET styles in the page:</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">ListBlockDefinition  : "LIST" [SimpleName]
+                       [BlockPosition]
+                       "STYLE" SimpleName
+                       (PrintTriggers)*
+                       [BlockBody]
+                       "END" "BLOCK"</pre><p>The STYLE section only accepts block styles.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">  //STYLES DEFINITIONS
+
+
+  PARAGRAPH STYLE posTabs
+    ALIGN LEFT
+    INDENT LEFT 5
+    TABSET
+      Article AT 10 ALIGN LEFT
+      Quantity AT 140 ALIGN RIGHT
+      Price AT 260 ALIGN RIGHT
+      Discount AT 360 ALIGN RIGHT
+      Total AT 490 ALIGN RIGHT
+    BORDER 3 TOP
+  END STYLE
+
+
+  PARAGRAPH STYLE posTabsHead IS posTabs
+    BORDER 5
+    BACKGROUND 200 190 210
+  END STYLE
+
+ //INSERTING DATA
+
+  LIST Loop1
+  SIZE 500 480
+
+  LISTHEADER
+  {
+    &lt;posTabsHead&gt; &lt;helvetica9&gt;&lt;bold&gt;
+    &lt;TAB Article&gt; ("Article")
+    &lt;TAB Quantity&gt; ("Quantity")
+    &lt;TAB Price&gt; ("Price")
+    &lt;TAB Discount&gt; ("Discount")
+    &lt;TAB Total&gt; ("Total")
+   }
+  line(InvoicePos invpos)
+  {
+    &lt;posTabs&gt;
+    &lt;helvetica4&gt; "\n" &lt;helvetica9&gt;
+    &lt;TAB Article&gt; (invpos.Article)
+    &lt;TAB Quantity&gt; (invpos.Quantity)
+    &lt;bold&gt;
+    &lt;TAB Price&gt; (invpos.Price)
+    &lt;TAB Discount&gt; (invpos.Discount) " %"
+    &lt;TAB Total&gt; (invpos.Quantity * (invpos.Price -
+    ((invpos.Price * invpos.Discount)/100)))
+    &lt;helvetica4&gt; "\n"
+  }
+  BODY
+  {
+    protected void print() throws Exception
+      {
+        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.open(id);
+        while (invpos.next())
+        {
+          line(invpos);
+          addBreak();
+        }
+        invpos.close();
+    }
+  }
+  END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Recursive Blocks Definition</strong></span>
+</li></ul></div><p>Also called vertical blocks, they are used to contain multiple blocks and displaying them vertically, you can use one of the block styles that you have defined in this block definition after the keyword STYLE, but no text styles and paragraph styles are allowed.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">RecursiveBlockDefinition : "VERTICAL" "BLOCK" [SimpleName]
+                           [BlockPosition]
+                           ["STYLE" SimpleName]
+                           (PageBlocks).
+                           "END" "BLOCK"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">VERTICAL BLOCK Loop
+  POS 60 280
+  SIZE 150 400
+  STYLE darkGreyBlock
+
+  LIST Loop1
+  SIZE 500 480
+
+  LISTHEADER
+  {
+    &lt;posTabsHead&gt; &lt;helvetica9&gt;&lt;bold&gt;
+    &lt;TAB Article&gt; ("Article")
+    &lt;TAB Quantity&gt; ("Quantity")
+    &lt;TAB Price&gt; ("Price")
+    &lt;TAB Discount&gt; ("Discount")
+    &lt;TAB Total&gt; ("Total")
+   }
+  line(InvoicePos invpos)
+  {
+    &lt;posTabs&gt;
+    &lt;helvetica4&gt; "\n" &lt;helvetica9&gt;
+    &lt;TAB Article&gt; (invpos.Article)
+    &lt;TAB Quantity&gt; (invpos.Quantity)
+    &lt;bold&gt;
+    &lt;TAB Price&gt; (invpos.Price)
+    &lt;TAB Discount&gt; (invpos.Discount) " %"
+    &lt;TAB Total&gt; (invpos.Quantity * (invpos.Price -
+    ((invpos.Price * invpos.Discount)/100)))
+    &lt;helvetica4&gt; "\n"
+  }
+  BODY
+  {
+    protected void print() throws Exception
+      {
+        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.open(id);
+        while (invpos.next())
+        {
+          line(invpos);
+          addBreak();
+        }
+        invpos.close();
+    }
+  }
+  END BLOCK
+END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Horizontal Blocks Definition</strong></span>
+</li></ul></div><p>Horizontal Blocks are the same as vertical blocks (recursive blocks), they do contain other blocks but they display them horizontally, you can use one of the block styles that you have defined in this block definition after the keyword STYLE, but no text styles and paragraph styles are allowed.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">RecursiveBlockDefinition : "HORIZONTAL" "BLOCK" [SimpleName]
+                           [BlockPosition]
+                           ["STYLE" SimpleName]
+                           (PageBlocks).
+                           "END" "BLOCK"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">HORIZONTAL BLOCK texts
+  POS 60 280
+  SIZE 150 400
+  TEXT text1
+  ...
+  END BLOCK
+
+  TEXT text2
+  ...
+  END BLOCK
+END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Rectangle Blocks Definition</strong></span>
+</li></ul></div><p>This Type of blocks just insert a rectangle with the parameters of position, size and block style to set.</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">RectangleBlockDefinition : "RECT" SimpleName
+                           [BlockPosition]
+                           "STYLE" SimpleName
+                           "END" "BLOCK"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">RECT Rectangle
+  POS     50 120
+  SIZE    100 150
+  STYLE   greyBlock
+END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<span class="strong"><strong>Imported Blocks Definition</strong></span>
+</li></ul></div><p>You can import already defined blocks using the INSERT keyword</p><p><span class="strong"><strong>Syntax</strong></span></p><pre class="programlisting">ImportedBlockDefinition : "INSERT" BlockType QualifiedName
+
+BlockType               : "RECT" | "VERTICAL" "BLOCK"
+                          | "HORIZONTAL" "BLOCK" | "TEXT"
+                          | "LIST"</pre><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">INSERT TEXT OtherReport.BlockText</pre></div><div class="section" title="Page Header and Footer"><div class="titlepage"><div><div><h4 class="title"><a id="_page_header_and_footer"></a>Page Header and Footer</h4></div></div></div><p>After defining the page blocks , you can define the header and the footer,to do so you can just create a trigger named PAGEFOOTER or PAGEHEADER, or you can import a block as a header/footer.
+<span class="strong"><strong>Examples</strong></span></p><pre class="programlisting">PAGEFOOTER {
+  &lt;landscape&gt; &lt;helvetica8&gt; "Invoice N° " (numInvoice)
+  "  -  Page " (getCurrentPage()) " / " (getPageCount()) "\n"
+     &lt;helvetica8&gt; (Date.now()) " " (Time.now())
+}
+
+
+PAGEFOOTER AnotherPageFile.definedBlock</pre></div><div class="section" title="Page Context Footer"><div class="titlepage"><div><div><h4 class="title"><a id="_page_context_footer"></a>Page Context Footer</h4></div></div></div><p>In this section is inserted between curly brackets after you will have to define the page’s constructor and initializers, the data members and the types definitions and other methods.</p><p>Here is an example named InvoicePage, notice the use of cursor for types definitions, the initPage() method sets the connection to the database.
+This static report prints a page of an invoice by its id:
+<span class="strong"><strong>Example</strong></span></p><pre class="programlisting">//TYPES DEFINITION
+#cursor Invoice (int id)
+{
+  SELECT int NumInvoice,
+         String Customer,
+         String Adress,
+         String PaymentMode,
+         String DeliveryMode,
+         date DateInvoice,
+         fixed Amount
+  FROM   Invoices I
+  WHERE  I.ID = :(id)
+}
+
+#cursor InvoicePos (int id)
+{
+  SELECT String Article,
+         int Quantity,
+         fixed Price,
+         nullable int Discount
+  FROM   InvoicesPos IP
+  WHERE  IP.Invoice = :(id)
+}
+
+//INITIALIZERS
+
+public InvoicePage(DBContextHandler handler, int id)
+{
+  super(handler);
+  this.id = id;
+}
+public void initPage() throws SQLException
+{
+  inv.setDefaultConnection(getDBContext().getDefaultConnection());
+  inv.open(id);
+  inv.next();
+
+}
+public void closePage() throws SQLException
+{
+inv.close();
+}
+
+// DATA MEMBERS
+
+private int id;
+private Invoice inv = new Invoice();
+private InvoicePos invpos = new InvoicePos();</pre></div></div><div class="section" title="2.4.2. Calling Print Pages"><div class="titlepage"><div><div><h3 class="title"><a id="_calling_print_pages"></a>2.4.2. Calling Print Pages</h3></div></div></div><p>Print pages are only available when called from a form that extends the VPrintSelectionForm class, besides, this class have to to implement
+the abstract method createReport and the command print.</p><p><span class="strong"><strong>Example</strong></span></p><pre class="programlisting">FORM IS VPrintSelectionForm
+...
+
+{
+  public PProtectedPage createReport(DBContextHandler handler){
+  return new InvoicePage (handler , @!I.ID);
+  }
+}
+END FORM</pre></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top"> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> </td></tr></table></div></body></html>
