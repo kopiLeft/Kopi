@@ -16,10 +16,11 @@
 ## GOALS
 
 
-default:		 kopi.pdf 
-			
+default:		 kopi.pdf kopi.html			
 kopi.xml:		kopi.adoc 
 			asciidoc -d book -b docbook  kopi.adoc 
+			
+ kopi.html: ax2
 
 			
 kopi.fo:	kopi.xml
@@ -54,7 +55,7 @@ kopi.pdf:		kopi.fo
 			
 
 clean:
-			rm -rf  kopi.pdf kopi.fo kopi.xml  *~
+			rm -rf  kopi.pdf kopi.fo kopi.xml *~
 
 ## ----------------------------------------------------------------------
 ## GLOBAL DEFINITIONS
