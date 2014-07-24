@@ -16,15 +16,27 @@
 ## GOALS
 
 
-default:		 kopi.pdf kopi.html			
+default:		kopi.pdf 
+				
 kopi.xml:		kopi.adoc 
 			asciidoc -d book -b docbook  kopi.adoc 
 			
- kopi.html: ax2
+kopi4html.xml: kopi4html.adoc
+				asciidoc -d book -b docbook  kopi4html.adoc
+			
+kopi.html: 	kopi4html.xml
+	        xsltproc -o kopi.html --stringparam l10n.gentext.language "en"		\
+		-param toc.section.depth 6 			\
+		--stringparam variablelist.as.blocks 1					\
+		--stringparam admon.graphics 1						\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam header.image.filename "images/srd.png"			\
+		$(STYLESHEETS_DIR)/xhtml5/chunk.xsl  kopi4html.xml
 
 			
 kopi.fo:	kopi.xml
-	          xsltproc -o kopi.fo --stringparam l10n.gentext.language "fr"	\
+	          xsltproc -o kopi.fo --stringparam l10n.gentext.language "en"	\
 		--stringparam body.font.family "concrete"				\
 		--stringparam title.font.family "sansserif"				\
 		--stringparam body.font.size "10"					\
@@ -55,7 +67,7 @@ kopi.pdf:		kopi.fo
 			
 
 clean:
-			rm -rf  kopi.pdf kopi.fo kopi.xml *~
+			rm -rf  *pdf *fo *xml *html *css *~
 
 ## ----------------------------------------------------------------------
 ## GLOBAL DEFINITIONS
