@@ -363,3 +363,7 @@ span.line-through { text-decoration: line-through; }
 
 .toc dl a {  color:#231f20; text-decoration:none;  font-family: cmu concrete; font-size: 16px;}
 
+.navfooter {position:fixed; bottom:0%; width:90%;    background-color: #fff;  z-index: 2147483647;}
+
+.navfooter table tbody tr td a , .navheader table tbody tr td a {  color: #1169a6;   font-family: cmu sans serif;  font-size: 15px;  font-weight: bold; text-decoration:none;}
+.navfooter table tbody tr td a:hover  , .navheader table tbody tr td a:hover {text-decoration:underline;}
