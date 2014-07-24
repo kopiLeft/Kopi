@@ -20,11 +20,9 @@ default:		kopi.pdf
 				
 kopi.xml:		kopi.adoc 
 			asciidoc -d book -b docbook  kopi.adoc 
+
 			
-kopi4html.xml: kopi4html.adoc
-				asciidoc -d book -b docbook  kopi4html.adoc
-			
-kopi.html: 	kopi4html.xml
+kopi.html: 	kopi.xml
 	        xsltproc -o kopi.html --stringparam l10n.gentext.language "en"		\
 		-param toc.section.depth 6 			\
 		--stringparam variablelist.as.blocks 1					\
@@ -32,7 +30,7 @@ kopi.html: 	kopi4html.xml
 		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
 		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
 		--stringparam header.image.filename "images/srd.png"			\
-		$(STYLESHEETS_DIR)/xhtml5/chunk.xsl  kopi4html.xml
+		$(STYLESHEETS_DIR)/xhtml5/chunk.xsl  kopi.xml
 
 			
 kopi.fo:	kopi.xml
