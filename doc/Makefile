@@ -34,8 +34,12 @@ kopi.html: 	kopi.xml
 		--stringparam navig.graphics 1						\
 		--stringparam chapter.autolabel 1					\
 		--stringparam part.autolabel 1						\
-		--stringparam section.autolabel 1			\
-		$(STYLESHEETS_DIR)/xhtml5/chunk.xsl  kopi.xml
+		--stringparam section.autolabel 1					\
+		--stringparam chunker.output.indent yes					\
+		--stringparam body.margin.bottom 10in 					\
+		--stringparam header.image.filename "images/srd.png"			\
+		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/xhtml5/custom.xsl  kopi.xml
 
 			
 kopi.fo:	kopi.xml
