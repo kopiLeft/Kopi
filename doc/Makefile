@@ -24,12 +24,15 @@ kopi.xml:		kopi.adoc
 			
 kopi.html: 	kopi.xml
 	        xsltproc -o kopi.html --stringparam l10n.gentext.language "en"		\
-		-param toc.section.depth 6 			\
+		-param toc.section.depth 6 						\
 		--stringparam variablelist.as.blocks 1					\
 		--stringparam admon.graphics 1						\
 		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
 		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
 		--stringparam header.image.filename "images/srd.png"			\
+		--stringparam chapter.autolabel 1					\
+		--stringparam part.autolabel 1					\
+		--stringparam section.autolabel 1					\
 		$(STYLESHEETS_DIR)/xhtml5/chunk.xsl  kopi.xml
 
 			
