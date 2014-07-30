@@ -291,7 +291,7 @@ VISIT Invoice AT <1, 2>
 END FIELD
 ----
 
-Note that a field can be connected to more than one table and column. In this case, the formula you will type will be:
+NOTE: that a field can be connected to more than one table and column. In this case, the formula you will type will be:
 
 *Example*
  	

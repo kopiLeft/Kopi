@@ -25,14 +25,16 @@ kopi.xml:		kopi.adoc
 kopi.html: 	kopi.xml
 	        xsltproc -o kopi.html --stringparam l10n.gentext.language "en"		\
 		-param toc.section.depth 6 						\
+		--stringparam generate.index 0 						\
 		--stringparam variablelist.as.blocks 1					\
 		--stringparam admon.graphics 1						\
-		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
-		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
-		--stringparam header.image.filename "images/srd.png"			\
+		--stringparam admon.graphics.path "images/"				\
+		--stringparam navig.graphics.path "images/" 				\
+		--stringparam navig.graphics.extension .png				\
+		--stringparam navig.graphics 1						\
 		--stringparam chapter.autolabel 1					\
-		--stringparam part.autolabel 1					\
-		--stringparam section.autolabel 1					\
+		--stringparam part.autolabel 1						\
+		--stringparam section.autolabel 1			\
 		$(STYLESHEETS_DIR)/xhtml5/chunk.xsl  kopi.xml
 
 			
@@ -56,7 +58,7 @@ kopi.fo:	kopi.xml
 		--param table.row.alternate.color 1					\
 		--stringparam table.row.odd.color "#ddd"				\
 		--stringparam table.row.pair.color "#fff"				\
-		--stringparam admon.graphics.path "/etc/asciidoc/images/icons/"		\
+		--stringparam admon.graphics.path "images/"		\
 		--stringparam header.image.filename "images/srd.png"			\
 		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  kopi.xml
 						
