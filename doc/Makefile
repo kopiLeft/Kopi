@@ -24,7 +24,7 @@ kopi.xml:		kopi.adoc
 			
 kopi.html: 	kopi.xml
 	        xsltproc -o kopi.html --stringparam l10n.gentext.language "en"		\
-		-param toc.section.depth 6 						\
+		--param toc.section.depth 6 						\
 		--stringparam generate.index 0 						\
 		--stringparam variablelist.as.blocks 1					\
 		--stringparam admon.graphics 1						\
@@ -37,8 +37,6 @@ kopi.html: 	kopi.xml
 		--stringparam section.autolabel 1					\
 		--stringparam chunker.output.indent yes					\
 		--stringparam body.margin.bottom 10in 					\
-		--stringparam header.image.filename "images/srd.png"			\
-		--stringparam book.titlepage.recto.logo "images/srd.png" 		\
 		--param fop1.extensions 1 $(STYLESHEETS_DIR)/xhtml5/custom.xsl  kopi.xml
 
 			
@@ -52,7 +50,7 @@ kopi.fo:	kopi.xml
 		--stringparam section.autolabel 1					\
 		--stringparam default.image.width 400pt					\
 		--stringparam section.label.includes.component.label 1			\
-		-param shade.verbatim 1 -param toc.section.depth 6 			\
+		--param shade.verbatim 1 -param toc.section.depth 6 			\
 		--stringparam variablelist.as.blocks 1					\
 		--stringparam admon.graphics 1						\
 		--param variablelist.term.break.after 1					\
