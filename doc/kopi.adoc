@@ -13,8 +13,8 @@ The Kopi Project also includes XKJC, a compiler for embedded SQL in Java. Built 
 
 The last tool provided by DMS is Visual Kopi. Visual Kopi is an application framework using JDBC and JFC/Swing which lets you create database applications in a high level specification language. It also provides the ability to write triggers and commands in Java with seamlessly embedded SQL statements. 
 
-Organization of This Document
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*Organization of This Document*
+
 This documentation includes two main Chapters: +
 
 * CHAPTER 1 : XKJC - The EXtended Kopi Java language+
@@ -22,6 +22,11 @@ XKJC is a compiler for embedded SQL in Java. This language is a super set of Jav
 
 * CHAPTER 2 : VLIB - The Visual Kopi application Framework+
 Visual Kopi is an application framework using SWING which lets you create database applications in a high level specification language. In this chapter, we will explore the capabilities of this framework.
+
+
+*Getting Started*
+
+The source code of the KOPI project along with the Kopi Suite binaries, is available on SourceForge http://sourceforge.net/projects/kopi/.
 
 
 == XKJC - The Extended Kopi Java language
