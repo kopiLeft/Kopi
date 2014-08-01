@@ -41,7 +41,7 @@ kopi.html: 	kopi.xml
 
 			
 kopi.fo:	kopi.xml
-	          xsltproc -o kopi.fo --stringparam l10n.gentext.language "en"	\
+	          xsltproc -o kopi.fo --stringparam l10n.gentext.language "en"		\
 		--stringparam body.font.family "concrete"				\
 		--stringparam title.font.family "sansserif"				\
 		--stringparam body.font.size "10"					\
@@ -60,7 +60,7 @@ kopi.fo:	kopi.xml
 		--param table.row.alternate.color 1					\
 		--stringparam table.row.odd.color "#ddd"				\
 		--stringparam table.row.pair.color "#fff"				\
-		--stringparam admon.graphics.path "images/"		\
+		--stringparam admon.graphics.path "images/"				\
 		--stringparam header.image.filename "images/srd.png"			\
 		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  kopi.xml
 						
