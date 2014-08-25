@@ -244,16 +244,16 @@ public class As400DriverInterface extends DriverInterface {
 	return "SIZE OF (" + arguments.elementAt(0) + ")";
 
       case 11:	// UPPER/1
-	return "UPPER (" + arguments.elementAt(0) + ")";
+	return "UCASE(" + arguments.elementAt(0) + ")";
 
       case 12:	// LOWER/1
-	return "(" + arguments.elementAt(0) + ")";	// !!! kann er nicht
+	return "LCASE(" + arguments.elementAt(0) + ")";
 
       case 13:	// LTRIM/1
-	return "TRIM ( LEADING" + " FROM " + arguments.elementAt(0) + ")";
+	return "LTRIM(" + arguments.elementAt(0) + ")";
 
       case 14:	// RTRIM/1
-	return "TRIM ( TRAILING" + " FROM " + arguments.elementAt(0) + ")";
+	return "RTRIM(" + arguments.elementAt(0) + ")";
 
       case 15:	// REPLACE/3
 	return "REPLACE (" + arguments.elementAt(0) + " BY " + arguments.elementAt(1) + " IN " +
