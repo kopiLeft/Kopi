@@ -746,6 +746,13 @@ public abstract class VForm extends VWindow implements VConstants {
     fireCurrentBlockChanged(old, activeBlock);
   }
 
+  /**
+   * Launch file preview
+   */ 
+  public void documentPreview(String file) throws VException {
+    ((UForm) getDisplay()).launchDocumentPreview(file);
+  }
+  
   // ----------------------------------------------------------------------
   // LISTENER
   // ----------------------------------------------------------------------

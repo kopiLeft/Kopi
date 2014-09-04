@@ -54,4 +54,9 @@ public interface UForm extends UWindow, DPositionPanelListener, FormListener {
    * @return The {@link Throwable} debug info.
    */
   public Throwable getRuntimeDebugInfo();
+  
+  /**
+   * Show document preview
+   */ 
+  public void launchDocumentPreview(String file) throws VException;
 }

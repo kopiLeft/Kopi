@@ -207,4 +207,12 @@ public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
 
   String EMPTY_TEXT			= "";
   String RESOURCE_DIR			= "com.kopiright.vkopi.lib.util/resource";
+  
+  // ---------------------------------------------------------------------
+  // IMAGE DOCUMENT EXTENSIONS
+  // ---------------------------------------------------------------------
+  
+  int IMAGE_DOC_PDF		= 0;
+  int IMAGE_DOC_JPEG		= 1;
+  int IMAGE_DOC_TIF		= 2;
 }

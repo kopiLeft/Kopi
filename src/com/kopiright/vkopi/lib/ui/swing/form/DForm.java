@@ -54,6 +54,7 @@ import com.kopiright.vkopi.lib.form.BlockRecordListener;
 import com.kopiright.vkopi.lib.form.UBlock;
 import com.kopiright.vkopi.lib.form.UForm;
 import com.kopiright.vkopi.lib.form.VBlock;
+import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldException;
 import com.kopiright.vkopi.lib.form.VForm;
@@ -64,6 +65,8 @@ import com.kopiright.vkopi.lib.ui.swing.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.ui.swing.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.ui.swing.visual.Utils;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
@@ -562,6 +565,43 @@ public class DForm extends DWindow implements UForm {
     }
   }
 
+  //----------------------------------------------------------------------
+  // DOCUMENT PREVIEW
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Show document preview
+   */ 
+  public void launchDocumentPreview(String file) throws VException {
+    try {  
+      String            command; 
+      int		art = 0;
+    
+      if(file != null) {
+        if(file.toLowerCase().endsWith(".pdf")) {
+          art = VConstants.IMAGE_DOC_PDF;
+        } else if(file.toLowerCase().endsWith(".jpeg")) {
+          art = VConstants.IMAGE_DOC_JPEG;
+        } else if(file.toLowerCase().endsWith(".tif") || file.toLowerCase().endsWith(".tiff")) {
+          art = VConstants.IMAGE_DOC_TIF;
+        } else {
+  	  throw new VExecFailedException();
+        }
+      }
+
+      if(art == VConstants.IMAGE_DOC_PDF) {
+	command = ApplicationConfiguration.getConfiguration().getStringFor("pdf.preview.command");
+      } else {
+	command = ApplicationConfiguration.getConfiguration().getStringFor("image.preview.command");
+      } 
+      Runtime.getRuntime().exec(command + " " + file);
+    } catch (IOException e) {
+      throw new VExecFailedException(e);
+    } catch (PropertyException e) {
+      throw new VExecFailedException(e);
+    }
+  }
+  
   // ----------------------------------------------------------------------
   // SNAPSHOT PRINTING
   // ----------------------------------------------------------------------
