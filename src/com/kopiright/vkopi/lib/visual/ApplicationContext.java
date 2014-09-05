@@ -380,6 +380,12 @@ public abstract class ApplicationContext {
    */
   public abstract Application getApplication();
 
+  /**
+   * Returns the <b>current</b> {@link PreviewRunner} instance.
+   * @return The <b>current</b> {@link PreviewRunner} instance.
+   */
+  public abstract PreviewRunner getPreviewRunner();
+  
   //-----------------------------------------------------------
   // DATA MEMBERS
   //-----------------------------------------------------------

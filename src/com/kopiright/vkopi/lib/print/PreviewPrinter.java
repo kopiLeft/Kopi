@@ -21,12 +21,10 @@ package com.kopiright.vkopi.lib.print;
 
 import java.io.IOException;
 
-import com.kopiright.vkopi.lib.preview.VPreviewWindow;
 import com.kopiright.vkopi.lib.util.AbstractPrinter;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
-import com.kopiright.vkopi.lib.visual.VException;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 
 
 /**
@@ -51,22 +49,12 @@ public class PreviewPrinter extends AbstractPrinter {
   }
 
   public String print(PrintJob data) throws IOException, PrintException {
-    if (ApplicationConfiguration.getConfiguration().useAcroread()) {
-      try {
-        if (System.getProperty("os.name").startsWith("Linux")) {
-          Runtime.getRuntime().exec("acroread " + data.getDataFile());
-        } else if (System.getProperty("os.name").startsWith("Windows")) {
-          Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " +  data.getDataFile());
-        }
-      } catch (IOException e) {
-        System.out.println("Acroread failed: " + e.getMessage());
-      }
-    } else {
-      try {
-         new VPreviewWindow().preview((data.getDataType() != PrintJob.DAT_PS) ? data : convertToGhostscript(data), command);
-       } catch (VException e) {
-         throw new PSPrintException("PreviewPrinter.PrintTaskImpl::print()", e);
-       }
+    try {
+      ApplicationContext.getApplicationContext().getPreviewRunner().run(data, command);
+    } catch (IOException ie) {
+      throw ie;
+    } catch (PrintException pe) {
+      throw pe;
     }
 
     return "NYI";

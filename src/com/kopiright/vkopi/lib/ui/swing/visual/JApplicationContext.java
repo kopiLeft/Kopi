@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.ui.swing.visual;
 
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
+import com.kopiright.vkopi.lib.visual.PreviewRunner;
 
 /**
  * {@code JApplicationContext} is an application context
@@ -32,4 +33,17 @@ public class JApplicationContext extends ApplicationContext {
   public Application getApplication() {
     return JApplication.getInstance();
   }
+  
+  /**
+   * Returns the current PreviewRunner.
+   */
+  public PreviewRunner getPreviewRunner() {
+    return  previewRunner == null ? new JPreviewRunner() : previewRunner ;
+  }
+  
+  //--------------------------------------------------
+  // DATA MEMBEERS
+  //--------------------------------------------------
+  
+  private JPreviewRunner			previewRunner;
 }
