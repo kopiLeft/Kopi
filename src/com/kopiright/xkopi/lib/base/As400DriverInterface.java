@@ -214,7 +214,7 @@ public class As400DriverInterface extends DriverInterface {
 	return "((" + arguments.elementAt(0) + ") CAST DATETIME[YY:MO])";
 
       case 2:	// ADD_DAYS/2
-	return "((" + arguments.elementAt(0) + ") + CONSTRUCT TIMESPAN[DD]( " + arguments.elementAt(1) + "))";
+	return "((" + arguments.elementAt(0) + ") + ( " + arguments.elementAt(1) + ") DAYS)";
 
       case 4:	// MONTH/2
 	return "DATETIME[YY:MO](" + arguments.elementAt(0) + "-" + arguments.elementAt(1) + ")";
