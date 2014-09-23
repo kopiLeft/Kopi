@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.visual;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.event.EventListenerList;
@@ -772,6 +773,13 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void removeModelCloseListener(ModelCloseListener mcl) {
     modelListener.remove(ModelCloseListener.class, mcl);
   }
+  
+  /**
+   * Notifies all listeners that the report file is produced.
+   */
+   public void fireFileProduced(File file) {
+
+   }
 
   // ----------------------------------------------------------------------
   // DEBUGGING
