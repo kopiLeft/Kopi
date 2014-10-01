@@ -187,7 +187,7 @@ class OptionDefinition {
     for (int i = prefix.length(); i < 25; i++) {
       prefix.append(" ");
     }
-    out.print(prefix.toString() + help);
+    out.print(prefix.toString() + (help == null ? "" : help.replaceAll("\"", "\\\\\"")));
     if (!defaultValue.equals("null")) {
       out.print(" [");
       out.print(defaultValue);
