@@ -341,7 +341,7 @@ public class DBlock extends JPanel implements UBlock {
    * @param     column column to order or if -1 back to original order
    */
   public void orderChanged() {
-    refresh(true);
+    SwingThreadHandler.startAndWait(synchronRefresh);
   }
 
   /**
