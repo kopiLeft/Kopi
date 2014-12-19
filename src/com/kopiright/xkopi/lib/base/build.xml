@@ -27,7 +27,7 @@
                    Db2UdbDriverInterface.java KconnectDriverInterface.java 
                    MysqlDriverInterface.java OracleDriverInterface.java 
                    PostgresDriverInterface.java SapdbDriverInterface.java 
-                   TbxDriverInterface.java
+                   TbxDriverInterface.java ODBCDriverInterface
                    ConnectionOptions.java IngresDriverInterface.java" />
 
   <property name="options" 

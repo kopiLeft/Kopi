@@ -476,6 +476,8 @@ public class Connection {
       driver = new PostgresDriverInterface();
     } else if (driverName.equals("ca.edbc.jdbc.EdbcDriver")) {
       driver = new IngresDriverInterface();
+    } else if (driverName.equals("sun.jdbc.odbc.JdbcOdbcDriver")) {
+      driver = new ODBCDriverInterface();
     } else {
       throw new InconsistencyException("no appropriate driver found");
     }
