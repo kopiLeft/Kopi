@@ -745,7 +745,7 @@ public abstract class VForm extends VWindow implements VConstants {
     // inform listener
     fireCurrentBlockChanged(old, activeBlock);
   }
-
+  
   /**
    * Launch file preview
    */ 

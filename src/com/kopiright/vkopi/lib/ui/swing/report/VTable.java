@@ -14,12 +14,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * $Id$
+ * $Id: VTable.java 34103 2013-11-07 17:30:39Z hacheni $
  */
 
-package com.kopiright.vkopi.lib.report;
+package com.kopiright.vkopi.lib.ui.swing.report;
 
 import javax.swing.table.AbstractTableModel;
+
+import com.kopiright.vkopi.lib.report.MReport;
 
 public class VTable extends AbstractTableModel {
 

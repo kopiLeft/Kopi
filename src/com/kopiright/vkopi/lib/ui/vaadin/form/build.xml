@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.ui.vaadin.form
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../../../.." />
+  <property name="package" value="com/kopiright/vkopi/lib/ui/vaadin/form" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.ui.vaadin.form" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="DateChooser.java DBlock.java DBlockDropHandler.java DChartBlock.java
+  	           DChartHeaderLabel.java DField.java DFieldHandler.java DFieldUI.java
+  	           DForm.java DImageField.java DLabel.java DListDialog.java DMultiBlock.java
+  	           DObjectField.java DPage.java DTextEditor.java DTextField.java Environment.java
+  	           HorizontalPage.java ImageFileChooser.java KeyNavigator.java KopiLayout.java
+  	           KopiMultiBlockLayout.java KopiSimpleBlockLayout.java ScrollBar.java
+  	           VerticalPage.java VPredefinedValueHandler.java" />
+	
+  <import file="${topdir}/defs.xml" />
+</project>

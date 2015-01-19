@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.visual.FileProductionListener;
 import com.kopiright.vkopi.lib.base.Image;
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.xkopi.lib.base.DBContext;
@@ -773,13 +774,6 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void removeModelCloseListener(ModelCloseListener mcl) {
     modelListener.remove(ModelCloseListener.class, mcl);
   }
-  
-  /**
-   * Notifies all listeners that the report file is produced.
-   */
-   public void fireFileProduced(File file) {
-
-   }
 
   // ----------------------------------------------------------------------
   // DEBUGGING
@@ -788,7 +782,44 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   protected static final String threadInfo() {
     return "Thread: " + Thread.currentThread() + "\n";
   }
+  
+  //--------------------------------------------------------------------
+  // FILE PRODUCTION LISTENERS HANDLING
+  // --------------------------------------------------------------------
 
+  /**
+  * Adds a listener to the list that's notified each time a production 
+  * of the report file occurs.
+  *
+  * @param l The FileProductionListener
+  */
+  public void addFileProductionListener(FileProductionListener l) {
+    listenerList.add(FileProductionListener.class, l);
+  }
+
+  /**
+  * Removes a listener from the list that's notified each time a
+  * production of the report file occurs.
+  *
+  * @param l The FileProductionListener
+  */
+  public void removeReportListener(FileProductionListener l) {
+    listenerList.remove(FileProductionListener.class, l);
+  }
+
+  /**
+  * Notifies all listeners that the report file is produced.
+  */
+  public void fireFileProduced(File file) {
+    Object[] listeners = listenerList.getListenerList();
+
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == FileProductionListener.class) {
+	((FileProductionListener)listeners[i+1]).fileProduced(file);
+      }
+    }
+  }
+ 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -809,4 +840,5 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   protected VActor[]            	actors;
   protected String              	title;
   protected Image           		smallIcon;
+  protected EventListenerList 	        listenerList = new EventListenerList(); // List of listeners
 }

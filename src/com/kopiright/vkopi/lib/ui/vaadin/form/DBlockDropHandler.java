@@ -1,0 +1,430 @@
+/*
+ * Copyright (c) 1990-2009 kopiRight Managed Solutions GmbH
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License version 2.1 as published by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * $Id: DBlock.java 34539 2015-01-19 08:51:40Z hacheni $
+ */
+
+package com.kopiright.vkopi.lib.ui.vaadin.form;
+
+import java.awt.datatransfer.DataFlavor;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
+import javax.activation.MimetypesFileTypeMap;
+
+import com.kopiright.vkopi.lib.form.VBlock;
+import com.kopiright.vkopi.lib.form.VField;
+import com.kopiright.vkopi.lib.form.VImageField;
+import com.kopiright.vkopi.lib.form.VStringField;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.vaadin.event.dd.DragAndDropEvent;
+import com.vaadin.event.dd.DropHandler;
+import com.vaadin.event.dd.acceptcriteria.AcceptAll;
+import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
+import com.vaadin.server.StreamVariable;
+import com.vaadin.ui.DragAndDropWrapper.WrapperTransferable;
+import com.vaadin.ui.Html5File;
+
+/**
+ * The <code>DBlockDropHandler</code> is the block implementation
+ * of the {@link DropHandler} specifications.
+ */
+public class DBlockDropHandler implements DropHandler {
+  
+  //---------------------------------------------------
+  // CONSTRUCTOR
+  //---------------------------------------------------
+
+  /**
+   * Creates a new <code>DBlockDropHandler</code> instance.
+   * @param block The block model.
+   */
+  public DBlockDropHandler(VBlock block) {
+    this.block = block;
+  }
+  
+  //---------------------------------------------------
+  // DROPTARGETLISTENER IMPLEMENTATION
+  //---------------------------------------------------
+  
+  @Override
+  public void drop(DragAndDropEvent event) {
+    if (isAccepted((WrapperTransferable)event.getTransferable())) {
+      if (isChartBlockContext()) {
+        fileList = new ArrayList<File>();
+        filesCount = ((WrapperTransferable)event.getTransferable()).getFiles().length;
+        for (int i = 0; i < filesCount; i++) {
+	  ((WrapperTransferable)event.getTransferable()).getFiles()[i].setStreamVariable(new StreamHandler());
+        }
+      } else {
+        ((WrapperTransferable)event.getTransferable()).getFiles()[0].setStreamVariable(new StreamHandler());
+      }
+    }
+  }
+
+  @Override
+  public AcceptCriterion getAcceptCriterion() {
+    return AcceptAll.get();
+  }
+
+  //---------------------------------------------------------
+  // UTILS
+  //---------------------------------------------------------
+  
+  /**
+   * Launches the drop operation for a given file.
+   * @param file The file instance.
+   */
+  private void acceptDrop(File file) {
+    if (file != null) {
+      if (isChartBlockContext()) {
+        fileList.add(file);
+        if (fileList.size() == filesCount){
+	  handleDrop(fileList);
+        }
+      } else {
+        handleDrop(file, getExtension(file));
+      }
+    }   
+  }
+
+  /**
+   * Returns {@code true} is the data flavor is accepted.
+   * @param transferable The {@link WrapperTransferable} instance.
+   * @return {@code true} is the data flavor is accepted.
+   */
+  private boolean isAccepted(WrapperTransferable transferable) {
+    if (isDataFlavorSupported(transferable ,DataFlavor.javaFileListFlavor)) {
+      ArrayList<Html5File>		flavors;
+      flavors = new ArrayList<Html5File>();
+      for (int i = 0; i < transferable.getFiles().length; i++) {
+	flavors.add(transferable.getFiles()[i]);
+      }
+      if (isChartBlockContext()) {
+	return isAccepted(flavors);
+      } else {
+	if (flavors.size() > 1) {
+	  return false;
+	} else {
+	  return isAccepted(flavors.get(0).getType().substring(flavors.get(0).getType().indexOf("/")+1).toLowerCase());
+	}
+      }
+    } else {
+      return false;
+    }
+  }
+  
+  /**
+   * Returns {@code true} is the data flavor is accepted.
+   * @param transferable The {@link WrapperTransferable} instance.
+   * @param flavor The {@link DataFlavor} instance.
+   * @return {@code true} is the data flavor is accepted.
+   */
+  private boolean isDataFlavorSupported(WrapperTransferable transferable, DataFlavor flavor) {     
+    Html5File 			file;
+    
+    for (int i = 0; i < transferable.getFiles().length; i++) {
+      file = transferable.getFiles()[i];  
+      try {
+        if (!(file.getType().substring(0, file.getType().indexOf("/")).toLowerCase()).equals(flavor.getPrimaryType().toLowerCase())) {  
+	  return false;
+        }
+      } catch (StringIndexOutOfBoundsException e) {
+	return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * Returns {@code true} is the given data flavor is accepted for drop operation.
+   * @param flavor The data flavor.
+   * @return {@code true} is the given data flavor is accepted for drop operation.
+   */
+  private boolean isAccepted(String flavor) {
+    return flavor != null && flavor.length() > 0 && block.isAccepted(flavor);
+  }
+
+  /**
+   * A List of flavors is accepted if all elements
+   * of the list are accepted and have the same extension
+   * @param flavors The data flavors.
+   * @return {@code true} when the drop operation succeeded.
+   */
+  private boolean isAccepted(ArrayList<Html5File> flavors) {
+    String		oldFlavor = null;
+
+    for (int i = 0; i < flavors.size(); i++) {
+      String	newFlavor = flavors.get(i).getType().substring(flavors.get(i).getType().indexOf("/")+1).toLowerCase();
+
+      if ((oldFlavor != null && !newFlavor.equals(oldFlavor))
+	  || !isAccepted(newFlavor))
+      {
+	return false;
+      }
+
+      oldFlavor = newFlavor;
+    }
+
+    return true;
+  }
+
+  /**
+   * Handles drop action for multiple files in a chart block.
+   * @param files The list of files to be dropped.
+   * @return {@code true} when the drop operation succeeded.
+   */
+  private boolean handleDrop(ArrayList<File> files) {
+    for (int i = 0; i < files.size(); i++) {
+      File	file = files.get(i);
+
+      if (!handleDrop(file, getExtension(file))) {
+	return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Handles drop operations for given flavors.
+   * @param file The file instance.
+   * @param flavor The data flavors.
+   * @return {@code true} when the drop operation succeeded.
+   */
+  private boolean handleDrop(File file, String flavor) {
+    VField	target = block.getDropTarget(flavor);
+
+    if (target == null) {
+      return false;
+    }
+
+    if (target instanceof VStringField) {
+      if (target.getWidth() < file.getAbsolutePath().length()) {
+	return false;
+      } else {
+	if (isChartBlockContext()) {
+	  if (block.getActiveRecord() != -1) {
+	    ((VStringField)target).setString(block.getActiveRecord(), file.getAbsolutePath());
+	    block.setActiveRecord(block.getActiveRecord() + 1);
+	    return true;
+	  } else {
+	    return false;
+	  }
+	} else {
+	  ((VStringField)target).setString(file.getAbsolutePath());
+	  return true;
+	}
+      }
+    } else if (target instanceof VImageField) {
+      if (!target.isInternal()) {
+	if (isImage(file)) {
+	  return handleImage((VImageField)target, file);
+	} else {
+	  return false;
+	}
+      } else {
+	return handleImage((VImageField)target, file);
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Handles the drop process for image files.
+   * @param target The target image field.
+   * @param file The file instance.
+   * @return {@code true} is the drop operation succeeded.
+   */
+  private boolean handleImage(VImageField target, File file) {
+    if (isChartBlockContext()) {
+      if (block.getActiveRecord() != -1) {
+	target.setImage(block.getActiveRecord(), toByteArray(file));
+	block.setActiveRecord(block.getActiveRecord() + 1);
+	return true;
+      } else {
+	return false;
+      }
+    } else {
+      target.setImage(toByteArray(file));
+      return true;
+    }
+  }
+
+  /**
+   * Returns {@code true} is the context block is chart block.
+   * @return {@code true} is the context block is chart block.
+   */
+  private boolean isChartBlockContext() {
+    return block.noDetail() || (block.isMulti() && !block.isDetailMode());
+  }
+
+  /**
+   * Returns the file extension.
+   * @param file The file instance.
+   * @return The file extension.
+   */
+  private static String getExtension(File file) {
+    String		extension = null;
+    String 		name = file.getName();
+    int 		index = name.lastIndexOf('.');
+
+    if (index > 0 &&  index < name.length() - 1) {
+      extension = name.substring(index + 1).toLowerCase();
+    }
+
+    return extension;
+  }
+
+  /**
+   * Returns {@code true} is the given file is an image.
+   * @param file The file instance.
+   * @return {@code true} is the given file is an image.
+   */
+  private static boolean isImage(File file) {
+    String		mimeType;
+
+    mimeType = MIMETYPES_FILE_TYPEMAP.getContentType(file);
+    if(mimeType.split("/")[0].equals("image")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns the bytes of the given file.
+   * @param file The file instance.
+   * @return The file bytes.
+   */
+  private static byte[] toByteArray(File file) {
+    try {
+      ByteArrayOutputStream	baos = new ByteArrayOutputStream();
+
+      copy(new FileInputStream(file), baos, 1024);
+      return baos.toByteArray();
+    } catch (IOException e) {
+      return null;
+    }
+  }
+
+  /**
+   * Copies the given input stream into the given output stream. 
+   * @param input The input stream to be copied.
+   * @param output The destination output stream.
+   * @param bufferSize The buffer size.
+   * @throws IOException I/O errors.
+   */
+  private static void copy(InputStream input, OutputStream output,  int bufferSize)
+    throws IOException
+  {
+    byte[]	buf = new byte[bufferSize];
+    int 	bytesRead = input.read(buf);
+
+    while (bytesRead != -1) {
+      output.write(buf, 0, bytesRead);
+      bytesRead = input.read(buf);
+    }
+
+    output.flush();
+  }
+  
+  //---------------------------------------------------
+  // INNER CLASSES
+  //---------------------------------------------------
+  
+  /**
+   * The <code>StreamHandler</code> is the block drop target handler
+   * of the {@link StreamVariable} specifications.
+   */
+  @SuppressWarnings("serial")
+  private final class StreamHandler implements StreamVariable {
+    
+    //---------------------------------------
+    // IMPLEMENTATIONS
+    //---------------------------------------
+    
+    @Override
+    public OutputStream getOutputStream() {
+      return bas;
+    }
+    
+    @Override
+    public boolean listenProgress() {
+      return false;
+    }
+    
+    @Override
+    public void onProgress (StreamingProgressEvent event) {}
+
+    @Override
+    public void streamingStarted (StreamingStartEvent event) {}
+
+    @Override
+    public void streamingFinished (StreamingEndEvent event) {      
+      try {
+	File 		temp;
+	      
+        temp = File.createTempFile(event.getFileName().substring(0,event.getFileName().indexOf(".")), event.getFileName().substring(event.getFileName().indexOf(".")),ApplicationConfiguration.getConfiguration().getDefaultDirectory());
+        OutputStream outputStream = new FileOutputStream (temp);
+        bas.writeTo(outputStream);
+        acceptDrop(temp);
+      } catch (FileNotFoundException e) {
+	acceptDrop(null);
+      } catch (IOException e) {
+	acceptDrop(null);
+      } 
+    }
+
+    @Override
+    public void streamingFailed (StreamingErrorEvent event) {}
+
+    @Override
+    public boolean isInterrupted() {
+      return false;
+    }
+    
+    //---------------------------------------
+    // DATA MEMBERS
+    //---------------------------------------
+    
+    private ByteArrayOutputStream	bas = new ByteArrayOutputStream();
+  }
+  
+  //---------------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------------
+
+  private final VBlock				block;
+  private static final MimetypesFileTypeMap	MIMETYPES_FILE_TYPEMAP = new MimetypesFileTypeMap();
+  private ArrayList<File>                       fileList;   
+  private int                                   filesCount;
+  private static final long 			serialVersionUID = 3924306391945432925L;
+  
+  static {
+    // missing PNG files in initial map
+    MIMETYPES_FILE_TYPEMAP.addMimeTypes("image/png png");
+  }
+}

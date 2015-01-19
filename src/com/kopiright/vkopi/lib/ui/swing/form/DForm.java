@@ -289,7 +289,7 @@ public class DForm extends DWindow implements UForm {
    * @exception	com.kopiright.vkopi.lib.visual.VException	an exception may be raised by triggers
    */
   @SuppressWarnings("deprecation")
-  protected void run() throws VException {
+  public void run() throws VException {
     if (!SwingUtilities.isEventDispatchThread()) {
       System.err.println("ERROR: run() of DForm called outside the event-dispatching-thread");
     }
@@ -318,7 +318,7 @@ public class DForm extends DWindow implements UForm {
 
     getModel().executeAfterStart();
   }
-
+  
   // ---------------------------------------------------------------------
   // NAVIGATION
   // ---------------------------------------------------------------------
@@ -746,6 +746,12 @@ public class DForm extends DWindow implements UForm {
       cell.setBorder(0);
     }
     return cell;
+  }
+  
+  @Override
+  public void fileProduced(File file) {
+    // TODO Auto-generated method stub
+    
   }
 
   // ----------------------------------------------------------------------

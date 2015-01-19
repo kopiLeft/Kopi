@@ -20,13 +20,19 @@
 package com.kopiright.vkopi.lib.visual;
 
 import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.visual.FileProductionListener;
 
 /**
  * {@code UWindow} is the top-level interface that must be implemented
  * by all kopi windows. It is the visual component of the {@link VWindow} model.
  */
-public interface UWindow extends UComponent, VActionListener, ModelCloseListener, WaitDialogListener, WaitInfoListener, ProgressDialogListener {
+public interface UWindow extends UComponent, VActionListener, ModelCloseListener, WaitDialogListener, WaitInfoListener, ProgressDialogListener , FileProductionListener {
 
+  /**
+   * Starts the window view
+   */
+  public void run() throws VException;
+  
   /**
    * Returns the {@link VWindow} model of this UI component.
    * @return the {@code UWindow} model.

@@ -28,6 +28,12 @@ import com.kopiright.vkopi.lib.base.UComponent;
 public interface UField extends UComponent {
 
   /**
+   * Returns the field model.
+   * @return the field model.
+   */
+  public VField getModel();
+  
+  /**
    * Returns the field block view.
    * @return The {@link UBlock} containing this view.
    */

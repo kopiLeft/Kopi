@@ -58,7 +58,7 @@ OLDGIFS =	all apply arrowleft arrowright article			\
 		yellow arrowfirst arrowlast
 
 
-PNGFILES =	all apply  article					\
+PNGFILES =	add all apply  article					\
 		ask bkup bkup3 block block2 board bomb			\
 		bookmark boxarrow break bw clip				\
 		config convert copy delete deleteline			\
@@ -77,7 +77,7 @@ PNGFILES =	all apply  article					\
 		search2 searchop sec  send				\
 		serialquery serviceoff serviceon sort			\
 		split standard  stop store suggest			\
-		todo top unfold unfoldColumn				\
+		todo top unfold unfoldColumn update			\
 		users utils validate wait warning forms checkbox
 
 PNGNEW =	align_center align_justify align_left align_right bold	\

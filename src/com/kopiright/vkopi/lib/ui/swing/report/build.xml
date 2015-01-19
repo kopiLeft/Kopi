@@ -11,7 +11,7 @@
   <property name="package.name" value="com.kopiright.vkopi.lib.ui.swing.report" />
   <property name="src" value="." />
   <property name="javafiles" 
-            value="CellRenderer.java DTable.java DReport.java" />
+            value="CellRenderer.java DTable.java DReport.java VTable.java" />
 
 
   <import file="${topdir}/defs.xml" />

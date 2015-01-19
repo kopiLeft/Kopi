@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.ui.vaadin
+    ==================================================================-->
+
+<project default="build" basedir=".">
+  <property name="topdir" value="../../../.." />
+  <property name="node" value="yes"/>
+  <target name="node.build" description="-->  Runs subbuild files ">
+    <ant dir="base"  		inheritAll="false" target="${target}" />
+    <ant dir="form" 		inheritAll="false" target="${target}" />
+    <ant dir="visual" 		inheritAll="false" target="${target}" />
+    <ant dir="report" 		inheritAll="false" target="${target}" />
+    <ant dir="preview" 		inheritAll="false" target="${target}" />
+    <ant dir="resource" 	inheritAll="false" target="${target}" />
+  </target>
+  <import file="${topdir}/defs.xml" />
+</project>

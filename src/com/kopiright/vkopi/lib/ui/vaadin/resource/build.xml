@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+	package: com.kopiright.vkopi.lib.resource
+	==================================================================-->
+
+
+<project default="build" basedir=".">
+
+  <property name="non.standard.build" value="yes" />
+  <property name="topdir" value="../../../../.." />
+  <import file="${topdir}/defs.xml" />
+  <property name="destcopy" value="${classroot}/com/kopiright/vkopi/lib/ui/vaadin/resource" />
+  <property name="src" value="." />
+  <property name="freegifs" value="calendar.gif" />
+  <property name="oldgifs" value="topRibbon.gif" />  
+  <property name="pngfiles" value="all.png bg_header.png block.png border.png bottomRibbon.png
+  	                           bread_crumb_separator.png break.png calendar.png collapsed_a.png
+  				   collapsed_p.png collapsed.png copy.png delete.png desk.png
+  	                           detail_view.png detail.png down.png duke.png edit.png expanded_a.png
+  	                           expanded_p.png expanded.png exportCsv.png exportPdf.png exportXls.png
+  	                           flag-de.png flag-fr.png flag-gb.png flag-tn.png fold.png foldColumn.png
+  	                           footer_icon.png form_a.png form_p.png form_selected.png forms.png formula.png
+  	                           help.png home.png insert.png insertline.png list.gif list.png loading.gif
+  	                           login_img.png logo_kopi.png logo_srd_excellence_operationelle.png
+  	                           logo_srd.png mail.png menuquery.png note.png nothing.png open.png
+  	                           options.png otherTab.gif preview.png print.png quit.png ribbon.png
+  	                           save.png search.png searchop.png separator.png serialquery.png
+  	                           serviceoff.png serviceon.png slogan.png splash_image.png store.png
+  	                           suggest.png timeStamp.png topRibbon.png tri.png unfold.png unfoldColumn.png
+  	                           up.png" />
+
+  <property name="giffiles" value="${freegifs} ${oldgifs}" />
+  <property name="psfiles" value="German.ps StoneGerman.ps german.ps report.ps" />
+  <property name="otherfiles" value="general.tex macros.tex splash.jpg titlepage.sty top.tex" />
+  <property name="files" value="${pngfiles} ${giffiles} ${psfiles} ${otherfiles}" />
+
+  <target name="non.standard.build"
+     description=" Copying files to com/kopiright/vkopi/lib/ui/vaadin/resource package ">
+    <copy todir="${destcopy}">
+      <fileset dir="${src}" includes="${files}" />
+    </copy>
+  </target>
+</project>

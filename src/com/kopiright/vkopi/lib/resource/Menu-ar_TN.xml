@@ -12,4 +12,8 @@
   <actor ident="Unfold" label="فتح" help="فتح القائمة"/>
   <actor ident="Information" label="معلومة" help="معلومة"/>
   <actor ident="Help" label="المساعدة" help="فتح نافذة المساعدة"/>
+  <actor ident="Autofill" label="مقيس" help="اعطاء قائمة القيم الممكنة"/>
+  <actor ident="NewItem" label="جديد" help="اضافة عنصر جديد"/>
+  <actor ident="EditItem" label="تحرير" help="تحرير العنصر المختار" />
+  <actor ident="EditItem_S" label="تحرير" help="تحرير العنصر المختار" />
 </insert>

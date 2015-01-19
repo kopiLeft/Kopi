@@ -281,4 +281,20 @@
   <property key="sort_ASC" value="فرز&gt;&gt;"/>
   <property key="set_column_info" value="تشخيص الخانة"/>
   <property key="remove_column" value="حذف الخانة"/>
+<!-- Vaadin UI static texts-->
+  <property key="welcomeMessage" value="مرحبا"/>
+  <property key="userName" value="   اسم المستخدم"/>
+  <property key="password" value="   كلمة السر"/>
+  <property key="login" value="دخول"/>
+  <property key="logout" value="خروج "/>
+  <property key="help" value="مساعدة"/>
+  <property key="loginInstructionMsg" value=".يرجى إدخال اسم المستخدم وكلمة المرور"/>
+  <property key="loginErrorMsg" value=".يجب إدخال اسم المستخدم وكلمة المرور بشكل صحيح"/>
+  <property key="admin" value="مشرف"/>
+  <property key="user" value="المستخدم"/>
+  <property key="language" value="  اللّغة"/>
+  <property key="themes" value="التصاميم" />
+  <property key="theme-confirmation" value="يؤدي تغيير التصميم إلى الخروج من جلسة العمل الخاصة بك." />
+  <property key="available-themes" value=": التصاميم المتاحة" /> 
+  <property key="home" value="إستقبال" />
 </properties>

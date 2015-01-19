@@ -983,7 +983,7 @@ public abstract class DWindow extends JPanel implements UWindow {
    * starts the window
    * @exception	VException	an exception may be raised by triggers
    */
-  protected abstract void run() throws VException;
+  public abstract void run() throws VException;
 
   /**
    * add a command in the menu bar

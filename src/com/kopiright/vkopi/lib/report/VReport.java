@@ -24,6 +24,8 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Vector;
 
+import javax.swing.event.EventListenerList;
+
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
@@ -256,18 +258,17 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   }
 
   public PrintJob createPrintJob() throws PrintException, VException {
-      PExport2PDF       exporter;
-      PrintJob          printJob;
-
-      exporter = new PExport2PDF(((UReport)getDisplay()).getTable(),
-				 model,
-				 pconfig,
-                                 pageTitle,
-                                 firstPageHeader,
-                                 Message.getMessage("toner_save_mode").equals("true"));
-      printJob = exporter.export();
-      printJob.setDocumentType(getDocumentType());
-      return printJob;
+    PExport2PDF       exporter;
+    PrintJob          printJob;
+    exporter = new PExport2PDF(((UReport)getDisplay()).getTable(),
+    			       model,
+			       pconfig,
+                               pageTitle,
+                               firstPageHeader,
+                               Message.getMessage("toner_save_mode").equals("true"));
+    printJob = exporter.export();
+    printJob.setDocumentType(getDocumentType());
+    return printJob;
   }
 
   /**
@@ -342,6 +343,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     }
     exporter.export(file);
     unsetWaitInfo();
+    fireFileProduced(file);
   }
 
   /**
@@ -678,7 +680,6 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
                                                  commands,
                                                  model,
                                                  help);
-
     try {
       surl.append(new File(fileName).toURL().toString());
     } catch (java.net.MalformedURLException mue) {
@@ -691,7 +692,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   public void showHelp() {
     new VHelpViewer().showHelp(genHelp());
   }
-
+ 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
@@ -705,21 +706,21 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   private VCommand             cmdColumnInfo;
   private VCommand             cmdEditColumn;
 
-  private String             	source;
-  protected MReport        	model;
-  private boolean             built;
-  private String             	pageTitle = "";
-  private String             	firstPageHeader = "";
+  private String               source;
+  protected MReport            model;
+  private boolean              built;
+  private String               pageTitle = "";
+  private String               firstPageHeader = "";
   private String               help;
 
-  protected int[][]          	VKT_Triggers;	// trigger list
-  protected VCommand[]      	commands;	// commands
-  private Vector<VCommand>	activeCommands;
+  protected int[][]            VKT_Triggers;	// trigger list
+  protected VCommand[]         commands;	// commands
+  private Vector<VCommand>     activeCommands;
 
   protected PConfig        	pconfig;	// print configuration object
   private String         	media;
 
-  public static final int    TYP_CSV = 1;
-  public static final int    TYP_PDF = 2;
-  public static final int    TYP_XLS = 3;
+  public static final int       TYP_CSV = 1;
+  public static final int       TYP_PDF = 2;
+  public static final int       TYP_XLS = 3;
 }

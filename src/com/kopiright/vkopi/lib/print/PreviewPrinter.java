@@ -24,8 +24,10 @@ import java.io.IOException;
 import com.kopiright.vkopi.lib.util.AbstractPrinter;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.visual.Application;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
-
+import com.kopiright.vkopi.lib.visual.VException;
 
 /**
  * Local printer

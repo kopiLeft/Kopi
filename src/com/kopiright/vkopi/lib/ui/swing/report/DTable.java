@@ -22,7 +22,6 @@ package com.kopiright.vkopi.lib.ui.swing.report;
 import javax.swing.JTable;
 
 import com.kopiright.vkopi.lib.report.UReport.UTable;
-import com.kopiright.vkopi.lib.report.VTable;
 
 /**
  * {@code DTable} is swing implementation of {@link UTable}

@@ -31,7 +31,6 @@ public class VHelpViewer extends VWindow {
 
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_HELP, new WindowBuilder() {
-
       
       public UWindow createWindow(VWindow model) {
 	return (UWindow)UIFactory.getUIFactory().createView(model);
@@ -160,7 +159,7 @@ public class VHelpViewer extends VWindow {
   // DATA MEMBERS
   // ---------------------------------------------------------------------
 
-  private URL			url;
+  private URL			 url;
   private static final String    HELPVIEWER_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/HelpViewer";
 
   public static final int	CMD_QUIT	= 0;

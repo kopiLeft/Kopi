@@ -281,4 +281,20 @@
   <property key="sort_ASC" value="trier &gt;&gt;" />
   <property key="set_column_info" value="personnaliser la colonne" />
   <property key="remove_column" value="supprimer la colonne" />
+<!-- Vaadin UI static texts-->
+  <property key="welcomeMessage" value="Bienvenue" />
+  <property key="userName" value="Nom d'utilisateur " />
+  <property key="password" value="Mot de passe " />
+  <property key="login" value="Connexion" />
+  <property key="logout" value="Déconnexion" />
+  <property key="help" value="Aide" />
+  <property key="loginInstructionMsg" value="Veuillez saisir votre nom d'utilisateur et votre mot de passe." />
+  <property key="loginErrorMsg" value="Vous devez saisir un nom d'utilisateur et un mot de passe corrects." />
+  <property key="admin" value="Administrateur" />
+  <property key="user" value="Utilisateur" />
+  <property key="language" value="Langue " />
+  <property key="themes" value="Thèmes" />
+  <property key="theme-confirmation" value="Le changement de thème provoque la déconnexion de votre session." />
+  <property key="available-themes" value="Thèmes disponibles :" />
+  <property key="home" value="Accueil" />
 </properties>

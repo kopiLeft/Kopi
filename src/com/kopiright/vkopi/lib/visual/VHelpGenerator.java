@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 
 import com.kopiright.vkopi.lib.base.Utils;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplicationContext;
 
 /**
  * This class implements a Kopi pretty printer
@@ -121,7 +122,11 @@ public class VHelpGenerator {
    * Add an image
    */
   private void addImage(String name, int border) {
-    p.print("<img src=\"" + Utils.getURLFromResource(name));
+    if (ApplicationContext.getApplicationContext() instanceof VApplicationContext) {
+      p.print("<img src=\"" + "../img/"+name);
+    } else {
+      p.print("<img src=\"" + Utils.getURLFromResource(name));
+    }
     p.print("\" BORDER =\"" + border);
     p.println("\" alt=\"" + name + "\">");
   }

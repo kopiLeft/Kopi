@@ -1032,7 +1032,6 @@ public class MReport implements Constants {
     }
   }
 
-
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
@@ -1067,7 +1066,6 @@ public class MReport implements Constants {
   private int[]		displayLevels;		// column levels in display order
 
   protected EventListenerList 	listenerList = new EventListenerList(); // List of listeners
-
 
   /**
    * Comment for <code>serialVersionUID</code>

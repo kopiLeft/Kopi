@@ -390,7 +390,7 @@ public abstract class DField extends JPanel implements UField {
 
           if (! model.getBlock().isRecordFilled(recno)) {
             model.getBlock().updateAccess(recno);
-          }
+          }	
         }
 
         if (!model.getBlock().isMulti()
@@ -398,10 +398,10 @@ public abstract class DField extends JPanel implements UField {
             || model.getBlock().noChart())
         {
           KopiAction	action = new KopiAction("mouse1") {
-              public void execute() throws VException {
-                model.transferFocus(DField.this); // use here a mouse transferfocus
-              }
-            };
+            public void execute() throws VException {
+              model.transferFocus(DField.this); // use here a mouse transferfocus
+            }
+          };
           // execute it as model transforming thread
           // it is not allowed to execute it not with
           // the method performAsync/BasicAction.

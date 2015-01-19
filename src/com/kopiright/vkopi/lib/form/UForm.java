@@ -19,6 +19,8 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.File;
+
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
 import com.kopiright.vkopi.lib.visual.UWindow;

@@ -282,4 +282,20 @@
   <property key="sort_ASC" value="aufsteigende Sortierung" />
   <property key="set_column_info" value="Spalten-Info eingeben" />
   <property key="remove_column" value="Spalte löschen" />
+<!-- Vaadin UI static texts-->
+  <property key="welcomeMessage" value="Willkommen" />
+  <property key="userName" value="Benutzer " />
+  <property key="password" value="Kennwort " />
+  <property key="login" value="Anmelden" />
+  <property key="logout" value="Abmelden" />
+  <property key="help" value="Hilfe" />
+  <property key="loginInstructionMsg" value="Geben Sie Ihren Benutzernamen und Ihr Passwort ein." />
+  <property key="loginErrorMsg" value="Sie müssen einen benutzernamen und passwort korrekt eingeben." />
+  <property key="admin" value="Admin" />
+  <property key="user" value="Benutzer" />
+  <property key="language" value="Sprache " />
+  <property key="themes" value="Designes" />
+  <property key="theme-confirmation" value="Änderung designe verursacht trennung der sitzung" />
+  <property key="available-themes" value="Entwürfe verfügbar :" />
+  <property key="home" value="Empfang" />
 </properties>

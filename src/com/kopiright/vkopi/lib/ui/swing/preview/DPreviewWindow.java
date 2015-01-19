@@ -352,4 +352,9 @@ public class DPreviewWindow extends DWindow implements DPositionPanelListener, P
 	 * Comment for <code>serialVersionUID</code>
 	 */
   private static final long serialVersionUID = -3057089222899270837L;
+  @Override
+  public void fileProduced(File file) {
+    // TODO Auto-generated method stub
+    
+  }
 }

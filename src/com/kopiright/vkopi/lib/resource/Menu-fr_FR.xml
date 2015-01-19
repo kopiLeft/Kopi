@@ -12,4 +12,8 @@
   <actor ident="Unfold" label="Ouvrir" help="Ouvrir le menu" />
   <actor ident="Information" label="Information" help="Information" />
   <actor ident="Help" label="Aide" help="Ouvrirr la fenêtre d'aide" />
+  <actor ident="Autofill" label="Standard" help="Donne la liste des valeurs possibles." />
+  <actor ident="NewItem" label="Nouveau" help="Ajoute un nouvel élément." />
+  <actor ident="EditItem" label="Editer" help="Edite l'élément sélectionné." />
+  <actor ident="EditItem_S" label="Editer" help="Edite l'élément sélectionné." />
 </insert>

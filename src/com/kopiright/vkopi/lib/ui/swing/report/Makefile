@@ -24,7 +24,7 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/swing/report
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	CellRenderer DTable DReport
+JAVAFILES +=	CellRenderer DTable DReport VTable
 
 ## ----------------------------------------------------------------------
 ## GOALS

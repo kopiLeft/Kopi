@@ -345,7 +345,8 @@ public abstract class JApplication implements Application {
 
   
   public boolean isNobugReport() {
-    return options != null && options.nobugreport;
+   // return options != null && options.nobugreport;
+    return true;
   }
 
   

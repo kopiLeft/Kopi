@@ -55,7 +55,7 @@
   <message ident="00039" text="Transaction interrompue: reessayer ?" />
   <message ident="00040" text="Erreur durant l'impression: reessayer ?" />
 <!-- ERROR MESSAGES-->
-  <message ident="00041" text="ERREUR FATALE, l''adminstrateur système sera informé." />
+  <message ident="00041" text="ERREUR FATALE, l'administrateur système sera informé." />
   <message ident="00042" text="Vous n''avez accès à aucun formulaire." />
 <!-- EXCEL READER (APPS.COMMON)-->
   <message ident="00043" text="Erreur de lecture ligne" />

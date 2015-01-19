@@ -35,6 +35,7 @@ import java.util.Locale;
 import com.kopiright.util.mailer.Mailer;
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplicationContext;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 /**
@@ -379,7 +380,7 @@ public abstract class ApplicationContext {
    * @return The <b>current</b> {@link Application} instance.
    */
   public abstract Application getApplication();
-
+  
   /**
    * Returns the <b>current</b> {@link PreviewRunner} instance.
    * @return The <b>current</b> {@link PreviewRunner} instance.
@@ -391,4 +392,5 @@ public abstract class ApplicationContext {
   //-----------------------------------------------------------
 
   private static ApplicationContext		applicationContext;
+  public static int compt = 0;
 }

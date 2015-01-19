@@ -28,6 +28,8 @@ import javax.swing.ImageIcon;
 
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.base.Utils;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplicationContext;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
@@ -279,7 +281,11 @@ class PLayoutEngine {
    */
   @SuppressWarnings("deprecation")
   public float getStringWidth(String str) {
-    return currentFont.getBaseFont().getWidthPoint(str,currentFont.size());
+    if (ApplicationContext.getApplicationContext() instanceof VApplicationContext) {
+      return currentFont.getCalculatedBaseFont(true).getWidthPoint(str, currentFont.size());
+    } else {
+      return currentFont.getBaseFont().getWidthPoint(str,currentFont.size());
+    }
   }
 
   /**

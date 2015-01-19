@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.ui.vaadin.visual
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../../../.." />
+  <property name="package" value="com/kopiright/vkopi/lib/ui/vaadin/visual" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.ui.vaadin.visual" />
+  <property name="src" value="." />
+  <property name="javafiles" value="BreadCrumb.java DActor.java DFootPanel.java
+  	                                DHelpViewer.java DInfoPanel.java DMenuTree.java
+  	                                DPositionPanel.java DStatePanel.java DWindow.java
+  	                                HomeForm.java NotificationPanel.java VApplication.java
+  	                                VApplicationContext.java VFileHandler.java VImageHandler.java
+  	                                VPreviewRunner.java VUIFactory.java VWindowController.java
+  	                                WaitIndicator.java" />
+
+  <import file="${topdir}/defs.xml" />
+</project>

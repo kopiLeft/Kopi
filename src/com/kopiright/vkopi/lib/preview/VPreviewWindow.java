@@ -161,10 +161,10 @@ public class VPreviewWindow extends VWindow {
                       String command)
     throws VException, IOException
   {
-    File        tempFile = Utils.getTempFile("PREVIEW", "JPG");
+   // File        tempFile = Utils.getTempFile("PREVIEW", "JPG");
 
     this.printJob = printJob;
-    this.numberOfPages = printJob.getNumberOfPages();
+   /* this.numberOfPages = printJob.getNumberOfPages();
     this.printFile = printJob.getDataFile();
     this.imageFile = tempFile.getPath();
     this.imageFile = imageFile.substring(0, imageFile.lastIndexOf('.'));
@@ -183,7 +183,7 @@ public class VPreviewWindow extends VWindow {
     setActorEnabled(CMD_ZOOM_FIT_H, true);
     setActorEnabled(CMD_ZOOM_FIT_W, true);
     setActorEnabled(CMD_ZOOM_PLUS, true);
-    setActorEnabled(CMD_ZOOM_MINUS, true);
+    setActorEnabled(CMD_ZOOM_MINUS, true);*/
 
     doNotModal();
   }
@@ -404,7 +404,7 @@ public class VPreviewWindow extends VWindow {
     return numberOfPages;
   }
 
-  protected PrintJob getPrintJob() {
+  public PrintJob getPrintJob() {
       return printJob;
   }
 

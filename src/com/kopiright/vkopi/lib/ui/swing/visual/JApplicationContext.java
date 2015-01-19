@@ -28,12 +28,15 @@ import com.kopiright.vkopi.lib.visual.PreviewRunner;
  * for swing applications.
  */
 public class JApplicationContext extends ApplicationContext {
+    
+  //--------------------------------------------------
+  // CONSTRUCTOR
+  //--------------------------------------------------
 
-  
   public Application getApplication() {
     return JApplication.getInstance();
   }
-  
+
   /**
    * Returns the current PreviewRunner.
    */

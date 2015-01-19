@@ -281,4 +281,20 @@
   <property key="sort_ASC" value="sort &gt;&gt;" />
   <property key="set_column_info" value="set column info" />
   <property key="remove_column" value="remove column" />
+<!-- Vaadin UI static texts-->
+  <property key="welcomeMessage" value="Welcome" />
+  <property key="userName" value="Username " />
+  <property key="password" value="Password " />
+  <property key="login" value="Login" />
+  <property key="logout" value="Logout" />
+  <property key="help" value="Help" />
+  <property key="loginInstructionMsg" value="Enter your username and password." />
+  <property key="loginErrorMsg" value="You must enter a username and password correctly." />
+  <property key="admin" value="Admin" />
+  <property key="user" value="User" />
+  <property key="language" value="Language " />
+  <property key="themes" value="Themes" />
+  <property key="theme-confirmation" value="Changing theme causes disconnecting your session." />
+  <property key="available-themes" value="Available Themes :" />
+  <property key="home" value="Home" />
 </properties>

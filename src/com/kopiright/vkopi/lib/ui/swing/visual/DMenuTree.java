@@ -25,6 +25,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -461,4 +462,9 @@ public class DMenuTree extends DWindow implements UMenuTree {
   private List<Action>             		orderdShorts;
   private List<Module>                  	modules;
   private static final long 			serialVersionUID = -6740174181163603800L;
+  @Override
+  public void fileProduced(File file) {
+    // TODO Auto-generated method stub
+    
+  }
 }

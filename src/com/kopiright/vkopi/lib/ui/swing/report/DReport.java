@@ -30,6 +30,7 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -63,7 +64,6 @@ import com.kopiright.vkopi.lib.report.VIntegerColumn;
 import com.kopiright.vkopi.lib.report.VReport;
 import com.kopiright.vkopi.lib.report.VReportColumn;
 import com.kopiright.vkopi.lib.report.VSeparatorColumn;
-import com.kopiright.vkopi.lib.report.VTable;
 import com.kopiright.vkopi.lib.ui.swing.visual.DWindow;
 import com.kopiright.vkopi.lib.ui.swing.visual.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -828,7 +828,12 @@ public class DReport extends DWindow implements UReport, TableCellRenderer {
      */
     private static final long serialVersionUID = 565901305687203629L;
   }
-
+  
+  @Override
+  public void fileProduced(File file) {
+    // TODO Auto-generated method stub
+    
+  }
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

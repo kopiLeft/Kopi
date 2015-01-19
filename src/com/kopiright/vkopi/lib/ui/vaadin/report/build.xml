@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.ui.vaadin.report
+    ==================================================================-->
+
+<project default="build" basedir=".">
+  <property name="topdir" value="../../../../.." />
+  <property name="package" value="com/kopiright/vkopi/lib/ui/vaadin/report" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.ui.vaadin.report" />
+  <property name="src" value="." />
+  <property name="javafiles" value="DReport.java DTable.java ReportCellStyleGenerator.java
+  	                                StyleGenerator.java VTable.java" />
+  <import file="${topdir}/defs.xml" />
+</project>

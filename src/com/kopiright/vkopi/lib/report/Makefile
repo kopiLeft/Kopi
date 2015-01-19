@@ -35,7 +35,7 @@ JAVAFILES +=	Constants MReport PConfig ReportListener		\
 		VTimeColumn VTimestampColumn VWeekColumn		\
 		VNoRowException VSeparatorColumn VHelpGenerator	Point	\
 		PExport PExport2XLS PExport2PDF PExport2CSV UReport 	\
-		VDefaultReportActor VReportCommand VTable ColumnStyle	\
+		VDefaultReportActor VReportCommand ColumnStyle		\
 		Parameters CellStyleCacheManager
 
 ## ----------------------------------------------------------------------

@@ -46,7 +46,6 @@ public class VFieldCommand extends VCommand implements ActionHandler {
     actor.setEnabled(enabled);
     actor.setNumber(trigger);
     actor.setHandler(handler);
-
     //    actor.setSynchronous(!isAsynchronous());
   }
 

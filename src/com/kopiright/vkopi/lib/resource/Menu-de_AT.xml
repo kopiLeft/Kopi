@@ -13,4 +13,8 @@
   <actor ident="Unfold" label="Öffnen" help="Das ausgewählte Verzeichnis öffnen" />
   <actor ident="Information" label="Information" help="Information" />
   <actor ident="Help" label="Hilfe" help="Das Hilfefenster öffnen" />
+  <actor ident="Autofill" label="Standard" help="Hier erhalten Sie eine Liste der möglichen Eingabewerte." />
+  <actor ident="NewItem" label="Neuer Eintrag" help="Anlegen eines neuen Eintrages für dieses Feld" />
+  <actor ident="EditItem" label="Eintrag bearbeiten" help="Bearbeiten des vollständigen Feldinhaltes" />
+  <actor ident="EditItem_S" label="Standard" help="Bearbeiten des vollständigen Feldinhaltes" />
 </insert>
