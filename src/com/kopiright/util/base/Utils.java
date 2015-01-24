@@ -159,6 +159,23 @@ public abstract class Utils {
     return splitQualifiedName(name, '/');
   }
 
+  /**
+   * Returns a substring of this string.
+   *
+   * Provides a more robust implementation of java.lang.String.substring,
+   * handling gracefully the following cases :
+   * - the specified string is null
+   * - a specified index is beyond the limits of the input string
+   */
+  public static String substring(String baseString, int beginIndex, int endIndex) {
+    if (baseString == null) {
+      return "";
+    } else {
+      return baseString.substring(Math.min(beginIndex, baseString.length()),
+                                  Math.min(endIndex, baseString.length()));
+    }
+  }
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
