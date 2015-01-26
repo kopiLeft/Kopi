@@ -78,6 +78,7 @@ public class As400DriverInterface extends DriverInterface {
    * @param     password        the initial password
    */
   public void grantAccess(Connection conn, String user, String password) throws SQLException {
+    //!!! graf FIXME 20150126 - avoid SQL injection
     // !!! coco 050102 : verify the syntax
     executeSQL(conn, "GRANT ACCESS TO '" + user + "'");
   }
@@ -90,6 +91,7 @@ public class As400DriverInterface extends DriverInterface {
    * @param	user		the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
+    //!!! graf FIXME 20150126 - avoid SQL injection
     // !!! coco 050102 : verify the syntax
     executeSQL(conn, "REVOKE ACCESS FROM '" + user + "'");
   }
@@ -112,10 +114,11 @@ public class As400DriverInterface extends DriverInterface {
    * @param	conn		the connection
    * @param     tableName       the name of the table to lock
    */
-  public void lockTable(Connection conn, String tableName)
+  public void lockTable(Connection conn, String table)
     throws SQLException
   {
-    throw new RuntimeException("NOT YET IMPLEMENTED");
+    //!!! graf FIXME 20150126 - avoid SQL injection
+    executeSQL(conn, "LOCK TABLE " + table + " IN EXCLUSIVE MODE");
   }
 
   /**
