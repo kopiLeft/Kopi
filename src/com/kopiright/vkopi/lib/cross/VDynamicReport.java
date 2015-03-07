@@ -120,10 +120,8 @@ public class VDynamicReport extends VReport {
     for (int i = 0; i < fields.length; i++) {
       if ((!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName()))) {
         if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
-          if (!(fields[i] instanceof VTextField || fields[i] instanceof VImageField || fields[i] instanceof VColorField)) {
-            processedFields[size] = fields[i];
-            size ++;
-          }
+          processedFields[size] = fields[i];
+          size ++;
         }
       }
     }
