@@ -78,8 +78,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * @param     password        the initial password
    */
   public void grantAccess(Connection conn, String user, String password) throws SQLException {
-    // !!! coco 050102 : verify the syntax
-    executeSQL(conn, "GRANT ACCESS TO '" + user + "'");
+    executeSQL(conn, "CREATE USER " + user + " WITH PASSWORD '" + password + "'");
   }
 
   /**
@@ -90,8 +89,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * @param	user		the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
-    // !!! coco 050102 : verify the syntax
-    executeSQL(conn, "REVOKE ACCESS FROM '" + user + "'");
+    executeSQL(conn, "DROP USER " + user);
   }
 
   /**
