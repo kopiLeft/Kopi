@@ -79,20 +79,20 @@ public class JEnhancedForStatement extends JForStatement {
     JStatement                    formalAssignStatement;
     JVariableDeclarationStatement exprVarDefinition;
 		
-    if (exprType.isArrayType()){
+    if (exprType.isArrayType()) {
       JVariableDefinition   	  iterator;
       JVariableDefinition   	  exprVariable;
   		   		
       iterator = new JVariableDefinition(getTokenReference(), 
                                          0, 
                                          factory.getPrimitiveType(Constants.TID_INT), 
-                                         "#foreach#i", 
+                                         "#foreach#i" + toString() /* unique ID */, 
                                          new JIntLiteral(expr.getTokenReference(),0));
       exprVariable = new JVariableDefinition(getTokenReference(), 
                                              0, 
                                              new CArrayType(((CArrayType)exprType).getBaseType(),
                                                             ((CArrayType)exprType).getArrayBound()), 
-                                             "#foreach#expr", 
+                                             "#foreach#expr" + toString() /* unique ID */, 
                                              new JCheckedExpression(expr.getTokenReference(),
                                                                     expr));
 
@@ -178,7 +178,7 @@ public class JEnhancedForStatement extends JForStatement {
                                                             new CReferenceType[][]{new CReferenceType[]{(CReferenceType) param.getType()}},
                                                             //CReferenceType.EMPTY_ARG,
                                                             false), 
-                                         "#foreach#i", 
+                                         "#foreach#i" + toString() /* unique ID */, 
                                          callIterator);
       
       init = new JVariableDeclarationStatement(expr.getTokenReference(), 
