@@ -250,11 +250,11 @@
   <property key="ExportPDF-help" value="Enregistrer les données dans un fichier PDF" />
   <property key="Fold" value="Plier" />
   <property key="Fold-help" value="Plie la colonne pour synthétiser les données" />
-  <property key="Unfold" value="Deplier" />
-  <property key="Unfold-help" value="Deplie la colonne pour approfondir la vision " />  
+  <property key="Unfold" value="Déplier" />
+  <property key="Unfold-help" value="Déplie la colonne pour approfondir la vision " />  
   <property key="FoldColumn" value="Cacher" />
   <property key="FoldColumn-help" value="Cacher la colonne" />
-  <property key="UnfoldColumn" value="Einblenden" />
+  <property key="UnfoldColumn" value="Montrer" />
   <property key="UnfoldColumn-help" value="Montrer la colonne" />
   <property key="ColumnInfo" value="Options" />
   <property key="ColumnInfo-help" value="Changer l'affichage des champs en fonction de leur valeur" />
