@@ -58,14 +58,15 @@ import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldException;
 import com.kopiright.vkopi.lib.form.VForm;
-import com.kopiright.vkopi.lib.util.AWTToPS;
-import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.ui.swing.visual.DPositionPanel;
 import com.kopiright.vkopi.lib.ui.swing.visual.DWindow;
-import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.ui.swing.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.ui.swing.visual.Utils;
+import com.kopiright.vkopi.lib.util.AWTToPS;
+import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
@@ -90,7 +91,7 @@ import com.lowagie.text.pdf.PdfWriter;
 /**
  * This is the display class of a form.
  */
-public class DForm extends DWindow implements UForm {
+public class DForm extends DWindow implements UForm, DPositionPanelListener {
 
   /**
    * Constructor
@@ -746,12 +747,6 @@ public class DForm extends DWindow implements UForm {
       cell.setBorder(0);
     }
     return cell;
-  }
-  
-  @Override
-  public void fileProduced(File file) {
-    // TODO Auto-generated method stub
-    
   }
 
   // ----------------------------------------------------------------------

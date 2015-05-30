@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.list;
 
 import com.kopiright.vkopi.lib.visual.Message;
 
+@SuppressWarnings("serial")
 public class VTextColumn extends VListColumn {
 
   // --------------------------------------------------------------------

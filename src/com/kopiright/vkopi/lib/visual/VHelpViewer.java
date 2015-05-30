@@ -27,6 +27,7 @@ import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 /**
  * A special window that display an html help
  */
+@SuppressWarnings("serial")
 public class VHelpViewer extends VWindow {
 
   static {

@@ -23,6 +23,10 @@ import java.sql.SQLException;
 
 public class DBForeignKeyException extends DBConstraintException {
   
+  //---------------------------------------------------
+  // CONSTRUCTORS
+  //---------------------------------------------------
+
   /**
    * Constructor
    *
@@ -43,6 +47,52 @@ public class DBForeignKeyException extends DBConstraintException {
   public DBForeignKeyException(String query, SQLException original, String constraint) {
     super(query, original, constraint);
   }
+
+  /**
+   * Creates a new <code>DBForeignKeyException</code> that indicates the tables in relation.
+   *
+   * @param     query                   the sql query which generated the exception
+   * @param     original                the original SQLException
+   * @param     constraintName          the violated constraint
+   * @param     referenced              the referenced table
+   * @param     referencing             the referencing table
+   */
+  public DBForeignKeyException(String query,
+                               SQLException original,
+                               String constraint,
+                               String referenced,
+                               String referencing)
+  {
+    super(query, original, constraint);
+    this.referenced = referenced;
+    this.referencing = referencing;
+  }
+
+  //---------------------------------------------------
+  // ACCESSORS
+  //---------------------------------------------------
+
+  /**
+   * Returns the referenced table in this FK exception.
+   */
+  public String getReferencedTable() {
+    return referenced;
+  }
+
+  /**
+   * Returns the referencing table in this FK exception.
+   */
+  public String getReferencingTable() {
+    return referencing;
+  }
+
+  //---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+
+  private String                        referenced; // The referenced table
+  private String                        referencing; // The referencing table
+
   /**
    * Comment for <code>serialVersionUID</code>
    */

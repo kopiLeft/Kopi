@@ -145,23 +145,33 @@ public class PostgresDriverInterface extends DriverInterface {
    * @return    the corresponding kopi DBException
    */
   public DBException convertException(String query, SQLException from) {
-    switch (from.getErrorCode()) {
-    case -50:	// Lock request timeout1
-    case -51:	// Lock request timeout2
-    case 500:	// Lock request timeout3
-    case -307:	// Connection down, session released
-    case 700:	// Session inactivity timeout (work rolled back)
-      return new DBDeadLockException(query, from);
+    int                 errorCode; // SQLState is used in postgres. Error code is always 0
 
-    case 250:	// Duplicate secondary key
-    case -6008:	// Duplicate index name
-    case -8018:	// Index name must be unique
+    try {
+      // SQLState is a char sequence.
+      // For common errors it would be an integer code.
+      // In other cases, -1 will be returned indicating that is an unspecified exception.
+      errorCode = Integer.parseInt(from.getSQLState()); // SQLState is used in postgres.
+    } catch (NumberFormatException e) {
+      errorCode = -1; // This means that we will treat the error as unspecified exception.
+    }
+    switch (errorCode) {
+      // Class 08 — Connection Exception
+    case 8000:	// connection_exception
+    case 8003:	// connection_does_not_exist
+    case 8006:	// connection_failure
+    case 8001:	// sqlclient_unable_to_establish_sqlconnection
+    case 8004:  // sqlserver_rejected_establishment_of_sqlconnection
+    case 8007:  // transaction_resolution_unknown
+      return new DBDeadLockException(query, from);
+      // Class 23 — Integrity Constraint Violation
+    case 23505:	// unique_violation
       return parseDuplicateIndex(query, from);
 
-    case -32:	// Integrity violation
+    case 23503:	// foreign_key_violation
       return parseIntegrityViolation(query, from);
-
-    case -1402:	// Integrity violation2
+      
+    case 23000:	// integrity_constraint_violation
       return new DBConstraintException(query, from);
 
     default:
@@ -193,24 +203,37 @@ public class PostgresDriverInterface extends DriverInterface {
   // ----------------------------------------------------------------------
 
   /**
-   * Parses a transbase duplicate index exception
+   * Parses a PostgreSQL duplicate index exception
+   * The message of a unique integrity vialoation has the following form:
+   * ERROR: duplicate key value violates unique constraint {index_name}
    */
   private static DBDuplicateIndexException parseDuplicateIndex(String query, SQLException from) {
-    String	mesg = from.getMessage();
-    int		index = mesg.lastIndexOf("index ");
+    // separate each word in the exception message in order to get the index name.
+    String[]    exception = from.getMessage().split("\\s");
 
-    return new DBDuplicateIndexException(query, from, mesg.substring(index + 6, mesg.length() - 2));
+    // As described above, the index name is the word number 7
+    // The message of the index is standard message from posgreSQL. Each change in the form
+    // of the error should be followed by an update of this message partition.
+    return new DBDuplicateIndexException(query, from, exception[7]);
   }
 
   /**
-   * Parses a transbase integrity violation exception
+   * Parses a PostgreSQL integrity violation exception.
+   * The message of an integrity violation has the following form:
+   * </p><i>ERROR: update or delete on table {referenced_table} violates foreign key constraint {fk_name} on table {reference_table}</i></p>
+   * We need to extract the FK name and the tables in relation to create the corresponding {@link DBForeignKeyException} instance.
    */
   private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
-    String	mesg = from.getMessage();
-    int		index1 = mesg.indexOf("'");
-    int		index2 = mesg.lastIndexOf("'");
-
-    return new DBForeignKeyException(query, from, mesg.substring(index1 + 1, index2));
+    // separate each word in the exception message in order to get tables in relation.
+    String[]    exception = from.getMessage().split("\\s");
+    
+    // As described above: 
+    // The referenced table will be the word number 6
+    // The FK name will be the word number 11
+    // The referencing table will be the word number 14
+    // The message of the FK error is standard message from posgreSQL. Each change in the form
+    // of the FK error should be followed by an update of this message partition.
+    return new DBForeignKeyException(query, from, exception[11], exception[6], exception[14]);
   }
 }
 

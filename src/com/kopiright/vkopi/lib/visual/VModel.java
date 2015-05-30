@@ -19,6 +19,8 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import java.io.Serializable;
+
 import com.kopiright.vkopi.lib.base.UComponent;
 
 /**
@@ -28,7 +30,7 @@ import com.kopiright.vkopi.lib.base.UComponent;
  * @see UIFactory
  * @see WindowBuilder
  */
-public interface VModel {
+public interface VModel extends Serializable {
 
   /**
    * Sets the model display.

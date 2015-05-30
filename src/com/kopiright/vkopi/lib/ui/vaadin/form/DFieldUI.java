@@ -30,15 +30,12 @@ import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VTextField;
-import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.visual.DWindow;
-import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * The <code>DFieldUI</code> is the vaadin UI components implementation of
  * the {@link VFieldUI} row controller.
  */
+@SuppressWarnings("serial")
 public class DFieldUI extends VFieldUI {
 	
   // --------------------------------------------------
@@ -52,8 +49,6 @@ public class DFieldUI extends VFieldUI {
    */
   public DFieldUI(UBlock blockView, VField model) {
     super(blockView, model);
-    this.blockView = blockView;
-    this.model = model;
   }
   
   // --------------------------------------------------
@@ -88,7 +83,7 @@ public class DFieldUI extends VFieldUI {
 
   @Override
   protected ULabel createLabel(String text, String help) {
-    return new DLabel(text, help, super.getAllCommands());
+    return new DLabel(text, help);
   }
 
   @Override
@@ -97,43 +92,6 @@ public class DFieldUI extends VFieldUI {
 	                                       int index,
                                                OrderModel model)
   {
-    return new DChartHeaderLabel(text, help, index, model, super.getAllCommands());
+    return new DChartHeaderLabel(text, help, index, model);
   }
-  
-  
-  @Override
-  public void displayFieldError(final String message) {
-    if (blockView.getDisplayLine(getBlock().getActiveRecord()) == -1) {
-      model.getForm().error(message);
-      return;
-    }
-    
-    UField[] 		displays = super.getDisplays();
-    final DField	display = (DField) displays[blockView.getDisplayLine(getBlock().getActiveRecord())];
-    
-    if (blockView instanceof DChartBlock) {
-      ((DWindow)getBlock().getForm().getDisplay()).getNotificationPanel().displayNotification(VlibProperties.getString("Error"),message);
-    } else {
-      BackgroundThreadHandler.start(new Runnable() {
-	
-        @Override
-        public void run() {
-          display.setComponentError(new com.vaadin.server.UserError(message));
-        }
-      });
-    }
-    
-    try {
-      transferFocus(display);
-    } catch (VException e) {
-      throw new InconsistencyException(e);
-    }
-  }  
-  
-  // --------------------------------------------------
-  // DATA MEMBERS
-  // --------------------------------------------------
-  
-  private UBlock			blockView;
-  private VField			model;
 }

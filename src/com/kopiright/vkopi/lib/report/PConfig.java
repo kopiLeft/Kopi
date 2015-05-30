@@ -19,7 +19,10 @@
 
 package com.kopiright.vkopi.lib.report;
 
-public class PConfig {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class PConfig implements Serializable {
 
   /**
    * constructor

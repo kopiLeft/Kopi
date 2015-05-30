@@ -19,11 +19,14 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import java.io.Serializable;
+
 /**
  * A point representing a location in {@code (x,y)} coordinate space,
  * specified in integer precision.
  */
-public class Point {
+@SuppressWarnings("serial")
+public class Point implements Serializable {
 
   /**
    * Constructs and initializes a point at the origin 

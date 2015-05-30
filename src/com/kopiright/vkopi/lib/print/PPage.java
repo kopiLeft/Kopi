@@ -27,11 +27,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplicationContext;
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.util.Printer;
-import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
@@ -39,9 +38,6 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinService;
-import com.vaadin.ui.UI;
 
 /**
  * Handle the generation of a document

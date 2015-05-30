@@ -19,6 +19,10 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
+import org.kopi.vaadin.addons.Block;
+import org.kopi.vaadin.addons.BlockLayout;
+import org.kopi.vaadin.addons.SimpleBlockLayout;
+
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.form.KopiAlignment;
 import com.kopiright.vkopi.lib.form.UBlock;
@@ -27,20 +31,17 @@ import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
-import com.kopiright.vkopi.lib.form.ViewBlockAlignment;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.DragAndDropWrapper;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.DragAndDropWrapper.DragStartMode;
 
 /**
  * The <code>DBlock</code> is the vaadin implementation
  * of the {@link UBlock} specifications.
  */
 @SuppressWarnings("serial")
-public class DBlock extends Panel implements UBlock {
+public class DBlock extends Block implements UBlock {
   
   //------------------------------------------------
   // CONSTRUCTOR
@@ -52,8 +53,7 @@ public class DBlock extends Panel implements UBlock {
    * @param model The block model.
    */
   public DBlock(DForm parent, VBlock model) {
-    addStyleName(KopiTheme.PANEL_LIGHT);  
-    addStyleName(KopiTheme.BLOCK_STYLE);
+    super(model.isDroppable());
     this.maxRowPos = model.getMaxRowPos();
     this.maxColumnPos = model.getMaxColumnPos();
     this.displayedFields = model.getDisplayedFields();
@@ -69,26 +69,19 @@ public class DBlock extends Panel implements UBlock {
       sortedRecToDisplay   = new int[1];
       displayToSortedRec   = new int[1];
     }
-	    
-    setContent(layout = createContent());
+
     rebuildCachedInfos();
     createFields();
     
     if (model.isDroppable()) {
-      layoutWrapper = new DragAndDropWrapper(this);
-      layoutWrapper.setDropHandler(new DBlockDropHandler(model));
+      setDropHandler(new DBlockDropHandler(model));
+      setDragStartMode(DragStartMode.HTML5);
     }
   }
+  
   //------------------------------------------------
   // UTILS
   //------------------------------------------------
-	  
-  /**
-   * Layouts the container
-   */
-  protected void layoutContainer() {
-    ((KopiLayout)getContent()).layoutContainer();
-  }
 	  
   /**
    * Creates block fields
@@ -99,25 +92,6 @@ public class DBlock extends Panel implements UBlock {
     columnViews = new VFieldUI[fields.length];
     for (int i = 0; i < fields.length; i++) {
       columnViews[i] = createFieldDisplays(fields[i]);
-    }
-  }
-	  
-  /**
-   * Creates the block layout
-   */
-  protected KopiLayout createContent() {
-    if((maxColumnPos > 0) && (maxRowPos > 0)){
-      return new KopiSimpleBlockLayout(2 * maxColumnPos, // label + field => 2
-                                       maxRowPos,
-                                       (model.getAlignment() == null) ?
-                                       null :
-                                       new ViewBlockAlignment(formView, model.getAlignment()));
-    } else {
-      return new KopiSimpleBlockLayout(2, // label + field => 2
-	  			       1,
-                                       (model.getAlignment() == null) ?
-                                       null :
-                                       new ViewBlockAlignment(formView, model.getAlignment()));
     }
   }
 
@@ -372,14 +346,6 @@ public class DBlock extends Panel implements UBlock {
     }
   }
   
-  /**
-   * Returns the {@link DragAndDropWrapper} instance.
-   * @return The {@link DragAndDropWrapper} instance.
-   */
-  public DragAndDropWrapper getLayoutWrapper() {
-    return layoutWrapper;
-  }
-  
   //---------------------------------------------------
   // UBLOCK IMPLEMENTATION
   //---------------------------------------------------
@@ -420,17 +386,37 @@ public class DBlock extends Panel implements UBlock {
 
   @Override
   public void add(UComponent comp, KopiAlignment constraints) {
-    ((KopiLayout)getContent()).addLayoutComponent((Component)comp, constraints);		
+    addComponent((Component)comp,
+	         constraints.x,
+	         constraints.y,
+	         constraints.width,
+	         constraints.alignRight,
+	         constraints.useAll);
   }
 
   @Override
   public int getColumnPos(int x) {
-    return layout.getColumnPos(x);
+    return 0;
   }
 
   @Override
   public boolean inDetailMode() {
     return false;
+  }
+
+  @Override
+  public BlockLayout createLayout() {
+    SimpleBlockLayout		layout;
+    
+    // label + field => 2 + lines
+    layout = new SimpleBlockLayout(2 * maxColumnPos, maxRowPos);
+    if (model.getAlignment() != null) {
+      layout.setBlockAlignment((Component)formView.getBlockView(model.getAlignment().getBlock()),
+	                       model.getAlignment().getTartgets(),
+	                       model.getAlignment().isChart());
+    }
+    
+    return layout;
   }
 	  
   //---------------------------------------------------
@@ -478,10 +464,10 @@ public class DBlock extends Panel implements UBlock {
   // DATA MEMBER
   //---------------------------------------------------
 
-  private   final DForm			formView;
+  protected   final DForm		formView;
   protected final VBlock		model;
   private   VFieldUI[]            	columnViews;
-  protected KopiLayout  		layout;
+  // protected KopiLayout  		layout;
 
   protected final int			maxRowPos;
   protected final int			maxColumnPos;
@@ -491,6 +477,4 @@ public class DBlock extends Panel implements UBlock {
   private  int				sortedToprec;		// first record displayed
   private  int[]			sortedRecToDisplay;
   private  int[]			displayToSortedRec;
-  
-  private  DragAndDropWrapper           layoutWrapper;
 }

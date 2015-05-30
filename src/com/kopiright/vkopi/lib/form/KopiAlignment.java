@@ -19,10 +19,13 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
+
 /**
  * A class to specifie alignment in KopiLayout
  */
-public class KopiAlignment {
+@SuppressWarnings("serial")
+public class KopiAlignment implements Serializable {
 
   public boolean		ALG_LEFT	= false;
   public boolean		ALG_RIGHT	= true;

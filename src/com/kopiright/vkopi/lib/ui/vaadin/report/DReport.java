@@ -33,7 +33,6 @@ import com.kopiright.vkopi.lib.report.UReport;
 import com.kopiright.vkopi.lib.report.VReport;
 import com.kopiright.vkopi.lib.report.VSeparatorColumn;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.ui.vaadin.report.DTable.ColumnCollapseEvent;
 import com.kopiright.vkopi.lib.ui.vaadin.report.DTable.ColumnCollapseListener;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.DWindow;
@@ -74,13 +73,10 @@ public class DReport extends DWindow implements UReport {
   public DReport(VReport report) {
     super(report);
     setImmediate(true);
-    addStyleName(KopiTheme.PANEL_LIGHT);
-    addStyleName(KopiTheme.PANEL_REPORT);
     this.report = report;
     model=report.getModel();
     model.addReportListener(this);
     getModel().setDisplay(this);
-    addStyleName(KopiTheme.REPORT_CONTENT);
     setSizeFull();
   }
 
@@ -108,7 +104,8 @@ public class DReport extends DWindow implements UReport {
     table.setColumnCollapsingAllowed(true);
     table.setNullSelectionAllowed(false);   
     table.setCellStyleGenerator(new ReportCellStyleGenerator(model, parameters));
-    table.setHeight(700, Unit.PIXELS);
+    // 200 px is approximately the header window size + the actor pane size
+    table.setHeight(UI.getCurrent().getPage().getBrowserWindowHeight() - 200, Unit.PIXELS);
     setContent(table);
     resetWidth();
     addTableListeners();
@@ -116,7 +113,7 @@ public class DReport extends DWindow implements UReport {
 
   @Override
   public void redisplay() {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
@@ -124,6 +121,7 @@ public class DReport extends DWindow implements UReport {
 	
 	table.refreshRowCache();
 	table.markAsDirty();
+	UI.getCurrent().push();
       }
     });
   }
@@ -136,10 +134,10 @@ public class DReport extends DWindow implements UReport {
     model.columnMoved(newOrder);
     table.setVisibleColumns(newOrder);
     
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
-      public void run() { 
+      public void run() {
 	for (int col = 0; col < model.getAccessibleColumnCount(); col++) {
 	  if (model.getAccessibleColumn(col).isFolded() &&
               !(model.getAccessibleColumn(col) instanceof VSeparatorColumn))
@@ -149,6 +147,7 @@ public class DReport extends DWindow implements UReport {
 	    table.setColumnCollapsed(col, false);
 	  }
 	}
+	UI.getCurrent().push();
       }
     });
   }
@@ -207,7 +206,8 @@ public class DReport extends DWindow implements UReport {
   public void contentChanged() {
     if (table != null) {
       ((VTable)table.getModel()).fireContentChanged();
-      UI.getCurrent().access(new Runnable() {       
+      UI.getCurrent().access(new Runnable() {  
+	
         @Override
         public void run() {
           table.refreshRowCache();
@@ -225,7 +225,13 @@ public class DReport extends DWindow implements UReport {
   
   @Override
   public void resetWidth() {
-    table.resetWidth();
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	table.resetWidth();
+      }
+    });
   }
   
   @Override
@@ -394,7 +400,7 @@ public class DReport extends DWindow implements UReport {
 	    }
 	  }
 	} else if (event.getButton() == ClickEvent.BUTTON_RIGHT) {
-	  labelPopupMenu.hide();
+	  // labelPopupMenu.hide();
 	  if (row >= 0) {
 	    if (currentModel.isRowFold(row, col)) {
 	      currentModel.unfoldingRow(row, col);

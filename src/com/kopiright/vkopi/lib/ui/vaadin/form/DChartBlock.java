@@ -19,15 +19,28 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
+import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.kopi.vaadin.addons.BlockLayout;
+import org.kopi.vaadin.addons.BlockListener;
+import org.kopi.vaadin.addons.ChartBlockLayout;
+
+import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.form.KopiAlignment;
 import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.VException;
+import com.vaadin.ui.Component;
 
 /**
  * The <code>DChartBlock</code> is a {@link DBlock} representing
  * a chart block where data is represented in a data grid.
  */
 @SuppressWarnings("serial")
-public class DChartBlock extends DBlock {
+public class DChartBlock extends DBlock implements BlockListener {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -41,8 +54,7 @@ public class DChartBlock extends DBlock {
   public DChartBlock(DForm parent, VBlock model) {
     super(parent, model);
     if (getModel().getDisplaySize() < getModel().getBufferSize()) {
-      scrollBar = createScrollBar();
-      addScrollBar(scrollBar);
+      addBlockListener(this);
     }
   }
 
@@ -51,71 +63,131 @@ public class DChartBlock extends DBlock {
   //---------------------------------------------------
   
   @Override
-  protected KopiLayout createContent() {
-    return new KopiMultiBlockLayout(displayedFields, getModel().getDisplaySize() + 1);
+  public void add(UComponent comp, KopiAlignment constraints) {
+    addComponent((Component)comp,
+                 constraints.x,
+                 constraints.y,
+                 constraints.width,
+                 constraints.alignRight,
+                 constraints.useAll);
   }
   
-  /**
-   * Adds the scroll bar component.
-   * @param bar The {@link ScrollBar} component.
-   */
-  protected void addScrollBar(ScrollBar bar) {
-    ((KopiLayout)getContent()).addLayoutComponent(bar, null);
-  }
-  
-  /**
-   * Creates the {@link ScrollBar} object.
-   * @return The {@link ScrollBar} object.
-   */
-  protected ScrollBar createScrollBar() {
-    final ScrollBar	scrollBar;
+  @Override
+  public BlockLayout createLayout() {
+    ChartBlockLayout		layout;
     
-    scrollBar = new ScrollBar(this);
-    return scrollBar;
+    layout = new ChartBlockLayout(displayedFields, getModel().getDisplaySize() + 1);
+    layout.setScrollable(getModel().getDisplaySize() < getModel().getBufferSize());
+    return layout;
   }
 
   @Override
   public void validRecordNumberChanged() {
     if (getModel().getDisplaySize() < getModel().getBufferSize()) {
-      if (scrollBar != null) {
-	updateScrollbar();
-      }
+      eventQueue.push(new RNCEvent());
+      // schedule an RNC task execution.
+      // this aims to minimize RPC communication
+      // between server and client side
+      timer.schedule(new RNCTask(), 1000);
     }
   }
   
   @Override
   protected void refresh(boolean force) {
     super.refresh(force);
-    if (scrollBar != null) {
-      updateScrollbar();
+    updateScrollbar();
+  }
+
+  @Override
+  public void onScroll(final int value) {
+    if (((DForm)getFormView()).getInAction()) {
+      // do not change the rows if there is currently a
+      // another command executed
+      return;
     }
+    getFormView().performBasicAction(new KopiAction("chart-scroll") {
+
+      @Override
+      public void execute() throws VException {
+	if (!init) {
+	  init = true; // on initialization, we do not scroll.
+	} else {
+	  try {
+	    setScrollPos(value);
+	  } catch (VException e) {
+	    eventQueue.push(new RNCEvent());
+	    timer.schedule(new RNCTask(), 1000);
+	  }
+	}
+      }
+    });
   }
 
   /**
-   * Updates the scroll bar component.
+   * Updates the scroll bar position.
    */
   private void updateScrollbar() {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
-        int         validRecords = getModel().getNumberOfValidRecord();
-        int         dispSize     = getModel().getDisplaySize();
+	int		validRecords = getModel().getNumberOfValidRecord();
+	int		dispSize = getModel().getDisplaySize();
 
-        if (validRecords > dispSize) {
-          scrollBar.up.setEnabled(true);
-          scrollBar.down.setEnabled(true);
-        } else {
-          scrollBar.up.setEnabled(false);
-          scrollBar.down.setEnabled(false);
-        }
+	updateScroll(dispSize,
+	             validRecords,
+	             validRecords > dispSize,
+	             getModel().getNumberOfValidRecordBefore(getRecordFromDisplayLine(0)));
       }
     });
+  }
+  
+  //-------------------------------------------------
+  // SCROLL UPDATE HANDLING
+  //-------------------------------------------------
+  
+  /**
+   * An event called to update scroll bar.
+   * @author hacheni
+   *
+   */
+  /*package*/ class RNCEvent implements Runnable {
+
+    @Override
+    public void run() {
+      updateScrollbar();
+    }
+  }
+  
+  /**
+   * A scroll bar update event needed to control
+   * updates of the scroll bar and to avoid overloading
+   * the client side component.
+   */
+  /*package*/ class RNCTask extends TimerTask {
+
+    @Override
+    public void run() {
+      if (!eventQueue.isEmpty()) {
+	// run the last event queued and then clear the queue.
+	RNCEvent	event = eventQueue.pop();
+	
+	while (!eventQueue.isEmpty() && event == null) {
+	  event = eventQueue.pop();
+	}
+	if (event != null) {
+	  event.run();
+	  eventQueue.clear();
+	}
+      }
+    }
   }
   
   //-------------------------------------------------
   // DATA MEMBERS
   //-------------------------------------------------
   
-  private ScrollBar            		scrollBar;
+  private boolean			init = false;
+  private final Stack<RNCEvent>		eventQueue = new Stack<RNCEvent>();
+  private final Timer			timer = new Timer();
 }

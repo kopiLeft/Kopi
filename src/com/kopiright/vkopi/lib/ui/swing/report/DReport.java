@@ -30,7 +30,6 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -829,11 +828,6 @@ public class DReport extends DWindow implements UReport, TableCellRenderer {
     private static final long serialVersionUID = 565901305687203629L;
   }
   
-  @Override
-  public void fileProduced(File file) {
-    // TODO Auto-generated method stub
-    
-  }
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------

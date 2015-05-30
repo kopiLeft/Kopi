@@ -28,6 +28,7 @@ import java.io.Writer;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.report.UReport.UTable;
 
+@SuppressWarnings("serial")
 public class  PExport2CSV extends PExport implements Constants {
   /**
    * Constructor

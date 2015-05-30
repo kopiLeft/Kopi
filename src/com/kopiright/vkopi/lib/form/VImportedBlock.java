@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.form;
 
 import com.kopiright.vkopi.lib.visual.VActor;
 
+@SuppressWarnings("serial")
 public abstract class VImportedBlock extends VBlock {
 
   // ----------------------------------------------------------------------

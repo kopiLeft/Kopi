@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.list;
 
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 
+@SuppressWarnings("serial")
 public class VBooleanColumn extends VListColumn {
 
   // --------------------------------------------------------------------

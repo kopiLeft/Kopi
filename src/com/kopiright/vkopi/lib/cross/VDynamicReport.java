@@ -30,18 +30,15 @@ import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.form.VBooleanCodeField;
 import com.kopiright.vkopi.lib.form.VBooleanField;
 import com.kopiright.vkopi.lib.form.VCodeField;
-import com.kopiright.vkopi.lib.form.VColorField;
 import com.kopiright.vkopi.lib.form.VDateField;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFixnumCodeField;
 import com.kopiright.vkopi.lib.form.VFixnumField;
-import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VIntegerCodeField;
 import com.kopiright.vkopi.lib.form.VIntegerField;
 import com.kopiright.vkopi.lib.form.VMonthField;
 import com.kopiright.vkopi.lib.form.VStringCodeField;
 import com.kopiright.vkopi.lib.form.VStringField;
-import com.kopiright.vkopi.lib.form.VTextField;
 import com.kopiright.vkopi.lib.form.VTimeField;
 import com.kopiright.vkopi.lib.form.VTimestampField;
 import com.kopiright.vkopi.lib.form.VWeekField;
@@ -75,6 +72,7 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
+@SuppressWarnings("serial")
 public class VDynamicReport extends VReport {
 
   public VDynamicReport (VBlock block) throws VException {

@@ -19,9 +19,13 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
+
 import com.kopiright.vkopi.lib.visual.VException;
 
-public class Accessor {
+@SuppressWarnings("serial")
+public class Accessor implements Serializable {
+  
   public static void checkType(VField field, Object o) throws VException {
     field.checkType(o);
   }

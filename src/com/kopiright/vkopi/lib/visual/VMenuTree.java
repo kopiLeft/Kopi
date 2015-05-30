@@ -34,6 +34,7 @@ import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.Query;
 
+@SuppressWarnings("serial")
 public class VMenuTree extends VWindow {
 
   static {

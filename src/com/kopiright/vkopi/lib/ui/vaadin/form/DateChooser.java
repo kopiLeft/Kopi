@@ -21,34 +21,23 @@ package com.kopiright.vkopi.lib.ui.vaadin.form;
 
 import java.util.Calendar;
 
+import org.kopi.vaadin.addons.DateChooserListener;
+
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 import com.kopiright.xkopi.lib.type.NotNullMonth;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutListener;
-import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.InlineDateField;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
+import com.vaadin.ui.Component;
 
 /**
  * The <code>DateChooser</code> is date selection component.
  */
-public class DateChooser extends Panel implements UComponent, ValueChangeListener {
+@SuppressWarnings("serial")
+public class DateChooser extends org.kopi.vaadin.addons.DateChooser implements UComponent, DateChooserListener {
   
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -58,37 +47,31 @@ public class DateChooser extends Panel implements UComponent, ValueChangeListene
    * Creates a new <code>DateChooser</code> instance.
    * @param date The initial date.
    */
-  public DateChooser(Date date) {
+  @SuppressWarnings("deprecation")
+  public DateChooser(Date date, Component reference) {
     setImmediate(true);
-    addStyleName("light");
-    setSizeUndefined();
     selectedDate = date;
-    cal = new CalendarPane();
-    cal.setImmediate(true);
-    todayButton = new Button(VlibProperties.getString("today"));
-    todayButton.addStyleName("small default");
-    todayButton.addClickListener(new ClickListener() {
-      
-      private static final long serialVersionUID = -7103888370716161397L;
-
-      public void buttonClick(ClickEvent event) {
-	setSelectedDate(Date.now());
-        synchronized (popup) {
-          popup.notify(); 
-        }
-        popup.close();	
-      }
-    });
-    
-    createContent();
+    showRelativeTo(reference);
+    setToDay(VlibProperties.getString("today"));
+    if (date != null) {
+      super.setSelectedDate(date.toCalendar().getTime());
+    }
+    addDateChooserListener(this);
+    setLocale(getApplication().getDefaultLocale().toString());
+    setOffset(new java.util.Date().getTimezoneOffset());
   }
   
   //---------------------------------------------------
   // UTILS
   //---------------------------------------------------
   
-  public static Date selectDate(Date date) {
-    DateChooser		chooser = new DateChooser(date);
+  /**
+   * Static date selection.
+   * @param date The initial date.
+   * @return The selected date.
+   */
+  public static Date selectDate(Date date, Component reference) {
+    DateChooser		chooser = new DateChooser(date, reference);
     
     return chooser.doModal(date);
   }
@@ -102,38 +85,15 @@ public class DateChooser extends Panel implements UComponent, ValueChangeListene
    * @param date The initial date.
    * @return The selected date.
    */
-  @SuppressWarnings("serial")
   private Date doModal(final Date date) {
-    popup = new Window(null, this);
-    popup.setImmediate(true);
-    popup.setModal(true);
-    popup.setDraggable(false);
-    popup.setResizable(false);
-    popup.addShortcutListener(new ShortcutListener("escape", KeyCode.ESCAPE, null) {
-
-      @Override
-      public void handleAction(Object sender, Object target) {
-        BackgroundThreadHandler.releaseLock(popup);
-        popup.close();
-      }
-    });
-    
-    popup.addCloseListener(new CloseListener() {
-      
-      @Override
-      public void windowClose(CloseEvent e) {
-	BackgroundThreadHandler.releaseLock(popup);
-      }
-    });
-    
     BackgroundThreadHandler.startAndWait(new Runnable() {
       
       @Override
       public void run() {
-        UI.getCurrent().addWindow(popup);
-        focus();
+        getApplication().attachComponent(DateChooser.this);
+        getApplication().push(); // push to immediately view the date chooser.
       }
-    }, popup);
+    }, this);
      
     return selectedDate;
   }
@@ -142,17 +102,14 @@ public class DateChooser extends Panel implements UComponent, ValueChangeListene
    * Disposes the date chooser.
    */
   protected void dispose() {
-    popup.close();
+    getApplication().detachComponent(this);
   }
   
   /**
    * Destroys the date chooser.
    */
   protected void destroy() {
-    cal = null;
     selectedDate = null;
-    popup = null;
-    todayButton = null;
   }
 
   /**
@@ -161,6 +118,14 @@ public class DateChooser extends Panel implements UComponent, ValueChangeListene
    */
   public int getFirstDay() {
     return firstDay;
+  }
+  
+  /**
+   * Returns the application instance.
+   * @return The application instance.
+   */
+  protected VApplication getApplication() {
+    return (VApplication) ApplicationContext.getApplicationContext().getApplication();
   }
 
   /**
@@ -188,68 +153,21 @@ public class DateChooser extends Panel implements UComponent, ValueChangeListene
   }
   
   //-------------------------------------------------
-  // VALUECHANGELISTENER IMPLEMENTATION
+  // DATE CHOOSER LISTENER IMPLEMENTATION
   //-------------------------------------------------
   
   @Override
-  public void valueChange(ValueChangeEvent event) {
-    Calendar	cal = Calendar.getInstance(ApplicationContext.getDefaultLocale());
-    
-    cal.setTime((java.util.Date) event.getProperty().getValue());
-    setSelectedDate(new NotNullDate(cal));
-    popup.close();
-  }
-  
-  //-------------------------------------------------
-  // DATE CHOOSER CONTENT
-  //-------------------------------------------------
-  
-  /**
-   * Creates the date chooser content.
-   */
-  public void createContent() {
-    VerticalLayout	content;
-
-    content = new VerticalLayout();
-    content.setSpacing(true);
-    content.addComponent(cal);
-    content.setComponentAlignment(cal, Alignment.TOP_CENTER);
-    content.addComponent(todayButton);
-    content.setComponentAlignment(todayButton, Alignment.BOTTOM_CENTER);
-    setContent(content);
-  }
-  
-  //-------------------------------------------------
-  // INNER CLASSES
-  //-------------------------------------------------
-  
-  /**
-   * The <code>CalendarPane</code> is an {@link InlineDateField}
-   * for date chooser.
-   */
-  /*package*/ class CalendarPane extends InlineDateField {
-
-    //---------------------------------------
-    // CONSTRUCTOR
-    //---------------------------------------
-    
-    /**
-     * Creates a new <code>CalendarPane</code> instance.
-     */
-    public CalendarPane() {
-      setImmediate(true);
-      setValue(getSelectedDate().toCalendar().getTime());
-      setLocale(ApplicationContext.getDefaultLocale());
-      setResolution(Resolution.DAY);
-      setShowISOWeekNumbers(true);
-      addValueChangeListener(DateChooser.this);
+  public void onClose(java.util.Date selected) {
+    if (selected == null) {
+      return;
     }
     
-    //---------------------------------------
-    // DATA MEMBERS
-    //---------------------------------------
+    Calendar	cal = Calendar.getInstance(ApplicationContext.getDefaultLocale());
     
-    private static final long	serialVersionUID = -3958329773743250969L;
+    cal.setTime(selected);
+    setSelectedDate(new NotNullDate(cal));
+    dispose();
+    BackgroundThreadHandler.releaseLock(this);
   }
   
   //---------------------------------------------------
@@ -257,9 +175,5 @@ public class DateChooser extends Panel implements UComponent, ValueChangeListene
   //---------------------------------------------------
   
   private Date				selectedDate;
-  private Button			todayButton;
-  private CalendarPane			cal;
   private int				firstDay;
-  private Window			popup;
-  private static final long		serialVersionUID = 9070604800608635033L;
 }

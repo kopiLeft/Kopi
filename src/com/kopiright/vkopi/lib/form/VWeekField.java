@@ -30,6 +30,7 @@ import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Week;
 import com.kopiright.xkopi.lib.type.NotNullWeek;
 
+@SuppressWarnings("serial")
 public class VWeekField extends VField {
 
   // ----------------------------------------------------------------------

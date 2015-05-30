@@ -21,6 +21,9 @@ package com.kopiright.vkopi.lib.ui.vaadin.form;
 
 import java.io.File;
 
+import org.kopi.vaadin.addons.Form;
+import org.kopi.vaadin.addons.FormListener;
+
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.BlockListener;
 import com.kopiright.vkopi.lib.form.BlockRecordListener;
@@ -31,24 +34,18 @@ import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldException;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
-import com.kopiright.vkopi.lib.ui.vaadin.visual.DPositionPanel;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.DWindow;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * The <code>DForm</code> is the vaadin implementation of
  * the {@link UForm} specifications.
  */
 @SuppressWarnings("serial")
-public class DForm extends DWindow implements UForm {
+public class DForm extends DWindow implements UForm, FormListener {
   
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -60,80 +57,13 @@ public class DForm extends DWindow implements UForm {
    */
   public DForm(VForm model) {
     super(model);
+    content = new Form(getPageCount(), model.getPages());
+    content.setLocale(getApplication().getDefaultLocale().toString());
     setSizeFull();
-    setStyleName(KopiTheme.FORM_STYLE);
+    content.setSizeFull();
     model.addFormListener(this);
-    blockPanel = new DPage[getPageCount() == 0 ? 1 : getPageCount()];
-    
-    for (int i = 0; i < blockPanel.length; i++) {
-      if (getPageCount() != 0) {
-	if (getPageTitle(i).endsWith("<CENTER>")) {
-	  blockPanel[i] = new HorizontalPage();
-	} else {
-	  blockPanel[i] = new VerticalPage();
-	}
-      } else {
-	blockPanel[i] = new VerticalPage();
-      }
-    }
-    
-    if (getPageCount() == 0) {
-      setContent(blockPanel[0]);
-    } else {
-      tabbedBlockPanel = new TabSheet();
-      
-      tabbedBlockPanel.addStyleName(KopiTheme.TABSHEET_BORDERLESS);
-      tabbedBlockPanel.addStyleName(KopiTheme.TABBED_BLOCK_PANEL_STYLE);
-      for (int i = 0; i < blockPanel.length; i++) {
-	final String    pageTitle = getPageTitle(i).endsWith("<CENTER>") ? getPageTitle(i).substring(0,  getPageTitle(i).length() - 8) : getPageTitle(i);
-
-        VerticalLayout tab=new VerticalLayout();
-        tab.setWidth("100%");
-        tab.addComponent(blockPanel[i]); 
-
-        tabbedBlockPanel.addTab(tab, pageTitle);
-        tabbedBlockPanel.getTab(i).setEnabled(false);
-        tabbedBlockPanel.getTab(i).setClosable(false);
-      }
-      
-      tabbedBlockPanel.addSelectedTabChangeListener(new SelectedTabChangeListener() {
-        
-        public void selectedTabChange(SelectedTabChangeEvent event) {   
-          final TabSheet 	tabsheet = (TabSheet) event.getTabSheet();
-          int             	index = 0;
-                   
-          if (tabsheet.getSelectedTab() != null) {
-            index = tabsheet.getTabIndex();
-          }
-          final int	selectedIndex = index;
-          if (getCurrentPage() == index) {
-            performBasicAction(new KopiAction("setSelectedIndex") {
-              public void execute() throws VException {  
-          	try {
-		  getVForm().gotoPage(selectedIndex);
-          	} catch (VException ve){
-          	  tabsheet.setSelectedTab(getCurrentPage());
-          	  if (ve.getMessage() != null) {
-	            displayError(ve.getMessage());
-	          }
-          	}
-              }
-            });
-          } 
-        }
-      });
-      
-      tabbedBlockPanel.setSizeFull();
-      setContent(tabbedBlockPanel);
-    }
-    
-    DPositionPanel      blockInfo;
-
-    blockInfo = new DPositionPanel(this);
-    setStatePanel(blockInfo);
-    
-    blockRecordHandler = new BlockRecordHandler(blockInfo);
-    
+    content.addFormListener(this);
+    blockRecordHandler = new BlockRecordHandler();
     blockListener = new BlockAccessHandler();
     getModel().setDisplay(this);
 
@@ -155,13 +85,12 @@ public class DForm extends DWindow implements UForm {
 
       blockModel.addBlockListener(blockListener);
     }
-    
-    Environment.addDefaultFormKey(this);
+    setContent(content);
     getModel().enableCommands();
   }
   
   //---------------------------------------------------
-  // UTILS
+  // IMPLEMENTATIONS
   //---------------------------------------------------
 
   /**
@@ -186,8 +115,6 @@ public class DForm extends DWindow implements UForm {
       }
     }
     
-    // layout the block
-    blockView.layoutContainer();
     return blockView;
   }
   
@@ -248,15 +175,13 @@ public class DForm extends DWindow implements UForm {
    */
   public void gotoPage(final int i) {
     setCurrentPage(i);
-    if (tabbedBlockPanel != null) {
-      BackgroundThreadHandler.start(new Runnable() {
-	
-	@Override
-	public void run() {
-          tabbedBlockPanel.setSelectedTab(i);
-        }
-      });
-    }
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	content.gotoPage(i);
+      }
+    });
   }
 
   /**
@@ -279,11 +204,10 @@ public class DForm extends DWindow implements UForm {
   */
   private void addBlock(DBlock block, int page) {
     if (!block.getModel().isInternal()) {
-      if (block.getModel().isFollow()) {
-	((DPage) blockPanel[page]).addFollowBlock(block);
-      } else {
-	((DPage) blockPanel[page]).addBlock(block);
-      }
+      content.addBlock(block,
+	               page,
+	               block.getModel().isFollow(),
+	               block.getModel().noDetail());
     }
   }
   
@@ -294,10 +218,6 @@ public class DForm extends DWindow implements UForm {
   public VForm getVForm() {
     return (VForm)super.getModel();
   }
-  
-  //---------------------------------------------------
-  // WINDOW IMPLEMENTATION
-  //---------------------------------------------------
 
   @SuppressWarnings("deprecation")
   @Override
@@ -318,13 +238,19 @@ public class DForm extends DWindow implements UForm {
     getVForm().executeAfterStart();
   }
   
-  //---------------------------------------------------
-  // POSITIONLISTENER IMPLEMENTATION
-  //---------------------------------------------------
+  @Override
+  public void onPageSelection(final int page) {
+    if (getCurrentPage() != page) {
+      performAsyncAction(new KopiAction("setSelectedIndex") {
+
+	@Override
+	public void execute() throws VException {  
+	  getVForm().gotoPage(page);
+	}
+      });
+    }
+  }
   
-  /**
-   * Requests to go to the next position.
-   */
   @Override
   public void gotoNextPosition() {
     performAsyncAction(new KopiAction("gotoNextPosition") {
@@ -336,9 +262,6 @@ public class DForm extends DWindow implements UForm {
     });
   }
   
-  /**
-   * Requests to go to the previous position.
-   */
   @Override
   public void gotoPrevPosition() {
     performAsyncAction(new KopiAction("gotoPrevPosition") {
@@ -350,9 +273,6 @@ public class DForm extends DWindow implements UForm {
     });
   }
 
-  /**
-   * Requests to go to the last position.
-   */
   @Override
   public void gotoLastPosition() {
     performAsyncAction(new KopiAction("gotoLastPosition") {
@@ -364,9 +284,6 @@ public class DForm extends DWindow implements UForm {
     });
   }
   
-  /**
-   * Requests to go to the first position.
-   */
   @Override
   public void gotoFirstPosition() {
     performAsyncAction(new KopiAction("gotoFirstPosition") {
@@ -378,9 +295,6 @@ public class DForm extends DWindow implements UForm {
     });
   }
 
-  /**
-   * Requests to go to the specified position.
-   */
   @Override
   public void gotoPosition(final int posno) {
     performAsyncAction(new KopiAction("gotoPosition") {
@@ -391,23 +305,19 @@ public class DForm extends DWindow implements UForm {
       }
     });
   }
-
-  //---------------------------------------------------
-  // FORMLISTENER IMPLEMENTATION
-  //---------------------------------------------------
   
   @Override
   public void currentBlockChanged(VBlock oldBlock, VBlock newBlock) {
     if (oldBlock != null) {
       oldBlock.removeBlockRecordListener(blockRecordHandler);
     }
-    
+
     if (newBlock != null) {
       newBlock.addBlockRecordListener(blockRecordHandler);
       blockRecordHandler.blockRecordChanged(newBlock.getSortedPosition(newBlock.getRecord()), newBlock.getRecordCount());
-//    }
-//
-//    if (newBlock != null) {
+    }
+
+    if (newBlock != null) {
       if (newBlock.getPageNumber() != getCurrentPage()) {
 	gotoPage(newBlock.getPageNumber());
       }
@@ -417,10 +327,6 @@ public class DForm extends DWindow implements UForm {
   public void setFieldSearchOperator(int op) {
     // nothing to do
   }
-  
-  //---------------------------------------------------
-  // FORM IMPLEMENTATION
-  //---------------------------------------------------
   
   @Override
   public UBlock getBlockView(VBlock block) {
@@ -480,47 +386,31 @@ public class DForm extends DWindow implements UForm {
     public void blockCleared() {}
 
     @Override
-    public void blockAccessChanged(VBlock block, boolean newAccess) {
-      if (tabbedBlockPanel == null) {
-	// nothing to do
-	return; 
-      }
-      
-      //enable/disable tab of tabbedPane (pages)
-      final int         pageNumber = block.getPageNumber();
-      final VBlock[]    blocks = getVForm().getBlocks();
-
-      if (newAccess) {
-        if (!tabbedBlockPanel.getTab(pageNumber).isEnabled()) {
-          // enable page
-          BackgroundThreadHandler.start(new Runnable() {
-            
-            @Override
-            public void run() {
-              tabbedBlockPanel.getTab(pageNumber).setEnabled(true);
-            }
-          });
-        }
-      } else {
-        if (tabbedBlockPanel.getTab(pageNumber).isEnabled()) {
-          // tab is visible (another visible block there?)
-          for (int i = 0; i < blocks.length; i++) {
-            if (pageNumber == blocks[i].getPageNumber()
-                && blocks[i].isAccessible()) {
-              return;
-            }
+    public void blockAccessChanged(final VBlock block, final boolean newAccess) {
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          if (getPageCount() == 1) {
+            return;
           }
-          // no accessible block on the page ->
-          // disable page
-          BackgroundThreadHandler.start(new Runnable() {
-            
-            @Override
-            public void run() {
-              tabbedBlockPanel.getTab(pageNumber).setEnabled(false);
+          //enable/disable tab of pages
+          final int         pageNumber = block.getPageNumber();
+          final VBlock[]    blocks = getVForm().getBlocks();
+
+          if (newAccess) {
+            content.setEnabled(true, pageNumber);
+          } else {
+            // tab is visible (another visible block there?)
+            for (int i = 0; i < blocks.length; i++) {
+              if (pageNumber == blocks[i].getPageNumber() && blocks[i].isAccessible()) {
+        	return;
+              }
             }
-          });
+            content.setEnabled(false, pageNumber);
+          }
         }
-      }
+      });
     }
 
     @Override
@@ -546,15 +436,7 @@ public class DForm extends DWindow implements UForm {
    * The <code>BlockRecordHandler</code> is the {@link DForm}
    * implementation of the {@link BlockRecordListener}
    */
-  private static class BlockRecordHandler implements BlockRecordListener {
-
-    //---------------------------------------
-    // CONSTRUCTOR
-    //---------------------------------------
-    
-    public BlockRecordHandler(DPositionPanel blockInfo) {
-      this.blockInfo = blockInfo;
-    }
+  private class BlockRecordHandler implements BlockRecordListener {
 
     //---------------------------------------
     // IMPLEMENTATION
@@ -562,20 +444,14 @@ public class DForm extends DWindow implements UForm {
     
     @Override
     public void blockRecordChanged(final int current, final int count) {
-      BackgroundThreadHandler.start(new Runnable() {
-	
-	@Override
-	public void run() {
-          blockInfo.setPosition(current, count);
-	}
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          content.setPosition(current, count);
+        }
       });
     }
-
-    //---------------------------------------
-    // DATA MEMBERS
-    //---------------------------------------
-    
-    private DPositionPanel		blockInfo;
   }
   
   //---------------------------------------------------
@@ -583,8 +459,7 @@ public class DForm extends DWindow implements UForm {
   //---------------------------------------------------
   
   private int				currentPage = -1;
-  private DPage[]                       blockPanel;
-  private TabSheet		        tabbedBlockPanel;
+  private Form				content;
   private BlockListener         	blockListener;
   private DBlock[]              	blockViews;
   private BlockRecordHandler    	blockRecordHandler;

@@ -20,11 +20,7 @@
 package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
 import com.kopiright.vkopi.lib.ui.vaadin.base.Image;
-import com.kopiright.vkopi.lib.ui.vaadin.base.Utils;
 import com.kopiright.vkopi.lib.visual.ImageHandler;
-import com.vaadin.server.ConnectorResource;
-import com.vaadin.server.Resource;
-import com.vaadin.server.VaadinService;
 
 /**
  * The <code>VImageHandler</code> is the vaadin implementation
@@ -46,17 +42,14 @@ public class VImageHandler extends ImageHandler {
     return null;
   }
 
-  @SuppressWarnings("unused")
   @Override
   public String getURL(String image) {
-    Resource	resource = Utils.getImage(image).getResource();
-    String	applicationName = VaadinService.getCurrent().getBaseDirectory().getName();
-    
-    if (resource instanceof ConnectorResource) {
-    //  return ApplicationContext.getApplicationContext().getApplication().getRelativeLocation((ConnectorResource)resource).replace("app:",  "/" + applicationName);
-    }
-    //  VaadinService.getCurrent().
-    // retrieve the image from the theme resource
-    return "../" + image;
+    // image should be located in theme otherwise it
+    // won't work. We cannot get the loaded image URL
+    // since vaadin 7 does not give the possibility to
+    // get the URL of a loaded resource.
+    // A workaround is to put the used images as a theme
+    // resources and try to load them from a fix path.
+    return "../resource/" + image;
   }
 }

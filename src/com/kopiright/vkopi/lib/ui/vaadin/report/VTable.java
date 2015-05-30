@@ -32,6 +32,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractInMemoryContainer;
 import com.vaadin.data.util.converter.Converter.ConversionException;
+import com.vaadin.ui.UI;
 
 /**
  * The <code>VTable</code> is a vaadin {@link Table} data container adapted
@@ -126,11 +127,12 @@ public class VTable extends AbstractInMemoryContainer<Integer, String, TableMode
    * Notifies the table container that content has been changed.
    */
   public void fireContentChanged() {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
 	fireItemSetChange();
+	UI.getCurrent().push();
       }
     });
   }
@@ -139,11 +141,12 @@ public class VTable extends AbstractInMemoryContainer<Integer, String, TableMode
    * Notifies the table container that structure has been changed.
    */
   public void fireStructureChanged() {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
         fireContainerPropertySetChange();
+        UI.getCurrent().push();
       }
     });
   }

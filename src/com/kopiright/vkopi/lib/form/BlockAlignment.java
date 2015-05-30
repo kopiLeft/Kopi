@@ -19,16 +19,32 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
+
 /**
  * A class to specifie alignment in KopiLayout
  */
-public class BlockAlignment {
+@SuppressWarnings("serial")
+public class BlockAlignment implements Serializable {
 
+  //---------------------------------------------------
+  // CONSTRUCTOR
+  //---------------------------------------------------
+  
+  /**
+   * Creates a new <code>BlockAlignment</code> instance.
+   * @param ori The original block to be aligned with.
+   * @param targets The alignment targets.
+   */
   public BlockAlignment(VBlock ori, int[] targets) {
     this.targets = targets;
     this.ori = ori;
   }
 
+  //---------------------------------------------------
+  // IMPLEMENTATIONS
+  //---------------------------------------------------
+  
   @SuppressWarnings("deprecation")
   public boolean isChart() {
     return (ori != null) && ori.isChart();
@@ -50,8 +66,20 @@ public class BlockAlignment {
     }
   }
 
+  /**
+   * Returns the original block to be aligned with. 
+   * @return The original block to be aligned with. 
+   */
   public VBlock getBlock() {
     return ori;
+  }
+  
+  /**
+   * Returns the alignment targets.
+   * @return The alignment targets.
+   */
+  public int[] getTartgets() {
+    return targets;
   }
 
   // MOVED TO DISPLAY

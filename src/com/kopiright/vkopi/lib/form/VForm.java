@@ -48,6 +48,7 @@ import com.kopiright.vkopi.lib.visual.WindowController;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 
+@SuppressWarnings("serial")
 public abstract class VForm extends VWindow implements VConstants {
 
   static {

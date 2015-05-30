@@ -349,12 +349,7 @@ public class DPreviewWindow extends DWindow implements DPositionPanelListener, P
   private JScrollPane           bodypane;
   private DPositionPanel        blockInfo;
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
+   * Comment for <code>serialVersionUID</code>
+   */
   private static final long serialVersionUID = -3057089222899270837L;
-  @Override
-  public void fileProduced(File file) {
-    // TODO Auto-generated method stub
-    
-  }
 }

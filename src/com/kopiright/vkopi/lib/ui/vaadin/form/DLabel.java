@@ -19,20 +19,19 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
+import org.kopi.vaadin.addons.SortableLabel;
+
 import com.kopiright.vkopi.lib.form.ULabel;
 import com.kopiright.vkopi.lib.form.VConstants;
-import com.kopiright.vkopi.lib.form.VField;
+import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
-import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplicationContext;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.VCommand;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
 
 @SuppressWarnings("serial")
-public class DLabel extends CssLayout implements ULabel {
+public class DLabel extends SortableLabel implements ULabel {
  
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -44,8 +43,9 @@ public class DLabel extends CssLayout implements ULabel {
    * @param help The label help.
    * @param commands The field commands.
    */
-  public DLabel(String text, String help, VCommand[] commands) {
-    this.commands = commands;
+  public DLabel(String text, String help) {
+    super(text);
+    setSortable(false);
     init(text, help);
   }
 
@@ -78,38 +78,14 @@ public class DLabel extends CssLayout implements ULabel {
   }
   
   @Override
-  public void init(String label, String toolTip) {
-    this.label = new Label(label == null ? "" : label);
-    this.label.setSizeUndefined(); 
-    if (commands.length > 0) {
-      String description = "<html>"+toolTip;
-      for (int i = 0; i < commands.length; i++) {
-	switch (commands[i].getTrigger()) {
-	case VForm.CMD_AUTOFILL:
-	  description = description +"<br>"+ localizeActor("Autofill")+" [F2]";
-	  break;
-	case VForm.CMD_EDITITEM:
-	  description = description +"<br>"+ localizeActor("EditItem")+" [Shift-F2]";
-	  break;
-	case VForm.CMD_EDITITEM_S:
-	  description = description +"<br>"+ localizeActor("EditItem_S")+" [F2]";
-	  break;
-	case VForm.CMD_NEWITEM:
-	  description = description +"<br>"+ localizeActor("NewItem")+" [Shift-F4]";
-	  break;
-	}
-      }
-      this.label.setDescription(description);
-    } else {
-      this.label.setDescription(toolTip);
-    }
-    this.label.addStyleName(KopiTheme.DLABEL_STYLE);
-    BackgroundThreadHandler.start(new Runnable() {
+  public void init(final String text, final String toolTip) {
+    this.tooltip = toolTip;
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
-	removeAllComponents();
-	addComponent(DLabel.this.label);
+	setCaption(text);
+	setDescription(toolTip);
       }
     });
   }
@@ -118,8 +94,15 @@ public class DLabel extends CssLayout implements ULabel {
    * Sets the info text.
    * @param info The info text.
    */
-  public void setInfoText(String info) {
+  public void setInfoText(final String info) {
     infoText = info;
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	DLabel.super.setInfoText(info);
+      }
+    });
   }
   
   /**
@@ -129,48 +112,71 @@ public class DLabel extends CssLayout implements ULabel {
   public String getInfoText() {
     return infoText;
   }
-
-  /**
-   * Returns the label text.
-   * @return The label text.
-   */
-  public String getDLabelText() {
-    return this.label.getValue();
-  }
   
   /**
    * Updates the label content.
    * @param model The field model.
    * @param row The field row.
    */
-  public void update(final VField model, final int row) {
-    BackgroundThreadHandler.start(new Runnable() {
-      
+  public void update(final VFieldUI model, final int row) {
+    BackgroundThreadHandler.access(new Runnable() {
+
       @Override
       public void run() {
-	if (model.hasFocus()){
-	  label.setStyleName(KopiTheme.DLABEL_FOCUSED_STYLE);
-	} else if (model.getAccess(row) == VConstants.ACS_MUSTFILL) {
-          label.setStyleName(KopiTheme.DLABEL_MUSTFILL_STYLE);
+	updateStyles(model.getModel().getAccess(row), model.getModel().hasFocus());
+	if (model.getModel().getAccess(row) == VConstants.ACS_SKIPPED) {
+	  // Only show base help on a skipped field
+	  // Actors are not shown since they are not active.
+	  setDescription(tooltip);
 	} else {
-	  label.setStyleName(KopiTheme.DLABEL_STYLE);
+	  setDescription(buildDescription(model, tooltip));
 	}
-	
-	if(model.hasAutofill()){
-	  addStyleName(KopiTheme.AUTOFILL_LABEL_STYLE);
+	setAutofill(model.hasAutofill());
+	if (model.getModel().getAccess(row) == VConstants.ACS_HIDDEN) {
+	  if (getState().visible) {
+	    setVisible(false);
+	  }
+	} else {
+	  if (!getState().visible) {
+	    setVisible(true);
+	  }
 	}
-		
-        if (model.getAccess(row) == VConstants.ACS_HIDDEN) {
-          if (isVisible()) {
-            setVisible(false);
-          }
-        } else {
-          if (!isVisible()) {
-            setVisible(true);
-          }
-	}
-      } 
+      }
     });
+  }
+  
+  /**
+   * Updates the label styles according to the field access.
+   * @param access The field access
+   */
+  private void updateStyles(int access, boolean focused) {
+    removeStyleName("visit");
+    removeStyleName("skipped");
+    removeStyleName("mustfill");
+    removeStyleName("hidden");
+    removeStyleName("focused");
+    // The focus style is the major style
+    if (focused) {
+      addStyleName("focused");      
+    } else {
+      switch (access) {
+      case VConstants.ACS_VISIT:
+        addStyleName("visit");
+        break;
+      case VConstants.ACS_SKIPPED:
+        addStyleName("skipped");
+        break;
+      case VConstants.ACS_MUSTFILL:
+        addStyleName("mustfill");
+        break;
+      case VConstants.ACS_HIDDEN:
+        addStyleName("hidden");
+        break;
+      default:
+        addStyleName("visit");
+        break;
+      }
+    }
   }
   
   /**
@@ -178,15 +184,46 @@ public class DLabel extends CssLayout implements ULabel {
    * @return The label text.
    */
   public String getText() {
-    return label.getCaption();
+    return getCaption();
   }
   
   /**
-   * Returns the {@link Label} component.
-   * @return The {@link Label} component.
+   * Builds full field description.
+   * @param model The field model.
+   * @param tooltip The initial field tooltip.
+   * @return The full field description.
    */
-  public Label getLabel() {
-    return label;
+  protected String buildDescription(VFieldUI model, String tooltip) {
+    String		description;
+    VCommand[]		commands;
+    
+    commands = model.getAllCommands();
+    if (tooltip == null) {
+      tooltip = ""; // avoid writing null in help tooltip.
+    }
+    description = tooltip;
+    if (commands.length > 0) {
+      description = "<html>" + tooltip;
+      
+      for (int i = 0; i < commands.length; i++) {
+	switch (commands[i].getTrigger()) {
+	case VForm.CMD_AUTOFILL:
+	  description += "<br>" + localizeActor("Autofill") + " [F2]";
+	  break;
+	case VForm.CMD_EDITITEM:
+	  description += "<br>" + localizeActor("EditItem") + " [Shift-F2]";
+	  break;
+	case VForm.CMD_EDITITEM_S:
+	  description += "<br>" + localizeActor("EditItem_S") + " [F2]";
+	  break;
+	case VForm.CMD_NEWITEM:
+	  description += "<br>" + localizeActor("NewItem") +" [Shift-F4]";
+	  break;
+	}
+      }
+    }
+    
+    return description;
   }
   
   /**
@@ -194,18 +231,16 @@ public class DLabel extends CssLayout implements ULabel {
    * @param ident the actor identifier.
    * @return THe localized actor.
    */
-  public String localizeActor(String ident) {
-    return ((VApplication) VApplicationContext.getApplicationContext().getApplication()).getLocalizationManager()
-	   .getActorLocalizer(MENU_LOCALIZATION_RESOURCE, ident).getLabel();
+  private String localizeActor(String ident) {
+    return ((VApplication) ApplicationContext.getApplicationContext().getApplication()).getLocalizationManager().getActorLocalizer(MENU_LOCALIZATION_RESOURCE, ident).getLabel();
   }
-  
+ 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private Label				label;
   private String			infoText;
   private boolean			detailMode;
-  private VCommand[]                    commands;
+  private String			tooltip;
   private static final String           MENU_LOCALIZATION_RESOURCE = "com/kopiright/vkopi/lib/resource/Menu";
 }

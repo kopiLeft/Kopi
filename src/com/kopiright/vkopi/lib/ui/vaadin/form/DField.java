@@ -19,6 +19,11 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
+import org.kopi.vaadin.addons.Field;
+import org.kopi.vaadin.addons.FieldListener;
+import org.kopi.vaadin.addons.LabelEvent;
+import org.kopi.vaadin.addons.LabelListener;
+
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.form.UBlock;
 import com.kopiright.vkopi.lib.form.UField;
@@ -27,26 +32,16 @@ import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VForm;
+import com.kopiright.vkopi.lib.form.VStringField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.FieldButton;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
-import com.kopiright.vkopi.lib.ui.vaadin.base.Utils;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.VException;
-import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.CssLayout;
 
 /**
  * The <code>DField</code> is the vaadin {@link UField} implementation.
- * The <code>DField</code> extends the {@link CssLayout} for performance issues.
  */
-@SuppressWarnings({ "serial", "deprecation" })
-public abstract class DField extends CssLayout implements UField, LayoutClickListener {
+@SuppressWarnings("serial")
+public abstract class DField extends Field implements UField, FieldListener {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -66,66 +61,30 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
                 int options,
                 boolean detail)
   {	
-    setImmediate(true);
-    addListener(this);
-	
+    super(model.getIncrementCommand() != null, model.getDecrementCommand() != null);
     this.inDetail = detail;
     this.model = model;
     this.options = options;
     this.label = label;
     this.align = align;
-    isEditable = (options & VConstants.FDO_NOEDIT) == 0;
-    
-    if ((!getModel().getBlock().isMulti() || getModel().getBlock().noChart() || isInDetail())
-        && (getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED)) {
-    
+    this.isEditable = (options & VConstants.FDO_NOEDIT) == 0;
+    setImmediate(true);
+    addFieldListener(this);
+    this.label.setAutofill(model.hasAutofill());
+    if (getModel() instanceof VStringField) {
+      setVisibleHeight(((VStringField)getModel()).getVisibleHeight());
+    } else {
+      setVisibleHeight(getModel().getHeight());
+    }
+    if (getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
       if (model.hasAutofill()) {
-	if (model.getModel().getTypeName().equals(VlibProperties.getString("Date")) || 
-	    model.getModel().getTypeName().equals(VlibProperties.getString("Month")) ||
-	    model.getModel().getTypeName().equals(VlibProperties.getString("Week"))) {
-	  info = new FieldButton(calendarImg);
-	} else if (model.getModel().getTypeName().equals(VlibProperties.getString("Timestamp")) ||
-	           model.getModel().getTypeName().equals(VlibProperties.getString("Time"))) {
-	  info = new FieldButton(timestampImg);
-	} else {
-	  info = new FieldButton(listImg);
-	}
+	this.label.addLabelListener(new LabelListener() {
 	  
-	this.label.addStyleName(KopiTheme.AUTOFILL_LABEL_STYLE);
-	this.label.addLayoutClickListener(new LayoutClickListener() {
-	    
 	  @Override
-	  public void layoutClick(LayoutClickEvent event) {
-            performAutoFillAction();
+	  public void onClick(LabelEvent event) {
+	    performAutoFillAction();
 	  }
 	});
-      }
-      
-      if (model.getDecrementCommand() != null) {
-    	decr = new FieldButton(leftImg);  
-    	decr.addClickListener(new Button.ClickListener() {
-			
-  	  @Override
-  	  public void buttonClick(ClickEvent event) {
-  	    DField.this.model.getDecrementCommand().performAction();
-  	  }
-  	});
-    	decr.setImmediate(true);
-    	decr.setEnabled(getModel().getDefaultAccess() > VConstants.ACS_SKIPPED);
-    	addComponent(decr); 	  
-      }
-      if (model.getIncrementCommand() != null) {
-    	incr=new FieldButton(rightImg);
-        incr.addClickListener(new Button.ClickListener() {
-
-          @Override
-          public void buttonClick(ClickEvent event) {
-    	    DField.this.model.getIncrementCommand().performAction();
-    	  }
-    	});
-    	incr.setImmediate(true);
-    	incr.setEnabled(getModel().getDefaultAccess() > VConstants.ACS_SKIPPED);
-    	addComponent(incr);
       }
     }
   }	
@@ -199,7 +158,7 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
   
   @Override
   public UComponent getAutofillButton() {
-    return info;
+    return null;
   }
 
   /**
@@ -238,39 +197,17 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
   }
   
   @Override
-  public void updateAccess() {   
-    access = getAccess();
-    BackgroundThreadHandler.start(new Runnable() {
+  public void updateAccess() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
-      public void run() { 
-        setVisible(access != VConstants.ACS_HIDDEN);
+      public void run() {
+	access = getAccess();
+	updateStyles(access);
+	setVisible(access != VConstants.ACS_HIDDEN);
+	update(label); 
       }
     });
-    update(info);
-    update(incr);
-    update(decr);
-    update(label);
-  }
-
-  /**
-   * Updates a given field button.
-   * @param button The button to be updated.
-   */
-  private void update(final Button button) {
-    if (button != null) {
-      boolean	was = button.isEnabled();
-      final boolean	will = access >= VConstants.ACS_VISIT;
-      if (was != will) {
-	BackgroundThreadHandler.start(new Runnable() {
-	  
-	  @Override
-	  public void run() {
-            button.setEnabled(will);
-	  }
-	});
-      }
-    }
   }
   
   /**
@@ -279,18 +216,40 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
    */
   private void update(final DLabel label) {
     if (label != null) {
-      BackgroundThreadHandler.start(new Runnable() {
-        
-        @Override
-        public void run() {
-          boolean	was = label.isEnabled();
-          boolean	will = access >= VConstants.ACS_VISIT;
-          
-          if (was != will) {
-            label.setEnabled(will);
-          }
-        }
-      });
+      boolean	was = label.isEnabled();
+      boolean	will = access >= VConstants.ACS_VISIT;
+
+      if (was != will) {
+	label.setEnabled(will);
+      }
+    }
+  }
+  
+  /**
+   * Update field style according to its access.
+   * @param access The field access.
+   */
+  private void updateStyles(int access) {
+    removeStyleName("visit");
+    removeStyleName("skipped");
+    removeStyleName("mustfill");
+    removeStyleName("hidden");
+    switch (access) {
+    case VConstants.ACS_VISIT:
+      addStyleName("visit");
+      break;
+    case VConstants.ACS_SKIPPED:
+      addStyleName("skipped");
+      break;
+    case VConstants.ACS_MUSTFILL:
+      addStyleName("mustfill");
+      break;
+    case VConstants.ACS_HIDDEN:
+      addStyleName("hidden");
+      break;
+    default:
+      addStyleName("visit");
+      break;
     }
   }
  
@@ -368,16 +327,6 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
   @Override
   public void prepareSnapshot(int fieldPos, boolean activ) {
     label.prepareSnapshot(activ);
-
-    if (info != null) {
-      info.setVisible(false);
-    }
-    if (incr != null) {
-      incr.setVisible(false);
-    }
-    if (decr != null) {
-      decr.setVisible(false);
-    }
   }
  
   //-------------------------------------------------
@@ -390,11 +339,21 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
   }
 
   //-------------------------------------------------
-  // LAYOUTCLICKLISTENER IMPLEMENTATION
+  // FIELD LISTENER IMPLEMENTATION
   //-------------------------------------------------
   
   @Override
-  public void layoutClick(LayoutClickEvent event) {
+  public void onIncrement() {
+    DField.this.model.getIncrementCommand().performAction();
+  }
+  
+  @Override
+  public void onDecrement() {
+    DField.this.model.getDecrementCommand().performAction();
+  }
+  
+  @Override
+  public void onClick() {
     if (!modelHasFocus()) {
       // an empty row in a chart has not calculated
       // the access for each field (ACCESS Trigger)
@@ -408,11 +367,13 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
 
       if (!model.getBlock().isMulti() 
 	  || model.getBlock().isDetailMode() == isInDetail()
-	  || model.getBlock().noChart()) {
+	  || model.getBlock().noChart())
+      {
         KopiAction	action = new KopiAction("mouse1") {
-	  public void execute() throws VException {
+	  
+          @Override
+          public void execute() throws VException {
 	    model.transferFocus(DField.this); // use here a mouse transferfocus
-	  //  UI.getCurrent().push();
 	  }
         };
         // execute it as model transforming thread
@@ -426,18 +387,18 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
   /**
    * Performs the auto fill action.
    */
-  public void performAutoFillAction() {
+  public final void performAutoFillAction() {
     getModel().getForm().performAsyncAction(new KopiAction("autofill") {
       
       @Override
       public void execute() throws VException {
-	DField.this.model.transferFocus(DField.this);
-	try {
-	  DField.this.model.autofillButton();		  
-        } catch (VException e) {
-          // ignore
-          e.printStackTrace();
-        }
+	if (!getModel().getBlock().isMulti() || getModel().getBlock().noChart() || isInDetail()) {
+	  // In chart blocks, transfer focus forces the active record to 0
+	  // So event if we request and autofill to the second record, the first one is filled.
+	  DField.this.model.transferFocus(DField.this);
+	}
+	
+	DField.this.model.autofillButton();
       }
     });     
   }
@@ -448,9 +409,6 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
 
   protected	VFieldUI		model;
   public	DLabel			label;
-  protected	FieldButton		info;
-  protected	FieldButton		incr;
-  protected	FieldButton		decr;
 
   protected	int			state;		// Display state
   protected	int			pos;
@@ -461,10 +419,4 @@ public abstract class DField extends CssLayout implements UField, LayoutClickLis
   protected	boolean			mouseInside;	// private events
 
   private       boolean             	inDetail;
-
-  private static final Resource 	listImg = Utils.getImage("list.png").getResource();
-  private static final Resource 	calendarImg = Utils.getImage("calendar.png").getResource();
-  private static final Resource 	timestampImg = Utils.getImage("timeStamp.png").getResource();
-  private static final Resource 	rightImg = Utils.getImage("arrowright.gif").getResource();
-  private static final Resource 	leftImg = Utils.getImage("arrowleft.gif").getResource();
 }

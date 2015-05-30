@@ -24,6 +24,7 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.base.KopiUtils;
 
+@SuppressWarnings("serial")
 public abstract class AbstractFieldHandler implements FieldHandler {
 
   // ----------------------------------------------------------------------

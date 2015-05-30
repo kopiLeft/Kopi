@@ -29,18 +29,18 @@ import com.kopiright.vkopi.lib.report.VIntegerColumn;
 import com.kopiright.vkopi.lib.report.VReportColumn;
 import com.kopiright.vkopi.lib.report.VSeparatorColumn;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 
 /**
  * The <code>DTable</code> is a vaadin {@link Table} implementing the {@link Utable}
  * specifications.
  */
 @SuppressWarnings("serial")
-public class DTable extends Table implements UTable , ItemClickListener {
+public class DTable extends Table implements UTable, ItemClickListener {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -54,11 +54,12 @@ public class DTable extends Table implements UTable , ItemClickListener {
     super("", model);
     this.model = model;
     setImmediate(true);
-    alwaysRecalculateColumnWidths = false;
-    addStyleName(KopiTheme.TABLE_SMALL);
-    addStyleName(KopiTheme.TABLE_BORDERLESS);
-    addStyleName(KopiTheme.TABLE_REPORT);
-    //setSizeFull();
+    // not really necessary.
+    //alwaysRecalculateColumnWidths = true;
+    addStyleName("small");
+    addStyleName("borderless");
+    addStyleName("report");
+    setWidth("100%");
     addItemClickListener((ItemClickListener)this);
     setItemDescriptionGenerator(new DescriptionGenerator());
   }
@@ -119,11 +120,12 @@ public class DTable extends Table implements UTable , ItemClickListener {
     for (int i = 0; i < visibleColumns.length; i++) {
       newVisibleColumns[i] = new Integer(visibleColumns[i]);
     }
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
 	DTable.super.setVisibleColumns(newVisibleColumns);
+	UI.getCurrent().push();
       }
     });	    
   }

@@ -297,4 +297,6 @@
   <property key="theme-confirmation" value="Changing theme causes disconnecting your session." />
   <property key="available-themes" value="Available Themes :" />
   <property key="home" value="Home" />
+  <property key="session-expired-caption" value="Session Expired" />
+  <property key="session-expired-message" value="Take note of any unsaved data, and click here to continue." />
 </properties>

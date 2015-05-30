@@ -35,7 +35,6 @@ import java.util.Locale;
 import com.kopiright.util.mailer.Mailer;
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
-import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplicationContext;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 /**

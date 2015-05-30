@@ -21,8 +21,10 @@ package com.kopiright.vkopi.lib.report;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.Serializable;
 
-public class Parameters {
+@SuppressWarnings("serial")
+public class Parameters implements Serializable {
 
   /**
    * Constructor

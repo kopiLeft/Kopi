@@ -12,11 +12,9 @@
   <property name="javafiles" 
             value="DateChooser.java DBlock.java DBlockDropHandler.java DChartBlock.java
   	           DChartHeaderLabel.java DField.java DFieldHandler.java DFieldUI.java
-  	           DForm.java DImageField.java DLabel.java DListDialog.java DMultiBlock.java
-  	           DObjectField.java DPage.java DTextEditor.java DTextField.java Environment.java
-  	           HorizontalPage.java ImageFileChooser.java KeyNavigator.java KopiLayout.java
-  	           KopiMultiBlockLayout.java KopiSimpleBlockLayout.java ScrollBar.java
-  	           VerticalPage.java VPredefinedValueHandler.java" />
+  	           DForm.java DImageField.java DLabel.java DListDialog.java
+  	           DMultiBlock.java DObjectField.java DTextEditor.java DTextField.java
+  	           KeyNavigator.java VPredefinedValueHandler.java" />
 	
   <import file="${topdir}/defs.xml" />
 </project>

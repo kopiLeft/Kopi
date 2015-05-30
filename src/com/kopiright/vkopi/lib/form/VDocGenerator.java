@@ -25,6 +25,7 @@ import com.kopiright.vkopi.lib.visual.VlibProperties;
 /**
  * This class implements a Kopi pretty printer
  */
+@SuppressWarnings("serial")
 public class VDocGenerator extends VHelpGenerator {
 
   public VDocGenerator(LatexPrintWriter p) {

@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import com.kopiright.util.base.InconsistencyException;
@@ -33,7 +34,8 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 /**
  * This class implements all UI actions on fields
  */
-public abstract class VFieldUI implements VConstants, ActionHandler {
+@SuppressWarnings("serial")
+public abstract class VFieldUI implements VConstants, ActionHandler, Serializable {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS

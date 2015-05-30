@@ -44,6 +44,7 @@ import com.lowagie.text.Rectangle;
  */
 public class StandAlone {
 
+  @SuppressWarnings("serial")
   public StandAlone(String inFile) {
     title = inFile;
 

@@ -24,8 +24,6 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Vector;
 
-import javax.swing.event.EventListenerList;
-
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
@@ -50,6 +48,7 @@ import com.kopiright.vkopi.lib.visual.WindowBuilder;
 import com.kopiright.vkopi.lib.visual.WindowController;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 
+@SuppressWarnings("serial")
 public abstract class VReport extends VWindow implements Constants, VConstants, Printable {
 
   static {

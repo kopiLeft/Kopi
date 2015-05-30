@@ -19,13 +19,15 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import java.io.Serializable;
+
 /**
  * {@code WindowBuilder} is responsible for creating {@link UWindow}
  * according to a given window model.
  * <p>{@code WindowBuilder} should be registered using {@link WindowController#registerWindowBuilder(int, WindowBuilder)}
  * @see WindowController#registerUIBuilder(int, WindowBuilder)</p>
  */
-public interface WindowBuilder {
+public interface WindowBuilder extends Serializable {
 
   /**
    * Creates the {@link UWindow} for a given window model

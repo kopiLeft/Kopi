@@ -56,7 +56,7 @@ public class Tree extends com.vaadin.ui.Tree implements UTree {
     setItemIconPropertyId(MODULE_PROPERTY_ICON);
     setItemCaptionMode(ItemCaptionMode.PROPERTY);
     setItemDescriptionGenerator(new ItemDescriptionHandler());
-    addStyleName(KopiTheme.TREE_STYLE);
+    // addStyleName(KopiTheme.TREE_STYLE);
   }
 
   //----------------------------------------------------------
@@ -156,7 +156,7 @@ public class Tree extends com.vaadin.ui.Tree implements UTree {
    * @param isLeaf Is it a leaf node ?
    */
   public void setIcon(final int access, final Object itemId, final boolean isLeaf) {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {   
@@ -215,7 +215,7 @@ public class Tree extends com.vaadin.ui.Tree implements UTree {
    * @param onlyMatchPrefix Only match prefixes; no other matches are included.
    */
   public void filter(final String text, final boolean ignoreCase, final boolean onlyMatchPrefix) {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
@@ -263,7 +263,7 @@ public class Tree extends com.vaadin.ui.Tree implements UTree {
   
   @Override
   public void collapseRow(final int row) {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() { 
@@ -274,7 +274,7 @@ public class Tree extends com.vaadin.ui.Tree implements UTree {
 
   @Override
   public void expandRow(final int row) {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {

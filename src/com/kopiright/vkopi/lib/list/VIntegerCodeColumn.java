@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.list;
 
 import com.kopiright.util.base.InconsistencyException;
 
+@SuppressWarnings("serial")
 public class VIntegerCodeColumn extends VCodeColumn {
 
   // --------------------------------------------------------------------

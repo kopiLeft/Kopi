@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.form;
 
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 
+@SuppressWarnings("serial")
 public class VBooleanField extends VBooleanCodeField {
 
   /*

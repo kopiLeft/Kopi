@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.list;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.type.Fixed;
 
+@SuppressWarnings("serial")
 public class VFixnumCodeColumn extends VCodeColumn {
 
   // --------------------------------------------------------------------

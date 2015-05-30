@@ -25,7 +25,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -48,6 +47,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import com.kopiright.vkopi.lib.ui.swing.base.Utils;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.Module;
@@ -56,7 +56,6 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VMenuTree;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.Query;
-import com.kopiright.vkopi.lib.ui.swing.base.Utils;
 
 public class DMenuTree extends DWindow implements UMenuTree {
 
@@ -462,9 +461,4 @@ public class DMenuTree extends DWindow implements UMenuTree {
   private List<Action>             		orderdShorts;
   private List<Module>                  	modules;
   private static final long 			serialVersionUID = -6740174181163603800L;
-  @Override
-  public void fileProduced(File file) {
-    // TODO Auto-generated method stub
-    
-  }
 }

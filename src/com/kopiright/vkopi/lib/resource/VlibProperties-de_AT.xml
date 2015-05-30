@@ -298,4 +298,6 @@
   <property key="theme-confirmation" value="Änderung designe verursacht trennung der sitzung" />
   <property key="available-themes" value="Entwürfe verfügbar :" />
   <property key="home" value="Empfang" />
+  <property key="session-expired-caption" value="Sitzung abgelaufen" />
+  <property key="session-expired-message" value="Notieren Sie sich alle nicht gespeicherten Daten, und klicken Sie hier." />
 </properties>

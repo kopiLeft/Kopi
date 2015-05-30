@@ -28,6 +28,7 @@ import com.kopiright.vkopi.lib.visual.VException;
  * The <code>DFieldHandler</code> is the vaadin implementation of the
  * field handler specifications.
  */
+@SuppressWarnings("serial")
 public class DFieldHandler extends AbstractFieldHandler {
   
   // --------------------------------------------------

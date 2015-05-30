@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.base.Utils;
@@ -32,7 +33,8 @@ import com.kopiright.vkopi.lib.visual.VCommand;
 /**
  * This class implements a Kopi pretty printer
  */
-public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerator implements VConstants {
+@SuppressWarnings("serial")
+public class VHelpGenerator extends com.kopiright.vkopi.lib.visual.VHelpGenerator implements VConstants, Serializable {
 
   // ----------------------------------------------------------------------
   // ACCESSORS

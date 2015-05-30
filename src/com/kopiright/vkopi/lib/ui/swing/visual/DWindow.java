@@ -36,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.io.File;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -892,6 +893,10 @@ public abstract class DWindow extends JPanel implements UWindow {
    */
   public final void unsetWaitInfo() {
     waitInfoHandler.unsetWaitInfo();
+  }
+  
+  public void fileProduced(File file) {
+    // not used in swing version.
   }
 
   /**

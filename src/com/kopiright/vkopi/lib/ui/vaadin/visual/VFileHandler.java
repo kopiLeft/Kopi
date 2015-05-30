@@ -20,12 +20,12 @@
 package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.kopiright.vkopi.lib.ui.vaadin.base.FileUploader;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.FileHandler;
 import com.kopiright.vkopi.lib.visual.UWindow;
-import com.vaadin.util.FileTypeResolver;
 
 /**
  * The <code>VFileHandler</code> is the vaadin implementation of
@@ -44,81 +44,117 @@ public class VFileHandler extends FileHandler {
 
   @Override
   public File chooseFile(UWindow window, File dir, String defaultName) { 
-    File		temp = null;
-    
-    try  {
-      if (dir != null) {
-	temp = File.createTempFile(defaultName.substring(0,defaultName.indexOf(".")), defaultName.substring(defaultName.indexOf(".")), dir);
-      } else {
-	temp = File.createTempFile(defaultName.substring(0,defaultName.indexOf(".")), defaultName.substring(defaultName.indexOf(".")));
-      }
+    try {
+      return createTempFile(dir, defaultName);
     } catch (IOException e) {
-      e.printStackTrace();
+      getApplication().displayError(window, e.getMessage());
+      return null;
     }
-    return temp;
   }
   
   @Override
   public File openFile(UWindow window, String defaultName) {
-    FileUploader.get().invoke(null);
-    return FileUploader.get().getSelectedFile();
+    return openFile(window, null, defaultName);
   }
 
   @Override
   public File openFile(UWindow window, final FileFilter filter) {
-    FileUploader.get().invoke(((VFileFilter)filter).getMIMEType());
-    return FileUploader.get().getSelectedFile();
+    return openFile(window, (String)null); // FIXME: Use the file filter by adding a mime type in the FileFilter object.
   }
 
   @Override
   public File openFile(UWindow window, File dir, String defaultName) {    
-    FileUploader.get().invoke(null);
-    return FileUploader.get().getSelectedFile();
+    byte[]	file = getApplication().getUploader().upload(null); // no mime type is provided
+    
+    if (file != null) {
+      return toFile(window, file, dir, defaultName);
+    }
+    
+    return null;
   }
   
-  //--------------------------------------------------
-  // FILE FILTER
-  //--------------------------------------------------
+  /**
+   * Returns the current application instance.
+   * @return The current application instance.
+   */
+  protected VApplication getApplication() {
+    return (VApplication) ApplicationContext.getApplicationContext().getApplication();
+  }
   
   /**
-   * The <code>VFileFilter</code> is a vaadin file filter.
+   * Converts the given bytes to a file. The file is created under OS temp directory.
+   * @param file The file bytes.
+   * @param dir The parent directory.
+   * @param defaultName The default file name.
+   * @return
    */
-  public class VFileFilter implements FileFilter {
-    
-    //---------------------------------------
-    // CONSTRUCTOR
-    //---------------------------------------
-    
-    /**
-     * Creates a new <code>VFileFilter</code> instance.
-     * @param extension The searched file extension.
-     */
-    public VFileFilter(String extension) {
-      this.extension = extension;
-    }
-    
-    @Override
-    public boolean accept(File f) {
-      return true;
-    }
-    
-    /**
-     * Returns the encapsulated mime type.
-     * @return The encapsulated mime type.
-     */
-    public String getMIMEType() {
-      return FileTypeResolver.getExtensionToMIMETypeMapping().get(extension.toLowerCase());
-    }
-    
-    @Override
-    public String getDescription() {
+  protected File toFile(UWindow window, byte[] file, File directory, String defaultName) {
+    try {
+      FileOutputStream		out;
+      File			destination;
+
+      destination = createTempFile(directory, defaultName);
+      out = new FileOutputStream(destination);
+      out.write(file);
+      out.close();
+      
+      return destination;
+    } catch (IOException e) {
+      getApplication().displayError(window, e.getMessage());
       return null;
     }
-   
-    //---------------------------------------
-    // DATA MEMBERS
-    //---------------------------------------
+  }
+  
+  /**
+   * Creates a temporary file.
+   * @param directory The parent directory.
+   * @param defaultName The default file name.
+   * @return The created temporary file.
+   * @throws IOException I/O errors.
+   */
+  protected File createTempFile(File directory, String defaultName)
+    throws IOException
+  {
+    String		basename;
+    String		extension;
     
-    private final String		extension;
+    basename = getBaseFileName(defaultName);
+    extension = getExtension(defaultName);
+    
+    return File.createTempFile(basename, String.valueOf("." + extension), directory);
+  }
+  
+  /**
+   * Returns the file extension of a given file name.
+   * @param defaultName The default file name.
+   * @return The file extension.
+   */
+  protected String getExtension(String defaultName) {
+    if (defaultName != null) {
+      int	index = defaultName.lastIndexOf('.');
+      
+      if (index != -1) {
+	return defaultName.substring(Math.min(defaultName.length(), index + 1));
+      }
+    }
+    
+    return ""; // no extension.
+  }
+  
+  /**
+   * Returns the base file name (without file extension).
+   * @param defaultName The default file name.
+   * @return The base file name 
+   */
+  protected String getBaseFileName(String defaultName) {
+    if (defaultName != null) {
+      int	index = defaultName.lastIndexOf('.');
+      
+      if (index != -1) {
+	return defaultName.substring(0, Math.min(defaultName.length(), index));
+      }
+    }
+    
+    return ""; // empty name.
   }
 }

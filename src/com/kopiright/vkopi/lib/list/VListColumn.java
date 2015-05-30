@@ -24,6 +24,7 @@ import com.kopiright.vkopi.lib.l10n.ListLocalizer;
 /**
  * !!! NEED COMMENTS
  */
+@SuppressWarnings("serial")
 public abstract class VListColumn implements VConstants, ObjectFormater {
 
   // --------------------------------------------------------------------

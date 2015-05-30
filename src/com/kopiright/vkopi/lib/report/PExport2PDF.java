@@ -29,6 +29,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.report.UReport.UTable;
 import com.kopiright.vkopi.lib.util.PPaperType;
 import com.kopiright.vkopi.lib.util.PrintJob;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Time;
@@ -48,7 +49,8 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class  PExport2PDF extends PExport implements Constants {
+@SuppressWarnings("serial")
+public class PExport2PDF extends PExport implements Constants {
 
   /**
    * Constructor
@@ -222,7 +224,7 @@ public class  PExport2PDF extends PExport implements Constants {
   private PdfPTable createFooter(int page, int allpages) {
     PdfPTable       foot = new PdfPTable(2);
 
-    foot.addCell(createCell(getTitle() + " - Seite " + page +"/"+allpages, 7, Color.black, Color.white, ALG_LEFT, false));
+    foot.addCell(createCell(getTitle() + " - " + VlibProperties.getString("print-page") + " " + page +"/"+allpages, 7, Color.black, Color.white, ALG_LEFT, false));
     foot.addCell(createCell(Date.now().format("dd.MM.yyyy") + " " + Time.now().format("HH:mm"),
                             7,
                             Color.black,

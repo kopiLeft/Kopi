@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.form;
 /**
  * A class to specifie alignment in KopiLayout
  */
+@SuppressWarnings("serial")
 public class MultiFieldAlignment extends KopiAlignment {
 
   public MultiFieldAlignment(int x, int y, int width, boolean alignRight) {

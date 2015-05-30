@@ -238,7 +238,7 @@
   <property key="Quit-help" value="Quitter le rapport." />
   <property key="Print" value="Imprimer" />
   <property key="Print-help" value="Imprimer le rapport" />
-  <property key="Preview" value="Afficher" />
+  <property key="Preview" value="Aperçu" />
   <property key="Preview-help" value="Afficher le rapport sur l'écran" />
   <property key="PrintOptions" value="Options" />
   <property key="PrintOptions-help" value="Changer les options d'impression" />
@@ -297,4 +297,6 @@
   <property key="theme-confirmation" value="Le changement de thème provoque la déconnexion de votre session." />
   <property key="available-themes" value="Thèmes disponibles :" />
   <property key="home" value="Accueil" />
+  <property key="session-expired-caption" value="Session expirée" />
+  <property key="session-expired-message" value="Prenez note de toutes les données non sauvegardées, et cliquez ici pour continuer." />
 </properties>

@@ -19,13 +19,10 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.visual; 
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import com.kopiright.vkopi.lib.ui.vaadin.base.HorizontalMenu;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.ui.vaadin.base.Tree;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
@@ -34,7 +31,6 @@ import com.kopiright.vkopi.lib.visual.UMenuTree;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VMenuTree;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.xkopi.lib.base.Query;
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -42,9 +38,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.Action.Handler;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.MenuBar.Command;
-import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree.CollapseEvent;
 import com.vaadin.ui.Tree.CollapseListener;
 import com.vaadin.ui.Tree.ExpandEvent;
@@ -55,6 +49,8 @@ import com.vaadin.ui.Tree.ExpandListener;
  * {@link UMenuTree}.
  * 
  * <p>The implementation is based on {@link DWindow}</p>
+ * 
+ * TODO Externalize favorites handling.
  */
 public class DMenuTree extends DWindow implements UMenuTree {
 
@@ -73,74 +69,23 @@ public class DMenuTree extends DWindow implements UMenuTree {
     modules = new ArrayList<Module>();
     orderdShorts = new ArrayList<Handler>();
     if(!model.isSuperUser()){
-      menu = new HorizontalMenu(model.getRoot());
-      menu.setAutoOpen(true);
-      toolbar = new BookmarkPanel();
-
-      for (int i = 0; i < ((VMenuTree) getModel()).getShortcutsID().size() ; i++) {
-        int       id = ((Integer)((VMenuTree) getModel()).getShortcutsID().get(i)).intValue();
-
-        for (int j = 0; j < ((VMenuTree) getModel()).getModuleArray().length; j++) {
-	  if (((VMenuTree) getModel()).getModuleArray()[j].getId() == id) {
-	    addShortcut(((VMenuTree) getModel()).getModuleArray()[j]);
-	  }
-        }
-      }
-    
-     // getMenuBar().addFavoriteMenu(VlibProperties.getString("toolbar-title")); /*Hedi*/
-    
-      if (!((VMenuTree) getModel()).getShortcutsID().isEmpty()) {
-        toolbar.show();
-        toolbar.toFront();
-      }
-      
-      org.kopi.vaadin.menubar.MenuBar.Command launchForm = new org.kopi.vaadin.menubar.MenuBar.Command() {
-      
-        @Override
-        public void menuSelected(final org.kopi.vaadin.menubar.MenuBar.MenuItem selectedItem) {
-          if (!selectedItem.hasChildren()) {
-	    selectedMenuItem = selectedItem;
-	    org.kopi.vaadin.menubar.MenuBar.MenuItem breadCrumbitem = selectedItem;
-	    breadCrumb = new BreadCrumb(breadCrumbitem.getText());
-	
-	    while (breadCrumbitem.getParent() != null) {
-	      breadCrumb.addItem(breadCrumbitem.getParent().getText());
-	      breadCrumbitem = breadCrumbitem.getParent();
-	    }
-	    callSelectedForm(); 
-          } 
-        }
-      };
- 
-      for(int i = 0; i < menu.getItems().size(); i++) {
-        if(!menu.getItems().get(i).hasChildren()) {  
-	  menu.getItems().get(i).setCommand(launchForm);
-        }else{ 
-    	  for(int j = 0; j < menu.getItems().get(i).getSize(); j++) {
-    	    if(!menu.getItems().get(i).getChildren().get(j).hasChildren()) {
-    	      menu.getItems().get(i).getChildren().get(j).setCommand(launchForm);
-    	    }else{
-    	      for(int k = 0; k < menu.getItems().get(i).getChildren().get(j).getSize(); k++) {
-    	        menu.getItems().get(i).getChildren().get(j).getChildren().get(k).setCommand(launchForm); 
-    	      }    
-    	    }
-    	  }   
-        }
-      }
-    
-      model.setDisplay(this);
-      menu.setWidth("100%");
-      setContent(menu);
+      // if we are not in a super user context, the menu is
+      // handled by the module menu component.
+      // The menu tree is handled differently comparing to swing
+      // version.
+      // The tree component is used only in a super user context.
     } else {
+      Panel		content;
+      
       tree = new Tree(model.getRoot(), model.isSuperUser());
-      tree.addStyleName(KopiTheme.TREE_MENU);
-
+      content = new Panel(tree);
+      
       for (int i = 0; i < ((VMenuTree) getModel()).getShortcutsID().size() ; i++) {
         int       id = ((Integer)((VMenuTree) getModel()).getShortcutsID().get(i)).intValue();
 
         for (int j = 0; j < ((VMenuTree) getModel()).getModuleArray().length; j++) {
   	  if (((VMenuTree) getModel()).getModuleArray()[j].getId() == id) {
-  	    addShortcut(((VMenuTree) getModel()).getModuleArray()[j]);
+  	    // addShortcut(((VMenuTree) getModel()).getModuleArray()[j]);
   	  }
         }
       }
@@ -163,7 +108,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
   	  if (itemId == null) {
   	    return;
   	  }
-  	  //tree.restoreLastModifiedItem();
+  	  // tree.restoreLastModifiedItem();
   	  tree.setIcon(itemId,
   	               !tree.areChildrenAllowed(itemId),
   	               tree.getParent(itemId) == null,
@@ -178,7 +123,10 @@ public class DMenuTree extends DWindow implements UMenuTree {
       setMenu();
       tree.setValue(null);
       tree.setNullSelectionAllowed(false);
-      setContent(tree);
+      // allow scrolling when an overflow is detected
+      content.setWidth(310, Unit.PIXELS);
+      content.setHeight(410, Unit.PIXELS);
+      setContent(content);
     }
   }
 
@@ -186,75 +134,74 @@ public class DMenuTree extends DWindow implements UMenuTree {
   // IMPLEMENTATIONS
   // --------------------------------------------------------------------
   
-  /**
-   * Adds the given module to favorites
-   */
-  @SuppressWarnings({ "serial", "unused" })
-  public void addShortcut(final Module module) {
-    if (!shortcuts.containsKey(module)) {
-      
-      Command command = new Command() {
-        
-        @Override
-        public void menuSelected(MenuItem selectedItem) {
-          setWaitInfo(VlibProperties.getString("menu_form_started"));
-	  getModel().performAsyncAction(new KopiAction("menu_form_started") {
-	    public void execute() throws VException {
-	      module.run(getModel().getDBContext());
-	      unsetWaitInfo();
-	    }
-	  });  
-	}
-      };
-
-//      toolbar.addShortcut(command);
-      //getMenuBar().addFavoriteMenuItem(module.getDescription(), command, (Image) module.getIcon()); /*Hedi*/
-      modules.add(module);
-    }
-  }
-  
-  /**
-   * Removes the given module from favorites.
-   * @param module The module to remove its shortcut.
-   */
-  public void removeShortcut(final Module module) {
-    if (shortcuts.containsKey(module)) {
-      Shortcut    	removed;
-      
-      modules.remove(module);
-      removed = (Shortcut) shortcuts.remove(module);
-      orderdShorts.remove(removed);
-    }
-  }
-
-  /**
-   * Resets all favorites.
-   */
-  public void resetShortcutsInDatabase() {
-    try {
-      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-      new Query(getModel()).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID());
-      for (int i = 0; i < modules.size(); i++) {
-        Module  module = (Module)modules.get(i);
-
-        new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-                                  + "{fn NEXTVAL(FAVORITENId)}" + ", "
-                                  + (int)(System.currentTimeMillis()/1000) + ", "
-                                  + getModel().getUserID() + ", "
-                                  + module.getId()
-                                  + ")");
-      }
-
-      getModel().getDBContext().commitWork();
-    } catch (SQLException e) {
-      try {
-        getModel().getDBContext().abortWork();
-      } catch (SQLException ef) {
-        ef.printStackTrace();
-      }
-      e.printStackTrace();
-    }
-  }
+//  /**
+//   * Adds the given module to favorites
+//   */
+//  public void addShortcut(final Module module) {
+//    if (!shortcuts.containsKey(module)) {
+//      
+//      Command command = new Command() {
+//        
+//        @Override
+//        public void menuSelected(MenuItem selectedItem) {
+//          setWaitInfo(VlibProperties.getString("menu_form_started"));
+//	  getModel().performAsyncAction(new KopiAction("menu_form_started") {
+//	    public void execute() throws VException {
+//	      module.run(getModel().getDBContext());
+//	      unsetWaitInfo();
+//	    }
+//	  });  
+//	}
+//      };
+//
+////      toolbar.addShortcut(command);
+//      //getMenuBar().addFavoriteMenuItem(module.getDescription(), command, (Image) module.getIcon()); /*Hedi*/
+//      modules.add(module);
+//    }
+//  }
+//  
+//  /**
+//   * Removes the given module from favorites.
+//   * @param module The module to remove its shortcut.
+//   */
+//  public void removeShortcut(final Module module) {
+//    if (shortcuts.containsKey(module)) {
+//      Shortcut    	removed;
+//      
+//      modules.remove(module);
+//      removed = (Shortcut) shortcuts.remove(module);
+//      orderdShorts.remove(removed);
+//    }
+//  }
+//
+//  /**
+//   * Resets all favorites.
+//   */
+//  public void resetShortcutsInDatabase() {
+//    try {
+//      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
+//      new Query(getModel()).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID());
+//      for (int i = 0; i < modules.size(); i++) {
+//        Module  module = (Module)modules.get(i);
+//
+//        new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
+//                                  + "{fn NEXTVAL(FAVORITENId)}" + ", "
+//                                  + (int)(System.currentTimeMillis()/1000) + ", "
+//                                  + getModel().getUserID() + ", "
+//                                  + module.getId()
+//                                  + ")");
+//      }
+//
+//      getModel().getDBContext().commitWork();
+//    } catch (SQLException e) {
+//      try {
+//        getModel().getDBContext().abortWork();
+//      } catch (SQLException ef) {
+//        ef.printStackTrace();
+//      }
+//      e.printStackTrace();
+//    }
+//  }
 
   /**
    * Move the focus from the activated frame to favorites frame.
@@ -271,12 +218,12 @@ public class DMenuTree extends DWindow implements UMenuTree {
 
   @Override
   public void addSelectedElement() {
-    Module      module = getSelectedModule();
-
-    if (module != null && module.getObject() != null) {
-      addShortcut(module);
-      resetShortcutsInDatabase();
-    }
+//    Module      module = getSelectedModule();
+//
+//    if (module != null && module.getObject() != null) {
+//      addShortcut(module);
+//      resetShortcutsInDatabase();
+//    }
   }
   
   /**
@@ -309,12 +256,11 @@ public class DMenuTree extends DWindow implements UMenuTree {
   
   @Override
   public void setMenu() {	
-    Module    module = getSelectedModule();
+    Module    		module = getSelectedModule();
 
     getModel().setActorEnabled(VMenuTree.CMD_QUIT, !((VMenuTree) getModel()).isSuperUser());
     getModel().setActorEnabled(VMenuTree.CMD_INFORMATION, true);
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true);
-    
     if (module != null) {
       ((VMenuTree) getModel()).setToolTip(module.getHelp());
       getModel().setActorEnabled(VMenuTree.CMD_SHOW, shortcuts.size() > 0);
@@ -340,12 +286,12 @@ public class DMenuTree extends DWindow implements UMenuTree {
 
   @Override
   public void removeSelectedElement() {
-    Module      module = getSelectedModule();
-
-    if (module != null && module.getObject() != null) {
-      removeShortcut(module);
-      resetShortcutsInDatabase();
-    }
+//    Module      module = getSelectedModule();
+//
+//    if (module != null && module.getObject() != null) {
+//      removeShortcut(module);
+//      resetShortcutsInDatabase();
+//    }
   }
   
   /**
@@ -356,7 +302,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
     if (getModel().isSuperUser()) {
       return tree.getModule(tree.getValue());
     } else {
-      return menu.getModule(selectedMenuItem);
+      return null;
     }
   }
 
@@ -365,8 +311,6 @@ public class DMenuTree extends DWindow implements UMenuTree {
     setVisible(true);
     if (getModel().isSuperUser()) {
       tree.focus();
-    } else {
-      menu.focus();
     }
   }
 
@@ -389,10 +333,9 @@ public class DMenuTree extends DWindow implements UMenuTree {
    * Allowed to call outside the event dispatch thread
    */
   @Override
-  public final void closeWindow() {//Fix Me
+  public final void closeWindow() {
     if (!((VMenuTree) getModel()).isSuperUser()) {
-      //  ((VApplication) VApplicationContext.getApplicationContext().getApplication()).quit();//in close listener for ask dialog   
-      askUser(Message.getMessage("confirm_quit"));
+      getModel().ask(Message.getMessage("confirm_quit"), false);
     }
   }
   
@@ -400,26 +343,14 @@ public class DMenuTree extends DWindow implements UMenuTree {
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  /**
-   * Returns the {@link HorizontalMenu} object.
-   * @return The {@link HorizontalMenu} object.
-   */
-  public HorizontalMenu getMenu() {
-    return menu;
-  }
-
   @Override
   public UBookmarkPanel getBookmark() {
-    return toolbar;
+    return null;
   }
   
   @Override
   public VMenuTree getModel() {
     return (VMenuTree) super.getModel();
-  }
-
-  public static BreadCrumb getBreadCrumb() {
-    return breadCrumb; //!!! FIXME Why it is static ? to check.
   }
   
   //------------------------------------------------------------
@@ -440,9 +371,9 @@ public class DMenuTree extends DWindow implements UMenuTree {
      * @param handler The action handler.
      * @param menubar The tree menu bar.
      */
-    public Shortcut(Handler handler, MenuBar menubar) {
+    public Shortcut(Handler handler/*, MenuBar menubar*/) {
       this.handler = handler;
-      this.menubar = menubar;
+      //this.menubar = menubar;
     }
 
     //---------------------------------------
@@ -450,13 +381,14 @@ public class DMenuTree extends DWindow implements UMenuTree {
     //---------------------------------------
 
     /*package*/ final Handler		handler;
-    /*package*/ final MenuBar		menubar;
+    ///*package*/ final MenuBar		menubar;
   }
    
   /**
    * A dummy implementation of the {@link UBookmarkPanel}.
    */
-  /*package*/ final class BookmarkPanel implements UBookmarkPanel {
+  /*package*/ @SuppressWarnings("serial")
+  final class BookmarkPanel implements UBookmarkPanel {
 
     @Override
     public boolean isEnabled() {
@@ -553,13 +485,14 @@ public class DMenuTree extends DWindow implements UMenuTree {
   // DATA MEMBERS
   // --------------------------------------------------
 
-  private HorizontalMenu				menu;
   private BookmarkPanel        				toolbar;
   private Hashtable<Module, Shortcut>           	shortcuts;
+  @SuppressWarnings("unused")
   private List<Handler>             			orderdShorts;
+  @SuppressWarnings("unused")
   private List<Module>                  		modules;
-  public static BreadCrumb                      	breadCrumb; //!!! FIXME why it is static ?
+  //public static BreadCrumb                      	breadCrumb; //!!! FIXME why it is static ?
   private Tree						tree;
-  private org.kopi.vaadin.menubar.MenuBar.MenuItem	selectedMenuItem;
+  //private org.kopi.vaadin.menubar.MenuBar.MenuItem	selectedMenuItem;
   private static final long 				serialVersionUID = -6740174181163603800L;
 }

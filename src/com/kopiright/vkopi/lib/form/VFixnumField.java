@@ -32,7 +32,7 @@ import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Fixed;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
-
+@SuppressWarnings("serial")
 public class VFixnumField extends VField {
 
   /*

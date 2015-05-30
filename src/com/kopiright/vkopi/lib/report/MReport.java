@@ -18,6 +18,7 @@
  */
 package com.kopiright.vkopi.lib.report;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
@@ -31,7 +32,7 @@ import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.type.NotNullFixed;
 
-public class MReport implements Constants {
+public class MReport implements Constants, Serializable {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION

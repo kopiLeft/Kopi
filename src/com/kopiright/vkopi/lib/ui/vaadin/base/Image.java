@@ -24,6 +24,7 @@ import com.vaadin.server.Resource;
 /**
  * The vaadin implementation of an image model.
  */
+@SuppressWarnings("serial")
 public class Image implements com.kopiright.vkopi.lib.base.Image {
 
   //----------------------------------------------------------------

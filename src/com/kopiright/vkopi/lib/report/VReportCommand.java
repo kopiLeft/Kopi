@@ -55,11 +55,12 @@ public class VReportCommand extends VCommand implements ActionHandler {
    * @deprecated                use method performAsyncAction
    */
   public void performAction(final KopiAction action, boolean block) {
-    try {
+    report.performAction(action, block);
+    /*try {
       executeVoidTrigger(getTrigger());
     } catch (Exception e) {
       e.printStackTrace();
-    }
+    }*/
   }
   /**
    * Performs the appropriate action asynchronously.
@@ -68,11 +69,12 @@ public class VReportCommand extends VCommand implements ActionHandler {
    * @param	action		the action to perform.
    */
   public void performAsyncAction(final KopiAction action) {
-    try {
+    report.performAsyncAction(action);
+    /*try {
       executeVoidTrigger(getTrigger());
     } catch (Exception e) {
       e.printStackTrace();
-    }
+    }*/
   }
 
   /**

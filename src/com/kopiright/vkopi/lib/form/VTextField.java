@@ -32,12 +32,14 @@ import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VTextColumn;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.PostgresDriverInterface;
 import com.kopiright.xkopi.lib.base.Query;
 
 /**
  * This class implements multi-line text fields.
  */
+@SuppressWarnings("serial")
 public class VTextField extends VStringField {
 
   // ----------------------------------------------------------------------
@@ -95,7 +97,11 @@ public class VTextField extends VStringField {
         throw new InconsistencyException(e);
       }
     } else {
-      setString(r, (String)v);
+      if (v != null) {
+	setString(r, new String(((String)v)));
+      } else {
+	setString(r, null);
+      }
     }
   }
 
@@ -162,7 +168,12 @@ public class VTextField extends VStringField {
    * Returns the SQL representation of field value of given record.
    */
   public String getSqlImpl(int r) {
-    return "?";
+    // use string representation for posgresql databases.
+    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      return KopiUtils.toSql((String)super.getObjectImpl(r));
+    } else {
+      return "?";
+    }
   }
 
   /**
@@ -171,7 +182,11 @@ public class VTextField extends VStringField {
    * @kopi	inaccessible
    */
   public boolean hasLargeObject(int r) {
-    return true;
+    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**

@@ -19,23 +19,27 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
-import org.kopi.vaadin.fields.AbstractField;
+import org.kopi.vaadin.addons.TextField;
+import org.kopi.vaadin.addons.TextValueChangeListener;
 import org.vaadin.peter.contextmenu.ContextMenu;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickEvent;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickListener;
 
 import com.kopiright.vkopi.lib.form.ModelTransformer;
 import com.kopiright.vkopi.lib.form.UTextField;
+import com.kopiright.vkopi.lib.form.VCodeField;
 import com.kopiright.vkopi.lib.form.VConstants;
+import com.kopiright.vkopi.lib.form.VDateField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
+import com.kopiright.vkopi.lib.form.VFixnumField;
+import com.kopiright.vkopi.lib.form.VIntegerField;
+import com.kopiright.vkopi.lib.form.VMonthField;
+import com.kopiright.vkopi.lib.form.VStringField;
+import com.kopiright.vkopi.lib.form.VTimeField;
+import com.kopiright.vkopi.lib.form.VTimestampField;
+import com.kopiright.vkopi.lib.form.VWeekField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.FieldFactory;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
 
 /**
  * The <code>DTextField</code> is the vaadin implementation
@@ -84,56 +88,39 @@ public class DTextField extends DField implements UTextField, VConstants {
                            scanner,
                            align);
     field.setImmediate(true);
-    field.setSelectAll(true);
-    textChangeHandler = new TextChangeListener() {
-
+    valueChangeHandler = new TextValueChangeListener() {
+      
       @Override
-      public void textChange(TextChangeEvent event) {
-	((DForm)model.getModel().getForm().getDisplay()).getNotificationPanel().hide();
-        if (getComponentError() != null) {
-          setComponentError(null);
-        }
-        // ensure that the active field is this field to check text
-        // this can cause an assertion exception after block load
-        if (getModel() == getModel().getBlock().getActiveField()) {
-          checkText(event.getText(), true);  
-        }
+      public void onTextChange(String oldText, String newText) {
+	// ensure that the active field is this field to check text
+        // to fire the autoleave trigger on the right field.
+	if (getModel() == getModel().getBlock().getActiveField()) {
+	  checkText(newText, isChanged(oldText, newText));
+	}
+      }
+      
+      /**
+       * Returns {@code true} if there is a difference between the old and the new text.
+       * @param oldText The old text value.
+       * @param newText The new text value.
+       * @return {@code true} if there is a difference between the old and the new text.
+       */
+      protected boolean isChanged(String oldText, String newText) {
+	if (oldText == null) {
+	  oldText = ""; // replace null by empty string to avoid null pointer exceptions
+	}
+	
+	if (newText == null) {
+	  newText = "";
+	}
+	
+	return !oldText.equals(newText);
       }
     };
 
-    valueChangeHandler = new ValueChangeListener() {
-
-      @Override
-      public void valueChange(ValueChangeEvent event) {
-	((DForm)model.getModel().getForm().getDisplay()).getNotificationPanel().hide();
-        if (getComponentError() != null) {
-          setComponentError(null);
-        }
-        // ensure that the active field is this field to check text
-        // this can cause an assertion exception after block load
-        if (getModel() == getModel().getBlock().getActiveField()) {
-          checkText((String)event.getProperty().getValue(), false);
-        }
-      }
-    };
-
-    field.addTextChangeListener(textChangeHandler);
-    field.addValueChangeListener(valueChangeHandler);
-    addContextMenu();
-    
-    if (model.hasAutofill() && getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
-      field.addStyleName(KopiTheme.FIELD_AUTOFILL);
-    }
-     
-    addComponentAsFirst(field);
-    
-    /*startDisplayed = false;
-    if (model.getModel().getDefaultAccess() == ACS_MUSTFILL && !(model.getBlockView() instanceof DChartBlock)) {
-      Label star = new Label("*");
-      star.addStyleName(KopiTheme.STAR_STYLE);
-      addComponentAsFirst(star);
-      startDisplayed = true;
-    }*/
+    field.addTextValueChangeListener(valueChangeHandler);
+    createContextMenu();
+    setContent(field);
   }
 
   // --------------------------------------------------
@@ -145,22 +132,58 @@ public class DTextField extends DField implements UTextField, VConstants {
    * @param noEcho Password field ?
    * @param scanner Scanner field ?
    * @param align The field alignment.
-   * @return The {@link AbstractField} object.
+   * @return The {@link TextField} object.
    */
-  private AbstractField createFieldGUI(boolean noEcho, 
-                                       boolean scanner, 
-                                       int align) 
+  private TextField createFieldGUI(boolean noEcho, 
+                                   boolean scanner, 
+                                   int align) 
   {
     
-    AbstractField      textfield;
+    TextField      	textfield;
 
-    textfield = FieldFactory.createField(getModel(), noEdit, noEcho, scanner);
-
-    if (align == VConstants.ALG_RIGHT) {
-      textfield.addStyleName("align-right");
+    textfield = new TextField(getModel().getWidth(),
+	                      getModel().getHeight(),
+	                      (getModel().getHeight() == 1) ? 1 : ((VStringField)getModel()).getVisibleHeight(),
+	                      noEcho,
+	                      scanner,
+	                      scanner,
+	                      align);
+    // set field type according to the model
+    // this will set the validation strategy on the client side.
+    if (getModel() instanceof VStringField) {
+      // string field
+      textfield.setType(TextField.Type.STRING);
+    } else if (getModel() instanceof VIntegerField) {
+      // integer field
+      textfield.setType(TextField.Type.INTEGER);
+    } else if (getModel() instanceof VMonthField) {
+      // month field
+      textfield.setType(TextField.Type.MONTH);
+    } else if (getModel() instanceof VDateField) {
+      // date field
+      textfield.setType(TextField.Type.DATE);
+    } else if (getModel() instanceof VWeekField) {
+      // week field
+      textfield.setType(TextField.Type.WEEK);
+    } else if (getModel() instanceof VTimeField) {
+      // time field
+      textfield.setType(TextField.Type.TIME);
+    } else if (getModel() instanceof VCodeField) {
+      // code field
+      textfield.setType(TextField.Type.CODE);
+      textfield.setEnumerations(((VCodeField)getModel()).getLabels());
+    } else if (getModel() instanceof VFixnumField) {
+      // fixnum field
+      textfield.setType(TextField.Type.FIXNUM);
+    } else if (getModel() instanceof VTimestampField) {
+      // timestamp field
+      textfield.setType(TextField.Type.TIMESTAMP);
+    } else {
+      throw new IllegalArgumentException("unknown field model : " + getModel().getClass().getName());
     }
-    
-    textfield.setMaxLength(getModel().getWidth() * getModel().getHeight());
+    // add navigation handler
+    textfield.addTextFieldListener(new KeyNavigator(getModel()));
+
     return textfield;
   }
 
@@ -169,50 +192,43 @@ public class DTextField extends DField implements UTextField, VConstants {
   // ----------------------------------------------------------------------
 
   @Override
-  public void updateAccess() {
-    super.updateAccess();
-    label.update(getModel(), getPosition());
-    BackgroundThreadHandler.start(new Runnable() {
+  public synchronized void updateAccess() {
+    DTextField.super.updateAccess();
+    label.update(model, getPosition());
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
-        field.setEnabled(access >= VConstants.ACS_VISIT);
-      }
-    });
-  }
-
-  public synchronized void updateText() {
-    BackgroundThreadHandler.start(new Runnable() {
-
-      @Override
-      public void run() {
-	final String	newModelTxt = getModel().getText(getRowController().getBlockView().getRecordFromDisplayLine(getPosition()));
-	String  	currentModelTxt = getText();
-
-	if ((newModelTxt == null && currentModelTxt != null) || !newModelTxt.equals(currentModelTxt)) {
-	  if (inside) {
-	    field.removeTextChangeListener(textChangeHandler);
-	    field.removeValueChangeListener(valueChangeHandler);
-	  }
-	  field.setValue(transformer.toGui(newModelTxt).trim());
-	  if (inside) {
-	    field.addTextChangeListener(textChangeHandler);
-	    field.addValueChangeListener(valueChangeHandler);
-	  }
-	}
-
-	DTextField.super.updateText();
-	if (modelHasFocus() && !selectionAfterUpdateDisabled) {	
-	  // field.selectAll();
-	  selectionAfterUpdateDisabled = false;
-	} 
+	field.setEnabled(access >= VConstants.ACS_VISIT);
+	setEnabled(access >= VConstants.ACS_VISIT);
       }
     });
   }
 
   @Override
+  public synchronized void updateText() {
+    final String	newModelTxt = getModel().getText(getRowController().getBlockView().getRecordFromDisplayLine(getPosition()));
+    String  		currentModelTxt = getText();
+
+    if ((newModelTxt == null && currentModelTxt != null) || !newModelTxt.equals(currentModelTxt)) {
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          field.setText(transformer.toGui(newModelTxt).trim());
+        }
+      });
+    }
+
+    super.updateText();
+    if (modelHasFocus() && !selectionAfterUpdateDisabled) {	
+      selectionAfterUpdateDisabled = false;
+    } 
+  }
+
+  @Override
   public synchronized void updateFocus() {
-    label.update(getModel(), getPosition());
+    label.update(model, getPosition());
     if (!modelHasFocus()) {
       if (inside) {
         inside = false;
@@ -231,17 +247,16 @@ public class DTextField extends DField implements UTextField, VConstants {
   /**
    * Gets the focus to this field.
    */
-  private void enterMe() {
-    if (scanner) {
-      field.setValue(transformer.toGui(""));
-    }
-
-    //field.setReadOnly(!noEdit);
-    BackgroundThreadHandler.start(new Runnable() {
+  private synchronized void enterMe() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
-      public void run() { 
-        field.focus();    
+      public void run() {
+	if (scanner) {
+	  field.setText(transformer.toGui(""));
+	}
+	
+	field.setFocus(true);
       }
     });
   }
@@ -249,7 +264,7 @@ public class DTextField extends DField implements UTextField, VConstants {
   /**
    * Leaves the field.
    */
-  private void leaveMe() {
+  private synchronized void leaveMe() {
     //field.setReadOnly(false);
 
     reInstallSelectionFocusListener();
@@ -257,7 +272,13 @@ public class DTextField extends DField implements UTextField, VConstants {
     // scanner nescessary
     if (scanner) {
       // trick: it is now displayed on a different way
-      field.setValue(transformer.toModel(field.getValue()));
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          field.setText(transformer.toModel(field.getText()));
+        }
+      });
     }
   }
 
@@ -267,19 +288,17 @@ public class DTextField extends DField implements UTextField, VConstants {
    * @param changed Is value changed ?
    */
   private void checkText(String s, boolean changed) {
-    String text = transformer.toModel(s);
+    String	text = transformer.toModel(s);
 
     if (!transformer.checkFormat(text)) {
       return;
     }
 
-    if (getModel().checkText(text)) {
-      if (getModel() == getModel().getBlock().getActiveField()) {
-        getModel().onTextChange(text);
-      }
+    if (getModel().checkText(text) && changed) {
+      getModel().onTextChange(text);
     }
 
-    getModel().setChanged(true);
+    getModel().setChanged(changed);
   }
 
   // --------------------------------------------------
@@ -428,7 +447,7 @@ public class DTextField extends DField implements UTextField, VConstants {
 
   @Override
   public String getText() {
-    return transformer.toModel(field.getValue());
+    return transformer.toModel(field.getText() == null ? "" : field.getText());
   }
 
   @Override
@@ -469,12 +488,14 @@ public class DTextField extends DField implements UTextField, VConstants {
   } 
 
   @Override
-  public void setBlink(boolean b) {
-    if (b) {
-      field.addStyleName(KopiTheme.FIELD_BLINK);
-    } else {
-      field.removeStyleName(KopiTheme.FIELD_BLINK);
-    }
+  public void setBlink(final boolean blink) {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	field.setBlink(blink);
+      }
+    });
   }
 
   //---------------------------------------------------
@@ -645,6 +666,7 @@ public class DTextField extends DField implements UTextField, VConstants {
     private final int         		col;
     private final int         		row;
   }
+  
   /*
   //---------------------------------------------
   // FieldChangeListener IMPLEMENTATION
@@ -703,21 +725,21 @@ public class DTextField extends DField implements UTextField, VConstants {
   /**
    * Add the field context menu.
    */
-  public void addContextMenu() {
-    if (model.hasAutofill()  && getModel().getDefaultAccess() > VConstants.ACS_SKIPPED) {
-      final ContextMenu labelPopupMenu = new ContextMenu();
-      labelPopupMenu.addItem(VlibProperties.getString("item-index")).setData(VlibProperties.getString("item-index"));
+  protected void createContextMenu() {
+    if (model.hasAutofill() && getModel().getDefaultAccess() > VConstants.ACS_SKIPPED) {
+      final ContextMenu		contextMenu = new ContextMenu();
       
-      labelPopupMenu.addItemClickListener(new ContextMenuItemClickListener() {
+      contextMenu.addItem(VlibProperties.getString("item-index")).setData(VlibProperties.getString("item-index"));
+      contextMenu.addItemClickListener(new ContextMenuItemClickListener() {
 	
 	@Override
 	public void contextMenuItemClicked(ContextMenuItemClickEvent event) {
+	  contextMenu.hide();
 	  performAutoFillAction();
-	  labelPopupMenu.hide();
         }
       });
       
-      labelPopupMenu.setAsContextMenuOf(field);
+      contextMenu.setAsContextMenuOf(field);
     }
   }
   
@@ -725,14 +747,12 @@ public class DTextField extends DField implements UTextField, VConstants {
   // DATA MEMBERS
   // --------------------------------------------------
 
-  private AbstractField             	field;		// the text component
+  private TextField             	field;		// the text component
   protected boolean                     inside;
   protected boolean                     noEdit;
   protected boolean			scanner;
   private   boolean 		        selectionAfterUpdateDisabled;
-  // private   boolean 		        startDisplayed;
   private   DLabel		        label;
   protected ModelTransformer            transformer;
-  private   TextChangeListener	        textChangeHandler;
-  private   ValueChangeListener	        valueChangeHandler;
+  private   TextValueChangeListener	valueChangeHandler;
 }

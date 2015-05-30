@@ -16,13 +16,16 @@
  *
  * $Id$
  */
+
 package com.kopiright.vkopi.lib.base;
+
+import java.io.Serializable;
 
 /**
  * {@code UComponent} is the top-level interface that is and must be implemented
  * by all kopi visual components.
  */
-public interface UComponent {
+public interface UComponent extends Serializable {
 
   /**
    * Tests whether the component is enabled or not. A user can not interact

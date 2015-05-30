@@ -19,11 +19,14 @@
 
 package com.kopiright.vkopi.lib.list;
 
+import java.io.Serializable;
+
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.ListLocalizer;
 
-public class VList implements VConstants {
+@SuppressWarnings("serial")
+public class VList implements VConstants, Serializable {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION

@@ -40,7 +40,8 @@ public class VBlockDefaultOuterJoin {
   private String getJoinCondition(int rootTable, int table) {
     StringBuffer        joinBuffer = new StringBuffer("");
     VField              field;
-
+     
+    System.out.println("ENTER ROOT:" + rootTable + " TABLE " + table);
     if (table == rootTable) {
       joinBuffer.append(tables[table] + " T" + table);
       addToJoinedTables(rootTable);
@@ -50,25 +51,48 @@ public class VBlockDefaultOuterJoin {
         continue;
       }
       field = fields[i];
+
       if (field.getColumnCount() > 1) {
         int     tableColumn = field.fetchColumn(table);
+        int     rootColumn = field.fetchColumn(rootTable);
 
         if (tableColumn != -1) {
-          if (field.getColumn(tableColumn).isNullable()) {
-            addToProcessedFields(i);
+          if (field.getColumn(tableColumn).isNullable() ||
+              field.getColumn(rootColumn).isNullable()) {
             for (int j = 0; j < field.getColumnCount(); j++) {
               if (j != tableColumn) {
                 if (isJoinedTable(field.getColumn(j).getTable()) ) {
-                  // the table for this column is present in the outer join tree, can't do another outer join for this table ===> add an AND condition
-                  // !!! wael 20070523: if the table for this column was used in another outer join tree, this will give a wrong outer join expression.
-                  // must signal an error.
-                    joinBuffer.append(" AND " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
+                  // the table for this column is present in the outer join tree
+                  // as caster outer joins do not work, we assume that the
+                  // condition will apply to the root 
+                    if (j == rootColumn) {
+                      joinBuffer.append(" AND " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
+                    }
+                    if (j == field.getColumnCount() || field.getColumnCount() == 2) {
+                      // a field is only processed if all columns processed
+                      // for nullable or has only 2 columns and one has been
+                      // already processed
+                      addToProcessedFields(i);
+                    }
                 } else {
-                  addToJoinedTables(field.getColumn(j).getTable());
-                  // !!! wael 20070517: outer join syntax is not jdbc 3.0 compliant.
-                  joinBuffer.append(" LEFT OUTER JOIN " + tables[field.getColumn(j).getTable()] + " T" + field.getColumn(j).getTable());
-                  joinBuffer.append(" ON " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
-                  joinBuffer.append(getJoinCondition(rootTable, field.getColumn(j).getTable()));
+                    if (rootTable == table) {
+                      // start of an outer join
+                      addToJoinedTables(field.getColumn(j).getTable());
+
+                      joinBuffer.append(" LEFT OUTER JOIN " + tables[field.getColumn(j).getTable()] + " T" + field.getColumn(j).getTable());
+                      joinBuffer.append(" ON " +  field.getColumn(tableColumn).getQualifiedName() + " = " + field.getColumn(j).getQualifiedName());
+                    }
+                    if (j == field.getColumnCount() || field.getColumnCount() == 2) {
+                      // a field is only processed if all columns processed
+                      // for nullable or has only 2 columns and one has been
+                      // already processed
+                      // must be marked before going to next level
+                      addToProcessedFields(i);
+                    }
+                    if (rootTable == table) {
+                      joinBuffer.append(getJoinCondition(rootTable, field.getColumn(j).getTable()));
+                    }
+                    
                 }
               }
             }
@@ -76,6 +100,7 @@ public class VBlockDefaultOuterJoin {
         }
       }
     }
+    
     return joinBuffer.toString();
   }
 
@@ -95,12 +120,14 @@ public class VBlockDefaultOuterJoin {
     buffer = new StringBuffer(" FROM ");
     // first search join condition for the block main table.
     buffer.append(getJoinCondition(0, 0));
+    System.out.println(buffer);
     // search join condition for other lookup tables  not joined with main table.
     for (int i = 1 ; i < tables.length; i++) {
       if (!isJoinedTable(i)) {
-        if (block.hasNullableColumns(i)) {
-          buffer.append(", " + getJoinCondition(i, i));
-        }
+        // all not joined tables need to be ran through
+        // removed: if (block.hasNullableColumns(i)) {
+        buffer.append(", " + getJoinCondition(i, i));
+        //}
       }
     }
     // add remaining tables (not joined tables) to the list of tables.

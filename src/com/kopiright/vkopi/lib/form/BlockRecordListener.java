@@ -19,8 +19,10 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
-public interface BlockRecordListener extends EventListener {
+public interface BlockRecordListener extends EventListener, Serializable {
+  
   void blockRecordChanged(int current, int count);
 }

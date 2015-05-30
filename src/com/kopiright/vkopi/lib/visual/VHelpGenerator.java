@@ -122,11 +122,7 @@ public class VHelpGenerator {
    * Add an image
    */
   private void addImage(String name, int border) {
-    if (ApplicationContext.getApplicationContext() instanceof VApplicationContext) {
-      p.print("<img src=\"" + "../img/"+name);
-    } else {
-      p.print("<img src=\"" + Utils.getURLFromResource(name));
-    }
+    p.print("<img src=\"" + ImageHandler.getImageHandler().getURL(name));
     p.print("\" BORDER =\"" + border);
     p.println("\" alt=\"" + name + "\">");
   }

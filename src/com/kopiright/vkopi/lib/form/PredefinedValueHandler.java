@@ -20,12 +20,13 @@
 package com.kopiright.vkopi.lib.form;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.type.Date;
 
-public interface PredefinedValueHandler {
+public interface PredefinedValueHandler extends Serializable {
   boolean selectDefaultValue() throws VException;
   String selectFromList(VListColumn[] list, Object[][] values, String[] predefinedValues) throws VException;
   Color selectColor(Color color) throws VException;

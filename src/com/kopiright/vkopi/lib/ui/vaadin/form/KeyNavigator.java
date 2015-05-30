@@ -21,6 +21,8 @@ package com.kopiright.vkopi.lib.ui.vaadin.form;
 
 import java.io.IOException;
 
+import org.kopi.vaadin.addons.TextFieldListener;
+
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
@@ -28,175 +30,153 @@ import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.PrinterManager;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
-import com.vaadin.event.ShortcutListener;
-import com.vaadin.ui.AbstractTextField;
+import com.kopiright.vkopi.lib.visual.VWindow;
 
 /**
- * A VAADIN key navigator.
+ * Text field key navigation.
  */
-public class KeyNavigator extends ShortcutListener {
-	
-  //---------------------------------------------------
-  // CONSTRUCTOR
-  //---------------------------------------------------
+@SuppressWarnings("serial")
+public class KeyNavigator implements TextFieldListener {
 
-  /**
-   * Creates a new <code>KeyNavigator</code> instance.
-   * @param code The navigator code.
-   * @param keyCode The key code.
-   * @param modfiersKeys The key modifiers.
-   */
-  protected KeyNavigator(int code,
-	                 int keyCode,
-	                 int... modfiersKeys)
-  {
-    super("key-navigator" + code, keyCode, modfiersKeys);
-    this.keyCode = code;
+  //---------------------------------------------------
+  // IMPLEMENTATIONS
+  //---------------------------------------------------
+  
+  public KeyNavigator(VField model) {
+    this.model = model;
   }
-	
+
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
   
   @Override
-  public void handleAction(Object sender, Object target) {
-    DField              fieldView = null;
+  public void gotoNextField() {
+    performAction(new KopiAction("keyKEY_TAB") {
 
-    // !!! field view is extracted from target object ==> AbstractTextField ==> DTextField ==> DField
-    if (target instanceof AbstractTextField) {
-      try {
-	fieldView = (DField) ((AbstractTextField)target).getParent();
-      } catch (ClassCastException e) {
-	return;
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().getForm().getActiveBlock().gotoNextField();
+	}
       }
-    }
-    if (fieldView == null) {
-     return;
-    }
-    final VField	field = (VField) fieldView.getModel();
-
-    if (field == null ||
-        field.getForm() == null ||
-        field.getForm().getActiveBlock() == null ||
-	(field.getForm().getActiveBlock().getActiveField() != field
-	&& keyCode != KEY_NEXT_BLOCK ))
-    {
-      return;
-    } else {
-      processKeyCode(fieldView, field, (AbstractTextField)target);
-    }
+    });
   }
 
-  /**
-   * Process the given key code.
-   * @param fieldView The field view.
-   * @param field The field model.
-   * @param sharedText The UI text component.
-   */
-  protected final void processKeyCode(final DField fieldView, final VField field, final AbstractTextField sharedText) {
-    KopiAction			action;
+  @Override
+  public void gotoPrevField() {
+    performAction(new KopiAction("keyKEY_STAB") {
 
-    switch (keyCode) {
-    case KEY_NEXT_FIELD:
-      action = new KopiAction("keyKEY_TAB") {
-	
-	@Override
-        public void execute() throws VException {
-          field.getBlock().getForm().getActiveBlock().gotoNextField();
-        }
-      };
-      break;
-    case KEY_PREV_FIELD:
-      action = new KopiAction("keyKEY_STAB") {
-	
-	@Override
-        public void execute() throws VException {
-          field.getBlock().getForm().getActiveBlock().gotoPrevField();
-        }
-      };
-      break;
-    case KEY_NEXT_BLOCK:
-      action = new KopiAction("keyKEY_BLOCK") {
-	
-	@Override
-        public void execute() throws VException {
-	  field.getBlock().getForm().gotoNextBlock();
-        }
-      };
-      break;
-    case KEY_REC_UP:
-      action = new KopiAction("keyKEY_REC_UP") {
-	
-	@Override
-        public void execute() throws VException {
-	  ((DBlock)fieldView.getBlockView()).gotoPrevRecord();
-        }
-      };
-      break;
-    case KEY_REC_DOWN:
-      action = new KopiAction("keyKEY_REC_DOWN") {
-	
-	@Override
-        public void execute() throws VException {
-	  ((DBlock)fieldView.getBlockView()).gotoNextRecord();
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().getForm().getActiveBlock().gotoPrevField();
 	}
-      };
-      break;
-    case KEY_REC_FIRST:
-      action = new KopiAction("keyKEY_REC_FIRST") {
-	
-	@Override
-	public void execute() throws VException {
-	  field.getBlock().getForm().getActiveBlock().gotoFirstRecord();
+      }
+    });
+  }
+
+  @Override
+  public void gotoNextBlock() {
+    performAction(new KopiAction("keyKEY_BLOCK") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().getForm().gotoNextBlock();
 	}
-      };
-      break;
-    case KEY_REC_LAST:
-      action = new KopiAction("keyKEY_REC_LAST") {
-	
-	@Override
-	public void execute() throws VException {
-	  field.getBlock().getForm().getActiveBlock().gotoLastRecord();
+      }
+    });
+  }
+
+  @Override
+  public void gotoPrevRecord() {
+    performAction(new KopiAction("keyKEY_REC_UP") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().gotoPrevRecord();
 	}
-      };
-      break;
-    case KEY_EMPTY_FIELD:
-      action = new KopiAction("keyKEY_ALTENTER") {
-	
-	@Override
-	public void execute() throws VException {
-	  field.getBlock().getForm().getActiveBlock().gotoNextEmptyMustfill();
+      }
+    });
+  }
+
+  @Override
+  public void gotoNextRecord() {
+    performAction(new KopiAction("keyKEY_REC_DOWN") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().gotoNextRecord();
 	}
-      };
-      break;
-    case KEY_DIAMETER:
-      action = new KopiAction("keyKEY_DIAMETER") {
-	
-	@Override
-	public void execute() throws VException {
-	  AbstractTextField	text = sharedText;
-	  text.setValue(text.getValue() + "\u00D8");
+      }
+    });
+  }
+
+  @Override
+  public void gotoFirstRecord() {
+    performAction(new KopiAction("keyKEY_REC_FIRST") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().getForm().getActiveBlock().gotoFirstRecord();
 	}
-      };
-      // execute it in the event-dispatching-thread!
-      ((DForm)fieldView.getBlockView().getFormView()).performBasicAction(action);
-      return;
-    case KEY_ESCAPE: 
-      action = new KopiAction("keyKEY_ESCAPE") {
-	
-	@Override
-	public void execute() throws VException {
-	  fieldView.getBlockView().getFormView().closeWindow();
+      }
+    });
+  }
+
+  @Override
+  public void gotoLastRecord() {
+    performAction(new KopiAction("keyKEY_REC_LAST") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().getForm().getActiveBlock().gotoLastRecord();
 	}
-      };
-      break;
-    case KEY_PRINTFORM:
-      action = new KopiAction("keyKEY_ALTENTER") {
-	
-	@Override
-	public void execute() throws VException {
+      }
+    });
+  }
+
+  @Override
+  public void gotoNextEmptyMustfill() {
+    performAction(new KopiAction("keyKEY_ALTENTER") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  model.getBlock().getForm().getActiveBlock().gotoNextEmptyMustfill();
+	}
+      }
+    });
+  }
+
+  @Override
+  public void closeWindow() {
+    performAction(new KopiAction("keyKEY_ESCAPE") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	model.getBlock().getForm().close(VWindow.CDE_QUIT);
+	}
+      }
+    });
+  }
+
+  @Override
+  public void printForm() {
+    performAction(new KopiAction("keyKEY_ALTENTER") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
 	  try {
-	    PrintJob    job = fieldView.getBlockView().getFormView().printForm();
+	    PrintJob    job = model.getDisplay().getBlockView().getFormView().printForm();
+
 	    PrinterManager.getPrinterManager().getCurrentPrinter().print(job);
 	  } catch (PrintException e) {
 	    throw new VExecFailedException(e.getMessage());
@@ -204,72 +184,49 @@ public class KeyNavigator extends ShortcutListener {
 	    throw new VExecFailedException(e.getMessage());
 	  }
 	}
-      };
-      break;
-    default:
-      action = processSpecificKeyCode(fieldView, field);
-    }
-    if (action != null) {
-      fieldView.getBlockView().getFormView().performAsyncAction(action);
-    }
+      }
+    });
   }
 
+  @Override
+  public void previousEntry() {
+    performAction(new KopiAction("keyKEY_LIST_UP") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  ((DField)model.getDisplay()).getRowController().previousEntry();
+	}
+      }
+    });
+  }
+
+  @Override
+  public void nextEntry() {
+    performAction(new KopiAction("keyKEY_LIST_UP") {
+
+      @Override
+      public void execute() throws VException {
+	if (model != null) {
+	  ((DField)model.getDisplay()).getRowController().nextEntry();
+	}
+      }
+    });
+  }
+  
   /**
-   * Subclasses must override this method to process their specific
-   * keys they are added by addSpecificNavigationKeys.
-   * @param fieldView The field view.
-   * @param field The field model.
+   * Executes the given action in the event dispatch handler.
+   * @param action The action to be executed.
    */
-  protected KopiAction processSpecificKeyCode(final DField fieldView, final VField field) {
-    KopiAction	action;
-    switch (keyCode) {
-    case KEY_PREV_VAL:
-      action = new KopiAction("keyKEY_LIST_UP") {
-	
-	@Override
-	public void execute() throws VException {
-	  fieldView.getRowController().previousEntry();
-	}
-      };
-      break;
-    case KEY_NEXT_VAL:
-      action = new KopiAction("keyKEY_LIST_DOWN") {
-	
-	@Override
-	public void execute() throws VException {
-	  fieldView.getRowController().nextEntry();
-	}
-      };
-      break;
-    default:
-      action = null;
+  protected void performAction(KopiAction action) {
+    if (action != null && model != null) {
+      model.getForm().performAsyncAction(action);
     }
-
-    return action;
   }
 
-  // --------------------------------------------------
+  //---------------------------------------------------
   // DATA MEMBERS
-  // --------------------------------------------------
-
-  protected final int		keyCode;
-
-  public static final int	KEY_NEXT_FIELD          =  0;
-  public static final int	KEY_PREV_FIELD		=  1;
-  public static final int	KEY_REC_UP		=  2;
-  public static final int	KEY_REC_DOWN		=  3;
-  public static final int	KEY_REC_FIRST		=  4;
-  public static final int	KEY_REC_LAST		=  5;
-  public static final int	KEY_EMPTY_FIELD         =  6;
-  public static final int	KEY_NEXT_BLOCK		=  7;
-  public static final int	KEY_PREV_VAL		=  8;
-  public static final int	KEY_NEXT_VAL		=  9;
-  public static final int	KEY_DIAMETER		= 10;
-  public static final int	KEY_ESCAPE		= 11;
-  public static final int	KEY_PRINTFORM		= 12;
-
-  /**
-   * Comment for <code>serialVersionUID</code>
-   */
-  private static final long serialVersionUID = -3277175963522587180L;
+  //---------------------------------------------------
+  
+  private final VField 				model;
 }

@@ -98,7 +98,7 @@ public class StyleGenerator {
       setItalic(parameters.getFont().isItalic());
       setBold(parameters.getFont().isBold());
       
-      BackgroundThreadHandler.start(new Runnable() {
+      BackgroundThreadHandler.access(new Runnable() {
 	
         @Override
         public void run() {    
@@ -121,7 +121,7 @@ public class StyleGenerator {
      * @return The style name.
      */
     public String getName() {
-      if(separator){
+      if (separator) {
 	return "separator";      
       } else {
 	return "level-" + level + "-column-" + column;
@@ -177,7 +177,7 @@ public class StyleGenerator {
 	setItalic(parameters.getFont().isItalic());
       }
       
-      BackgroundThreadHandler.start(new Runnable() {
+      BackgroundThreadHandler.access(new Runnable() {
 	
         @Override
         public void run() {

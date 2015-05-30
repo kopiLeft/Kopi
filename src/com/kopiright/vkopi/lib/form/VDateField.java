@@ -31,6 +31,7 @@ import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.NotNullDate;
 
+@SuppressWarnings("serial")
 public class VDateField extends VField {
 
   // ----------------------------------------------------------------------

@@ -41,6 +41,7 @@ import com.kopiright.vkopi.lib.visual.WindowController;
 /**
  * {@code JWindowController} is a swing implementation of the {@link WindowController}.
  */
+@SuppressWarnings("serial")
 public class JWindowController extends WindowController {
 
   //----------------------------------------------------------------------

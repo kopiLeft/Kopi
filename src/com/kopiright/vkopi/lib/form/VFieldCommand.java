@@ -19,12 +19,15 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
+
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.ActionHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 
-public class VFieldCommand extends VCommand implements ActionHandler {
+@SuppressWarnings("serial")
+public class VFieldCommand extends VCommand implements ActionHandler, Serializable {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTOR

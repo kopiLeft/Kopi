@@ -26,6 +26,7 @@ import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VIntegerCodeColumn;
 import com.kopiright.xkopi.lib.base.Query;
 
+@SuppressWarnings("serial")
 public class VIntegerCodeField extends VCodeField {
 
   // ----------------------------------------------------------------------

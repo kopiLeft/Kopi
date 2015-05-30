@@ -34,6 +34,7 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.xkopi.lib.base.Query;
 
+@SuppressWarnings("serial")
 public class VImageField extends VField {
 
   /*

@@ -17,6 +17,7 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.xkopi.lib.type.Date;
 
+@SuppressWarnings("serial")
 public class JPredefinedValueHandler extends AbstractPredefinedValueHandler {
 
   //----------------------------------------------------------

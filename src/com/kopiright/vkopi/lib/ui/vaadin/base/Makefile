@@ -27,9 +27,8 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/vaadin/base
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES += 	BackgroundThreadHandler ButtonPanel ExportResource	\
-		FieldButton FieldFactory FileUploader HorizontalMenu	\
-		Image KopiTheme PositionRequestor Image Utils
+JAVAFILES += 	BackgroundThreadHandler ExportResource FileUploader	\
+                Image Tree Utils KopiServlet
 
 OPTIONS =
 

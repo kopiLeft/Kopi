@@ -28,6 +28,7 @@ import com.kopiright.vkopi.lib.visual.VException;
 /**
  * {@code JFieldHandler} is a swing implementation of the {@link AbstractFieldHandler}.
  */
+@SuppressWarnings("serial")
 public class JFieldHandler extends AbstractFieldHandler {
 
   // ----------------------------------------------------------------------

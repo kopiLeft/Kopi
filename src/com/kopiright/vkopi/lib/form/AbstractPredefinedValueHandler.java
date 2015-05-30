@@ -22,6 +22,7 @@ package com.kopiright.vkopi.lib.form;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.VException;
 
+@SuppressWarnings("serial")
 public abstract class AbstractPredefinedValueHandler implements PredefinedValueHandler {
 
   //----------------------------------------------------------

@@ -20,21 +20,38 @@
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.vaadin.peter.imagescaler.ImageScaler;
+import org.kopi.vaadin.addons.ImageField;
+import org.kopi.vaadin.addons.ImageFieldListener;
 
+// import org.vaadin.peter.imagescaler.ImageScaler;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutListener;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
+import com.kopiright.xkopi.lib.type.Date;
+import com.vaadin.event.dd.DragAndDropEvent;
+import com.vaadin.event.dd.DropHandler;
+import com.vaadin.event.dd.acceptcriteria.AcceptAll;
+import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
+import com.vaadin.server.StreamVariable;
+import com.vaadin.ui.DragAndDropWrapper;
+import com.vaadin.ui.DragAndDropWrapper.DragStartMode;
+import com.vaadin.ui.DragAndDropWrapper.WrapperTransferable;
+import com.vaadin.ui.Html5File;
 
+/**
+ * The image field implementation based on the customized VAADIN
+ * addons.
+ */
 @SuppressWarnings("serial")
-public class DImageField extends DObjectField {
+public class DImageField extends DObjectField implements DropHandler, ImageFieldListener {
 
   // --------------------------------------------------
   // CONSTRUCTION
@@ -59,23 +76,19 @@ public class DImageField extends DObjectField {
                      boolean detail)
   {
     super(model, label, align, options, detail);
-    this.width = width;
-    this.height = height;
-    scaler = new ImageScaler();
-    scaler.setImmediate(true);
-    empty.addStyleName(KopiTheme.FIELD_IMAGE);
-    empty.setContent(scaler);
-    scaler.setWidth(width, Unit.PIXELS);
-    scaler.setHeight(height, Unit.PIXELS);
-    empty.addShortcutListener(new ShortcutListener("clear", KeyCode.BACKSPACE, null) {
-
-      @Override
-      public void handleAction(Object sender, Object target) {
-  	if (target == empty) {
-  	  setObject(null);
-  	}
-      }
-    });
+    field = new ImageField();
+    field.setImmediate(true);
+    field.setImageWidth(width);
+    field.setImageHeight(height);
+    field.addObjectFieldListener(this);
+    field.addImageFieldListener(this);
+    field.setWidth(width, Unit.PIXELS);
+    field.setHeight(height, Unit.PIXELS);
+    wrapper = new DragAndDropWrapper(field);
+    wrapper.setImmediate(true);
+    wrapper.setDropHandler(this);
+    wrapper.setDragStartMode(DragStartMode.HTML5);
+    setContent(wrapper);
   }
 
   // --------------------------------------------------
@@ -89,13 +102,7 @@ public class DImageField extends DObjectField {
 
   @Override
   public void setBlink(boolean b) {
-    BackgroundThreadHandler.start(new Runnable() {
-      
-      @Override
-      public void run() {
-	empty.addStyleName("blink");
-      }
-    });
+    // TODO
   }
 
   // ----------------------------------------------------------------------
@@ -104,7 +111,7 @@ public class DImageField extends DObjectField {
 
   @Override
   public void updateAccess() {
-    label.update(getModel(), getPosition());
+     label.update(model, getPosition());
   }
 
   @Override
@@ -115,9 +122,39 @@ public class DImageField extends DObjectField {
   
   @Override
   public void updateFocus() {
-    label.update(getModel(), getPosition());
-    
+    label.update(model, getPosition());
     super.updateFocus();
+  }
+  
+  @Override
+  public void onRemove() {
+    setObject(null);
+  }
+  
+  @Override
+  public void onImageClick() {
+    performAutoFillAction();
+  }
+  
+  @Override
+  public void drop(DragAndDropEvent event) {
+    Html5File[]	files = ((WrapperTransferable)event.getTransferable()).getFiles();
+    
+    if (files.length > 0) {
+      // even if there are multiple images dropped, we take only the first one.
+      Html5File		image;
+      
+      image = files[0];
+      // look if it is an image
+      if (image.getType() != null && image.getType().contains("image/")) {
+	image.setStreamVariable(new ImageStreamHandler());
+      }
+    }
+  }
+
+  @Override
+  public AcceptCriterion getAcceptCriterion() {
+    return AcceptAll.get();
   }
   
   /**
@@ -126,28 +163,29 @@ public class DImageField extends DObjectField {
    * @param s The object to set in
    */
   public void setObject(final Object s) {
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
         if (s == null) {
-          if (scaler.getImage() != null) {
-	    scaler.setImage(null, width, height);
-          }     
-          image = null;
-          return;
+          field.setIcon(null);
+        } else {
+          field.setIcon(new DynamicImageResource(new ImageStreamSource((byte[])s), createFileName("image")));
+          setBlink(false);
+          setBlink(true);
         }
-        image = (byte[])s;
-
-        if (image != null) {
-          scaler.setImage(new DynamicImageResource(new ImageStreamSource(image),""),
-	                  width,
-	                  height);
-        } 
-        setBlink(false);
-        setBlink(true);
       }
     });
+    image = (byte[])s;
+  }
+  
+  /**
+   * Creates the dynamic image name.
+   * @param baseName The base name.
+   * @return The dynamic image name.
+   */
+  protected String createFileName(String baseName) {
+    return baseName + Date.now().format("yyyyMMddHHmmssSSS") + ".png";
   }
   
   //---------------------------------------------------
@@ -206,21 +244,97 @@ public class DImageField extends DObjectField {
      * @param streamSource The {@link StreamSource} object.
      * @param fileName The file name.
      */
-    public DynamicImageResource(StreamSource streamSource,
-	                        String fileName)
-    {
+    public DynamicImageResource(StreamSource streamSource, String fileName) {
       super(streamSource, fileName);
-      //setMIMEType(ImageFileChooser.IMAGES_MIME_TYPE); //depend on ImageFileChooser implementation
       setCacheTime(0l);
     }
+  }
+  
+  /**
+   * The image stream handler for reading uploaded stream from DnD
+   * operations.
+   */
+  /*package*/ final class ImageStreamHandler implements StreamVariable {
+
+    //---------------------------------------
+    // CONSTRUCTOR
+    //---------------------------------------
+    
+    public ImageStreamHandler() {
+      output = new ByteArrayOutputStream();
+    }
+
+    //---------------------------------------
+    // IMPLEMENTATIONS
+    //---------------------------------------
+    
+    @Override
+    public OutputStream getOutputStream() {
+      return output;
+    }
+
+    @Override
+    public boolean listenProgress() {
+      return true;
+    }
+
+    @Override
+    public void onProgress(StreamingProgressEvent event) {
+      // show progress only when the file is bigger than 50MB
+      if (event.getContentLength() > (50 * 1024 * 1024)) {
+	getModel().getForm().setCurrentJob((int)event.getBytesReceived());
+      }
+    }
+
+    @Override
+    public void streamingStarted(StreamingStartEvent event) {
+      // show progress only when the file is bigger than 50MB
+      if (event.getContentLength() > (50 * 1024 * 1024)) {
+	getModel().getForm().setProgressDialog("", (int)event.getContentLength());
+      }
+    }
+
+    @Override
+    public void streamingFinished(StreamingEndEvent event) {
+      try {
+	setObject(output.toByteArray());
+      } finally {
+	if (event.getContentLength() > (50 * 1024 * 1024)) {
+	  getModel().getForm().unsetProgressDialog();
+	}
+      }
+    }
+
+    @Override
+    public void streamingFailed(final StreamingErrorEvent event) {
+      event.getException().printStackTrace(System.err);
+      BackgroundThreadHandler.start(new Runnable() {
+        
+        @Override
+        public void run() {
+          getModel().getForm().error(event.getException().getMessage());
+          ((VApplication)ApplicationContext.getApplicationContext().getApplication()).push();
+        }
+      });
+    }
+
+    @Override
+    public boolean isInterrupted() {
+      return false; // never interrupt
+    }
+    
+    //---------------------------------------
+    // DATA MEMBERS
+    //---------------------------------------
+    
+    private final ByteArrayOutputStream		output;
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private byte[]			image;
-  private int				width;
-  private int				height;
-  private ImageScaler			scaler;
+  private byte[]				image;
+  private ImageField				field;
+  private final DragAndDropWrapper		wrapper;
 }

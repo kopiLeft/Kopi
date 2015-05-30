@@ -19,11 +19,10 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
+import org.kopi.vaadin.addons.SortableLabelListener;
+
 import com.kopiright.vkopi.lib.form.UChartLabel;
 import com.kopiright.vkopi.lib.form.VBlock;
-import com.kopiright.vkopi.lib.visual.VCommand;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
 
 /**
  * The <code>DChartHeaderLabel</code> is the vaadin implementation
@@ -47,34 +46,39 @@ public class DChartHeaderLabel extends DLabel implements UChartLabel {
   /*package*/ DChartHeaderLabel(String text,
                                 String help,
                                 int index,
-                                VBlock.OrderModel model,
-                                VCommand[] commands)
+                                VBlock.OrderModel model)
   {
-    super(text, help, commands);
+    super(text, help);
     fieldIndex = index;
     sortModel = model;
     sortModel.addSortingListener(this);
-    addLayoutClickListener(new LayoutClickListener() {
+    setSortable(true);
+    addSortableLabelListener(new SortableLabelListener() {
       
       @Override
-      public void layoutClick(LayoutClickEvent event) {
+      public void onSort(int mode) {
 	sortModel.sortColumn(fieldIndex);
       }
-    });	
+    });
   }
 	
   //---------------------------------------------------
-  // UCAHRTLABEL IMPLEMENTATION
+  // IMPLEMENTATIONS
   //---------------------------------------------------
 
   @Override
   public void orderChanged() {
-    markAsDirtyRecursive();
+    // TODO correct sort icon in client side if needed
   }
 
   @Override
   public void repaint() {
-    markAsDirty();
+    // nothing to do
+  }
+  
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 
   //------------------------------------------------------

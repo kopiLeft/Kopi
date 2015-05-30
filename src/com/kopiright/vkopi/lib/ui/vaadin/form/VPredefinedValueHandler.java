@@ -25,13 +25,17 @@ import com.kopiright.vkopi.lib.form.AbstractPredefinedValueHandler;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VForm;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.type.Date;
+import com.vaadin.ui.Component;
 
 /**
  * The <code>VPredefinedValueHandler</code> is the VAADIN implementation of
  * the predefined value handler specifications.
  */
+@SuppressWarnings("serial")
 public class VPredefinedValueHandler extends AbstractPredefinedValueHandler {
 
   //---------------------------------------------------
@@ -63,21 +67,25 @@ public class VPredefinedValueHandler extends AbstractPredefinedValueHandler {
 
   @Override
   public Date selectDate(Date date) throws VException {
-    return DateChooser.selectDate(date);
+    return DateChooser.selectDate(date, (Component) field.getDisplay());
   }
 
  /**
- * This method will open the ImageFileChooser 
+ * This method will open the file chooser to select an image. 
  * @return the selected image from the user file system
- * @author amira
  * @throws VException
  * @see com.kopiright.vkopi.lib.form.PredefinedValueHandler#selectImage()
  */
   @Override
   public byte[] selectImage() throws VException {
-    // FIXME: Need to block here or the UI already blocks ?
-    byte [] uploadedImage = ImageFileChooser.get().chooseImage();
-
-    return uploadedImage;
+    return getApplication().getUploader().upload("image/*");
+  }
+  
+  /**
+   * Returns the current application instance.
+   * @return the current application instance.
+   */
+  protected VApplication getApplication() {
+    return (VApplication) ApplicationContext.getApplicationContext().getApplication();
   }
 }

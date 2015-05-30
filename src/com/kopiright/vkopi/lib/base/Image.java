@@ -19,12 +19,14 @@
 
 package com.kopiright.vkopi.lib.base;
 
+import java.io.Serializable;
+
 /**
  * The interface class <code>Image</code> is the superInterface of all
  * classes that represent graphical images. The image must be
  * obtained in a platform-specific manner.
  */
-public interface Image {
+public interface Image extends Serializable {
 
   /**
    * Returns the <code>Image</code> width

@@ -675,8 +675,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (rec < 0 || rec >= getBufferSize()) {
       return false;
     } else if (!isAccessible()) {
+    System.out.println("NOT ACCESSIBLE");
+    System.out.println("insert=" + noInsert());
+    System.out.println("fetched=" + isRecordFetched(rec));
+    System.out.println("changed=" + isRecordChanged(rec));
       return false;
     } else {
+      System.out.println("NO INSERT");
       return isRecordInsertAllowed(rec);
     }
   }
@@ -771,6 +776,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           break;
         }
       }
+      System.out.println("currentRec=" + currentRec);
+      System.out.println("found i=" + i);
+      System.out.println("buffer=" + getBufferSize());
+      
       if (i == getBufferSize() || !isRecordAccessible(getDataPosition(i))) {
         throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
@@ -3365,7 +3374,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       if (fld.isInternal()
           && fld.fetchColumn(0) != -1
           && fld.fetchColumn(table) != -1
-          && !fld.getColumn(fld.fetchColumn(0)).isNullable()) {
+          && !(fld.getColumn(fld.fetchColumn(table)).isNullable() ||
+               fld.getColumn(fld.fetchColumn(0)).isNullable())) {
         nullReference = false;
       }
     }

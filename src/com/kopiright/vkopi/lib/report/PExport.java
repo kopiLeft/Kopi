@@ -24,10 +24,12 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 import com.kopiright.vkopi.lib.report.UReport.UTable;
 
-public abstract class PExport {
+@SuppressWarnings("serial")
+public abstract class PExport implements Serializable {
 
   /**
    * Constructor

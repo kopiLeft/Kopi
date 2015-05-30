@@ -29,6 +29,7 @@ import com.kopiright.vkopi.lib.visual.VModel;
 import com.kopiright.vkopi.lib.visual.VWindow;
 import com.kopiright.xkopi.lib.type.Date;
 
+@SuppressWarnings("serial")
 public class VListDialog implements VModel {
 
   // --------------------------------------------------------------------

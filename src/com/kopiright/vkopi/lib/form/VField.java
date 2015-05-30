@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import javax.swing.event.EventListenerList;
 
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.l10n.BlockLocalizer;
 import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.list.VColumn;
@@ -37,6 +38,7 @@ import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
+import com.kopiright.vkopi.lib.visual.VModel;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.Query;
@@ -52,7 +54,8 @@ import com.kopiright.xkopi.lib.type.Week;
  * it provides an access to data both programmatically or via a UI
  * (DForm)
  */
-public abstract class VField implements VConstants {
+@SuppressWarnings("serial")
+public abstract class VField implements VConstants, VModel {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -413,6 +416,11 @@ public abstract class VField implements VConstants {
         };
       ((UField) getDisplay()).getBlockView().getFormView().performAsyncAction(action);
     }
+  }
+  
+  @Override
+  public void setDisplay(UComponent display) {
+    // not used
   }
 
   /**

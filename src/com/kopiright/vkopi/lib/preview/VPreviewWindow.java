@@ -26,9 +26,9 @@ import java.util.Locale;
 
 import javax.swing.event.EventListenerList;
 
+import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.base.Utils;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.Constants;
 import com.kopiright.vkopi.lib.visual.UIFactory;
@@ -43,6 +43,7 @@ import com.kopiright.vkopi.lib.visual.WindowController;
 /**
  * A special window that display an html help
  */
+@SuppressWarnings("serial")
 public class VPreviewWindow extends VWindow {
 
   static {
@@ -63,7 +64,7 @@ public class VPreviewWindow extends VWindow {
    * Construct a new Editor
    */
   public VPreviewWindow() {
-    setTitle("Preview");
+    setTitle(VlibProperties.getString("Preview"));
     setActors(new VActor[] {
       new VActor("File",
                  PREVIEW_LOCALIZATION_RESOURCE,
@@ -157,14 +158,13 @@ public class VPreviewWindow extends VWindow {
   /**
    * The user want to show an help
    */
-  public void preview(PrintJob printJob,
-                      String command)
+  public void preview(PrintJob printJob, String command)
     throws VException, IOException
   {
-   // File        tempFile = Utils.getTempFile("PREVIEW", "JPG");
+    File        tempFile = Utils.getTempFile("PREVIEW", "JPG");
 
     this.printJob = printJob;
-   /* this.numberOfPages = printJob.getNumberOfPages();
+    this.numberOfPages = printJob.getNumberOfPages();
     this.printFile = printJob.getDataFile();
     this.imageFile = tempFile.getPath();
     this.imageFile = imageFile.substring(0, imageFile.lastIndexOf('.'));
@@ -183,7 +183,7 @@ public class VPreviewWindow extends VWindow {
     setActorEnabled(CMD_ZOOM_FIT_H, true);
     setActorEnabled(CMD_ZOOM_FIT_W, true);
     setActorEnabled(CMD_ZOOM_PLUS, true);
-    setActorEnabled(CMD_ZOOM_MINUS, true);*/
+    setActorEnabled(CMD_ZOOM_MINUS, true);
 
     doNotModal();
   }
@@ -429,7 +429,7 @@ public class VPreviewWindow extends VWindow {
 
   // the following commands *MUST* be in the same order than
   // in 'actors' field set in the contructor of the current class.
-  protected static final int    CMD_QUIT        =  0;
+  public static final int    	CMD_QUIT        =  0;
   public static final int    	CMD_FIRST       =  1;
   public static final int    	CMD_LEFT        =  2;
   public static final int    	CMD_RIGHT       =  3;

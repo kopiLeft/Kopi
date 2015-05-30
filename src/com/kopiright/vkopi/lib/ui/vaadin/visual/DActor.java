@@ -19,20 +19,21 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
-import java.awt.Event;
 import java.awt.event.KeyEvent;
+
+import org.kopi.vaadin.addons.ActionEvent;
+import org.kopi.vaadin.addons.ActionListener;
+import org.kopi.vaadin.addons.Actor;
 
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.ui.vaadin.base.Image;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.ui.vaadin.base.Utils;
 import com.kopiright.vkopi.lib.visual.UActor;
 import com.kopiright.vkopi.lib.visual.VActor;
 import com.vaadin.event.ShortcutAction.ModifierKey;
 import com.vaadin.event.ShortcutListener;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 
 /**
  * The <code>DActor</code> is the vaadin implementation of
@@ -44,79 +45,32 @@ import com.vaadin.ui.Button.ClickListener;
  *   of the {@link DWindow} which is the receiver of all actors actions.
  * </p>
  */
-public class DActor implements UActor {
+@SuppressWarnings("serial")
+public class DActor extends Actor implements UActor, ActionListener {
 	
   // --------------------------------------------------
   // CONSTRUCTOR
   // --------------------------------------------------
 
   /**
-   * Creates a new <code>DActor</code> object.
-   * @param model The actor model.
-   * @param viewer The actor actions viewer.
+   * Creates the visible actor component from a given model.
+   * @param model The <b>not null</b> model.
    */
-  public DActor(VActor model, DWindow viewer) {
+  public DActor(VActor model) {
+    super(model.menuItem,
+	  getDescription(model),
+	  loadResource(model.iconName),
+	  correctAcceleratorKey(model.acceleratorKey),
+	  correctAcceleratorModifier(model.acceleratorModifier));
     this.model = model;
-    this.viewer = viewer;
+    setEnabled(false);
     model.setDisplay(this);
-    init();
+    addActionListener(this);
   }
 
   // --------------------------------------------------
   // ACCESSORS
   // --------------------------------------------------
-
-  @Override
-  public boolean isEnabled() {
-    if (button != null) {
-      return button.isEnabled();
-    } else {
-      return viewer.hasAction(shortcutHandler);
-    }
-  }
-
-  @Override
-  public void setEnabled(final boolean enabled) {
-    BackgroundThreadHandler.start(new Runnable() {
-
-      @Override
-      public void run() {
-	if (button != null) {
-	  if (button.isEnabled() != enabled) {
-	    button.setEnabled(enabled);
-	  }
-	}
-	// set actor shortcut
-	if (enabled) {
-	  viewer.addAction(shortcutHandler);
-	} else {
-	  viewer.removeAction(shortcutHandler);
-	}
-      }
-    });
-  }
-
-  @Override
-  public boolean isVisible() {
-    if (button != null) {
-      return button.isVisible();
-    } else {  
-      return false;
-    }
-  }
-
-  @Override
-  public void setVisible(final boolean visible) {
-    if (button != null) {
-      BackgroundThreadHandler.start(new Runnable() {
-	
-	@Override
-	public void run() {
-	  button.setVisible(visible);
-	}
-      });
-    }
-  }
 
   @Override
   public void setModel(VActor model) {
@@ -128,64 +82,58 @@ public class DActor implements UActor {
     return model;
   }
   
+  @Override
+  public void setEnabled(final boolean enabled) {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	DActor.super.setEnabled(enabled);
+      }
+    });
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent event) {
+    if (model != null && event.getActor() == this) {
+      model.performAction();
+    }
+  }
+  
   // --------------------------------------------------
   // PRIVATE METHODS
   // --------------------------------------------------
   
   /**
-   * The <code>DActor</code> initialization.
+   * Creates the actor description.
+   * @param model The actor model.
+   * @return The actor description.
    */
-  public void init() {
-    if (model.iconName != null) { 
-      button = new Button(model.menuItem, new ClickHandler());
-      button.setClickShortcut(correctAcceleratorKey(model.acceleratorKey));
-      button.addStyleName(KopiTheme.BUTTON_LINK);	
-      button.addStyleName(KopiTheme.BUTTON_PANEL_ACTOR_STYLE);
-      button.setIcon(loadImage(model.iconName).getResource());
-      button.setEnabled(false);
-      if (model.acceleratorKey > 0) {
-        button.setDescription(model.help+" ["+KeyEvent.getKeyText(model.acceleratorKey)+"]");
-      } else {
-	button.setDescription(model.help);
-      }
+  private static String getDescription(VActor model) {
+    if (model.acceleratorKey > 0) {
+      return model.help + " ["+ KeyEvent.getKeyText(model.acceleratorKey) + "]";
     } else {
-      if (model.getActorIdent() == "AddConfiguration") {
-	model.iconName = "add"; // FIXME ==> change icon name
-	init();
-      } else if (model.getActorIdent() == "RemoveConfiguration") {
-	model.iconName = "update"; // FIXME ==> change icon name
-	init();
-      }    
+      return model.help;
     }
-    
-    //Shortcuts
-    shortcutHandler = new ShortcutHandler(model.menuItem,
-		                          correctAcceleratorKey(model.acceleratorKey),
-		                          correctAcceleratorModifier(model.acceleratorModifier));
-    setEnabled(false);
   }
-
-  /**
-   * Returns the actor button. The button is <code>null</code> when the actor is not visible.
-   * @return The actor button.
-   */
-  public Button getButton() {
-    return button;
-  }  
 	
   /**
    * Loads the actor icon.
    * @param iconName The icon name.
    */
-  private Image loadImage(String iconName) {
-    Image  	image;
+  private static Resource loadResource(String iconName) {
+    if (iconName == null) {
+      return null;
+    }
+    
+    Image  		image;
 
     image = Utils.getImage(iconName + ".png");
     if (image == null || image == Utils.UKN_IMAGE) {
       image = Utils.getImage(iconName + ".gif");
     }
     
-    return image;
+    return image.getResource();
   }
 
   /**
@@ -193,7 +141,7 @@ public class DActor implements UActor {
    * @param acceleratorKey The original accelerator key.
    * @return The corrected accelerator key.
    */
-  private int correctAcceleratorKey(int acceleratorKey) {
+  private static int correctAcceleratorKey(int acceleratorKey) {
     return acceleratorKey == 10 ? 13 : acceleratorKey;
   }
   
@@ -202,20 +150,20 @@ public class DActor implements UActor {
    * @param acceleratorModifier The original modifier accelerator key.
    * @return The corrected modifier accelerator key.
    */
-  private int correctAcceleratorModifier (int acceleratorModifier) {
+  private static int correctAcceleratorModifier (int acceleratorModifier) {
     int correctAcceleratorModifier = 0;
     
     switch (acceleratorModifier) {
-    case Event.SHIFT_MASK:
+    case java.awt.Event.SHIFT_MASK:
       correctAcceleratorModifier = ModifierKey.SHIFT;
       break;
-    case Event.ALT_MASK:
+    case java.awt.Event.ALT_MASK:
       correctAcceleratorModifier = ModifierKey.ALT;
       break;
-    case Event.CTRL_MASK:
+    case java.awt.Event.CTRL_MASK:
       correctAcceleratorModifier = ModifierKey.CTRL;
       break;
-    case Event.META_MASK:
+    case java.awt.Event.META_MASK:
       correctAcceleratorModifier = ModifierKey.META;
       break;
     }
@@ -224,63 +172,8 @@ public class DActor implements UActor {
   }
 	  
   //---------------------------------------------------
-  // INNER CLASSES
-  //---------------------------------------------------
-
-  /**
-   * The <code>ClickHandler</code> is the {@link ClickListener}
-   * implementation of the actor button.
-   */
-  @SuppressWarnings("serial")
-  private final class ClickHandler implements ClickListener {
-    
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (model != null) {
-        model.performAction();
-      }
-    }
-  }
-
-  /**
-   * The <code>ShortcutHandler</code> is the {@link ShortcutListener}
-   * implementation of the actor action.
-   */
-  @SuppressWarnings("serial")
-  private final class ShortcutHandler extends ShortcutListener {
-
-    //---------------------------------------
-    // CONSTRUCTOR
-    //---------------------------------------
-    
-    /**
-     * Creates a new <code>ShortcutHandler</code> object.
-     * @param caption The action caption.
-     * @param keyCode The action key code.
-     * @param modifierKey The action modifier key.
-     */
-    public ShortcutHandler(String caption, int keyCode, int modifierKey) {
-      super(caption, keyCode, new int[] {modifierKey});
-    }
-
-    //---------------------------------------
-    // IMPLEMENTATIONS
-    //---------------------------------------
-    
-    @Override
-    public void handleAction(Object sender, Object target) {
-      if (model != null && sender == viewer) {
-	model.performAction();
-      }
-    }
-  }
-	  
-  //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
 
-  private Button				button;
   private VActor				model;
-  private DWindow				viewer;
-  private ShortcutHandler	        	shortcutHandler;
 }

@@ -21,6 +21,7 @@ package com.kopiright.vkopi.lib.list;
 
 import com.kopiright.vkopi.lib.visual.ImageHandler;
 
+@SuppressWarnings("serial")
 public class VImageColumn extends VListColumn {
 
   // --------------------------------------------------------------------

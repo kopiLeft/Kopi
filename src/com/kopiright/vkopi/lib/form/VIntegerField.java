@@ -31,6 +31,7 @@ import com.kopiright.xkopi.lib.base.Query;
 /**
  * !!! NEED COMMENTS
  */
+@SuppressWarnings("serial")
 public class VIntegerField extends VField {
 
   // ----------------------------------------------------------------------

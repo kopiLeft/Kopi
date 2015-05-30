@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * style.
  * Use {@link #setCellStyle(HSSFWorkbook, HSSFCell, HSSFCellStyle)} for caching functions.
  */
-public class CellStyleCacheManager {
+@SuppressWarnings("serial")
+public class CellStyleCacheManager implements Serializable {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -141,7 +143,7 @@ public class CellStyleCacheManager {
    * Original equals and hashcode methods are based on the cell
    * format and the cell index which is not enough for our case.
    */
-  /*package*/ static class CellStyleWrapper {
+  /*package*/ static class CellStyleWrapper implements Serializable {
     
     //---------------------------------------
     // CONSTRUCTOR

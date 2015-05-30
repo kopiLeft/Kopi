@@ -21,10 +21,12 @@ package com.kopiright.vkopi.lib.report;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.Serializable;
 
 import com.kopiright.util.base.InconsistencyException;
 
-public class ColumnStyle implements Constants {
+@SuppressWarnings("serial")
+public class ColumnStyle implements Constants, Serializable {
 
   /**
    * Sets the background color of this component.

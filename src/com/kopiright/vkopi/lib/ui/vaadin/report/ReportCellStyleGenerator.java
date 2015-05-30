@@ -49,7 +49,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
   public ReportCellStyleGenerator(MReport model, Parameters parameters) {
     this.model = model;
     this.parameters = parameters;
-    stylesMap = new CSSStyle [model.getAccessibleColumnCount() + 30][11];
+    stylesMap = new CSSStyle[model.getAccessibleColumnCount() + 30][11];
     updateStyles();
   }
   
@@ -58,7 +58,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
   //---------------------------------------------------
   
   @Override
-  public String getStyle(Table source,Object itemId, Object propertyId) { 
+  public String getStyle(Table source, Object itemId, Object propertyId) { 
     int		level = model.getRow((Integer)itemId).getLevel();
 	    
     if (propertyId == null) {
@@ -69,6 +69,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
 	col = 0;
       }    
       String	style = stylesMap[col][level].getName();
+      
       return style == null ? stylesMap[col][level].getName() : style;
     }
   }

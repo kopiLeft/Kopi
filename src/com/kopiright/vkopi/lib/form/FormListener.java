@@ -19,9 +19,11 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
-public interface FormListener extends EventListener {
+public interface FormListener extends EventListener, Serializable {
+  
   void currentBlockChanged(VBlock oldBlock, VBlock newBlock);
   void setFieldSearchOperator(int op);
 }

@@ -22,12 +22,11 @@ package com.kopiright.vkopi.lib.ui.vaadin.visual;
 import java.io.IOException;
 
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VHelpViewer;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * The <code>DHelpViewer</code> is used to display help information.
@@ -50,21 +49,19 @@ public class DHelpViewer extends DWindow {
   public DHelpViewer(final VHelpViewer model) {
     super(model);
     model.setDisplay(this);
-    addAction(new ShortcutListener("", KeyCode.ESCAPE, null) {
-      
-      @Override
-      public void handleAction(Object sender, Object target) {
-        if (target == DHelpViewer.this) {
-          closeWindow();
-        }
-      }
-    });
     
     try {
+      Panel			pane;
+      VerticalLayout		layout;
+      
+      pane = new Panel();
       html = new CustomLayout(model.getURL().openStream());
-      html.addStyleName(KopiTheme.CUSTOM_LAYOUT_HTML);
-      html.setSizeUndefined();
-      setContent(html);
+      layout = new VerticalLayout(html);
+      pane.setWidth(600, Unit.PIXELS);
+      pane.setHeight(500, Unit.PIXELS);
+      pane.setContent(layout);
+      layout.setMargin(true);
+      setContent(pane);
     } catch (IOException e) {
       throw new InconsistencyException(e);
     } 

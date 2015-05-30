@@ -19,13 +19,16 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+import java.io.Serializable;
+
 import com.kopiright.util.base.InconsistencyException;
 
 /**
  * Creates the GUI, opens the window, form, ...
  * Handles actions initialized by the user
  */
-public abstract class WindowController {
+@SuppressWarnings("serial")
+public abstract class WindowController implements Serializable {
 
   //------------------------------------------------------------------
   // ACCESSORS

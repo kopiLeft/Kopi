@@ -19,11 +19,13 @@
 
 package com.kopiright.vkopi.lib.preview;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
 import com.kopiright.vkopi.lib.visual.UserConfiguration;
 
-public interface PreviewListener extends EventListener {
+public interface PreviewListener extends EventListener, Serializable {
+  
   void pageChanged(int current);
   void zoomChanged();
   void zoomFit(int type);

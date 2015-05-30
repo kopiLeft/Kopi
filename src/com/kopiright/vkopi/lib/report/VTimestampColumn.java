@@ -44,7 +44,7 @@ public class VTimestampColumn extends VReportColumn {
 	  align,
 	  groups,
 	  function,
-	  10 + 1 + 9 + 3 + 3, // width, default timestamp format (date + space + time)
+	  10 + 1 + 8, // width, default timestamp format (date + space + time)
 	  1,
 	  format);
   }

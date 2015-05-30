@@ -19,9 +19,10 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
-public interface BlockListener extends EventListener {
+public interface BlockListener extends EventListener, Serializable {
   void blockClosed();
   void blockChanged();
   void blockCleared();

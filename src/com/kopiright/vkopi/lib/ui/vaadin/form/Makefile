@@ -27,13 +27,11 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/vaadin/form
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	DChartBlock DMultiBlock KopiMultiBlockLayout		\
-    		DBlock DField DFieldUI VPredefinedValueHandler 		\
-		DForm  DImageField DLabel DListDialog DChartBlock	\
-		DMultiBlock DObjectField DPage DTextEditor DTextField	\
-	    	DateChooser KeyNavigator Environment ImageFileChooser	\
-		KopiMultiBlockLayout KopiSimpleBlockLayout		\
-		DChartHeaderLabel
+JAVAFILES +=	DateChooser DBlock DBlockDropHandler DChartBlock	\
+		DChartHeaderLabel DField DFieldHandler DFieldUI		\
+		DForm DImageField DLabel DListDialog DMultiBlock	\
+		DObjectField DTextEditor DTextField KeyNavigator 	\
+		VPredefinedValueHandler
 		
 
 ## ----------------------------------------------------------------------

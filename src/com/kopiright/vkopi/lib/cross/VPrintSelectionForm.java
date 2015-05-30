@@ -34,6 +34,7 @@ import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 
+@SuppressWarnings("serial")
 public abstract class VPrintSelectionForm extends VDictionaryForm implements Printable {
 
   protected VPrintSelectionForm() throws VException {

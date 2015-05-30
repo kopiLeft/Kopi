@@ -33,6 +33,7 @@ import com.kopiright.xkopi.lib.type.Timestamp;
 /**
  * !!! graf 20100914 complete input methods
  */
+@SuppressWarnings("serial")
 public class VTimestampField extends VField {
 
   // ----------------------------------------------------------------------
@@ -43,7 +44,7 @@ public class VTimestampField extends VField {
    * Constructor
    */
   public VTimestampField() {
-    super(10 + 1 + 9 + 3 + 9, 1); // yyyy-MM-dd hh:mm:ss.nnnnnnnnn
+    super(10 + 1 + 8, 1); // yyyy-MM-dd hh:mm:ss
   }
 
   /**

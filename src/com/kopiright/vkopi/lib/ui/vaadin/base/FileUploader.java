@@ -20,29 +20,26 @@
 package com.kopiright.vkopi.lib.ui.vaadin.base;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.kopiright.vaadin.component.fileupload.UploadWindow;
-import com.kopiright.vkopi.lib.base.UComponent;
+import org.kopi.vaadin.addons.Upload;
+import org.kopi.vaadin.addons.UploadFailedEvent;
+import org.kopi.vaadin.addons.UploadFailedListener;
+import org.kopi.vaadin.addons.UploadFinishedEvent;
+import org.kopi.vaadin.addons.UploadFinishedListener;
+import org.kopi.vaadin.addons.UploadReceiver;
+import org.kopi.vaadin.addons.UploadStartedEvent;
+import org.kopi.vaadin.addons.UploadStartedListener;
+import org.kopi.vaadin.addons.UploadSucceededEvent;
+import org.kopi.vaadin.addons.UploadSucceededListener;
+
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Upload.FailedEvent;
-import com.vaadin.ui.Upload.FailedListener;
-import com.vaadin.ui.Upload.FinishedEvent;
-import com.vaadin.ui.Upload.FinishedListener;
-import com.vaadin.ui.Upload.Receiver;
-import com.vaadin.ui.Upload.StartedEvent;
-import com.vaadin.ui.Upload.StartedListener;
-import com.vaadin.ui.Upload.SucceededEvent;
-import com.vaadin.ui.Upload.SucceededListener;
 
 /**
  * The <code>FileUploader</code> handles all client to server file upload operations.
@@ -51,9 +48,9 @@ import com.vaadin.ui.Upload.SucceededListener;
  * to the application at the UI start up.
  * </p>
  */
-public class FileUploader extends Panel
-  implements UComponent, Receiver, StartedListener, FinishedListener, SucceededListener,FailedListener
-{
+@SuppressWarnings("serial")
+public class FileUploader implements UploadReceiver, UploadStartedListener, UploadFinishedListener, UploadSucceededListener, UploadFailedListener {
+  
   //---------------------------------------------------
   // CONSTRUCTOR
   //---------------------------------------------------
@@ -62,105 +59,104 @@ public class FileUploader extends Panel
    * Creates a new <code>FileUploader</code> instance
    */
   public FileUploader() {
-    fileChooser = new UploadWindow("", this);
-    fileChooser.setImmediate(true);
-    fileChooser.addSucceededListener((SucceededListener)this);
-    fileChooser.addStartedListener((StartedListener)this);
-    fileChooser.addFinishedListener((FinishedListener)this);
-    fileChooser.addFailedListener((FailedListener)this);
+    listeners = new LinkedList<FileUploader.FileUploadListener>();
+    uploader = new Upload(this);
+    uploader.setImmediate(true);
+    uploader.addSucceededListener(this);
+    uploader.addStartedListener(this);
+    uploader.addFinishedListener(this);
+    uploader.addFailedListener(this);
   }
   
   //---------------------------------------------------
-  // UTILS
+  // IMPLEMENTATION
   //---------------------------------------------------
-  
-  /**
-   * Returns the file uploader instance.
-   * @return The file uploader instance.
-   */
-  public static FileUploader get() { 
-    if (instance == null) {
-      instance = new FileUploader();
-    }
-    
-    return instance;
-  }
   
   /**
    * Invokes the upload process for a given mime type.
    * @param mimeType The mime type to be uploaded.
    * @return The uploaded bytes.
    */
-  public byte[] invoke(String mimeType) {
+  public byte[] upload(final String mimeType) {
     this.mimeType = mimeType;
-    
-    if (mimeType != null) {
-      fileChooser.setFilter(mimeType);
-    }
-    fileChooser.chooseFile();
-    synchronized (fileChooser) {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	uploader.upload(mimeType);
+      }
+    });
+
+    synchronized (uploader) {
       try {
-        fileChooser.wait();
+	uploader.wait();
       } catch (InterruptedException e) {
 	e.printStackTrace();
       } 
     }
-    focus();
-    UI.getCurrent().push();
+
+    if (output != null) {
+      return output.toByteArray();
+    } else {
+      return null;
+    }
+  }
+  
+  /**
+   * Returns the uploader component.
+   * @return The uploader component.
+   */
+  public Upload getUploader() {
+    return uploader;
+  }
+  
+  /**
+   * Registers a new {@link FileUploadListener} object.
+   * @param l The listener object.
+   */
+  public void addFileUploadListener(FileUploadListener l) {
+    listeners.add(l);
+  }
+  
+  /**
+   * Removes a new {@link FileUploadListener} object.
+   * @param l The listener object.
+   */
+  public void removeFileUploadListener(FileUploadListener l) {
+    listeners.remove(l);
+  }
+  
+  
+  @Override
+  public void uploadFailed(UploadFailedEvent event) {
+    if (event.getReason() != null) {
+      event.getReason().printStackTrace(System.err);
+      getApplication().displayError(null, event.getReason().getMessage());
+    }
+  }
+
+  @Override
+  public void uploadSucceeded(UploadSucceededEvent event) {
     
-    return output.toByteArray();
   }
-  
-  //---------------------------------------------------
-  // IMPLEMENTATIONS
-  //---------------------------------------------------
-  
-  /**
-   * @override
-   */
-  public void uploadFailed(FailedEvent event) {
-    event.getReason().printStackTrace();
-    ApplicationContext.getApplicationContext().getApplication().displayError(this, event.getReason().getMessage());
-  }
-  
-  /**
-   * @override
-   */
-  public void uploadSucceeded(SucceededEvent event) {
-    // nothing to do
-  }
-  
-  /**
-   * @override
-   */
-  public void uploadFinished(FinishedEvent event) {
-    synchronized (fileChooser) {
-      fileChooser.notify(); 
+
+  @Override
+  public void uploadFinished(UploadFinishedEvent event) {
+    synchronized (uploader) {
+      uploader.notify(); 
     }
   }
-  
-  /**
-   * @override
-   */
-  public void uploadStarted(StartedEvent event) {
+
+  @Override
+  public void uploadStarted(UploadStartedEvent event) {
     if (mimeType != null && !event.getMIMEType().startsWith(getParentMIMEType())) {
-      fileChooser.interruptUpload();
+      uploader.interruptUpload();
     }
   }
   
-  /**
-   * @override
-   */
+  @Override
   public OutputStream receiveUpload(String filename, String mimeType) {
     output = new ByteArrayOutputStream();
-    try {
-      selectedFile = File.createTempFile(filename, "");
-      new FileOutputStream(selectedFile);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
     return output;
   }
   
@@ -176,9 +172,19 @@ public class FileUploader extends Panel
 	                            byte[] uploaded)
     throws VException
   {
-    if (uploadHandler != null) {
-      uploadHandler.uploadFinished(new UploadEvent(this, filename, mimeType, uploaded));
+    for (FileUploadListener listener : listeners) {
+      if (listener != null) {
+	listener.uploadFinished(new UploadEvent(uploader, filename, mimeType, uploaded));
+      }
     }
+  }
+  
+  /**
+   * Returns the current application instance.
+   * @return The current application instance.
+   */
+  protected VApplication getApplication() {
+    return (VApplication) ApplicationContext.getApplicationContext().getApplication();
   }
   
   /**
@@ -194,10 +200,10 @@ public class FileUploader extends Panel
   //---------------------------------------------------
   
   /**
-   * The <code>FileUploadHandler</code> is a listener to
+   * The <code>FileUploadListener</code> is a listener to
    * notify registered object of an upload process finish
    */
-  public interface FileUploadHandler extends Serializable {
+  public interface FileUploadListener extends Serializable {
     
     /**
      * Fired when the upload operation has been successfully executed;
@@ -227,7 +233,7 @@ public class FileUploader extends Panel
      * @param mimeType The mime type to be uploaded.
      * @param uploaded The uploaded bytes.
      */
-    public UploadEvent(FileUploader source,
+    public UploadEvent(Upload source,
 		       String filename,
 		       String mimeType,
 	               byte[] uploaded)
@@ -254,8 +260,8 @@ public class FileUploader extends Panel
      * Returns the event source.
      * @return The event source.
      */
-    public FileUploader getUploader() {
-      return (FileUploader) source;
+    public Upload getUploader() {
+      return (Upload) source;
     }
 
     /**
@@ -274,15 +280,13 @@ public class FileUploader extends Panel
       return mimeType;
     }
     
-    //-----------------------------------------
+    //---------------------------------------
     // DATA MEMBERS
-    //-----------------------------------------
+    //---------------------------------------
     
     private final byte[]		uploaded;
     private final String		filename;
     private final String		mimeType;
-    
-    private static final long	        serialVersionUID = 1414582850937188939L;
   }
   
   //---------------------------------------------------
@@ -290,11 +294,11 @@ public class FileUploader extends Panel
   //---------------------------------------------------
   
   /**
-   * Returns the file chooser.
-   * @return The file chooser.
+   * Returns the file uploader.
+   * @return The file uploader.
    */
-  public UploadWindow geFileChooser() {
-    return fileChooser;
+  public Upload geUploader() {
+    return uploader;
   }
   
   /**
@@ -312,24 +316,13 @@ public class FileUploader extends Panel
   public void setOutput(ByteArrayOutputStream output) {
     this.output = output;
   }
-  
-  /**
-   * Returns the selected file.
-   * @return The selected file.
-   */
-  public File getSelectedFile() {
-    return selectedFile;
-  }
 
   //--------------------------------------------
   // DATA MEMBERS
   //--------------------------------------------
 
-  private final UploadWindow			fileChooser;
-  private File 					selectedFile;
+  private final Upload				uploader;
   private ByteArrayOutputStream			output;
   private String				mimeType;
-  private FileUploadHandler 			uploadHandler;
-  private static FileUploader			instance;
-  private static final long 			serialVersionUID = -598412676724701973L;
+  private List<FileUploadListener>		listeners;
 }

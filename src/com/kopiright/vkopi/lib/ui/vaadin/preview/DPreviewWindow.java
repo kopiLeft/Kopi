@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 
 import com.kopiright.vkopi.lib.preview.VPreviewWindow;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.DWindow;
 import com.vaadin.server.FileResource;
 import com.vaadin.ui.Embedded;
@@ -45,10 +44,11 @@ public class DPreviewWindow extends DWindow {
    */
   public DPreviewWindow(VPreviewWindow model) {
     super(model);
+    setSizeUndefined();
     this.model = model;
-    addStyleName(KopiTheme.PREVIEW_PANEL);  
     embedded = new Embedded(); 
     embedded.setSizeFull();
+    embedded.setHeight(297, Unit.MM); // size of an A4 document
     setContent(embedded);
   }
   
@@ -56,18 +56,17 @@ public class DPreviewWindow extends DWindow {
    * Customized initializations.
    */
   public void init() {
-    // to be overriden in children classes.
+    // to be overridden in children classes.
   }
 
   @Override
   public void run() {
     try {
+      model.setActorEnabled(VPreviewWindow.CMD_QUIT, true); // force to enable the quit actor
       setEmbeddedContent(model.getPrintJob().getDataFile());
     } catch (IOException e) {
-      e.printStackTrace();
+      e.printStackTrace(System.err);
     }
-    // get the window focused.
-    focus();
   } 
 
   /**

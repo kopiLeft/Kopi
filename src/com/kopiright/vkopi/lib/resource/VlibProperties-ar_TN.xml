@@ -297,4 +297,6 @@
   <property key="theme-confirmation" value="يؤدي تغيير التصميم إلى الخروج من جلسة العمل الخاصة بك." />
   <property key="available-themes" value=": التصاميم المتاحة" /> 
   <property key="home" value="إستقبال" />
+  <property key="session-expired-caption" value="انتهت الدورة" />
+  <property key="session-expired-message" value="تثبّت من أيّة بيانات لم يتم حفظها، ثم انقر هنا للمتابعة." />
 </properties>

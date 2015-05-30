@@ -24,7 +24,7 @@ package com.kopiright.vkopi.lib.list;
  * laurent :<br>
  * NOTICE : This class was copied from VImageColumn and was not test 
  */
-
+@SuppressWarnings("serial")
 public class VColorColumn extends VListColumn {
 
   // --------------------------------------------------------------------

@@ -27,11 +27,9 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/vaadin/visual
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES += 	DActor DFootPanel DInfoPanel	\
-		DMenuTree DStatePanel  DWindow			\
-		VFileHandler DHelpViewer DPositionPanel		\
-		VApplicationContext	VApplication VUIFactory	\
-		VImageHandler VWindowController WaitIndicator
+JAVAFILES += 	DActor DModuleMenu DMenuTree DWindow VFileHandler	\
+		DHelpViewer VApplicationContext VApplication		\
+		VUIFactory VImageHandler VWindowController
 
 OPTIONS =	
 

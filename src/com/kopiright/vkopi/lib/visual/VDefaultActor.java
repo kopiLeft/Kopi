@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.visual;
 
+@SuppressWarnings("serial")
 public class VDefaultActor extends VActor {
 
   public VDefaultActor(int code,

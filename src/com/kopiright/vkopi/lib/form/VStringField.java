@@ -30,6 +30,7 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.xkopi.lib.base.Query;
 
+@SuppressWarnings("serial")
 public class VStringField extends VField {
 
   /**

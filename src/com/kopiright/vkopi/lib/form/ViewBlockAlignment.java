@@ -19,10 +19,13 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
+
 /**
  * A class to specify alignment in KopiLayout
  */
-public class ViewBlockAlignment {
+@SuppressWarnings("serial")
+public class ViewBlockAlignment implements Serializable {
 
   //------------------------------------------------------------
   // CONSTRUCTOR

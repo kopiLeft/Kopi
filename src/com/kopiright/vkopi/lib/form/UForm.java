@@ -19,10 +19,7 @@
 
 package com.kopiright.vkopi.lib.form;
 
-import java.io.File;
-
 import com.kopiright.vkopi.lib.util.PrintJob;
-import com.kopiright.vkopi.lib.visual.DPositionPanelListener;
 import com.kopiright.vkopi.lib.visual.UWindow;
 import com.kopiright.vkopi.lib.visual.VException;
 
@@ -30,7 +27,7 @@ import com.kopiright.vkopi.lib.visual.VException;
  * {@code UForm} is the top-level interface that must be implemented
  * by all kopi forms. It is the visual component of the {@link VForm} model.
  */
-public interface UForm extends UWindow, DPositionPanelListener, FormListener {
+public interface UForm extends UWindow, FormListener {
 
   /**
    * Returns the block view of a given {@link UBlock} model.

@@ -29,6 +29,7 @@ import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBContext;
 
+@SuppressWarnings("serial")
 public abstract class VDictionaryForm extends VForm {
 
   /*

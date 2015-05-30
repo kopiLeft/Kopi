@@ -19,10 +19,12 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
+
 /**
  * {@code FieldHandler} handles all events on a kopi field. 
  */
-public interface FieldHandler extends FieldListener, FieldChangeListener {
+public interface FieldHandler extends FieldListener, FieldChangeListener, Serializable {
 
   /**
    * Returns the field row controller.

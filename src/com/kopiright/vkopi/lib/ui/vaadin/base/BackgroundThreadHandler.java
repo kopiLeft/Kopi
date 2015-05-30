@@ -19,6 +19,10 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.base;
 
+import org.kopi.vaadin.addons.StrategyUIExecutor;
+import org.kopi.vaadin.addons.UIExecutor;
+import org.kopi.vaadin.addons.UIRunnable;
+
 import com.vaadin.ui.UI;
 
 /**
@@ -38,16 +42,8 @@ public class BackgroundThreadHandler {
    * @param lock The lock object.
    * @see {@link UI#access(Runnable)}
    */
-  public static void startAndWait(final Runnable runnable, Object lock) {
-    UI.getCurrent().access(new Runnable() {
-      
-      @Override
-      public void run() {
-        runnable.run();
-        UI.getCurrent().push();
-      }
-    }); 
-    
+  public static void startAndWait(final Runnable runnable, final Object lock) {
+    access(runnable);
     synchronized (lock) {
       try { 
 	lock.wait();
@@ -58,19 +54,30 @@ public class BackgroundThreadHandler {
   }
   
   /**
+   * Access the UI to pending tasks to perform some updates.
+   * @param runnable The runnable to be run.
+   */
+  public static void access(final Runnable runnable) {
+    executor.access(runnable);
+  }
+  
+  /**
    * Starts a task asynchronously. This will lock the current session and all concurrent sessions.
    * @param runnable The task to be run.
-   * @see {@link UI#access(Runnable)}
    */
   public static void start(final Runnable runnable) {
-    UI.getCurrent().access(new Runnable() {
+    executor.executeAndAccess(new UIRunnable() {
       
       @Override
-      public void run() {
-        runnable.run();
-        UI.getCurrent().push();
+      public void runInUI(Throwable ex) {
+	UI.getCurrent().push();
       }
-    }); 
+      
+      @Override
+      public void runInBackground() {
+	runnable.run();
+      }
+    });
   }
   
   /**
@@ -79,14 +86,7 @@ public class BackgroundThreadHandler {
    * @see {@link UI#accessSynchronously(Runnable)}
    */
   public static void startSynchronously(final Runnable runnable) {
-    UI.getCurrent().accessSynchronously(new Runnable() {
-      
-      @Override
-      public void run() {
-        runnable.run();
-        UI.getCurrent().push();
-      }
-    }); 
+    executor.accessSynchronously(runnable);
   }
   
   /**
@@ -94,7 +94,7 @@ public class BackgroundThreadHandler {
    * UI.
    */
   public static void updateUI() {
-    UI.getCurrent().access(new Runnable() {
+    executor.access(new Runnable() {
       
       @Override
       public void run() {
@@ -111,5 +111,15 @@ public class BackgroundThreadHandler {
     synchronized (lock) {
       lock.notifyAll(); 
     }
+  }
+  
+  //---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+  
+  private static UIExecutor 			executor;
+  
+  static {
+    executor = new StrategyUIExecutor();
   }
 }

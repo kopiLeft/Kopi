@@ -9,10 +9,8 @@
   <property name="package" value="com/kopiright/vkopi/lib/ui/vaadin/base" />
   <property name="package.name" value="com.kopiright.vkopi.lib.ui.vaadin.base" />
   <property name="src" value="." />
-  <property name="javafiles" value="BackgroundThreadHandler.java ButtonPanel.java
-  	                                ExportResource.java FieldButton.java FieldFactory.java
-  	                                FileUploader.java HorizontalMenu.java Image.java
-  	                                KopiTheme.java MainWindow.java PositionRequestor.java
-  	                                Tree.java Utils.java" />
+  <property name="javafiles" value="BackgroundThreadHandler.java ExportResource.java
+  	                            FileUploader.java Image.java Tree.java Utils.java
+  	                            KopiServlet.java" />
   <import file="${topdir}/defs.xml" />
 </project>

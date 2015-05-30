@@ -24,7 +24,7 @@ import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.l10n.MenuLocalizer;
 import com.kopiright.vkopi.lib.base.UComponent;
 
-
+@SuppressWarnings("serial")
 public class VActor implements VModel {
 
   // ----------------------------------------------------------------------

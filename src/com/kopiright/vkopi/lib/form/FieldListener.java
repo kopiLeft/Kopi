@@ -19,11 +19,12 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
 import com.kopiright.vkopi.lib.visual.VException;
 
-public interface FieldListener extends EventListener {
+public interface FieldListener extends EventListener, Serializable {
 
   /**
    * Updates the field model.

@@ -35,6 +35,7 @@ import com.kopiright.xkopi.lib.type.Time;
  * !!! NEED COMMENTS
  * default values
  */
+@SuppressWarnings("serial")
 public class VTimeField extends VField {
 
   // ----------------------------------------------------------------------

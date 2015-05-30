@@ -32,6 +32,7 @@ import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Month;
 import com.kopiright.xkopi.lib.type.NotNullMonth;
 
+@SuppressWarnings("serial")
 public class VMonthField extends VField {
 
   // ----------------------------------------------------------------------

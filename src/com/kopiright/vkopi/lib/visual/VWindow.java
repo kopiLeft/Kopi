@@ -35,6 +35,7 @@ import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBDeadLockException;
 import com.kopiright.xkopi.lib.base.XInterruptProtectedException;
 
+@SuppressWarnings("serial")
 public abstract class VWindow implements DBContextHandler, KopiExecutable, ActionHandler, VModel {
 
   /**
@@ -248,7 +249,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     }
     if (!send) {
       // use a 'default listener' that the message is
-      // not lost (e.g .because this is happend in the
+      // not lost (e.g .because this is happened in the
       // constructor)
       ApplicationContext.getApplicationContext().getApplication().error(message);
     }
@@ -808,10 +809,10 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   /**
-  * Notifies all listeners that the report file is produced.
-  */
+   * Notifies all listeners that the report file is produced.
+   */
   public void fireFileProduced(File file) {
-    Object[] listeners = listenerList.getListenerList();
+    Object[]		listeners = listenerList.getListenerList();
 
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
       if (listeners[i] == FileProductionListener.class) {

@@ -21,13 +21,22 @@ package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
 import java.io.File;
 
+import org.kopi.vaadin.addons.AbstractNotification;
+import org.kopi.vaadin.addons.ConfirmNotification;
+import org.kopi.vaadin.addons.ErrorNotification;
+import org.kopi.vaadin.addons.InformationNotification;
+import org.kopi.vaadin.addons.NotificationListener;
+import org.kopi.vaadin.addons.PopupWindow;
+import org.kopi.vaadin.addons.ProgressDialog;
+import org.kopi.vaadin.addons.WaitDialog;
+import org.kopi.vaadin.addons.WaitWindow;
+import org.kopi.vaadin.addons.WarningNotification;
+
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.ButtonPanel;
 import com.kopiright.vkopi.lib.ui.vaadin.base.ExportResource;
-import com.kopiright.vkopi.lib.ui.vaadin.base.KopiTheme;
-import com.kopiright.vkopi.lib.ui.vaadin.base.PositionRequestor;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.MessageListener;
 import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.UWindow;
@@ -36,25 +45,9 @@ import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VWindow;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.WaitInfoListener;
-import com.vaadin.event.Action;
-import com.vaadin.event.Action.Container;
-import com.vaadin.event.ActionManager;
-import com.vaadin.server.VariableOwner;
-import com.vaadin.shared.Position;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Notification;
+import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Notification.Type;
-
-import de.steinwedel.messagebox.ButtonId;
-import de.steinwedel.messagebox.Icon;
-import de.steinwedel.messagebox.MessageBox;
-import de.steinwedel.messagebox.MessageBoxListener;
 
 /**
  * The <code>DWindow</code> is an abstract implementation of an {@link UWindow} component.
@@ -62,7 +55,7 @@ import de.steinwedel.messagebox.MessageBoxListener;
  * and reduce the window load time.
  */
 @SuppressWarnings({ "serial", "deprecation"})
-public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use CSSLayout instead
+public abstract class DWindow extends org.kopi.vaadin.addons.Window implements UWindow {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -73,12 +66,10 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
    * @param model The window model.
    */
   protected DWindow(VWindow model) {
-    addStyleName(KopiTheme.PANEL_LIGHT);
+    //addStyleName(KopiTheme.PANEL_LIGHT);
     setImmediate(true);
     this.model = model;
-    buttonPanel = new ButtonPanel();
-    footPanel = new DFootPanel(this);
-    footPanel.setWidth("100%");
+    setCaption(model.getTitle());
     setSizeFull();
     createEditMenu();
     model.addVActionListener(this);
@@ -91,9 +82,7 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
     messageHandler = new MessageHandler();
     model.addMessageListener(messageHandler);
     addActorsToGUI(model.getActors());
-    // Add the help menu at last position
-    notificationPanel = new NotificationPanel("", "");
-    waitIndicator = new WaitIndicator();
+    waitIndicator = new WaitWindow();
   }
 	  
   //---------------------------------------------------
@@ -108,14 +97,6 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
     this.model = model;
     addActorsToGUI(getModel().getActors());
     setWindowFocusEnabled(true);
-  }
-	  
-  /**
-   * Returns the button panel.
-   * @return The button panel.
-   */
-  public ButtonPanel getButtonPanel() {
-    return buttonPanel;
   }
 	  
   /**
@@ -143,6 +124,7 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
    */
   protected void close(int code) {
     VWindow     model = this.model; //destroyed in release()
+    
     try {
       model.destroyModel();
     } finally {
@@ -150,9 +132,9 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
         // set the return code
         returnCode = code;
         // Inform all threads who wait for this panel
-        model.notifyAll();
         release();
         dispose();
+        model.notifyAll();
       }
     }
   }
@@ -171,27 +153,9 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
       for (int i = 0; i < actorDefs.length; i++) {
 	DActor		actor;
 		
-	actor = new DActor(actorDefs[i], this);
-        addButton(buttonPanel, actor);
-        //this.addShortcutListener(actor.getShortcutHandler()); Wrong: This does not allow to enable/disable the shortcut according to the actor
-        if (i != actorDefs.length - 2
-            && actor.getModel().iconName != null)
-        {     	
-          buttonPanel.addSeparator();
-        }
+	actor = new DActor(actorDefs[i]);
+        addActor(actor);
       } 
-    }
-  }
-
-  /**
-   * Adds a button to the button panel.
-   * @param panel The button panel.
-   * @param actor The actor view.
-   */
-  private void addButton(CssLayout panel, DActor actor) {
-    if (actor.getModel().iconName != null) {
-      panel.addComponent(actor.getButton());
-      //panel.setComponentAlignment(actor.getButton(),Alignment.MIDDLE_CENTER);
     }
   }
 
@@ -209,7 +173,6 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
    * @param asynch Should the action run asynchronously ?
    */
   private void performActionImpl(final KopiAction action, boolean asynch) {
-    notificationPanel.hide();
     if (inAction == true) {
       return;
     }
@@ -227,43 +190,36 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
         getModel().executedAction(currentAction);
       }
     } else {
-      Thread     currentThread;
-      //
-      //	      // asyn. work of task
-      //	      // must set inAction to false in event-disp.thread
-      //	      // after it is fully completed
-      //actionRunner.run();	
-      currentThread = new Thread(actionRunner);
+      Thread 	currentThread = new Thread(actionRunner);
+      
       currentThread.start();
     } 
   }
 	  
   public final void setStatePanel(Panel statePanel) {
-    footPanel.setStatePanel(statePanel);
+    //footPanel.setStatePanel(statePanel);
   }
 	  
   /**
    * Disposes the window. Finalize and close this window.
    */
   private void dispose() {
-    BackgroundThreadHandler.start(new Runnable() {
-      
-      @Override
-      public void run() {  
-        if (getParent().getParent() instanceof TabSheet) {
-          TabSheet	tabsheet = ((TabSheet)getParent().getParent());
-
-          tabsheet.removeComponent(getParent());
-          if(tabsheet.getComponentCount() > 1){
-            tabsheet.setSelectedTab(1);
-          }
-        } else {
-          // all modal and children window are added to the application main window
-          // It's enough to close the parent window.
-          ((Window)getParent().getParent()).close();
-        }
-      }
-    });
+    VApplication		application;
+    // close the window by removing it from the application.
+    // this should not be called in a separate transaction.
+    // Modal windows are attached to a popup window. So it is not closed
+    // like not modal windows. We should remove the popup window from the application
+    application = getApplication();
+    if (application == null) {
+      return; // this should never happen.
+    }
+    if (getParent() instanceof PopupWindow) {
+      // it is a modal window ==> we remove its parent
+      application.removeWindow(getParent());
+    } else {
+      // it is not a modal window, we need to remove it from the application.
+      application.removeWindow(this);
+    }
   }
 	  
   /**
@@ -275,9 +231,6 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
     model.removeVActionListener(this);
     model.removeWaitInfoListener(waitInfoHandler);
     model.removeMessageListener(messageHandler);
-    getActionManager().removeAllActionHandlers();
-    footPanel = null;
-    buttonPanel = null;
     model = null;
   }
 
@@ -287,14 +240,6 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
   @Deprecated
   public void close() {
     closeWindow();
-  }
-
-  /**
-   * Returns the foot panel of this window.
-   * @return The foot panel of this window.
-   */
-  public DFootPanel getFootPanel() {
-    return footPanel;
   }
 
   /**
@@ -321,58 +266,19 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
     actionRunner.setInAction();
   }
 	  
-  @Override
-  protected ActionManager getActionManager() {
-    if (actionManager == null) {
-      actionManager = new ActionHandler(this);
-    }
-	    
-    return actionManager;
-  }
-  
-  /**
-   * Returns {@code true} if the window contains the given action.
-   * @param action The action to be checked.
-   * @return {@code true} if the window contains the given action.
-   */
-  public boolean hasAction(Action action) {
-    return ((ActionHandler)getActionManager()).hasAction(action);
-  }
-	  
   /**
    * Displays a text in the lower right corner of the window.
    * @param text The statistics text.
    */
   public final void setStatisticsText(String text) {
-    footPanel.setStatisticsText(text);
+    // footPanel.setStatisticsText(text);
   }
 
   /**
-   * Asks the user for a record to go through.
-   * @param parent The parent container.
-   * @param current The current record.
-   * @param total The total records.
-   * @return The chosen position.
+   * Returns the {@link WaitWindow} instance.
+   * @return The {@link WaitWindow} instance.
    */
-  public static int askPosition(ComponentContainer parent, int current, int total) {
-    PositionRequestor	requestor = new PositionRequestor(parent, current, total);
-    
-    return requestor.askPosition();
-  }
-
-  /**
-   * Returns the {@link NotificationPanel} instance.
-   * @return The {@link NotificationPanel} instance.
-   */
-  public NotificationPanel getNotificationPanel() {
-    return notificationPanel;
-  }
-
-  /**
-   * Returns the {@link WaitIndicator} instance.
-   * @return The {@link WaitIndicator} instance.
-   */
-  public WaitIndicator getWaitIndicator() {
+  public WaitWindow getWaitIndicator() {
     return waitIndicator;
   }
   
@@ -389,13 +295,21 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
   //--------------------------------------------------------------
   
   @Override
-  public void setTotalJobs(int totalJobs) {
-    // TODO
+  public void setTotalJobs(final int totalJobs) {
+    if (progressDialog != null) {
+      BackgroundThreadHandler.access(new Runnable() {
+
+	@Override
+	public void run() {
+	  progressDialog.setTotalJobs(totalJobs);
+	}
+      });
+    }
   }
   
   @Override
   public void performAsyncAction(final KopiAction action) {
-    performActionImpl(action, true);   
+    performActionImpl(action, true);
   }
 
   @Override
@@ -404,23 +318,71 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
   }
 
   @Override
-  public void setWaitDialog(String message, int maxtime) {
-    // TODO
+  public void setWaitDialog(final String message, final int maxtime) {
+    if (waitDialog == null) {
+      waitDialog = new WaitDialog();
+    }
+    
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	waitDialog.setTitle(MessageCode.getMessage("VIS-00067"));
+	waitDialog.setMessage(message);
+	waitDialog.setMaxTime(maxtime);
+	getApplication().attachComponent(waitDialog);
+	getApplication().push();
+      }
+    });
   }
 
   @Override
   public void unsetWaitDialog() {
-    // TODO 
+    if (waitDialog != null) {
+      BackgroundThreadHandler.access(new Runnable() {
+
+	@Override
+	public void run() {
+	  getApplication().detachComponent(waitDialog);
+	  getApplication().push();
+	  waitDialog = null;
+	}
+      });
+    }
   }
 
   @Override
-  public void setProgressDialog(String message, int totalJobs) {
-    // TODO 
+  public void setProgressDialog(final String message, final int totalJobs) {
+    if (progressDialog == null) {
+      progressDialog = new ProgressDialog();
+    }
+    
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	progressDialog.setTitle(MessageCode.getMessage("VIS-00067"));
+	progressDialog.setMessage(message);
+	progressDialog.setTotalJobs(totalJobs);
+	getApplication().attachComponent(progressDialog);
+	getApplication().push();
+      }
+    });
   }
   
   @Override
   public void unsetProgressDialog() {
-    // TODO 
+    if (progressDialog != null) {
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          getApplication().detachComponent(progressDialog);
+          getApplication().push();
+          progressDialog = null;
+        }
+      });
+    }
   }
 
   @Override
@@ -429,8 +391,17 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
   }
   
   @Override
-  public void setCurrentJob(int currentJob) {
-    // TODO
+  public void setCurrentJob(final int currentJob) {
+    if (progressDialog != null) {
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          progressDialog.setProgress(currentJob);
+          getApplication().push();
+        }
+      });
+    }
   }
 
   @Override
@@ -440,12 +411,21 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
 
   @Override
   public void setInformationText(final String text) {
-    footPanel.setInformationText(text);
+   // footPanel.setInformationText(text);
   }
 
   @Override
-  public void updateWaitDialogMessage(String message) {
-    // TODO 
+  public void updateWaitDialogMessage(final String message) {
+    if (waitDialog != null) {
+      BackgroundThreadHandler.access(new Runnable() {
+
+	@Override
+	public void run() {
+	  progressDialog.setMessage(message);
+	  getApplication().push();
+	}
+      });
+    }
   }
   
   @Override
@@ -481,36 +461,39 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
    * @param message The application information.
    */
   public void showApplicationInformation(String message) {
-    verifyNotInTransaction("DWindow.showApplicationInformation(" + message + ")");
-	    
-    messageBox = MessageBox.showPlain(Icon.INFO,
-    		                      VlibProperties.getString("Notice"),
-    		                      message,
-    		                      ButtonId.CLOSE);
-    messageBox.getButton(ButtonId.CLOSE).setCaption(VlibProperties.getString("CLOSE"));
+//    verifyNotInTransaction("DWindow.showApplicationInformation(" + message + ")");
+//	    
+//    messageBox = MessageBox.showPlain(Icon.INFO,
+//    		                      VlibProperties.getString("Notice"),
+//    		                      message,
+//    		                      ButtonId.CLOSE);
+//    messageBox.getButton(ButtonId.CLOSE).setCaption(VlibProperties.getString("CLOSE"));
   }
-
+  
   /**
-   * Displays an ask dialog box.
-   * @param message The message to be displayed.
+   * Sets the window error.
+   * @param e The exception cause.
    */
-  public void askUser(String message) {
-    verifyNotInTransaction("DWindow.askUser(" + message + ")");
+  protected void setWindowError(final Throwable e) {
+    BackgroundThreadHandler.access(new Runnable() {
 
-    messageBox = MessageBox.showPlain(Icon.QUESTION,
-    		                      VlibProperties.getString("Question"),
-    		                      message,
-    		                      ButtonId.YES,
-    		                      ButtonId.NO);
-    messageBox.getButton(ButtonId.YES).setCaption(VlibProperties.getString("OK"));
-    messageBox.getButton(ButtonId.NO).setCaption(VlibProperties.getString("NO"));
+      @Override
+      public void run() {
+	if (e == null) {
+	  setComponentError(null);
+	} else {
+	  setComponentError(AbstractErrorMessage.getErrorMessageForException(e));
+	  getApplication().push();
+	}
+      }
+    });
   }
 	  
   /**
    * Reports if a message is shown while in a transaction.
    * @param The message to be displayed.
    */
-  private void verifyNotInTransaction(String message) {
+  protected void verifyNotInTransaction(String message) {
     if (getModel().inTransaction() && debugMessageInTransaction()) {
       try {
 	ApplicationContext.reportTrouble("DWindow",
@@ -538,6 +521,14 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
     
     return debugMessageInTransaction;
   }
+  
+  /**
+   * Returns the current application instance.
+   * @return the current application instance.
+   */
+  protected VApplication getApplication() {
+    return (VApplication)ApplicationContext.getApplicationContext().getApplication();
+  }
 	  
   //--------------------------------------------------------------
   // MESSAGELISTENER IMPLEMENTATION
@@ -551,87 +542,120 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
 
     @Override
     public void notice(String message) {
-      final Notification	notification;
-	      
-      notification = new Notification(VlibProperties.getString("Notice"),
-                                      message,
-                                      Type.TRAY_NOTIFICATION);
-      notification.setPosition(Position.MIDDLE_CENTER);
-      notification.setDelayMsec(800);
-      BackgroundThreadHandler.start(new Runnable() {
+      final InformationNotification		dialog;
+      final Object				lock;
+      
+      lock = new Object();
+      dialog = new InformationNotification(VlibProperties.getString("Notice"), message);
+      dialog.addNotificationListener(new NotificationListener() {
         
         @Override
-        public void run() {
-          UI.getCurrent().showNotification(notification);
+        public void onClose(boolean yes) {
+          getApplication().detachComponent(dialog);
+          BackgroundThreadHandler.releaseLock(lock);
         }
       });
+      showNotification(dialog, lock);
     }
 
     @Override
     public void error(final String message) {
-      notificationPanel.displayNotification(VlibProperties.getString("Error"),message);
+      final ErrorNotification		dialog;
+      final Object			lock;
+      
+      lock = new Object();
+      dialog = new ErrorNotification(VlibProperties.getString("Error"), message);
+      dialog.setOwner(DWindow.this);
+      dialog.addNotificationListener(new NotificationListener() {
+        
+        @Override
+        public void onClose(boolean yes) {
+          setComponentError(null); // remove any further error.
+          getApplication().detachComponent(dialog);
+          BackgroundThreadHandler.releaseLock(lock);
+        }
+      });
+      showNotification(dialog, lock);
     }
 
     @Override
     public void warn(String message) {
-      notificationPanel.displayNotification(VlibProperties.getString("Warning"),message);
+      final WarningNotification		dialog;
+      final Object			lock;
+      
+      lock = new Object();
+      dialog = new WarningNotification(VlibProperties.getString("Warning"), message);
+      dialog.addNotificationListener(new NotificationListener() {
+        
+        @Override
+        public void onClose(boolean yes) {
+          getApplication().detachComponent(dialog);
+          BackgroundThreadHandler.releaseLock(lock);
+        }
+      });
+      showNotification(dialog, lock);
     }
 
     /**
      * Displays a request dialog for a user interaction.
      * @param message The message to be displayed in the dialog box.
      */
-    public void ask(String message) {
-      messageBox = MessageBox.showPlain(Icon.QUESTION,
-	                                VlibProperties.getString("Question"),
-	                                message,
-	                                ButtonId.YES,
-	                                ButtonId.NO);
-      messageBox.getButton(ButtonId.YES).setCaption(VlibProperties.getString("OK"));
-      messageBox.getButton(ButtonId.NO).setCaption(VlibProperties.getString("NO"));
+    public boolean ask(String message) {
+      return ask(message, false) == MessageListener.AWR_YES;
     }
 
     @Override
-    public int ask(final String message, boolean yesIsDefault) {
+    public int ask(String message, boolean yesIsDefault) {
+      final ConfirmNotification		dialog;
       final Object			lock;
-      final MessageBoxListener 		askToQuitListener;
-      
-      askUser = true;
-      res = 0;	
+
       lock = new Object();
-      askToQuitListener= new MessageBoxListener() {
-	
-	@Override
-	public void buttonClicked(ButtonId buttonId) {
-	  if (buttonId.equals(ButtonId.YES)) {
-	    res = 1;
-	  } else {
-	    res = 0;
-	  }
-	  
-	  messageBox.close();
-	  BackgroundThreadHandler.releaseLock(lock);
-	}
-      };
+      dialog = new ConfirmNotification(VlibProperties.getString("Question"), message);
+      dialog.setYesIsDefault(yesIsDefault);
+      dialog.addNotificationListener(new NotificationListener() {
+        
+        @Override
+        public void onClose(boolean yes) {
+          if (yes) {
+            value = MessageListener.AWR_YES;
+          } else {
+            value = MessageListener.AWR_NO;
+          }
+          getApplication().detachComponent(dialog);
+          BackgroundThreadHandler.releaseLock(lock);
+        }
+      });
+      // attach the notification to the application.
+      showNotification(dialog, lock);
       
-      BackgroundThreadHandler.startAndWait(new Runnable() {
-	
-	@Override
-	public void run() { 
-	  messageBox = MessageBox.showPlain(Icon.QUESTION,
-	                                    VlibProperties.getString("Question"),
-	                                    message,
-	                                    askToQuitListener, 
-	                                    ButtonId.YES,
-	                                    ButtonId.NO);
-	  messageBox.getButton(ButtonId.YES).setCaption(VlibProperties.getString("OK"));
-	  messageBox.getButton(ButtonId.NO).setCaption(VlibProperties.getString("NO"));
-	}
-      }, lock);
-      
-      askUser = false;
-      return res;
+      return value;
     }
+    
+    /**
+     * Shows a notification.
+     * @param notification The notification to be shown
+     */
+    protected void showNotification(final AbstractNotification notification, final Object lock) {
+      if (notification == null) {
+	return;
+      }
+      
+      notification.setLocale(getApplication().getDefaultLocale().toString());
+      BackgroundThreadHandler.startAndWait(new Runnable() {
+        
+        @Override
+        public void run() {
+          getApplication().attachComponent(notification);
+          getApplication().push();
+        }
+      }, lock);
+    }
+	  
+    //---------------------------------------
+    // DATA MEMBERS
+    //---------------------------------------
+    
+    private int				value; // only for use in ask(...)
   }
 	  
   //--------------------------------------------------------------
@@ -646,30 +670,28 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
 
     @Override
     public void setWaitInfo(final String message) {
-      if (footPanel != null) {
-	BackgroundThreadHandler.start(new Runnable() {
-	  
-	  @Override
-	  public void run() {
-	    footPanel.setWaitInfo(message);	
-	    waitIndicator.show(message);
-	  }
-	});
-      }
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          waitIndicator.setText(message);
+          getApplication().attachComponent(waitIndicator);
+          getApplication().push();
+        }
+      });
     }
 
     @Override
     public void unsetWaitInfo() {
-      if (footPanel != null) {
-	BackgroundThreadHandler.start(new Runnable() {
-	  
-	  @Override
-	  public void run() {
-	    footPanel.unsetWaitInfo();	
-	    waitIndicator.hide();
-	  }
-	});
-      } 
+      BackgroundThreadHandler.access(new Runnable() {
+
+	@Override
+	public void run() {
+	  waitIndicator.setText(null);
+	  getApplication().detachComponent(waitIndicator);
+	  // getApplication().push();
+	}
+      });
     }
   }
 	  
@@ -696,26 +718,34 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
 	if (currentAction == null) {
 	  return;
 	}
-	
 	currentAction.run();
+        if (getModel() != null) {
+          // actions which close the window also
+          // set the referenced model to null
+          getModel().executedAction(currentAction);
+        }
       } catch (VRuntimeException v) {
 	v.printStackTrace();
 	reportError(v);
 	//getModel().error(v.getMessage());
       } catch (ArrayIndexOutOfBoundsException ar) {
-	// Ignor out of bound exception in position requestor
+	// Ignore out of bound exception in position requestor
       } catch (Throwable exc) {
 	//exc.printStackTrace();
 	//System.out.println("DWindow exc exception: "+exc.getMessage());
 	// model can be destroyed
-	((VApplication)ApplicationContext.getApplicationContext().getApplication()).displayError(null, com.kopiright.vkopi.lib.visual.MessageCode.getMessage("VIS-00041"));
+	setWindowError(exc);
 	if (getModel() != null) {
 	  getModel().fatalError(getModel(), "VWindow.performActionImpl(final KopiAction action)", exc);
+	} else {
+	  getApplication().displayError(null, MessageCode.getMessage("VIS-00041"));
 	}
       } finally {  
 	setInAction();
-	BackgroundThreadHandler.updateUI();
-      }   
+	synchronized (getApplication()) {
+	  BackgroundThreadHandler.updateUI(); 
+	}
+      }
     }
 
     /**
@@ -723,12 +753,6 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
      */
     public synchronized void setInAction() {
       try {
-	if (getModel() != null) {
-	  // actions which close the window also
-	  // set the referenced model to null
-	  getModel().executedAction(currentAction);
-	}
-
 	currentAction = null;
 	inAction = false;
 
@@ -744,55 +768,6 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
       }
     }
   }
-	  
-  //--------------------------------------------------------------
-  // ACTION MAPPER
-  //--------------------------------------------------------------
-  
-  /**
-   * The <code>ActionHandler</code> is the customized window
-   * {@link ActionManager} that allows to test if the window
-   * contains a given vaadin action and use this ability to
-   * enable or disable window actors.
-   */
-  public class ActionHandler extends ActionManager {
-
-    //-------------------------------------------------
-    // CONSTRUCTOR
-    //-------------------------------------------------
-    
-    /**
-     * Creates a new <code>ActionHandler</code> instance.
-     * @param viewer The component who will receive the actions.
-     */
-    public <T extends Component & Container & VariableOwner> ActionHandler(T viewer) {
-      super(viewer);
-    }
-
-    //-------------------------------------------------
-    // IMPLEMENTATIONS
-    //-------------------------------------------------
-    
-    /**
-     * Returns {@code true} if the action handler contains the given action.
-     * @return {@code true} if the action handler contains the given action.
-     */
-    public boolean hasAction(Action action) {
-      for (Action ownAction : ownActions) {
-	if (action == ownAction) {
-	  return true;
-	}
-      }
-	      
-      return false;
-    }
-	    
-    //----------------------------------------------
-    // DATA MEMBERS
-    //----------------------------------------------
-	    
-    private static final long 		serialVersionUID = -2418676926322540654L;
-  }
   
   //----------------------------------------------
   // FILE PRODUCTION IMPLEMENTATION
@@ -802,7 +777,7 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
   public void fileProduced(File file) {
     final ExportResource    resource =  new ExportResource (file, file.getName());
     
-    BackgroundThreadHandler.start(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
@@ -814,20 +789,18 @@ public abstract class DWindow extends Panel implements UWindow { //!!! FIXME use
   //--------------------------------------------------------------
   // DATA MEMBERS
   //--------------------------------------------------------------
-	  
+
   private VWindow				        model;
   private WaitInfoHandler                               waitInfoHandler;
   private MessageHandler                                messageHandler;
-  private ButtonPanel				        buttonPanel;
   private boolean			                inAction;
   private KopiAction			                currentAction;
   protected Throwable           	                runtimeDebugInfo;
-  private DFootPanel			                footPanel;
   private int			                        returnCode;
-  private NotificationPanel                             notificationPanel;
-  private WaitIndicator                                 waitIndicator;
-  private int                                           res;
+  private WaitWindow                                 	waitIndicator;
+  private ProgressDialog				progressDialog;
+  private WaitDialog					waitDialog;
   private boolean					askUser;
-  private MessageBox                                    messageBox;
+  //private MessageBox                                    messageBox;
   private final ActionRunner    	      	        actionRunner = new ActionRunner();
 }

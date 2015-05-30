@@ -19,7 +19,10 @@
 
 package com.kopiright.vkopi.lib.list;
 
-public class VColumn {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class VColumn implements Serializable {
 
   /**
    * Constructor

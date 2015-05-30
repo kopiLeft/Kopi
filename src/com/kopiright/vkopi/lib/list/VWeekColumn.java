@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.list;
 
+@SuppressWarnings("serial")
 public class VWeekColumn extends VListColumn {
 
   // --------------------------------------------------------------------

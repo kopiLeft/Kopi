@@ -19,9 +19,10 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
-public interface FieldChangeListener extends EventListener {
+public interface FieldChangeListener extends EventListener, Serializable {
 
   /**
    * Fired when the field label is changed.

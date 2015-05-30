@@ -33,6 +33,7 @@ import com.kopiright.vkopi.lib.ui.swing.base.JMenuButton;
 import com.kopiright.vkopi.lib.visual.UActor;
 import com.kopiright.vkopi.lib.visual.VActor;
 
+@SuppressWarnings("serial")
 public class DActor implements UActor {
 
   // --------------------------------------------------------------------

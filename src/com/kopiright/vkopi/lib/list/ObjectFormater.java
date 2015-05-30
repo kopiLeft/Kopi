@@ -19,7 +19,9 @@
 
 package com.kopiright.vkopi.lib.list;
 
-public interface ObjectFormater {
+import java.io.Serializable;
+
+public interface ObjectFormater extends Serializable {
   
   /**
    * Returns a representation of value

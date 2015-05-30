@@ -23,7 +23,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +35,9 @@ import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VStringField;
-import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
@@ -86,6 +87,14 @@ public class DBlockDropHandler implements DropHandler {
   public AcceptCriterion getAcceptCriterion() {
     return AcceptAll.get();
   }
+  
+  /**
+   * Returns the application instance.
+   * @return The application instance.
+   */
+  protected VApplication getApplication() {
+    return (VApplication) ApplicationContext.getApplicationContext().getApplication();
+  }
 
   //---------------------------------------------------------
   // UTILS
@@ -114,8 +123,9 @@ public class DBlockDropHandler implements DropHandler {
    * @return {@code true} is the data flavor is accepted.
    */
   private boolean isAccepted(WrapperTransferable transferable) {
-    if (isDataFlavorSupported(transferable ,DataFlavor.javaFileListFlavor)) {
+    if (isDataFlavorSupported(transferable, DataFlavor.javaFileListFlavor)) {
       ArrayList<Html5File>		flavors;
+      
       flavors = new ArrayList<Html5File>();
       for (int i = 0; i < transferable.getFiles().length; i++) {
 	flavors.add(transferable.getFiles()[i]);
@@ -373,37 +383,112 @@ public class DBlockDropHandler implements DropHandler {
     
     @Override
     public boolean listenProgress() {
-      return false;
+      return true;
     }
     
     @Override
-    public void onProgress (StreamingProgressEvent event) {}
-
-    @Override
-    public void streamingStarted (StreamingStartEvent event) {}
-
-    @Override
-    public void streamingFinished (StreamingEndEvent event) {      
-      try {
-	File 		temp;
-	      
-        temp = File.createTempFile(event.getFileName().substring(0,event.getFileName().indexOf(".")), event.getFileName().substring(event.getFileName().indexOf(".")),ApplicationConfiguration.getConfiguration().getDefaultDirectory());
-        OutputStream outputStream = new FileOutputStream (temp);
-        bas.writeTo(outputStream);
-        acceptDrop(temp);
-      } catch (FileNotFoundException e) {
-	acceptDrop(null);
-      } catch (IOException e) {
-	acceptDrop(null);
-      } 
+    public void onProgress(StreamingProgressEvent event) {
+      if (event.getContentLength() > 50 * 1024 * 1024) {
+	// show progress bar only for file larger than 50 MB
+	block.getForm().setCurrentJob((int)event.getBytesReceived());
+      }
     }
 
     @Override
-    public void streamingFailed (StreamingErrorEvent event) {}
+    public void streamingStarted(StreamingStartEvent event) {
+      if (event.getContentLength() > 50 * 1024 * 1024) {
+	block.getForm().setProgressDialog("", Long.valueOf(event.getContentLength()).intValue());
+      }
+    }
+
+    @Override
+    public void streamingFinished(StreamingEndEvent event) {
+      try {
+	File 			temp;
+	FileOutputStream	out;
+	      
+        temp = createTempFile(event.getFileName());
+        out = new FileOutputStream (temp);
+        bas.writeTo(out);
+        acceptDrop(temp);
+      } catch (IOException e) {
+	acceptDrop(null);
+      } finally {
+	if (event.getContentLength() > 50 * 1024 * 1024) {
+	  block.getForm().unsetProgressDialog();
+	}
+      }
+    }
+
+    @Override
+    public void streamingFailed(final StreamingErrorEvent event) {
+      event.getException().printStackTrace(System.err);
+      BackgroundThreadHandler.start(new Runnable() {
+        
+        @Override
+        public void run() {
+          block.getForm().error(event.getException().getMessage());
+          getApplication().push();
+        }
+      });
+    }
 
     @Override
     public boolean isInterrupted() {
       return false;
+    }
+    
+    /**
+     * Creates a temporary file.
+     * @param directory The parent directory.
+     * @param defaultName The default file name.
+     * @return The created temporary file.
+     * @throws IOException I/O errors.
+     */
+    protected File createTempFile(String defaultName)
+      throws IOException
+    {
+      String		basename;
+      String		extension;
+      
+      basename = getBaseFileName(defaultName);
+      extension = getExtension(defaultName);
+      
+      return File.createTempFile(basename, String.valueOf("." + extension), null);
+    }
+    
+    /**
+     * Returns the file extension of a given file name.
+     * @param defaultName The default file name.
+     * @return The file extension.
+     */
+    protected String getExtension(String defaultName) {
+      if (defaultName != null) {
+	int	index = defaultName.lastIndexOf('.');
+
+	if (index != -1) {
+	  return defaultName.substring(Math.min(defaultName.length(), index + 1));
+	}
+      }
+
+      return ""; // no extension.
+    }
+    
+    /**
+     * Returns the base file name (without file extension).
+     * @param defaultName The default file name.
+     * @return The base file name 
+     */
+    protected String getBaseFileName(String defaultName) {
+      if (defaultName != null) {
+        int	index = defaultName.lastIndexOf('.');
+        
+        if (index != -1) {
+  	return defaultName.substring(0, Math.min(defaultName.length(), index));
+        }
+      }
+      
+      return ""; // empty name.
     }
     
     //---------------------------------------

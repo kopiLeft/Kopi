@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.report;
 
+import java.io.Serializable;
 import java.util.EventListener;
 
 /**
@@ -27,7 +28,7 @@ import java.util.EventListener;
  *
  * @see javax.swing.table.TableModel
  */
-public interface ReportListener extends EventListener {
+public interface ReportListener extends EventListener, Serializable {
 
   /**
    * This fine grain notification tells listeners that

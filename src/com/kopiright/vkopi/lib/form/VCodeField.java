@@ -28,6 +28,7 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 
+@SuppressWarnings("serial")
 public abstract class VCodeField extends VField {
 
   /**

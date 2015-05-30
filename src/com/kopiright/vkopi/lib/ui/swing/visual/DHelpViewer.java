@@ -23,7 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
@@ -44,27 +43,26 @@ import com.kopiright.vkopi.lib.visual.VHelpViewer;
 /*package*/ class DHelpViewer extends DWindow implements HyperlinkListener {
 
   /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -5681828259231318466L;
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long serialVersionUID = -5681828259231318466L;
 
-/**
+  /**
    *
    */
   public DHelpViewer(VHelpViewer model) {
     super(model);
     registerKeyboardAction(new AbstractAction() {
-        /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = -4312276387422409187L;
+      /**
+       * Comment for <code>serialVersionUID</code>
+       */
+      private static final long serialVersionUID = -4312276387422409187L;
 
-		public void actionPerformed(ActionEvent e) {
-          closeWindow();
-        }},
+      public void actionPerformed(ActionEvent e) {
+	closeWindow();
+      }},
                            null,
-                           KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                           JComponent.WHEN_IN_FOCUSED_WINDOW);
+                           KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     getContentPanel().setLayout(new BorderLayout());
     try {
       html = new JEditorPane(model.getURL());
@@ -75,8 +73,8 @@ import com.kopiright.vkopi.lib.visual.VHelpViewer;
     html.addHyperlinkListener(this);
 
     JScrollPane         scroller = new JScrollPane(html,
-                                                   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                                   ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	                                           ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+	                                           ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     scroller.setPreferredSize(new Dimension(600, 500));
     getContentPanel().add(scroller, BorderLayout.CENTER);
   }
@@ -96,16 +94,16 @@ import com.kopiright.vkopi.lib.visual.VHelpViewer;
   public void setURL(final URL url) {
     SwingThreadHandler.startAndWait(new Runnable() {
       public void run() {
-        Document    doc = html.getDocument();
+	Document    doc = html.getDocument();
 
-        try {
-          html.setPage(url);
-        } catch (java.io.IOException ioe) {
-          html.setDocument(doc);
-          getToolkit().beep();
-        }
+	try {
+	  html.setPage(url);
+	} catch (java.io.IOException ioe) {
+	  html.setDocument(doc);
+	  getToolkit().beep();
+	}
       }
-      });
+    });
   }
 
   // ----------------------------------------------------------------------
@@ -136,12 +134,6 @@ import com.kopiright.vkopi.lib.visual.VHelpViewer;
    */
   protected void linkActivated(URL u) {
     ((VHelpViewer)getModel()).setURL(u);
-  }
-
-  @Override
-  public void fileProduced(File file) {
-    // TODO Auto-generated method stub
-    
   }
   
   // ----------------------------------------------------------------------

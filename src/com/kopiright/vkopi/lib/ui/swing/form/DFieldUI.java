@@ -35,6 +35,7 @@ import com.kopiright.vkopi.lib.ui.swing.visual.SwingThreadHandler;
 /**
  * {@code DFieldUI} is a swing implementation of {@link VFieldUI}
  */
+@SuppressWarnings("serial")
 public class DFieldUI extends VFieldUI {
 
   // ----------------------------------------------------------------------

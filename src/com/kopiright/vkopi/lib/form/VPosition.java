@@ -19,7 +19,10 @@
 
 package com.kopiright.vkopi.lib.form;
 
-public class VPosition implements VConstants {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class VPosition implements VConstants, Serializable {
 
   // --------------------------------------------------------------------
   // CONSTRUCTION
