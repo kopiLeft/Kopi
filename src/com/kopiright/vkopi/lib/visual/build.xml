@@ -28,7 +28,7 @@
   		   Registry.java ProgressDialogListener.java MessageCode.java 
   		   Message.java VModel.java UWindow.java WindowBuilder.java
   		   ApplicationContext.java UIFactory.java 
-  		   ImageHandler.java FileHandler.java 
+  		   ImageHandler.java FileHandler.java FileProductionListener.java
   		   UWindow.java VMenuTree.java UMenuTree.java
 		   UBookmarkPanel.java UTree.java PreviewRunner.java" />
 

@@ -40,7 +40,8 @@ JAVAFILES +=	ActionHandler Application ApplicationContext		\
 		VerifyConfiguration ApplicationConfiguration		\
 		PrinterManager PropertyException ModelCloseListener	\
 		UserConfiguration Message VlibProperties UWindow	\
-		UMenuTree ImageHandler VModel UIFactory UActor
+		UMenuTree ImageHandler VModel UIFactory UActor		\
+		FileProductionListener
 
 ## ----------------------------------------------------------------------
 ## GOALS
