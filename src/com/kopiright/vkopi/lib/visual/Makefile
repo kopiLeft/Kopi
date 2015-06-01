@@ -32,7 +32,7 @@ JAVAFILES +=	ActionHandler Application ApplicationContext		\
 		MessageCode Module  DPositionPanelListener		\
 		Registry WaitDialogListener ProgressDialogListener	\
 		VActor VDefaultActor VActionListener			\
-		VCommand VException					\
+		VCommand VException PreviewRunner			\
 		VExecFailedException VHelpGenerator			\
 		VInterruptException VMenuTree VRuntimeException		\
 		VTrigger VWindow VDatabaseUtils WindowController 	\

@@ -30,7 +30,7 @@
   		   ApplicationContext.java UIFactory.java 
   		   ImageHandler.java FileHandler.java 
   		   UWindow.java VMenuTree.java UMenuTree.java
-		   UBookmarkPanel.java UTree.java " />
+		   UBookmarkPanel.java UTree.java PreviewRunner.java" />
 
   <import file="${topdir}/defs.xml" />
 
