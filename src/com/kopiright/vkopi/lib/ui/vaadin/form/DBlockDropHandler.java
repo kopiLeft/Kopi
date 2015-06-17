@@ -423,14 +423,14 @@ public class DBlockDropHandler implements DropHandler {
     @Override
     public void streamingFailed(final StreamingErrorEvent event) {
       event.getException().printStackTrace(System.err);
-      BackgroundThreadHandler.start(new Runnable() {
+      new Thread(new Runnable() {
         
         @Override
         public void run() {
           block.getForm().error(event.getException().getMessage());
-          getApplication().push();
+          BackgroundThreadHandler.updateUI();
         }
-      });
+      }).start();;
     }
 
     @Override

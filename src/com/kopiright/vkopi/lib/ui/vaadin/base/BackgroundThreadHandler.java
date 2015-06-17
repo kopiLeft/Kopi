@@ -64,7 +64,9 @@ public class BackgroundThreadHandler {
   /**
    * Starts a task asynchronously. This will lock the current session and all concurrent sessions.
    * @param runnable The task to be run.
+   * Deprecated cause it is a source of a session interference.
    */
+  @Deprecated
   public static void start(final Runnable runnable) {
     executor.executeAndAccess(new UIRunnable() {
       

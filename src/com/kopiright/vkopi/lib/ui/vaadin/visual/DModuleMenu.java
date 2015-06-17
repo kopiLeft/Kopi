@@ -141,16 +141,15 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
    * @param module The module to be launched.
    */
   protected void launchModule(final Module module) {
-    BackgroundThreadHandler.start(new KopiAction("menu_form_started2") {
+    new Thread(new KopiAction("menu_form_started2") {
 
       @Override
       public void execute() throws VException {
 	setWaitDialog();
 	module.run(model.getDBContext());
 	unsetWaitDialog();
-	getApplication().push();
       }
-    });
+    }).start();;
   }
   
   /**
