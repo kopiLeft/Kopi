@@ -158,14 +158,13 @@ public class DateChooser extends org.kopi.vaadin.addons.DateChooser implements U
   
   @Override
   public void onClose(java.util.Date selected) {
-    if (selected == null) {
-      return;
+    if (selected != null) {
+      Calendar	cal = Calendar.getInstance(ApplicationContext.getDefaultLocale());
+      
+      cal.setTime(selected);
+      setSelectedDate(new NotNullDate(cal));
     }
     
-    Calendar	cal = Calendar.getInstance(ApplicationContext.getDefaultLocale());
-    
-    cal.setTime(selected);
-    setSelectedDate(new NotNullDate(cal));
     dispose();
     BackgroundThreadHandler.releaseLock(this);
   }
