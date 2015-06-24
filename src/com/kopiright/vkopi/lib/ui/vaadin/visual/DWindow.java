@@ -726,6 +726,8 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
         }
       } catch (VRuntimeException v) {
 	v.printStackTrace();
+	// close the wait info window if it is attached to avoid connector hierarchy corruption.  
+	unsetWaitInfo();
 	reportError(v);
 	//getModel().error(v.getMessage());
       } catch (ArrayIndexOutOfBoundsException ar) {
@@ -734,13 +736,15 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
 	//exc.printStackTrace();
 	//System.out.println("DWindow exc exception: "+exc.getMessage());
 	// model can be destroyed
+	// close the wait info window if it is attached to avoid connector hierarchy corruption.  
+	unsetWaitInfo();
 	setWindowError(exc);
 	if (getModel() != null) {
 	  getModel().fatalError(getModel(), "VWindow.performActionImpl(final KopiAction action)", exc);
 	} else {
 	  getApplication().displayError(null, MessageCode.getMessage("VIS-00041"));
 	}
-      } finally {  
+      } finally {
 	setInAction();
 	synchronized (getApplication()) {
 	  BackgroundThreadHandler.updateUI(); 
