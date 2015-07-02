@@ -208,18 +208,15 @@ public class DTextField extends DField implements UTextField, VConstants {
   @Override
   public synchronized void updateText() {
     final String	newModelTxt = getModel().getText(getRowController().getBlockView().getRecordFromDisplayLine(getPosition()));
-    String  		currentModelTxt = getText();
-
-    if ((newModelTxt == null && currentModelTxt != null) || !newModelTxt.equals(currentModelTxt)) {
-      BackgroundThreadHandler.access(new Runnable() {
-        
-        @Override
-        public void run() {
-          field.setText(transformer.toGui(newModelTxt).trim());
-        }
-      });
-    }
-
+    
+    BackgroundThreadHandler.access(new Runnable() {
+    
+      @Override
+      public void run() {
+        field.setText(transformer.toGui(newModelTxt).trim());
+      }
+    });
+    
     super.updateText();
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {	
       selectionAfterUpdateDisabled = false;
