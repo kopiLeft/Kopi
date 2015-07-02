@@ -321,6 +321,7 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
   public void setWaitDialog(final String message, final int maxtime) {
     if (waitDialog == null) {
       waitDialog = new WaitDialog();
+      unsetWaitInfo();
     }
     
     BackgroundThreadHandler.access(new Runnable() {
@@ -355,6 +356,7 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
   public void setProgressDialog(final String message, final int totalJobs) {
     if (progressDialog == null) {
       progressDialog = new ProgressDialog();
+      unsetWaitInfo();
     }
     
     BackgroundThreadHandler.access(new Runnable() {
