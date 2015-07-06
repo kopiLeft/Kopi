@@ -702,6 +702,8 @@ public class Query {
       return new NotNullDate((java.sql.Date)obj);
     } else if (obj instanceof java.sql.Time) {
       return new NotNullTime((java.sql.Time)obj);
+    } else if (obj instanceof java.sql.Timestamp) {
+      return new NotNullTimestamp((java.sql.Timestamp)obj);
     } else if (obj instanceof Byte) {
       return new Integer(((Byte)obj).byteValue());
     } else if (obj instanceof Short) {
