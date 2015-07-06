@@ -3804,7 +3804,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         //query.close(); --- in comment because it produces an error
         form.getDBContext().abortWork();
         setActiveRecord(recno);                 // also valid for single blocks
-        throw convertForeignKeyException(e.getConstraint());
+        throw convertForeignKeyException(e);
       }
 
       clearRecord(recno);
@@ -3877,10 +3877,32 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return false;
   }
 
-  /*
-   * Checks if a foreign key is referenced in the view SYSTEMREFERENZEN
+  /**
+   * Converts a {@link DBForeignKeyException} to visual exception with a comprehensive
+   * message including the tow table in relation.
+   * If the referenced and the referencing table are not provided, we will use the
+   * exception message. Note, that this should not happen if FK exception are handled
+   * in driver interfaces.
    */
-  @SuppressWarnings("deprecation")
+  protected VExecFailedException convertForeignKeyException(DBForeignKeyException exception) {
+    String              referenced;
+    String              referencing;
+
+    referenced = exception.getReferencedTable();
+    referencing = exception.getReferencingTable();
+    if (referenced == null || referencing == null) {
+      // use the original exception in this case
+      return new VExecFailedException(exception);
+    }
+    // create a visual exception 
+    return new VExecFailedException(MessageCode.getMessage("VIS-00021", new Object[] {referencing, referenced}));
+  }
+
+  /**
+   * Checks if a foreign key is referenced in the view SYSTEMREFERENZEN
+   * TODO: Remove this cause it is depending on SYSTEMREFERENZEN table.
+   */
+  @Deprecated
   protected VExecFailedException convertForeignKeyException(String name) {
     try {
       Query             query;
