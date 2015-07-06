@@ -111,7 +111,11 @@ public class DActor extends Actor implements UActor, ActionListener {
    */
   private static String getDescription(VActor model) {
     if (model.acceleratorKey > 0) {
-      return model.help + " ["+ KeyEvent.getKeyText(model.acceleratorKey) + "]";
+      if (model.acceleratorModifier == 0) {
+	return model.help + " [" + KeyEvent.getKeyText(model.acceleratorKey) + "]";
+      } else {
+	return model.help + " [" + KeyEvent.getKeyModifiersText(model.acceleratorModifier) + "-" + KeyEvent.getKeyText(model.acceleratorKey) + "]";
+      }
     } else {
       return model.help;
     }
