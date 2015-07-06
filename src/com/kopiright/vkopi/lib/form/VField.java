@@ -354,6 +354,7 @@ public abstract class VField implements VConstants, VModel {
       checkList();
       try {
         if (!isNull(block.getActiveRecord())) {
+          callTrigger(TRG_FORMAT);
           callTrigger(TRG_VALFLD);
         }
         callTrigger(TRG_POSTCHG);
