@@ -191,7 +191,17 @@ public class VTimestampField extends VField {
    * Returns the display representation of field value of given record.
    */
   public String getTextImpl(int r) {
-    return value[r] == null ? VConstants.EMPTY_TEXT : value[r].toString();
+    if (value[r] == null) {
+      return VConstants.EMPTY_TEXT;
+    } else {
+      String            text;
+
+      text = value[r].toString();
+      // this is work around to display the timestamp in yyyy-MM-dd hh:mm:ss format
+      // The proper way is to change the method Timestamp#toString(Locale) but this
+      // will affect the SQL representation of the timestamp value.
+      return text.substring(0, Math.min(getWidth(), text.length()));
+    }
   }
 
   /**
