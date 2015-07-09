@@ -275,6 +275,7 @@
   <property key="validate" value="Überprüfen" />
   <property key="enter_new_label" value="Geben Sie einen neuen Namen für diese Spalte ein" />
   <property key="add_data_for_column" value="Wo wird das  verwendet, wo liegt das" />
+  <property key="help_viewer" value="Hilfe" />
 <!-- report column popup menu -->
   <property key="set_column_data" value="Formel eingeben" />
   <property key="add_column" value="Neue Spalte hinzufügen" />

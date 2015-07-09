@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.Locale;
 
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * A special window that display an html help
@@ -43,7 +44,7 @@ public class VHelpViewer extends VWindow {
    * Construct a new Editor
    */
   public VHelpViewer() {
-    setTitle("Help Viewer");
+    setTitle(VlibProperties.getString("help_viewer"));
     setActors(new VActor[] {
       new VActor("File",
                  HELPVIEWER_LOCALIZATION_RESOURCE,

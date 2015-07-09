@@ -211,6 +211,7 @@
   <property key="editor-help-print" value="" />
   <property key="editor-label-preview" value="" />
   <property key="editor-help-preview" value="" />
+  <property key="help_viewer" value="مساعدة" />
 <!-- SPELL CHECKER-->
   <property key="aspell-dialog-title" value="التدقيق الاملائي"/>
   <property key="aspell-dialog-not-in" value="ليس بالمعجم"/>
