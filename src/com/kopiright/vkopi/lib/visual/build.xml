@@ -17,7 +17,7 @@
                    KopiAction.java KopiExecutable.java DPositionPanelListener.java
                    MenuTree.java WaitDialogListener.java 
                    Module.java SActor.java SDefaultActor.java VActionListener.java 
-                   VCommand.java VException.java 
+                   VCommand.java VException.java VColor.java
                    VExecFailedException.java VHelpGenerator.java  VActor.java 
                    VInterruptException.java VRuntimeException.java UActor.java
                    VTrigger.java VWindow.java VDatabaseUtils.java WindowController.java  

@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.ui.swing.form;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
@@ -57,6 +58,7 @@ import com.kopiright.vkopi.lib.ui.swing.spellchecker.SpellException;
 import com.kopiright.vkopi.lib.ui.swing.base.TextSelecter;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
+import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.ui.swing.visual.DMenuTree;
 import com.kopiright.vkopi.lib.ui.swing.visual.DWindow;
 import com.kopiright.vkopi.lib.visual.KopiAction;
@@ -384,6 +386,24 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
   }
 
+  public void setColor(VColor foreground, VColor background) {
+    if (field != null) {
+      // if both fg and bg colors are null, the field will
+      // inherit the properties of the parent component
+      // according the JComponent javadoc
+      if (foreground != null) {
+        field.setForeground(new Color(foreground.getRGB()));
+      } else {
+        field.setForeground(null);
+      }
+      if (background != null) {
+        field.setBackground(new Color(background.getRGB()));
+      } else {
+        field.setBackground(null);
+      }
+    }
+  }
+
   /**
    * set blink state
    */
@@ -398,10 +418,9 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
   }
 
-  class ListAction extends AbstractAction {
+  /*package*/ class ListAction extends AbstractAction {
 
-
-    ListAction() {
+    /*package*/ ListAction() {
       super(VlibProperties.getString("item-index"));
     }
 

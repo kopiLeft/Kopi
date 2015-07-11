@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.form;
 
 import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.visual.VColor;
 
 /**
  * {@code UField} is the top-level interface that must be implemented
@@ -102,4 +103,11 @@ public interface UField extends UComponent {
    * @return The field value.
    */
   public Object getObject();
+  
+  /**
+   * Sets the field color properties.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  public void setColor(VColor foreground, VColor background);
 }

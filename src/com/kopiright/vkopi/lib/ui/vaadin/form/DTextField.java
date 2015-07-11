@@ -39,7 +39,11 @@ import com.kopiright.vkopi.lib.form.VTimeField;
 import com.kopiright.vkopi.lib.form.VTimestampField;
 import com.kopiright.vkopi.lib.form.VWeekField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import com.kopiright.vkopi.lib.ui.vaadin.base.Utils;
+import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.vaadin.server.Page;
+import com.vaadin.server.Page.Styles;
 
 /**
  * The <code>DTextField</code> is the vaadin implementation
@@ -221,6 +225,31 @@ public class DTextField extends DField implements UTextField, VConstants {
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {	
       selectionAfterUpdateDisabled = false;
     } 
+  }
+  
+  @Override
+  public void setColor(final VColor foreground, final VColor background) {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+	if (field != null) {
+	  if (foreground == null && background == null) {
+	    field.removeStyleName(getModel().getBlock().getName() + "-" + getModel().getName());
+	  } else {
+	    Styles		styles;
+	  
+	    field.addStyleName(getModel().getBlock().getName() + "-" + getModel().getName());
+	    styles = Page.getCurrent().getStyles();
+	    styles.add(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + " input.k-textinput {"
+	      + "background-color: " + Utils.getCSSColor(background)
+	      + "color: " + Utils.getCSSColor(foreground)
+	      + "}"
+	    );
+	  }
+	}
+      }
+    });
   }
 
   @Override

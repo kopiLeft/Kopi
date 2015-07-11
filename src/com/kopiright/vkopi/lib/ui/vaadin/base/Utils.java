@@ -20,6 +20,9 @@
 package com.kopiright.vkopi.lib.ui.vaadin.base;
 
 import java.util.Hashtable;
+
+import com.kopiright.vkopi.lib.visual.VColor;
+
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
 
@@ -112,6 +115,19 @@ public class Utils extends com.kopiright.vkopi.lib.base.Utils {
     }
 	    
     return null;
+  }
+  
+  /**
+   * Returns the corresponding CSS color of a given {@link Color}.
+   * @param color The AWT color.
+   * @return The CSS color.
+   */
+  public static String getCSSColor(VColor color) {
+    if (color == null) {
+      return "inherit !important ;";
+    } else {
+      return "rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ") !important ;";
+    }
   }
 	  
   // --------------------------------------------------

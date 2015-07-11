@@ -36,10 +36,12 @@ import javax.swing.UIManager;
 
 import com.kopiright.vkopi.lib.form.VColorField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
+import com.kopiright.vkopi.lib.visual.VColor;
 
 /**
  * DColorField is a panel composed in a color field and a label behind
  */
+@SuppressWarnings("deprecation")
 public class DColorField extends DObjectField {
 
   // ----------------------------------------------------------------------
@@ -70,11 +72,11 @@ public class DColorField extends DObjectField {
 
     registerKeyboardAction(new AbstractAction() {
       /**
-		 * Comment for <code>serialVersionUID</code>
-		 */
-		private static final long serialVersionUID = -1310894091877733337L;
+       * Comment for <code>serialVersionUID</code>
+       */
+      private static final long serialVersionUID = -1310894091877733337L;
 
-	public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
 	setObject(null);
 	update();
       }},
@@ -183,25 +185,26 @@ public class DColorField extends DObjectField {
     updateAlways();
     super.updateAccess();
   }
-
+  
   public void updateText() {
     setObject(((VColorField)getModel()).getColor(model.getBlockView().getRecordFromDisplayLine(getPosition())));
     updateAlways();
     super.updateText();
   }
-
+  
   public void updateFocus() {
     label.update(getModel(), getPosition());
     fireMouseHasChanged();
     updateAlways();
     super.updateFocus();
   }
+  
+  public void setColor(VColor foreground, VColor background) {}
 
   /**
    * set blink state
    */
-  public void setBlink(boolean start) {
-  }
+  public void setBlink(boolean start) {}
 
   // NOT USED
 //   /*
@@ -220,16 +223,16 @@ public class DColorField extends DObjectField {
   private Color			image;
 
   private static final int      textHeight;
+  
+  /**
+   * Comment for <code>serialVersionUID</code>
+   */
+  private static final long 	serialVersionUID = 1L;
 
   static {
     Font                font = UIManager.getFont("KopiLayout.font");
-    @SuppressWarnings("deprecation")
-    FontMetrics         fm = Toolkit.getDefaultToolkit().getFontMetrics(font);
 
+    FontMetrics         fm = Toolkit.getDefaultToolkit().getFontMetrics(font);
     textHeight = fm.getHeight();
   }
-  /**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 1L;
 }

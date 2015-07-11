@@ -35,6 +35,7 @@ import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.Module;
+import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
@@ -130,6 +131,7 @@ public abstract class VField implements VConstants, VModel {
             fireValueChanged(r);
           }
           public void accessChanged(int r) {}
+          public void colorChanged(int r, VColor foreground, VColor background) {}
         });
     }
   }
@@ -558,6 +560,7 @@ public abstract class VField implements VConstants, VModel {
         checkList();
         try {
           if (!isNull(block.getActiveRecord())) {
+            callTrigger(TRG_FORMAT);
             callTrigger(TRG_VALFLD);
           }
           callTrigger(TRG_POSTCHG);
@@ -1571,6 +1574,44 @@ public abstract class VField implements VConstants, VModel {
   }
 
   // ----------------------------------------------------------------------
+  // FOREGROUND AND BACKGROUND COLOR MANAGEMENT
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Sets the foreground and the background colors for the current record.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  public void setColor(VColor foreground, VColor background) {
+    setColor(block.getCurrentRecord(), foreground, background);
+  }
+  
+  /**
+   * Resets the foreground and the background colors the current record.
+   */
+  public void resetColor() {
+    resetColor(block.getCurrentRecord());
+  }
+  
+  /**
+   *  Sets the foreground and the background colors.
+   * @param r The record number.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  public void setColor(int r, VColor foreground, VColor background) {
+    fireColorChanged(r, foreground, background);
+  }
+  
+  /**
+   * Resets the foreground and the background colors.
+   * @param r The record number.
+   */
+  public void resetColor(int r) {
+    fireColorChanged(r, null, null);
+  }
+
+  // ----------------------------------------------------------------------
   // UTILS
   // ----------------------------------------------------------------------
 
@@ -2399,6 +2440,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
+  
   public void fireSearchOperatorChanged() {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2410,6 +2452,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
+  
   public void fireLabelChanged() {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2421,6 +2464,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
+  
   public void fireAccessChanged(int r) {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2428,6 +2472,18 @@ public abstract class VField implements VConstants, VModel {
       for (int i = listeners.length-2; i>=0; i-=2) {
         if (listeners[i]==FieldChangeListener.class) {
           ((FieldChangeListener)listeners[i+1]).accessChanged(r);
+        }
+      }
+    }
+  }
+  
+  public void fireColorChanged(int r, VColor foreground, VColor background) {
+    if (hasListener) {
+      Object[]          listeners = fieldListener.getListenerList();
+
+      for (int i = listeners.length-2; i>=0; i-=2) {
+        if (listeners[i]==FieldChangeListener.class) {
+          ((FieldChangeListener)listeners[i+1]).colorChanged(r, foreground, background);
         }
       }
     }
