@@ -19,11 +19,14 @@
 
 package com.kopiright.vkopi.lib.ui.swing.base;
 
+import com.kopiright.vkopi.lib.visual.VColor;
+
 public interface Stateful {
   int getState();
   boolean getAutofill();
   boolean isAlert();
   boolean hasCriticalValue();
+  VColor getBgColor();
   Object getModel();
 }
 

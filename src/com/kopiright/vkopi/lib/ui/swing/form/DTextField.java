@@ -396,11 +396,9 @@ public class DTextField extends DField implements UTextField, VConstants {
       } else {
         field.setForeground(null);
       }
-      if (background != null) {
-        field.setBackground(new Color(background.getRGB()));
-      } else {
-        field.setBackground(null);
-      }
+    }
+    if (document != null) {
+      document.setBgColor(background);
     }
   }
 

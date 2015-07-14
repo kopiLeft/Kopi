@@ -29,6 +29,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.ModelTransformer;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.ui.swing.base.Stateful;
+import com.kopiright.vkopi.lib.visual.VColor;
 
 /**
  * !!! NEED COMMENTS
@@ -140,6 +141,14 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
     return hasCriticalValue;
   }
 
+  public void setBgColor(VColor bgColor) {
+    this.bgColor = bgColor;
+  }
+
+  public VColor getBgColor() {
+    return bgColor;
+  }
+
   public void setAlert(boolean alert) {
     this.alert = alert;
   }
@@ -163,6 +172,7 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
   private boolean               alert;
   private boolean               autofill = false;
   private boolean               hasCriticalValue;
+  private VColor                bgColor;
   private VField		model;
   private ModelTransformer      transformer;
   /**

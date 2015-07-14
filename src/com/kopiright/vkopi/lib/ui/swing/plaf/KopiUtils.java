@@ -41,7 +41,9 @@ import com.kopiright.vkopi.lib.ui.swing.base.Stateful;
 public class KopiUtils {
   public static void drawBackground(Graphics g, JTextComponent c, Rectangle clipRect) {
     if (c.getDocument() instanceof Stateful) {
-      if (((Stateful) c.getDocument()).isAlert()) {
+      if (((Stateful) c.getDocument()).getBgColor() != null) {
+        g.setColor(new Color(((Stateful) c.getDocument()).getBgColor().getRGB()));
+      } else if (((Stateful) c.getDocument()).isAlert()) {
         g.setColor(color_alert);
       } else {
         if (c.hasFocus()) {
