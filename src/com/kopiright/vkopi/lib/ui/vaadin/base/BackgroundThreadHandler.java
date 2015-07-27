@@ -96,11 +96,11 @@ public class BackgroundThreadHandler {
    * UI.
    */
   public static void updateUI() {
-    executor.access(new Runnable() {
+    UI.getCurrent().accessSynchronously(new Runnable() {
       
       @Override
       public void run() {
-        UI.getCurrent().push();
+	UI.getCurrent().push();
       }
     });
   }
