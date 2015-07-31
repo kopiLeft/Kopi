@@ -21,6 +21,8 @@ package com.kopiright.vkopi.lib.form;
 
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
@@ -42,6 +44,7 @@ import com.kopiright.vkopi.lib.visual.VExecFailedException;
 import com.kopiright.vkopi.lib.visual.VModel;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
+import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.Query;
 import com.kopiright.xkopi.lib.type.Date;
 import com.kopiright.xkopi.lib.type.Fixed;
@@ -238,8 +241,34 @@ public abstract class VField implements VConstants, VModel {
     return (options & FDO_DO_NOT_ERASE_ON_LOOKUP) == 0;
   }
 
+  /**
+   * Returns <code>true</code> if the field has the auto fill feature.
+   */
   public boolean hasAutofill() {
     return list != null;
+  }
+  
+  /**
+   * Returns <code>true</code> if the field has the auto complete feature.
+   */
+  public boolean hasAutocomplete() {
+    return list != null && list.hasAutocomplete();
+  }
+  
+  /**
+   * Returns the auto complete length.
+   * @return The auto complete length.
+   */
+  public int getAutocompleteLength() {
+    return list != null ? list.getAutocompleteLength() : 0;
+  }
+  
+  /**
+   * Returns the auto complete type.
+   * @return The auto complete type.
+   */
+  public int getAutocompleteType() {
+    return  list != null ? list.getAutocompleteType() : VList.AUTOCOMPLETE_NONE;
   }
 
   /**
@@ -2165,6 +2194,67 @@ public abstract class VField implements VConstants, VModel {
       throw new VExecFailedException(); // no message to display
     } else {
       setObject(block.getActiveRecord(), value);
+    }
+  }
+  
+  /**
+   * Returns the suggestion list of this field.
+   * @param query The field content to be taken into consideration when looking for suggestions.
+   * @return An object array that contains two arrays : The displayed values of the suggestions
+   *         and the object values of the suggestions.
+   * @throws VException Visual exceptions related to database errors.
+   */
+  public String[] getSuggestions(String query) throws VException {
+    if (query == null || getAutocompleteType() == VList.AUTOCOMPLETE_NONE) {
+      return null;
+    } else {
+      String      		qrybuf;
+      List<String>		suggestions;
+
+      qrybuf =
+        " SELECT " + list.getColumn(0).getColumn() +
+        " FROM " + evalListTable() +
+        " WHERE " + "{fn LOWER(" + list.getColumn(0).getColumn() + ")}" +
+        (getAutocompleteType() == VList.AUTOCOMPLETE_CONTAINS ? " LIKE " + KopiUtils.toSql("%" + query.toLowerCase() + "%") :
+        " LIKE " + KopiUtils.toSql(query.toLowerCase() + "%")) + " ORDER BY 1";
+      suggestions = new ArrayList<String>();
+      
+      for (;;) {
+	try {
+	  getForm().startProtected(null);
+
+	  Query           sqlQuery = new Query(getForm().getDBContext().getDefaultConnection());
+	  
+	  sqlQuery.open(qrybuf);
+	  while (sqlQuery.next()) {
+	    suggestions.add((String)list.getColumn(0).formatObject(sqlQuery.getObject(1)));
+	  }
+	  sqlQuery.close();
+
+	  getForm().commitProtected();
+	  break;
+	} catch (SQLException e) {
+	  try {
+	    getForm().abortProtected(e);
+	  } catch(SQLException abortEx) {
+	    throw new VExecFailedException(abortEx);
+	  }
+	} catch (Error error) {
+	  try {
+	    getForm().abortProtected(error);
+	  } catch(Error abortEx) {
+	    throw new VExecFailedException(abortEx);
+	  }
+	} catch (RuntimeException rte) {
+	  try {
+	    getForm().abortProtected(rte);
+	  } catch(RuntimeException abortEx) {
+	    throw new VExecFailedException(abortEx);
+	  }
+	}
+      }
+        
+      return suggestions.toArray(new String[suggestions.size()]);
     }
   }
 

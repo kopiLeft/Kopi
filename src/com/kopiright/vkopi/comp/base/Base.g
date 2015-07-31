@@ -28,6 +28,7 @@ header { package com.kopiright.vkopi.comp.base; }
   import com.kopiright.kopi.comp.kjc.*;
   import com.kopiright.vkopi.comp.trig.GKjcParser;
   import com.kopiright.vkopi.comp.trig.GSqlcParser;
+  import com.kopiright.vkopi.lib.list.VList;
   import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
   import com.kopiright.xkopi.comp.sqlc.TableName;
   import com.kopiright.xkopi.comp.sqlc.TableReference;
@@ -654,14 +655,24 @@ vkFieldList [String pack, String type]
   returns [VKFieldList self]
 {
   TableReference        table;
-  boolean               access = false;
+  int                   autocompleteType = VList.AUTOCOMPLETE_NONE;
+  int                   autocompleteLength = 0;
   String                name = null;
+  boolean               access = false;
   VKListDesc[]          columns;
   TokenReference        sourceRef = buildTokenReference();
 }
 :
   "LIST"
   table = vkListTable[]
+  ( "COMPLETE"
+    ( 
+      "LEFT" { autocompleteType = VList.AUTOCOMPLETE_STARTSWITH; }
+      | 
+      "CENTER" { autocompleteType = VList.AUTOCOMPLETE_CONTAINS; } 
+    )
+    autocompleteLength = vkInteger[]
+  )?
   ( ( "NEW" | "ACCESS" { access = true; } ) name = vkQualifiedIdent[] )?
   "IS" columns = vkListDescs[]
   "END" "LIST"
@@ -670,8 +681,10 @@ vkFieldList [String pack, String type]
                              pack,
                              type,
                              table,
-                             name == null ? null : environment.getTypeFactory().createType(name.replace('.', '/'), false),
                              columns,
+                             autocompleteType,
+                             autocompleteLength,
+                             name == null ? null : environment.getTypeFactory().createType(name.replace('.', '/'), false),
                              access);
     }
 ;

@@ -12,7 +12,6 @@
 @literal	BOLD
 @literal	BORDER
 @literal	BOTTOM
-@literal	CENTER
 @literal	FIRST
 @literal	FONT
 @literal	FOREGROUND
@@ -24,7 +23,6 @@
 @literal	ITALIC
 @literal	JUSTIFIED
 @literal	LANDSCAPE
-@literal	LEFT
 @literal	LINE
 @literal	LOOP
 @literal        MARGIN

@@ -40,24 +40,28 @@ public class VKFieldList extends VKPhylum {
    * @param pack                the package name of the class defining the list containing type
    * @param type		the identifier of the type containing this list
    * @param table		the statement to select data
-   * @param newForm		the name of the form to edit data
    * @param columns		a description of the columns
+   * @param newForm		the name of the form to edit data
    * @param access		true if this field is only an access to a form
    */
   public VKFieldList(TokenReference where,
                      String pack,
                      String type,
 		     TableReference table,
-		     CType newForm,
 		     VKListDesc[] columns,
+                     int autocompleteType,
+                     int autocompleteLength,
+		     CType newForm,
 		     boolean access)
   {
     super(where);
     this.source = (pack == null) ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
     this.type = type;
     this.table = table;
-    this.newForm = newForm;
     this.columns = columns;
+    this.autocompleteType = autocompleteType;
+    this.autocompleteLength = autocompleteLength;
+    this.newForm = newForm;
     this.access = access;
   }
 
@@ -141,6 +145,8 @@ public class VKFieldList extends VKPhylum {
                                               VKUtils.toExpression(ref, source),
                                               VKUtils.createArray(ref, VKStdType.VListColumn, init),
                                               VKUtils.toExpression(ref, actionNumber),
+                                              VKUtils.toExpression(ref, autocompleteType),
+                                              VKUtils.toExpression(ref, autocompleteLength),
                                               newForm != null
                                               ? new JClassExpression(ref, newForm, 0)
                                               : (JExpression)new JNullLiteral(ref),
@@ -181,7 +187,9 @@ public class VKFieldList extends VKPhylum {
   private final String                  source;
   private final String                  type;
   private final	TableReference       	table;
-  private final CType			newForm;
   private final VKListDesc[]		columns;
+  private final int                     autocompleteType;
+  private final int                     autocompleteLength;
+  private final CType			newForm;
   private final boolean			access;
 }

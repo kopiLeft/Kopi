@@ -21,9 +21,12 @@ package com.kopiright.vkopi.lib.ui.vaadin.form;
 
 import java.io.IOException;
 
+import org.kopi.vaadin.addons.TextField;
 import org.kopi.vaadin.addons.TextFieldListener;
+import org.kopi.vaadin.addons.client.suggestion.AutocompleteSuggestion;
 
 import com.kopiright.vkopi.lib.form.VField;
+import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.util.PrintException;
 import com.kopiright.vkopi.lib.util.PrintJob;
 import com.kopiright.vkopi.lib.visual.KopiAction;
@@ -42,8 +45,9 @@ public class KeyNavigator implements TextFieldListener {
   // IMPLEMENTATIONS
   //---------------------------------------------------
   
-  public KeyNavigator(VField model) {
+  public KeyNavigator(VField model, TextField box) {
     this.model = model;
+    this.box = box;
   }
 
   //---------------------------------------------------
@@ -161,7 +165,7 @@ public class KeyNavigator implements TextFieldListener {
       @Override
       public void execute() throws VException {
 	if (model != null) {
-	model.getBlock().getForm().close(VWindow.CDE_QUIT);
+	  model.getBlock().getForm().close(VWindow.CDE_QUIT);
 	}
       }
     });
@@ -213,6 +217,36 @@ public class KeyNavigator implements TextFieldListener {
       }
     });
   }
+
+  @Override
+  public void onQuery(final String query) {
+    try {
+      final String[]		suggestions;
+      
+      suggestions = model.getSuggestions(query);
+      if (box != null && suggestions != null) {
+	BackgroundThreadHandler.access(new Runnable() {
+	  
+	  @Override
+	  public void run() {
+	    box.setSuggestions(suggestions, query);
+	  }
+	});
+      }
+    } catch (VException e) {
+      // ignore errors on auto completion process
+      // just print stack trace for debugging
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void onSuggestion(AutocompleteSuggestion suggestion) {
+    // not working cause objects passed in the the shared state are not properly
+    // serialized. We will set the field value at the client side and fire a go to next field
+    // here to convert the field displayed value to model value.
+    // model.setObject(model.getBlock().getActiveRecord(), suggestion.getValue());
+  }
   
   /**
    * Executes the given action in the event dispatch handler.
@@ -229,4 +263,5 @@ public class KeyNavigator implements TextFieldListener {
   //---------------------------------------------------
   
   private final VField 				model;
+  private final TextField 			box;
 }

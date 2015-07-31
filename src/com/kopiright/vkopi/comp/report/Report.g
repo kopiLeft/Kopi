@@ -24,18 +24,19 @@ header { package com.kopiright.vkopi.comp.report; }
   import java.util.ArrayList;
 
   import com.kopiright.compiler.base.Compiler;
-  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.compiler.base.TokenReference;
+  import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.kopi.comp.kjc.*;
+  import com.kopiright.vkopi.comp.base.*;
+  import com.kopiright.vkopi.comp.base.VKEnvironment;
+  import com.kopiright.vkopi.comp.trig.GKjcParser;
+  import com.kopiright.vkopi.comp.trig.GSqlcParser;
+  import com.kopiright.vkopi.lib.list.VList;
   import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
   import com.kopiright.xkopi.comp.sqlc.TableName;
   import com.kopiright.xkopi.comp.sqlc.TableReference;
-  import com.kopiright.vkopi.comp.base.*;
-  import com.kopiright.vkopi.comp.trig.GKjcParser;
-  import com.kopiright.vkopi.comp.trig.GSqlcParser;
   import com.kopiright.xkopi.lib.type.Fixed;
   import com.kopiright.xkopi.lib.type.NotNullFixed;
-  import com.kopiright.vkopi.comp.base.VKEnvironment;
 }
 
 // ----------------------------------------------------------------------

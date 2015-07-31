@@ -35,6 +35,7 @@ header { package com.kopiright.vkopi.comp.print; }
   import com.kopiright.vkopi.comp.base.*;
   import com.kopiright.vkopi.comp.trig.GKjcParser;
   import com.kopiright.vkopi.comp.trig.GSqlcParser;
+  import com.kopiright.vkopi.lib.list.VList;
   import com.kopiright.vkopi.lib.print.PBlockStyle;
   import com.kopiright.vkopi.lib.print.PParagraphStyle;
   import com.kopiright.xkopi.lib.type.Fixed;

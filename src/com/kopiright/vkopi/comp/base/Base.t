@@ -7,9 +7,11 @@
 @literal	BLOCK
 @literal	BOOL
 @literal	CALL
+@literal	CENTER
 @literal	CODE
 @literal	COLOR
 @literal	COMMAND
+@literal        COMPLETE
 @literal	CONVERT
 @literal	DATE
 @literal	END
@@ -27,6 +29,7 @@
 @literal	ITEM
 @literal	KEY
 @literal	LABEL
+@literal	LEFT
 @literal	LIST
 @literal	LOCALE
 @literal	LONG

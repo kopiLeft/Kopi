@@ -6,7 +6,6 @@
 @literal	AT
 @literal	BEGIN
 @literal	BORDER
-@literal	CENTER
 @literal	CHANGED
 @literal	CHART
 @literal	COLUMNS
@@ -22,7 +21,6 @@
 @literal	IMPLEMENTS
 @literal	INDEX
 @literal	INIT
-@literal	LEFT
 @literal	LINE
 @literal	LOWERED
 @literal	MOVE

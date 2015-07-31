@@ -152,6 +152,8 @@ public class DTextField extends DField implements UTextField, VConstants {
 	                      scanner,
 	                      scanner,
 	                      align);
+    textfield.setAutocompleteLength(getModel().getAutocompleteLength());
+    textfield.setHasAutocomplete(getModel().hasAutocomplete());
     // set field type according to the model
     // this will set the validation strategy on the client side.
     if (getModel() instanceof VStringField) {
@@ -186,7 +188,7 @@ public class DTextField extends DField implements UTextField, VConstants {
       throw new IllegalArgumentException("unknown field model : " + getModel().getClass().getName());
     }
     // add navigation handler
-    textfield.addTextFieldListener(new KeyNavigator(getModel()));
+    textfield.addTextFieldListener(new KeyNavigator(getModel(), textfield));
 
     return textfield;
   }

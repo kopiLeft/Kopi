@@ -32,6 +32,7 @@ header { package com.kopiright.vkopi.comp.form; }
   import com.kopiright.vkopi.comp.base.VKEnvironment;
   import com.kopiright.vkopi.comp.trig.GKjcParser;
   import com.kopiright.vkopi.comp.trig.GSqlcParser;
+  import com.kopiright.vkopi.lib.list.VList;
   import com.kopiright.xkopi.comp.sqlc.SimpleIdentExpression;
   import com.kopiright.xkopi.comp.sqlc.TableName;
   import com.kopiright.xkopi.comp.sqlc.TableReference;

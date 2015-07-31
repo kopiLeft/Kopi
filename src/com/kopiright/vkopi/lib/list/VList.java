@@ -43,10 +43,14 @@ public class VList implements VConstants, Serializable {
                String newForm,
                VListColumn[] columns,
                int table,
+               int autocompleteType,
+               int autocompleteLength,
                boolean hasShortcut)
   {
     this.ident = ident;
     this.source = source;
+    this.autocompleteType = autocompleteType;
+    this.autocompleteLength = autocompleteLength;
     this.newForm = newForm;
     this.columns = columns;
     this.table = table;
@@ -60,6 +64,8 @@ public class VList implements VConstants, Serializable {
                String source,
                VListColumn[] columns,
                int table,
+               int autocompleteType,
+               int autocompleteLength,
                Class<VForm> newForm,
                boolean hasShortcut)
   {
@@ -68,6 +74,8 @@ public class VList implements VConstants, Serializable {
          newForm == null ? null : newForm.getName(),
          columns,
          table,
+         autocompleteType,
+         autocompleteLength,
          hasShortcut);
   }
 
@@ -112,6 +120,27 @@ public class VList implements VConstants, Serializable {
   public boolean hasShortcut() {
     return hasShortcut;
   }
+  
+  /**
+   * Returns the auto complete length.
+   */
+  public int getAutocompleteLength() {
+    return autocompleteLength;
+  }
+  
+  /**
+   * Returns the auto complete type.
+   */
+  public int getAutocompleteType() {
+    return autocompleteType;
+  }
+  
+  /**
+   * Returns <code>true</code> if the list has auto complete support.
+   */
+  public boolean hasAutocomplete() {
+    return autocompleteLength >= 0 && autocompleteType > AUTOCOMPLETE_NONE;
+  }
 
   /**
    * Localize this object.
@@ -131,8 +160,14 @@ public class VList implements VConstants, Serializable {
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
+  public static final int               AUTOCOMPLETE_NONE = 0;
+  public static final int               AUTOCOMPLETE_STARTSWITH = 1;
+  public static final int               AUTOCOMPLETE_CONTAINS = 2;
+
   private final String                  ident;
   private final String                  source;
+  private final int                     autocompleteType;
+  private final int                     autocompleteLength;
   private final String			newForm;
   private final VListColumn[]		columns;
   private final int			table;

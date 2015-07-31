@@ -19,9 +19,13 @@
 
 package com.kopiright.vkopi.lib.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.FieldLocalizer;
 import com.kopiright.vkopi.lib.l10n.TypeLocalizer;
+import com.kopiright.vkopi.lib.list.VList;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VExecFailedException;
@@ -50,6 +54,21 @@ public abstract class VCodeField extends VField {
    */
   public boolean hasAutofill() {
     return true;
+  }
+  
+  @Override
+  public boolean hasAutocomplete() {
+    return true;
+  }
+  
+  @Override
+  public int getAutocompleteLength() {
+    return 0;
+  }
+  
+  @Override
+  public int getAutocompleteType() {
+    return VList.AUTOCOMPLETE_CONTAINS;
   }
 
   /**
@@ -237,6 +256,24 @@ public abstract class VCodeField extends VField {
       throw new VExecFailedException();	// no message to display
     } else {
       setCode(getBlock().getActiveRecord(), pos);
+    }
+  }
+  
+  @Override
+  public String[] getSuggestions(String query) throws VException {
+    if (query == null) {
+      return null;
+    } else {
+      List<String>		suggestions;
+
+      suggestions = new ArrayList<String>();
+      for (int i = 0; i < labels.length; i++) {
+	if (labels[i].toLowerCase().contains(query.toLowerCase())) {
+	  suggestions.add(labels[i]);
+	}
+      }
+
+      return suggestions.toArray(new String[suggestions.size()]);
     }
   }
 
