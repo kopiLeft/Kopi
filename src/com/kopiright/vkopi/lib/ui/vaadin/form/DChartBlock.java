@@ -31,7 +31,6 @@ import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.form.KopiAlignment;
 import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.vaadin.ui.Component;
 
@@ -105,22 +104,16 @@ public class DChartBlock extends DBlock implements BlockListener {
       // another command executed
       return;
     }
-    getFormView().performBasicAction(new KopiAction("chart-scroll") {
-
-      @Override
-      public void execute() throws VException {
-	if (!init) {
-	  init = true; // on initialization, we do not scroll.
-	} else {
-	  try {
-	    setScrollPos(value);
-	  } catch (VException e) {
-	    eventQueue.push(new RNCEvent());
-	    timer.schedule(new RNCTask(), 1000);
-	  }
-	}
+    if (!init) {
+      init = true; // on initialization, we do not scroll.
+    } else {
+      try {
+	setScrollPos(value);
+      } catch (VException e) {
+	eventQueue.push(new RNCEvent());
+	timer.schedule(new RNCTask(), 1000);
       }
-    });
+    }
   }
 
   /**
