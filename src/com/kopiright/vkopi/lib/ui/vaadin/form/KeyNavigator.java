@@ -221,7 +221,7 @@ public class KeyNavigator implements TextFieldListener {
   @Override
   public void onQuery(final String query) {
     try {
-      final String[]		suggestions;
+      final String[][]		suggestions;
       
       suggestions = model.getSuggestions(query);
       if (box != null && suggestions != null) {

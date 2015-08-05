@@ -260,20 +260,20 @@ public abstract class VCodeField extends VField {
   }
   
   @Override
-  public String[] getSuggestions(String query) throws VException {
+  public String[][] getSuggestions(String query) throws VException {
     if (query == null) {
       return null;
     } else {
-      List<String>		suggestions;
+      List<String[]>		suggestions;
 
-      suggestions = new ArrayList<String>();
+      suggestions = new ArrayList<String[]>();
       for (int i = 0; i < labels.length; i++) {
 	if (labels[i].toLowerCase().contains(query.toLowerCase())) {
-	  suggestions.add(labels[i]);
+	  suggestions.add(new String[] {labels[i]});
 	}
       }
 
-      return suggestions.toArray(new String[suggestions.size()]);
+      return suggestions.toArray(new String[suggestions.size()][]);
     }
   }
 

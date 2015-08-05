@@ -2204,20 +2204,45 @@ public abstract class VField implements VConstants, VModel {
    *         and the object values of the suggestions.
    * @throws VException Visual exceptions related to database errors.
    */
-  public String[] getSuggestions(String query) throws VException {
+  public String[][] getSuggestions(String query) throws VException {
     if (query == null || getAutocompleteType() == VList.AUTOCOMPLETE_NONE) {
       return null;
     } else {
-      String      		qrybuf;
-      List<String>		suggestions;
+      StringBuffer      		qrybuf;
+      List<String[]>			suggestions;
+      
+      qrybuf = new StringBuffer();
+      suggestions = new ArrayList<String[]>();
+      
+      qrybuf.append("SELECT ");
+      for (int i = 0; i < list.columnCount(); i++) {
+        if (i != 0) {
+          qrybuf.append(", ");
+        }
+        qrybuf.append(list.getColumn(i).getColumn());
+      }
+      qrybuf.append(" FROM ");
+      qrybuf.append(evalListTable());
+      qrybuf.append(" WHERE ");
+      qrybuf.append(" {fn LOWER(");
+      qrybuf.append(list.getColumn(0).getColumn());
+      qrybuf.append(")}");
+      switch (getAutocompleteType()) {
+      case VList.AUTOCOMPLETE_CONTAINS:
+	qrybuf.append(" LIKE ");
+	qrybuf.append(KopiUtils.toSql("%" + query.toLowerCase() + "%"));
+	break;
+      case VList.AUTOCOMPLETE_STARTSWITH:
+	qrybuf.append(" LIKE ");
+	qrybuf.append(KopiUtils.toSql(query.toLowerCase() + "%"));
+	break;
+      default:
+	// default should never reached
+	qrybuf.append(" = ");
+	qrybuf.append(KopiUtils.toSql(query));
+      }
 
-      qrybuf =
-        " SELECT " + list.getColumn(0).getColumn() +
-        " FROM " + evalListTable() +
-        " WHERE " + "{fn LOWER(" + list.getColumn(0).getColumn() + ")}" +
-        (getAutocompleteType() == VList.AUTOCOMPLETE_CONTAINS ? " LIKE " + KopiUtils.toSql("%" + query.toLowerCase() + "%") :
-        " LIKE " + KopiUtils.toSql(query.toLowerCase() + "%")) + " ORDER BY 1";
-      suggestions = new ArrayList<String>();
+      qrybuf.append(" ORDER BY 1");
       
       for (;;) {
 	try {
@@ -2225,9 +2250,16 @@ public abstract class VField implements VConstants, VModel {
 
 	  Query           sqlQuery = new Query(getForm().getDBContext().getDefaultConnection());
 	  
-	  sqlQuery.open(qrybuf);
+	  sqlQuery.open(qrybuf.toString());
 	  while (sqlQuery.next()) {
-	    suggestions.add((String)list.getColumn(0).formatObject(sqlQuery.getObject(1)));
+	    List<String>		columns;
+	      
+	      
+	    columns = new ArrayList<String>();
+	    for (int i = 0; i < list.columnCount(); i++) {
+	      columns.add((String)list.getColumn(i).formatObject(sqlQuery.getObject(i + 1)));
+	    }
+	    suggestions.add(columns.toArray(new String[columns.size()]));
 	  }
 	  sqlQuery.close();
 
@@ -2254,7 +2286,7 @@ public abstract class VField implements VConstants, VModel {
 	}
       }
         
-      return suggestions.toArray(new String[suggestions.size()]);
+      return suggestions.toArray(new String[suggestions.size()][]);
     }
   }
 
