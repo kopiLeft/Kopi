@@ -392,13 +392,15 @@ public abstract class DField extends Field implements UField, FieldListener {
       
       @Override
       public void execute() throws VException {
-	if (!getModel().getBlock().isMulti() || getModel().getBlock().noChart() || isInDetail()) {
-	  // In chart blocks, transfer focus forces the active record to 0
-	  // So event if we request and autofill to the second record, the first one is filled.
-	  DField.this.model.transferFocus(DField.this);
-	}
+	UField			display;
 	
-	DField.this.model.autofillButton();
+	// for chart blocks, this DField instance is always situated in the first record.
+	// we will get the field display from the active record using the block view.
+	display = model.getDisplays()[model.getBlockView().getDisplayLine(model.getBlock().getActiveRecord())];
+	if (display != null) {
+	  model.transferFocus(display);
+	  model.autofillButton();
+	}
       }
     });     
   }
