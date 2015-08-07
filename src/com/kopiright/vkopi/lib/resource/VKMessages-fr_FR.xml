@@ -27,11 +27,11 @@
 <!-- INFO TEXTS-->
   <message ident="saved_successfully" text="Données enregistrées." />
 <!-- QUESTIONS-->
-  <message ident="confirm_break" text="Interrompre: Etes-vous sûr ?" />
-  <message ident="confirm_quit" text="Quitter: Etes-vous sûr ?" />
-  <message ident="confirm_delete" text="Effacer: Etes-vous sûr ?" />
-  <message ident="confirm_save_unchanged" text="Aucun champ modifié: Enregistrer quand-même ?" />
-  <message ident="confirm_discard_changes" text="Perdre changements: Etes-vous sûr ?" />
-  <message ident="confirm_insert_mode" text="Mode insertion: Etes-vous sûr ?" />
+  <message ident="confirm_break" text="Interrompre : Etes-vous sûr ?" />
+  <message ident="confirm_quit" text="Quitter : Etes-vous sûr ?" />
+  <message ident="confirm_delete" text="Effacer : Etes-vous sûr ?" />
+  <message ident="confirm_save_unchanged" text="Aucun champ modifié : Enregistrer quand-même ?" />
+  <message ident="confirm_discard_changes" text="Perdre changements : Etes-vous sûr ?" />
+  <message ident="confirm_insert_mode" text="Mode insertion : Etes-vous sûr ?" />
 
 </messages>
