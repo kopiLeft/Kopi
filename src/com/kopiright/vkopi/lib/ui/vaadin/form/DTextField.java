@@ -150,7 +150,7 @@ public class DTextField extends DField implements UTextField, VConstants {
 	                      (getModel().getHeight() == 1) ? 1 : ((VStringField)getModel()).getVisibleHeight(),
 	                      noEcho,
 	                      scanner,
-	                      scanner,
+	                      noEdit,
 	                      align);
     textfield.setAutocompleteLength(getModel().getAutocompleteLength());
     textfield.setHasAutocomplete(getModel().hasAutocomplete());
