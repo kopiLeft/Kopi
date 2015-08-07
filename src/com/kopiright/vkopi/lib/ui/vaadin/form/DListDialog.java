@@ -134,7 +134,7 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
    * Prepares the dialog content.
    */
   protected void prepareDialog() {
-    setModel(model.getTitles(), model.getTranslatedIdents(), createModelObjects(), model.getCount());
+    setModel(model.getTitles(), buildColumnsAlignment(), model.getTranslatedIdents(), createModelObjects(), model.getCount());
     // set the new button if needed.
     if (model.getNewForm() != null || model.isForceNew()) {
       setNewText(VlibProperties.getString("new-record"));
@@ -206,6 +206,21 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
         getApplication().push();
       }
     }, lock);
+  }
+  
+  /**
+   * Builds the columns alignment.
+   * @return The columns alignment.
+   */
+  protected int[] buildColumnsAlignment() {
+    int[]		aligns;
+    
+    aligns = new int[model.getColumns().length];
+    for (int i = 0; i < model.getColumns().length; i++) {
+      aligns[i] = model.getColumns()[i].getAlign();
+    }
+    
+    return aligns;
   }
   
   //------------------------------------------------------
