@@ -110,7 +110,7 @@ public class VBooleanCodeField extends VCodeField {
 	}
       }
       if (code == -1) {
-	throw new InconsistencyException("bad code value " + v);
+	throw new InconsistencyException("bad code value " + v + "field " + getName());
       }
 
       setCode(r, code);
@@ -184,7 +184,7 @@ public class VBooleanCodeField extends VCodeField {
       }
     }
     if (code == -1) {
-      throw new InconsistencyException("bad code value " + value);
+      throw new InconsistencyException("bad code value " + value + "field " + getName());
     }
 
     return formatCode(code);
