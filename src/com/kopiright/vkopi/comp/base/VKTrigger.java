@@ -39,7 +39,7 @@ public class VKTrigger extends VKPhylum implements com.kopiright.vkopi.lib.form.
    * @param modes		the events that this trigger listen
    * @param action		the action to perform
    */
-  public VKTrigger(TokenReference where, int events, VKAction action) {
+  public VKTrigger(TokenReference where, long events, VKAction action) {
     super(where);
 
     this.action = action;
@@ -50,7 +50,7 @@ public class VKTrigger extends VKPhylum implements com.kopiright.vkopi.lib.form.
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-  public int getEvents() {
+  public long getEvents() {
     return events;
   }
 
@@ -125,6 +125,6 @@ public class VKTrigger extends VKPhylum implements com.kopiright.vkopi.lib.form.
   // ---------------------------------------------------------------------
 
   private int			type;
-  private int			events;
+  private long			events;
   private VKAction		action;
 }

@@ -20,9 +20,35 @@
 package com.kopiright.vkopi.comp.base;
 
 import java.util.Vector;
-import com.kopiright.kopi.comp.kjc.*;
+
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CStdType;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.CTypeVariable;
+import com.kopiright.kopi.comp.kjc.JBlock;
+import com.kopiright.kopi.comp.kjc.JBreakStatement;
+import com.kopiright.kopi.comp.kjc.JCatchClause;
+import com.kopiright.kopi.comp.kjc.JCompoundStatement;
+import com.kopiright.kopi.comp.kjc.JEmptyStatement;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JExpressionStatement;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JIntLiteral;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JMethodDeclaration;
+import com.kopiright.kopi.comp.kjc.JNameExpression;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JSuperExpression;
+import com.kopiright.kopi.comp.kjc.JSwitchGroup;
+import com.kopiright.kopi.comp.kjc.JSwitchLabel;
+import com.kopiright.kopi.comp.kjc.JSwitchStatement;
+import com.kopiright.kopi.comp.kjc.JThisExpression;
+import com.kopiright.kopi.comp.kjc.JThrowStatement;
+import com.kopiright.kopi.comp.kjc.JTryCatchStatement;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.InconsistencyException;
 
 /**
@@ -245,7 +271,7 @@ public class Commandable implements com.kopiright.vkopi.lib.form.VConstants, com
   /**
    *
    */
-  public int addTrigger(JStatement code, int events, int type) {
+  public int addTrigger(JStatement code, long events, int type) {
     TokenReference	ref = code.getTokenReference();
     int			pos;
 

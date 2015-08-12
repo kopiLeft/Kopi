@@ -303,7 +303,7 @@ vkBlockAlignment []
 ;
 
 vkBlockEvent []
-  returns [int self]
+  returns [long self]
 :
   "PREQRY"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREQRY; }
 |
@@ -347,13 +347,13 @@ vkBlockEvent []
 ;
 
 vkBlockEventList []
-  returns [int self = 0]
+  returns [long self = 0]
 {
-  int		e;
+  long		e;
 }
 :
-  e = vkBlockEvent[] { self |= (1 << e); }
-  ( COMMA e = vkBlockEvent[] { self |= (1 << e); } )*
+  e = vkBlockEvent[] { self |= (1L << e); }
+  ( COMMA e = vkBlockEvent[] { self |= (1L << e); } )*
 ;
 
 vkBlockIndices []
@@ -439,7 +439,7 @@ vkBlockTables [VKParseBlockContext context]
 
 vkBlockTriggers [VKParseBlockContext context]
 {
-  int			e;
+  long			e;
   VKAction		t;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
@@ -704,7 +704,7 @@ vkFieldColumns []
 ;
 
 vkFieldEvent []
-  returns [int self]
+  returns [long self]
 :
   "PREFLD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREFLD; }
 |
@@ -740,13 +740,13 @@ vkFieldEvent []
 ;
 
 vkFieldEventList []
-  returns [int self = 0]
+  returns [long self = 0]
 {
-  int		e;
+  long		e;
 }
 :
-  e = vkFieldEvent[] { self |= (1 << e); }
-  ( COMMA e = vkFieldEvent[] { self |= (1 << e); } )*
+  e = vkFieldEvent[] { self |= (1L << e); }
+  ( COMMA e = vkFieldEvent[] { self |= (1L << e); } )*
 ;
 
 vkFieldIndices []
@@ -855,7 +855,7 @@ vkFieldPriority []
 
 vkFieldTriggers [VKParseFieldContext context]
 {
-  int		e;
+  long		e;
   VKAction	t;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
@@ -949,7 +949,7 @@ vkForm []
 ;
 
 vkFormEvent []
-  returns [int self]
+  returns [long self]
 :
   "PREFORM"
     { self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREFORM; }
@@ -971,18 +971,18 @@ vkFormEvent []
 ;
 
 vkFormEventList []
-  returns [int self = 0]
+  returns [long self = 0]
 {
-  int		e;
+  long		e;
 }
 :
-  e = vkFormEvent[] { self |= (1 << e); }
-  ( COMMA e = vkFormEvent[] { self |= (1 << e); } )*
+  e = vkFormEvent[] { self |= (1L << e); }
+  ( COMMA e = vkFormEvent[] { self |= (1L << e); } )*
 ;
 
 vkFormTriggers [VKParseFormContext context]
 {
-  int			e;
+  long			e;
   VKAction		t;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }

@@ -279,11 +279,14 @@ class VRReport
       fields[i].getCommandable().genCode(ref, body, false, false);
     }
     // TRIGGER ARRAY
-    int[][]	triggerArray = new int[fields.length + 1][];
+    int[][]	triggerArray = new int[fields.length + getCommands().length + 1][];
 
     triggerArray[0] = getCommandable().getTriggerArray();
     for (int i = 0; i < fields.length; i++) {
       triggerArray[i + 1] = fields[i].getTriggerArray();
+    }
+    for (int i = 0; i < getCommands().length; i++) {
+      triggerArray[fields.length + i + 1] = getCommands()[i].getBody().getCommandable().getTriggerArray();
     }
 
     // TRIGGERS

@@ -13,7 +13,8 @@
   <property name="src" value="." />
   <property name="javafiles" 
             value="VKOptions.java 
-                   BaseScanner.java VKParseContext.java VKParseVKWindowContext.java
+                   BaseScanner.java VKParseContext.java VKParseCommandContext.java
+		   VKParseVKWindowContext.java
                    BaseTokenTypes.java 
                    BaseParser.java 
                    BaseKeywords.java

@@ -20,8 +20,11 @@
 package com.kopiright.vkopi.comp.form;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import com.kopiright.compiler.base.CWarning;
@@ -169,7 +172,8 @@ public class VKBlock
                                          VConstants.MOD_ANY,
                                          new VKCommandBody(where,
                                                            "SwitchBlockView",
-                                                           new VKExternAction(where, "com.kopiright.vkopi.lib.form.Commands.switchBlockView")));
+                                                           new VKExternAction(where, "com.kopiright.vkopi.lib.form.Commands.switchBlockView"),
+                                                           new VKTrigger[0]));
     }
   }
 
@@ -644,13 +648,19 @@ public class VKBlock
       fields[i].getCommandable().genCode(ref, body, false, false);
     }
     // TRIGGER ARRAY
-    int[][]	triggerArray = new int[fields.length + 1][];
+    VKCommand[]		fieldsCommands = getFieldsCommands();
+    int[][]		triggerArray = new int[fields.length + commands.length + fieldsCommands.length + 1][];
 
     triggerArray[0] = commandable.getTriggerArray();
     for (int i = 0; i < fields.length; i++) {
       triggerArray[i + 1] = fields[i].getTriggerArray();
     }
-
+    for (int i = 0; i < commands.length; i++) {
+      triggerArray[fields.length + i + 1] = commands[i].getBody().getCommandable().getTriggerArray();
+    }
+    for (int i = 0; i < fieldsCommands.length; i++) {
+      triggerArray[fields.length + commands.length + i + 1] = fieldsCommands[i].getBody().getCommandable().getTriggerArray();
+    }
     // TRIGGERS
     body.addElement(VKUtils.assign(ref,
 				   CMP_BLOCK_ARRAY,
@@ -738,6 +748,21 @@ public class VKBlock
 				       null,
 				       null,
                                        factory);
+  }
+  
+  /**
+   * Returns the field commands.
+   * @return The field commands.
+   */
+  private VKCommand[] getFieldsCommands() {
+    List		commands;
+    
+    commands = new ArrayList();
+    for (VKField field : fields) {
+      commands.addAll(Arrays.asList(field.getCommands()));
+    }
+    
+    return (VKCommand[])Utils.toArray(commands, VKCommand.class);
   }
 
   private JExpressionListStatement buildDropList() {

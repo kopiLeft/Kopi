@@ -163,7 +163,7 @@ public class VKPrettyPrinter {
   /**
    * prints a compilation unit
    */
-  public void printTrigger(int events, VKAction action) {
+  public void printTrigger(long events, VKAction action) {
     printEvents(events);
     action.genVKCode(this);
   }
@@ -688,7 +688,7 @@ public class VKPrettyPrinter {
     print(" ");
   }
 
-  protected void printEvents(int events) {
+  protected void printEvents(long events) {
     int	count = 0;
 
     if ((events & (1 << VConstants.TRG_PREQRY)) > 0) {
@@ -776,6 +776,9 @@ public class VKPrettyPrinter {
       print((count++ == 0 ? "" : ", ") + "ACCESS");
     }
     if ((events & (1 << VConstants.TRG_FLDACCESS)) > 0) {
+      print((count++ == 0 ? "" : ", ") + "ACCESS");
+    }
+    if ((events & (1 << VConstants.TRG_CMDACCESS)) > 0) {
       print((count++ == 0 ? "" : ", ") + "ACCESS");
     }
     if ((events & (1 << VConstants.TRG_VALUE)) > 0) {

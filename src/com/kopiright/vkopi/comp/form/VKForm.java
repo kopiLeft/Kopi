@@ -26,8 +26,34 @@ import java.util.Vector;
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.kopi.comp.kjc.*;
-import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.kopi.comp.kjc.CParseClassContext;
+import com.kopiright.kopi.comp.kjc.CParseCompilationUnitContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CStdType;
+import com.kopiright.kopi.comp.kjc.CTypeVariable;
+import com.kopiright.kopi.comp.kjc.JArrayAccessExpression;
+import com.kopiright.kopi.comp.kjc.JAssignmentExpression;
+import com.kopiright.kopi.comp.kjc.JBlock;
+import com.kopiright.kopi.comp.kjc.JClassDeclaration;
+import com.kopiright.kopi.comp.kjc.JClassImport;
+import com.kopiright.kopi.comp.kjc.JCompilationUnit;
+import com.kopiright.kopi.comp.kjc.JConstructorBlock;
+import com.kopiright.kopi.comp.kjc.JConstructorDeclaration;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JExpressionStatement;
+import com.kopiright.kopi.comp.kjc.JFieldDeclaration;
+import com.kopiright.kopi.comp.kjc.JFormalParameter;
+import com.kopiright.kopi.comp.kjc.JIntLiteral;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JMethodDeclaration;
+import com.kopiright.kopi.comp.kjc.JNameExpression;
+import com.kopiright.kopi.comp.kjc.JNewArrayExpression;
+import com.kopiright.kopi.comp.kjc.JPackageImport;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JStringLiteral;
+import com.kopiright.kopi.comp.kjc.JTypeNameExpression;
+import com.kopiright.kopi.comp.kjc.KjcEnvironment;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.Utils;
 import com.kopiright.vkopi.comp.base.VKCommand;
 import com.kopiright.vkopi.comp.base.VKConstants;
@@ -298,24 +324,36 @@ public class VKForm extends VKWindow implements com.kopiright.kopi.comp.kjc.Cons
     body.addElement(VKUtils.assign(ref, "blocks", VKUtils.createArray(ref, VKStdType.VBlock, init1)));
 
     // TRIGGERS
+    int[][]	triggerArray = new int[getCommands().length + 1][];
+    
     body.addElement(VKUtils.assign(ref,
 				   CMP_BLOCK_ARRAY,
 				   new JNewArrayExpression(ref,
 							   CStdType.Integer,
 							   new JExpression[] {
+				                             new JIntLiteral(ref, triggerArray.length),
 							     new JIntLiteral(ref, TRG_TYPES.length)
 							   },
 							   null)));
-    int[]	triggerArray = getCommandable().getTriggerArray();
-    for (int i = 0; i < TRG_TYPES.length; i++) {
-      if (triggerArray[i] != 0) {
-	JExpression	expr = new JIntLiteral(ref, triggerArray[i]);
-	JExpression	left = new JArrayAccessExpression(ref,
-							  new JNameExpression(ref, CMP_BLOCK_ARRAY),
-							  new JIntLiteral(ref, i));
-	JExpression	assign = new JAssignmentExpression(ref, left, expr);
+    
+    triggerArray[0] = getCommandable().getTriggerArray();
+    for (int i = 0; i < getCommands().length; i++) {
+      triggerArray[i + 1] = getCommands()[i].getBody().getCommandable().getTriggerArray();
+    }
+    for (int i = 0; i < triggerArray.length; i++) {
+      for (int j = 0; j < TRG_TYPES.length; j++) {
+	if (triggerArray[i][j] != 0) {
+	  JExpression	expr = new JIntLiteral(ref, triggerArray[i][j]);
+	  JExpression	left = new JArrayAccessExpression(ref,
+	                                                  new JNameExpression(ref, CMP_BLOCK_ARRAY),
+	                                                  new JIntLiteral(ref, i));
+	  left = new JArrayAccessExpression(ref,
+		                            left,
+		                            new JIntLiteral(ref, j));
+	  JExpression	assign = new JAssignmentExpression(ref, left, expr);
 
-	body.addElement(new JExpressionStatement(ref, assign, null));
+	  body.addElement(new JExpressionStatement(ref, assign, null));
+	}
       }
     }
 

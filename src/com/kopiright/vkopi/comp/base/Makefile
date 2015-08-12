@@ -34,7 +34,8 @@ SCANNER1 =	Base
 OPTIONS =	VKOptions
 
 # Compiler classes
-JAVAFILES +=	BaseScanner Parser VKParseContext VKParseVKWindowContext
+JAVAFILES +=	BaseScanner Parser VKParseContext VKParseCommandContext	\
+		VKParseVKWindowContext
 
 # Syntax tree classes
 JAVAFILES +=	Commandable						\
@@ -55,7 +56,7 @@ JAVAFILES +=	Commandable						\
 		VKPrettyPrinter VKStdType VKStringType VKTextType	\
 		VKTimeType VKTimestampType VKTopLevel VKTrigger		\
 		VKType VKTypeFactory VKTypeDefinition VKUtils		\
-		VKWeekType VKWindow VKLocalizationWriter
+		VKWeekType VKWindow VKLocalizationWriter 
 
 MESSAGES =	BaseMessages
 

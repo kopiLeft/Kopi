@@ -135,7 +135,7 @@ vrReport []
 
 vrReportTriggers [VRParseReportContext context]
 {
-  int			e;
+  long			e;
   VKAction		t;
   TokenReference	sourceRef = buildTokenReference();	// !!! add comment
 }
@@ -149,11 +149,11 @@ vrReportTriggers [VRParseReportContext context]
 vrReportEventList []
   returns [int self = 0]
 {
-  int		e;
+  long		e;
 }
 :
-  e = vrReportEvent[] { self |= (1 << e); }
-  ( COMMA e = vrReportEvent[] { self |= (1 << e); } )*
+  e = vrReportEvent[] { self |= (1L << e); }
+  ( COMMA e = vrReportEvent[] { self |= (1L << e); } )*
 ;
 
 vrReportCommands [VRParseReportContext context]
@@ -173,7 +173,7 @@ vrReportCommands [VRParseReportContext context]
 ;
 
 vrReportEvent []
-  returns [int self]
+  returns [long self]
 :
   "PREREPORT"	{ self = com.kopiright.vkopi.lib.report.Constants.TRG_PREREPORT; }
 |

@@ -19,9 +19,13 @@
 
 package com.kopiright.vkopi.comp.base;
 
-import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JStatement;
+import com.kopiright.kopi.comp.kjc.JThisExpression;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 
 /**
  * This class represent a command, ie a link between an actor and
@@ -39,13 +43,14 @@ public class VKCommandBody extends VKPhylum {
    * @param modes		the menu name
    * @param name		the item name
    * @param action		the action to execute
-   * @param block		block the UI during execution of this command
+   * @param triggers		The triggers owned by this command
    */
-  public VKCommandBody(TokenReference where, String actor, VKAction action) {
+  public VKCommandBody(TokenReference where, String actor, VKAction action, VKTrigger[] triggers) {
     super(where);
 
     this.actor = actor;
     this.action = action;
+    this.triggers = triggers;
   }
 
   // ----------------------------------------------------------------------
@@ -61,6 +66,8 @@ public class VKCommandBody extends VKPhylum {
     actorDef = commandable.getDefinitionCollector().getActorDef(actor);
     check(actorDef != null, BaseMessages.UNDEFINED_ACTOR, actor);
     actorDef.checkCode(context, commandable.getDefinitionCollector());
+    this.commandable = new Commandable(actor, commandable);
+    this.commandable.checkCode(context, commandable.getDefinitionCollector(), new VKCommand[0], triggers);
     // !!!check(number != -1, "vk-item-not-found", actor);
   }
 
@@ -120,6 +127,24 @@ public class VKCommandBody extends VKPhylum {
     genComments(p);
     p.printCommandBody(actor, action);
   }
+  
+  // ---------------------------------------------------------------------
+  // ACCESSORS
+  // ---------------------------------------------------------------------
+  
+  /**
+   * Returns the triggers array.
+   */
+  public int[] getTriggerArray() {
+    return commandable.getTriggerArray();
+  }
+
+  /**
+   * Returns commandable
+   */
+  public Commandable getCommandable() {
+    return commandable;
+  }
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
@@ -128,4 +153,6 @@ public class VKCommandBody extends VKPhylum {
   private String		actor;
   private VKActor		actorDef;
   private VKAction		action;
+  private VKTrigger[] 		triggers;
+  private Commandable		commandable;
 }

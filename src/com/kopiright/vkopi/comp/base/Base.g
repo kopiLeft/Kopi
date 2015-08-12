@@ -497,19 +497,50 @@ vkCommandIn [String cmd]
   String                method;
   VKAction              action;
   TokenReference        sourceRef = buildTokenReference();
+  VKParseCommandContext context = new VKParseCommandContext();
 }
 :
   "ITEM" name = vkSimpleIdent[]
   (
     "ACTION" action = vkAction[cmd]
-      { self = new VKCommandBody(sourceRef, name, action); }
   |
     "EXTERN" method = vkQualifiedIdent[] // SHORTCUT
-      { self = new VKCommandBody(sourceRef, name, new VKExternAction(sourceRef, method)); }
+      { action = new VKExternAction(sourceRef, method); }
   |
     "CALL" method = vkSimpleIdent[]
-      { self = new VKCommandBody(sourceRef, name, new VKInternAction(sourceRef, method)); }
+      { action = new VKInternAction(sourceRef, method); }
   )
+  ( vkCommandTriggers[context] )?
+  { self = new VKCommandBody(sourceRef, name, action, context.getTriggers()); }
+;
+
+vkCommandTriggers [VKParseCommandContext context]
+{
+  long		e;
+  VKAction	t;
+  TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
+}
+:
+  (
+   e = vkCommandEventList[] t = vkTriggerAction[]
+    { context.addTrigger(new VKTrigger(sourceRef, e, t)); }
+  )+
+;
+
+vkCommandEvent []
+  returns [long self]
+:
+  "ACCESS"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_CMDACCESS; }
+;
+
+vkCommandEventList []
+  returns [long self = 0]
+{
+  long		e;
+}
+:
+  e = vkCommandEvent[] { self |= (1L << e); }
+  ( COMMA e = vkCommandEvent[] { self |= (1L << e); } )*
 ;
 
 vkListDescs []

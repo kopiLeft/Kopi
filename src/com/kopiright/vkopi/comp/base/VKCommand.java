@@ -19,6 +19,8 @@
 
 package com.kopiright.vkopi.comp.base;
 
+import java.util.Vector;
+
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
@@ -64,7 +66,7 @@ public abstract class VKCommand extends VKPhylum {
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-  protected VKCommandBody getBody() {
+  public VKCommandBody getBody() {
     return body;
   }
 

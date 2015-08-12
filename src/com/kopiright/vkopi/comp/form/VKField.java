@@ -168,6 +168,14 @@ public class VKField
   public Commandable getCommandable() {
     return commandable;
   }
+  
+  /**
+   * Returns the field commands.
+   * @return The field commands.
+   */
+  public VKCommand[] getCommands() {
+    return commands;
+  }
 
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
