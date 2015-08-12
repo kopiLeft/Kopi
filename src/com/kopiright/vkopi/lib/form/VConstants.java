@@ -87,6 +87,8 @@ public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
   int TRG_INT				= 2;
   int TRG_OBJECT			= 3;
   int TRG_PRTCD				= 4;
+  
+  int TRG_CMDACCESS                     = 32;
 
   // ---------------------------------------------------------------------
   // OPTIONS FOR BLOCKS
@@ -189,7 +191,7 @@ public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
       "TRG_POSTBLK", "TRG_VALBLK", "TRG_VALREC", "TRG_DEFAULT", "TRG_INIT", "TRG_RESET",
       "TRG_CHANGED", "TRG_POSTCHG", "TRG_PREFLD", "TRG_POSTFLD", "TRG_PREVAL",
       "TRG_VALFLD", "TRG_FORMAT", "TRG_PREFORM", "TRG_POSTFORM", "TRG_ACCESS",
-      "TRG_FLDACCESS", "TRG_VALUE", "TRG_AUTOLEAVE", "TRG_QUITFORM"
+      "TRG_FLDACCESS", "TRG_VALUE", "TRG_AUTOLEAVE", "TRG_QUITFORM", "TRG_CMDACCESS"
       };
 
   int[] TRG_TYPES			= new int[] {
@@ -198,7 +200,7 @@ public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
       TRG_VOID, TRG_VOID, TRG_VOID, TRG_VOID, TRG_VOID, TRG_BOOLEAN,
       TRG_BOOLEAN, TRG_VOID, TRG_VOID, TRG_VOID, TRG_VOID,
       TRG_VOID, TRG_VOID, TRG_VOID, TRG_VOID, TRG_BOOLEAN,
-      TRG_INT, TRG_OBJECT, TRG_BOOLEAN, TRG_BOOLEAN
+      TRG_INT, TRG_OBJECT, TRG_BOOLEAN, TRG_BOOLEAN, TRG_BOOLEAN
       };
 
   // ---------------------------------------------------------------------
