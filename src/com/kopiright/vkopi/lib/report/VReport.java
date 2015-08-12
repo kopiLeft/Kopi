@@ -157,7 +157,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
         } else if (command.getIdent().equals("EditColumnData")) {
           cmdEditColumn = command;
         } else {
-          setCommandEnabled(commands[i], true);
+          setCommandEnabled(commands[i], model.getColumnCount() + i + 1, true);
         }
       }
     }
@@ -242,6 +242,30 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   // ----------------------------------------------------------------------
   // INTERFACE (COMMANDS)
   // ----------------------------------------------------------------------
+
+  /**
+   * Enables/disables the actor.
+   */
+  public void setCommandEnabled(final VCommand command, int index, boolean enable) {
+    if (enable) {
+      if (hasTrigger(TRG_CMDACCESS, index)) {
+	boolean			active;
+	
+	try {
+	  active = ((Boolean)callTrigger(TRG_CMDACCESS, index)).booleanValue();
+	} catch (VException e) {
+	  // trigger call error ==> command is considered as active
+	  active = true;
+	}
+	enable = active;
+      }
+      command.setEnabled(enable);
+      activeCommands.addElement(command);
+    } else {
+      activeCommands.removeElement(command);
+      command.setEnabled(false);
+    }
+  }
 
   /**
    * Enables/disables the actor.

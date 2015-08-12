@@ -532,25 +532,46 @@ public abstract class VForm extends VWindow implements VConstants {
   /**
    * Calls trigger for given event, returns last trigger called 's value.
    */
-  protected Object callTrigger(int event) throws VException {
+  protected Object callTrigger(int event, int index) throws VException {
+    final Object        returnValue;
+
     switch (TRG_TYPES[event]) {
     case TRG_VOID:
-      executeVoidTrigger(VKT_Triggers[event]);
-      return null;
+      executeVoidTrigger(VKT_Triggers[index][event]);
+      returnValue = null;
+      break;
     case TRG_BOOLEAN:
-      return new Boolean(executeBooleanTrigger(VKT_Triggers[event]));
+      returnValue = new Boolean(executeBooleanTrigger(VKT_Triggers[index][event]));
+      break;
     case TRG_INT:
-      return new Integer(executeIntegerTrigger(VKT_Triggers[event]));
+      returnValue = new Integer(executeIntegerTrigger(VKT_Triggers[index][event]));
+      break;
     default:
-      return executeObjectTrigger(VKT_Triggers[event]);
+      returnValue = executeObjectTrigger(VKT_Triggers[index][event]);
     }
+    
+    return returnValue;
+  }
+
+  /**
+   * Calls trigger for given event, returns last trigger called 's value.
+   */
+  protected Object callTrigger(int event) throws VException {
+    return callTrigger(event, 0);
+  }
+  
+  /**
+   * @return If there is trigger associated with event
+   */
+  protected boolean hasTrigger(int event) {
+    return hasTrigger(event, 0);
   }
 
   /**
    * @return If there is trigger associated with event
    */
-  protected boolean hasTrigger(int event) {
-    return VKT_Triggers[event] != 0;
+  protected boolean hasTrigger(int event, int index) {
+    return VKT_Triggers[index][event] != 0;
   }
 
   public Object executeObjectTrigger(final int VKT_Type) throws com.kopiright.vkopi.lib.visual.VException {
@@ -903,6 +924,18 @@ public abstract class VForm extends VWindow implements VConstants {
     }
     // form-level commands
     for (int i = 0; i < commands.length; i++) {
+      if (enable && hasTrigger(TRG_CMDACCESS, i + 1)) {
+	boolean		active;
+	
+	try {
+	  active = ((Boolean)callTrigger(TRG_CMDACCESS, i + 1)).booleanValue();
+        } catch (VException e) {
+          // consider the command as active if trigger call fails.
+          active = true;
+        }
+	// The command is enabled if its access trigger returns <code>true</true>
+	enable = active;
+      }
       commands[i].setEnabled(enable);
     }
   }
@@ -974,7 +1007,7 @@ public abstract class VForm extends VWindow implements VConstants {
   public VBlock[]		blocks;
   protected String[]		pages;
   protected String		help;
-  protected int[]		VKT_Triggers;
+  protected int[][]		VKT_Triggers;
 
   // dynamic data
   private boolean		blockMoveAllowed = true;

@@ -3188,9 +3188,25 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
         // add active commands to the list
         for (int i = 0; i < commands.length; i++) {
+          // look command access only when the command
+          // is active for the block mode.
           if (commands[i].isActive(mode)) {
+            boolean		active;
+            
+            if (hasTrigger(TRG_CMDACCESS, fields.length + i + 1)) {
+              try {
+        	active = ((Boolean)callTrigger(TRG_CMDACCESS, fields.length + i + 1)).booleanValue();
+              } catch (VException e) {
+        	// consider that the command is active of any error occurs
+        	active = true;
+              }
+            } else {
+              // if no access trigger is associated with the command
+              // we consider it as active command
+              active = true;
+            }
             activeCommands.addElement(commands[i]);
-            commands[i].setEnabled(true);
+            commands[i].setEnabled(active);
           }
         }
       }

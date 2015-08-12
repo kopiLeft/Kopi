@@ -186,8 +186,24 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       if (localCommands != null) {
         for (int i = 0; i < localCommands.length; i++) {
           if (localCommands[i].isActive(getBlock().getMode())) {
-            activeCommands.addElement(localCommands[i]);
-            localCommands[i].setEnabled(true);
+            boolean		active;
+            
+            if (getBlock().hasTrigger(TRG_CMDACCESS, getBlock().fields.length + getBlock().commands.length + i + 1)) {
+              try {
+        	active = ((Boolean)getBlock().callTrigger(TRG_CMDACCESS, getBlock().fields.length + getBlock().commands.length + i + 1)).booleanValue();
+              } catch (VException e) {
+        	// consider that the command is active of any error occurs
+        	active = true;
+              }
+            } else {
+              // if no access trigger is associated with the command
+              // we consider it as active command
+              active = true;
+            }
+            if (active) {
+              activeCommands.addElement(localCommands[i]);
+              localCommands[i].setEnabled(true);
+            }
           }
         }
       }
