@@ -157,7 +157,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
         } else if (command.getIdent().equals("EditColumnData")) {
           cmdEditColumn = command;
         } else {
-          setCommandEnabled(commands[i], model.getColumnCount() + i + 1, true);
+          setCommandEnabled(commands[i], model.getModelColumnCount() + i + 1, true);
         }
       }
     }
@@ -248,13 +248,11 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
    */
   public void setCommandEnabled(final VCommand command, int index, boolean enable) {
     if (enable) {
-      // we need to check if VKT_Triggers is initialized
-      // ex : com.kopiright.vkopi.lib.cross.VDynamicReport
-      if (VKT_Triggers != null && hasTrigger(TRG_CMDACCESS, index)) {
+      if (hasTrigger(com.kopiright.vkopi.lib.report.Constants.TRG_CMDACCESS, index)) {
 	boolean			active;
 	
 	try {
-	  active = ((Boolean)callTrigger(TRG_CMDACCESS, index)).booleanValue();
+	  active = ((Boolean)callTrigger(com.kopiright.vkopi.lib.report.Constants.TRG_CMDACCESS, index)).booleanValue();
 	} catch (VException e) {
 	  // trigger call error ==> command is considered as active
 	  active = true;

@@ -67,9 +67,11 @@ public interface Constants extends com.kopiright.vkopi.lib.visual.Constants {
   int TRG_INIT				= 2;
   int TRG_FORMAT			= 3;
   int TRG_COMPUTE			= 4;
+  int TRG_CMDACCESS			= 5;
 
   int TRG_VOID				= com.kopiright.vkopi.lib.form.VConstants.TRG_VOID;
   int TRG_OBJECT			= com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT;
+  int TRG_BOOLEAN			= com.kopiright.vkopi.lib.form.VConstants.TRG_BOOLEAN;
 
   // ---------------------------------------------------------------------
   // CELL STATE
@@ -110,10 +112,10 @@ public interface Constants extends com.kopiright.vkopi.lib.visual.Constants {
   // ---------------------------------------------------------------------
 
   String[] TRG_NAMES			= new String[] {
-    "TRG_PREREPORT", "TRG_POSTREPORT", "TRG_INIT", "TRG_FORMAT", "TRG_COMPUTE"};
+    "TRG_PREREPORT", "TRG_POSTREPORT", "TRG_INIT", "TRG_FORMAT", "TRG_COMPUTE", "TRG_CMDACCESS"};
 
   int[] TRG_TYPES			= new int[] {
-    TRG_VOID, TRG_VOID, TRG_VOID, TRG_OBJECT, TRG_OBJECT};
+    TRG_VOID, TRG_VOID, TRG_VOID, TRG_OBJECT, TRG_OBJECT, TRG_BOOLEAN};
 
 
 }
