@@ -248,7 +248,9 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
    */
   public void setCommandEnabled(final VCommand command, int index, boolean enable) {
     if (enable) {
-      if (hasTrigger(TRG_CMDACCESS, index)) {
+      // we need to check if VKT_Triggers is initialized
+      // ex : com.kopiright.vkopi.lib.cross.VDynamicReport
+      if (VKT_Triggers != null && hasTrigger(TRG_CMDACCESS, index)) {
 	boolean			active;
 	
 	try {
