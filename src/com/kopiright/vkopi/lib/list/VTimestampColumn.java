@@ -32,4 +32,20 @@ public class VTimestampColumn extends VListColumn {
   public VTimestampColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 5, sortAscending);
   }
+
+  // --------------------------------------------------------------------
+  // IMPLEMENTATIONS
+  // --------------------------------------------------------------------
+
+  /**
+   * Returns a representation of value
+   */
+  public Object formatObject(Object value) {
+    String	val = (String) super.formatObject(value);
+    
+    // this is work around to display the timestamp in yyyy-MM-dd hh:mm:ss format
+    // The proper way is to change the method Timestamp#toString(Locale) but this
+    // will affect the SQL representation of the timestamp value.
+    return val.substring(0, Math.min(19, val.length()));
+  }
 }
