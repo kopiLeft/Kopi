@@ -26,6 +26,7 @@ import org.kopi.vaadin.addons.NotificationListener;
 
 import com.kopiright.vkopi.lib.form.UField;
 import com.kopiright.vkopi.lib.form.UListDialog;
+import com.kopiright.vkopi.lib.form.VDictionary;
 import com.kopiright.vkopi.lib.form.VDictionaryForm;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.form.VListDialog;
@@ -122,9 +123,9 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
    * @return The selected item.
    * @throws VException Visual errors.
    */
-  protected int doNewForm(final VForm form, final String cstr) throws VException {
+  protected int doNewForm(final VForm form, final VDictionary cstr) throws VException {
     if (form != null && cstr != null) {
-      return ((VDictionaryForm)Module.getKopiExecutable(cstr)).newRecord(form);
+      return cstr.add(form);
     } else {
       return VListDialog.NEW_CLICKED;
     }

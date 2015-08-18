@@ -40,6 +40,7 @@ public class VKFieldList extends VKPhylum {
    * @param pack                the package name of the class defining the list containing type
    * @param type		the identifier of the type containing this list
    * @param table		the statement to select data
+   * @param action		the field list action
    * @param columns		a description of the columns
    * @param newForm		the name of the form to edit data
    * @param access		true if this field is only an access to a form
@@ -48,6 +49,7 @@ public class VKFieldList extends VKPhylum {
                      String pack,
                      String type,
 		     TableReference table,
+		     VKFieldListAction action,
 		     VKListDesc[] columns,
                      int autocompleteType,
                      int autocompleteLength,
@@ -58,6 +60,7 @@ public class VKFieldList extends VKPhylum {
     this.source = (pack == null) ? null : pack + "/" + where.getName().substring(0, where.getName().lastIndexOf('.'));
     this.type = type;
     this.table = table;
+    this.action = action;
     this.columns = columns;
     this.autocompleteType = autocompleteType;
     this.autocompleteLength = autocompleteLength;
@@ -75,12 +78,19 @@ public class VKFieldList extends VKPhylum {
   public boolean hasNewForm() {
     return newForm != null;
   }
+  
+  /**
+   * Returns <code>true</code> if the list has a list action.
+   */
+  public boolean hasAction() {
+    return action != null;
+  }
 
   /**
    * Return true if there is a shortcut to access the form to edit this field
    */
   public boolean hasShortcut() {
-    return newForm != null && access;
+    return (hasNewForm() || hasAction()) && access;
   }
 
   /**
@@ -88,6 +98,14 @@ public class VKFieldList extends VKPhylum {
    */
   public TableReference getTable() {
     return table;
+  }
+  
+  /**
+   * Returns the field list action.
+   * @return The field list action.
+   */
+  public VKFieldListAction getAction() {
+    return action;
   }
 
   // ----------------------------------------------------------------------
@@ -128,7 +146,7 @@ public class VKFieldList extends VKPhylum {
    * Check expression and evaluate and alter context
    * @exception	PositionedError	Error catched as soon as possible
    */
-  public JExpression genCode(int actionNumber) {
+  public JExpression genCode(int actionNumber, int listActionNumber) {
     JExpression[]	init;
     TokenReference	ref;
 
@@ -145,6 +163,7 @@ public class VKFieldList extends VKPhylum {
                                               VKUtils.toExpression(ref, source),
                                               VKUtils.createArray(ref, VKStdType.VListColumn, init),
                                               VKUtils.toExpression(ref, actionNumber),
+                                              VKUtils.toExpression(ref, listActionNumber),
                                               VKUtils.toExpression(ref, autocompleteType),
                                               VKUtils.toExpression(ref, autocompleteLength),
                                               newForm != null
@@ -187,6 +206,7 @@ public class VKFieldList extends VKPhylum {
   private final String                  source;
   private final String                  type;
   private final	TableReference       	table;
+  private final VKFieldListAction 	action;
   private final VKListDesc[]		columns;
   private final int                     autocompleteType;
   private final int                     autocompleteLength;

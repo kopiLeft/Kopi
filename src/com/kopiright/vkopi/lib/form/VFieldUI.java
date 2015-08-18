@@ -78,7 +78,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
     hasAutofill = model.hasAutofill() && !hasAutofillCommand();
 
     if (model.getList() != null) {
-      if (model.getList().getNewForm() != null) {
+      if (model.getList().getNewForm() != null || model.getList().getAction() != -1) {
 	hasEditItem = hasNewItem = true;
       }
     }

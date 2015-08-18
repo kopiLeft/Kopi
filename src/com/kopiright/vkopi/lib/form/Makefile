@@ -34,7 +34,7 @@ JAVAFILES +=	AbstractFieldHandler BlockAlignment Commands		\
 		VBooleanField VCodeField				\
 		VColorField VConstants					\
 		VDateField VDictionaryForm				\
-		VDocGenerator						\
+		VDocGenerator VDictionary				\
 		VField VFieldCommand VFieldException			\
 		VFieldUI VFixnumCodeField				\
 		VFixnumField VForm					\

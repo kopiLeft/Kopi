@@ -79,6 +79,11 @@ public class VKFieldTypeName extends VKFieldType implements com.kopiright.vkopi.
       getDef().checkCode(context);
       if (getDef().getList() != null) {
 	actionNumber = commandable.addTrigger(type.genCall(params), 0, com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT);
+	if (getDef().getList().getAction() != null) {
+	  listActionNumber = commandable.addTrigger(type.genActionCall(params), 0, TRG_OBJECT);
+	} else {
+	  listActionNumber = -1;
+	}
       }
     }
   }
@@ -86,6 +91,11 @@ public class VKFieldTypeName extends VKFieldType implements com.kopiright.vkopi.
   public void genCode(Commandable commandable) {
     if (getDef().getList() != null) {
       actionNumber = commandable.addTrigger(type.genCall(params), 0, TRG_VOID);
+      if (getDef().getList().getAction() != null) {
+	listActionNumber = commandable.addTrigger(type.genActionCall(params), 0, TRG_VOID);
+      } else {
+	listActionNumber = 1;
+      }
     }
   }
 

@@ -57,17 +57,16 @@ import javax.swing.table.AbstractTableModel;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.UField;
 import com.kopiright.vkopi.lib.form.UListDialog;
-import com.kopiright.vkopi.lib.form.VDictionaryForm;
+import com.kopiright.vkopi.lib.form.VDictionary;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.form.VListDialog;
 import com.kopiright.vkopi.lib.ui.swing.base.ListDialogCellRenderer;
 import com.kopiright.vkopi.lib.ui.swing.visual.DObject;
 import com.kopiright.vkopi.lib.ui.swing.visual.DWindow;
-import com.kopiright.vkopi.lib.visual.MessageCode;
-import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.ui.swing.visual.SwingThreadHandler;
-import com.kopiright.vkopi.lib.visual.UWindow;
 import com.kopiright.vkopi.lib.ui.swing.visual.Utils;
+import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.UWindow;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
@@ -105,7 +104,7 @@ public class DListDialog extends JPanel implements UListDialog {
    * @exception VException       an exception may be raised by string formatter
    */
   private int selectFromJDialog(Component parent, boolean showSingleEntry) throws VException {
-    if (!showSingleEntry && table.getModel().getRowCount() == 1) {
+    if (!showSingleEntry && model.getCount() == 1) {
       return model.convert(0);
     }
 
@@ -327,9 +326,9 @@ public class DListDialog extends JPanel implements UListDialog {
   /**
    * Do a new form
    */
-  private int doNewForm(final VForm form, final String cstr) throws VException {
+  private int doNewForm(final VForm form, final VDictionary cstr) throws VException {
     if (form != null && cstr != null) {
-      return ((VDictionaryForm)Module.getKopiExecutable(cstr)).newRecord(form);
+      return cstr.add(form);
     } else {
       return VListDialog.NEW_CLICKED;
     }

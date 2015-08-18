@@ -23,6 +23,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VStringColumn;
 import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.UIFactory;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VModel;
@@ -46,6 +47,18 @@ public class VListDialog implements VModel {
   {
     this(list, data, idents, rows, true);
   }
+  
+  /**
+   * Creates a dialog with specified data
+   */
+  public VListDialog(VListColumn[] list,
+                     Object[][] data,
+                     int rows,
+                     VDictionary newForm)
+  {
+    this(list, data, makeIdentArray(rows), rows, false);
+    this.newForm = newForm;
+  }
 
   /**
    * Creates a dialog with specified data
@@ -55,8 +68,7 @@ public class VListDialog implements VModel {
                      int rows,
                      String newForm)
   {
-    this(list, data, makeIdentArray(rows), rows, false);
-    this.newForm = newForm;
+    this(list, data, rows, (VDictionary) Module.getKopiExecutable(newForm));
   }
 
   /**
@@ -354,7 +366,7 @@ public class VListDialog implements VModel {
   /**
    * @return the newForm
    */
-  public String getNewForm() {
+  public VDictionary getNewForm() {
     return newForm;
   }
 
@@ -430,7 +442,7 @@ public class VListDialog implements VModel {
   private String[]				titles;
   private int[]       				idents;
   private int					count;
-  private String                		newForm;
+  private VDictionary                		newForm;
   private int[]       				tab;
   private UListDialog				display;
 

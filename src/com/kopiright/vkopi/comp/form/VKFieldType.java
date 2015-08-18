@@ -70,6 +70,11 @@ public abstract class VKFieldType extends VKPhylum {
       JExpression expr = new com.kopiright.xkopi.comp.xkjc.XSqlExpr(getTokenReference(), getDef().getList().getTable());
 
       actionNumber = commandable.addTrigger(new JReturnStatement(getTokenReference(), expr, null), 0, com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT);
+      if (getDef().getList().getAction() != null) {
+	listActionNumber = commandable.addTrigger(getDef().getList().getAction().getStatement(), 0, com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT);
+      } else {
+	listActionNumber = -1;
+      }
     }
   }
 
@@ -126,7 +131,7 @@ public abstract class VKFieldType extends VKPhylum {
     if (getDef().getList() == null) {
       return VKUtils.nullLiteral(getTokenReference());
     } else {
-      return getDef().getList().genCode(actionNumber);
+      return getDef().getList().genCode(actionNumber, listActionNumber);
     }
   }
 
@@ -153,4 +158,5 @@ public abstract class VKFieldType extends VKPhylum {
   private	VKActor		actorNewitem;
   private	VKActor		actorEdititem;
   protected	int		actionNumber;
+  protected	int		listActionNumber;
 }

@@ -1978,15 +1978,26 @@ public abstract class VField implements VConstants, VModel {
   private Object displayQueryList(String queryText, VListColumn[] columns)
     throws VException {
 
-    final String        newForm = list.getNewForm();
+    final VDictionary   newForm;
 
     final int           MAX_LINE_COUNT = 1024;
     final boolean       SKIP_FIRST_COLUMN = false;
-    final boolean       SHOW_SINGLE_ENTRY = newForm != null;
+    final boolean       SHOW_SINGLE_ENTRY;
 
     Object[][]          lines = new Object[columns.length - (SKIP_FIRST_COLUMN ? 1 : 0)][MAX_LINE_COUNT];
     int                 lineCount = 0;
 
+    if (list.getNewForm() != null) {
+      // OLD SYNTAX
+      newForm = (VDictionary) Module.getKopiExecutable(list.getNewForm());
+    } else if (list.getAction() != -1) {
+      // NEW SYNTAX
+      newForm = (VDictionary) getBlock().executeObjectTrigger(list.getAction());
+    } else {
+      newForm = null; // should never happen.
+    }
+    SHOW_SINGLE_ENTRY = newForm != null;
+    
     try {
       for (;;) {
         try {
@@ -2028,7 +2039,7 @@ public abstract class VField implements VConstants, VModel {
       int     selected;
 
       if (lineCount == 0 && (newForm != null && isNull(block.getActiveRecord()))) {
-        selected = ((VDictionaryForm)Module.getKopiExecutable(newForm)).newRecord(getForm());
+        selected = newForm.add(getForm());
       } else {
         if (lineCount == MAX_LINE_COUNT - 1) {
           getForm().notice(MessageCode.getMessage("VIS-00028"));

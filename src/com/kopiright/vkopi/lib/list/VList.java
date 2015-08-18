@@ -43,6 +43,7 @@ public class VList implements VConstants, Serializable {
                String newForm,
                VListColumn[] columns,
                int table,
+               int action,
                int autocompleteType,
                int autocompleteLength,
                boolean hasShortcut)
@@ -54,6 +55,7 @@ public class VList implements VConstants, Serializable {
     this.newForm = newForm;
     this.columns = columns;
     this.table = table;
+    this.action = action;
     this.hasShortcut = hasShortcut;
   }
 
@@ -64,6 +66,7 @@ public class VList implements VConstants, Serializable {
                String source,
                VListColumn[] columns,
                int table,
+               int action,
                int autocompleteType,
                int autocompleteLength,
                Class<VForm> newForm,
@@ -74,6 +77,7 @@ public class VList implements VConstants, Serializable {
          newForm == null ? null : newForm.getName(),
          columns,
          table,
+         action,
          autocompleteType,
          autocompleteLength,
          hasShortcut);
@@ -84,6 +88,14 @@ public class VList implements VConstants, Serializable {
    */
   public int getTable() {
     return table;
+  }
+  
+  /**
+   * Returns the list action.
+   * @return The list action.
+   */
+  public int getAction() {
+    return action;
   }
 
   /**
@@ -171,5 +183,6 @@ public class VList implements VConstants, Serializable {
   private final String			newForm;
   private final VListColumn[]		columns;
   private final int			table;
+  private final int			action;
   private final boolean			hasShortcut;
 }

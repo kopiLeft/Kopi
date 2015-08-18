@@ -686,6 +686,7 @@ vkFieldList [String pack, String type]
   returns [VKFieldList self]
 {
   TableReference        table;
+  VKFieldListAction     action = null;
   int                   autocompleteType = VList.AUTOCOMPLETE_NONE;
   int                   autocompleteLength = 0;
   String                name = null;
@@ -704,7 +705,9 @@ vkFieldList [String pack, String type]
     )
     autocompleteLength = vkInteger[]
   )?
-  ( ( "NEW" | "ACCESS" { access = true; } ) name = vkQualifiedIdent[] )?
+  (
+    ( "NEW" | "ACCESS" { access = true; } ) (name = vkQualifiedIdent[] | action = vkFieldListAction[])
+  )?
   "IS" columns = vkListDescs[]
   "END" "LIST"
     {
@@ -712,12 +715,28 @@ vkFieldList [String pack, String type]
                              pack,
                              type,
                              table,
+                             action,
                              columns,
                              autocompleteType,
                              autocompleteLength,
                              name == null ? null : environment.getTypeFactory().createType(name.replace('.', '/'), false),
                              access);
     }
+;
+
+vkFieldListAction[]
+  returns [VKFieldListAction self]
+{
+  JStatement[]          stmts;
+  TokenReference        sourceRef = buildTokenReference();
+}
+:
+  LCURLY
+    {
+      stmts = buildGKjcParser().gAction();
+      self = new VKFieldListAction(sourceRef, new JCompoundStatement(sourceRef, stmts));
+    }
+  // RCURLY
 ;
 
 vkListTable[]

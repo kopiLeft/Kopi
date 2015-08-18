@@ -30,7 +30,7 @@ import com.kopiright.xkopi.lib.base.DBContextHandler;
 import com.kopiright.xkopi.lib.base.DBContext;
 
 @SuppressWarnings("serial")
-public abstract class VDictionaryForm extends VForm {
+public abstract class VDictionaryForm extends VForm implements VDictionary {
 
   /*
    * ----------------------------------------------------------------------
@@ -182,6 +182,7 @@ public abstract class VDictionaryForm extends VForm {
 
     super.prepareForm();
   }
+  
   /**
    * close the form
    */
@@ -199,6 +200,25 @@ public abstract class VDictionaryForm extends VForm {
       this.id = -1;
     }
     super.close(code);
+  }
+
+  // ----------------------------------------------------------------------
+  // VDICTIONARY IMPLEMENTATION
+  // ----------------------------------------------------------------------
+  
+  @Override
+  public int search(VWindow parent) throws VException {
+    return openForQuery(parent);
+  }
+  
+  @Override
+  public int edit(VWindow parent, int id) throws VException {
+    return editWithID(parent, id);
+  }
+  
+  @Override
+  public int add(VWindow parent) throws VException {
+    return newRecord(parent);
   }
 
   // ----------------------------------------------------------------------

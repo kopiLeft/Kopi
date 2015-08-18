@@ -118,17 +118,33 @@ public abstract class AbstractFieldHandler implements FieldHandler {
    * 
    */
   public boolean loadItem(int mode) throws VException {
-    int	id = -1;
+    int				id;
+    VDictionary			dictionnary;
+
+    id = -1;
+    if (getModel().getList().getNewForm() != null) {
+      // OLD SYNTAX
+      dictionnary = (VDictionary)Module.getKopiExecutable(getModel().getList().getNewForm());
+    } else if (getModel().getList().getAction() != -1) {
+      // NEW SYNTAX
+      dictionnary = (VDictionary)getModel().getBlock().executeObjectTrigger(getModel().getList().getAction());
+    } else {
+      dictionnary = null;
+    }
+    
+    if (dictionnary == null) {
+      return false;
+    }
 
     if (mode == VForm.CMD_NEWITEM) {
-      id = ((VDictionaryForm)Module.getKopiExecutable(getModel().getList().getNewForm())).newRecord(getModel().getForm());
+      id = dictionnary.add(getModel().getForm());
     } else if (mode == VForm.CMD_EDITITEM) {
       try {
 	updateModel();
 	if (!getModel().isNull(rowController.getBlock().getActiveRecord())) {
 	  int	val = getModel().getListID();
 	  if  (val != -1) {
-	    id = ((VDictionaryForm)Module.getKopiExecutable(getModel().getList().getNewForm())).editWithID(getModel().getForm(), val);
+	    id = dictionnary.edit(getModel().getForm(), val);
 	  } else {
 	    mode = VForm.CMD_EDITITEM_S;
 	  }
@@ -140,7 +156,7 @@ public abstract class AbstractFieldHandler implements FieldHandler {
       }
     }
     if (mode == VForm.CMD_EDITITEM_S) {
-      id = ((VDictionaryForm)Module.getKopiExecutable(getModel().getList().getNewForm())).openForQuery(getModel().getForm());
+      id = dictionnary.search(getModel().getForm());
     }
     if (id == -1) {
       if (mode == VForm.CMD_EDITITEM || mode == VForm.CMD_EDITITEM_S) {

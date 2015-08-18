@@ -43,7 +43,7 @@ JAVAFILES +=	Commandable						\
 		VKBooleanType VKCodeDesc VKCodeType VKColorType		\
 		VKCommand VKCommandBody VKCommandDefinition		\
 		VKCommandName VKCompilationUnit VKConstants		\
-		VKContext						\
+		VKContext VKFieldListAction				\
 		VKDateType VKDefaultCommand VKDefinition		\
 		VKDefinitionCollector VKStringCodeType			\
 		VKEnvironment VKExternAction VKFieldList		\

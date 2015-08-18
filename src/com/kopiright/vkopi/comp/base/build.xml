@@ -14,7 +14,7 @@
   <property name="javafiles" 
             value="VKOptions.java 
                    BaseScanner.java VKParseContext.java VKParseCommandContext.java
-		   VKParseVKWindowContext.java
+		   VKParseVKWindowContext.java VKFieldListAction.java
                    BaseTokenTypes.java 
                    BaseParser.java 
                    BaseKeywords.java

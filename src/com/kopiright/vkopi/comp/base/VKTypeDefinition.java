@@ -75,6 +75,21 @@ public class VKTypeDefinition
 
     return new JReturnStatement(getTokenReference(), expr, null);
   }
+  
+  /**
+   * Returns the action call of this type definition
+   */
+  public JReturnStatement genActionCall(JExpression[] args) {
+    TokenReference	ref = getTokenReference();
+    JExpression		expr;
+    
+    expr = new JMethodCallExpression(ref,
+	                             access,
+	                             getIdent() + "_TYPE_ACTION",
+	                             args);
+
+    return new JReturnStatement(getTokenReference(), expr, null);
+  }
 
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
@@ -97,6 +112,14 @@ public class VKTypeDefinition
       
       if (decl != null) {
 	context.getClassContext().addMethodDeclaration(decl);
+      }
+      
+      if (type.getList().getAction() != null) {
+	decl = type.getList().getAction().genMethod(isStatic, params, getIdent() + "_TYPE_ACTION");
+	
+	if (decl != null) {
+	  context.getClassContext().addMethodDeclaration(decl);
+	}
       }
     }
   }

@@ -28,6 +28,7 @@ import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.TypeFactory;
 
 public class VKStdType {
+  public static CReferenceType VDictionary;
   public static CReferenceType VDictionaryForm;
   public static CReferenceType VReport;
   public static CReferenceType VForm;
@@ -80,6 +81,7 @@ public class VKStdType {
 
     VField = tf.createType(com.kopiright.vkopi.lib.form.VField.class.getName().replace('.','/'), false);
     VBlock = tf.createType(com.kopiright.vkopi.lib.form.VBlock.class.getName().replace('.','/'), false);
+    VDictionary = tf.createType(com.kopiright.vkopi.lib.form.VDictionary.class.getName().replace('.','/'), false);
     VDictionaryForm = tf.createType(com.kopiright.vkopi.lib.form.VDictionaryForm.class.getName().replace('.','/'), false);
     VForm = tf.createType(com.kopiright.vkopi.lib.form.VForm.class.getName().replace('.','/'), false);
     VReport = tf.createType(com.kopiright.vkopi.lib.report.VReport.class.getName().replace('.','/'), false);
@@ -113,6 +115,7 @@ public class VKStdType {
     try {
       VField = (CReferenceType) VField.checkType(context);
       VBlock = (CReferenceType) VBlock.checkType(context);
+      VDictionary = (CReferenceType) VDictionary.checkType(context);
       VDictionaryForm = (CReferenceType) VDictionaryForm.checkType(context);
       VForm = (CReferenceType) VForm.checkType(context);
       VReport =  (CReferenceType) VReport.checkType(context);

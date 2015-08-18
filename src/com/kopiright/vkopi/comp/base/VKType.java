@@ -112,7 +112,7 @@ public abstract class VKType extends VKPhylum {
    * return whether this type support auto fill command
    */
   public boolean hasNewItem() {
-    return getList() != null && getList().hasNewForm();
+    return getList() != null && (getList().hasNewForm() || getList().hasAction());
   }
 
   /**
