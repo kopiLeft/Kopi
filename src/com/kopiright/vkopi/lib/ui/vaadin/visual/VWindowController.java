@@ -45,12 +45,17 @@ public class VWindowController extends WindowController {
   
   @Override
   public boolean doModal(VWindow model) {
-    ModalViewRunner		viewStarter;
-    
-    viewStarter = new ModalViewRunner(model);
-    BackgroundThreadHandler.startAndWait(viewStarter, model);
-    
-    return (viewStarter.getView() == null) ? false : viewStarter.getView().getReturnCode() == VWindow.CDE_VALIDATE;
+    try {
+      ModalViewRunner		viewStarter;
+
+      viewStarter = new ModalViewRunner(model);
+      BackgroundThreadHandler.startAndWait(viewStarter, model);
+
+      return (viewStarter.getView() == null) ? false : viewStarter.getView().getReturnCode() == VWindow.CDE_VALIDATE;
+    } finally {
+      // This is a turn around to kill delayed wait dialog displayed in modal windows
+      model.getDisplay().unsetWaitInfo();
+    }
   }
 
   @Override
