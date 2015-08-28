@@ -32,7 +32,6 @@ import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.list.VTextColumn;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
-import com.kopiright.xkopi.lib.base.KopiUtils;
 import com.kopiright.xkopi.lib.base.PostgresDriverInterface;
 import com.kopiright.xkopi.lib.base.Query;
 
@@ -113,8 +112,8 @@ public class VTextField extends VStringField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      return super.retrieveQuery(query, column);
+    if (getBlock().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      return query.getByteArray(column);
     } else {
       Blob        blob = query.getBlob(column);
 
@@ -168,12 +167,7 @@ public class VTextField extends VStringField {
    * Returns the SQL representation of field value of given record.
    */
   public String getSqlImpl(int r) {
-    // use string representation for posgresql databases.
-    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      return KopiUtils.toSql((String)super.getObjectImpl(r));
-    } else {
-      return "?";
-    }
+    return "?";
   }
 
   /**
@@ -182,11 +176,7 @@ public class VTextField extends VStringField {
    * @kopi	inaccessible
    */
   public boolean hasLargeObject(int r) {
-    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      return false;
-    } else {
-      return true;
-    }
+    return true;
   }
 
   /**
@@ -194,11 +184,7 @@ public class VTextField extends VStringField {
    * @kopi	inaccessible
    */
   public boolean hasBinaryLargeObject(int r) {
-    if (getBlock().getForm().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      return false;
-    } else {
-      return true;
-    }
+    return true;
   }
 
   /**

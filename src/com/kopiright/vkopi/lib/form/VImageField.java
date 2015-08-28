@@ -32,6 +32,7 @@ import com.kopiright.vkopi.lib.list.VListColumn;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
+import com.kopiright.xkopi.lib.base.PostgresDriverInterface;
 import com.kopiright.xkopi.lib.base.Query;
 
 @SuppressWarnings("serial")
@@ -180,24 +181,28 @@ public class VImageField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    Blob        blob = query.getBlob(column);
-
-    if (blob != null) {
-      InputStream               is = blob.getBinaryStream();
-      ByteArrayOutputStream     out = new ByteArrayOutputStream();
-      byte[]                    buf = new byte[2048];
-      int                       nread;
-
-      try {
-        while ((nread = is.read(buf)) != -1) {
-          out.write(buf, 0, nread);
-        }
-      } catch (IOException e) {
-        throw new VRuntimeException(e);
-      }
-      return out.toByteArray();
+    if (getBlock().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      return query.getByteArray(column);
     } else {
-      return null;
+      Blob        blob = query.getBlob(column);
+
+      if (blob != null) {
+	InputStream               is = blob.getBinaryStream();
+	ByteArrayOutputStream     out = new ByteArrayOutputStream();
+	byte[]                    buf = new byte[2048];
+	int                       nread;
+
+	try {
+	  while ((nread = is.read(buf)) != -1) {
+	    out.write(buf, 0, nread);
+	  }
+	} catch (IOException e) {
+	  throw new VRuntimeException(e);
+	}
+	return out.toByteArray();
+      } else {
+	return null;
+      }
     }
   }
 
