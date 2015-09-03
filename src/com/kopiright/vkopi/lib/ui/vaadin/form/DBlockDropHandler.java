@@ -136,7 +136,7 @@ public class DBlockDropHandler implements DropHandler {
 	if (flavors.size() > 1) {
 	  return false;
 	} else {
-	  return isAccepted(flavors.get(0).getType().substring(flavors.get(0).getType().indexOf("/")+1).toLowerCase());
+	  return isAccepted(getExtension(flavors.get(0)));
 	}
       }
     } else {
@@ -163,7 +163,7 @@ public class DBlockDropHandler implements DropHandler {
 	return false;
       }
     }
-    
+
     return true;
   }
 
@@ -186,7 +186,7 @@ public class DBlockDropHandler implements DropHandler {
     String		oldFlavor = null;
 
     for (int i = 0; i < flavors.size(); i++) {
-      String	newFlavor = flavors.get(i).getType().substring(flavors.get(i).getType().indexOf("/")+1).toLowerCase();
+      String	newFlavor = getExtension(flavors.get(i));
 
       if ((oldFlavor != null && !newFlavor.equals(oldFlavor))
 	  || !isAccepted(newFlavor))
@@ -299,6 +299,23 @@ public class DBlockDropHandler implements DropHandler {
   private static String getExtension(File file) {
     String		extension = null;
     String 		name = file.getName();
+    int 		index = name.lastIndexOf('.');
+
+    if (index > 0 &&  index < name.length() - 1) {
+      extension = name.substring(index + 1).toLowerCase();
+    }
+
+    return extension;
+  }
+
+  /**
+   * Returns the file extension.
+   * @param file The file instance.
+   * @return The file extension.
+   */
+  private static String getExtension(Html5File file) {
+    String		extension = null;
+    String 		name = file.getFileName();
     int 		index = name.lastIndexOf('.');
 
     if (index > 0 &&  index < name.length() - 1) {
