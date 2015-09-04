@@ -123,48 +123,21 @@ public class DBlockDropHandler implements DropHandler {
    * @return {@code true} is the data flavor is accepted.
    */
   private boolean isAccepted(WrapperTransferable transferable) {
-    if (isDataFlavorSupported(transferable, DataFlavor.javaFileListFlavor)) {
-      ArrayList<Html5File>		flavors;
-      
-      flavors = new ArrayList<Html5File>();
-      for (int i = 0; i < transferable.getFiles().length; i++) {
-	flavors.add(transferable.getFiles()[i]);
-      }
-      if (isChartBlockContext()) {
-	return isAccepted(flavors);
-      } else {
-	if (flavors.size() > 1) {
-	  return false;
-	} else {
-	  return isAccepted(getExtension(flavors.get(0)));
-	}
-      }
-    } else {
-      return false;
-    }
-  }
-  
-  /**
-   * Returns {@code true} is the data flavor is accepted.
-   * @param transferable The {@link WrapperTransferable} instance.
-   * @param flavor The {@link DataFlavor} instance.
-   * @return {@code true} is the data flavor is accepted.
-   */
-  private boolean isDataFlavorSupported(WrapperTransferable transferable, DataFlavor flavor) {     
-    Html5File 			file;
-    
-    for (int i = 0; i < transferable.getFiles().length; i++) {
-      file = transferable.getFiles()[i];  
-      try {
-        if (!(file.getType().substring(0, file.getType().indexOf("/")).toLowerCase()).equals(flavor.getPrimaryType().toLowerCase())) {  
-	  return false;
-        }
-      } catch (StringIndexOutOfBoundsException e) {
-	return false;
-      }
-    }
+    ArrayList<Html5File>		flavors;
 
-    return true;
+    flavors = new ArrayList<Html5File>();
+    for (int i = 0; i < transferable.getFiles().length; i++) {
+      flavors.add(transferable.getFiles()[i]);
+    }
+    if (isChartBlockContext()) {
+      return isAccepted(flavors);
+    } else {
+      if (flavors.size() > 1) {
+	return false;
+      } else {
+	return isAccepted(getExtension(flavors.get(0)));
+      }
+    }
   }
 
   /**
