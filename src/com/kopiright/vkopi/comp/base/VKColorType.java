@@ -108,6 +108,20 @@ public class VKColorType extends VKType {
     throw new NotImplementedException();
     //    return com.kopiright.vkopi.comp.trig.GStdType.ColorColumn;
   }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    throw new NotImplementedException();
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
+  }
 
   // ----------------------------------------------------------------------
   // VK CODE GENERATION

@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.xkopi.comp.database.DatabaseWeekColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
@@ -97,7 +98,21 @@ public class VKWeekType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.WeekColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportWeekColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartWeekDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
   }
 
   // ----------------------------------------------------------------------

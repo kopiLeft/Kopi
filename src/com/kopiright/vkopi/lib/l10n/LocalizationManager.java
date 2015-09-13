@@ -126,6 +126,15 @@ public class LocalizationManager {
   }
 
   /**
+   * Constructs a chart localizer using the specified source.
+   *
+   * @param     source          the source qualified name
+   */
+  public ChartLocalizer getChartLocalizer(String source) {
+    return new ChartLocalizer(this, getDocument(source));
+  }
+
+  /**
    * Constructs a module localizer using the specified source.
    *
    * @param     source          the source qualified name

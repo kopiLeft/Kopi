@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.comp.chart
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+  <property name="package" value="com/kopiright/vkopi/comp/chart" />
+  <property name="package.name" value="com.kopiright.vkopi.comp.chart" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="ChartScanner.java ChartTokenTypes.java  ChartParser.java ChartKeywords.java 
+  	           VCChart.java VCChartLocalizationWriter.java VCConstants.java VCDefinitionType.java
+  	           VCField.java VCFieldType.java VCFieldTypeName.java VCDimension.java VCMeasure.java
+  	           VCMultiMeasure.java VCParseChartContext.java VCParseFieldContext.java VCMultiDimension.java" />
+  <property name="messages"    value="ChartMessages" />
+  <property name="grm1voc"     value="Chart" />
+  <property name="grm1dep"     value="../base/Base" />
+  <property name="scanner1"    value="Chart" />
+  <import file="${topdir}/defs.xml" />
+
+</project>

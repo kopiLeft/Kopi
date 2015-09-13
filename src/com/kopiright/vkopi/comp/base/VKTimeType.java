@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.xkopi.comp.database.DatabaseTimeColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
@@ -98,7 +99,21 @@ public class VKTimeType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.TimeColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportTimeColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartTimeDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
   }
 
   // ----------------------------------------------------------------------

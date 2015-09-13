@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.xkopi.comp.database.DatabaseFixedColumn;
 import com.kopiright.kopi.comp.kjc.*;
@@ -114,7 +115,21 @@ public class VKFixnumCodeType extends VKCodeType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.FixnumCodeColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportFixnumCodeColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartFixnumCodeDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartFixnumCodeMeasure;
   }
 
   // ----------------------------------------------------------------------

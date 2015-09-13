@@ -17,7 +17,7 @@
   	           LocalizationManager.java Localizer.java MenuLocalizer.java
   	           MessageLocalizer.java ModuleLocalizer.java PropertyLocalizer.java
   	           ReportLocalizer.java ReportLocalizer.java TypeLocalizer.java
-  	           Utils.java LocalizationCheckerOptions.java" />
+  	           Utils.java LocalizationCheckerOptions.java ChartLocalizer.java" />
 
   <property name="options" value="LocalizationCheckerOptions" />
 

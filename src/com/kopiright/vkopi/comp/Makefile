@@ -19,7 +19,7 @@
 
 TOPDIR =	../..
 
-SUBDIRS =	trig base form report print main
+SUBDIRS =	trig base form chart report print main
 
 ## ----------------------------------------------------------------------
 ## TOOLS

@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!--==================================================================
+    package: com.kopiright.vkopi.lib.report
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+  <property name="package" value="com/kopiright/vkopi/lib/chart" />
+  <property name="package.name" value="com.kopiright.vkopi.lib.chart" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="ChartTypeFactory.java UChart.java UChartType.java
+  	           VBooleanCodeDimension.java VBooleanDimension.java
+  	           VChart.java VChartCommand.java VChartType.java
+  	           VCodeDimension.java VCodeMeasure.java VColumn.java
+  	           VColumnFormat.java VConstants.java VDataSeries.java
+  	           VDateDimension.java VDefaultChartActor.java VDimension.java
+  	           VFixnumCodeDimension.java VFixnumCodeMeasure.java
+  	           VFixnumDimension.java VFixnumMeasure.java
+  	           VHelpGenerator.java VIntegerCodeDimension.java
+  	           VIntegerCodeMeasure.java VIntegerDimension.java
+  	           VIntegerMeasure.java VMeasure.java VMonthDimension.java
+  	           VNoRowException.java VPrintOptions.java VRow.java
+  	           VStringCodeDimension.java VStringDimension.java
+  	           VTimeDimension.java VTimestampDimension.java
+  	           VWeekDimension.java VCodeMeasure.java VDimensionData.java" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

@@ -28,6 +28,7 @@ import com.kopiright.kopi.comp.kjc.CType;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JIntLiteral;
 import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.vkopi.lib.form.VConstants;
 
 /**
@@ -149,7 +150,21 @@ public class VKStringType extends VKType implements VConstants {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.StringColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportStringColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartStringDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
   }
 
   // ----------------------------------------------------------------------

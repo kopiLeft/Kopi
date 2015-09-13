@@ -20,10 +20,12 @@
 package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
 import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.chart.VChart;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.form.VListDialog;
 import com.kopiright.vkopi.lib.preview.VPreviewWindow;
 import com.kopiright.vkopi.lib.report.VReport;
+import com.kopiright.vkopi.lib.ui.vaadin.chart.DChart;
 import com.kopiright.vkopi.lib.ui.vaadin.form.DForm;
 import com.kopiright.vkopi.lib.ui.vaadin.form.DListDialog;
 import com.kopiright.vkopi.lib.ui.vaadin.preview.DPreviewWindow;
@@ -54,6 +56,8 @@ public class VUIFactory extends UIFactory {
       view = createPreviewWindow((VPreviewWindow)model);
     } else if (model instanceof VReport) {
       view = createReport((VReport) model);
+    } else if (model instanceof VChart) {
+      view = createChart((VChart) model);
     } else if (model instanceof VHelpViewer) {
       view = createHelpViewer((VHelpViewer) model);
     } else if (model instanceof VListDialog) {
@@ -104,6 +108,15 @@ public class VUIFactory extends UIFactory {
    */
   protected DReport createReport(VReport model) {
     return new DReport(model);
+  }
+
+  /**
+   * Creates the {@link DReport} from a given model.
+   * @param model The report model
+   * @return The  {@link DReport} view.
+   */
+  protected DChart createChart(VChart model) {
+    return new DChart(model);
   }
 
   /**

@@ -19,7 +19,7 @@
 
 TOPDIR =	../../../..
 
-SUBDIRS =	base form visual report preview resource
+SUBDIRS =	base form visual chart report preview resource
 
 ## ----------------------------------------------------------------------
 ## GOALS

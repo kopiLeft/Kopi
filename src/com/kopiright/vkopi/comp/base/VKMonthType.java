@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.comp.base;
 
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.xkopi.comp.database.DatabaseMonthColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
@@ -109,7 +110,21 @@ public class VKMonthType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.MonthColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportMonthColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartMonthDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
   }
 
   // ----------------------------------------------------------------------

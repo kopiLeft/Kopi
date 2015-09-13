@@ -21,6 +21,7 @@ package com.kopiright.vkopi.comp.base;
 
 
 import com.kopiright.compiler.base.TokenReference;
+import com.kopiright.util.base.NotImplementedException;
 import com.kopiright.xkopi.comp.database.DatabaseBooleanColumn;
 import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.kopi.comp.kjc.*;
@@ -93,7 +94,21 @@ public class VKBooleanCodeType extends VKCodeType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.BooleanCodeColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportBooleanCodeColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartBooleanCodeDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
   }
 
   // ----------------------------------------------------------------------

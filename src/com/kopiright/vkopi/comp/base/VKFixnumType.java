@@ -111,7 +111,21 @@ public class VKFixnumType extends VKType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.FixnumColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportFixnumColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartFixnumDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartFixnumMeasure;
   }
 
   // ----------------------------------------------------------------------

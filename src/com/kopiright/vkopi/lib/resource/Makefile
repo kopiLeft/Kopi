@@ -83,13 +83,15 @@ PNGFILES =	add all apply  article					\
 PNGNEW =	align_center align_justify align_left align_right bold	\
 		cut ident italic paste redo unident underline undo      \
 		border password zoomminus zoomwidth zoomheight		\
-		zoomoptimal zoomplus formula
+		zoomoptimal zoomplus formula area_chart column_chart	\
+		pie_chart bar_chart line_chart
 
 GIFFILES =	$(FREEGIFS) $(OLDGIFS)
 
 PSFILES =	StoneGerman german report
 
-LOCALIZATIONS =	General HelpViewer Preview Menu Window Messages VKMessages VlibProperties
+LOCALIZATIONS =	General HelpViewer Preview Menu Window Messages		\
+		VKMessages VlibProperties
 
 OTHERFILES =	general.tex macros.tex splash.jpg			\
 		titlepage.sty top.tex					\

@@ -176,6 +176,18 @@ public abstract class VKType extends VKPhylum {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public abstract CReferenceType getReportType();
+  
+  /**
+   * Returns the type of the dimension chart field.
+   * @return The type of the dimension chart field.
+   */
+  public abstract CReferenceType getDimensionChartType();
+  
+  /**
+   * Returns the type of the measure chart field.
+   * @return The type of the measure chart field.
+   */
+  public abstract CReferenceType getMeasureChartType();
 
   // ----------------------------------------------------------------------
   // PROTECTED UTILITIES

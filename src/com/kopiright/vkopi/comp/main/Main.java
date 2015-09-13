@@ -42,6 +42,7 @@ import com.kopiright.kopi.comp.kjc.KjcClassReader;
 import com.kopiright.kopi.comp.kjc.KjcMessages;
 import com.kopiright.xkopi.comp.xkjc.XKjcSignatureParser;
 import com.kopiright.vkopi.comp.base.*;
+import com.kopiright.vkopi.comp.chart.ChartParser;
 import com.kopiright.vkopi.comp.form.FormParser;
 import com.kopiright.vkopi.comp.print.PrintParser;
 import com.kopiright.vkopi.comp.report.ReportParser;
@@ -263,7 +264,7 @@ public class Main extends Compiler implements VKInsertParser {
     for (int i = 0; i < options.nonOptions.length; i++) {
       String    suffix = options.nonOptions[i];
 
-      if (suffix.endsWith(".vp") || suffix.endsWith(".vf") || suffix.endsWith(".vr")) {
+      if (suffix.endsWith(".vp") || suffix.endsWith(".vf") || suffix.endsWith(".vr") || suffix.endsWith(".vc")) {
         infiles.add(options.nonOptions[i]);
       } else {
         gfiles.add(options.nonOptions[i]);
@@ -385,6 +386,9 @@ public class Main extends Compiler implements VKInsertParser {
         } else if (file.getName().endsWith(".vr")) {
           parser = new ReportParser(this, buffer, environment);
           unit = ((ReportParser)parser).vrCompilationUnit();
+        } else if (file.getName().endsWith(".vc")) {
+          parser = new ChartParser(this, buffer, environment);
+          unit = ((ChartParser)parser).vcCompilationUnit();
         } else if (file.getName().endsWith(".vp")) {
           parser = new PrintParser(this, buffer, environment);
           unit = ((PrintParser)parser).prCompilationUnit();
@@ -444,7 +448,7 @@ public class Main extends Compiler implements VKInsertParser {
     long        lastTime = System.currentTimeMillis();
 
     try {
-      if (file.getName().endsWith(".vf") || file.getName().endsWith(".vr")) {
+      if (file.getName().endsWith(".vf") || file.getName().endsWith(".vr") || file.getName().endsWith(".vc")) {
         parser = new BaseParser(this, buffer, environment);
         unit = ((BaseParser)parser).vkCompilationUnit();
       } else if (file.getName().endsWith(".vp")) {

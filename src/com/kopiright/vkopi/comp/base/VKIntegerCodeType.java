@@ -101,7 +101,21 @@ public class VKIntegerCodeType extends VKCodeType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.IntegerCodeColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportIntegerCodeColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartIntegerCodeDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartIntegerCodeMeasure;
   }
 
   // ----------------------------------------------------------------------

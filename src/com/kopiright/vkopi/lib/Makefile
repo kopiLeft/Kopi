@@ -19,8 +19,8 @@
 
 TOPDIR =	../..
 
-SUBDIRS =	base l10n util visual list form preview print report 	\
-		cross doc ui resource
+SUBDIRS =	base l10n util visual list form preview print chart 	\
+		report cross doc ui resource
 
 ## ----------------------------------------------------------------------
 ## GOALS

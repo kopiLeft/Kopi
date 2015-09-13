@@ -24,6 +24,7 @@ import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.xkopi.comp.database.DatabaseEnumColumn;
 import com.kopiright.kopi.comp.kjc.*;
 import com.kopiright.util.base.InconsistencyException;
+import com.kopiright.util.base.NotImplementedException;
 
 /**
  * This class represents the definition of an string code type
@@ -122,7 +123,21 @@ public class VKStringCodeType extends VKCodeType {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public CReferenceType getReportType() {
-    return com.kopiright.vkopi.comp.trig.GStdType.StringCodeColumn;
+    return com.kopiright.vkopi.comp.trig.GStdType.ReportStringCodeColumn;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    return com.kopiright.vkopi.comp.trig.GStdType.ChartStringCodeDimension;
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
   }
 
   // ----------------------------------------------------------------------

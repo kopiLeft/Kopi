@@ -246,7 +246,8 @@ public class DReport extends DWindow implements UReport {
   
   @Override
   public void setColumnLabel(final int column, final String label) {
-    UI.getCurrent().access(new Runnable() {   
+    UI.getCurrent().access(new Runnable() {
+      
       @Override
       public void run() {
 	table.setColumnHeader(column, label);

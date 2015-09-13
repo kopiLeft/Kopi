@@ -31,10 +31,13 @@ public class VKStdType {
   public static CReferenceType VDictionary;
   public static CReferenceType VDictionaryForm;
   public static CReferenceType VReport;
+  public static CReferenceType VChart;
   public static CReferenceType VForm;
   public static CReferenceType VBlock;
   public static CReferenceType VField;
   public static CReferenceType VReportColumn;
+  public static CReferenceType VChartDimension;
+  public static CReferenceType VChartMeasure;
 
   public static CReferenceType SActor;
   public static CReferenceType SDefaultActor;
@@ -86,6 +89,9 @@ public class VKStdType {
     VForm = tf.createType(com.kopiright.vkopi.lib.form.VForm.class.getName().replace('.','/'), false);
     VReport = tf.createType(com.kopiright.vkopi.lib.report.VReport.class.getName().replace('.','/'), false);
     VReportColumn = tf.createType(com.kopiright.vkopi.lib.report.VReportColumn.class.getName().replace('.','/'), false);
+    VChart = tf.createType(com.kopiright.vkopi.lib.chart.VChart.class.getName().replace('.','/'), false);
+    VChartDimension = tf.createType(com.kopiright.vkopi.lib.chart.VDimension.class.getName().replace('.','/'), false);
+    VChartMeasure = tf.createType(com.kopiright.vkopi.lib.chart.VMeasure.class.getName().replace('.','/'), false);
 
     SActor = tf.createType(com.kopiright.vkopi.lib.visual.VActor.class.getName().replace('.','/'), false);
     SDefaultActor = tf.createType(com.kopiright.vkopi.lib.visual.VDefaultActor.class.getName().replace('.','/'), false);
@@ -120,6 +126,9 @@ public class VKStdType {
       VForm = (CReferenceType) VForm.checkType(context);
       VReport =  (CReferenceType) VReport.checkType(context);
       VReportColumn = (CReferenceType) VReportColumn.checkType(context);
+      VChart =  (CReferenceType) VChart.checkType(context);
+      VChartDimension = (CReferenceType) VChartDimension.checkType(context);
+      VChartMeasure = (CReferenceType) VChartMeasure.checkType(context);
 
       SActor = (CReferenceType) SActor.checkType(context);
       SDefaultActor = (CReferenceType) SDefaultActor.checkType(context);

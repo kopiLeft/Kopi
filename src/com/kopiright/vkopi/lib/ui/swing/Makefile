@@ -19,7 +19,7 @@
 
 TOPDIR =	../../../..
 
-SUBDIRS =	base visual plaf preview form report spellchecker 
+SUBDIRS =	base visual plaf preview form chart report spellchecker 
 
 ## ----------------------------------------------------------------------
 ## GOALS

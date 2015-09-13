@@ -16,12 +16,12 @@
 ## GOALS
 
 
-default:		kopi.pdf 
-				
-kopi.xml:		kopi.adoc 
-			asciidoc -d book -b docbook  kopi.adoc 
+default:	kopi.pdf 
 
-			
+kopi.xml:	kopi.adoc 
+		asciidoc -d book -b docbook  kopi.adoc 
+
+
 kopi.html: 	kopi.xml
 	        xsltproc -o kopi.html --stringparam l10n.gentext.language "en"		\
 		--param toc.section.depth 6 						\
@@ -37,9 +37,9 @@ kopi.html: 	kopi.xml
 		--stringparam section.autolabel 1					\
 		--stringparam chunker.output.indent yes					\
 		--stringparam body.margin.bottom 10in 					\
-		--param fop1.extensions 1 $(STYLESHEETS_DIR)/xhtml5/custom.xsl  kopi.xml
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/xhtml5/custom.xsl kopi.xml
 
-			
+
 kopi.fo:	kopi.xml
 	          xsltproc -o kopi.fo --stringparam l10n.gentext.language "en"		\
 		--stringparam body.font.family "concrete"				\
@@ -62,17 +62,13 @@ kopi.fo:	kopi.xml
 		--stringparam table.row.pair.color "#fff"				\
 		--stringparam admon.graphics.path "images/"				\
 		--stringparam header.image.filename "images/srd.png"			\
-		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl  kopi.xml
-						
-			
+		--param fop1.extensions 1 $(STYLESHEETS_DIR)/fo/docbook.xsl kopi.xml
 
-
-kopi.pdf:		kopi.fo
-			fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf kopi.pdf -fo kopi.fo
-			
+kopi.pdf:	kopi.fo
+		fop -c $(STYLESHEETS_DIR)/../conf.xml -pdf kopi.pdf -fo kopi.fo
 
 clean:
-			rm -rf  *pdf *fo *xml *html *css *~
+		rm -rf  *pdf *fo *xml *html *css *~
 
 ## ----------------------------------------------------------------------
 ## GLOBAL DEFINITIONS

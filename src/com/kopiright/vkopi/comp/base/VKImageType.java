@@ -110,6 +110,20 @@ public class VKImageType extends VKType {
   public CReferenceType getReportType() {
     throw new NotImplementedException();
   }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getDimensionChartType() {
+    throw new NotImplementedException();
+  }
+  
+  /**
+   * @Override
+   */
+  public CReferenceType getMeasureChartType() {
+    throw new NotImplementedException();
+  }
 
   // ----------------------------------------------------------------------
   // VK CODE GENERATION

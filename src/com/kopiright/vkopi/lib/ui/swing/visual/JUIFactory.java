@@ -19,15 +19,17 @@
 
 package com.kopiright.vkopi.lib.ui.swing.visual;
 
-import com.kopiright.vkopi.lib.ui.swing.form.DForm;
-import com.kopiright.vkopi.lib.ui.swing.form.DListDialog;
+import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.chart.VChart;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.form.VListDialog;
-import com.kopiright.vkopi.lib.ui.swing.preview.DPreviewWindow;
 import com.kopiright.vkopi.lib.preview.VPreviewWindow;
-import com.kopiright.vkopi.lib.ui.swing.report.DReport;
 import com.kopiright.vkopi.lib.report.VReport;
-import com.kopiright.vkopi.lib.base.UComponent;
+import com.kopiright.vkopi.lib.ui.swing.chart.DChart;
+import com.kopiright.vkopi.lib.ui.swing.form.DForm;
+import com.kopiright.vkopi.lib.ui.swing.form.DListDialog;
+import com.kopiright.vkopi.lib.ui.swing.preview.DPreviewWindow;
+import com.kopiright.vkopi.lib.ui.swing.report.DReport;
 import com.kopiright.vkopi.lib.visual.UIFactory;
 import com.kopiright.vkopi.lib.visual.VActor;
 import com.kopiright.vkopi.lib.visual.VHelpViewer;
@@ -44,7 +46,9 @@ public class JUIFactory extends UIFactory {
    * compiler UForm and UListDialog classes
    */
 
-  
+  /**
+   * @Override
+   */
   public UComponent createView(VModel model) {
     UComponent		view;
 
@@ -56,6 +60,8 @@ public class JUIFactory extends UIFactory {
       view = createPreviewWindow((VPreviewWindow)model);
     } else if (model instanceof VReport) {
       view = createReport((VReport) model);
+    } else if (model instanceof VChart) {
+      return createChart((VChart) model);
     } else if (model instanceof VHelpViewer) {
       view = createHelpViewer((VHelpViewer) model);
     } else if (model instanceof VListDialog) {
@@ -66,6 +72,7 @@ public class JUIFactory extends UIFactory {
       throw new IllegalArgumentException("NO UI IMPLEMENTATION FOR " + model.getClass());
     }
     model.setDisplay(view);
+    
     return view;
   }
 
@@ -107,6 +114,15 @@ public class JUIFactory extends UIFactory {
    */
   protected DReport createReport(VReport model) {
     return new DReport(model);
+  }
+
+  /**
+   * Creates the {@link DReport} from a given model.
+   * @param model The report model
+   * @return The  {@link DReport} view.
+   */
+  protected DChart createChart(VChart model) {
+    return new DChart(model);
   }
 
   /**
