@@ -42,7 +42,7 @@ public class VWeekDimension extends VDimension {
    */
   public String toString(Object value) {
     if (value == null) {
-      return VConstants.EMPTY_TEXT;
+      return CConstants.EMPTY_TEXT;
     } else if (value instanceof Week) {
       return ((Week) value).toString();
     } else {

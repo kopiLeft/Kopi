@@ -43,6 +43,6 @@ public class VIntegerDimension extends VDimension {
    * @Override
    */
   public String toString(Object value) {
-    return value == null ? VConstants.EMPTY_TEXT : value.toString();
+    return value == null ? CConstants.EMPTY_TEXT : value.toString();
   }
 }

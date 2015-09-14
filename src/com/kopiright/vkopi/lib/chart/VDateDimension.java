@@ -42,7 +42,7 @@ public class VDateDimension extends VDimension {
    */
   public String toString(Object value) {
     if (value == null) {
-      return VConstants.EMPTY_TEXT;
+      return CConstants.EMPTY_TEXT;
     } else if (value instanceof Date) {
       return ((Date) value).toString();
     } else {

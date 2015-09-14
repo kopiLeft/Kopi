@@ -23,7 +23,7 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.chart.ChartTypeFactory;
 import com.kopiright.vkopi.lib.chart.UChartType;
 import com.kopiright.vkopi.lib.chart.VChartType;
-import com.kopiright.vkopi.lib.chart.VConstants;
+import com.kopiright.vkopi.lib.chart.CConstants;
 
 public class VChartTypeFactory extends ChartTypeFactory {
 
@@ -32,19 +32,19 @@ public class VChartTypeFactory extends ChartTypeFactory {
     DAbstractChartType		view;
     
     switch (model.getOrdinal()) {
-    case VConstants.TYPE_PIE:
+    case CConstants.TYPE_PIE:
       view = new DPieChart(title, model.getDataSeries());
       break;
-    case VConstants.TYPE_COLUMN:
+    case CConstants.TYPE_COLUMN:
       view = new DColumnChart(title, model.getDataSeries());
       break;
-    case VConstants.TYPE_BAR:
+    case CConstants.TYPE_BAR:
       view = new DBarChart(title, model.getDataSeries());
       break;
-    case VConstants.TYPE_LINE:
+    case CConstants.TYPE_LINE:
       view = new DLineChart(title, model.getDataSeries());
       break;
-    case VConstants.TYPE_AREA:
+    case CConstants.TYPE_AREA:
       view = new DAreaChart(title, model.getDataSeries());
       break;
     default:

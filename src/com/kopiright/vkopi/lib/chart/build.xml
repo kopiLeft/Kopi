@@ -14,7 +14,7 @@
   	           VBooleanCodeDimension.java VBooleanDimension.java
   	           VChart.java VChartCommand.java VChartType.java
   	           VCodeDimension.java VCodeMeasure.java VColumn.java
-  	           VColumnFormat.java VConstants.java VDataSeries.java
+  	           VColumnFormat.java CConstants.java VDataSeries.java
   	           VDateDimension.java VDefaultChartActor.java VDimension.java
   	           VFixnumCodeDimension.java VFixnumCodeMeasure.java
   	           VFixnumDimension.java VFixnumMeasure.java

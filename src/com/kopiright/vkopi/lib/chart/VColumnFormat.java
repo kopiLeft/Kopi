@@ -43,6 +43,6 @@ public class VColumnFormat implements Serializable {
    * @return The formatted value.
    */
   public String format(Object value) {
-    return value == null ? VConstants.EMPTY_TEXT : value.toString();
+    return value == null ? CConstants.EMPTY_TEXT : value.toString();
   }
 }

@@ -66,7 +66,7 @@ import com.lowagie.text.Rectangle;
  * Other chart implementations can be provided by extending this class.
  */
 @SuppressWarnings("serial")
-public abstract class VChart extends VWindow implements VConstants, Printable {
+public abstract class VChart extends VWindow implements CConstants, Printable {
 
   // --------------------------------------------------------------------
   // STATIC INITIALIZATION
@@ -537,14 +537,14 @@ public abstract class VChart extends VWindow implements VConstants, Printable {
    * Calls trigger for given event, returns last trigger called 's value.
    */
   protected Object callTrigger(int event, int index) throws VException {
-    switch (VConstants.TRG_TYPES[event]) {
-    case VConstants.TRG_VOID:
+    switch (CConstants.TRG_TYPES[event]) {
+    case CConstants.TRG_VOID:
       executeVoidTrigger(VKT_Triggers[index][event]);
       return null;
-    case VConstants.TRG_OBJECT:
+    case CConstants.TRG_OBJECT:
       return executeObjectTrigger(VKT_Triggers[index][event]);
     default:
-      throw new InconsistencyException("BAD TYPE" + VConstants.TRG_TYPES[event]);
+      throw new InconsistencyException("BAD TYPE" + CConstants.TRG_TYPES[event]);
     }
   }
 

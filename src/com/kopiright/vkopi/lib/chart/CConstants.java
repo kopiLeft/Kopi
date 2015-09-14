@@ -22,7 +22,7 @@ package com.kopiright.vkopi.lib.chart;
 /**
  * Collects some constants for the chart implementation
  */
-public interface VConstants extends com.kopiright.vkopi.lib.visual.Constants {
+public interface CConstants extends com.kopiright.vkopi.lib.visual.Constants {
 
   // ---------------------------------------------------------------------
   // CHART TYPES

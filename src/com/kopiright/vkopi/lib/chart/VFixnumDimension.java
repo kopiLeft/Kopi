@@ -54,7 +54,7 @@ public class VFixnumDimension extends VDimension {
    */
   public String toString(Object value) {
     if (value == null) {
-      return VConstants.EMPTY_TEXT;
+      return CConstants.EMPTY_TEXT;
     } else if (value instanceof Integer) {
       return value.toString();
     } else if (value instanceof NotNullFixed) {

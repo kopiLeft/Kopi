@@ -30,7 +30,7 @@ import com.kopiright.vkopi.lib.visual.VModel;
  * Supported chart types.
  */
 @SuppressWarnings("serial")
-public class VChartType implements Serializable, VConstants, VModel {
+public class VChartType implements Serializable, CConstants, VModel {
 
   // --------------------------------------------------------------------
   // DATA MEMBERS

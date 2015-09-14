@@ -27,7 +27,7 @@ PACKAGE =	com/kopiright/vkopi/lib/chart
 JAVAFILES +=	ChartTypeFactory UChart UChartType			\
 		VBooleanCodeDimension VBooleanDimension VChart		\
 		VChartCommand VChartType VCodeDimension VCodeMeasure	\
-		VColumn VColumnFormat VConstants VDataSeries		\
+		VColumn VColumnFormat CConstants VDataSeries		\
                 VDateDimension VDefaultChartActor VDimension		\
 		VFixnumCodeDimension VFixnumCodeMeasure			\
 		VFixnumDimension VFixnumMeasure VHelpGenerator		\

@@ -124,14 +124,14 @@ public class VCDimension extends VCField {
     TokenReference	ref = getTokenReference();
 
     for (int i = 0; i < triggers.length; i++) {
-      if ((triggers[i].getEvents() & (1 << com.kopiright.vkopi.lib.chart.VConstants.TRG_FORMAT)) > 0) {
+      if ((triggers[i].getEvents() & (1 << com.kopiright.vkopi.lib.chart.CConstants.TRG_FORMAT)) > 0) {
 	JExpression	expr;
 
 	expr = new JMethodCallExpression(ref,
 					 null,
 					 "callTrigger",
 					 new JExpression[]{
-					   VKUtils.toExpression(ref, com.kopiright.vkopi.lib.chart.VConstants.TRG_FORMAT),
+					   VKUtils.toExpression(ref, com.kopiright.vkopi.lib.chart.CConstants.TRG_FORMAT),
 					   VKUtils.toExpression(ref, getIndex() + 1)
 					 });
 	return new JCastExpression(ref, expr, FORMAT_TYPE);

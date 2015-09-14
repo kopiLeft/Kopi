@@ -63,7 +63,7 @@ import com.kopiright.vkopi.comp.base.VKTrigger;
 import com.kopiright.vkopi.comp.base.VKUtils;
 import com.kopiright.vkopi.comp.base.VKWindow;
 
-public class VCChart extends VKWindow implements com.kopiright.vkopi.lib.chart.VConstants, com.kopiright.kopi.comp.kjc.Constants {
+public class VCChart extends VKWindow implements com.kopiright.vkopi.lib.chart.CConstants, com.kopiright.kopi.comp.kjc.Constants {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS
@@ -221,7 +221,7 @@ public class VCChart extends VKWindow implements com.kopiright.vkopi.lib.chart.V
    * @@exception	PositionedError	Error catched as soon as possible
    */
   public void checkCode(VKContext context) throws PositionedError {
-    context.setTriggers(com.kopiright.vkopi.lib.chart.VConstants.TRG_TYPES);
+    context.setTriggers(com.kopiright.vkopi.lib.chart.CConstants.TRG_TYPES);
 
     super.checkCode(context);
     if (dimensions == null || dimensions.length == 0) {
@@ -549,7 +549,7 @@ public class VCChart extends VKWindow implements com.kopiright.vkopi.lib.chart.V
   // PRIVATE CONSTANTS
   // ----------------------------------------------------------------------
 
-  private static final int[]	TRG_TYPES1 = com.kopiright.vkopi.lib.chart.VConstants.TRG_TYPES;
+  private static final int[]	TRG_TYPES1 = com.kopiright.vkopi.lib.chart.CConstants.TRG_TYPES;
   private static final int	TRG_VOID1 = com.kopiright.vkopi.lib.form.VConstants.TRG_VOID;
   private static final int	TRG_OBJECT1 = com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT;
 
