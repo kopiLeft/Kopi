@@ -175,13 +175,13 @@ vcChartCommands [VCParseChartContext context]
 vcChartEvent []
   returns [long self]
 :
-  "PRECHART"	{ self = com.kopiright.vkopi.lib.chart.VConstants.TRG_PRECHART; }
+  "PRECHART"	{ self = com.kopiright.vkopi.lib.chart.CConstants.TRG_PRECHART; }
 |
-  "INIT"        { self = com.kopiright.vkopi.lib.chart.VConstants.TRG_INIT; }
+  "INIT"        { self = com.kopiright.vkopi.lib.chart.CConstants.TRG_INIT; }
 |
-  "POSTCHART"	{ self = com.kopiright.vkopi.lib.chart.VConstants.TRG_POSTCHART; }
+  "POSTCHART"	{ self = com.kopiright.vkopi.lib.chart.CConstants.TRG_POSTCHART; }
 |
-  "CHARTTYPE"   {self = com.kopiright.vkopi.lib.chart.VConstants.TRG_CHARTTYPE;}
+  "CHARTTYPE"   {self = com.kopiright.vkopi.lib.chart.CConstants.TRG_CHARTTYPE;}
 ;
 
 vcField[VCParseChartContext chart]
@@ -305,9 +305,9 @@ vcFieldEventList []
 vcFieldEvent []
   returns [int self]
 :
-  "FORMAT"	{ self = com.kopiright.vkopi.lib.chart.VConstants.TRG_FORMAT; }
+  "FORMAT"	{ self = com.kopiright.vkopi.lib.chart.CConstants.TRG_FORMAT; }
 |
-  "COLOR"       { self = com.kopiright.vkopi.lib.chart.VConstants.TRG_COLOR; }
+  "COLOR"       { self = com.kopiright.vkopi.lib.chart.CConstants.TRG_COLOR; }
 ;
 
 vcCommands[VCParseFieldContext context]
