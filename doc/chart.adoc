@@ -1,185 +1,156 @@
 
-=== Visual Kopi Reports
+=== Visual Kopi Charts
 
-Visual Kopi allows you to create dynamic reports. These are  files with the ".vr" extension that have a very simple structure, in fact, all you have to do to create such reports
-is to list the definitions of all the fields you need, then you will have to write a constructor that will load data into these fields.
-The so created reports will have dynamic functions such as sorting and group making, you will also be able to print it or export to different file formats.You can even add other fields
-to the report after it's generated, do more calculus, customize the report columns...
-The Visual Kopi Reports are generated from Visual Kopi form files with the ".vf" extension by different methods that we will see in this chapter, along with the process of making a
-dynamic report.
+Visual Kopi allows you to create charts. These are files with the ".vc" extension that have a very simple structure, in fact, all you have to do to create such charts
+is to define the dimensions you need and their measures, then you will have to write a constructor that will load data into these fields.
+With kopi Charts, you will also be able to print or export the created chart to different file formats.
 
-==== Creating Report Fields
+The Visual Kopi Charts are generated from Visual Kopi form files with the ".vc" extension by different methods that we will see in this chapter, along with the process of making a
+visual charts.
 
-As we said in the introduction, the report structure is based on report fields, these fields begin with FIELD  and a SimpleName and ends with END FIELD and have the following syntax :
+==== Creating Charts dimensions and measures
+
+As we said in the introduction, the chart structure is based on chart dimensions and measures.
+The dimension field begins with DIMENSION and a SimpleName and ends with END DIMENSION and have the following syntax :
 
 *Syntax*
 [source,java]
 ----
-ReportFieldDef: "FIELD" [Integer MultiField] SimpleName [FieldLabel]
-                [HelpText] FieldType [FieldAlign] [FieldOptions]
-                [GroupCommand] [FieldCommands] [FieldTriggers]
-                "END" "FIELD"
-GroupCommands : "GROUP" SimpleName
+ChartDimensionDef: "DIMENSION" [Integer MultiDimension] SimpleName [DimensionLabel]
+                [HelpText] DimensionType [DimensionCommands] [DimensionTriggers]
+                "END" "DIMENSION"
 ----
 
-===== Single Field and Multiple Fields
+The measure field begins with MEASURE and a SimpleName and ends with END MEASURE and have the following syntax :
 
-When you define a news report field, you have the choice to make it multiple by adding an integer (i) just after the FIELD command, doing so will create i fields.
-The generated fields will have the SimpleName indicated after the FIELD command plus a number from 1 to i.
+*Syntax*
+[source,java]
+----
+ChartDimensionDef: "MEASURE" [Integer MultiMeasure] SimpleName [MeasureLabel]
+                [HelpText] MeasureType [MeasureCommands] [MeasureTriggers]
+                "END" "MEASURE"
+----
+
+===== Single "dimension / measure" and Multiple "dimensions / measures"
+
+When you define a news chart dimension or measure, you have the choice to make it multiple by adding an integer (i) just after the DIMENSION / MEASURE command, doing so will create i fields.
+The generated fields will have the SimpleName indicated after the DIMENSION / MEASURE command plus a number from 1 to i.
 
 *Example*
 [source,java]
 ----
-FIELD(3) Name
+MEASURE(3) Name
   ...
-END FIELD
+END MEASURE
 ----
-In this example we have created 3 fields (Name1, Name2 and Name3).
+In this example we have created 3 measures (Name1, Name2 and Name3).
 
-=====  Report Field Label
+=====  Chart "dimension / measure" Label
 
-The field label is the name that will be shown in the dynamic report, you can define a label by entering the LABEL command followed by String separated with a comma. If you omit the Strings after the LABEL command, the field 
+The label is the name that will be shown in the chart, you can define a label by entering the LABEL command followed by String separated with a comma. If you omit the Strings after the LABEL command, the "dimension / measure" 
 will have its SimpleName as label. You can also specify NO LABEL if you want your field to have no label at all.
-If you specify more than one String after the LABEL command, then if your field is Single it will have the first String as label, otherwise, if it's a multiple field each generated field will have a label 
+If you specify more than one String after the LABEL command, then if your "dimension / measure" is Single it will have the first String as label, otherwise, if it's a multiple "dimension / measure" each generated field will have a label 
 from the Strings by order.
 
 *Example*
 [source,java]
 ----
-FIELD Name
+DIMENSION Name
   LABEL "Person Name"
   ...
-END FIELD
+END DIMENSION
 
 
-FIELD(3) LastName
+DIMENSION(3) LastName
   LABEL "Name1", "Name2", "Name3"
   ...
-END FIELD
+END DIMENSION
 
 
-FIELD Age
+MEASURE Age
   LABEL
   ...
-END FIELD
+END MEASURE
 
 
-FIELD ID
+DIMENSION ID
   NO LABEL
   ...
-END FIELD
+END DIMENSION
 ---- 
 
-===== Report Field Help Text
+===== Chart "dimension / measure" Help Text
 
-HELP is used to insert an explanation text for the application user . This Help text will then be displayed when the user places the mouse on the report field.
+HELP is used to insert an explanation text for the application user . This Help text will then be displayed when the user places the mouse on the chart measure or dimension.
 
 *Example*
 [source,java]
 ----
-FIELD Name
+DIMENSION Name
   LABEL
   HELP *"The Person's First Name"
   ...
-END FIELD
+END DIMENSION
 ----
 
-===== Report Field Type
+===== Chart dimension Type
 
-The field type is a required entry, you may enter a predefined field type :
+The dimension type is a required entry, you may enter a predefined dimension type :
 
 *Example*
 [source,java]
 ----
-FIELD Name
+DIMENSION Name
   LABEL
   STRING(10)
-END FIELD
+END DIMENSION
 
-
-FIELD Age
-  LONG(3)
-END FIELD
+DIMENSION Month
+  MONTH
+END DIMENSION
 ----
 
-You can also use self defined field types that you have previously defined in the type definition section of your report.
+You can also use self defined field types that you have previously defined in the type definition section of your chart.
 
 *Example*
 [source,java]
 ----
-FIELD objectList
+DIMENSION objectList
   LABEL
   TYPE Objects
-END FIELD
+END DIMENSION
 ----
 
-In this example, Objects is a type you should have defined previously in type definition section of the report using standard types, CODE types, ENUM types, LIST and SELECT command ...
+In this example, Objects is a type you should have defined previously in type definition section of the chart using standard types, CODE types, ENUM types, LIST and SELECT command ...
 
-===== Report Field Alignment
+===== Chart measure Type
 
-This command is used to define the localization of the field's content inside the field. There are three types of alignment.
+The dimension type is a required entry but it is restricted to number types. This means that for a measure you can use only LONG and FIXNUM as types. The measure type is checked at the compilation step.
+If you use not a numeric type for a measure, the following compiler error will be revealed :
 
-* ALIGN RIGHT the value is displayed at the right inside the field
-* ALIGN LEFT the value is displayed at the left inside the field
-* ALIGN CENTER the value is centered in the field
+Measure "Measure name" is not numeric.
+
+The measure type can be defined with different ways :
 
 *Example*
 [source,java]
 ----
-FIELD Name
+MEASURE Name
   LABEL
-  STRING(10)
-  ALIGN CENTER
-END FIELD
+  LONG(5)
+END DIMENSION
+
+MEASURE Name
+  LABEL
+  TYPE Price
+END DIMENSION
 ----
 
-===== Report Field Options
+In the last example, the price type should be a numeric type otherwise it would not be accepted.
 
-There is actually only one option for the dynamic report fields in Kopi: the HIDDEN OPTION , if this option is used on a field, he will not be visible the the report.
-This options have to be used on the last visible field of the report to avoid rendering bugs.
+===== Chart "dimension / measure" Command
 
-*Example*
-[source,java]
-----
-FIELD Name
-  LABEL
-  STRING(10)
-  HIDDEN
-END FIELD
-----
-
-The field Name will not be visible on the report.
-
-===== Report Field Group
-
-You can create clickable groups in your report by using the keyword GROUP in you field followed by the field you want to be grouped by the actual field.
-
-*Example*
-[source,java]
-----
-FIELD Customers
-  LABEL
-  STRING(5)
-END FIELD
-
-FIELD Articles
-  LABEL
-  STRING(10)
-END FIELD
-
-FIELD InvoiceNum
-  LABEL
-  STRING(10)
-  GROUP Articles
-  GROUP Customers
-END FIELD
-----
-
-In this report, you can click on the InvoiceNum field to group customers and articles.
-
-===== Report Field Command
-
-In report Fields, you can call commands with one of the following syntaxes :
+In chart dimensions or measures, you can call commands with one of the following syntaxes :
 
 
 [source,java]
@@ -187,7 +158,7 @@ In report Fields, you can call commands with one of the following syntaxes :
 "COMMAND" QualifiedName  
     
 Example
-COMMAND ExportCsv 
+COMMAND ExportPNG 
 ----
 
 Or: 
@@ -221,7 +192,7 @@ Or:
 [source,java]
 ----
 "COMMAND" "ITEM" SimpleName "ACTION"
-(VReportColulmn SimpleName) {Kopi-Java Code} 
+(com.kopiright.vkopi.lib.chart.VColulmn SimpleName) {Kopi-Java Code} 
 "END" "COMMAND"
 ----
 
@@ -233,9 +204,9 @@ Or:
 "END" "COMMAND" 
 ----
 
-===== Report Field Triggers
+===== Chart "dimension / measure" Triggers
 
-Report field triggers are special events that you can catch to execute other actions.
+Chart dimensions or measures triggers are special events that you can catch to execute other actions.
 
 *Syntax*
 [source,java]
@@ -245,54 +216,62 @@ Trigger      : EventList TrigerAction
 EventList    : Event [,EventList]*
 
 TrigerAction : SimpleName | "EXTERN" QualifiedName | {KOPI_JAVA code} |
-               (VReportColulmn SimpleNAme){KOPI_JAVA code} 
+               (VDimension | VMeasure SimpleNAme){KOPI_JAVA code} 
 ----
 
-Here is the two triggers available for report fields :
+Here is the two triggers available for chart fields (dimensions & measures) :
 
- * FORMAT  : Actually not available
- * COMPUTE : executed when the report is displayed and can be used to compute expressions on the report columns and show the result.
+ * FORMAT  : Called for formatting a dimension value. The trigger should return a com.kopiright.vkopi.lib.chart.VColumnFormat instance. This trigger is not available for measures.
+ * COLOR : Called to specify a measure color. The trigger should return a com.kopiright.vkopi.lib.visual.VColor instance. This trigger is not available for dimensions.
 
 *Example*
 [source,java]
 ----
-FIELD Price
+DIMENSION Month
   LABEL
-  FIXNUM(9, 4)
-  COMPUTE  EXTERN ReportTriggers.sumFixed	
-END FIELD
+  MONTH
+  FORMAT {
+    return new VColumnFormat() {
+      
+      public void format(Object value) {
+      	return ((month)value).format("MM.yyyy");
+      }
+    }
+  }
+END DIMENSION
   
-FIELD 
-  LABEL
-  STRING(10)
-  FORMAT 
-END FIELD  
+MEASURE Quantity
+  NO LABEL
+  LONG(5)
+  COLOR {
+    return VColor.RED;
+  }
+END MEASURE  
 ----
 
-==== Creating Reports
+==== Creating Charts
 
-Visual Kopi Dynamic reports have a unique structure that begin with REPORT and ends with END REPORT as described by the following syntax :
+Visual Kopi charts have a unique structure that begin with CHART and ends with END CHART as described by the following syntax :
 
 *Syntax*
 [source,java]
 ----
-ReportDefinition  :[ReportLocalization] "REPORT" ReportTitle
+ChartDefinition   :[CharttLocalization] "CHART" ChartTitle
                    [IS QualifiedName] 
                    ["IMPLEMENTS"  [,QualifiedName]*]
-                   [ContextHeader] [ReportHelp] [ReportDefinitions]
-                   "BEGIN" [ReportCommands] [ReportTriggers] (ReportFields)
+                   [ContextHeader] [CharttHelp] [ChartDefinitions]
+                   "BEGIN" [ChartCommands] [ChartTriggers] (ChartFields)
                    [ContextFooter]
-                   "END" "FIELD"
+                   "END" "CHART"
 
-ReportTitle       :  String Title
+ChartTitle        :  String Title
 
-ReportDefinitions : [MenuDefinition] [ActorDefinition] [TypeDefinition]
+ChartDefinitions  : [MenuDefinition] [ActorDefinition] [TypeDefinition]
                     [CommandDefinition]
                     [InsertDefinition]
 ----
 
- 
-===== Report Localization
+===== Chart Localization
 
 This is an optional step in which you may define the language of your forms menus and messages, the latter have to be defined in xml files.
 
@@ -302,21 +281,21 @@ This is an optional step in which you may define the language of your forms menu
 LOCALE "en_EN"
 -----
 
-===== Report Title
+===== Chart Title
 
-Every Report have to begin with the keyword REPORT that you have to follow with a title.
+Every Chart have to begin with the keyword CHART that you have to follow with a title.
 
 
 *Example*
  	
 [source,java]
 ----  
-REPORT "Invoices"
+CHART "Sold quantities per month"
   ...
-END REPORT
+END CHART
 ----
 
-===== Report Superclass And Interfaces
+===== Chart Superclass And Interfaces
 
  * *Superclass:*
 
@@ -326,19 +305,19 @@ END REPORT
 ----  
 SuperClass:   "IS" QualifiedName 
 ----
-Every Report is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
+Every Chart is a class that may extend another Java class by using the optional keyword IS. Otherwise,  Kopi will automatically take over the java.lang.Object QualifiedName.
 
 *Example:*
  	
 [source,java]
 ----  
-REPORT  "Orders Report" IS VReport
+CHART  "Earnings" IS com.kopiright.vkopi.lib.chart.VChart
 ----
 In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
  * *Interfaces:*
 
-You can also specify interfaces which the report may implement by using the IMPLEMENTS option. 
+You can also specify interfaces which the chart may implement by using the IMPLEMENTS option. 
 
 *Syntax*
 
@@ -351,13 +330,13 @@ You can also specify interfaces which the report may implement by using the IMPL
  	
 [source,java]
 ----  
-REPORT "Orders Report" IS VReport
-  IMPLEMENTS UReport
+CHART "Earnings" IS com.kopiright.vkopi.lib.chart.VChart
+  IMPLEMENTS IChart
   ...
-END REPORT
+END CHART
 ----
 
-===== Report Header
+===== Chart Header
 
 *Syntax:*
  	
@@ -368,70 +347,70 @@ ContextHeader:   { PackageDeclaration  ImportDeclarations  }
 PackageDeclaration:   <As defined in JLS 7.4> 
 ImportDeclarations:   <As defined in JLS 7.5> 
 ----
-The package definition is contained in the header. It consists in defining where this report belongs to i.e which application, which firm or which person it is related to.
+The package definition is contained in the header. It consists in defining where this chart belongs to i.e which application, which firm or which person it is related to.
 
 *Example*
  	
 [source,java]
 ----  
-REPORT "List of the Lecturers"
+CHART "Sold quantities per year"
   {
-  package at.dms.apps.timetable;
+  package com.kopiright.apps.sales;
   }
   ...
-END REPORT
+END CHART
 ----
-In this example, the report belongs to the DMS firm and is a part of the application called "timetable". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
+In this example, the chart belongs to the kopiRight firm and is a part of the application called "sales". In addition to this Java package declaration, you can make a Java import declaration in order to import some classes from other packages. You can add an unlimited number of imports.
 
 *Example*
  	
 [source,java]
 ----  
-REPORT "List of the Lecturers"
+CHART "Sold quantities per year"
   {
-    package at.dms.apps.tb;
+    package com.kopiright.apps.sales;
 
     import java.util.Hashtable
     import java.util.Vector
   }
    ...
-END REPORT
+END CHART
 ----
 
 
-===== Report Help Text
+===== Chart Help Text
 
-After the report header, you can enter a help text for the report using the following syntax:
+After the chart header, you can enter a help text for the chart using the following syntax:
 
 *Syntax*
 [source,java]
 ----
 HELP String helpText
 ----
-Actually every report has a help menu that tries to describe the structure of the report by giving information about its commands and fields in a document, the help text will be on the top of this help menu document.
+Actually every chart has a help menu that tries to describe the structure of the chart by giving information about its commands and fields in a document, the help text will be on the top of this help menu document.
 
 *Example*
 [source,java]
 ----
-REPORT "Orders Report"
+CHART "Ordered quantities per month"
 
   {
-    package at.dms.apps.tb;
+    package com.kopiright.apps.orders;
 
     import java.util.Hashtable
     import java.util.Vector
   }
   
-HELP "This report lists purchase orders"
+HELP "This chart lists the ordered quantities per month"
 ...
 
-END REPORT
+END CHART
 
 ----
 
-===== Report Menus Definition
+===== Chart Menus Definition
 
-Defining a menu means adding an entry to the menu bar in the top of the report, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
+Defining a menu means adding an entry to the menu bar in the top of the chart, you can add actors to this menu later by specifying the menu name in the actor definition. In the menu definition, the LABEL is optional.
 
 *Syntax:*
  	
@@ -444,20 +423,20 @@ MenuDefinition:   "MENU" SimpleName ["LABEL" String label]   "END" "MENU"
  	
 [source,java]
 ---- 
-REPORT "List of the Lecturers"
+CHART "Ordered quantities per month"
 
   {
-    package at.dms.apps.tb;
+    package com.kopiright.apps.orders;
   }
   
   MENU newMenu
     LABEL "newMenu"
   END MENU
 ...
-END REPORT
+END CHART
 ----
 
-===== Report Actors Definition
+===== Chart Actors Definition
 
 An Actor is an item to be linked with a command, if its ICON is specified, it will appear in the icon_toolbar located under the menu bar, otherwise, it will only be accessible from the menu bar.
 ICON,LABEL and KEY are optional, the KEY being the keyboard shortcut to assign to the actor.
@@ -480,28 +459,27 @@ ActorDefinition:  "ACTOR" SimpleName
  	
 [source,java]
 ---- 
-FORM "List of the Lecturers"
+CHART "Ordered quantities per month"
 
   {
-    package at.dms.apps.tb;
+    package com.kopiright.apps.orders;
   }
   
   MENU newMenu
     LABEL "newMenu"
   END MENU
   
-  
-  ACTOR printReport
+  ACTOR printChart
     MENU  newMenu
     LABEL "Print"
-    HELP  "Print the report" 
+    HELP  "Print the chart" 
     ICON  "printerIcon"
   END ACTOR
 ...
-END REPORT
+END CHART
 ----
 
-===== Report Types Definition
+===== Chart Types Definition
 
 After having defined your menus and actor, you can enter different field types definitions based on the standard field types or code field types, you can also use the LIST and SELECT commands
 to customize these new types. 
@@ -515,10 +493,11 @@ TypeDefinition:  "TYPE" SimplName "IS" FieldType  [TypeList] "END" "TYPE"
  	
 [source,java]
 ----  
-REPORT "List of the Lecturers"
+CHART "Ordered quantities per month"
   {
-    package at.dms.apps.tb;
+    package com.kopiright.apps.orders;
   }
+  
   TYPE Name IS
     STRING (20,10,4)
     CONVERT UPPER
@@ -532,7 +511,7 @@ REPORT "List of the Lecturers"
   
   TYPE Answer IS
     CODE BOOL IS
-    	"Yes"	= TRUE
+    	"Yes" = TRUE
     	"No"  = FALSE
     END CODE
   END TYPE
@@ -540,32 +519,21 @@ REPORT "List of the Lecturers"
   TYPE Months IS
     ENUM("January", "February", "March", "April")
   END TYPE 
-  
-TYPE Lecturer IS
-  STRING (8)
-  CONVERT UPPER
-
-  LIST "Lecturer" IS
-    "Symbol" = Symbol : STRING (8)
-    "Name" = Name : STRING (40)
-    "Surname" = Surname : STRING (40)
-    "Lesson" = Lesson : STRING (20)
-  END LIST
 ...
 END TYPE
     
   ...
-END REPORT
+END CHART
 ----
 
-===== Report Commands Definition
+===== Chart Commands Definition
 
-In this section you may want to define new commands, to do so, all you need is an already defined Actor from which you will call the command in order to execute an Action on the form. There are 3 ways to define this Action:
-every command have an effective ray of action (VRField, VReport)
+In this section you may want to define new commands, to do so, all you need is an already defined Actor from which you will call the command in order to execute an Action on the chart. There are 3 ways to define this Action:
+every command have an effective ray of action (VDimension | VMeasure, VChart)
 
  * Calling a function with the CALL command
- * Calling a function outside of the report using the EXTERN command
- * Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VRField or VReport. 
+ * Calling a function outside of the chart using the EXTERN command
+ * Simply writing the body of the action using the  ACTION command, the parameters are optional and can be VColumn or VChart. 
  
 *Syntax*
 [source,java]
@@ -577,7 +545,7 @@ cmdDef: "COMMAND" QualifiedName
 
 cmdBody: "CALL" SimpleName | "EXTERN" QualifiedName 
          |"ACTION"
-         [(VField SimpleName | VBlock SimpleName | VForm SimpleName)]
+         [(VDimension SimpleName | VMeasure SimpleName | VChart SimpleName)]
          {KOPI_JAVA statements}
 ----
 
@@ -590,7 +558,7 @@ Calling a local action :
 ----
 COMMAND print
   ITEM  printActor
-  CALL  printReport
+  CALL  printChart
 END COMMAND
 ----
 
@@ -601,7 +569,7 @@ Calling an external action :
 ----
 COMMAND doAction
   ITEM Save
-  EXTERN com.company.vkopi.lib.report.Actions
+  EXTERN com.kopiright.vkopi.lib.chart.Actions
 END COMMAND
 ----
 
@@ -610,16 +578,16 @@ Writing the action's body :
 
 [source,java]
 ----
-COMMAND PrintReport
-  ITEM  PrintReport
-  ACTION (VReport report){
+COMMAND PrintChart
+  ITEM  PrintChart
+  ACTION (VChart chart){
     // KOPI_JAVA code
   }
 END COMMAND
 ----
 
-===== Report Insert Definition
-This command allows you to actually define your types, menus, actors, commands in another file, and then insert it in any report you want, thus avoiding rewriting recurrent definitions. You still can add definition before or after using the INSERT command.
+===== Chart Insert Definition
+This command allows you to actually define your types, menus, actors, commands in another file, and then insert it in any chart you want, thus avoiding rewriting recurrent definitions. You still can add definition before or after using the INSERT command.
 
 *Syntax* 
 [source,java]
@@ -630,36 +598,36 @@ Insert Definition : "INSERT" String filePath
 *Example*
 [source,java]
 ----
-REPORT "List of Students"
+CHART "Orders"
  
   {
-  package at.dms.app.application
+    package com.kopiright.apps.orders;
   }
    
-  INSERT "ReportDefault.vr"
+  INSERT "ChartDefault.vc"
   
   TYPE Lesson IS
     LONG(11)
   END TYPE
 
 ...  
-END REPORT    
+END CHART    
 ----
 
-===== Report Commands Declaration
+===== Chart Commands Declaration
 
-After the Definitions section of the report, you have to enter the BEGIN keyword in order to begin the report declaration part where you can optionally call report commands and triggers, and where you have to enter the report's fields.
-Concerning the commands declaration, you can start by the REPORT COMMAND statement that add all the default report commands to your report that include printing and exporting the report.
+After the Definitions section of the chart, you have to enter the BEGIN keyword in order to begin the chart declaration part where you can optionally call chart commands and triggers, and where you have to enter the chart's fields (dimensions and measures).
+Concerning the commands declaration, you can start by the CHART COMMAND statement that add all the default chart commands to your chart that include printing and exporting the chart.
 Now you may call other commands using the COMMAND keyword followed by a defined command name from those who already exist or the ones you defined in the command definition section.
 
 *Example*
 [source,java]
 ----
-COMMAND Sort
-COMMAND PrintReport
+COMMAND SwitchAxis
+COMMAND PrintChart
 ----
 
-You can also define your command when declaring it instead of defining it in the command definition section of the report, simply write the command definition like explained before, but with no name, in the command declaration section of the report.
+You can also define your command when declaring it instead of defining it in the command definition section of the chart, simply write the command definition like explained before, but with no name, in the command declaration section of the chart.
 
 *Example*
 [source,java]
@@ -678,68 +646,73 @@ COMMAND
 END COMMAND
 ----
 
-===== Report Triggers Declaration
+===== Chart Triggers Declaration
 
-Report Triggers are special events that once switched on you can execute a set of actions defined by the following syntax :
+Chart Triggers are special events that once switched on you can execute a set of actions defined by the following syntax :
 
 *Syntax*
 ----
-ReportTrigger  :    ReportEventList TriggerAction
-ReportEventList:  ReportEvent [,FormEvent]*
+ChartTrigger  :    ChartEventList TriggerAction
+ChartEventList:    ChartEvent*
 ----
 
-Kopi actually defines 2 report Triggers or report Events : 
+Kopi actually defines 4 chart Triggers or chart Events : 
 
- * PREREPORT  : executed before the report is displayed.
- * POSTREPORT : executed after the report is closed.
+ * PRECHART  : executed before the chart is displayed.
+ * INIT      : executed at chart initialization.
+ * CHARTTYPE : executed after the chart initialization. This trigger should return com.kopiright.vkopi.lib.chart.VChartType and will a fixed type for the chart.
+ * POSTCHART : executed after the chart is closed.
 
 *Example*
 [source, java]
 ----
-REPORT "Orders Report"
+CHART "Orders"
 {
   package at.dms.app.application
 }
 
-INSERT "ReportDefault.vr"
+INSERT "ChartDefault.vc"
 
 BEGIN
 
-  REPORT COMMAND
+  CHART COMMAND
 
-  PREREPORT{
-    System.out.println("This message is displayed before the report appears");
+  PRECHART {
+    System.out.println("This message is displayed before the chart appears");
+  }
+  
+  CHARTTYPE {
+    return VChartType.PIE;
   }
   ...
-END REPORT
+END CHART
 ----
 
-===== Report Fields Declaration 
+===== Chart Fields Declaration 
 
-As you already know, a dynamic report is based on field that will be shown as report columns, in this section you have to write at least on field definition or more following 
+As you already know, a chart is based on field that will be shown as chart series, in this section you have to write at least on dimension and one measure definition or more following 
 the definition and the structure we saw in the previous chapter.
 
-===== Report Context Footer:
+===== Chart Context Footer:
 
-This section should follow the report fields declaration and have to be placed between curly braces, here you may define all the functions, data, classes you need in your report, written in KOPI_JAVA code.
-But most important, you need to define the constructor of you report, this constructor will be responsible of filling the report's lines or rows.
-All you need to do is importing your data (a List or vector parameter, database query cursors ...) , declaring a row in the report then add the Add(); statement to add the row to the report.
+This section should follow the chart fields (dimensions and measures) declaration and have to be placed between curly braces, here you may define all the functions, data, classes you need in your chart, written in KOPI_JAVA code.
+But most important, you need to define the constructor of you chart, this constructor will be responsible of filling the chart's lines or rows.
+All you need to do is importing your data (a List or vector parameter, database query cursors ...) , declaring a row in the chart then add the add(); statement to add the row to the chart.
 The constructor may have different parameters but a DBContextHandler object is compulsory (a form most of the time)
-For example here is the constructor of a dynamic report named UserList with 3 fields (FirstName, LastName, Age).We will retrieve data from the User table on the database. 
+For example here is the constructor of a chart named UserChart with 1 measure (Month) and one dimension (Quantity). We will retrieve data from the Orders table on the database. 
 
 *Example*
 [source,java]
 ----
-void UserList(DBContextHandler context) throws VException {
-  super(context);
+void UserChart(DBContextHandler ctxt) throws VException {
+  super(ctxt);
   #protected () {
     try {
       #cursor (){
-        SELECT int U.age,
-               String U.firstname,
-               String U.lastname,
+        SELECT month O.Month,
+               int O.Quantity
     
-        FROM    User U
+        FROM    Orders O
   
       } cursor;
     
@@ -747,9 +720,8 @@ void UserList(DBContextHandler context) throws VException {
     
       while (cursor.next()) 
       {
-        FirstName = cursor.U.firstname;
-        LastName  = cursor.U.lastname;
-        Age       = cursor.U.age;
+        Month = cursor.O.Month;
+        Quantity  = cursor.O.Quantity;
         add();
       }
       cursor.close();
@@ -761,19 +733,46 @@ void UserList(DBContextHandler context) throws VException {
 
 ----
 
-==== Calling reports
+==== Chart types
 
-A report is always called from a form, if the caller form extends from the VDictionaryForm class you have to do the following steps :
+Kopi offers five predefined chart types :
 
- * Change VDictionaryForm to VReportSelectionForm
- * Add the CreateReport command to the caller form
- * Implement the createReport abstract method :
+  * Pie charts
+  * Bar charts
+  * Column charts
+  * Line charts
+  * Area charts
+  
+The chart type can be defined by calling the setType(VChartType) method. The VChartType class contains the five definitions described above :
+
+  * VChartType.PIE
+  * VChartType.BAR
+  * VChartType.COLUMN
+  * VChartType.LINE
+  * VChartType.AREA
+  
+If no type is defined, the chart type will be set to the default type which is the VChartType.DEFAULT = VChartType.COLUMN.
+The chart type can be set at INIT trigger or can be fixed using the CHARTTYPE trigger.
+
+If you want to define a new type, you need to subclass the VChartType object and define the data series by overriding the createDataSeries(VChart).
+The view implementations should also be provided by implementing the UChartType component. The new chart type should be mentioned in the ChartTypeFactory class
+which is responsible for creating views for every chart type.
+
+You should note that calling setType will create the data series and refresh the chart view. So it can be called whenever you want to change the chart type. 
+
+==== Calling charts
+
+A chart is always called from a form, if the caller form extends from the VDictionaryForm class you have to do the following steps :
+
+ * Change VDictionaryForm to VChartSelectionForm
+ * Add the CreateChart command to the caller form
+ * Implement the createChart abstract method :
 
 *Example*
 [source,java]
 ----
- protected VReport createReport() throws VException{
-   return new USerList(this);
+ protected VChart createChart() throws VException {
+   return new UserChart(this);
  }
 ----
 
@@ -781,5 +780,6 @@ Otherwise you can create a normal form or block command that executes the follow
 
 [source,java]
 ----
-   WindowController.getWindowController().doNotModal(new UserList(this));
+   WindowController.getWindowController().doNotModal(new UserChart(this));
 ----
+

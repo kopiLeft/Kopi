@@ -179,5 +179,6 @@ In this chapter we will se how to create kopi powered forms,reports and print pa
 include::general.adoc[]
 include::form.adoc[]
 include::report.adoc[]
+include::chart.adoc[]
 include::print.adoc[]
 include::conclusion.adoc[]
