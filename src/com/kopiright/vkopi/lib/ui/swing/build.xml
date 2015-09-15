@@ -10,12 +10,13 @@
 
   <target name="node.build" description="-->  Runs subbuild files ">
     <ant dir="base"  		inheritAll="false" target="${target}" />
-    <ant dir="form" 		inheritAll="false" target="${target}" />
     <ant dir="plaf" 		inheritAll="false" target="${target}" />
-    <ant dir="preview" 		inheritAll="false" target="${target}" />
     <ant dir="visual" 		inheritAll="false" target="${target}" />
+    <ant dir="chart" 		inheritAll="false" target="${target}" />
     <ant dir="report" 		inheritAll="false" target="${target}" />
+    <ant dir="form" 		inheritAll="false" target="${target}" />
     <ant dir="spellchecker" 	inheritAll="false" target="${target}" />
+    <ant dir="preview" 		inheritAll="false" target="${target}" />
   </target>
 
   <import file="${topdir}/defs.xml" />

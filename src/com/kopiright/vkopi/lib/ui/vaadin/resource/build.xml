@@ -30,9 +30,7 @@
   	                           up.png" />
 
   <property name="giffiles" value="${freegifs} ${oldgifs}" />
-  <property name="psfiles" value="German.ps StoneGerman.ps german.ps report.ps" />
-  <property name="otherfiles" value="general.tex macros.tex splash.jpg titlepage.sty top.tex" />
-  <property name="files" value="${pngfiles} ${giffiles} ${psfiles} ${otherfiles}" />
+  <property name="files" value="${pngfiles} ${giffiles} ${psfiles}" />
 
   <target name="non.standard.build"
      description=" Copying files to com/kopiright/vkopi/lib/ui/vaadin/resource package ">

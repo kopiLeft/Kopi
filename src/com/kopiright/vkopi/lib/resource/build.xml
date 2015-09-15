@@ -3,20 +3,14 @@
 	package: com.kopiright.vkopi.lib.resource
 	==================================================================-->
 
-
 <project default="build" basedir=".">
 
-	<property name="non.standard.build" value="yes" />
-
-	<property name="topdir" value="../../.." />
-	<import file="${topdir}/defs.xml" />
-
-	<property name="destcopy" value="${classroot}/com/kopiright/vkopi/lib/resource" />
-	<property name="src" value="." />
-
-
+  <property name="non.standard.build" value="yes" />
+  <property name="topdir" value="../../.." />
+  <import file="${topdir}/defs.xml" />
+  <property name="destcopy" value="${classroot}/com/kopiright/vkopi/lib/resource" />
+  <property name="src" value="." />
   <property name="freegifs" value="" />
-
   <property name="oldgifs" 
             value="all.gif apply.gif arrowleft.gif arrowright.gif arrowlast.gif  arrowfirst.gif
                    article.gif ask.gif bkup.gif bkup3.gif block.gif block2.gif board.gif bomb.gif 
@@ -36,8 +30,7 @@
                    send.gif serialquery.gif serviceoff.gif serviceon.gif sort.gif split.gif 
                    standard.gif stick.gif stop.gif store.gif suggest.gif todo.gif top.gif 
                    unfold.gif unfoldColumn.gif unstick.gif users.gif utils.gif validate.gif 
-                   wait.gif warning.gif window.gif yellow.gif " />  
-
+                   wait.gif warning.gif window.gif yellow.gif arrowfirst.gif arrowlast.gif" />  
   <property name="pngfiles" 
             value="align_center.png align_justify.png align_left.png align_right.png 
                    all.png apply.png article.png ask.png bkup.png bkup3.png block.png 
@@ -58,17 +51,26 @@
                    stop.png store.png suggest.png todo.png top.png underline.png 
                    undo.png unfold.png unfoldColumn.png unident.png users.png 
                    utils.png validate.png wait.png warning.png zoomminus.png
-                   pageLast.png  pageFirst.png zoomheight.png  zoomwidth.png
-                   zoomoptimal.png  zoomplus.png" />
-
+                   pageLast.png pageFirst.png zoomheight.png  zoomwidth.png
+                   zoomoptimal.png zoomplus.png formula.png area_chart.png
+  	           column_chart.png pie_chart.png bar_chart.png line_chart.png" />
   <property name="giffiles" value="${freegifs} ${oldgifs}" />
-
   <property name="psfiles" value="German.ps StoneGerman.ps german.ps report.ps" />
-
   <property name="otherfiles" 
             value="general.tex macros.tex splash.jpg titlepage.sty top.tex" />
-
-  <property name="files" value="${pngfiles} ${giffiles} ${psfiles} ${otherfiles}" />
+  <property name="localizationfiles" 
+	    value="General-de_AT.xml HelpViewer-de_AT.xml Preview-de_AT.xml
+  	           Menu-de_AT.xml Window-de_AT.xml Messages-de_AT.xml
+  	           VKMessages-de_AT.xml VlibProperties-de_AT.xml General-fr_FR.xml
+  	           HelpViewer-fr_FR.xml Preview-fr_FR.xml Menu-fr_FR.xml Window-fr_FR.xml
+  	           Messages-fr_FR.xml VKMessages-fr_FR.xml VlibProperties-fr_FR.xml
+  	           General-en_GB.xml HelpViewer-en_GB.xml Preview-en_GB.xml
+  	  	   Menu-en_GB.xml Window-en_GB.xml Messages-en_GB.xml
+  	  	   VKMessages-en_GB.xml VlibProperties-en_GB.xml General-ar_TN.xml
+  	           HelpViewer-ar_TN.xml Preview-ar_TN.xml Menu-ar_TN.xml Window-ar_TN.xml
+  	           Messages-ar_TN.xml VKMessages-ar_TN.xml VlibProperties-ar_TN.xml" />
+	
+  <property name="files" value="${pngfiles} ${giffiles} ${psfiles} ${otherfiles} ${localizationfiles}" />
 
   <target name="non.standard.build"
      description=" Copying files to com/kopiright/vkopi/lib/resource package ">
