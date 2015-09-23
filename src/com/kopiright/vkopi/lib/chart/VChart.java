@@ -242,7 +242,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
    */
   protected void build() throws VException {
     if (rows.size() == 0) {
-      throw new VNoRowException(MessageCode.getMessage("VIS-00015"));
+      throw new VNoChartRowException(MessageCode.getMessage("VIS-00015"));
     }
     ((UChart)getDisplay()).build();
     setType(VChartType.DEFAULT, false);

@@ -9,7 +9,7 @@
   <property name="package" value="com/kopiright/vkopi/lib/chart" />
   <property name="package.name" value="com.kopiright.vkopi.lib.chart" />
   <property name="src" value="." />
-  <property name="javafiles" 
+  <property name="javafiles"
             value="ChartTypeFactory.java UChart.java UChartType.java
   	           VBooleanCodeDimension.java VBooleanDimension.java
   	           VChart.java VChartCommand.java VChartType.java
@@ -21,7 +21,7 @@
   	           VHelpGenerator.java VIntegerCodeDimension.java
   	           VIntegerCodeMeasure.java VIntegerDimension.java
   	           VIntegerMeasure.java VMeasure.java VMonthDimension.java
-  	           VNoRowException.java VPrintOptions.java VRow.java
+  	           VNoChartRowException.java VPrintOptions.java VRow.java
   	           VStringCodeDimension.java VStringDimension.java
   	           VTimeDimension.java VTimestampDimension.java
   	           VWeekDimension.java VCodeMeasure.java VDimensionData.java" />

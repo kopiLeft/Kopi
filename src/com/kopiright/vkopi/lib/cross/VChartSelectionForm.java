@@ -20,7 +20,7 @@
 package com.kopiright.vkopi.lib.cross;
 
 import com.kopiright.vkopi.lib.chart.VChart;
-import com.kopiright.vkopi.lib.chart.VNoRowException;
+import com.kopiright.vkopi.lib.chart.VNoChartRowException;
 import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.form.VDictionaryForm;
 import com.kopiright.vkopi.lib.visual.Message;
@@ -63,7 +63,7 @@ public abstract class VChartSelectionForm extends VDictionaryForm {
       chart.setDBContext(chart.getDBContext());
       chart.doNotModal();
       chart.unsetWaitInfo();
-    } catch (VNoRowException e) {
+    } catch (VNoChartRowException e) {
       chart.unsetWaitInfo();
       chart.error(MessageCode.getMessage("VIS-00057"));
     }

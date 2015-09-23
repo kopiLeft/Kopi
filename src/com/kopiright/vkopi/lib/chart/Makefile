@@ -33,7 +33,7 @@ JAVAFILES +=	ChartTypeFactory UChart UChartType			\
 		VFixnumDimension VFixnumMeasure VHelpGenerator		\
 		VIntegerCodeDimension VIntegerCodeMeasure		\
 		VIntegerDimension VIntegerMeasure VMeasure		\
-		VMonthDimension VNoRowException VPrintOptions VRow	\
+		VMonthDimension VNoChartRowException VPrintOptions VRow	\
 		VStringCodeDimension VStringDimension VTimeDimension	\
 		VTimestampDimension VWeekDimension VCodeMeasure		\
 		VDimensionData

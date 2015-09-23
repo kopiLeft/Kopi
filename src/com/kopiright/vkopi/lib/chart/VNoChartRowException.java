@@ -27,7 +27,7 @@ import com.kopiright.vkopi.lib.visual.VRuntimeException;
  * for the chart content.
  */
 @SuppressWarnings("serial")
-public class VNoRowException extends VRuntimeException {
+public class VNoChartRowException extends VRuntimeException {
 
   // --------------------------------------------------------------------
   // CONSTRUCTORS
@@ -37,7 +37,7 @@ public class VNoRowException extends VRuntimeException {
    * Creates a new no row exception.
    * @param message The exception message.
    */
-  public VNoRowException(String message) {
+  public VNoChartRowException(String message) {
     super(message);
   }
   
@@ -45,7 +45,7 @@ public class VNoRowException extends VRuntimeException {
    * Creates a new no row exception.
    * @param exec The exception cause.
    */
-  public VNoRowException(Throwable exc) {
+  public VNoChartRowException(Throwable exc) {
     super(exc);
   }
 
@@ -54,14 +54,14 @@ public class VNoRowException extends VRuntimeException {
    * @param msg The exception message.
    * @param exc The exception cause.
    */
-  public VNoRowException(String msg, Throwable exc) {
+  public VNoChartRowException(String msg, Throwable exc) {
     super(msg, exc);
   }
 
   /**
    * Creates a new no row exception.
    */
-  public VNoRowException() {
+  public VNoChartRowException() {
     super();
   }
 }
