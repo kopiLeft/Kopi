@@ -166,7 +166,9 @@ public class Cursor {
     try {
       traceQuery(Query.TRL_FETCH, "CLOSE", null);
       if (stmt != null) {
-        rset.close();
+        if (rset != null) {
+          rset.close();
+        }
 	stmt.close();
         rset = null;
         stmt = null;
