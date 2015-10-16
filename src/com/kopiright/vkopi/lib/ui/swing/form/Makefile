@@ -27,13 +27,13 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/swing/form
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	DBlock DChartHeaderLabel DColorField DField DFieldUI	\
-		DForm DImage DImageField DLabel DListDialog DChartBlock	\
-		DMultiBlock DObjectField DPage DTextEditor DTextField	\
-		DateChooser KeyNavigator Environment ImageFileChooser	\
-		JFieldHandler KopiFieldDocument KopiScanDocument	\
-		KopiMultiBlockLayout KopiSimpleBlockLayout		\
-		JPredefinedValueHandler 
+JAVAFILES +=	DateChooser DBlock DBlockDropTargetHandler DChartBlock	\
+                DChartHeaderLabel DColorField DField DFieldUI DForm     \
+                DImage DImageField DLabel DListDialog DMultiBlock       \
+                DObjectField DPage DTextEditor DTextField Environment   \
+                ImageFileChooser JFieldHandler JPredefinedValueHandler  \
+                KeyNavigator KopiFieldDocument KopiMultiBlockLayout     \
+                KopiScanDocument KopiSimpleBlockLayout
 
 ## ----------------------------------------------------------------------
 ## GOALS

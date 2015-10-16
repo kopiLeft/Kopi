@@ -450,7 +450,9 @@ public abstract class VField implements VConstants, VModel {
     }
   }
   
-  @Override
+  /**
+   * @Override
+   */
   public void setDisplay(UComponent display) {
     // not used
   }
@@ -1638,6 +1640,30 @@ public abstract class VField implements VConstants, VModel {
    */
   public void resetColor(int r) {
     fireColorChanged(r, null, null);
+  }
+
+  // ----------------------------------------------------------------------
+  // DRAG AND DROP HANDLIN
+  // ----------------------------------------------------------------------
+  
+  /**
+   * Call before a drop starts on this field.
+   * @throws VException Visual erros occuring.
+   */
+  public final void onBeforeDrop() throws VException {
+    if (hasTrigger(TRG_PREDROP)) {
+      callTrigger(TRG_PREDROP);
+    }
+  }
+  
+  /**
+   * Called after a drop ends on this field.
+   * @throws VException Visual erros occuring.
+   */
+  public final void onAfterDrop() throws VException {
+    if (hasTrigger(TRG_POSTDROP)) {
+      callTrigger(TRG_POSTDROP);
+    }
   }
 
   // ----------------------------------------------------------------------

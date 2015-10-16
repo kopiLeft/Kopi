@@ -737,6 +737,10 @@ vkFieldEvent []
   "POSTINS"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTINS; }
 |
   "POSTUPD"	{ self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTUPD; }
+|
+  "PREDROP"     { self = com.kopiright.vkopi.lib.form.VConstants.TRG_PREDROP; }
+|
+  "POSTDROP"    { self = com.kopiright.vkopi.lib.form.VConstants.TRG_POSTDROP; }
 ;
 
 vkFieldEventList []

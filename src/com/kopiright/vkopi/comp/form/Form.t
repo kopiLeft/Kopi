@@ -32,6 +32,8 @@
 @literal	POSTBLK
 @literal	POSTCHG
 @literal	POSTDEL
+@literal	PREDROP
+@literal	POSTDROP
 @literal	POSTFLD
 @literal	POSTFORM
 @literal	POSTINS

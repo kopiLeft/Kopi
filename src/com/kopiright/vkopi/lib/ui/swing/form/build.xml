@@ -12,15 +12,15 @@
   <property name="package.name" value="com.kopiright.vkopi.lib.ui.swing.form" />
   <property name="src" value="." />
   <property name="javafiles" 
-            value="DBlock.java DColorField.java DField.java
-                   DForm.java DImage.java DImageField.java DLabel.java 
-  		   DChartBlock.java DMultiBlock.java DObjectField.java 
-                   DPage.java DTextEditor.java DTextField.java DateChooser.java
-  	           DFieldUI.java DChartHeaderLabel.java DListDialog.java 
-  		   ImageFileChooser.java JFieldHandler.java
-                   KopiFieldDocument.java KopiScanDocument.java 
-                   KopiMultiBlockLayout.java KopiSimpleBlockLayout.java
-                   JPredefinedValueHandler.java KeyNavigator.java Environment.java" />
+            value="DateChooser.java DBlock.java DBlockDropTargetHandler.java
+  	           DChartBlock.java DChartHeaderLabel.java DColorField.java
+  	           DField.java DFieldUI.java DForm.java DImage.java
+  	           DImageField.java DLabel.java DListDialog.java
+  	           DMultiBlock.java DObjectField.java DPage.java DTextEditor.java
+  	           DTextField.java Environment.java ImageFileChooser.java
+  	           JFieldHandler.java JPredefinedValueHandler.java KeyNavigator.java
+  	           KopiFieldDocument.java KopiMultiBlockLayout.java KopiScanDocument.java
+  	           KopiSimpleBlockLayout.java" />
 	
   <import file="${topdir}/defs.xml" />
 

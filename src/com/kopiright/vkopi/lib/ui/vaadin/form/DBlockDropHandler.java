@@ -19,7 +19,6 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
-import java.awt.datatransfer.DataFlavor;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +37,7 @@ import com.kopiright.vkopi.lib.form.VStringField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
+import com.kopiright.vkopi.lib.visual.VException;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
@@ -103,18 +103,24 @@ public class DBlockDropHandler implements DropHandler {
   /**
    * Launches the drop operation for a given file.
    * @param file The file instance.
+   * @throws VException Visual errors.
    */
   private void acceptDrop(File file) {
     if (file != null) {
-      if (isChartBlockContext()) {
-        fileList.add(file);
-        if (fileList.size() == filesCount){
-	  handleDrop(fileList);
+      try {
+        if (isChartBlockContext()) {
+          fileList.add(file);
+          if (fileList.size() == filesCount){
+            handleDrop(fileList);
+          }
+        } else {
+          handleDrop(file, getExtension(file));
         }
-      } else {
-        handleDrop(file, getExtension(file));
+      } catch (VException e) {
+        // nothing to do
+        e.printStackTrace();
       }
-    }   
+    }
   }
 
   /**
@@ -177,8 +183,11 @@ public class DBlockDropHandler implements DropHandler {
    * Handles drop action for multiple files in a chart block.
    * @param files The list of files to be dropped.
    * @return {@code true} when the drop operation succeeded.
+   * @throws VException Visual errors.
    */
-  private boolean handleDrop(ArrayList<File> files) {
+  private boolean handleDrop(ArrayList<File> files)
+    throws VException
+  {
     for (int i = 0; i < files.size(); i++) {
       File	file = files.get(i);
 
@@ -195,28 +204,35 @@ public class DBlockDropHandler implements DropHandler {
    * @param file The file instance.
    * @param flavor The data flavors.
    * @return {@code true} when the drop operation succeeded.
+   * @throws VException Visual errors.
    */
-  private boolean handleDrop(File file, String flavor) {
+  private boolean handleDrop(File file, String flavor)
+    throws VException
+  {
     VField	target = block.getDropTarget(flavor);
 
     if (target == null) {
       return false;
     }
-
+    
+    target.onBeforeDrop();
     if (target instanceof VStringField) {
       if (target.getWidth() < file.getAbsolutePath().length()) {
 	return false;
       } else {
-	if (isChartBlockContext()) {
-	  if (block.getActiveRecord() != -1) {
-	    ((VStringField)target).setString(block.getActiveRecord(), file.getAbsolutePath());
-	    block.setActiveRecord(block.getActiveRecord() + 1);
-	    return true;
-	  } else {
-	    return false;
-	  }
-	} else {
+        if (isChartBlockContext()) {
+          int               rec;
+          
+          rec = getFirstUnfilledRecord(block, target);
+          block.setActiveRecord(rec);
+          ((VStringField)target).setString(rec, file.getAbsolutePath());
+          target.onAfterDrop();
+          block.setActiveRecord(rec + 1);
+          block.gotoRecord(block.getActiveRecord());
+          return true;
+        } else {
 	  ((VStringField)target).setString(file.getAbsolutePath());
+	  target.onAfterDrop();
 	  return true;
 	}
       }
@@ -240,18 +256,24 @@ public class DBlockDropHandler implements DropHandler {
    * @param target The target image field.
    * @param file The file instance.
    * @return {@code true} is the drop operation succeeded.
+   * @throws VException Visual errors.
    */
-  private boolean handleImage(VImageField target, File file) {
+  private boolean handleImage(VImageField target, File file)
+    throws VException
+  {
     if (isChartBlockContext()) {
-      if (block.getActiveRecord() != -1) {
-	target.setImage(block.getActiveRecord(), toByteArray(file));
-	block.setActiveRecord(block.getActiveRecord() + 1);
-	return true;
-      } else {
-	return false;
-      }
+      int               rec;
+      
+      rec = getFirstUnfilledRecord(block, target);
+      block.setActiveRecord(rec);
+      target.setImage(rec, toByteArray(file));
+      target.onAfterDrop();
+      block.setActiveRecord(rec + 1);
+      block.gotoRecord(block.getActiveRecord());
+      return true;
     } else {
       target.setImage(toByteArray(file));
+      target.onAfterDrop();
       return true;
     }
   }
@@ -349,6 +371,22 @@ public class DBlockDropHandler implements DropHandler {
     }
 
     output.flush();
+  }
+  
+  /**
+   * Looks for the first unfilled record according to the given target field.
+   * @param block The block model.
+   * @param target The target field.
+   * @return The record for which the given field is {@code null}.
+   */
+  private static int getFirstUnfilledRecord(VBlock block, VField target) {
+    for (int i = 0; i < block.getBufferSize(); i++) {
+      if (target.isNull(i)) {
+        return i;
+      }
+    }
+
+    return 0;
   }
   
   //---------------------------------------------------

@@ -41,6 +41,7 @@ import com.kopiright.vkopi.lib.form.VBlock;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VStringField;
+import com.kopiright.vkopi.lib.visual.VException;
 
 public class DBlockDropTargetHandler implements DropTargetListener {
 
@@ -88,6 +89,8 @@ public class DBlockDropTargetHandler implements DropTargetListener {
     } catch (UnsupportedFlavorException e) {
       dtde.dropComplete(false);
     } catch (IOException e) {
+      dtde.dropComplete(false);
+    } catch (VException e) {
       dtde.dropComplete(false);
     }
   }
@@ -152,7 +155,7 @@ public class DBlockDropTargetHandler implements DropTargetListener {
   /**
    * Handles drop action for multiple files in a chart block
    */
-  private boolean handleDrop(List<File> files) {
+  private boolean handleDrop(List<File> files) throws VException {
     for (int i = 0; i < files.size(); i++) {
       File	file = files.get(i);
 
@@ -164,27 +167,31 @@ public class DBlockDropTargetHandler implements DropTargetListener {
     return true;
   }
 
-  private boolean handleDrop(File file, String flavor) {
+  private boolean handleDrop(File file, String flavor) throws VException {
     VField	target = block.getDropTarget(flavor);
 
     if (target == null) {
       return false;
     }
 
+    target.onBeforeDrop();
     if (target instanceof VStringField) {
       if (target.getWidth() < file.getAbsolutePath().length()) {
 	return false;
       } else {
-	if (isChartBlockContext()) {
-	  if (block.getActiveRecord() != -1) {
-	    ((VStringField)target).setString(block.getActiveRecord(), file.getAbsolutePath());
-	    block.setActiveRecord(block.getActiveRecord() + 1);
-	    return true;
-	  } else {
-	    return false;
-	  }
-	} else {
+        if (isChartBlockContext()) {
+          int               rec;
+
+          rec = getFirstUnfilledRecord(block, target);
+          block.setActiveRecord(rec);
+          ((VStringField)target).setString(rec, file.getAbsolutePath());
+          target.onAfterDrop();
+          block.setActiveRecord(rec + 1);
+          block.gotoRecord(block.getActiveRecord());
+          return true;
+        } else {
 	  ((VStringField)target).setString(file.getAbsolutePath());
+	  target.onAfterDrop();
 	  return true;
 	}
       }
@@ -203,17 +210,20 @@ public class DBlockDropTargetHandler implements DropTargetListener {
     }
   }
 
-  private boolean handleImage(VImageField target, File file) {
+  private boolean handleImage(VImageField target, File file) throws VException {
     if (isChartBlockContext()) {
-      if (block.getActiveRecord() != -1) {
-	target.setImage(block.getActiveRecord(), toByteArray(file));
-	block.setActiveRecord(block.getActiveRecord() + 1);
-	return true;
-      } else {
-	return false;
-      }
+      int               rec;
+
+      rec = getFirstUnfilledRecord(block, target);
+      block.setActiveRecord(rec);
+      target.setImage(rec, toByteArray(file));
+      target.onAfterDrop();
+      block.setActiveRecord(rec + 1);
+      block.gotoRecord(block.getActiveRecord());
+      return true;
     } else {
       target.setImage(toByteArray(file));
+      target.onAfterDrop();
       return true;
     }
   }
@@ -270,6 +280,16 @@ public class DBlockDropTargetHandler implements DropTargetListener {
     }
 
     output.flush();
+  }
+  
+  private static int getFirstUnfilledRecord(VBlock block, VField target) {
+    for (int i = 0; i < block.getBufferSize(); i++) {
+      if (target.isNull(i)) {
+        return i;
+      }
+    }
+
+    return 0;
   }
 
   //---------------------------------------------------------
