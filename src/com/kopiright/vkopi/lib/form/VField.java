@@ -382,10 +382,12 @@ public abstract class VField implements VConstants, VModel {
         modelNeedUpdate();
       }
       callTrigger(TRG_PREVAL);
+      if (!isNull(block.getActiveRecord())) {
+        callTrigger(TRG_FORMAT);
+      }
       checkList();
       try {
         if (!isNull(block.getActiveRecord())) {
-          callTrigger(TRG_FORMAT);
           callTrigger(TRG_VALFLD);
         }
         callTrigger(TRG_POSTCHG);
@@ -588,10 +590,12 @@ public abstract class VField implements VConstants, VModel {
           checkType(getDisplayedValue(true));
         }
         callTrigger(TRG_PREVAL);
+        if (!isNull(block.getActiveRecord())) {
+          callTrigger(TRG_FORMAT);
+        }
         checkList();
         try {
           if (!isNull(block.getActiveRecord())) {
-            callTrigger(TRG_FORMAT);
             callTrigger(TRG_VALFLD);
           }
           callTrigger(TRG_POSTCHG);
