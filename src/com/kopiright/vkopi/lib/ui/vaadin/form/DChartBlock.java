@@ -87,14 +87,18 @@ public class DChartBlock extends DBlock implements BlockListener {
       // schedule an RNC task execution.
       // this aims to minimize RPC communication
       // between server and client side
-      timer.schedule(new RNCTask(), 1000);
+      timer.schedule(new RNCTask(), 100);
     }
   }
   
   @Override
   protected void refresh(boolean force) {
     super.refresh(force);
-    updateScrollbar();
+    // don't update scroll bar when the scroll position
+    // is being changing from the client side.
+    if (!scrolling) {
+      updateScrollbar();
+    }
   }
 
   @Override
@@ -108,10 +112,13 @@ public class DChartBlock extends DBlock implements BlockListener {
       init = true; // on initialization, we do not scroll.
     } else {
       try {
+        scrolling = true;
 	setScrollPos(value);
+	scrolling = false;
       } catch (VException e) {
+        e.printStackTrace();
 	eventQueue.push(new RNCEvent());
-	timer.schedule(new RNCTask(), 1000);
+	timer.schedule(new RNCTask(), 100);
       }
     }
   }
@@ -126,7 +133,7 @@ public class DChartBlock extends DBlock implements BlockListener {
       public void run() {
 	int		validRecords = getModel().getNumberOfValidRecord();
 	int		dispSize = getModel().getDisplaySize();
-
+	
 	updateScroll(dispSize,
 	             validRecords,
 	             validRecords > dispSize,
@@ -181,6 +188,15 @@ public class DChartBlock extends DBlock implements BlockListener {
   //-------------------------------------------------
   
   private boolean			init = false;
+  /*
+   * This flag was added to avoid mutual communication
+   * betwwen client and server side when the scroll bar
+   * position is changed from the client side.
+   * Thus, scroll bar position is not changed by server
+   * side when it is changed from the client side
+   * @see {@link #refresh(boolean) 
+   */
+  private boolean                       scrolling = false;
   private final Stack<RNCEvent>		eventQueue = new Stack<RNCEvent>();
   private final Timer			timer = new Timer();
 }
