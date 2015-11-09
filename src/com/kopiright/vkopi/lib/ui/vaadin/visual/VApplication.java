@@ -411,7 +411,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       defaultLocale = getAlternateLocale();
     }
     // Now create the localization manager using the application default locale.
-    localizationManager = new LocalizationManager(Locale.getDefault(), defaultLocale);
+    localizationManager = new LocalizationManager(defaultLocale, Locale.getDefault());
   }
   
   /**
