@@ -104,7 +104,7 @@ public class KopiServlet extends VaadinServlet implements SessionInitListener {
   private String getLocalizedProperty(String key) {
     LocalizationManager			manager;
     
-    manager = new LocalizationManager(Locale.getDefault(), locale);
+    manager = new LocalizationManager(locale, Locale.getDefault());
     try {
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       return manager.getPropertyLocalizer(VLIB_PROPERTIES_RESOURCE_FILE, key).getValue().replaceAll("'", "''");
