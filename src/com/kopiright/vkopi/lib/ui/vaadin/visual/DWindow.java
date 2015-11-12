@@ -20,7 +20,6 @@
 package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
 import java.io.File;
-import java.util.Stack;
 
 import org.kopi.vaadin.addons.AbstractNotification;
 import org.kopi.vaadin.addons.ConfirmNotification;
@@ -84,6 +83,9 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
     model.addMessageListener(messageHandler);
     actionRunner = new ActionRunner();
     addActorsToGUI(model.getActors());
+    progressDialog = new ProgressDialog();
+    waitDialog = new WaitDialog();
+    addAttachDetachListeners();
   }
 	  
   //---------------------------------------------------
@@ -158,6 +160,47 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
         addActor(actor);
       } 
     }
+  }
+  
+  /**
+   * Adds progress bar and wait dialog attach and
+   * detach listeners
+   */
+  private void addAttachDetachListeners() {
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        progressDialog.addAttachListener(new AttachListener() {
+          
+          @Override
+          public void attach(AttachEvent event) {
+            isProgressDialogAttached = true;
+          }
+        });
+        progressDialog.addDetachListener(new DetachListener() {
+          
+          @Override
+          public void detach(DetachEvent event) {
+            isProgressDialogAttached = false;
+          }
+        });
+        waitDialog.addAttachListener(new AttachListener() {
+          
+          @Override
+          public void attach(AttachEvent event) {
+            isWaitDialogAttached = true;
+          }
+        });
+        waitDialog.addDetachListener(new DetachListener() {
+          
+          @Override
+          public void detach(DetachEvent event) {
+            isWaitDialogAttached = false;
+          }
+        });
+      }
+    });
   }
 
   @Override
@@ -289,15 +332,17 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
   
   @Override
   public void setTotalJobs(final int totalJobs) {
-    if (progressDialog != null) {
-      BackgroundThreadHandler.access(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
 
-	@Override
-	public void run() {
-	  progressDialog.setTotalJobs(totalJobs);
-	}
-      });
-    }
+      @Override
+      public void run() {
+        synchronized (progressDialog) {
+          if (isProgressDialogAttached) {
+            progressDialog.setTotalJobs(totalJobs);
+          }
+        }
+      }
+    });
   }
   
   @Override
@@ -312,64 +357,78 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
 
   @Override
   public void setWaitDialog(final String message, final int maxtime) {
-    waitDialog = new WaitDialog();
     BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
-	waitDialog.setTitle(MessageCode.getMessage("VIS-00067"));
-	waitDialog.setMessage(message);
-	waitDialog.setMaxTime(maxtime);
-	getApplication().attachComponent(waitDialog);
-	getApplication().push();
+        synchronized (waitDialog) {
+          waitDialog.setTitle(MessageCode.getMessage("VIS-00067"));
+          waitDialog.setMessage(message);
+          waitDialog.setMaxTime(maxtime);
+          if (!isWaitDialogAttached) {
+            getApplication().attachComponent(waitDialog);
+          }
+          getApplication().push(); 
+        }
       }
     });
   }
 
   @Override
   public void unsetWaitDialog() {
-    if (waitDialog != null) {
-      BackgroundThreadHandler.access(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
 
-	@Override
-	public void run() {
-	  getApplication().detachComponent(waitDialog);
-	  getApplication().push();
-	  waitDialog = null;
-	}
-      });
-    }
+      @Override
+      public void run() {
+        synchronized (waitDialog) {
+          if (isWaitDialogAttached) {
+            waitDialog.setTitle(null);
+            waitDialog.setMessage(null);
+            waitDialog.setMaxTime(0);
+            getApplication().detachComponent(waitDialog);
+            getApplication().push();
+          } 
+        }
+      }
+    });
   }
 
   @Override
   public void setProgressDialog(final String message, final int totalJobs) {
-    progressDialog = new ProgressDialog(); 
     BackgroundThreadHandler.access(new Runnable() {
-      
+
       @Override
       public void run() {
-	progressDialog.setTitle(MessageCode.getMessage("VIS-00067"));
-	progressDialog.setMessage(message);
-	progressDialog.setTotalJobs(totalJobs);
-	getApplication().attachComponent(progressDialog);
-	getApplication().push();
+        synchronized (progressDialog) {
+          progressDialog.setTitle(MessageCode.getMessage("VIS-00067"));
+          progressDialog.setMessage(message);
+          progressDialog.setTotalJobs(totalJobs);
+          if (!isProgressDialogAttached) {
+            getApplication().attachComponent(progressDialog);
+          }
+          getApplication().push();
+        }
       }
     });
   }
   
   @Override
   public void unsetProgressDialog() {
-    if (progressDialog != null) {
-      BackgroundThreadHandler.access(new Runnable() {
-        
-        @Override
-        public void run() {
-          getApplication().detachComponent(progressDialog);
-          getApplication().push();
-          progressDialog = null;
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        synchronized (progressDialog) {
+          if (isProgressDialogAttached) {
+            progressDialog.setTitle(null);
+            progressDialog.setMessage(null);
+            progressDialog.setTotalJobs(0);
+            getApplication().detachComponent(progressDialog);
+            getApplication().push();
+          }
         }
-      });
-    }
+      }
+    });
   }
 
   @Override
@@ -379,15 +438,17 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
   
   @Override
   public void setCurrentJob(final int currentJob) {
-    if (progressDialog != null) {
-      BackgroundThreadHandler.access(new Runnable() {
-        
-        @Override
-        public void run() {
-          progressDialog.setProgress(currentJob);
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        synchronized (progressDialog) {
+          if (isProgressDialogAttached) {
+            progressDialog.setProgress(currentJob);
+          }
         }
-      });
-    }
+      }
+    });
   }
 
   @Override
@@ -402,16 +463,18 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
 
   @Override
   public void updateWaitDialogMessage(final String message) {
-    if (waitDialog != null) {
-      BackgroundThreadHandler.access(new Runnable() {
+    BackgroundThreadHandler.access(new Runnable() {
 
-	@Override
-	public void run() {
-	  waitDialog.setMessage(message);
-	  getApplication().push();
-	}
-      });
-    }
+      @Override
+      public void run() {
+        synchronized (waitDialog) {
+          if (isWaitDialogAttached) {
+            waitDialog.setMessage(message);
+            getApplication().push(); 
+          }
+        }
+      }
+    });
   }
   
   @Override
@@ -660,6 +723,28 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
     
     public WaitInfoHandler() {
       waitIndicator = new WaitWindow();
+      // add attach and detach listeners to detect
+      // wait indicator state.
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          waitIndicator.addAttachListener(new AttachListener() {
+            
+            @Override
+            public void attach(AttachEvent event) {
+              iswaitIndicatorAttached = true;
+            }
+          });
+          waitIndicator.addDetachListener(new DetachListener() {
+            
+            @Override
+            public void detach(DetachEvent event) {
+              iswaitIndicatorAttached = false;
+            }
+          });
+        }
+      });
     }
     
     //-----------------------------------------------------------
@@ -669,15 +754,16 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
     @Override
     public void setWaitInfo(final String message) {
       BackgroundThreadHandler.access(new Runnable() {
-        
+
         @Override
         public void run() {
-          waitIndicator.setText(message);
-          if (!iswaitIndicatorAttached) {
-            getApplication().attachComponent(waitIndicator);
-            iswaitIndicatorAttached = true;
+          synchronized (waitIndicator) {
+            waitIndicator.setText(message);
+            if (!iswaitIndicatorAttached) {
+              getApplication().attachComponent(waitIndicator);
+            }
+            getApplication().push(); 
           }
-          getApplication().push();
         }
       });
     }
@@ -688,11 +774,12 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
 
         @Override
         public void run() {
-          if (iswaitIndicatorAttached) {
-            waitIndicator.setText(null);
-            getApplication().detachComponent(waitIndicator);
-            getApplication().push();
-            iswaitIndicatorAttached = false;
+          synchronized (waitIndicator) {
+            if (iswaitIndicatorAttached) {
+              waitIndicator.setText(null);
+              getApplication().detachComponent(waitIndicator);
+              getApplication().push();
+            } 
           }
         }
       });
@@ -737,12 +824,18 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
         }
       } catch (VRuntimeException v) {
 	v.printStackTrace();
+        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
+        unsetWaitInfo();
 	reportError(v);
 	//getModel().error(v.getMessage());
       } catch (ArrayIndexOutOfBoundsException ar) {
 	// Ignore out of bound exception in position requestor
+        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
+        unsetWaitInfo();
       } catch (Throwable exc) {
 	//exc.printStackTrace();
+        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
+        unsetWaitInfo();
 	setWindowError(exc);
 	if (getModel() != null) {
 	  getModel().fatalError(getModel(), "VWindow.performActionImpl(final KopiAction action)", exc);
@@ -751,8 +844,6 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
 	}
       } finally {
 	setInAction();
-        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
-        unsetWaitInfo();
 	synchronized (getApplication()) {
 	  BackgroundThreadHandler.updateUI();
 	}
@@ -809,7 +900,9 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
   protected Throwable           	                runtimeDebugInfo;
   private int			                        returnCode;
   private ProgressDialog				progressDialog;
+  private boolean                                       isProgressDialogAttached;
   private WaitDialog					waitDialog;
+  private boolean                                       isWaitDialogAttached;    
   private boolean					askUser;
   private final ActionRunner    	      	        actionRunner;
 }
