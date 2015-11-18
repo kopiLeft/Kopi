@@ -68,9 +68,8 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
       if (col > stylesMap.length-1) {
 	col = 0;
       }    
-      String	style = stylesMap[col][level].getName();
       
-      return style == null ? stylesMap[col][level].getName() : style;
+      return stylesMap[col][level] == null ? null : stylesMap[col][level].getName();
     }
   }
 

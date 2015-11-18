@@ -206,7 +206,7 @@ public class DReport extends DWindow implements UReport {
   public void contentChanged() {
     if (table != null) {
       ((VTable)table.getModel()).fireContentChanged();
-      UI.getCurrent().access(new Runnable() {  
+      BackgroundThreadHandler.access(new Runnable() {  
 	
         @Override
         public void run() {
@@ -395,7 +395,13 @@ public class DReport extends DWindow implements UReport {
 	      currentModel.foldingColumn(col);
 	    }
 	  } else {
-	    table.refreshRowCache();
+	    BackgroundThreadHandler.access(new Runnable() {  
+
+	      @Override
+	      public void run() {
+	        table.refreshRowCache();
+	      }
+	    });
 	    synchronized (table) {
 	      report.setMenu(); 
 	    }
