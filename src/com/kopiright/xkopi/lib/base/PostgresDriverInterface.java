@@ -273,23 +273,24 @@ public class PostgresDriverInterface extends DriverInterface {
   public String extract(String type, Object date) {
     String result = null;
 
+    result = "EXTRACT (";
     if (type.equals("YY")) {
-      result = "YEAR (";
+      result += "YEAR ";
     } else if (type.equals("MO")) {
-      result = "MONTH (";
+      result += "MONTH ";
     } else if (type.equals("DD")) {
-      result = "DAY (";
+      result += "DAY ";
     } else if (type.equals("HH")) {
-      result = "HOUR (";
+      result += "HOUR ";
     } else if (type.equals("MI")) {
-      result = "MINUTE (";
+      result += "MINUTE ";
     } else if (type.equals("SS")) {
-      result = "SECOND (";
+      result += "SECOND ";
     } else {
       throw new IllegalArgumentException(type + " is not a good type of data to extract");
     }
 
-    return result + date + ")";
+    return result + " FROM " + date + ")";
   }
 
   /**
