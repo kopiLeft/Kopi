@@ -452,8 +452,15 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
   }
 
   @Override
-  public void setTitle(String title) {
-    // TODO
+  public void setTitle(final String title) {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        setCaption(title);
+        getApplication().push();
+      }
+    });
   }
 
   @Override
