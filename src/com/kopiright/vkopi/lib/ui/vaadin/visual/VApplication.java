@@ -23,10 +23,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Locale;
 
+import org.kopi.vaadin.addons.AbstractNotification;
 import org.kopi.vaadin.addons.ConfirmNotification;
+import org.kopi.vaadin.addons.ErrorNotification;
+import org.kopi.vaadin.addons.InformationNotification;
 import org.kopi.vaadin.addons.MainWindow;
 import org.kopi.vaadin.addons.MainWindowListener;
 import org.kopi.vaadin.addons.NotificationListener;
+import org.kopi.vaadin.addons.WarningNotification;
 import org.kopi.vaadin.addons.WelcomeView;
 import org.kopi.vaadin.addons.WelcomeViewEvent;
 import org.kopi.vaadin.addons.WelcomeViewListener;
@@ -40,11 +44,14 @@ import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.FileHandler;
 import com.kopiright.vkopi.lib.visual.ImageHandler;
+import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
+import com.kopiright.vkopi.lib.visual.MessageListener;
 import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.Registry;
 import com.kopiright.vkopi.lib.visual.UIFactory;
+import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VMenuTree;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VerifyConfiguration;
@@ -108,6 +115,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       // really need to do this ?
       push();
     }
+    this.askAnswer = MessageListener.AWR_UNDEF;
   }
   
   // ---------------------------------------------------------------------
@@ -116,28 +124,105 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   
   @Override
   public void notice(String message) {
-    if (menuTree != null) {
-      menuTree.notice(message);
-    }
+    final InformationNotification       dialog;
+    final Object                        lock;
+    
+    lock = new Object();
+    dialog = new InformationNotification(VlibProperties.getString("Notice"), message);
+    dialog.addNotificationListener(new NotificationListener() {
+      
+      @Override
+      public void onClose(boolean yes) {
+        detachComponent(dialog);
+        BackgroundThreadHandler.releaseLock(lock);
+      }
+    });
+    showNotification(dialog, lock);
   }
 
   @Override
   public void error(String message) {
-    if (menuTree != null) {
-      menuTree.error(message);
-    }
+    final ErrorNotification     dialog;
+    final Object                lock;
+    
+    lock = new Object();
+    dialog = new ErrorNotification(VlibProperties.getString("Error"), message);
+    dialog.setOwner(this);
+    dialog.addNotificationListener(new NotificationListener() {
+      
+      @Override
+      public void onClose(boolean yes) {
+        setComponentError(null); // remove any further error.
+        detachComponent(dialog);
+        BackgroundThreadHandler.releaseLock(lock);
+      }
+    });
+    showNotification(dialog, lock);
   }
 
   @Override
   public void warn(String message) {
-    if (menuTree != null) {
-      menuTree.warn(message);
-    }
+    final WarningNotification   dialog;
+    final Object                lock;
+    
+    lock = new Object();
+    dialog = new WarningNotification(VlibProperties.getString("Warning"), message);
+    dialog.addNotificationListener(new NotificationListener() {
+      
+      @Override
+      public void onClose(boolean yes) {
+        detachComponent(dialog);
+        BackgroundThreadHandler.releaseLock(lock);
+      }
+    });
+    showNotification(dialog, lock);
   }
 
   @Override
   public int ask(String message, boolean yesIsDefault) {
-    return AWR_UNDEF;
+    final ConfirmNotification   dialog;
+    final Object                lock;
+
+    lock = new Object();
+    dialog = new ConfirmNotification(VlibProperties.getString("Question"), message);
+    dialog.setYesIsDefault(yesIsDefault);
+    dialog.addNotificationListener(new NotificationListener() {
+      
+      @Override
+      public void onClose(boolean yes) {
+        if (yes) {
+          askAnswer = MessageListener.AWR_YES;
+        } else {
+          askAnswer = MessageListener.AWR_NO;
+        }
+        detachComponent(dialog);
+        BackgroundThreadHandler.releaseLock(lock);
+      }
+    });
+    // attach the notification to the application.
+    showNotification(dialog, lock);
+    
+    return askAnswer;
+  }
+  
+  /**
+   * Shows a notification.
+   * @param notification The notification to be shown
+   */
+  protected void showNotification(final AbstractNotification notification, final Object lock) {
+    if (notification == null) {
+      return;
+    }
+    
+    notification.setLocale(getDefaultLocale().toString());
+    BackgroundThreadHandler.startAndWait(new Runnable() {
+      
+      @Override
+      public void run() {
+        attachComponent(notification);
+        push();
+      }
+    }, lock);
   }
 
   //---------------------------------------------------------------------
@@ -272,8 +357,16 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   }
 
   @Override
-  public void displayError(UComponent parent, String message) {
-    // TODO
+  public void displayError(UComponent parent, final String message) {
+    if (menuTree != null) {
+      menuTree.performAsyncAction(new KopiAction() {
+        
+        @Override
+        public void execute() throws VException {
+          error(message);
+        }
+      });
+    }
   }
   
   //---------------------------------------------------
@@ -620,7 +713,9 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   private WelcomeView				welcomeView;
   private DModuleMenu				moduleMenu;
   private MainWindow				mainWindow;
-  private FileUploader				uploader; // the uploader is a singleton per application instance.
+  //the uploader is a singleton per application instance.
+  private FileUploader				uploader;
+  private int                                   askAnswer;
   
   // ---------------------------------------------------------------------
   // Failure cause informations
