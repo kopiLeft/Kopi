@@ -34,6 +34,7 @@ import com.kopiright.vkopi.lib.form.VDateField;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFixnumCodeField;
 import com.kopiright.vkopi.lib.form.VFixnumField;
+import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VIntegerCodeField;
 import com.kopiright.vkopi.lib.form.VIntegerField;
 import com.kopiright.vkopi.lib.form.VMonthField;
@@ -116,10 +117,13 @@ public class VDynamicReport extends VReport {
     int       size = 0;
 
     for (int i = 0; i < fields.length; i++) {
-      if ((!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName()))) {
-        if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
-          processedFields[size] = fields[i];
-          size ++;
+      if (!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName())) {
+        // Images fields cannot be handled in dynamic reports
+        if (!(fields[i] instanceof VImageField)) {
+          if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
+            processedFields[size] = fields[i];
+            size ++;
+          }
         }
       }
     }
