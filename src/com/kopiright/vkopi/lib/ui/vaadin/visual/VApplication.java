@@ -44,14 +44,12 @@ import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.FileHandler;
 import com.kopiright.vkopi.lib.visual.ImageHandler;
-import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.MessageListener;
 import com.kopiright.vkopi.lib.visual.PropertyException;
 import com.kopiright.vkopi.lib.visual.Registry;
 import com.kopiright.vkopi.lib.visual.UIFactory;
-import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VMenuTree;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
 import com.kopiright.vkopi.lib.visual.VerifyConfiguration;
@@ -358,15 +356,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
 
   @Override
   public void displayError(UComponent parent, final String message) {
-    if (menuTree != null) {
-      menuTree.performAsyncAction(new KopiAction() {
-        
-        @Override
-        public void execute() throws VException {
-          error(message);
-        }
-      });
-    }
+    error(message);
   }
   
   //---------------------------------------------------
