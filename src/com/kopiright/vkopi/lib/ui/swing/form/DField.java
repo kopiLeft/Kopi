@@ -69,8 +69,8 @@ public abstract class DField extends JPanel implements UField {
     this.align = align;
     isEditable = (options & VConstants.FDO_NOEDIT) == 0;
 
-    if ((!getModel().getBlock().isMulti() || getModel().getBlock().noChart() || isInDetail())
-        && (getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED)) {
+    if ((!getModel().getBlock().isMulti() || getModel().getBlock().noChart() || isInDetail())) {
+        //&& (getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED)) { //!!! hidden fields can be visible in other block modes.
       JPanel	optionPane = new JPanel();
 
       optionPane.setLayout(new BorderLayout());

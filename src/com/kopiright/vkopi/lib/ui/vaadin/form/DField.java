@@ -76,17 +76,14 @@ public abstract class DField extends Field implements UField, FieldListener {
     } else {
       setVisibleHeight(getModel().getHeight());
     }
-    if (getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
-      if (model.hasAutofill()) {
-	this.label.addLabelListener(new LabelListener() {
-	  
-	  @Override
-	  public void onClick(LabelEvent event) {
-	    performAutoFillAction();
-	  }
-	});
+    listener = new LabelListener() {
+      
+      @Override
+      public void onClick(LabelEvent event) {
+        performAutoFillAction();
       }
-    }
+    };
+    enableAutofill(getModel().getDefaultAccess());
   }	
    
   //----------------------------------------------------------------------
@@ -205,7 +202,8 @@ public abstract class DField extends Field implements UField, FieldListener {
 	access = getAccess();
 	updateStyles(access);
 	setVisible(access != VConstants.ACS_HIDDEN);
-	update(label); 
+	update(label);
+	enableAutofill(access);
       }
     });
   }
@@ -250,6 +248,20 @@ public abstract class DField extends Field implements UField, FieldListener {
     default:
       addStyleName("visit");
       break;
+    }
+  }
+  
+  /**
+   * Enables the auto fill action according to a given access.
+   * The auto fill action is enabled if the model allows it and
+   * if the field is not hidden.
+   * @param access The field access.
+   */
+  private void enableAutofill(int access) {
+    if (model.hasAutofill() && access >= VConstants.ACS_SKIPPED) {
+      label.addLabelListener(listener);
+    } else {
+      label.removeLabelListener(listener);
     }
   }
  
@@ -410,8 +422,7 @@ public abstract class DField extends Field implements UField, FieldListener {
   // ----------------------------------------------------------------------
 
   protected	VFieldUI		model;
-  public	DLabel			label;
-
+  protected	DLabel			label;
   protected	int			state;		// Display state
   protected	int			pos;
   protected	int			options;
@@ -419,6 +430,6 @@ public abstract class DField extends Field implements UField, FieldListener {
   protected     int			access;		// current access of field
   protected	boolean			isEditable;	// is this field editable
   protected	boolean			mouseInside;	// private events
-
   private       boolean             	inDetail;
+  private       final LabelListener     listener;
 }
