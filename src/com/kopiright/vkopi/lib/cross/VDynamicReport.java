@@ -113,29 +113,24 @@ public class VDynamicReport extends VReport {
    * @return fields that will represent columns in the dynamic report.
    */
   private VField[] initFields(VField[] fields) {
-    VField[]  processedFields = new VField[fields.length];
-    int       size = 0;
+    List<VField>        processedFields = new ArrayList<VField>();
 
     for (int i = 0; i < fields.length; i++) {
-      if (!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName())) {
-        // Images fields cannot be handled in dynamic reports
-        if (!(fields[i] instanceof VImageField)) {
-          if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
-            processedFields[size] = fields[i];
-            size ++;
-          }
+      // Images fields cannot be handled in dynamic reports
+      if (!(fields[i] instanceof VImageField)
+          && (!fields[i].isInternal() || fields[i].getName().equals(block.getIdField().getName())))
+      {
+        if (fields[i].getColumnCount() > 0  || block.isMulti() && isFetched()) {
+          processedFields.add(fields[i]);
         }
       }
     }
-    if (size == 0) {
+    
+    if (processedFields.isEmpty()) {
       throw new InconsistencyException("Can't generate a report, check that this block contains unhidden fields with database columns.");
     }
-    fields = processedFields;
-    processedFields = new VField[size];
-    for (int i = 0; i < size; i++) {
-      processedFields[i] = fields[i];
-    }
-    return processedFields;
+
+    return processedFields.toArray(new VField[processedFields.size()]);
   }
 
   public boolean isFetched() {
@@ -144,6 +139,7 @@ public class VDynamicReport extends VReport {
         return true;
       }
     }
+    
     return false;
   }
 

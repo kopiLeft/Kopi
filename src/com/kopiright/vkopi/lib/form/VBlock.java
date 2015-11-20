@@ -2016,8 +2016,12 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // take all visible fields with database access
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
-
-      if (!fld.isInternal() && fld.getColumnCount() > 0) {
+      
+      // image fields cannot be handled in a report.
+      if (!(fld instanceof VImageField)
+          && !fld.isInternal()
+          && fld.getColumnCount() > 0)
+      {
         if (result == null) {
           result = "";
         } else {
