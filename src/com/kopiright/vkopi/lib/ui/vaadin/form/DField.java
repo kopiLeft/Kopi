@@ -32,6 +32,7 @@ import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VForm;
+import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VStringField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
@@ -73,6 +74,13 @@ public abstract class DField extends Field implements UField, FieldListener {
     this.label.setAutofill(model.hasAutofill());
     if (getModel() instanceof VStringField) {
       setVisibleHeight(((VStringField)getModel()).getVisibleHeight());
+    } else if (getModel() instanceof VImageField) {
+      /*
+       * Sets the visible height of the image field to allow row span
+       * in simple block layouts.
+       * We estimate that a row height is ~ 20 px
+       */
+      setVisibleHeight(((VImageField)getModel()).getIconHeight() / 20);
     } else {
       setVisibleHeight(getModel().getHeight());
     }
