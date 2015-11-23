@@ -148,6 +148,7 @@ public class DTextField extends DField implements UTextField, VConstants {
     textfield = new TextField(getModel().getWidth(),
 	                      getModel().getHeight(),
 	                      (getModel().getHeight() == 1) ? 1 : ((VStringField)getModel()).getVisibleHeight(),
+	                      (!scanner && (getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0),
 	                      noEcho,
 	                      scanner,
 	                      noEdit,
