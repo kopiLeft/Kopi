@@ -19,10 +19,6 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
-import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.kopi.vaadin.addons.BlockLayout;
 import org.kopi.vaadin.addons.BlockListener;
 import org.kopi.vaadin.addons.ChartBlockLayout;
@@ -83,11 +79,7 @@ public class DChartBlock extends DBlock implements BlockListener {
   @Override
   public void validRecordNumberChanged() {
     if (getModel().getDisplaySize() < getModel().getBufferSize()) {
-      eventQueue.push(new RNCEvent());
-      // schedule an RNC task execution.
-      // this aims to minimize RPC communication
-      // between server and client side
-      timer.schedule(new RNCTask(), 100);
+      updateScrollbar();
     }
   }
   
@@ -117,8 +109,6 @@ public class DChartBlock extends DBlock implements BlockListener {
 	scrolling = false;
       } catch (VException e) {
         e.printStackTrace();
-	eventQueue.push(new RNCEvent());
-	timer.schedule(new RNCTask(), 100);
       }
     }
   }
@@ -143,60 +133,17 @@ public class DChartBlock extends DBlock implements BlockListener {
   }
   
   //-------------------------------------------------
-  // SCROLL UPDATE HANDLING
-  //-------------------------------------------------
-  
-  /**
-   * An event called to update scroll bar.
-   * @author hacheni
-   *
-   */
-  /*package*/ class RNCEvent implements Runnable {
-
-    @Override
-    public void run() {
-      updateScrollbar();
-    }
-  }
-  
-  /**
-   * A scroll bar update event needed to control
-   * updates of the scroll bar and to avoid overloading
-   * the client side component.
-   */
-  /*package*/ class RNCTask extends TimerTask {
-
-    @Override
-    public void run() {
-      if (!eventQueue.isEmpty()) {
-	// run the last event queued and then clear the queue.
-	RNCEvent	event = eventQueue.pop();
-	
-	while (!eventQueue.isEmpty() && event == null) {
-	  event = eventQueue.pop();
-	}
-	if (event != null) {
-	  event.run();
-	  eventQueue.clear();
-	}
-      }
-    }
-  }
-  
-  //-------------------------------------------------
   // DATA MEMBERS
   //-------------------------------------------------
   
   private boolean			init = false;
   /*
    * This flag was added to avoid mutual communication
-   * betwwen client and server side when the scroll bar
+   * between client and server side when the scroll bar
    * position is changed from the client side.
    * Thus, scroll bar position is not changed by server
    * side when it is changed from the client side
    * @see {@link #refresh(boolean) 
    */
   private boolean                       scrolling = false;
-  private final Stack<RNCEvent>		eventQueue = new Stack<RNCEvent>();
-  private final Timer			timer = new Timer();
 }
