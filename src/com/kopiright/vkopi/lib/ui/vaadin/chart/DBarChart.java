@@ -22,6 +22,8 @@ package com.kopiright.vkopi.lib.ui.vaadin.chart;
 import java.util.List;
 
 import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.BarChartPlotOptions;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.BarChartSeries;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
 
@@ -49,11 +51,16 @@ public class DBarChart extends DAbstractChartType {
   
   @Override
   protected HighChartsSeries createChartSeries(String name, List<Object> values) {
-    return new BarChartSeries(name, values);
+    return new BarChartSeries(name, toHighChartsDataList(values));
   }
 
   @Override
   protected ChartType getChartType() {
     return ChartType.BAR;
+  }
+  
+  @Override
+  protected HighChartsPlotOptionsImpl getPlotOptions() {
+    return new BarChartPlotOptions();
   }
 }

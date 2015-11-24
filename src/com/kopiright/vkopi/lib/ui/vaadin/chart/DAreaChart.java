@@ -22,6 +22,8 @@ package com.kopiright.vkopi.lib.ui.vaadin.chart;
 import java.util.List;
 
 import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.AreaChartPlotOptions;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.AreaChartSeries;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
 
@@ -49,11 +51,16 @@ public class DAreaChart extends DAbstractChartType {
   
   @Override
   protected HighChartsSeries createChartSeries(String name, List<Object> values) {
-    return new AreaChartSeries(name, values);
+    return new AreaChartSeries(name, toHighChartsDataList(values));
   }
 
   @Override
   protected ChartType getChartType() {
     return ChartType.AREA;
+  }
+  
+  @Override
+  protected HighChartsPlotOptionsImpl getPlotOptions() {
+    return new AreaChartPlotOptions();
   }
 }

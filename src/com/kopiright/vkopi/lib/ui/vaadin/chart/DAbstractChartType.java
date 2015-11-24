@@ -40,6 +40,13 @@ import at.downdrown.vaadinaddons.highchartsapi.model.ChartConfiguration;
 import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
 import at.downdrown.vaadinaddons.highchartsapi.model.Margin;
 import at.downdrown.vaadinaddons.highchartsapi.model.ZoomType;
+import at.downdrown.vaadinaddons.highchartsapi.model.data.HighChartsData;
+import at.downdrown.vaadinaddons.highchartsapi.model.data.base.DoubleData;
+import at.downdrown.vaadinaddons.highchartsapi.model.data.base.IntData;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptions;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl.DashStyle;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl.Steps;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
 
 import com.kopiright.vkopi.lib.chart.UChartType;
@@ -47,6 +54,7 @@ import com.kopiright.vkopi.lib.chart.VDataSeries;
 import com.kopiright.vkopi.lib.chart.VMeasureData;
 import com.kopiright.vkopi.lib.chart.VPrintOptions;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import com.kopiright.xkopi.lib.type.Fixed;
 import com.vaadin.shared.ui.colorpicker.Color;
 import com.vaadin.ui.Panel;
 
@@ -95,6 +103,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
       configuration.setZoomType(getZoomType());
       configuration.setBackgroundColor(getBackgroundColor());
       configuration.setSeriesList(createChartSeries(dataSeries));
+      configuration.setPlotOptions(createPlotOptions());
       chart = HighChartFactory.renderChart(configuration);
       chart.addStyleName("kopi-chart");
       chart.setSizeFull();
@@ -120,7 +129,6 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
     throws IOException
   {
     // TODO Auto-generated method stub
-    
   }
 
   @Override
@@ -128,7 +136,6 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
     throws IOException
   {
     // TODO Auto-generated method stub
-    
   }
 
   @Override
@@ -136,7 +143,6 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
     throws IOException
   {
     // TODO Auto-generated method stub
-    
   }
   
   /**
@@ -245,6 +251,25 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
   }
   
   /**
+   * Creates the plot options.
+   * @return The created plot options.
+   */
+  protected HighChartsPlotOptions createPlotOptions() {
+    HighChartsPlotOptionsImpl   plotOptions;
+    
+    plotOptions = getPlotOptions();
+    plotOptions.setAllowPointSelect(true);
+    plotOptions.setAnimated(true);
+    plotOptions.setConnectNulls(true);
+    plotOptions.setDashStyle(DashStyle.Solid);
+    plotOptions.setShadow(false);
+    plotOptions.setShowCheckBox(false);
+    plotOptions.setSteps(Steps.FALSE);
+    
+    return plotOptions;
+  }
+  
+  /**
    * Creates the color list.
    * @return The color list.
    */
@@ -273,6 +298,40 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
     return ADDITIONAL_COLORS[index];
   }
   
+  /**
+   * Creates a list of {@link HighChartsData} that corresponds to the given object values.
+   * @param values The list of object values.
+   * @return The list of created {@link HighChartsData}.
+   */
+  protected List<HighChartsData> toHighChartsDataList(List<Object> values) {
+    List<HighChartsData>        chartsData;
+    
+    chartsData = new ArrayList<HighChartsData>();
+    for (Object value : values) {
+      chartsData.add(toHighChartsData(value));
+    }
+    
+    return chartsData;
+  }
+  
+  /**
+   * Creates the {@link HighChartsData} object corresponding to the given value.
+   * @param value The object value.
+   * @return The corresponding {@link HighChartsData} object of the value.
+   */
+  protected HighChartsData toHighChartsData(Object value) {
+    if (value == null) {
+      return null;
+    } else if (value instanceof Fixed) {
+      return new DoubleData(((Fixed)value).doubleValue());
+    } else if (value instanceof Integer) {
+      return new IntData(((Integer)value).intValue());
+    } else {
+      // This should never happen since measures are FIXNUM OR LONG.
+      return null;
+    }
+  }
+  
   //---------------------------------------------------
   // ABSTRACT METHODS
   //---------------------------------------------------
@@ -290,6 +349,12 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    * @return the chart type.
    */
   protected abstract ChartType getChartType();
+  
+  /**
+   * Returns the plot options to be used with the chart.
+   * @return the plot options to be used with the chart.
+   */
+  protected abstract HighChartsPlotOptionsImpl getPlotOptions();
   
   //---------------------------------------------------
   // INNER CLASSES

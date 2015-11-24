@@ -22,6 +22,8 @@ package com.kopiright.vkopi.lib.ui.vaadin.chart;
 import java.util.List;
 
 import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
+import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.LineChartPlotOptions;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.LineChartSeries;
 
@@ -49,11 +51,16 @@ public class DLineChart extends DAbstractChartType {
   
   @Override
   protected HighChartsSeries createChartSeries(String name, List<Object> values) {
-    return new LineChartSeries(name, values);
+    return new LineChartSeries(name, toHighChartsDataList(values));
   }
 
   @Override
   protected ChartType getChartType() {
     return ChartType.LINE;
+  }
+  
+  @Override
+  protected HighChartsPlotOptionsImpl getPlotOptions() {
+    return new LineChartPlotOptions();
   }
 }
