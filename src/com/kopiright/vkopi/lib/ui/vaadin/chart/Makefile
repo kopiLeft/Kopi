@@ -25,7 +25,8 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/vaadin/chart
 ## FILES
 
 JAVAFILES +=	DAbstractChartType DAreaChart DBarChart DChart		\
-		DColumnChart DLineChart DPieChart VChartTypeFactory
+		DColumnChart DLineChart DPieChart VChartTypeFactory	\
+		BigDecimalData
 
 ## ----------------------------------------------------------------------
 ## GOALS

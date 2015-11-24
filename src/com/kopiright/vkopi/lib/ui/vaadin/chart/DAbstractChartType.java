@@ -41,7 +41,6 @@ import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
 import at.downdrown.vaadinaddons.highchartsapi.model.Margin;
 import at.downdrown.vaadinaddons.highchartsapi.model.ZoomType;
 import at.downdrown.vaadinaddons.highchartsapi.model.data.HighChartsData;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.base.DoubleData;
 import at.downdrown.vaadinaddons.highchartsapi.model.data.base.IntData;
 import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptions;
 import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
@@ -128,21 +127,21 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
   public void exportToPDF(OutputStream destination, VPrintOptions options)
     throws IOException
   {
-    // TODO Auto-generated method stub
+    // DONE IN CLIENT SIDE
   }
 
   @Override
   public void exportToPNG(OutputStream destination, int width, int height)
     throws IOException
   {
-    // TODO Auto-generated method stub
+    // DONE IN CLIENT SIDE
   }
 
   @Override
   public void exportToJPEG(OutputStream destination, int width, int height)
     throws IOException
   {
-    // TODO Auto-generated method stub
+    // DONE IN CLIENT SIDE
   }
   
   /**
@@ -323,7 +322,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
     if (value == null) {
       return null;
     } else if (value instanceof Fixed) {
-      return new DoubleData(((Fixed)value).doubleValue());
+      return new BigDecimalData(((Fixed)value).toBigDecimal());
     } else if (value instanceof Integer) {
       return new IntData(((Integer)value).intValue());
     } else {
