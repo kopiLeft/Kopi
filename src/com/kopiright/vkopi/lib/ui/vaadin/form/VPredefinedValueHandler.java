@@ -25,6 +25,7 @@ import com.kopiright.vkopi.lib.form.AbstractPredefinedValueHandler;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VForm;
+import com.kopiright.vkopi.lib.ui.vaadin.base.FileUploader;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -78,7 +79,7 @@ public class VPredefinedValueHandler extends AbstractPredefinedValueHandler {
  */
   @Override
   public byte[] selectImage() throws VException {
-    return getApplication().getUploader().upload("image/*");
+    return new FileUploader().upload("image/*");
   }
   
   /**

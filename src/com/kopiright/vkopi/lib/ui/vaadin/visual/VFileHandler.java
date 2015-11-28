@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.kopiright.vkopi.lib.ui.vaadin.base.FileUploader;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.FileHandler;
 import com.kopiright.vkopi.lib.visual.UWindow;
@@ -63,9 +64,10 @@ public class VFileHandler extends FileHandler {
   }
 
   @Override
-  public File openFile(UWindow window, File dir, String defaultName) {    
-    byte[]	file = getApplication().getUploader().upload(null); // no mime type is provided
+  public File openFile(UWindow window, File dir, String defaultName) {
+    byte[]	        file;
     
+    file = new FileUploader().upload(null); // no mime type is provided 
     if (file != null) {
       return toFile(window, file, dir, defaultName);
     }

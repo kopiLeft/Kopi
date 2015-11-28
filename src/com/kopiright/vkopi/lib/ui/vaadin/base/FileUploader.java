@@ -24,17 +24,18 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.kopi.vaadin.addons.Upload;
 import org.kopi.vaadin.addons.UploadFailedEvent;
 import org.kopi.vaadin.addons.UploadFailedListener;
 import org.kopi.vaadin.addons.UploadFinishedEvent;
 import org.kopi.vaadin.addons.UploadFinishedListener;
+import org.kopi.vaadin.addons.UploadProgressListener;
 import org.kopi.vaadin.addons.UploadReceiver;
 import org.kopi.vaadin.addons.UploadStartedEvent;
 import org.kopi.vaadin.addons.UploadStartedListener;
-import org.kopi.vaadin.addons.UploadSucceededEvent;
-import org.kopi.vaadin.addons.UploadSucceededListener;
 
 import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
@@ -49,7 +50,7 @@ import com.vaadin.ui.Component;
  * </p>
  */
 @SuppressWarnings("serial")
-public class FileUploader implements UploadReceiver, UploadStartedListener, UploadFinishedListener, UploadSucceededListener, UploadFailedListener {
+public class FileUploader implements UploadReceiver, UploadStartedListener, UploadFinishedListener, UploadFailedListener, UploadProgressListener {
   
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -62,10 +63,11 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     listeners = new LinkedList<FileUploader.FileUploadListener>();
     uploader = new Upload(this);
     uploader.setImmediate(true);
-    uploader.addSucceededListener(this);
+    uploader.addProgressListener(this);
     uploader.addStartedListener(this);
     uploader.addFinishedListener(this);
     uploader.addFailedListener(this);
+    uploader.setLocale(getApplication().getDefaultLocale().toString());
   }
   
   //---------------------------------------------------
@@ -79,22 +81,18 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
    */
   public byte[] upload(final String mimeType) {
     this.mimeType = mimeType;
-    BackgroundThreadHandler.access(new Runnable() {
+    BackgroundThreadHandler.startAndWait(new Runnable() {
       
       @Override
       public void run() {
-	uploader.upload(mimeType);
+        uploader.setMimeType(mimeType);
+        getApplication().attachComponent(uploader);
+	getApplication().push();
       }
-    });
-
-    synchronized (uploader) {
-      try {
-	uploader.wait();
-      } catch (InterruptedException e) {
-	e.printStackTrace();
-      } 
-    }
-
+    }, uploader);
+    
+    close();
+    
     if (output != null) {
       return output.toByteArray();
     } else {
@@ -108,6 +106,31 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
    */
   public Upload getUploader() {
     return uploader;
+  }
+  
+  /**
+   * Closes the uploader component.
+   * The uploader should not be detached
+   * Immediately from the main application window
+   * in order to communicate upload progress.
+   * For this we will use a timer to differ schedule the detach
+   * event of the uploader component.
+   */
+  public void close() {
+    new Timer().schedule(new TimerTask() {
+
+      @Override
+      public void run() {
+        BackgroundThreadHandler.access(new Runnable() {
+
+          @Override
+          public void run() {
+            getApplication().detachComponent(uploader);
+            getApplication().push();
+          }
+        });
+      }
+    }, 200);
   }
   
   /**
@@ -136,15 +159,8 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   }
 
   @Override
-  public void uploadSucceeded(UploadSucceededEvent event) {
-    
-  }
-
-  @Override
   public void uploadFinished(UploadFinishedEvent event) {
-    synchronized (uploader) {
-      uploader.notify(); 
-    }
+    BackgroundThreadHandler.releaseLock(uploader);
   }
 
   @Override
@@ -156,8 +172,12 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   
   @Override
   public OutputStream receiveUpload(String filename, String mimeType) {
-    output = new ByteArrayOutputStream();
-    return output;
+    return output = new ByteArrayOutputStream();
+  }
+  
+  @Override
+  public void updateProgress(final long readBytes, final long contentLength) {
+    uploader.fireOnProgress(contentLength, readBytes);
   }
   
   /**

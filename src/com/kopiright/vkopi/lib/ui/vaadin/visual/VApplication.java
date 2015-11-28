@@ -38,7 +38,6 @@ import org.kopi.vaadin.addons.WelcomeViewListener;
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.ui.vaadin.base.FileUploader;
 import com.kopiright.vkopi.lib.visual.Application;
 import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
@@ -239,8 +238,6 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     mainWindow.setConnectedUser(getUserName());
     // mainWindow.setSizeFull();
     mainWindow.setModuleList(moduleMenu);
-    uploader = new FileUploader();
-    attachComponent(uploader.getUploader());
   }
   
   @Override
@@ -409,14 +406,6 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   }
   
   /**
-   * returns the file uploader.
-   * @return The file uploader.
-   */
-  public FileUploader getUploader() {
-    return uploader;
-  }
-  
-  /**
    * Verifies the configuration settings.
    */
   public void verifyConfiguration() {
@@ -570,10 +559,8 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   protected void gotoWelcomeView() {
     if (mainWindow != null) {
       // it should be attached to the application.
-      detachComponent(uploader.getUploader());
       AbstractSingleComponentContainer.removeFromParent(mainWindow);
       mainWindow = null;
-      uploader = null;
       menuTree = null;
       moduleMenu = null;
       localizationManager = null;
@@ -703,8 +690,6 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   private WelcomeView				welcomeView;
   private DModuleMenu				moduleMenu;
   private MainWindow				mainWindow;
-  //the uploader is a singleton per application instance.
-  private FileUploader				uploader;
   private int                                   askAnswer;
   
   // ---------------------------------------------------------------------
