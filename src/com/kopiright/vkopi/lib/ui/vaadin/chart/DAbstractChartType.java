@@ -41,6 +41,7 @@ import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
 import at.downdrown.vaadinaddons.highchartsapi.model.Margin;
 import at.downdrown.vaadinaddons.highchartsapi.model.ZoomType;
 import at.downdrown.vaadinaddons.highchartsapi.model.data.HighChartsData;
+import at.downdrown.vaadinaddons.highchartsapi.model.data.base.DoubleData;
 import at.downdrown.vaadinaddons.highchartsapi.model.data.base.IntData;
 import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptions;
 import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
@@ -322,7 +323,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
     if (value == null) {
       return null;
     } else if (value instanceof Fixed) {
-      return new BigDecimalData(((Fixed)value).toBigDecimal());
+      return new DoubleData(((Fixed)value).doubleValue());
     } else if (value instanceof Integer) {
       return new IntData(((Integer)value).intValue());
     } else {
