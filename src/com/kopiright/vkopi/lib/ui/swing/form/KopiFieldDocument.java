@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.ui.swing.form;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 
 import javax.swing.text.AttributeSet;
@@ -29,7 +30,6 @@ import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.form.ModelTransformer;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.ui.swing.base.Stateful;
-import com.kopiright.vkopi.lib.visual.VColor;
 
 /**
  * !!! NEED COMMENTS
@@ -141,11 +141,11 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
     return hasCriticalValue;
   }
 
-  public void setBgColor(VColor bgColor) {
+  public void setBgColor(Color bgColor) {
     this.bgColor = bgColor;
   }
 
-  public VColor getBgColor() {
+  public Color getBgColor() {
     return bgColor;
   }
 
@@ -172,7 +172,7 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
   private boolean               alert;
   private boolean               autofill = false;
   private boolean               hasCriticalValue;
-  private VColor                bgColor;
+  private Color                 bgColor;
   private VField		model;
   private ModelTransformer      transformer;
   /**

@@ -36,7 +36,6 @@ import javax.swing.UIManager;
 
 import com.kopiright.vkopi.lib.form.VColorField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
-import com.kopiright.vkopi.lib.visual.VColor;
 
 /**
  * DColorField is a panel composed in a color field and a label behind
@@ -199,7 +198,7 @@ public class DColorField extends DObjectField {
     super.updateFocus();
   }
   
-  public void setColor(VColor foreground, VColor background) {}
+  public void updateColor() {}
 
   /**
    * set blink state

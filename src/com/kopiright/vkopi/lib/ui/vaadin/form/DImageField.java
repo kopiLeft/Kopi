@@ -30,7 +30,6 @@ import org.kopi.vaadin.addons.ImageFieldListener;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.xkopi.lib.type.Date;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
@@ -125,7 +124,7 @@ public class DImageField extends DObjectField implements DropHandler, ImageField
   }
   
   @Override
-  public void setColor(VColor foreground, VColor background) {
+  public void updateColor() {
     // color properties are not set for an image field.
   }
   

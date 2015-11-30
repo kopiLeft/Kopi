@@ -22,7 +22,6 @@ package com.kopiright.vkopi.lib.ui.vaadin.form;
 import com.kopiright.vkopi.lib.form.AbstractFieldHandler;
 import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VFieldUI;
-import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.visual.VException;
 
 /**
@@ -120,16 +119,9 @@ public class DFieldHandler extends AbstractFieldHandler {
   }
   
   @Override
-  public void colorChanged(int r, final VColor foreground, final VColor background) {
-    final int         dispRow = getRowController().getBlockView().getDisplayLine(r);
-
-    if (dispRow != -1) {
-      if (getRowController().getDisplays() != null) {
-        getRowController().getDisplays()[dispRow].setColor(foreground, background);
-      }
-      if (getRowController().getDetailDisplay() != null) {
-        getRowController().getDetailDisplay().setColor(foreground, background);
-      }
-    }	
+  public void colorChanged(int r) {
+    if (getRowController().getBlockView().getDisplayLine(r) != -1) {
+      getRowController().fireColorHasChanged(r);
+    }
   }
 }

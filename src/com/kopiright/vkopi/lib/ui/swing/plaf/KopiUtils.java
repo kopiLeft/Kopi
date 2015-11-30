@@ -42,7 +42,7 @@ public class KopiUtils {
   public static void drawBackground(Graphics g, JTextComponent c, Rectangle clipRect) {
     if (c.getDocument() instanceof Stateful) {
       if (((Stateful) c.getDocument()).getBgColor() != null) {
-        g.setColor(new Color(((Stateful) c.getDocument()).getBgColor().getRGB()));
+        g.setColor(((Stateful) c.getDocument()).getBgColor());
       } else if (((Stateful) c.getDocument()).isAlert()) {
         g.setColor(color_alert);
       } else {

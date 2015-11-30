@@ -36,6 +36,7 @@ import com.kopiright.vkopi.lib.form.VImageField;
 import com.kopiright.vkopi.lib.form.VStringField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.visual.VException;
 
 /**
@@ -334,6 +335,48 @@ public abstract class DField extends Field implements UField, FieldListener {
     } else {
       return VConstants.ACS_SKIPPED;
     }
+  }
+  
+  /**
+   * Returns the field foreground color.
+   * @param at The desired line.
+   * @return The foreground color.
+   */
+  protected final VColor getForegroundAt(int at) {
+    if (model != null) {
+      return getModel().getForeground(getBlockView().getRecordFromDisplayLine(at));
+    } else {
+      return null;
+    }
+  }
+  
+  /**
+   * Returns the field background color.
+   * @param at The desired line.
+   * @return The background color.
+   */
+  protected final VColor getBackgroundAt(int at) {
+    if (model != null) {
+      return getModel().getBackground(getBlockView().getRecordFromDisplayLine(at));
+    } else {
+      return null;
+    }
+  }
+  
+  /**
+   * Returns the foreground color of the current data position.
+   * @return The foreground color of the current data position.
+   */
+  public final VColor getForeground() {
+    return getBackgroundAt(getPosition());
+  }
+  
+  /**
+   * Returns the background color of the current data position.
+   * @return The background color of the current data position.
+   */
+  public final VColor getBackground() {
+    return getBackgroundAt(getPosition());
   }
 
   // ----------------------------------------------------------------------

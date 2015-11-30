@@ -20,7 +20,6 @@
 package com.kopiright.vkopi.lib.ui.swing.form;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
@@ -48,25 +47,24 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.UndoManager;
 
+import com.kopiright.vkopi.lib.form.ModelTransformer;
 import com.kopiright.vkopi.lib.form.UTextField;
 import com.kopiright.vkopi.lib.form.VConstants;
 import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VStringField;
+import com.kopiright.vkopi.lib.ui.swing.base.TextSelecter;
 import com.kopiright.vkopi.lib.ui.swing.spellchecker.SpellChecker;
 import com.kopiright.vkopi.lib.ui.swing.spellchecker.SpellException;
-import com.kopiright.vkopi.lib.ui.swing.base.TextSelecter;
-import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
-import com.kopiright.vkopi.lib.visual.ApplicationContext;
-import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.ui.swing.visual.DMenuTree;
 import com.kopiright.vkopi.lib.ui.swing.visual.DWindow;
+import com.kopiright.vkopi.lib.ui.swing.visual.Utils;
+import com.kopiright.vkopi.lib.visual.ApplicationConfiguration;
+import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.PropertyException;
-import com.kopiright.vkopi.lib.ui.swing.visual.Utils;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
-import com.kopiright.vkopi.lib.form.ModelTransformer;
 
 /**
  * DTextField is a panel composed in a text field and an information panel
@@ -386,20 +384,19 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
   }
 
-  public void setColor(VColor foreground, VColor background) {
-    if (field != null) {
-      // if both fg and bg colors are null, the field will
-      // inherit the properties of the parent component
-      // according the JComponent javadoc
-      if (foreground != null) {
-        field.setForeground(new Color(foreground.getRGB()));
-      } else {
-        field.setForeground(null);
-      }
+  public void updateColor() {
+    // if both fg and bg colors are null, the field will
+    // inherit the properties of the parent component
+    // according the JComponent javadoc
+    if (getForeground() != null) {
+      field.setForeground(getForeground());
+    } else {
+      field.setForeground(null);
     }
     if (document != null) {
-      document.setBgColor(background);
+      document.setBgColor(getBackground());
     }
+    field.repaint();
   }
 
   /**

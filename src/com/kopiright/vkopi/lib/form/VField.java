@@ -86,6 +86,8 @@ public abstract class VField implements VConstants, VModel {
   public void setBlock(VBlock block) {
     this.block = block;
     this.dynAccess = new int[block.getBufferSize()];
+    this.foreground = new VColor[block.getBufferSize()];
+    this.background = new VColor[block.getBufferSize()];
     setAccess(-1);
   }
 
@@ -134,7 +136,7 @@ public abstract class VField implements VConstants, VModel {
             fireValueChanged(r);
           }
           public void accessChanged(int r) {}
-          public void colorChanged(int r, VColor foreground, VColor background) {}
+          public void colorChanged(int r) {}
         });
     }
   }
@@ -1635,7 +1637,9 @@ public abstract class VField implements VConstants, VModel {
    * @param background The background color.
    */
   public void setColor(int r, VColor foreground, VColor background) {
-    fireColorChanged(r, foreground, background);
+    this.foreground[r] = foreground;
+    this.background[r] = background;
+    fireColorChanged(r);
   }
   
   /**
@@ -1643,7 +1647,15 @@ public abstract class VField implements VConstants, VModel {
    * @param r The record number.
    */
   public void resetColor(int r) {
-    fireColorChanged(r, null, null);
+    setColor(r, null, null);
+  }
+  
+  public VColor getForeground(int r) {
+    return foreground[r];
+  }
+  
+  public VColor getBackground(int r) {
+    return background[r];
   }
 
   // ----------------------------------------------------------------------
@@ -2640,13 +2652,13 @@ public abstract class VField implements VConstants, VModel {
     }
   }
   
-  public void fireColorChanged(int r, VColor foreground, VColor background) {
+  public void fireColorChanged(int r) {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
 
       for (int i = listeners.length-2; i>=0; i-=2) {
         if (listeners[i]==FieldChangeListener.class) {
-          ((FieldChangeListener)listeners[i+1]).colorChanged(r, foreground, background);
+          ((FieldChangeListener)listeners[i+1]).colorChanged(r);
         }
       }
     }
@@ -2792,6 +2804,9 @@ public abstract class VField implements VConstants, VModel {
 
   private       VPosition       pos;
   private       VCommand[]      cmd;
+  
+  private       VColor[]        foreground;    // foreground colors for this field.
+  private       VColor[]        background;    // background colors for this field.
 
   public static final int              MDL_FLD_COLOR = 1;
   public static final int              MDL_FLD_IMAGE = 2;

@@ -519,6 +519,23 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       detailDisplay.updateAccess();
     }
   }
+  
+  /**
+   * Changes the color properties of a field.
+   */
+  public void fireColorHasChanged(int recno) {
+    int         rowInDisplay = blockView.getDisplayLine(recno);
+
+    if (displays != null) {
+      if (rowInDisplay != -1) {
+        // -1 means currently not displayed
+        displays[rowInDisplay].updateColor();
+      }
+    }
+    if (detailDisplay != null && detailDisplay.getPosition() == rowInDisplay) {
+      detailDisplay.updateColor();
+    }
+  }
 
   // ----------------------------------------------------------------------
   // DISPLAY UTILS
@@ -533,6 +550,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
         displays[i].updateFocus();
         displays[i].updateAccess();
         displays[i].updateText();
+        displays[i].updateColor();
       }
     }
     if (detailDisplay != null) {
@@ -550,6 +568,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       detailDisplay.updateFocus();
       detailDisplay.updateAccess();
       detailDisplay.updateText();
+      detailDisplay.updateColor();
     }
   }
 

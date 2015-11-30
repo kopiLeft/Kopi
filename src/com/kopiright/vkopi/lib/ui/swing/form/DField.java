@@ -20,6 +20,7 @@
 package com.kopiright.vkopi.lib.ui.swing.form;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -41,6 +42,7 @@ import com.kopiright.vkopi.lib.ui.swing.base.JFieldButton;
 import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.ui.swing.base.Utils;
 import com.kopiright.vkopi.lib.visual.KopiAction;
+import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.ui.swing.visual.SwingThreadHandler;
 import com.kopiright.vkopi.lib.visual.VException;
 
@@ -235,12 +237,42 @@ public abstract class DField extends JPanel implements UField {
   public final int getAccess() {
     return getAccessAt(getPosition());
   }
+  
+  public final Color getForeground() {
+    return getForegroundAt(getPosition());
+  }
+  
+  public final Color getBackground() {
+    return getBackgroundAt(getPosition());
+  }
 
   protected final int getAccessAt(int at) {
     if (getModel() != null) {
       return getModel().getAccess(model.getBlockView().getRecordFromDisplayLine(at));
     } else {
       return VConstants.ACS_SKIPPED;
+    }
+  }
+  
+  protected final Color getForegroundAt(int at) {
+    if (model != null) {
+      VColor            foreground;
+      
+      foreground = getModel().getForeground(model.getBlockView().getRecordFromDisplayLine(at));
+      return foreground == null ? null : new Color(foreground.getRGB());
+    } else {
+      return null;
+    }
+  }
+  
+  protected final Color getBackgroundAt(int at) {
+    if (model != null) {
+      VColor            background;
+      
+      background = getModel().getBackground(model.getBlockView().getRecordFromDisplayLine(at));
+      return background == null ? null : new Color(background.getRGB());
+    } else {
+      return null;
     }
   }
 

@@ -22,8 +22,6 @@ package com.kopiright.vkopi.lib.form;
 import java.io.Serializable;
 import java.util.EventListener;
 
-import com.kopiright.vkopi.lib.visual.VColor;
-
 public interface FieldChangeListener extends EventListener, Serializable {
 
   /**
@@ -54,8 +52,6 @@ public interface FieldChangeListener extends EventListener, Serializable {
    * Setting both the background and the foreground colors to
    * <code>null</code> will lead to reset the field color properties.
    * @param r The current record.
-   * @param foreground The foreground color.
-   * @param background The background color.
    */
-  void colorChanged(int r, VColor foreground, VColor background);
+  void colorChanged(int r);
 }

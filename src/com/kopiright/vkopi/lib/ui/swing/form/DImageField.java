@@ -34,7 +34,6 @@ import javax.swing.KeyStroke;
 
 import com.kopiright.vkopi.lib.form.VFieldUI;
 import com.kopiright.vkopi.lib.form.VImageField;
-import com.kopiright.vkopi.lib.visual.VColor;
 
 /**
  * DImageField is a panel composed in a Image field and a label behind
@@ -174,8 +173,7 @@ public class DImageField extends DObjectField {
     super.updateFocus();
   }
   
-  @Override
-  public void setColor(VColor foreground, VColor background) {}
+  public void updateColor() {}
 
   /**
    * set blink state
