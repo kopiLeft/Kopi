@@ -55,6 +55,7 @@ public class VTextField extends VStringField {
   public int getType() {
     return MDL_FLD_EDITOR;
   }
+  
   // ----------------------------------------------------------------------
   // INTERFACE DISPLAY
   // ----------------------------------------------------------------------
@@ -87,6 +88,7 @@ public class VTextField extends VStringField {
    * Sets the field value of given record.
    * Warning:	This method will become inaccessible to kopi users in next release
    * @kopi	inaccessible
+   * @see       #isPostgresDriverInterface()
    */
   public void setObject(int r, Object v) {
     if (v instanceof byte[]) {
@@ -108,12 +110,14 @@ public class VTextField extends VStringField {
    * Returns the specified tuple column as object of correct type for the field.
    * @param	query		the query holding the tuple
    * @param	column		the index of the column in the tuple
+   * 
+   * @see       #isPostgresDriverInterface()
    */
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    if (getBlock().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      return query.getByteArray(column);
+    if (isPostgresDriverInterface()) {
+      return super.retrieveQuery(query, column);
     } else {
       Blob        blob = query.getBlob(column);
 
@@ -148,49 +152,70 @@ public class VTextField extends VStringField {
 
   /**
    * Returns the field value of the current record as an object
+   * @see       #isPostgresDriverInterface()
    */
   public Object getObjectImpl(int r) {
     String	c = (String) super.getObjectImpl(r);
-    
+
     if (c == null) {
       return null;
     } else {
-      try {
-        return c.getBytes(ApplicationConfiguration.getConfiguration().isUnicodeDatabase() ? "UTF-8" : "ISO-8859-1");
-      } catch (UnsupportedEncodingException e) {
-        throw new InconsistencyException(e);
+      if (isPostgresDriverInterface()) {
+        return c;
+      } else {
+        try {
+          return c.getBytes(ApplicationConfiguration.getConfiguration().isUnicodeDatabase() ? "UTF-8" : "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+          throw new InconsistencyException(e);
+        }
       }
     }
   }
 
   /**
    * Returns the SQL representation of field value of given record.
+   * @see       #isPostgresDriverInterface()
    */
   public String getSqlImpl(int r) {
-    return "?";
+    if (isPostgresDriverInterface()) {
+      return super.getSqlImpl(r);
+    } else {
+      return "?";
+    }
   }
 
   /**
    * Returns the SQL representation of field value of given record.
    * Warning:	This method will become inaccessible to kopi users in next release
    * @kopi	inaccessible
+   * @see       #isPostgresDriverInterface()
    */
   public boolean hasLargeObject(int r) {
-    return true;
+    if (isPostgresDriverInterface()) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
    * Warning:	This method will become inaccessible to kopi users in next release
    * @kopi	inaccessible
+   * @see       #isPostgresDriverInterface()
    */
   public boolean hasBinaryLargeObject(int r) {
-    return true;
+    if (isPostgresDriverInterface()) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
    * Returns the SQL representation of field value of given record.
    * Warning:	This method will become inaccessible to kopi users in next release
    * @kopi	inaccessible
+   * @see       #isPostgresDriverInterface()
    */
   public InputStream getLargeObject(int r) {
     if (value[r] == null) {
@@ -198,5 +223,21 @@ public class VTextField extends VStringField {
     } else {
       return new ByteArrayInputStream((byte[])getObjectImpl(r));
     }
+  }
+  
+  /**
+   * Checks if we are running in a postgreSQL database.
+   * This check is done to treat the content of this field as String
+   * and not as large objects. In fact, postgreSQL large binary objects
+   * are not properly treated and we face many encoding problems.
+   * The getClob or getClob methods returns always wrong content for non UTF-8
+   * characters.
+   * A work around for this, is to handle the content of this field as {@link String}
+   * objects. This will not affect the content of the field even for non UTF-8 characters
+   * since they are retrieved as strings from the database. 
+   * @return {@code true} if the we are running in a postgreSQL context.
+   */
+  protected boolean isPostgresDriverInterface() {
+    return getBlock().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface;
   }
 }
