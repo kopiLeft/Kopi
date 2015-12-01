@@ -368,7 +368,7 @@ public abstract class DField extends Field implements UField, FieldListener {
    * @return The foreground color of the current data position.
    */
   public final VColor getForeground() {
-    return getBackgroundAt(getPosition());
+    return getForegroundAt(getPosition());
   }
   
   /**
