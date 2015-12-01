@@ -385,13 +385,8 @@ public class DTextField extends DField implements UTextField, VConstants {
   }
 
   public void updateColor() {
-    // if both fg and bg colors are null, the field will
-    // inherit the properties of the parent component
-    // according the JComponent javadoc
     if (getForeground() != null) {
       field.setForeground(getForeground());
-    } else {
-      field.setForeground(null);
     }
     if (document != null) {
       document.setBgColor(getBackground());
