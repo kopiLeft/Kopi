@@ -36,6 +36,7 @@ import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.Message;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.VActor;
+import com.kopiright.vkopi.lib.visual.VColor;
 import com.kopiright.vkopi.lib.visual.VCommand;
 import com.kopiright.vkopi.lib.visual.VDatabaseUtils;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -369,7 +370,25 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return newAccess;
   }
 
+  /**
+   * Sets the color properties of the given record.
+   * @param r The record number.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  public void setColor(int r, VColor foreground, VColor background) {
+    if (!isMulti()) {
+      // give up for non multi blocks. use VField#setColor(int,VColor,VColor)
+      // for simple blocks
+      return;
+    }
 
+    for (VField field : fields) {
+      if (!field.isInternal()) {
+        field.setColor(r, foreground, background);
+      }
+    }
+  }
 
   /**
    * sort the records to order it by the value of the
