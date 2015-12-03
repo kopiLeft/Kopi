@@ -109,6 +109,14 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   }
   
   /**
+   * Returns the uploaded file name.
+   * @return The uploaded file name.
+   */
+  public String getFilename() {
+    return filename;
+  }
+  
+  /**
    * Closes the uploader component.
    * The uploader should not be detached
    * Immediately from the main application window
@@ -168,6 +176,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     if (mimeType != null && !event.getMIMEType().startsWith(getParentMIMEType())) {
       uploader.interruptUpload();
     }
+    this.filename = event.getFilename();
   }
   
   @Override
@@ -341,8 +350,9 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   // DATA MEMBERS
   //--------------------------------------------
 
-  private final Upload				uploader;
-  private ByteArrayOutputStream			output;
-  private String				mimeType;
-  private List<FileUploadListener>		listeners;
+  private final Upload                  uploader;
+  private ByteArrayOutputStream         output;
+  private String                        mimeType;
+  private String                        filename;
+  private List<FileUploadListener>      listeners;
 }
