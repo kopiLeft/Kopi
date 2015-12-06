@@ -87,6 +87,10 @@ public class VKCommandBody extends VKPhylum {
    * @exception	PositionedError	Error catched as soon as possible
    */
   public JStatement genCode(Commandable commandable) {
+    for (int i = 0; i < triggers.length; i++) {
+      triggers[i].genCode(commandable);
+    }
+    
     return action.genAction(commandable, false);
   }
 

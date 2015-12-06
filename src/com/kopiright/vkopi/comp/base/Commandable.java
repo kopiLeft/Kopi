@@ -368,11 +368,7 @@ public class Commandable implements com.kopiright.vkopi.lib.form.VConstants, com
     for (int i = 0; i < commands.length; i++) {
       commands[i].genCode(this);
     }
-    for (int i = 0; i < commands.length; i++) {
-      if (commands[i].getBody() != null) {
-	commands[i].getBody().getCommandable().genCode(ref, body, false, false);
-      }
-    }
+    
     for (int i = 0; i < triggers.length; i++) {
       triggers[i].genCode(this);
     }
