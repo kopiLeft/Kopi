@@ -88,7 +88,7 @@ public class VKCommandBody extends VKPhylum {
    */
   public JStatement genCode(Commandable commandable) {
     for (int i = 0; i < triggers.length; i++) {
-      triggers[i].genCode(commandable);
+      triggers[i].genCode(getCommandable());
     }
     
     return action.genAction(commandable, false);
