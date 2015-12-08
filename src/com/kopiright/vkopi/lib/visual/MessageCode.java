@@ -102,6 +102,7 @@ public class MessageCode {
     String                      domain;
     String                      ident;
     String                      src;
+    MessageFormat               messageFormat;
 
     if (!keyPattern.matcher(key).matches()) {
       throw new InconsistencyException("Malformed message key '" + key + "'");
@@ -124,7 +125,8 @@ public class MessageCode {
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
-      return (withKey? (key + ": ") : "") + MessageFormat.format(format, params);
+      messageFormat = new MessageFormat(format, ApplicationContext.getDefaultLocale());
+      return (withKey? (key + ": ") : "") + messageFormat.format(params);
     } catch (InconsistencyException e) {
       ApplicationContext.reportTrouble("localize MessageCode",
                                        "com.kopiright.vkopi.lib.visual.MessageCode.getMessage(String key, Object[] params, boolean withKey)",
