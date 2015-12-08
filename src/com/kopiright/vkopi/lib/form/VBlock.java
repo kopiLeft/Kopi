@@ -389,6 +389,24 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
+  
+  /**
+   * Resets the color properties of the given record.
+   * @param r The record number.
+   */
+  public void resetColor(int r) {
+    if (!isMulti()) {
+      // give up for non multi blocks. use VField#resetColor(int)
+      // for simple blocks
+      return;
+    }
+    
+    for (VField field : fields) {
+      if (!field.isInternal()) {
+        field.resetColor(r);
+      }
+    }
+  }
 
   /**
    * sort the records to order it by the value of the
@@ -694,13 +712,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (rec < 0 || rec >= getBufferSize()) {
       return false;
     } else if (!isAccessible()) {
-    System.out.println("NOT ACCESSIBLE");
-    System.out.println("insert=" + noInsert());
-    System.out.println("fetched=" + isRecordFetched(rec));
-    System.out.println("changed=" + isRecordChanged(rec));
       return false;
     } else {
-      System.out.println("NO INSERT");
       return isRecordInsertAllowed(rec);
     }
   }
@@ -795,9 +808,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           break;
         }
       }
-      System.out.println("currentRec=" + currentRec);
-      System.out.println("found i=" + i);
-      System.out.println("buffer=" + getBufferSize());
       
       if (i == getBufferSize() || !isRecordAccessible(getDataPosition(i))) {
         throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));

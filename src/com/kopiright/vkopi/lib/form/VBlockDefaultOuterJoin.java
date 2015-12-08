@@ -41,7 +41,6 @@ public class VBlockDefaultOuterJoin {
     StringBuffer        joinBuffer = new StringBuffer("");
     VField              field;
      
-    System.out.println("ENTER ROOT:" + rootTable + " TABLE " + table);
     if (table == rootTable) {
       joinBuffer.append(tables[table] + " T" + table);
       addToJoinedTables(rootTable);
