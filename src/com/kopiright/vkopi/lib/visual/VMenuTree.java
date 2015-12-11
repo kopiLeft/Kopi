@@ -142,6 +142,13 @@ public class VMenuTree extends VWindow {
     actors[actor].setHandler(this);
     actors[actor].setEnabled(enabled);
   }
+  
+  /**
+   * Returns the actor having the given number.
+   */
+  public VActor getActor(int number) {
+    return actors[number];
+  }
 
   /**
    * Returns the ID of the current user

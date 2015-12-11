@@ -313,7 +313,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
 
   @Override
   public VMenuTree getMenu() {
-    return new VMenuTree(context);
+    return menuTree;
   }
 
   @Override

@@ -19,6 +19,7 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.visual;
 
+import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -35,8 +36,10 @@ import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.KopiAction;
 import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.Module;
+import com.kopiright.vkopi.lib.visual.UMenuTree;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VMenuTree;
+import com.kopiright.vkopi.lib.visual.VlibProperties;
 
 /**
  * A module menu implementation that uses the menu tree
@@ -44,7 +47,7 @@ import com.kopiright.vkopi.lib.visual.VMenuTree;
  * menu with vertical sub menus drops.
  */
 @SuppressWarnings("serial")
-public class DModuleMenu extends ModuleList implements ModuleListListener {
+public class DModuleMenu extends ModuleList implements ModuleListListener, UMenuTree {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -56,6 +59,7 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
    */
   public DModuleMenu(VMenuTree model) {
     this.model = model;
+    model.setDisplay(this);
     modules = new HashMap<Integer, Module>();
     waitIndicator = new WaitWindow();
     setAutoOpen(false);
@@ -64,6 +68,7 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
     buildModuleMenu(model.getRoot(), null);
     fillModulesMap();
     addModuleListListener(this);
+    maybeAddShortcuts();
   }
 
   //---------------------------------------------------
@@ -90,12 +95,28 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
     Module			module;
     ModuleItem			item;
     
-    module = (Module)(node.getUserObject());
+    module = (Module) node.getUserObject();
+    item = toModuleItem(module, parent);
+    // build module children
+    for (int i = 0; i < node.getChildCount(); i++) {
+      toModuleItem((DefaultMutableTreeNode) node.getChildAt(i), item);
+    }
+  }
+  
+  /**
+   * Converts the given {@link Module} to a {@link ModuleItem}
+   * @param module The {@link Module} object.
+   * @param parent The parent {@link ModuleItem} that holds the created menu item.
+   * @return The created item for the given module.
+   */
+  protected ModuleItem toModuleItem(Module module, ModuleItem parent) {
+    ModuleItem                  item;
+    
     if (parent != null) {
       item = parent.addItem(String.valueOf(module.getId()), // module ID.
-	                    module.getDescription(), // module caption
-	                    null, // item help are not injected for z-index issues.
-	                    module.getObject() != null); // leaf module ?
+                            module.getDescription(), // module caption
+                            null, // item help are not injected for z-index issues.
+                            module.getObject() != null); // leaf module ?
     } else {
       // add it as a root module
       item = addItem(String.valueOf(module.getId()), // module ID.
@@ -103,10 +124,8 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
                      null, // item help are not injected for z-index issues.
                      module.getObject() != null);
     }
-    // build module children
-    for (int i = 0; i < node.getChildCount(); i++) {
-      toModuleItem((DefaultMutableTreeNode) node.getChildAt(i), item);
-    }
+    
+    return item;
   }
   
   /**
@@ -141,47 +160,44 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
    * @param module The module to be launched.
    */
   protected void launchModule(final Module module) {
-    new Thread(new KopiAction("menu_form_started2") {
+    performAsyncAction(new KopiAction("menu_form_started2") {
 
       @Override
       public void execute() throws VException {
-	setWaitDialog();
-	module.run(model.getDBContext());
-	unsetWaitDialog();
-      }
-    }).start();;
-  }
-  
-  /**
-   * Sets the wait info.
-   */
-  protected void setWaitDialog() {
-    BackgroundThreadHandler.access(new Runnable() {
-
-      @Override
-      public void run() {
-	waitIndicator.setText(MessageCode.getMessage("VIS-00067"));
-	getApplication().attachComponent(waitIndicator);
-	getApplication().push();
+        setWaitInfo(MessageCode.getMessage("VIS-00067"));
+        module.run(model.getDBContext());
+        unsetWaitInfo();
       }
     });
   }
   
   /**
-   * Unsets the wait info.
+   * Adds shortcuts menu item if necessary
    */
-  protected void unsetWaitDialog() {
-    BackgroundThreadHandler.access(new Runnable() {
+  protected final void maybeAddShortcuts() {
+    if (!getModel().getShortcutsID().isEmpty()) {
+      ModuleItem          favoriteItem;
 
-      @Override
-      public void run() {
-	waitIndicator.setText(null);
-	getApplication().detachComponent(waitIndicator);
-	getApplication().push();
+      favoriteItem = addItem(FAVORITES_ITEM_ID, VlibProperties.getString("toolbar-title"), null, false);
+      for (int i = 0; i < ((VMenuTree) getModel()).getShortcutsID().size() ; i++) {
+        int       id = getModel().getShortcutsID().get(i).intValue();
+
+        for (int j = 0; j < getModel().getModuleArray().length; j++) {
+          if (getModel().getModuleArray()[j].getId() == id) {
+            addShortcut(getModel().getModuleArray()[j], favoriteItem);
+          }
+        }
       }
-    });
+    }
   }
   
+  /**
+   * Adds the given module to favorites
+   * @param module The module to be added to book mark.
+   */
+  protected final void addShortcut(Module module, ModuleItem parent) {
+    toModuleItem(module, parent);
+  }
   
   /**
    * Returns the current application instance.
@@ -207,10 +223,131 @@ public class DModuleMenu extends ModuleList implements ModuleListListener {
   }
 
   //---------------------------------------------------
+  // MENU TREE IMPLEMENTATION
+  //---------------------------------------------------
+  
+  @Override
+  public void run() throws VException {}
+
+  @Override
+  public void setTitle(String title) {}
+
+  @Override
+  public void setInformationText(String text) {}
+
+  @Override
+  public void setTotalJobs(int totalJobs) {}
+
+  @Override
+  public void setCurrentJob(int currentJob) {}
+
+  @Override
+  public void updateWaitDialogMessage(String message) {}
+
+  @Override
+  public void closeWindow() {
+    getApplication().logout();
+  }
+
+  @Override
+  public void setWindowFocusEnabled(boolean enabled) {}
+
+  @Override
+  public void performBasicAction(KopiAction action) {
+    action.run();
+  }
+
+  @Override
+  public void performAsyncAction(KopiAction action) {
+    new Thread(action).start();
+  }
+
+  @Override
+  public void modelClosed(int type) {}
+
+  @Override
+  public void setWaitDialog(String message, int maxtime) {}
+  
+  @Override
+  public void unsetWaitDialog() {}
+
+  @Override
+  public void setWaitInfo(final String message) {
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        waitIndicator.setText(message);
+        getApplication().attachComponent(waitIndicator);
+        getApplication().push();
+      }
+    });
+  }
+
+  @Override
+  public void unsetWaitInfo() {
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        waitIndicator.setText(null);
+        getApplication().detachComponent(waitIndicator);
+        getApplication().push();
+      }
+    });
+  }
+
+  @Override
+  public void setProgressDialog(String message, int totalJobs) {}
+
+  @Override
+  public void unsetProgressDialog() {}
+
+  @Override
+  public void fileProduced(File file) {}
+
+  @Override
+  public UTree getTree() {
+    return null;
+  }
+
+  @Override
+  public UBookmarkPanel getBookmark() {
+    return null;
+  }
+
+  @Override
+  public void launchSelectedForm() throws VException {}
+
+  @Override
+  public void addSelectedElement() {}
+
+  @Override
+  public void setMenu() {}
+
+  @Override
+  public void removeSelectedElement() {}
+
+  @Override
+  public void gotoShortcuts() {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        doItemAction(FAVORITES_ITEM_ID);
+      }
+    });
+  }
+
+  @Override
+  public void showApplicationInformation(String message) {}
+
+  //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
   private final VMenuTree			model;
   private final HashMap<Integer, Module> 	modules;
   private final WaitWindow			waitIndicator;
+  private static final String                   FAVORITES_ITEM_ID = "favorites";
 }
