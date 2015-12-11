@@ -43,6 +43,7 @@ import com.kopiright.vkopi.lib.ui.vaadin.base.Utils;
 import com.kopiright.vkopi.lib.visual.VlibProperties;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.Styles;
+import com.vaadin.ui.UI;
 
 /**
  * The <code>DTextField</code> is the vaadin implementation
@@ -285,6 +286,8 @@ public class DTextField extends DField implements UTextField, VConstants {
 	}
 	
 	field.setFocus(true);
+	// get the focus as soon as possible
+	UI.getCurrent().push();
       }
     });
   }

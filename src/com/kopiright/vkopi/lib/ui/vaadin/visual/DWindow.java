@@ -217,6 +217,8 @@ public abstract class DWindow extends org.kopi.vaadin.addons.Window implements U
    * @param asynch Should the action run asynchronously ?
    */
   private void performActionImpl(final KopiAction action, boolean asynch) {
+    BackgroundThreadHandler.updateUI(); // send pending tasks before
+    
     if (inAction == true) {
       return;
     }
