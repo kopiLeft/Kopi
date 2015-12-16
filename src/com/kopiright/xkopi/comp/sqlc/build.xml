@@ -19,19 +19,19 @@
                    DefaultSqlVisitor.java Main.java 
                    SqlContext.java SqlcPrettyPrinter.java SqlVisitor.java 
                    DBChecker.java SCompilationUnitContext.java SqlChecker.java
-                   AbstractCaseExpression.java AndCondition.java ArrayPrecision.java 
+                   AndCondition.java ArrayPrecision.java 
                    Assignment.java BetweenPredicate.java 
                    BinaryExpression.java BinarySearchCondition.java 
-                   BlobType.java BoolType.java BooleanLiteral.java CaseExpression.java 
+                   BlobType.java BoolType.java BooleanLiteral.java
                    CastPrimary.java CharType.java ClobType.java 
                    ComparisonPredicate.java CorrespondingSpec.java CountExpression.java 
-                   DecodeExpression.java DbpipeExpression.java 
+                   DbpipeExpression.java 
                    DefaultValuesInsertSource.java 
                    DeleteStatement.java DoubleType.java ExistsPredicate.java 
                    Expression.java ExpressionList.java ExpressionPredicate.java 
                    ExtendedPredicate.java FieldNameList.java FieldReference.java 
                    FloatType.java FromClause.java 
-                   GroupByClause.java HavingClause.java IfExpression.java 
+                   GroupByClause.java HavingClause.java
                    InsertSource.java InsertStatement.java IntegerLiteral.java 
                    IntegerType.java IntersectSpec.java IntersectTableReference.java 
                    IntersectTableTerm.java IsPredicate.java JdbcDateLiteral.java 

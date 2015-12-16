@@ -238,18 +238,6 @@ public class SqlcPrettyPrinter implements SqlVisitor {
   }
 
   /**
-   * Visits a CaseExpression node.
-   */
-  public void visitCaseExpression(CaseExpression self, AbstractCaseExpression cases)
-    throws PositionedError
-  {
-    print("CASE");
-    println();
-    cases.accept(this);
-    print("END");
-  }
-
-  /**
    * Visits a CastPrimary node.
    */
   public void visitCastPrimary(CastPrimary self, Expression left, Type right)
@@ -493,57 +481,6 @@ public class SqlcPrettyPrinter implements SqlVisitor {
     condition.accept(this);
     pos -= TAB_AND_HALF;
     println();
-  }
-
-  /**
-   * Visits a IfExpression node.
-   */
-  public void visitIfExpression(IfExpression self, SearchCondition condition, Expression thenExpr, Expression elseExpr)
-    throws PositionedError
-  {
-    print("IF");
-    pos += TAB_SIZE;
-    condition.accept(this);
-    pos -= TAB_SIZE;
-
-    println();
-    print("THEN");
-    pos += TAB_SIZE;
-    thenExpr.accept(this);
-    pos -= TAB_SIZE;
-
-    println();
-    print("ELSE");
-    pos += TAB_SIZE;
-    elseExpr.accept(this);
-    pos -= TAB_SIZE;
-
-    println();
-    print("FI");
-  }
-
-  /**
-   * Visits decode a expression
-   */
-  public void visitDecodeExpression(DecodeExpression self,
-                                    Expression checkExpr,
-                                    Expression[][] searchResult,
-                                    Expression defaultExpr)
-    throws PositionedError
-  {
-    print("DECODE(");
-    checkExpr.accept(this);
-    if (searchResult != null) {
-      for (int i = 0; i < searchResult.length; i++) {
-	print(", ");
-        searchResult[i][0].accept(this);
-	print(", ");
-        searchResult[i][1].accept(this);
-      }
-    }
-    print(", ");
-    defaultExpr.accept(this);
-    print(")");
   }
 
   /**
@@ -895,6 +832,8 @@ public class SqlcPrettyPrinter implements SqlVisitor {
   public void visitSearchedCaseExpression(SearchedCaseExpression self, ArrayList conditions, Expression elseExpr)
     throws PositionedError
   {
+    print("CASE");
+    println();
     for (int i = 0; i < conditions.size(); i++) {
       ((SearchedWhenClause)conditions.get(i)).accept(this);
       println();
@@ -905,6 +844,7 @@ public class SqlcPrettyPrinter implements SqlVisitor {
       elseExpr.accept(this);
       pos -= TAB_SIZE;
       println();
+    print("END");
     }
   }
 
@@ -1093,6 +1033,8 @@ public class SqlcPrettyPrinter implements SqlVisitor {
   public void visitSimpleCaseExpression(SimpleCaseExpression self, Expression expr, ArrayList conditions, Expression elseExpr)
     throws PositionedError
   {
+    print("CASE");
+    println();
     pos += TAB_SIZE;
     expr.accept(this);
     pos -= TAB_SIZE;
@@ -1108,6 +1050,7 @@ public class SqlcPrettyPrinter implements SqlVisitor {
       pos -= TAB_SIZE;
       println();
     }
+    print("END");
   }
 
   /**

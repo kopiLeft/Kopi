@@ -34,14 +34,12 @@
 @literal	EXCLUSIVE
 @literal	EXISTS
 @literal	FALSE
-@literal	FI
 @literal	FLOAT
 @literal	FOR
 @literal	FROM
 @literal	FULL
 @literal	GROUP
 @literal	HAVING
-@literal	IF
 @literal	IN
 @literal	INCLUSIVE
 @literal	INSENSITIVE

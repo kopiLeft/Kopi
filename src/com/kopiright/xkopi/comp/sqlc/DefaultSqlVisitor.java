@@ -127,15 +127,6 @@ public class DefaultSqlVisitor implements SqlVisitor {
   }
 
   /**
-   * Visits a CaseExpression node.
-   */
-  public void visitCaseExpression(CaseExpression self, AbstractCaseExpression cases)
-    throws PositionedError
-  {
-    cases.accept(this);
-  }
-
-  /**
    * Visits a CastPrimary node.
    */
   public void visitCastPrimary(CastPrimary self, Expression left, Type right)
@@ -308,36 +299,6 @@ public class DefaultSqlVisitor implements SqlVisitor {
     throws PositionedError
   {
     condition.accept(this);
-  }
-
-  /**
-   * Visits a IfExpression node.
-   */
-  public void visitIfExpression(IfExpression self, SearchCondition condition, Expression thenExpr, Expression elseExpr)
-    throws PositionedError
-  {
-    condition.accept(this);
-    thenExpr.accept(this);
-    elseExpr.accept(this);
-  }
-
-  /**
-   * Visits a decode expression
-   */
-  public void visitDecodeExpression(DecodeExpression self,
-                                    Expression checkExpr,
-                                    Expression[][] searchResult,
-                                    Expression defaultExpr)
-    throws PositionedError
-  {
-    checkExpr.accept(this);
-    if (searchResult != null) {
-      for (int i = 0; i < searchResult.length; i++) {
-        searchResult[i][0].accept(this);
-        searchResult[i][1].accept(this);
-      }
-    }
-    defaultExpr.accept(this);
   }
 
   /**

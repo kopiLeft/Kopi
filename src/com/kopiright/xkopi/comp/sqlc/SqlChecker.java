@@ -191,18 +191,6 @@ public class SqlChecker implements SqlVisitor {
   }
 
   /*
-   * Visits CaseExpression
-   */
-  public void visitCaseExpression(CaseExpression self,
-                                  AbstractCaseExpression cases)
-    throws PositionedError
-  {
-    current.append("CASE ");
-    cases.accept(this);
-    current.append(" END");
-  }
-
-  /*
    * Visits CastPrimary
    */
   public void visitCastPrimary(CastPrimary self, Expression left, Type right)
@@ -453,54 +441,6 @@ public class SqlChecker implements SqlVisitor {
     current.append("HAVING ");
     condition.accept(this);
     current.append(" ");
-  }
-
-  /*
-   * Visits IfExpression
-   */
-  public void visitIfExpression(IfExpression self,
-                                SearchCondition condition,
-                                Expression thenExpr,
-                                Expression elseExpr)
-    throws PositionedError
-  {
-    current.append("IF ");
-    condition.accept(this);
-
-    current.append(" ");
-    current.append("THEN ");
-    thenExpr.accept(this);
-
-    current.append(" ");
-    current.append("ELSE ");
-    elseExpr.accept(this);
-
-    current.append(" ");
-    current.append("FI");
-  }
-
-  /**
-   * Visits decode a expression
-   */
-  public void visitDecodeExpression(DecodeExpression self,
-                                    Expression checkExpr,
-                                    Expression[][] searchResult,
-                                    Expression defaultExpr)
-    throws PositionedError
-  {
-    current.append("DECODE(");
-    checkExpr.accept(this);
-    if (searchResult != null) {
-      for (int i = 0; i < searchResult.length; i++) {
-	current.append(", ");
-        searchResult[i][0].accept(this);
-	current.append(", ");
-        searchResult[i][1].accept(this);
-      }
-    }
-    current.append(", ");
-    defaultExpr.accept(this);
-    current.append(")");
   }
 
   /*
@@ -882,6 +822,7 @@ public class SqlChecker implements SqlVisitor {
                                           Expression elseExpr)
     throws PositionedError
   {
+    current.append("CASE ");
     for (int i = 0; i < conditions.size(); i++) {
       ((SearchedWhenClause)conditions.get(i)).accept(this);
       current.append(" ");
@@ -891,6 +832,7 @@ public class SqlChecker implements SqlVisitor {
       elseExpr.accept(this);
       //      println();
     }
+    current.append(" END");
   }
 
   /*
@@ -1097,6 +1039,7 @@ public class SqlChecker implements SqlVisitor {
                                         Expression elseExpr)
     throws PositionedError
   {
+    current.append("CASE ");
     expr.accept(this);
     current.append(" ");
     for (int i = 0; i < conditions.size(); i++) {
@@ -1108,6 +1051,7 @@ public class SqlChecker implements SqlVisitor {
       elseExpr.accept(this);
       current.append(" ");
     }
+    current.append(" END");
   }
 
   /*

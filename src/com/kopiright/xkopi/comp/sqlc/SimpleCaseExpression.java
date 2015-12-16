@@ -26,7 +26,7 @@ import com.kopiright.compiler.base.TokenReference;
 /**
  * This class represents a simple case expression
  */
-public class SimpleCaseExpression extends AbstractCaseExpression {
+public class SimpleCaseExpression extends Expression {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS

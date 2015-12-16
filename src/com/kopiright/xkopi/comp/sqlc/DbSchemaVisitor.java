@@ -173,18 +173,6 @@ public class DbSchemaVisitor implements SqlVisitor {
   }
 
   /**
-   * Visits a CaseExpression node.
-   */
-  public void visitCaseExpression(CaseExpression self, AbstractCaseExpression cases)
-    throws PositionedError
-  {
-//     print("CASE");
-//     println();
-    cases.accept(this);
-//     print("END");
-  }
-
-  /**
    * Visits a CastPrimary node.
    */
   public void visitCastPrimary(CastPrimary self, Expression left, Type right)
@@ -428,74 +416,28 @@ public class DbSchemaVisitor implements SqlVisitor {
   }
 
   /**
-   * Visits a IfExpression node.
+   * Visits a InsertStatement node.
    */
-  public void visitIfExpression(IfExpression self, SearchCondition condition, Expression thenExpr, Expression elseExpr)
+  public void visitInsertStatement(InsertStatement self, String ident, FieldNameList fields, InsertSource source)
     throws PositionedError
   {
-//     print("IF");
-//     pos += TAB_SIZE;
-    condition.accept(this);
-//     pos -= TAB_SIZE;
-
-//     println();
-//     print("THEN");
-//     pos += TAB_SIZE;
-    thenExpr.accept(this);
-//     pos -= TAB_SIZE;
-
-//     println();
-//     print("ELSE");
-//     pos += TAB_SIZE;
-    elseExpr.accept(this);
-//     pos -= TAB_SIZE;
-
-//     println();
-//     print("FI");
-  }
-
-  /**
-   * Visits a decode expression
-   */
-  public void visitDecodeExpression(DecodeExpression self,
-                                    Expression checkExpr,
-                                    Expression[][] searchResult,
-                                    Expression defaultExpr)
-    throws PositionedError
-  {
-    checkExpr.accept(this);
-    if (searchResult != null) {
-      for (int i = 0; i < searchResult.length; i++) {
-        searchResult[i][0].accept(this);
-        searchResult[i][1].accept(this);
-      }
+    currentQuery = new StringBuffer("INSERT INTO " + ident);
+    // 	pos += TAB_SIZE;
+    if (fields != null) {
+      currentQuery.append("(");
+      fields.accept(this);
+      currentQuery.append(")");
     }
-    defaultExpr.accept(this);
-  }
-
-    /**
-     * Visits a InsertStatement node.
-     */
-    public void visitInsertStatement(InsertStatement self, String ident, FieldNameList fields, InsertSource source)
-	throws PositionedError
-    {
-	currentQuery = new StringBuffer("INSERT INTO " + ident);
-// 	pos += TAB_SIZE;
-	if (fields != null) {
-	    currentQuery.append("(");
-	    fields.accept(this);
-	    currentQuery.append(")");
-	}
-// 	println();
-// 	pos -= TAB_SIZE;
-	source.accept(this);
-// 	System.out.println("Requete insert:\n" +currentQuery);
-	try{
-	    stmt.executeUpdate(currentQuery.toString());
-	}catch(SQLException e){
-	    e.printStackTrace();
-	}
+    // 	println();
+    // 	pos -= TAB_SIZE;
+    source.accept(this);
+    // 	System.out.println("Requete insert:\n" +currentQuery);
+    try{
+      stmt.executeUpdate(currentQuery.toString());
+    } catch(SQLException e){
+      e.printStackTrace();
     }
+  }
 
   /**
    * Visits a IntegerLiteral node.

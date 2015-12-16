@@ -205,20 +205,15 @@ sBetweenQualifier []
 ;
 
 sCaseExpression []
-  returns [CaseExpression self = null]
-{
-  AbstractCaseExpression        p1;
-  TokenReference                sourceRef = buildTokenReference();
-}
+  returns [Expression self = null]
 :
   "CASE"
   (
-    p1 = sSearchedCaseExpression[]
+    self = sSearchedCaseExpression[]
   |
-    p1 = sSimpleCaseExpression[]
+    self = sSimpleCaseExpression[]
   )
   "END"
-    { self = new CaseExpression(sourceRef,  p1); }
 ;
 
 sCorrespondingSpec []
@@ -451,9 +446,9 @@ sIdentifier []
  * This is not parsable in a straightforward way by a LL(1) parser
  */
 sDecodeExpression []
-  returns [DecodeExpression self = null]
+  returns [Expression self = null]
 {
-  Vector                container = new Vector();
+  ArrayList             container = new ArrayList();
   Expression            p1;
   Expression            p2;
   TokenReference        sourceRef = buildTokenReference();
@@ -463,53 +458,49 @@ sDecodeExpression []
   p1 = sExpression[]            // check expression
   COMMA p2 = sExpression[]      // default if there are no search expressions, first search otherwise
     {
-      container.addElement(p1);
-      container.addElement(p2);
+      container.add(p1);
+      container.add(p2);
     }
   (
     COMMA p1 = sExpression[]
     COMMA p2 = sExpression[]
       {
-        container.addElement(p1);
-        container.addElement(p2);
+        container.add(p1);
+        container.add(p2);
       }
   )*
   RPAREN
     {
       Expression        checkExpr;
-      Vector            searchResult;
+      ArrayList         whenClauses;
       Expression        defaultExpr;
 
-      checkExpr = (Expression)container.elementAt(0);
-      searchResult = new Vector();
+      checkExpr = (Expression)container.get(0);
+      whenClauses = new ArrayList();
       for (int i = 1; i < container.size() - 1; i += 2) {
-        searchResult.addElement(new Expression[]{ (Expression)container.elementAt(i), (Expression)container.elementAt(i + 1) });
+        Expression      searchExpr;
+        Predicate       condition;
+
+        searchExpr = (Expression)container.get(i);
+        if (searchExpr instanceof NullLiteral) {
+          condition = new IsPredicate(searchExpr.getTokenReference(),
+                                      new ExpressionPredicate(checkExpr.getTokenReference(), checkExpr),
+                                      false);
+        } else {
+          condition = new ComparisonPredicate(searchExpr.getTokenReference(),
+                                              new ExpressionPredicate(checkExpr.getTokenReference(), checkExpr),
+                                              new ExpressionPredicate(searchExpr.getTokenReference(), searchExpr),
+                                              "=");
+        }
+        whenClauses.add(new SearchedWhenClause(condition.getTokenReference(),
+                                               new SimpleSearchCondition(condition.getTokenReference(), condition),
+                                               (Expression)container.get(i + 1)));
       }
-      defaultExpr = (Expression)container.elementAt(container.size() - 1);
+      defaultExpr = (Expression)container.get(container.size() - 1);
 
-      self = new DecodeExpression(sourceRef,
-                                  checkExpr,
-                                  (Expression[][])Utils.toArray(searchResult, Expression[].class),
-                                  defaultExpr);
-    }
-;
-
-sIfExpression []
-  returns [IfExpression self = null]
-{
-  SearchCondition       p1;
-  Expression            p2;
-  Expression            p3;
-  TokenReference        sourceRef = buildTokenReference();
-}
-:
-  "IF" p1 = sSearchCondition[]
-  "THEN" p2 = sExpression[]
-  "ELSE" p3 = sExpression[]
-  "FI"
-    { 
-      reportTrouble(new CWarning(sourceRef, SqlcMessages.IF_EXPR));
-      self = new IfExpression(sourceRef, p1, p2, p3); 
+      self = new SearchedCaseExpression(sourceRef,
+                                        whenClauses,
+                                        defaultExpr);
     }
 ;
 
@@ -1003,8 +994,6 @@ sSimplePrimary []
   self = sFieldReference[]
 |
   self = sSubTableExpression[]
-|
-  self = sIfExpression[]
 |
   self = sDecodeExpression[]
 |

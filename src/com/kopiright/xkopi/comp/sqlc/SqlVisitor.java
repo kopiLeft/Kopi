@@ -463,30 +463,6 @@ public interface SqlVisitor {
     throws PositionedError;
 
   /**
-   * Visits if expression
-   * @param	condition	           the if condition
-   * @param	thenExpr	           the Expression for then
-   * @param	elseExpr	           the Expression for else
-   */
-  void visitIfExpression(IfExpression self,
-			 SearchCondition condition,
-			 Expression thenExpr,
-			 Expression elseExpr)
-    throws PositionedError;
-
-  /**
-   * Visits decode a expression
-   * @param	checkExpr	           the Sql Expression for the comparison
-   * @param	searchResult	           the array of search-result pairs
-   * @param	defaultExpr	           the Sql Expression for default value
-   */
-  void visitDecodeExpression(DecodeExpression self,
-                             Expression checkExpr,
-                             Expression[][] searchResult,
-                             Expression defaultExpr)
-    throws PositionedError;
-
-  /**
    * Visits the SimpleWhenClause
    * @param	whenExpr	           the Sql Expression for the when
    * @param	thenExpr	           the Sql Expression for the else
@@ -526,13 +502,6 @@ public interface SqlVisitor {
   void visitSearchedCaseExpression(SearchedCaseExpression self,
 				   ArrayList conditions,
 				   Expression elseExpr)
-    throws PositionedError;
-
-  /**
-   * Visits the CaseExpression
-   * @param	cases
-   */
-  void visitCaseExpression(CaseExpression self, AbstractCaseExpression cases)
     throws PositionedError;
 
   /**

@@ -34,22 +34,23 @@ SCANNER1 =	Sqlc
 # Compiler classes
 JAVAFILES +=	DefaultSqlVisitor Main SqlcScanner			\
 		SqlContext SqlcPrettyPrinter				\
-		SqlVisitor DBChecker SCompilationUnitContext Constants SqlChecker
+		SqlVisitor DBChecker SCompilationUnitContext		\
+		Constants SqlChecker
 
 # Syntax tree classes
-JAVAFILES +=	AbstractCaseExpression AndCondition ArrayPrecision	\
+JAVAFILES +=	AndCondition ArrayPrecision				\
 		Assignment BetweenPredicate				\
 		BinaryExpression BinarySearchCondition 			\
-		BlobType BoolType BooleanLiteral CaseExpression 	\
+		BlobType BoolType BooleanLiteral		 	\
 		CastPrimary CharType ClobType				\
 		ComparisonPredicate CorrespondingSpec CountExpression	\
-		DecodeExpression DbpipeExpression			\
+		DbpipeExpression					\
 		DefaultValuesInsertSource				\
 		DeleteStatement DoubleType ExistsPredicate		\
 		Expression ExpressionList ExpressionPredicate		\
 		ExtendedPredicate FieldNameList FieldReference		\
 		FloatType FromClause					\
-		GroupByClause HavingClause IfExpression			\
+		GroupByClause HavingClause				\
 		InsertSource InsertStatement IntegerLiteral		\
 		IntegerType IntersectSpec IntersectTableReference	\
 		IntersectTableTerm IsPredicate JdbcDateLiteral		\

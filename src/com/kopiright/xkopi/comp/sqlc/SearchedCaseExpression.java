@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
 
-public class SearchedCaseExpression extends AbstractCaseExpression {
+public class SearchedCaseExpression extends Expression {
 
   // ----------------------------------------------------------------------
   // CONSTRUCTORS

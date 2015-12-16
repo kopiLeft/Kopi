@@ -412,8 +412,6 @@ sSimplePrimary []
 |
   self = sSubTableExpression[]
 |
-  self = sIfExpression[]
-|
   self = sDecodeExpression[]
 |
   self = sCaseExpression[]
