@@ -34,7 +34,6 @@ import org.kopi.vaadin.addons.WaitWindow;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
 import com.kopiright.vkopi.lib.visual.KopiAction;
-import com.kopiright.vkopi.lib.visual.MessageCode;
 import com.kopiright.vkopi.lib.visual.Module;
 import com.kopiright.vkopi.lib.visual.UMenuTree;
 import com.kopiright.vkopi.lib.visual.VException;
@@ -164,7 +163,7 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
 
       @Override
       public void execute() throws VException {
-        setWaitInfo(MessageCode.getMessage("VIS-00067"));
+        setWaitInfo(VlibProperties.getString("menu_form_started"));
         module.run(model.getDBContext());
         unsetWaitInfo();
       }

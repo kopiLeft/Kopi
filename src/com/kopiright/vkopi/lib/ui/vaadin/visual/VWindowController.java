@@ -82,7 +82,13 @@ public class VWindowController extends WindowController {
 	  }
 	}
       } catch (VException e) {
-	throw new VRuntimeException(e.getMessage(), e);
+        if (e.getMessage() != null) {
+          model.error(e.getMessage());
+        }
+      } catch (VRuntimeException e) {
+	if (e.getMessage() != null) {
+          model.error(e.getMessage());
+        }
       }
     }
   }
