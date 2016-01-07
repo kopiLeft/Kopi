@@ -105,7 +105,7 @@ public class PostgresDriverInterface extends DriverInterface {
     if (user == null) {
       user = conn.getMetaData().getUserName();
     } 
-    executeSQL(conn, "ALTER USER " + user + " WITH PASSWORD " + newPassword);
+    executeSQL(conn, "ALTER USER " + user + " WITH PASSWORD '" + newPassword + "'");
   }
 
   /**
