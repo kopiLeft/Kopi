@@ -101,6 +101,10 @@ public class PostgresDriverInterface extends DriverInterface {
                              String newPassword)
     throws SQLException
   {
+    // if user is not provided => get the connected user
+    if (user == null) {
+      user = conn.getMetaData().getUserName();
+    } 
     executeSQL(conn, "ALTER USER " + user + " WITH PASSWORD " + newPassword);
   }
 
