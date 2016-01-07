@@ -24,6 +24,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.xkopi.lib.base.DBContext;
 import com.kopiright.xkopi.lib.base.DBException;
@@ -53,6 +56,22 @@ public class DBUtils {
     } catch (SQLException exc) {
       System.err.println(exc.getMessage());
     }
+  }
+
+  /**
+   * Checks if the given SQL statement contains "FOR UPDATE"
+   * keyword.
+   */
+  public static boolean isSelectForUpdate(String sql) {
+    String      patternStr = "FOR *UPDATE";
+    Pattern     pattern = Pattern.compile(patternStr);
+    Matcher     matcher = pattern.matcher(sql.toUpperCase());
+
+    if (matcher.find()) {
+      return true;
+    }
+
+    return false;
   }
 
   // ----------------------------------------------------------------------

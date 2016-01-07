@@ -178,26 +178,27 @@ public class Query {
    */
   public void open(String format) throws DBException {
     try {
-      String convertedSql;
-      
-      stmt = conn.createStatement();
-      
-      if (conn.supportsCursorNames()) {
-        name = "C" + nextCursorId++;
-	stmt.setCursorName(name);
-      }
+      String            convertedSql;
+      boolean           selectForUpdate;
+
       buildText(format);
-      traceQuery(TRL_QUERY, "OPEN " + name);
       convertedSql = conn.convertSql(text);
+      selectForUpdate = DBUtils.isSelectForUpdate(convertedSql);
+      if (selectForUpdate) {
+        stmt = conn.createStatement(ResultSet.CONCUR_UPDATABLE);
+        if (conn.supportsCursorNames()) {
+          name = "C" + nextCursorId++;
+          stmt.setCursorName(name);
+        }
+      } else {
+        stmt = conn.createStatement();
+      }
+      traceQuery(TRL_QUERY, "OPEN " + name);
       rset = stmt.executeQuery(convertedSql);
       traceTimer(TRL_QUERY, "OPEN " + name);
       //!!! wael 20090306 WORKAROUND FOR SAP DB BUG, this workaround is used also on Cursor.java
       if (conn.getDriverInterface() instanceof SapdbDriverInterface) {
-        String patternStr = "FOR *UPDATE";
-        Pattern pattern = Pattern.compile(patternStr);
-        Matcher matcher = pattern.matcher(convertedSql.toUpperCase());
-        
-        if (matcher.find()) {
+        if (selectForUpdate) {
           rset.setFetchSize(1);
         }
       }

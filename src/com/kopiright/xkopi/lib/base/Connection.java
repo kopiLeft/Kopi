@@ -283,6 +283,13 @@ public class Connection {
   }
 
   /**
+   * Creates an SQL statement with concurrency.
+   */
+  public Statement createStatement(int concurrency) throws SQLException {
+    return conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, concurrency);
+  }
+
+  /**
    * Creates a prepared statement.
    */
   public PreparedStatement prepareStatement(String text)
@@ -473,6 +480,8 @@ public class Connection {
     } else if (driverName.equals("com.mysql.jdbc.Driver")) {
       driver = new MysqlDriverInterface();
     } else if (driverName.equals("org.postgresql.Driver")) {
+      driver = new PostgresDriverInterface();
+    } else if (driverName.equals("com.impossibl.postgres.jdbc.PGDriver")) {
       driver = new PostgresDriverInterface();
     } else if (driverName.equals("ca.edbc.jdbc.EdbcDriver")) {
       driver = new IngresDriverInterface();

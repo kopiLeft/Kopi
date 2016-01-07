@@ -80,27 +80,27 @@ public class Cursor {
       throw new DBCursorException("This cursor (" + this.name + ") is already opened");
     } else {
       try {
-        String convertedSql;
-        
-        stmt = conn.createStatement();
-        this.conn = conn;
-        
-        if (conn.supportsCursorNames()) {
-          this.name = "K" + nextCursorId++;
-          stmt.setCursorName(name);
-        }
-        traceQuery(Query.TRL_QUERY, "OPEN", sql);
+        String          convertedSql;
+        boolean         selectForUpdate;
+
         convertedSql = conn.convertSql(sql);
+        selectForUpdate = DBUtils.isSelectForUpdate(convertedSql);
+        if (selectForUpdate) {
+          stmt = conn.createStatement(ResultSet.CONCUR_UPDATABLE);
+          if (conn.supportsCursorNames()) {
+            this.name = "K" + nextCursorId++;
+            stmt.setCursorName(name);
+          }
+        } else {
+          stmt = conn.createStatement();
+        }
+        this.conn = conn;
+        traceQuery(Query.TRL_QUERY, "OPEN", sql);
         rset = stmt.executeQuery(convertedSql);
         traceTimer(Query.TRL_TIMER, "OPEN");
-        
         if (conn.getDriverInterface() instanceof SapdbDriverInterface) {
           //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
-          String patternStr = "FOR *UPDATE";
-          Pattern pattern = Pattern.compile(patternStr);
-          Matcher matcher = pattern.matcher(convertedSql.toUpperCase());
-          
-          if (matcher.find()) {
+          if (selectForUpdate) {
             rset.setFetchSize(1);
           }
         }

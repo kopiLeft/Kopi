@@ -332,13 +332,13 @@ public class PostgresDriverInterface extends DriverInterface {
 	}
 
       case 1:	// TOMONTH/1
-	return "(YEAR(+" +  arguments.elementAt(0) + ") * 12 + (MONTH(" + arguments.elementAt(1) + ") - 1))";
+	return "(EXTRACT(YEAR FROM " +  arguments.elementAt(0) + ") * 100 + EXTRACT(MONTH FROM " + arguments.elementAt(0) + ")) ";
 
       case 2:	// ADD_DAYS/2
 	return "(ADDDATE(" +  arguments.elementAt(0) + ","+ arguments.elementAt(1) + "))";
 
       case 4:	// MONTH/2
-	return "(" +  arguments.elementAt(0) + " * 12 + (" + arguments.elementAt(1) + " - 1))";
+	return "(" +  arguments.elementAt(0) + " * 100 + (" + arguments.elementAt(1) + "))";
 
       case 5:	// EXTRACT/2
 	{
