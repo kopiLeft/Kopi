@@ -24,6 +24,7 @@
   <message ident="deleting_record" text="Efface l''enregistrement." />
   <message ident="printing" text="Impression en cours." />
   <message ident="report_generation" text="Construction du rapport en cours." />
+  <message ident="chart_generation" text="Construction du chart en cours." />
 <!-- INFO TEXTS-->
   <message ident="saved_successfully" text="Données enregistrées." />
 <!-- QUESTIONS-->

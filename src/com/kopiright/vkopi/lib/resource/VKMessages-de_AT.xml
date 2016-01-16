@@ -24,6 +24,7 @@
   <message ident="deleting_record" text="Datensatz wird gelöscht." />
   <message ident="printing" text="Druck wird vorbereitet." />
   <message ident="report_generation" text="Bericht wird erstellt." />
+  <message ident="chart_generation" text="Diagramm wird erstellt." />
 <!-- INFO TEXTS-->
   <message ident="saved_successfully" text="Datensatz wurde geändert." />
 <!-- QUESTIONS-->
