@@ -52,7 +52,7 @@ public class ChartKeyedValues {
      * only one value for a dimension/measure couple.
      */
     // ====>>>>>>>>>>>>>>> <dimesnion, Map<measure, value>>
-    valuesMap = new TreeMap<String, Map<String, Object>>();
+    valuesMap = new TreeMap<Comparable, Map<String, Object>>();
   }
   
   //-------------------------------------------------------------------
@@ -66,7 +66,7 @@ public class ChartKeyedValues {
    * @param measure  The measure key (<code>null</code> not permitted).
    * @param value the value (<code>null</code> permitted).
    */
-  public void addValue(String dimension, String measure, Number value) {
+  public void addValue(Comparable dimension, String measure, Number value) {
     System.out.println("DIM = " + dimension + "; MES = " + measure + "; VAL = " + value);
     // The measure is not mapped yet so we add it
     if (!valuesMap.containsKey(dimension)) {
@@ -83,8 +83,8 @@ public class ChartKeyedValues {
    * These categories are in fact the distinct sorted dimension values.
    * @return The X Axis labels in the final chart.
    */
-  public List<String> getXAxisCategories() {
-    return new LinkedList<String>(valuesMap.keySet());
+  public List<Comparable> getXAxisCategories() {
+    return new LinkedList<Comparable>(valuesMap.keySet());
   }
   
   /**
@@ -141,5 +141,5 @@ public class ChartKeyedValues {
   // DATA MEMBERS
   //-------------------------------------------------------------------
   
-  private final SortedMap<String, Map<String, Object>>          valuesMap;
+  private final SortedMap<Comparable, Map<String, Object>>          valuesMap;
 }

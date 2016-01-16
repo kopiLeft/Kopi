@@ -30,10 +30,10 @@ public class VDimensionData implements Serializable {
   
   /**
    * Creates a new dimension data.
-   * @param name The dimension name.
-   * @param name The dimension value.
+   * @param     name    the dimension name.
+   * @param     value   the dimension value.
    */
-  public VDimensionData(String name, String value) {
+  public VDimensionData(String name, Comparable value) {
     this.name = name;
     this.value = value;
   }
@@ -42,6 +42,6 @@ public class VDimensionData implements Serializable {
   // DATA MEMBERS
   //---------------------------------------------------------------------
   
-  public final String				name;
-  public final String				value;
+  public final String			name;
+  public final Comparable               value;
 }

@@ -243,9 +243,19 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    * Creates the X Axis categories.
    * @param dataSeries The data data series.
    * @return The X Axis categories.
+   *
+   * !!!graf 20160116 - does not use the parameter but member keyedValues
    */
   protected List<String> createXAxisCategories(VDataSeries[] dataSeries) {
-    return keyedValues.getXAxisCategories();
+    List<Comparable>    source;
+    List<String>        result;
+
+    source = keyedValues.getXAxisCategories();
+    result = new ArrayList<String>(source.size());
+    for (Comparable e : source) {
+      result.add(e.toString());
+    }
+    return result;
   }
   
   /**
