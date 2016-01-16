@@ -74,7 +74,18 @@ public abstract class VChartSelectionForm extends VDictionaryForm {
    * Implements interface for COMMAND CreateChart
    */
   public void createChart(VBlock b) throws VException {
-    VChartSelectionForm.createChart(createChart(), b);
+    b.validate();
+    try {
+      setWaitInfo(Message.getMessage("chart_generation"));
+      VChart chart = createChart();
+      chart.setDBContext(getDBContext());
+      chart.doNotModal();
+      unsetWaitInfo();
+    } catch (VNoChartRowException e) {
+      unsetWaitInfo();
+      error(MessageCode.getMessage("VIS-00057"));
+    }
+    b.setRecordChanged(0, false);
   }
 
   //---------------------------------------------------------------------
