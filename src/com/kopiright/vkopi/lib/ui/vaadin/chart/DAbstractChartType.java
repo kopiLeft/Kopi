@@ -51,6 +51,7 @@ import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
 
 import com.kopiright.vkopi.lib.chart.UChartType;
 import com.kopiright.vkopi.lib.chart.VDataSeries;
+import com.kopiright.vkopi.lib.chart.VDimensionData;
 import com.kopiright.vkopi.lib.chart.VMeasureData;
 import com.kopiright.vkopi.lib.chart.VPrintOptions;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
@@ -73,6 +74,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
   protected DAbstractChartType(String title, VDataSeries[] dataSeries) {
     this.title = title;
     this.dataSeries = dataSeries;
+    this.keyedValues = new ChartKeyedValues();
     setSizeFull();
     addStyleName("chart-container");
   }
@@ -89,7 +91,6 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
       Axis 			xAxis;
       
       xAxis = new Axis(AxisType.xAxis);
-      xAxis.setCategories(createXAxisCategories(dataSeries));
       xAxis.setLabelsEnabled(true);
       xAxis.setTitle(dataSeries[0].getDimension().name);
       configuration = new ChartConfiguration();
@@ -103,6 +104,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
       configuration.setZoomType(getZoomType());
       configuration.setBackgroundColor(getBackgroundColor());
       configuration.setSeriesList(createChartSeries(dataSeries));
+      xAxis.setCategories(createXAxisCategories(dataSeries));
       configuration.setPlotOptions(createPlotOptions());
       chart = HighChartFactory.renderChart(configuration);
       chart.addStyleName("kopi-chart");
@@ -208,6 +210,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    */
   protected void fillChartsSeriesMap(Map<String, DefaultChartsSeries> chartsSeries, VDataSeries data) {
     for (VMeasureData measure : data.getMeasures()) {
+      System.out.println("NAME = " + measure.name + ", VALUE = " + measure.value);
       if (!chartsSeries.containsKey(measure.name)) {
 	chartsSeries.put(measure.name, new DefaultChartsSeries(measure.name));
       }
@@ -222,16 +225,18 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    * @return the chart series to be appended to chart data.
    */
   protected List<HighChartsSeries> createChartSeries(VDataSeries[] dataSeries) {
-    List<HighChartsSeries>		chartsSeries;
-    Map<String, DefaultChartsSeries>	chartsSeriesMap;
-    
-    chartsSeries = new ArrayList<HighChartsSeries>();
-    chartsSeriesMap = createDefaultChartsSerie(dataSeries);
-    for (DefaultChartsSeries model : chartsSeriesMap.values()) {
-      chartsSeries.add(createChartSeries(model.getName(), model.getValues()));
+    for (VDataSeries serie : dataSeries) {
+      VDimensionData            dimension;
+      VMeasureData[]            measures;
+      
+      dimension = serie.getDimension();
+      measures = serie.getMeasures();
+      for (VMeasureData measure : measures) {
+        keyedValues.addValue(dimension.value,  measure.name, measure.value);
+      }
     }
     
-    return chartsSeries;
+    return keyedValues.createChartsSeries(this);
   }
   
   /**
@@ -240,14 +245,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    * @return The X Axis categories.
    */
   protected List<String> createXAxisCategories(VDataSeries[] dataSeries) {
-    List<String>		categories;
-    
-    categories = new ArrayList<String>();
-    for (VDataSeries data : dataSeries) {
-      categories.add(data.getDimension().value);
-    }
-    
-    return categories;
+    return keyedValues.getXAxisCategories();
   }
   
   /**
@@ -413,6 +411,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
   
   private final String 				title;
   private final VDataSeries[]			dataSeries;
+  private final ChartKeyedValues                keyedValues;
   
   // colors
   private static final Color[]			BASIC_COLORS = new Color[] {

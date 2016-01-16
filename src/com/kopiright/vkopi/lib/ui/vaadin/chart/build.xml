@@ -10,7 +10,7 @@
   <property name="src" value="." />
   <property name="javafiles" value="DAbstractChartType.java DAreaChart.java
   	                            DBarChart.java DChart.java DColumnChart.java
-  	                            DLineChart.java DPieChart.java
+  	                            DLineChart.java DPieChart.java ChartKeyedValues.java
   	                            VChartTypeFactory.java BigDecimalData.java" />
   <import file="${topdir}/defs.xml" />
 </project>
