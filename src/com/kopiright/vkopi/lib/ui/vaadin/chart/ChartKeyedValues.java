@@ -84,6 +84,11 @@ public class ChartKeyedValues {
    * @return The X Axis labels in the final chart.
    */
   public List<Comparable> getXAxisCategories() {
+//!!!DEBUG graf 20160117 - REMOVEME
+    for (Comparable x : valuesMap.keySet()) {
+      System.out.println("x-axis : " + x.toString());
+    }
+//!!!DEBUG graf 20160117 - REMOVEME
     return new LinkedList<Comparable>(valuesMap.keySet());
   }
   
@@ -101,6 +106,11 @@ public class ChartKeyedValues {
     chartsSeries = new LinkedList<HighChartsSeries>();
     measuresMap = createMeasuresMap();
     for (Map.Entry<String, List<Object>> measure : measuresMap.entrySet()) {
+//!!!DEBUG graf 20160117 - REMOVEME
+      for (Object v : measure.getValue()) {
+        System.out.println("series : " + measure.getKey() + " => " + v);
+      }
+//!!!DEBUG graf 20160117 - REMOVEME
       //valuesMap.va
       chartsSeries.add(type.createChartSeries(measure.getKey(), measure.getValue()));
     }
