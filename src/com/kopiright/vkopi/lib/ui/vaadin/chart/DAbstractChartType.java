@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -104,7 +105,7 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
       configuration.setZoomType(getZoomType());
       configuration.setBackgroundColor(getBackgroundColor());
       configuration.setSeriesList(createChartSeries(dataSeries));
-      xAxis.setCategories(createXAxisCategories(dataSeries));
+      xAxis.setCategories(createXAxisCategories());
       configuration.setPlotOptions(createPlotOptions());
       chart = HighChartFactory.renderChart(configuration);
       chart.addStyleName("kopi-chart");
@@ -243,19 +244,18 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    * Creates the X Axis categories.
    * @param dataSeries The data data series.
    * @return The X Axis categories.
-   *
-   * !!!graf 20160116 - does not use the parameter but member keyedValues
    */
-  protected List<String> createXAxisCategories(VDataSeries[] dataSeries) {
-    List<Comparable>    source;
-    List<String>        result;
+  protected List<String> createXAxisCategories() {
+    List<Comparable<?>>         source;
+    List<String>                result;
 
     source = keyedValues.getXAxisCategories();
     result = new ArrayList<String>(source.size());
-    for (Comparable e : source) {
+    for (Comparable<?> e : source) {
       result.add(e.toString());
     }
-    return result;
+    
+    return Collections.unmodifiableList(result);
   }
   
   /**
