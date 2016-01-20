@@ -426,7 +426,7 @@ public class PostgresDriverInterface extends DriverInterface {
 	return "((" + arguments.elementAt(0) + ") * 100 + (" + arguments.elementAt(1) + "))";
 
       case 30: // DATEDIFF/2
-	return "DATEDIFF(" + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
+	return "(" + arguments.elementAt(0) + "::date - " + arguments.elementAt(1) + "::date" + ")";
 
       case 31: // COALESCE/2
 	return "COALESCE(" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
