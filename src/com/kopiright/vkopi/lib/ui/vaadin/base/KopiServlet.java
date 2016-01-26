@@ -26,6 +26,7 @@ import javax.servlet.ServletException;
 import com.kopiright.util.base.InconsistencyException;
 import com.kopiright.vkopi.lib.l10n.LocalizationManager;
 import com.vaadin.server.CustomizedSystemMessages;
+import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
@@ -33,6 +34,7 @@ import com.vaadin.server.SystemMessages;
 import com.vaadin.server.SystemMessagesInfo;
 import com.vaadin.server.SystemMessagesProvider;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinServletService;
 
 /**
  * A customized servlet that handles the localization
@@ -71,6 +73,32 @@ public class KopiServlet extends VaadinServlet implements SessionInitListener {
   @Override
   public void sessionInit(SessionInitEvent event) throws ServiceException {
     event.getSession().setLocale(locale);
+  }
+  
+  @Override
+  protected VaadinServletService createServletService(DeploymentConfiguration deploymentConfiguration)
+    throws ServiceException
+  {
+    if (isCommunicationStatisticsEnabled()) {
+      if (statistics == null) {
+        statistics = new CommunicationStatistics(getDisplayStatisticsInterval(), isShowCommunicatedMessages());
+        statistics.installBroadcasterListener();
+        statistics.start();
+      }
+
+      return statistics.createServletService(this, deploymentConfiguration);
+    } else {
+      return super.createServletService(deploymentConfiguration);
+    }
+  }
+  
+  @Override
+  public void destroy() {
+    if (statistics != null) {
+      statistics.stop();
+    }
+    
+    super.destroy();
   }
   
   /**
@@ -113,10 +141,39 @@ public class KopiServlet extends VaadinServlet implements SessionInitListener {
     }
   }
   
+  /**
+   * Returns the display statistics interval in seconds.
+   * @return The display statistics interval in seconds.
+   */
+  protected int getDisplayStatisticsInterval() {
+    if (getInitParameter("displayStatisticsInterval") == null) {
+      return 60; // 1 minutes by default
+    }
+    
+    return Integer.parseInt(getInitParameter("displayStatisticsInterval"));
+  }
+  
+  /**
+   * Returns <code>true</code> if we should show the communicated messages.
+   * @return <code>true</code> if we should show the communicated messages.
+   */
+  protected boolean isShowCommunicatedMessages() {
+    return Boolean.parseBoolean(getInitParameter("showCommunicatedMessages"));
+  }
+  
+  /**
+   * Returns <code>true</code> if we should display the communication statistics.
+   * @return <code>true</code> if we should display the communication statistics.
+   */
+  protected boolean isCommunicationStatisticsEnabled() {
+    return Boolean.parseBoolean(getInitParameter("communicationStatisticsEnabled"));
+  }
+  
   // --------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------
 
   private Locale				locale;
+  private CommunicationStatistics               statistics;
   private final static String 			VLIB_PROPERTIES_RESOURCE_FILE = "com/kopiright/vkopi/lib/resource/VlibProperties" ;
 }

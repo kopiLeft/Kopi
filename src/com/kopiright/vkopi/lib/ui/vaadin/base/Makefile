@@ -28,7 +28,7 @@ PACKAGE =	com/kopiright/vkopi/lib/ui/vaadin/base
 ## FILES
 
 JAVAFILES += 	BackgroundThreadHandler ExportResource FileUploader	\
-                Image Tree Utils KopiServlet
+                Image Tree Utils KopiServlet CommunicationStatistics
 
 OPTIONS =
 

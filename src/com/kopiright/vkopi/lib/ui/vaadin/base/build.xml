@@ -11,6 +11,6 @@
   <property name="src" value="." />
   <property name="javafiles" value="BackgroundThreadHandler.java ExportResource.java
   	                            FileUploader.java Image.java Tree.java Utils.java
-  	                            KopiServlet.java" />
+  	                            KopiServlet.java CommunicationStatistics.java" />
   <import file="${topdir}/defs.xml" />
 </project>
