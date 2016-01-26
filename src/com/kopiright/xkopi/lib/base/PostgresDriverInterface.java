@@ -130,12 +130,15 @@ public class PostgresDriverInterface extends DriverInterface {
   public String convertSql(String from) {
     try {
       PostgresParser	parser = new PostgresParser(from);
+      String            nativeSql = parser.getText().trim();
 
-      System.err.println("-- NATIVE SQL: ");
-      System.err.println(parser.getText() + ";");
-      System.err.println("--");
+      if (trace) {
+        System.err.println("-- NATIVE SQL: ");
+        System.err.println(nativeSql + ";");
+        System.err.println("--");
+      }
 
-      return parser.getText();
+      return nativeSql;
     } catch (SQLException e) {
       throw new DBRuntimeException(e.getMessage());
     }
