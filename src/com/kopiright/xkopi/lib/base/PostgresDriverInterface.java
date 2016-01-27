@@ -117,7 +117,7 @@ public class PostgresDriverInterface extends DriverInterface {
   public void lockTable(Connection conn, String tableName)
     throws SQLException
   {
-    throw new RuntimeException("NOT YET IMPLEMENTED");
+    executeSQL(conn, "LOCK TABLE " + tableName + " IN EXCLUSIVE MODE");
   }
 
   /**
