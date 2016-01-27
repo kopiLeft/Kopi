@@ -21,7 +21,7 @@ package com.kopiright.vkopi.lib.ui.vaadin.chart;
 
 import java.math.BigDecimal;
 
-import at.downdrown.vaadinaddons.highchartsapi.model.data.base.HighChartsBaseData;
+import org.kopi.vaadin.highchartsapi.model.data.base.HighChartsBaseData;
 
 /**
  * Big Decimal data used to wrap big decimals as charts data.

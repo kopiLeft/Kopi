@@ -21,11 +21,11 @@ package com.kopiright.vkopi.lib.ui.vaadin.chart;
 
 import java.util.List;
 
-import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.AreaChartPlotOptions;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.AreaChartSeries;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
+import org.kopi.vaadin.highchartsapi.model.ChartType;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.AreaChartPlotOptions;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
+import org.kopi.vaadin.highchartsapi.model.series.AreaChartSeries;
+import org.kopi.vaadin.highchartsapi.model.series.HighChartsSeries;
 
 import com.kopiright.vkopi.lib.chart.VDataSeries;
 

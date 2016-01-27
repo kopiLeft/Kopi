@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
+import org.kopi.vaadin.highchartsapi.model.series.HighChartsSeries;
 
 /**
  * A data structure that stores zero, one or many chart values, where each value

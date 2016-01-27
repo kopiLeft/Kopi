@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.PieChartData;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.PieChartPlotOptions;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.PieChartSeries;
+import org.kopi.vaadin.highchartsapi.model.ChartType;
+import org.kopi.vaadin.highchartsapi.model.data.PieChartData;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.PieChartPlotOptions;
+import org.kopi.vaadin.highchartsapi.model.series.HighChartsSeries;
+import org.kopi.vaadin.highchartsapi.model.series.PieChartSeries;
 
 import com.kopiright.vkopi.lib.chart.VDataSeries;
 import com.kopiright.vkopi.lib.chart.VMeasureData;

@@ -32,23 +32,23 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import at.downdrown.vaadinaddons.highchartsapi.HighChart;
-import at.downdrown.vaadinaddons.highchartsapi.HighChartFactory;
-import at.downdrown.vaadinaddons.highchartsapi.exceptions.HighChartsException;
-import at.downdrown.vaadinaddons.highchartsapi.model.Axis;
-import at.downdrown.vaadinaddons.highchartsapi.model.Axis.AxisType;
-import at.downdrown.vaadinaddons.highchartsapi.model.ChartConfiguration;
-import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
-import at.downdrown.vaadinaddons.highchartsapi.model.Margin;
-import at.downdrown.vaadinaddons.highchartsapi.model.ZoomType;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.HighChartsData;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.base.DoubleData;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.base.IntData;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptions;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl.DashStyle;
-import at.downdrown.vaadinaddons.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl.Steps;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
+import org.kopi.vaadin.highchartsapi.HighChart;
+import org.kopi.vaadin.highchartsapi.HighChartFactory;
+import org.kopi.vaadin.highchartsapi.exceptions.HighChartsException;
+import org.kopi.vaadin.highchartsapi.model.Axis;
+import org.kopi.vaadin.highchartsapi.model.Axis.AxisType;
+import org.kopi.vaadin.highchartsapi.model.ChartConfiguration;
+import org.kopi.vaadin.highchartsapi.model.ChartType;
+import org.kopi.vaadin.highchartsapi.model.Margin;
+import org.kopi.vaadin.highchartsapi.model.ZoomType;
+import org.kopi.vaadin.highchartsapi.model.data.HighChartsData;
+import org.kopi.vaadin.highchartsapi.model.data.base.DoubleData;
+import org.kopi.vaadin.highchartsapi.model.data.base.IntData;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.HighChartsPlotOptions;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl.DashStyle;
+import org.kopi.vaadin.highchartsapi.model.plotoptions.HighChartsPlotOptionsImpl.Steps;
+import org.kopi.vaadin.highchartsapi.model.series.HighChartsSeries;
 
 import com.kopiright.vkopi.lib.chart.UChartType;
 import com.kopiright.vkopi.lib.chart.VDataSeries;
@@ -211,7 +211,6 @@ public abstract class DAbstractChartType extends Panel implements UChartType {
    */
   protected void fillChartsSeriesMap(Map<String, DefaultChartsSeries> chartsSeries, VDataSeries data) {
     for (VMeasureData measure : data.getMeasures()) {
-      System.out.println("NAME = " + measure.name + ", VALUE = " + measure.value);
       if (!chartsSeries.containsKey(measure.name)) {
 	chartsSeries.put(measure.name, new DefaultChartsSeries(measure.name));
       }
