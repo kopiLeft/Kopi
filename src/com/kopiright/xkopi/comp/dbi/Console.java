@@ -776,8 +776,8 @@ public class Console extends Compiler implements Constants {
 
   private static final class PostgresDataSource extends DbiDataSource {
     PostgresDataSource() {
-      super("org.postgresql.Driver",
-            "jdbc:postgresql:",
+      super("com.impossibl.postgres.jdbc.PGDriver",
+            "jdbc:pgsql:",
             "pg");
     }
   }
