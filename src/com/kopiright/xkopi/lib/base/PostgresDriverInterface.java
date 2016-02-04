@@ -232,6 +232,7 @@ public class PostgresDriverInterface extends DriverInterface {
    */
   private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
     // separate each word in the exception message in order to get tables in relation.
+    System.out.println("EXE == " + from.getMessage());
     String[]    exception = from.getMessage().split("\\s");
     
     // As described above: 
@@ -342,7 +343,7 @@ public class PostgresDriverInterface extends DriverInterface {
 	return "(EXTRACT(YEAR FROM " +  arguments.elementAt(0) + ") * 100 + EXTRACT(MONTH FROM " + arguments.elementAt(0) + ")) ";
 
       case 2:	// ADD_DAYS/2
-	return "(ADDDATE(" +  arguments.elementAt(0) + ","+ arguments.elementAt(1) + "))";
+	return "(" +  arguments.elementAt(0) + " + " + arguments.elementAt(1) + ")";
 
       case 4:	// MONTH/2
 	return "(" +  arguments.elementAt(0) + " * 100 + (" + arguments.elementAt(1) + "))";
