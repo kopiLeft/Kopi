@@ -2293,14 +2293,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception VException      an exception may be raised by triggers
    */
   public void fetchLookupFirst(VField fld) throws VException {
-    int         table = -1;
+    int         table;
 
     assert fld != null : "fld = " + fld;
     assert this == form.getActiveBlock() :
       this.getName() + " != "
       + ((form.getActiveBlock() == null) ? "null" : form.getActiveBlock().getName());
 
-    table  = fld.getColumn(0).getTable();
+    table = fld.getColumn(0).getTable();
     fetchLookup(table, fld);
   }
 
@@ -2318,7 +2318,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     assert fld.getColumnCount() == 1 : "column count: " + fld.getColumnCount();
     table = fld.getColumn(0).getTable();
-
     fetchLookup(table, fld);
   }
 
