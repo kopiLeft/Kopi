@@ -348,3 +348,12 @@ vrFieldTypeName []
   )?
     { self = new VRFieldTypeName(sourceRef, name, params); }
 ;
+
+/**
+ * definition of the command  event to use the right event.
+ */
+vkCommandEvent []
+  returns [long self]
+:
+  "ACCESS"      { self = com.kopiright.vkopi.lib.report.Constants.TRG_CMDACCESS; }
+;
