@@ -238,13 +238,13 @@ public class DTextField extends DField implements UTextField, VConstants {
       public void run() {
 	if (field != null) {
 	  if (getForeground() == null && getBackground() == null) {
-	    field.removeStyleName(getModel().getBlock().getName() + "-" + getModel().getName());
+	    field.removeStyleName(getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
 	  } else {
 	    Styles		styles;
 	  
-	    field.addStyleName(getModel().getBlock().getName() + "-" + getModel().getName());
+	    field.addStyleName(getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
 	    styles = Page.getCurrent().getStyles();
-	    styles.add(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + " input.k-textinput {"
+	    styles.add(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition() + " input.k-textinput {"
 	      + "background-color: " + Utils.getCSSColor(getBackground())
 	      + "color: " + Utils.getCSSColor(getForeground())
 	      + "}"
@@ -286,8 +286,6 @@ public class DTextField extends DField implements UTextField, VConstants {
 	}
 	
 	field.setFocus(true);
-	// get the focus as soon as possible
-	UI.getCurrent().push();
       }
     });
   }
