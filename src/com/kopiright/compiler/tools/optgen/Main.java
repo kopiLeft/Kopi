@@ -21,7 +21,8 @@ package com.kopiright.compiler.tools.optgen;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import com.kopiright.compiler.base.CompilerMessages;
@@ -168,7 +169,7 @@ public class Main {
     boolean		errorsFound = false;
 
     try {
-      PrintWriter	out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
+      PrintWriter	out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8")));
 
       definition.printFile(out);
 
