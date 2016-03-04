@@ -609,6 +609,8 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
       return null;
     case Constants.TRG_OBJECT:
       return executeObjectTrigger(VKT_Triggers[index][event]);
+    case Constants.TRG_BOOLEAN:
+      return executeBooleanTrigger(VKT_Triggers[index][event]);
     default:
       throw new InconsistencyException("BAD TYPE" + Constants.TRG_TYPES[event]);
     }

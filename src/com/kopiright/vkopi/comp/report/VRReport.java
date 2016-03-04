@@ -188,6 +188,9 @@ class VRReport
     if (getCommandable().countTriggers(TRG_OBJECT1) > 0) {
       clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(null, ref, "executeObjectTrigger", TRG_OBJECT1));
     }
+    if (getCommandable().countTriggers(TRG_BOOLEAN1) > 0) {
+      clazz.addMethodDeclaration(getCommandable().buildTriggerHandler(null, ref, "executeBooleanTrigger", TRG_BOOLEAN1));
+    }
 
     // BUILD THE CLASS
     JClassDeclaration		self = new JClassDeclaration(ref,
@@ -453,6 +456,7 @@ class VRReport
   private static final int[]	TRG_TYPES1 = com.kopiright.vkopi.lib.report.Constants.TRG_TYPES;
   private static final int	TRG_VOID1 = com.kopiright.vkopi.lib.form.VConstants.TRG_VOID;
   private static final int	TRG_OBJECT1 = com.kopiright.vkopi.lib.form.VConstants.TRG_OBJECT;
+  private static final int      TRG_BOOLEAN1 = com.kopiright.vkopi.lib.form.VConstants.TRG_BOOLEAN;
 
   private static final Vector	TRIGGER_ARRAY_DIM = new Vector(2);
 
