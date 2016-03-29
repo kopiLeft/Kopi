@@ -807,10 +807,15 @@ public abstract class VField implements VConstants, VModel {
   }
 
   /**
-   * Returns true if the first column is a key in table
+   * Returns true if the column is a key of the table with specified correlation.
    */
-  public boolean isKey() {
-    return columns.length == 0 ? false : columns[0].isKey();
+  public boolean isLookupKey(int corr) {
+    for (int i = 0; i < getColumnCount(); i++) {
+      if (corr == columns[i].getTable()) {
+        return columns[i].isKey();
+      }
+    }
+    return false;
   }
 
   /**

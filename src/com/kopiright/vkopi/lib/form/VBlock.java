@@ -2322,75 +2322,90 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   }
 
   protected void fetchLookup(int table, VField fld) throws VException {
-    // clears all fields of lookup except the key
+    // clears all fields of lookup except the key(s)
+    // the specified field is considered to be a key
     for (int i = 0; i < fields.length; i++) {
       VField    f = fields[i];
 
-      if (f != fld && f.lookupColumn(table) != null) {
+      if (f != fld && f.lookupColumn(table) != null && !f.isLookupKey(table)) {
         f.setNull(getActiveRecord());
       }
     }
 
-    String      fldbuff = fld.getSearchCondition();
+    String      headbuff = null;        // columns to select
+    String      condbuff = null;        // search condition
+    
+    for (int i = 0; i < fields.length; i++) {
+      String    column = fields[i].lookupColumn(table);
 
-    // if field has a fixed value fetch table
-    if (fldbuff != null && fldbuff.startsWith("= ")) {
-      String    headbuff = null;
-
-      for (int i = 0; i < fields.length; i++) {
-        String          column = fields[i].lookupColumn(table);
-
-        if (column != null) {
-          if (headbuff == null) {
-            headbuff = "";
-          } else {
-            headbuff += ", ";
-          }
-
-          headbuff += column;
-        }
-      }
-
-      try {
-        form.getDBContext().startWork();        // !!! BEGIN_SYNC(null);
-
-        Query           query = new Query(form.getDBContext().getDefaultConnection());
-        query.addString(headbuff);
-        query.addString(tables[table]);
-        query.addString(fld.lookupColumn(table));
-        query.addString(fldbuff);
-        query.open("SELECT $1 FROM $2 WHERE $3 $4");
-
-        if (! query.next()) {
-          query.close();
-          form.getDBContext().abortWork();      // !!! END_SYNC();
-          throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
-                                                                new Object[]{ tables[table] }));
+      if (column != null) {
+        // add column to select
+        if (headbuff == null) {
+          headbuff = "";
         } else {
-          int   j = 0;
-
-          for (int i = 0; i < fields.length; i++) {
-            VField      f = fields[i];
-
-            if (f.lookupColumn(table) != null) {
-              f.setQuery(query, 1+j);
-              j += 1;
-            }
-          }
-
-          if (query.next()) {
-            query.close();
-            form.getDBContext().abortWork();    // !!! END_SYNC();
-            throw new VExecFailedException(MessageCode.getMessage("VIS-00020",
-                                                                  new Object[]{ tables[table] }));
-          }
-          query.close();
+          headbuff += ", ";
         }
+        headbuff += column;
 
-        form.getDBContext().commitWork();       // !!! END_SYNC();
-      } catch (SQLException e) {
-        throw new VExecFailedException("XXXX !!!!" + e.getMessage());
+        if (fields[i].isLookupKey(table)) {
+          String      fldbuff = fld.getSearchCondition();
+
+          if (fldbuff == null || !fldbuff.startsWith("= ")) {
+            // at least one key field is not completely specified
+            // no guarantee that a unique value will be fetched
+            // end processing - non-key fields have already been cleared
+            return;
+          }
+
+          if (condbuff == null) {
+            condbuff = "";
+          } else {
+            condbuff += " AND ";
+          }
+          condbuff += fld.lookupColumn(table) + " " + fldbuff;
+        }
       }
+    }
+    
+    try {
+      form.getDBContext().startWork();        // !!! BEGIN_SYNC(null);
+
+      Query             query = new Query(form.getDBContext().getDefaultConnection());
+
+      query.addString(headbuff);
+      query.addString(tables[table]);
+      query.addString(condbuff);
+      query.open("SELECT $1 FROM $2 WHERE $3");
+
+      if (! query.next()) {
+        query.close();
+        form.getDBContext().abortWork();      // !!! END_SYNC();
+        throw new VExecFailedException(MessageCode.getMessage("VIS-00016",
+                                                              new Object[]{ tables[table] }));
+      } else {
+        int     j = 0;
+
+        for (int i = 0; i < fields.length; i++) {
+          VField      f = fields[i];
+          
+          if (f.lookupColumn(table) != null) {
+            f.setQuery(query, 1+j);
+            j += 1;
+          }
+        }
+        
+        if (query.next()) {
+          query.close();
+          form.getDBContext().abortWork();    // !!! END_SYNC();
+          throw new VExecFailedException(MessageCode.getMessage("VIS-00020",
+                                                                new Object[]{ tables[table] }));
+        }
+        query.close();
+      }
+      
+      form.getDBContext().commitWork();       // !!! END_SYNC();
+    } catch (SQLException e) {
+      throw new VExecFailedException("XXXX !!!!" + e.getMessage());
     }
   }
 
