@@ -2348,7 +2348,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         headbuff += column;
 
         if (fields[i].isLookupKey(table)) {
-          String      fldbuff = fld.getSearchCondition();
+          String      fldbuff = fields[i].getSearchCondition();
 
           if (fldbuff == null || !fldbuff.startsWith("= ")) {
             // at least one key field is not completely specified
@@ -2362,7 +2362,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           } else {
             condbuff += " AND ";
           }
-          condbuff += fld.lookupColumn(table) + " " + fldbuff;
+          condbuff += fields[i].lookupColumn(table) + " " + fldbuff;
         }
       }
     }
