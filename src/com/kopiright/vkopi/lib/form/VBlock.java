@@ -2321,13 +2321,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     fetchLookup(table, fld);
   }
 
-  protected void fetchLookup(int table, VField fld) throws VException {
+  protected void fetchLookup(int table, VField currentField) throws VException {
     // clears all fields of lookup except the key(s)
     // the specified field is considered to be a key
     for (int i = 0; i < fields.length; i++) {
       VField    f = fields[i];
 
-      if (f != fld && f.lookupColumn(table) != null && !f.isLookupKey(table)) {
+      if (f != currentField && f.lookupColumn(table) != null && !f.isLookupKey(table)) {
         f.setNull(getActiveRecord());
       }
     }
@@ -2347,7 +2347,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
         headbuff += column;
 
-        if (fields[i].isLookupKey(table)) {
+        if (fields[i] == currentField || fields[i].isLookupKey(table)) {
           String      fldbuff = fields[i].getSearchCondition();
 
           if (fldbuff == null || !fldbuff.startsWith("= ")) {
