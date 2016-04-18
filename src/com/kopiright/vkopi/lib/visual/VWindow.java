@@ -605,18 +605,6 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    */
   public void setDBContext(DBContext context) {
     this.context = context;
-    try {
-      context.startWork();
-      System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx transaction Isolation = " + context.getDefaultConnection().getJDBCConnection().getTransactionIsolation());
-    } catch (Throwable e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        context.abortWork();
-      } catch (Throwable e) {
-        e.printStackTrace();
-      }
-    }
   }
 
   /**
