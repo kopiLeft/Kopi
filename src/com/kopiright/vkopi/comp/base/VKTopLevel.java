@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Vector;
 
 import com.kopiright.compiler.base.Compiler;
+import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.UnpositionedError;
 import com.kopiright.kopi.comp.kjc.JCompilationUnit;
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.vkopi.comp.base.VKEnvironment;
 
 public class VKTopLevel extends com.kopiright.util.base.Utils {
 

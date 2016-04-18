@@ -23,9 +23,9 @@ import java.io.PrintWriter;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.xkopi.comp.database.DatabaseColumn;
 import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.xkopi.comp.database.DatabaseColumn;
 
 /**
  * This class represents the definition of a type
@@ -160,10 +160,12 @@ public abstract class VKType extends VKPhylum {
   public abstract JExpression genConstructor();
 
   /**
-   * Returns the java equivalent type
+   * Returns the default java type to be used if no type
+   * is explicitly set. 
+   * @return The default java type to be used
    */
-  public abstract CReferenceType getType();
-
+  public abstract CReferenceType getDefaultType();
+  
   /**
    * Returns the info for the type-checking mechanism of dbi. 
    *
@@ -188,6 +190,21 @@ public abstract class VKType extends VKPhylum {
    * @return The type of the measure chart field.
    */
   public abstract CReferenceType getMeasureChartType();
+
+  /**
+   * Sets explicitly the java type to be used for this field.  
+   * @param type The field java type.
+   */
+  public void setType(CReferenceType type) {
+    this.type = type;
+  }
+  
+  /**
+   * Returns the java equivalent type
+   */
+  public CReferenceType getType() {
+    return type != null ? type : getDefaultType();
+  }
 
   // ----------------------------------------------------------------------
   // PROTECTED UTILITIES
@@ -218,4 +235,5 @@ public abstract class VKType extends VKPhylum {
   private int			height;
   private int			visibleHeight;
   private VKFieldList		list;
+  private CReferenceType        type;
 }

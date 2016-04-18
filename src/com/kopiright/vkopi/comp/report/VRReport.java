@@ -176,7 +176,7 @@ class VRReport
       clazz.addFieldDeclaration(decl);
       clazz.addFieldDeclaration(VKUtils.buildFieldDeclaration(ref,
 							      ACC_PRIVATE,
-							      com.kopiright.vkopi.comp.trig.GVKAccess.translate(fields[i].getType().getDef().getType()),
+							      com.kopiright.vkopi.comp.trig.GVKAccess.translate(fields[i].getType().getDef().getDefaultType()),
 							      fields[i].getIdent(),
 							      null));
     }

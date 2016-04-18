@@ -479,7 +479,7 @@ public class VKBlock
 
         alias = getField(fieldAlias);
         if(alias != null) {
-          if(fields[i].getFieldType().getDef().getType() != alias.getFieldType().getDef().getType()) {
+          if(fields[i].getFieldType().getDef().getDefaultType() != alias.getFieldType().getDef().getDefaultType()) {
             context.reportTrouble(new CWarning(getTokenReference(),
                                                FormMessages.INCORRECT_ALIAS_TYPE,
                                                alias.getFieldType().getDef().getType(),

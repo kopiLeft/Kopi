@@ -6,7 +6,6 @@
 @literal	CHARTTYPE
 @literal	DIMENSION
 @literal	FORMAT
-@literal	IMPLEMENTS
 @literal	INIT
 @literal	MEASURE
 @literal	NO

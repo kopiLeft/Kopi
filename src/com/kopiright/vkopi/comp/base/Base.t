@@ -24,6 +24,7 @@
 @literal	HELP
 @literal	ICON
 @literal	IMAGE
+@literal        IMPLEMENTS
 @literal	INSERT
 @literal	IS
 @literal	ITEM

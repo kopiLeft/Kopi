@@ -21,9 +21,31 @@ package com.kopiright.vkopi.comp.trig;
 
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-import com.kopiright.kopi.comp.kjc.*;
+import com.kopiright.kopi.comp.kjc.CExpressionContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
+import com.kopiright.kopi.comp.kjc.CStdType;
+import com.kopiright.kopi.comp.kjc.CType;
+import com.kopiright.kopi.comp.kjc.JArrayAccessExpression;
+import com.kopiright.kopi.comp.kjc.JCheckedExpression;
+import com.kopiright.kopi.comp.kjc.JExpression;
+import com.kopiright.kopi.comp.kjc.JLogicalComplementExpression;
+import com.kopiright.kopi.comp.kjc.JMethodCallExpression;
+import com.kopiright.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import com.kopiright.kopi.comp.kjc.TypeFactory;
 import com.kopiright.util.base.InconsistencyException;
-import com.kopiright.xkopi.comp.xkjc.*;
+import com.kopiright.xkopi.comp.xkjc.XAddExpression;
+import com.kopiright.xkopi.comp.xkjc.XBitwiseExpression;
+import com.kopiright.xkopi.comp.xkjc.XCastExpression;
+import com.kopiright.xkopi.comp.xkjc.XDivideExpression;
+import com.kopiright.xkopi.comp.xkjc.XExpression;
+import com.kopiright.xkopi.comp.xkjc.XKjcPrettyPrinter;
+import com.kopiright.xkopi.comp.xkjc.XMethodCallExpression;
+import com.kopiright.xkopi.comp.xkjc.XMinusExpression;
+import com.kopiright.xkopi.comp.xkjc.XModuloExpression;
+import com.kopiright.xkopi.comp.xkjc.XMultExpression;
+import com.kopiright.xkopi.comp.xkjc.XNameExpression;
+import com.kopiright.xkopi.comp.xkjc.XShiftExpression;
+import com.kopiright.xkopi.comp.xkjc.XStdType;
 
 /**
  * This class represents unary expressions.

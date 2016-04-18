@@ -22,9 +22,8 @@ package com.kopiright.vkopi.comp.base;
 import com.kopiright.compiler.base.Compiler;
 import com.kopiright.compiler.base.PositionedError;
 import com.kopiright.compiler.base.TokenReference;
-
-import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.CParseClassContext;
+import com.kopiright.kopi.comp.kjc.CReferenceType;
 import com.kopiright.kopi.comp.kjc.JExpression;
 import com.kopiright.kopi.comp.kjc.JThisExpression;
 import com.kopiright.kopi.comp.kjc.JTypeNameExpression;

@@ -260,7 +260,7 @@ public class VCChart extends VKWindow implements com.kopiright.vkopi.lib.chart.C
       clazz.addFieldDeclaration(decl);
       clazz.addFieldDeclaration(VKUtils.buildFieldDeclaration(ref,
 							      ACC_PRIVATE,
-							      com.kopiright.vkopi.comp.trig.GVKAccess.translate(dimensions[i].getType().getDef().getType()),
+							      com.kopiright.vkopi.comp.trig.GVKAccess.translate(dimensions[i].getType().getDef().getDefaultType()),
 							      dimensions[i].getIdent(),
 							      null));
     }
@@ -272,7 +272,7 @@ public class VCChart extends VKWindow implements com.kopiright.vkopi.lib.chart.C
       clazz.addFieldDeclaration(decl);
       clazz.addFieldDeclaration(VKUtils.buildFieldDeclaration(ref,
 							      ACC_PRIVATE,
-							      com.kopiright.vkopi.comp.trig.GVKAccess.translate(measures[i].getType().getDef().getType()),
+							      com.kopiright.vkopi.comp.trig.GVKAccess.translate(measures[i].getType().getDef().getDefaultType()),
 							      measures[i].getIdent(),
 							      null));
     }

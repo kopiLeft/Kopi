@@ -418,7 +418,7 @@ public class VKField
   public void genCode(CParseClassContext context) {
     context.addFieldDeclaration(VKUtils.buildFieldDeclaration(getTokenReference(),
 							      ACC_PUBLIC | ACC_FINAL,
-							      type.getDef().getType(),
+							      type.getDef().getDefaultType(),
 							      getIdent(),
 							      null));
   }

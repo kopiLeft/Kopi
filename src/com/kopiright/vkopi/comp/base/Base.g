@@ -23,9 +23,11 @@ header { package com.kopiright.vkopi.comp.base; }
   import java.util.Vector;
 
   import com.kopiright.compiler.base.Compiler;
+  import com.kopiright.compiler.base.PositionedError;
   import com.kopiright.compiler.base.TokenReference;
   import com.kopiright.compiler.tools.antlr.extra.InputBuffer;
   import com.kopiright.kopi.comp.kjc.*;
+  import com.kopiright.util.base.MessageDescription;
   import com.kopiright.vkopi.comp.trig.GKjcParser;
   import com.kopiright.vkopi.comp.trig.GSqlcParser;
   import com.kopiright.vkopi.lib.list.VList;
@@ -98,30 +100,41 @@ vkBool []
 
 vkPredefinedFieldType []
   returns [VKType self]
+{
+  String	       fieldType;
+}
 :
-  self = vkFixnumFieldType[]
-|
-  self = vkImageFieldType[]
-|
-  self = vkIntegerFieldType[]
-|
-  self = vkStringFieldType[]
-|
-  self = vkTextFieldType[]
-|
-  "DATE"        { self = new VKDateType(buildTokenReference()); }
-|
-  "BOOL"        { self = new VKBooleanType(buildTokenReference()); }
-|
-  "COLOR"       { self = new VKColorType(buildTokenReference()); }
-|
-  "MONTH"       { self = new VKMonthType(buildTokenReference()); }
-|
-  "TIME"        { self = new VKTimeType(buildTokenReference()); }
-|
-  "TIMESTAMP"   { self = new VKTimestampType(buildTokenReference()); }
-|
-  "WEEK"        { self = new VKWeekType(buildTokenReference()); }
+  (
+      self = vkFixnumFieldType[]
+    |
+      self = vkImageFieldType[]
+    |
+      self = vkIntegerFieldType[]
+    |
+      self = vkStringFieldType[]
+    |
+      self = vkTextFieldType[]
+    |
+      "DATE"        { self = new VKDateType(buildTokenReference()); }
+    |
+      "BOOL"        { self = new VKBooleanType(buildTokenReference()); }
+    |
+      "COLOR"       { self = new VKColorType(buildTokenReference()); }
+    |
+      "MONTH"       { self = new VKMonthType(buildTokenReference()); }
+    |
+      "TIME"        { self = new VKTimeType(buildTokenReference()); }
+    |
+      "TIMESTAMP"   { self = new VKTimestampType(buildTokenReference()); }
+    |
+      "WEEK"        { self = new VKWeekType(buildTokenReference()); }
+  )
+  (
+    "IMPLEMENTS" fieldType = vkQualifiedIdent[]
+    {
+      self.setType(environment.getTypeFactory().createType(fieldType.replace('.', '/'), false));
+    }
+  )?
 ;
 
 vkStringFieldType []

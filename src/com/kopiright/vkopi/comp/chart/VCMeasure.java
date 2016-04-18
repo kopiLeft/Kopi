@@ -79,7 +79,7 @@ public class VCMeasure extends VCField {
    * @throws PositionedError Error caught as soon as possible
    */
   protected void checkType(VKContext context) throws PositionedError {
-    CReferenceType	refType = com.kopiright.vkopi.comp.trig.GVKAccess.translate(getType().getDef().getType());
+    CReferenceType	refType = com.kopiright.vkopi.comp.trig.GVKAccess.translate(getType().getDef().getDefaultType());
 
     if (refType != XStdType.Fixed && refType != XStdType.Int) {
       throw new PositionedError(getTokenReference(), ChartMessages.MEASURE_NOT_NUMERIC, getIdent());

@@ -138,7 +138,7 @@ public class VKMultiField extends VKField implements com.kopiright.kopi.comp.kjc
   public void genCode(CParseClassContext context) {
     context.addFieldDeclaration(VKUtils.buildFieldDeclaration(getTokenReference(),
 							      ACC_PUBLIC | ACC_FINAL,
-							      getFieldType().getDef().getType(),
+							      getFieldType().getDef().getDefaultType(),
 							      getIdent(),
 							      null));
 
@@ -147,7 +147,7 @@ public class VKMultiField extends VKField implements com.kopiright.kopi.comp.kjc
 
       context.addFieldDeclaration(VKUtils.buildFieldDeclaration(getTokenReference(),
 								ACC_PUBLIC | ACC_FINAL,
-								new CArrayType(getFieldType().getDef().getType(), 1),
+								new CArrayType(getFieldType().getDef().getDefaultType(), 1),
 								ident,
 								null));
     }

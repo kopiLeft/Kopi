@@ -18,7 +18,6 @@
 @literal	FORM
 @literal	FORMAT
 @literal	HIDDEN
-@literal	IMPLEMENTS
 @literal	INDEX
 @literal	INIT
 @literal	LINE

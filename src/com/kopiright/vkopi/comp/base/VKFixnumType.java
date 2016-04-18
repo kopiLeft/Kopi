@@ -92,7 +92,7 @@ public class VKFixnumType extends VKType {
    * Check expression and evaluate and alter context
    * @exception	PositionedError	Error catched as soon as possible
    */
-  public CReferenceType getType() {
+  public CReferenceType getDefaultType() {
     return com.kopiright.vkopi.comp.trig.GStdType.FixnumField;
   }
 
