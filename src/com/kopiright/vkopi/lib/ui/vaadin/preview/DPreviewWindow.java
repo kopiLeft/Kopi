@@ -26,6 +26,7 @@ import com.kopiright.vkopi.lib.preview.VPreviewWindow;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.DWindow;
 import com.vaadin.server.FileResource;
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.UI;
 
 /**
  * The <code>DPreviewWindow</code> is the vaadin view side of the
@@ -48,7 +49,7 @@ public class DPreviewWindow extends DWindow {
     this.model = model;
     embedded = new Embedded(); 
     embedded.setSizeFull();
-    embedded.setHeight(297, Unit.MM); // size of an A4 document
+    embedded.setHeight(UI.getCurrent().getPage().getBrowserWindowHeight() - 100, Unit.PIXELS);
     setContent(embedded);
   }
   

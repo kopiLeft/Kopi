@@ -121,7 +121,7 @@ public class MessageCode {
     try {
       String            format;
 
-      manager = new LocalizationManager(Locale.getDefault(), ApplicationContext.getDefaultLocale());
+      manager = new LocalizationManager(ApplicationContext.getDefaultLocale(), Locale.getDefault());
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");

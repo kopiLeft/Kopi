@@ -165,6 +165,7 @@ public abstract class AbstractFieldHandler implements FieldHandler {
       throw new VExecFailedException();	// no message needed
     }
     getModel().setValueID(id);
+    getModel().getBlock().gotoNextField();
     return true;
   }
 

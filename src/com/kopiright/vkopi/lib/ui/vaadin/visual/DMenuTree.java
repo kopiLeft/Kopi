@@ -126,6 +126,28 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   // --------------------------------------------------------------------
 
   /**
+   * Adds the given module to favorites.
+   * @param module The module to be added to favorites.
+   */
+  public void addShortcut(final Module module) {
+    if (!getModel().getShortcutsID().contains(module.getId())) {
+      getModel().getShortcutsID().add(module.getId());
+      addShortcutsInDatabase(module.getId());
+    }
+  }
+  
+  /**
+   * Removes the given module from favorites.
+   * @param module The module to be removed from favorites.
+   */
+  public void removeShortcut(final Module module) {
+    if (getModel().getShortcutsID().contains(module.getId())) {
+      getModel().getShortcutsID().remove(new Integer(module.getId()));
+      removeShortcutsFromDatabase(module.getId());
+    }
+  }
+
+  /**
    * Add a favorite into database.
    */
   protected void addShortcutsInDatabase(int id) {
@@ -174,7 +196,13 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   public void gotoShortcuts() {}
 
   @Override
-  public void addSelectedElement() {}
+  public void addSelectedElement() {
+    final Module      module = getSelectedModule();
+    
+    if (module != null) {
+      addShortcut(module);
+    }
+  }
   
   /**
    * Launches the selected form in the menu tree.
@@ -184,6 +212,7 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   @Override
   public void launchSelectedForm() throws VException {
     final Module      module = getSelectedModule();
+    
     if (module != null) {
       if (getModel().isSuperUser()) {
 	if (tree.getParent(tree.getValue()) != null) {
@@ -213,10 +242,13 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true);
     if (module != null) {
       ((VMenuTree) getModel()).setToolTip(module.getHelp());
+      getModel().setActorEnabled(VMenuTree.CMD_SHOW, getModel().getShortcutsID().size() > 0);
       if (module.getObject() != null) {
-	getModel().setActorEnabled(VMenuTree.CMD_OPEN, true);
-	getModel().setActorEnabled(VMenuTree.CMD_FOLD, false);
-	getModel().setActorEnabled(VMenuTree.CMD_UNFOLD, false);
+        getModel().setActorEnabled(VMenuTree.CMD_OPEN, true);
+        getModel().setActorEnabled(VMenuTree.CMD_ADD, !getModel().getShortcutsID().contains(module.getId()));
+        getModel().setActorEnabled(VMenuTree.CMD_REMOVE, getModel().getShortcutsID().contains(module.getId()));
+        getModel().setActorEnabled(VMenuTree.CMD_FOLD, false);
+        getModel().setActorEnabled(VMenuTree.CMD_UNFOLD, false);
       } else {
 	getModel().setActorEnabled(VMenuTree.CMD_OPEN, ((VMenuTree) getModel()).isSuperUser());
 	getModel().setActorEnabled(VMenuTree.CMD_ADD, false);
@@ -232,7 +264,13 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   }
 
   @Override
-  public void removeSelectedElement() {}
+  public void removeSelectedElement() {
+    final Module      module = getSelectedModule();
+    
+    if (module != null) {
+      removeShortcut(module);
+    }
+  }
   
   /**
    * Returns the selected module.
@@ -410,8 +448,8 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   // DATA MEMBERS
   // --------------------------------------------------
 
-  private Tree						tree;
-  private final Action                                 ADD_BOOKMARK;
-  private final Action                                 REMOVE_BOOKMARK;
-  private static final long 				serialVersionUID = -6740174181163603800L;
+  private Tree                                  tree;
+  private final Action                          ADD_BOOKMARK;
+  private final Action                          REMOVE_BOOKMARK;
+  private static final long                     serialVersionUID = -6740174181163603800L;
 }

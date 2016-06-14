@@ -19,9 +19,9 @@
 
 package com.kopiright.vkopi.lib.ui.vaadin.form;
 
+import org.kopi.vaadin.addons.ContextMenu;
 import org.kopi.vaadin.addons.TextField;
 import org.kopi.vaadin.addons.TextValueChangeListener;
-import org.vaadin.peter.contextmenu.ContextMenu;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickEvent;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickListener;
 

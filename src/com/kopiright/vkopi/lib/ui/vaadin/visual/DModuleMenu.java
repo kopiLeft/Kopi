@@ -163,9 +163,12 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
 
       @Override
       public void execute() throws VException {
-        setWaitInfo(VlibProperties.getString("menu_form_started"));
-        module.run(model.getDBContext());
-        unsetWaitInfo();
+        try {
+          setWaitInfo(VlibProperties.getString("menu_form_started"));
+          module.run(model.getDBContext());
+        } finally {
+          unsetWaitInfo();
+        }
       }
     });
   }
@@ -257,8 +260,18 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
   }
 
   @Override
-  public void performAsyncAction(KopiAction action) {
-    new Thread(action).start();
+  public void performAsyncAction(final KopiAction action) {
+    new Thread(new Runnable() {
+      
+      @Override
+      public void run() {
+        try {
+          action.execute();
+        } catch (VException e) {
+          getApplication().error(e.getMessage());
+        }
+      }
+    }).start();
   }
 
   @Override

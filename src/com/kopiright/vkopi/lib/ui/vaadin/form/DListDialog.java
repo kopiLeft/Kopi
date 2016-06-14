@@ -23,12 +23,24 @@ import org.kopi.vaadin.addons.InformationNotification;
 import org.kopi.vaadin.addons.ListDialog;
 import org.kopi.vaadin.addons.ListDialogListener;
 import org.kopi.vaadin.addons.NotificationListener;
+import org.kopi.vaadin.addons.client.list.TableModel.ColumnType;
 
 import com.kopiright.vkopi.lib.form.UField;
 import com.kopiright.vkopi.lib.form.UListDialog;
 import com.kopiright.vkopi.lib.form.VDictionary;
 import com.kopiright.vkopi.lib.form.VForm;
 import com.kopiright.vkopi.lib.form.VListDialog;
+import com.kopiright.vkopi.lib.list.VBooleanCodeColumn;
+import com.kopiright.vkopi.lib.list.VBooleanColumn;
+import com.kopiright.vkopi.lib.list.VDateColumn;
+import com.kopiright.vkopi.lib.list.VFixnumCodeColumn;
+import com.kopiright.vkopi.lib.list.VFixnumColumn;
+import com.kopiright.vkopi.lib.list.VIntegerCodeColumn;
+import com.kopiright.vkopi.lib.list.VIntegerColumn;
+import com.kopiright.vkopi.lib.list.VMonthColumn;
+import com.kopiright.vkopi.lib.list.VTimeColumn;
+import com.kopiright.vkopi.lib.list.VTimestampColumn;
+import com.kopiright.vkopi.lib.list.VWeekColumn;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.ui.vaadin.visual.VApplication;
 import com.kopiright.vkopi.lib.visual.ApplicationContext;
@@ -133,7 +145,12 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
    * Prepares the dialog content.
    */
   protected void prepareDialog() {
-    setModel(model.getTitles(), buildColumnsAlignment(), model.getTranslatedIdents(), createModelObjects(), model.getCount());
+    setModel(model.getTitles(),
+             buildColumnsTypes(),
+             buildColumnsAlignment(),
+             model.getTranslatedIdents(),
+             createModelObjects(),
+             model.getCount());
     // set the new button if needed.
     if (model.getNewForm() != null || model.isForceNew()) {
       setNewText(VlibProperties.getString("new-record"));
@@ -220,6 +237,44 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
     }
     
     return aligns;
+  }
+  
+  /**
+   * Builds the columns types.
+   * @return The columns types.
+   */
+  protected ColumnType[] buildColumnsTypes() {
+    ColumnType[]        types;
+    
+    types = new ColumnType[model.getColumns().length];
+    for (int i = 0; i < model.getColumns().length; i++) {
+      if (model.getColumns()[i] instanceof VBooleanCodeColumn
+          || model.getColumns()[i] instanceof VBooleanColumn)
+      {
+        types[i] = ColumnType.BOOLEAN;
+      } else if (model.getColumns()[i] instanceof VIntegerCodeColumn
+                 || model.getColumns()[i] instanceof VIntegerColumn
+                 || model.getColumns()[i] instanceof VFixnumCodeColumn
+                 || model.getColumns()[i] instanceof VFixnumColumn)
+      {
+        types[i] = ColumnType.NUMBER;
+      } else if (model.getColumns()[i] instanceof VDateColumn) {
+        types[i] = ColumnType.DATE;
+      } else if (model.getColumns()[i] instanceof VTimeColumn) {
+        types[i] = ColumnType.TIME;
+      } else if (model.getColumns()[i] instanceof VTimestampColumn) {
+        types[i] = ColumnType.TIMESTAMP;
+      } else if (model.getColumns()[i] instanceof VWeekColumn) {
+        types[i] = ColumnType.WEEK;
+      } else if (model.getColumns()[i] instanceof VMonthColumn) {
+        types[i] = ColumnType.MONTH;
+      } else {
+        // consider all other columns as string
+        types[i] = ColumnType.STRING;
+      }
+    }
+    
+    return types;
   }
   
   //------------------------------------------------------

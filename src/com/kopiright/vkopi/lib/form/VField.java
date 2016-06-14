@@ -985,6 +985,7 @@ public abstract class VField implements VConstants, VModel {
   public void clear(int r) {
     setSearchOperator(SOP_EQ);
     setNull(r);
+    resetColor(r);
   }
 
   /**
@@ -1642,9 +1643,24 @@ public abstract class VField implements VConstants, VModel {
    * @param background The background color.
    */
   public void setColor(int r, VColor foreground, VColor background) {
-    this.foreground[r] = foreground;
-    this.background[r] = background;
-    fireColorChanged(r);
+    boolean             fireColorChanged;
+    
+    fireColorChanged = false;
+    if ((this.foreground[r] == null && foreground != null)
+        || (this.foreground[r] != null && !this.foreground[r].equals(foreground)))
+    {
+      this.foreground[r] = foreground;
+      fireColorChanged = true;
+    }
+    if ((this.background[r] == null && background != null)
+        || (this.background[r] != null && !this.background[r].equals(foreground)))
+    {
+      this.background[r] = background;
+      fireColorChanged = true;
+    }
+    if (fireColorChanged) {
+      fireColorChanged(r);
+    }
   }
   
   /**

@@ -54,7 +54,7 @@ public class VWindowController extends WindowController {
       return (viewStarter.getView() == null) ? false : viewStarter.getView().getReturnCode() == VWindow.CDE_VALIDATE;
     } finally {
       // This is a turn around to kill delayed wait dialog displayed in modal windows
-      model.getDisplay().unsetWaitInfo();
+      model.unsetWaitInfo();
     }
   }
 

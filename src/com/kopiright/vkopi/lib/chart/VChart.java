@@ -693,13 +693,17 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
                                                 commands,
                                                 getColumns(),
                                                 help);
-    try {
-      surl.append(new File(fileName).toURL().toString());
-    } catch (java.net.MalformedURLException mue) {
-      throw new InconsistencyException(mue);
-    }
+    if (fileName == null) {
+      return null;
+    } else {
+      try {
+        surl.append(new File(fileName).toURL().toString());
+      } catch (java.net.MalformedURLException mue) {
+        throw new InconsistencyException(mue);
+      }
 
-    return surl.toString();
+      return surl.toString();
+    }
   }
   
   // --------------------------------------------------------------------

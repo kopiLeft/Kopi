@@ -353,7 +353,7 @@ public class Query {
       traceQuery(TRL_QUERY, "RUN");
 
       if (!lobs.isEmpty()) {
-        stmt = createFilledPreparedStatement(text);
+        stmt = createFilledPreparedStatement(conn.convertSql(text));
 	count = ((PreparedStatement)stmt).executeUpdate();
         stmt.close();
       } else {

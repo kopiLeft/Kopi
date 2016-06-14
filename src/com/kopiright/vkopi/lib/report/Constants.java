@@ -116,6 +116,4 @@ public interface Constants extends com.kopiright.vkopi.lib.visual.Constants {
 
   int[] TRG_TYPES			= new int[] {
     TRG_VOID, TRG_VOID, TRG_VOID, TRG_OBJECT, TRG_OBJECT, TRG_BOOLEAN};
-
-
-}
+  }

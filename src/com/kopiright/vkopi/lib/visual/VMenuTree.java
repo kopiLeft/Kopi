@@ -105,9 +105,9 @@ public class VMenuTree extends VWindow {
     createActor(CMD_HELP, "Help", "Help", "help", KeyEvent.VK_F1, 0);
     setActors(actors);
 
-    localizeActors(Locale.getDefault());
+    localizeActors(ApplicationContext.getDefaultLocale());
     createTree(loadFavorites);
-    localizeModules(Locale.getDefault());
+    localizeModules(ApplicationContext.getDefaultLocale());
   }
 
   // ----------------------------------------------------------------------
@@ -122,7 +122,7 @@ public class VMenuTree extends VWindow {
   public void localizeActors(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
+    manager = new LocalizationManager(locale, Locale.getDefault());
     try {
       super.localizeActors(manager); // localizes the actors in VWindow
     } catch (InconsistencyException e) {
@@ -247,7 +247,7 @@ public class VMenuTree extends VWindow {
   public void localizeModules(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
+    manager = new LocalizationManager(locale, Locale.getDefault());
 
     // localizes the modules
     for (ListIterator<Module> i = items.listIterator(); i.hasNext(); ) {

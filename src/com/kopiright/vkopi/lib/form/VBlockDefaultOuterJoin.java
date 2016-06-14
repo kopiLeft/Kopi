@@ -119,7 +119,6 @@ public class VBlockDefaultOuterJoin {
     buffer = new StringBuffer(" FROM ");
     // first search join condition for the block main table.
     buffer.append(getJoinCondition(0, 0));
-    System.out.println(buffer);
     // search join condition for other lookup tables  not joined with main table.
     for (int i = 1 ; i < tables.length; i++) {
       if (!isJoinedTable(i)) {

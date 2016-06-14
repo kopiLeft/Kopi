@@ -285,7 +285,7 @@ public abstract class JApplication implements Application {
       }
     }
 
-    localizationManager = new LocalizationManager(Locale.getDefault(), defaultLocale);
+    localizationManager = new LocalizationManager(defaultLocale, Locale.getDefault());
     return true;
   }
 

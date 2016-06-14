@@ -707,13 +707,17 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
                                                  commands,
                                                  model,
                                                  help);
-    try {
-      surl.append(new File(fileName).toURL().toString());
-    } catch (java.net.MalformedURLException mue) {
-      throw new InconsistencyException(mue);
-    }
+    if (fileName == null) {
+      return null;
+    } else {
+      try {
+        surl.append(new File(fileName).toURL().toString());
+      } catch (java.net.MalformedURLException mue) {
+        throw new InconsistencyException(mue);
+      }
 
-    return surl.toString();
+      return surl.toString();
+    }
   }
 
   public void showHelp() {

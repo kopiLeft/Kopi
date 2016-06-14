@@ -59,6 +59,7 @@ public class DActor extends Actor implements UActor, ActionListener {
   public DActor(VActor model) {
     super(model.menuItem,
 	  getDescription(model),
+	  model.menuName,
 	  loadResource(model.iconName),
 	  correctAcceleratorKey(model.acceleratorKey),
 	  correctAcceleratorModifier(model.acceleratorModifier));
