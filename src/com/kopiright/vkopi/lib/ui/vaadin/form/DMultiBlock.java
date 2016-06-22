@@ -26,6 +26,7 @@ import com.kopiright.vkopi.lib.base.UComponent;
 import com.kopiright.vkopi.lib.form.KopiAlignment;
 import com.kopiright.vkopi.lib.form.UMultiBlock;
 import com.kopiright.vkopi.lib.form.VBlock;
+import com.kopiright.vkopi.lib.form.VField;
 import com.kopiright.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import com.kopiright.vkopi.lib.visual.VException;
 import com.kopiright.vkopi.lib.visual.VRuntimeException;
@@ -86,6 +87,75 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
     
     return layout;
   }
+  
+  @Override
+  public void blockViewModeLeaved(VBlock block, VField activeField) {
+    try {
+      // take care that value of current field
+      // is visible in the other mode
+      // Not field.updateText(); because the field is
+      // maybe not visible in the Detail Mode
+      if (activeField != null) {
+        activeField.leave(true);
+      }
+    } catch (VException ex) {
+      getModel().getForm().error(ex.getMessage());
+    }
+  }
+  
+  @Override
+  public void blockViewModeEntered(VBlock block, VField activeField) {
+    if (inDetailMode()) {
+      try {
+        // Show detail view
+
+        // take care that value of current field
+        // is visible in the other mode
+        // Not field.updateText(); because the field is
+        // maybe not visible in the Detail Mode
+        if (activeField == null) {
+          //     getModel().gotoFirstField();
+        } else {
+          if (! activeField.noDetail()) {
+            // field is visible in chartView
+            activeField.enter();
+          } else {
+            // field is not visible in in chart view:
+            // go to the next visible field
+            block.setActiveField(activeField);
+            getModel().gotoNextField();
+          }
+        }
+      } catch (VException ex) {
+        getModel().getForm().error(ex.getMessage());
+      }
+    } else {
+      try {
+        // show chart view
+
+        // take care that value of current field
+        // is visible in the other mode
+        // Not field.updateText(); because the field is
+        // maybe not visible in the Detail Mode
+
+        if (activeField == null) {
+          // getModel().gotoFirstField();
+        } else {
+          if (!activeField.noChart()) {
+            // field is visible in chartView
+            activeField.enter();
+          } else {
+            // field is not visible in in chart view:
+            // go to the next visible field
+            block.setActiveField(activeField);
+            getModel().gotoNextField();
+          }
+        }
+      } catch (VException ex) {
+        getModel().getForm().error(ex.getMessage());
+      }
+    }
+  }
 
   //---------------------------------------------------
   // MULTIBLOCK IMPLEMENTATION
@@ -106,27 +176,19 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
         return;
       }
     }
+    
     if (row >= 0) {
       getModel().gotoRecord(getRecordFromDisplayLine(row));
+    } else if (getDisplayLine() >= 0) {
+      getModel().gotoRecord(getRecordFromDisplayLine(getDisplayLine()));
     }
-    if (inDetailMode()) {
-      getModel().setDetailMode(false);
-      BackgroundThreadHandler.access(new Runnable() {
-        
-        @Override
-        public void run() {
-          switchView(false);
-        }
-      });
-    } else {
-      getModel().setDetailMode(true);
-      BackgroundThreadHandler.access(new Runnable() {
-        
-        @Override
-        public void run() {
-          switchView(true);
-        }
-      });
-    }
+    getModel().setDetailMode(!inDetailMode());
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        switchView(inDetailMode());
+      }
+    });
   }
 }
