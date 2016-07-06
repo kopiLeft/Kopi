@@ -19,7 +19,7 @@
 
 TOPDIR =	..
 
-SUBDIRS =	 ipp lpr mailer
+SUBDIRS =	 ipp lpr html mailer
 
 ## ----------------------------------------------------------------------
 ## TOOLS
