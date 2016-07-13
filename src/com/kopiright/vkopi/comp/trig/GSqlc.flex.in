@@ -91,7 +91,7 @@ E =	[eE] [+\-]? {D}+
   \'    			{ yybegin(STRINGLITERAL); string.setLength(0); }
 
   /* delimited ids */
-  \"    			{ yybegin(DELIMITERID); }
+  \"    			{ yybegin(DELIMITERID); string.setLength(0); }
 
   /* numeric literals */
   {D}+				{ return new CToken(INTEGER_LIT, yytext()); }
