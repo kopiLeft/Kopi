@@ -487,6 +487,8 @@ public class Connection {
       driver = new IngresDriverInterface();
     } else if (driverName.equals("sun.jdbc.odbc.JdbcOdbcDriver")) {
       driver = new ODBCDriverInterface();
+    } else if (driverName.equals("com.ddtek.jdbc.openedge.OpenEdgeDriver")) {
+      driver = new OpenEdgeDriverInterface();
     } else {
       throw new InconsistencyException("no appropriate driver found");
     }

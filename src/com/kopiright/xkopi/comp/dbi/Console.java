@@ -89,9 +89,8 @@ public class Console extends Compiler implements Constants {
       if (options.host != null &&
           options.dbname != null &&
           options.login != null) {
-        final String  url = datasource.startURL + "//" + options.host + "/" + options.dbname;
-        
-        connection = DriverManager.getConnection(url,
+	
+        connection = DriverManager.getConnection(getURL(),
                                                  options.login,
                                                  options.password);
         connection.setAutoCommit(false);
@@ -221,10 +220,7 @@ public class Console extends Compiler implements Constants {
             && options.dbname != null
             && options.login != null)
         {
-          final String  url
-            = datasource.startURL + "//" + options.host + "/" + options.dbname;
-
-          connection = DriverManager.getConnection(url,
+          connection = DriverManager.getConnection(getURL(),
                                                    options.login,
                                                    options.password);
           connection.setAutoCommit(false);
@@ -247,6 +243,44 @@ public class Console extends Compiler implements Constants {
     } else {
       return false;
     }
+  }
+  
+  /**
+   * Retrieve the connection URL
+   */
+  private String getURL() {
+    final String	url;
+    
+    // For the Progress OpenEdge JDBC Driver (DataDirect), the URL should look
+    // similar to the following:jdbc:datadirect:openedge://hostname:port;databaseName=name 
+    // in which port is the port number of the database server and name is the logical database name. 
+    // If the URL contains an IPv6 address, be sure to include an opening bracket before and a closing bracket after the address; 
+    // for example, [thehostmachine].
+    if (options.datasource.equals("oe")) {
+      if (isIpAdress(options.host)) {
+        url = datasource.startURL + "//[" + options.host + "]:" + options.port + ";databaseName=" + options.dbname;
+      } else {
+        url = datasource.startURL + "//" + options.host + ":" + options.port + ";databaseName=" + options.dbname;
+      }
+    } else {
+      url = datasource.startURL + "//" + options.host + "/" + options.dbname;
+    }
+    
+    return url;
+  }
+  
+  /**
+   * Verify if the host name is an IP adresse
+   * @param 	host : host name
+   */
+  private boolean isIpAdress(String host) {
+    for (int i = 0; i < host.length(); i++) {
+      if (Character.isDigit(host.charAt(i))) {
+	return true;
+      }
+    }
+    
+    return false;
   }
 
   private void processInput() {
@@ -662,6 +696,8 @@ public class Console extends Compiler implements Constants {
         dataSource = new IngresDataSource();
       } else if (name.equals("as400")) {
         dataSource = new As400DataSource();
+      } else if (name.equals("oe")) {
+	dataSource = new OpenEdgeDataSource();
       } else {
         throw new IllegalArgumentException("No data source corresponding to '"
                                            + name + "'");
@@ -805,6 +841,15 @@ public class Console extends Compiler implements Constants {
             "as400");
     }
   }
+  
+  private static final class OpenEdgeDataSource extends DbiDataSource {
+    OpenEdgeDataSource() {
+      super("com.ddtek.jdbc.openedge.OpenEdgeDriver",
+            "jdbc:datadirect:openedge:",
+            "oe");
+    }
+  }
+  
 
   // ----------------------------------------------------------------------
   // INNER CLASSES

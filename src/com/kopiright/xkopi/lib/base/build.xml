@@ -28,7 +28,8 @@
                    MysqlDriverInterface.java OracleDriverInterface.java 
                    PostgresDriverInterface.java SapdbDriverInterface.java 
                    TbxDriverInterface.java ODBCDriverInterface
-                   ConnectionOptions.java IngresDriverInterface.java" />
+                   ConnectionOptions.java IngresDriverInterface.java
+  		   OpenEdgeDriverInterface.java" />
 
   <property name="options" 
             value="ConnectionOptions" />

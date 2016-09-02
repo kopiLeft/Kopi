@@ -32,6 +32,11 @@
          type="String"
          default="localhost"
          help="The host to connect to" />
+  <param longname="port"
+         shortname="P"
+         type="String" 
+         default="null"
+         help="The port number of the database server" />
   <param longname="dbname"
          shortname="b"
          type="String"

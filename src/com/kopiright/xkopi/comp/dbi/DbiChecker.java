@@ -81,6 +81,8 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
       return new TbSpoolerDbiChecker(context);
     } else if (syntax.equals("oraspool")) {
       return new OraSpoolerDbiChecker(context);
+    } else if (syntax.equals("oe")) {
+      return new OpenEdgeDbiChecker(context);
     } else {
       System.err.println("syntax " + syntax + " not found, using default syntax." );
       return new KopiDbiChecker(context);
