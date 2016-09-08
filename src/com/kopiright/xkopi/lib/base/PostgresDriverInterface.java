@@ -302,6 +302,24 @@ public class PostgresDriverInterface extends DriverInterface {
   }
 
   /**
+   * Casts a field to a target type using native database cast function.
+   * @param object      the field to casted
+   * @param type        the casting type
+   * @return            a string representing the native syntax for cast
+   */
+  private String cast(Object object, String type) {
+    if (type.toUpperCase().startsWith("INT")) { 
+      return "CAST(" + object + " AS integer)";
+    } else if (type.toUpperCase().startsWith("NUMERIC") || type.toUpperCase().startsWith("FIXED")) {
+      return "CAST(" + object + " AS numeric)";
+    } else if (type.toUpperCase().startsWith("STRING") || type.toUpperCase().startsWith("CHAR")) {
+      return "CAST(" + object + " AS text)";
+    } else {
+      return object.toString();
+    }
+  }
+
+  /**
    * Converts a function call in JDBC syntax to native syntax
    *
    * @param	function	the name of the function
@@ -438,6 +456,9 @@ public class PostgresDriverInterface extends DriverInterface {
       case 32: // NEXTVAL/1
 	return "NEXTVAL('" + arguments.elementAt(0) + "')";
 	
+      case 33: // CAST/2
+        return cast(arguments.elementAt(0), (String) arguments.elementAt(1));
+
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
 				   "/" + arguments.size());
@@ -456,10 +477,8 @@ public class PostgresDriverInterface extends DriverInterface {
 
     functions.put("TOMONTH/1", new Integer(1));
     functions.put("ADD_DAYS/2", new Integer(2));
-    //unused
     functions.put("MONTH/2", new Integer(4));
     functions.put("EXTRACT/2", new Integer(5));
-    //unused
     functions.put("POSITION/2", new Integer(7));
     functions.put("SUBSTRING/2", new Integer(8));
     functions.put("SUBSTRING/3", new Integer(9));
@@ -486,5 +505,6 @@ public class PostgresDriverInterface extends DriverInterface {
     functions.put("DATEDIFF/2", new Integer(30));
     functions.put("COALESCE/2", new Integer(31));
     functions.put("NEXTVAL/1", new Integer(32));
+    functions.put("CAST/2", new Integer(33));
   }
 }
