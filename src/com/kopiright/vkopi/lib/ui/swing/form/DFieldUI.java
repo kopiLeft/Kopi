@@ -64,7 +64,7 @@ public class DFieldUI extends VFieldUI {
       field = new DImageField(this, (DLabel)label, model.getAlign(), 0, ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight(), detail);
       break;
     case VField.MDL_FLD_EDITOR:
-      field = new DTextEditor(this, (DLabel)label, model.getAlign(), 0, ((VTextField) model).getHeight(), detail);
+      field = new DTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
       break;
     case VField.MDL_FLD_TEXT:
       field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
