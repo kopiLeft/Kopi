@@ -45,6 +45,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.JTextComponent;
+import javax.swing.UIManager;
 import javax.swing.undo.UndoManager;
 
 import com.kopiright.vkopi.lib.form.ModelTransformer;
@@ -387,6 +388,9 @@ public class DTextField extends DField implements UTextField, VConstants {
   public void updateColor() {
     if (getForeground() != null) {
       field.setForeground(getForeground());
+    } else {
+      // restore default foreground
+      field.setForeground(UIManager.getLookAndFeelDefaults().getColor("TextField.foreground"));
     }
     if (document != null) {
       document.setBgColor(getBackground());
