@@ -52,6 +52,7 @@ public class VFileHandler extends FileHandler {
     try {
       return createTempFile(dir, defaultName);
     } catch (IOException e) {
+      e.printStackTrace();
       getApplication().displayError(window, e.getMessage());
       return null;
     }
@@ -137,7 +138,11 @@ public class VFileHandler extends FileHandler {
   {
     String		basename;
     String		extension;
-    
+
+    // if parent directory does not exist, create file in java.io.tempdir directly. 
+    if (directory != null && !directory.exists()) {
+      directory = null;
+    }
     basename = ensurePrefixLength(getBaseFileName(defaultName));
     extension = getExtension(defaultName);
     
