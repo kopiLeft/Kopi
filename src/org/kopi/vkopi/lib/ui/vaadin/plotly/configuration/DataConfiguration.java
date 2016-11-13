@@ -47,8 +47,8 @@ public class DataConfiguration implements ChartProprety {
   //---------------------------------------------------------
 
   public DataConfiguration() {
-    this.dataConfiguraion = new ArrayList<>();
-    colors = new ArrayList<>();
+    this.dataConfiguraion = new ArrayList<ChartData>();
+    colors = new ArrayList<Color>();
     colors.add(Colors.LIGHTGREEN);
     colors.add(Colors.LIGHTSALMON);
     colors.add(Colors.LIGHTCORAL);
@@ -224,7 +224,7 @@ public class DataConfiguration implements ChartProprety {
   // DATA MEMBERS
   //---------------------------------------------------------
 
-  private List<ChartData>		dataConfiguraion;
+  private List<ChartData>       dataConfiguraion;
   private List<Color>		colors;
   private boolean               isPieOrDonut;
   private boolean               isBoxPlot;
