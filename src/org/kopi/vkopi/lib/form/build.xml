@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.vkopi.lib.form
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="org/kopi/vkopi/lib/form" />
+  <property name="package.name" value="org.kopi.vkopi.lib.form" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="BlockAlignment.java Commands.java 
+                   KopiAlignment.java
+                   LatexPrintWriter.java ListDialog.java MultiFieldAlignment.java
+                   Triggers.java VBlock.java
+                   VBooleanCodeColumn.java VBooleanCodeField.java VBooleanColumn.java
+                   VBooleanField.java VCodeColumn.java VCodeField.java
+                   VColorColumn.java VColorField.java VColumn.java VConstants.java
+                   VDateColumn.java VDateField.java VDictionaryForm.java
+                   VDocGenerator.java  VStringCodeField.java
+                   VField.java VFieldCommand.java VFieldException.java
+                   VFieldUI.java VFixedCodeColumn.java VFixedCodeField.java
+                   VFixedColumn.java VFixedField.java VForm.java
+                   VHelpGenerator.java VImageColumn.java VImageField.java
+                   VImportedBlock.java VIntegerCodeColumn.java VIntegerCodeField.java
+                   VIntegerColumn.java VIntegerField.java
+                   VListColumn.java VMonthColumn.java
+                   VMonthField.java VPosition.java BlockRecordListener.java 
+                   VQueryNoRowException.java VQueryOverflowException.java 
+                   VSkipRecordException.java VStringColumn.java 
+                   VStringField.java VTextColumn.java VTextField.java 
+                   VTimeColumn.java VTimeField.java VWeekColumn.java 
+                   VTimestampColumn.java VTimestampField.java 
+                   VWeekField.java KopiLayoutManager.java
+                   FieldListener.java FieldChangeListener.java
+                   BlockListener.java ViewBlockAlignment.java FormListener.java 
+                   PredefinedValueHandler.java Accessor.java 
+  	           ModelTransformer.java VFixnumField.java 
+  	           VBlockOracleOuterJoin.java VBlockDefaultOuterJoin.java
+	           VFixnumCodeField.java VStringCodeField.java
+  	           DListDialog.java UField.java VListDialog.java
+  	           UBlock.java UChartLabel.java UForm.java ULabel.java 
+  	           UListDialog.java UMultiBlock.java UTextField.java
+  	           FieldHandler.java VDictionary.java" />
+	
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

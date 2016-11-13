@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 1990-2009 kopiRight Managed Solutions GmbH
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<option prefix="Kjc" parent="org.kopi.util.base.Options"  package="org.kopi.kopi.comp.kjc"  usage="usage: org.kopi.kopi.comp.kjc.Main [option]* [--help] &lt;java-files>">
+
+  <param longname="beautify" shortname="b" type="boolean" default="false" help="Beautifies the source code"/>
+ 
+  <param longname="verbose" shortname="v" type="boolean" default="false"  help="Prints out information during compilation"/>
+ 
+  <param longname="java" shortname="j" type="boolean" default="false"  help="Generates java source code instead of class"/> 
+
+  <param longname="encoding" shortname="e" type="String" default="null" help="Sets the character encoding for the source file(s)."/>
+  
+  <param longname="nowrite" shortname="n" type="boolean" default="false"  help="Only checks files, doesn't generate code"/>
+
+  <param longname="warning" shortname="w" type="int" default="1" optionalDefault="2"  help="Maximal level of warnings to be displayed"/>
+  
+  <param longname="nowarn" shortname="*" type="boolean" default="false"  help="Not used, for compatibility purpose"/>
+  
+  <param longname="optimize" shortname="O" type="int" default="1" optionalDefault="2"  help="Optimizes X times"/>
+  
+  <param longname="deprecation" shortname="D" type="boolean" default="false"  help="Tests for deprecated members"/>
+   
+  <param longname="extdirs" shortname="t" type="String" default="null"  help="Define location of installed extensions"/>
+  
+  <param longname="destination" shortname="d" type="String" default="null"  help="Writes files to destination"/>
+  
+  <param longname="classpath" shortname="C" type="String" default="null"  help="Changes class path to classpath"/>
+  
+  <param longname="debug" shortname="g" type="boolean" default="false"  help="Produces debug information (does nothing yet)"/>
+
+  <param longname="source" shortname="s" type="String" default="1.2"  help="Sets the source language (1.1, 1.2, 1.3, 1.4)"/>
+  
+  <param longname="assertion" shortname="A" type="String" default="none"  help="Enables assert extension to Java (none, simple, all)"/>
+    
+  <param longname="filter" shortname="f" type="String" default="org.kopi.kopi.comp.kjc.DefaultFilter"  help="Warning filter"/>
+
+</option>

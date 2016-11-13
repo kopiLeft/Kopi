@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 1990-2009 kopiRight Managed Solutions GmbH
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<option prefix="Mailer" parent="org.kopi.util.base.Options"  package="org.kopi.util.mailer"  usage="java org.kopi.util.mailer.Mailer --host &lt;host> --from &lt;sender> --to &lt;recipient>">
+<param longname="host" shortname="m"  type="String"  default="localhost"  help="The mail host." />
+<param longname="from" shortname="f"  type="String"  default="null"  help="The email of the sender" />
+<param longname="to" shortname="t"  type="String"  default="null"  help="A comma separated list of email addresses which are the recipients" />
+<param longname="cc" shortname="c"  type="String"  default=""  help="A comma separated list of email addresses which are the cc (Carbon Copy) recipients" />
+<param longname="bcc" shortname="b"  type="String"  default=""  help="A comma separated list of email addresses which are the bcc (Blind Carbon Copy) recipients" />
+<param longname="subject" shortname="s"  type="String"  default=""  help="The subject of the message" />
+<param longname="body" shortname="o"  type="String"  default=""  help="The body of the message" />
+<param longname="attachments" shortname="a"  type="String"  default="null"  help="A comma separated list of files to attach" />
+</option>

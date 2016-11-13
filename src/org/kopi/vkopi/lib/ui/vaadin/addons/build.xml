@@ -1,0 +1,132 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<!--==================================================================
+	package: org.kopi.vkopi.lib.ui.vaadin.addons
+    ==================================================================-->
+<project default="build" basedir=".">
+  
+  <property name="topdir" value="../../../../.." />
+  <property name="package" value="org/kopi/vkopi/lib/ui/vaadin/addons" />
+  <property name="package.name" value="org.kopi.vkopi.lib.ui.vaadin.addons" />
+  <property name="src" value="." />
+  <property name="node" value="yes"/>
+  <property name="non.standard.build" value="yes" />
+  <property name="widgetstsfiles" value="KopiAddonsWidgetset.gwt.xml" />
+  <property name="javafiles" value="AbstractBlockLayout.java
+  	                            AbstractNotification.java
+  	                            ActionEvent.java
+  	                            ActionListener.java
+  	                            Actor.java
+  	                            Block.java
+  	                            BlockLayout.java
+  	                            BlockListener.java
+			  	    ChartBlockLayout.java
+			  	    CloseListener.java
+			  	    ConfirmNotification.java
+			  	    ContextMenu.java
+			  	    DateChooser.java
+			  	    DateChooserListener.java
+			  	    ErrorNotification.java
+			  	    Field.java
+			  	    FieldListener.java
+			  	    Form.java
+			  	    FormListener.java
+			  	    ImageField.java
+			  	    ImageFieldListener.java
+			  	    InformationNotification.java
+			  	    Label.java
+			  	    LabelEvent.java
+			  	    LabelListener.java
+			  	    ListDialog.java
+			  	    ListDialogListener.java
+			  	    MainWindow.java
+			  	    MainWindowListener.java
+			  	    ModuleItem.java
+			  	    ModuleList.java
+			  	    ModuleListEvent.java
+			  	    ModuleListListener.java
+			  	    MultiBlockLayout.java
+			  	    NoInputStreamEvent.java
+			  	    NoOutputStreamEvent.java
+			  	    NotificationListener.java
+			  	    NotificationPopupListener.java
+			  	    ObjectField.java
+			  	    ObjectFieldListener.java
+			  	    PopupWindow.java
+			  	    ProgressDialog.java
+			  	    SimpleBlockLayout.java
+			  	    SortableLabel.java
+			  	    SortableLabelListener.java
+			  	    TextField.java
+			  	    TextFieldListener.java
+			  	    TextValueChangeListener.java
+			  	    TristateChangeListener.java
+			  	    TristateCheckBox.java
+			  	    Upload.java
+			  	    UploadChangeEvent.java
+			  	    UploadChangeListener.java
+			  	    UploadFailedEvent.java
+			  	    UploadFailedListener.java
+			  	    UploadFinishedEvent.java
+			  	    UploadFinishedListener.java
+			  	    UploadProgressListener.java
+			  	    UploadReceiver.java
+			  	    UploadStartedEvent.java
+			  	    UploadStartedListener.java
+			  	    UploadSucceededEvent.java
+			  	    UploadSucceededListener.java
+			  	    WaitDialog.java
+			  	    WaitWindow.java
+			  	    WarningNotification.java
+			  	    WelcomeView.java
+			  	    WelcomeViewEvent.java
+			  	    WelcomeViewListener.java
+			  	    Window.java" />
+
+  <!--==============================================================
+      Default target:	builds messages, options and java sources 
+      ==============================================================-->
+
+  <target name="node.build" depends="init" description="--> Runs subbuild files ">
+    <ant dir="client"   inheritAll="false" target="${target}" />
+  </target>
+  
+  <!--==============================================================
+		buildtools target: builds java sources only
+      ==============================================================-->
+
+  <target name="buildtools" depends="init" description=" Runs subbuild files ">
+    <ant dir="client"  inheritAll="false" />
+  </target> 
+	  
+  <!--==============================================================
+		non standard build sources and copy widgetsets files
+      ==============================================================-->
+
+  <target name="non.standard.build" description="buld sources and copy widgetsets files into classroot ">
+    <antcall target="classes" />
+    <copy todir="${classroot}/${package}">
+      <fileset dir="${src}" includes="${widgetstsfiles}" />
+    </copy>
+  </target>
+	
+  <import file="${topdir}/defs.xml" />  
+</project>

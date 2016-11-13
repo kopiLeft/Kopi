@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.vkopi.lib.util
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="org/kopi/vkopi/lib/util" />
+  <property name="package.name" value="org.kopi.vkopi.lib.util" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="Rexec.java LPrinter.java RPrinter.java EpsonLQ.java Filter.java FPrinter.java 
+                   FileWriter.java PreviewPrinter.java GroupHandler.java 
+                   LabelPrinter.java PropertyManager.java Message.java PixelConsumer.java AWTToPS.java 
+                   LpRPrinter.java CachePrinter.java AbstractPrinter.java Printer.java 
+                   To437.java ToLatin1.java FaxException.java 
+                   PrintInformation.java PrintException.java MailPrinter.java FaxPrinter.java 
+                   Fax.java FaxStatus.java PPaperType.java UnixFileWriter.java 
+                   EltronEPL2.java Laserjet.java IPPPrinter.java  PlatformFileWriter.java
+                   Charset437.java PrintJob.java HylaFAXPrinter.java HylaFAXUtils.java LineBreaker.java" />
+
+  <property name="properties" 
+            value="vlib_messages_en.properties vlib_messages_fr.properties 
+                   vlib_messages_de.properties" />
+	 
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

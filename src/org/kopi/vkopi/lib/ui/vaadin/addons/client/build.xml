@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<!--==================================================================
+	package:
+    ==================================================================-->
+
+<project default="build" basedir=".">
+  
+  <property name="topdir" value="../../../../../.." />
+  <property name="node" value="yes"/>
+    
+  <!--==============================================================
+      Default target:	builds messages, options and java sources 
+      ==============================================================-->
+
+  <target name="node.build" depends="init" description="--> Runs subbuild files ">
+    <ant dir="base"		inheritAll="false" target="${target}" />
+    <ant dir="common"		inheritAll="false" target="${target}" />
+    <ant dir="suggestion"	inheritAll="false" target="${target}" />
+    <ant dir="actor"		inheritAll="false" target="${target}" />
+    <ant dir="block"		inheritAll="false" target="${target}" />
+    <ant dir="checkbox"		inheritAll="false" target="${target}" />
+    <ant dir="date"		inheritAll="false" target="${target}" />
+    <ant dir="event"		inheritAll="false" target="${target}" />
+    <ant dir="form"		inheritAll="false" target="${target}" />
+    <ant dir="list"		inheritAll="false" target="${target}" />
+    <ant dir="main"		inheritAll="false" target="${target}" />
+    <ant dir="menu"		inheritAll="false" target="${target}" />
+    <ant dir="progress"		inheritAll="false" target="${target}" />
+    <ant dir="upload"		inheritAll="false" target="${target}" />
+    <ant dir="window"		inheritAll="false" target="${target}" />
+    <ant dir="field"		inheritAll="false" target="${target}" />
+    <ant dir="label"		inheritAll="false" target="${target}" />
+    <ant dir="login"		inheritAll="false" target="${target}" />
+    <ant dir="notification"	inheritAll="false" target="${target}" />
+    <ant dir="scrollbar"	inheritAll="false" target="${target}" />
+    <ant dir="wait"		inheritAll="false" target="${target}" />
+  </target>
+  
+  <!--==============================================================
+		buildtools target: builds java sources only
+      ==============================================================-->
+
+  <target name="buildtools" depends="init" description=" Runs subbuild files ">
+    <ant dir="base"		inheritAll="false" target="${target}" />
+    <ant dir="common"		inheritAll="false" target="${target}" />
+    <ant dir="actor"		inheritAll="false" target="${target}" />
+    <ant dir="block"		inheritAll="false" target="${target}" />
+    <ant dir="checkbox"		inheritAll="false" target="${target}" />
+    <ant dir="date"		inheritAll="false" target="${target}" />
+    <ant dir="event"		inheritAll="false" target="${target}" />
+    <ant dir="form"		inheritAll="false" target="${target}" />
+    <ant dir="list"		inheritAll="false" target="${target}" />
+    <ant dir="main"		inheritAll="false" target="${target}" />
+    <ant dir="menu"		inheritAll="false" target="${target}" />
+    <ant dir="progress"		inheritAll="false" target="${target}" />
+    <ant dir="upload"		inheritAll="false" target="${target}" />
+    <ant dir="window"		inheritAll="false" target="${target}" />
+    <ant dir="dnd"		inheritAll="false" target="${target}" />
+    <ant dir="field"		inheritAll="false" target="${target}" />
+    <ant dir="label"		inheritAll="false" target="${target}" />
+    <ant dir="login"		inheritAll="false" target="${target}" />
+    <ant dir="notification"	inheritAll="false" target="${target}" />
+    <ant dir="report"		inheritAll="false" target="${target}" />
+    <ant dir="scrollbar"	inheritAll="false" target="${target}" />
+    <ant dir="wait"		inheritAll="false" target="${target}" />
+  </target> 
+  
+  <import file="${topdir}/defs.xml" />  
+</project>

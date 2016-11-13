@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.compiler.tools.antlr.compiler
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../../.." />
+  <import file="${topdir}/defs.xml" />
+
+  <property name="package" value="org/kopi/compiler/tools/antlr/compiler" />
+  <property name="package.name" value="org.kopi.compiler.tools.antlr.compiler" />
+
+  <property name="src" value="." />
+
+  <property name="javafiles" 
+            value="ANTLRGrammarParseBehavior.java ANTLRLexer.java 
+                   ANTLRParser.java ANTLRTokdefLexer.java 
+                   ANTLRTokdefParser.java 
+                   ANTLRTokdefParserTokenTypes.java 
+                   ANTLRTokenTypes.java ActionElement.java 
+                   ActionLexer.java ActionLexerTokenTypes.java 
+                   Alternative.java AlternativeBlock.java 
+                   AlternativeElement.java BlockContext.java 
+                   BlockEndElement.java BlockWithImpliedExitPath.java 
+                   CharLiteralElement.java CharRangeElement.java 
+                   DefineGrammarSymbols.java ExceptionHandler.java 
+                   ExceptionSpec.java FileCopyException.java 
+                   Grammar.java GrammarAnalyzer.java GrammarAtom.java 
+                   GrammarDefinition.java GrammarElement.java 
+                   GrammarFile.java GrammarSymbol.java Hierarchy.java 
+                   ImportVocabTokenManager.java IndexedVector.java 
+                   JavaBlockFinishingInfo.java JavaCharFormatter.java 
+                   JavaCodeGenerator.java LLCell.java 
+                   LLEnumeration.java LList.java LLkAnalyzer.java 
+                   LLkGrammarAnalyzer.java LexerGrammar.java 
+                   List.java Lookahead.java Main.java 
+                   MakeGrammar.java OneOrMoreBlock.java Option.java 
+                   ParserGrammar.java Preprocessor.java 
+                   PreprocessorLexer.java PreprocessorTokenTypes.java 
+                   Rule.java RuleBlock.java RuleEndElement.java 
+                   RuleRefElement.java RuleSymbol.java 
+                   SimpleTokenManager.java Stack.java 
+                   StringLiteralElement.java StringLiteralSymbol.java 
+                   SynPredBlock.java TokenManager.java 
+                   TokenRangeElement.java TokenRefElement.java 
+                   TokenSymbol.java Utils.java WildcardElement.java 
+                   ZeroOrMoreBlock.java AntlrMessages.java 
+                   AntlrOptions.java" />
+
+  <target name="buildtools" >
+    <antcall target="classes" />
+  </target>
+
+
+
+</project>

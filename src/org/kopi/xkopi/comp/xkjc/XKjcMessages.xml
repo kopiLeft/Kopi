@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 1990-2009 kopiRight Managed Solutions GmbH
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<messages prefix="XKjc"  package="org.kopi.xkopi.comp.xkjc">
+<msg identifier="ASSERT_BAD_TYPE" format="Second argument of assert must be a String" reference="XKJC" level="0"/>
+<msg identifier="ASSERT_COND_BAD_TYPE" format="First argument of assert must be a boolean expression" reference="XKJC" level="0"/>
+<msg identifier="ASSIGNMENT_TO_NOT_NULL" format="Try to assign a value of type \&quot;{0}\&quot; to a variable that can&apos;t be null" reference="XKJC" level="0"/>
+<msg identifier="BAD_CONNECTION" format="The object \&quot;{0}\&quot; must inherit from Connection or DBContextHandler" reference="XKJC" level="0"/>
+<msg identifier="BAD_DEFAULT_CONTEXT" format="You must provide a Connection for this statement, \&quot;{0}\&quot; does not inherit from DBContextHandler" reference="XKJC" level="0"/>
+<msg identifier="BAD_FIXED_FORMAT" format="This is not a fixed: \&quot;{0}\&quot;" reference="XKJC" level="0"/>
+<msg identifier="BAD_KEYWORD" format="Illegal KOPI keyword \&quot;{0}\&quot;" reference="XKJC" level="0"/>
+<msg identifier="BAD_XKJCPATH" format="The XKJC_PATH is corrupted: {0}" reference="XKJC" level="0"/>
+<msg identifier="DUPLICATE_IDENT" format="The column \&quot;{0}\&quot; appears more than one time in this SELECT" reference="XKJC" level="0"/>
+<msg identifier="DUMMY" format="This an unused dummy message" reference="XKJC" level="0"/>
+<msg identifier="EXECUTE_BAD_PRIMITIVE" format="An execute statement may return null values for SetFunctions if no rows are found" reference="XKJC" level="2"/>
+<msg identifier="FAIL_BAD_TYPE" format="First argument of fail must be a String" reference="XKJC" level="0"/>
+<msg identifier="OPERATOR_IDENT" format="Operator must be named \&quot;operator:xxx\&quot;" reference="XKJC" level="0"/>
+<msg identifier="OPERATOR_STATIC" format="Operator definition must be static" reference="XKJC" level="0"/>
+<msg identifier="OPERATOR_PUBLIC" format="Operator definition must be static" reference="XKJC" level="0"/>
+<msg identifier="PROTECTED_BAD_CONTEXT" format="The context for a protected statement must inherit from DBContextHandler (\&quot;{0}\&quot; doesn&apos;&apos;t)" reference="XKJC" level="0"/>
+<msg identifier="PROTECTED_BAD_MESSAGE" format="The message parameter of a protected statement must be a String and not {0}" reference="XKJC" level="0"/>
+<msg identifier="PROTECTED_DEFAULT_BAD" format="The default context for protected should inherit from DBContextHandler but this class ({0}) doesn&apos;&apos;t" reference="XKJC" level="0"/>
+<msg identifier="PROTECTED_NO_CONTEXT" format="The class enclosing this protected statement does not inherit from DBContextHandler; therefore you must provide an explicit context" reference="XKJC" level="0"/>
+<msg identifier="PROTECTED_RETURN" format="Return statement not allowed in protected code" reference="XKJC" level="0"/>
+<msg identifier="GOTO_NOT_ALLOWED" format="Goto statement not allowed in Java (use --allowGoto)" reference="XKJC" level="0"/>
+<msg identifier="SELECT_LIST_LENGTH" format="The number of parameters in the INTO part should match those of the SELECT part" reference="XKJC" level="0"/>
+<msg identifier="EXEC_KOPI_INSERT_TABLE_BAD_TYPE" format="The type of the table parameter in an #sqlinsert should be String" reference="XKJC" level="0"/>
+<msg identifier="MISSING_NOTNULL_COLUMN" format="Not-null column \&quot;{0}\&quot; missing in #sqlinsert expression" reference="XKJC" level="2"/>
+<msg identifier="SHARP_ASSERT" format="\&quot;#assert\&quot; is the old syntax of assert. Use \&quot;@assert\&quot; instead." reference="KOPI" level="1"/>
+</messages>

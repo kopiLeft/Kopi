@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.xkopi.lib.oper
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+ <property name="non.standard.build" value="yes" />
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="org/kopi/xkopi/lib/oper" />
+  <property name="package.name" value="org.kopi.xkopi.lib.oper" />
+  <property name="src" value="." />
+	  <property name="xfiles" 
+	            value="XBoolean.x XByte.x XCharacter.x XDate.x XDouble.x 
+	                   XFixed.x XFloat.x XInteger.x XMonth.x XShort.x 
+	                   XString.x XTime.x XTimestamp.x XWeek.x" />
+
+  <property name="jfiles" 
+            value="NullValueInComparison.java NullValueInCastOperator.java
+                   NullValueInOperation.java" />
+
+
+  <target name="non.standard.build" >
+  	<java.def classname="org.kopi.xkopi.comp.xkjc.Main">
+  	  <arg line="--verbose --nooo --xkjcpath /dev/null -d ${classroot} ${xfiles} ${jfiles}" />
+	</java.def>
+  </target>
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

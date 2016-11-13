@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.bytecode.classfile
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../.." />
+
+
+  <property name="package" value="org/kopi/bytecode/classfile" />
+  <property name="package.name" value="org.kopi.bytecode.classfile" />
+
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="AbstractInstructionAccessor.java AccessorContainer.java 
+                   AccessorTransformer.java AsciiConstant.java Attribute.java 
+                   AttributeList.java BadAccessorException.java 
+                   ClassConstant.java ClassfileOptions.java 
+                   ClassFileFormatException.java ClassInfo.java ClassPath.java 
+                   ClassRefInstruction.java CodeEnv.java CodeInfo.java 
+                   CodePosition.java ConstantPool.java 
+                   ConstantValueAttribute.java Constants.java 
+                   DeprecatedAttribute.java DoubleConstant.java 
+                   ExceptionsAttribute.java FieldInfo.java 
+                   FieldRefConstant.java FieldRefInstruction.java 
+                   FloatConstant.java GenericAttribute.java HandleCreator.java 
+                   HandlerInfo.java IincInstruction.java InnerClassInfo.java 
+                   InnerClassTable.java Instruction.java InstructionAccessor.java 
+                   InstructionHandle.java InstructionIO.java IntegerConstant.java 
+                   InterfaceConstant.java InvokeinterfaceInstruction.java 
+                   JumpInstruction.java LineNumberInfo.java LineNumberTable.java 
+                   LocalVarInstruction.java LocalVariableInfo.java 
+                   LocalVariableTable.java LongConstant.java Main.java 
+                   Member.java MethodInfo.java MethodRefConstant.java 
+                   MethodRefInstruction.java MultiarrayInstruction.java 
+                   NameAndTypeConstant.java NewarrayInstruction.java 
+                   NoArgInstruction.java OpcodeNames.java PooledConstant.java 
+                   PushLiteralInstruction.java ReferenceConstant.java 
+                   SkippedCodeInfo.java SourceFileAttribute.java 
+                   StringConstant.java SwitchInstruction.java 
+                   SyntheticAttribute.java UnresolvedConstant.java 
+                   ConstraintsAttribute.java SignatureAttribute.java 
+                   PreconditionAttribute.java PostconditionAttribute.java 
+                   InvariantAttribute.java MethodDescription.java 
+                   ConstantPoolOverflowException.java 
+                   InstructionOverflowException.java 
+                   LocalVariableOverflowException.java 
+                   ClassfileMessages.java ClassfileOptions.java" />
+
+  <property name="messages" value="ClassfileMessages" />
+  
+  <property name="options"  value="ClassfileOptions" />
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

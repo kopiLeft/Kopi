@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.vkopi.comp.base
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+
+
+  <property name="package" value="org/kopi/vkopi/comp/base" />
+  <property name="package.name" value="org.kopi.vkopi.comp.base" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="VKOptions.java 
+                   BaseScanner.java VKParseContext.java VKParseCommandContext.java
+		   VKParseVKWindowContext.java VKFieldListAction.java
+                   BaseTokenTypes.java 
+                   BaseParser.java 
+                   BaseKeywords.java
+                   Commandable.java 
+                   VKAction.java VKActor.java VKBlockAction.java VKBooleanCodeType.java 
+                   VKBooleanType.java VKCodeDesc.java VKCodeType.java VKColorType.java 
+                   VKCommand.java VKCommandBody.java VKCommandDefinition.java 
+                   VKCommandName.java VKCompilationUnit.java VKConstants.java 
+                   VKContext.java 
+                   VKDateType.java VKDefaultCommand.java VKDefinition.java 
+                   VKDefinitionCollector.java 
+                   VKStringCodeType.java VKEnvironment.java VKExternAction.java VKFieldList.java 
+                   VKFixedCodeType.java VKFixedType.java 
+                   VKHelpUtils.java VKImageType.java VKInsert.java 
+                   VKInsertParser.java VKIntegerCodeType.java 
+                   VKIntegerType.java VKInternAction.java VKKjcTypeFactory.java 
+                   VKLatexPrintWriter.java 
+                   VKListDesc.java VKMethodAction.java VKMonthType.java VKPhylum.java 
+                   VKPrettyPrinter.java VKStdType.java VKStringType.java VKTextType.java 
+                   VKTimeType.java VKTimestampType.java VKTopLevel.java VKTrigger.java 
+                   VKType.java VKTypeFactory.java VKTypeDefinition.java VKUtils.java 
+                   VKWeekType.java VKWindow.java 
+                   BaseMessages.java Parser.java
+  	           VKFixnumType.java VKFixnumCodeType.java VKMenuDefinition.java
+  	           VKLocalizationWriter.java VKMenuDefinition.java VKLocalizationWriter.java" />
+
+  <property name="messages"    value="BaseMessages" />
+  <property name="options"     value="VKOptions" />
+  <property name="grm1voc"     value="Base" />
+  <property name="scanner1"    value="Base" />
+
+
+  <import file="${topdir}/defs.xml" />
+
+
+</project>

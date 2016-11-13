@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 1990-2009 kopiRight Managed Solutions GmbH
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 2
+    as published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+    $Id$
+  -->
+
+<option prefix="Console"
+        parent="org.kopi.util.base.Options"
+        package="org.kopi.xkopi.comp.dbi"
+        usage="usage: org.kopi.xkopi.comp.dbi.Connection [options]* [--help] --datasource &lt;datasrc> --host &lt;host> --dbname &lt;dbname> [--schema &lt;schema>] --login &lt;login> --password &lt;password> [&lt;dbi-files>]">
+  <param longname="datasource"
+         shortname="d"
+         type="String"
+         default="tbx"
+         help="Sets the source to connect to (sap | tbx | pg | ora | ora10g | mysql | ingres | as400)" />
+  <param longname="host"
+         shortname="H"
+         type="String"
+         default="localhost"
+         help="The host to connect to" />
+  <param longname="port"
+         shortname="P"
+         type="String" 
+         default="null"
+         help="The port number of the database server" />
+  <param longname="dbname"
+         shortname="b"
+         type="String"
+	 default="null"
+	 help="The name of the database" />
+  <param longname="schema"
+         shortname="s"
+         type="String"
+	 default="null"
+	 help="The name of the database schema" />
+  <param longname="login"
+	 shortname="l"
+	 type="String"
+	 default="null"
+	 help="The login for the database" />
+  <param longname="password"
+	 shortname="p"
+	 type="String"
+	 default="null"
+	 help="The password for the database" />
+  <param longname="noprompt"
+	 shortname="N"
+	 type="boolean"
+	 default="false"
+	 help="No console prompt" />
+  <param longname="abortonerror"
+	 shortname="A"
+	 type="boolean"
+	 default="false"
+	 help="Abort the transaction and exit on error" />
+  <param longname="trace"
+	 shortname="t"
+	 type="boolean"
+	 default="false"
+	 help="print sql trace." />
+</option>

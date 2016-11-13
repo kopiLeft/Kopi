@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+<!--==================================================================
+    package: org.kopi.vkopi.lib.visual
+    ==================================================================-->
+
+<project default="build" basedir=".">
+
+  <property name="topdir" value="../../.." />
+  <property name="package" value="org/kopi/vkopi/lib/visual" />
+  <property name="package.name" value="org.kopi.vkopi.lib.visual" />
+  <property name="src" value="." />
+  <property name="javafiles" 
+            value="ActionHandler.java Application.java ApplicationDefaults.java 
+                   ApplicationDefaultsAdapter.java 
+                   ApplicationDefaultsProperties.java 
+                   Constants.java FileChooser.java VHelpViewer.java 
+                   KopiAction.java KopiExecutable.java DPositionPanelListener.java
+                   MenuTree.java WaitDialogListener.java 
+                   Module.java SActor.java SDefaultActor.java VActionListener.java 
+                   VCommand.java VException.java VColor.java
+                   VExecFailedException.java VHelpGenerator.java  VActor.java 
+                   VInterruptException.java VRuntimeException.java UActor.java
+                   VTrigger.java VWindow.java VDatabaseUtils.java WindowController.java  
+                   UIBuilder.java WaitInfoListener.java MessageListener.java 
+                   VerifyConfiguration.java ApplicationConfiguration.java
+                   PrinterManager.java PropertyException.java ModelCloseListener.java 
+		   UserConfiguration.java ApplicationOptions.java VlibProperties.java 
+  		   Registry.java ProgressDialogListener.java MessageCode.java 
+  		   Message.java VModel.java UWindow.java WindowBuilder.java
+  		   ApplicationContext.java UIFactory.java 
+  		   ImageHandler.java FileHandler.java FileProductionListener.java
+  		   UWindow.java VMenuTree.java UMenuTree.java
+		   UBookmarkPanel.java UTree.java PreviewRunner.java" />
+
+  <import file="${topdir}/defs.xml" />
+
+</project>

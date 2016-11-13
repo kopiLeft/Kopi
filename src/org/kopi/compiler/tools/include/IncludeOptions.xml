@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 1990-2009 kopiRight Managed Solutions GmbH
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 2
+  as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<option prefix="Include" parent="org.kopi.util.base.Options"  package="org.kopi.compiler.tools.include"  usage="usage: org.kopi.compiler.tools.include.Main [option]* [--help] &lt;input-file>">
+<param longname="output" shortname="o"  type="String"  default="null"  help="The name of the output file" />
+<param longname="pattern" shortname="p"  type="String"  default="%%include"  help="The pattern preceding the file name to include" />
+<param longname="directory" shortname="d"  type="String"  default="."  help="The directory to search for include files" />
+</option>

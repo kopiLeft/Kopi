@@ -165,7 +165,7 @@ BUILDING FROM SOURCE
     to edit the Makefile in this directory if the Java compiler available on your
     system is not Jikes.
 
-    Then just go to the "src/com/kopiright" directory and type "make".
+    Then just go to the "src/org/kopi" directory and type "make".
 
 --------------------------------------------------------------------------------
 REPORTING BUGS

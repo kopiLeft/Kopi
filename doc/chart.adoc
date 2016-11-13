@@ -192,7 +192,7 @@ Or:
 [source,java]
 ----
 "COMMAND" "ITEM" SimpleName "ACTION"
-(com.kopiright.vkopi.lib.chart.VColulmn SimpleName) {Kopi-Java Code} 
+(org.kopi.vkopi.lib.chart.VColulmn SimpleName) {Kopi-Java Code} 
 "END" "COMMAND"
 ----
 
@@ -221,8 +221,8 @@ TrigerAction : SimpleName | "EXTERN" QualifiedName | {KOPI_JAVA code} |
 
 Here is the two triggers available for chart fields (dimensions & measures) :
 
- * FORMAT  : Called for formatting a dimension value. The trigger should return a com.kopiright.vkopi.lib.chart.VColumnFormat instance. This trigger is not available for measures.
- * COLOR : Called to specify a measure color. The trigger should return a com.kopiright.vkopi.lib.visual.VColor instance. This trigger is not available for dimensions.
+ * FORMAT  : Called for formatting a dimension value. The trigger should return a org.kopi.vkopi.lib.chart.VColumnFormat instance. This trigger is not available for measures.
+ * COLOR : Called to specify a measure color. The trigger should return a org.kopi.vkopi.lib.visual.VColor instance. This trigger is not available for dimensions.
 
 *Example*
 [source,java]
@@ -311,7 +311,7 @@ Every Chart is a class that may extend another Java class by using the optional 
  	
 [source,java]
 ----  
-CHART  "Earnings" IS com.kopiright.vkopi.lib.chart.VChart
+CHART  "Earnings" IS org.kopi.vkopi.lib.chart.VChart
 ----
 In other words, the class declaration you have just made specifies the direct superclass of the current class.
 
@@ -330,7 +330,7 @@ You can also specify interfaces which the chart may implement by using the IMPLE
  	
 [source,java]
 ----  
-CHART "Earnings" IS com.kopiright.vkopi.lib.chart.VChart
+CHART "Earnings" IS org.kopi.vkopi.lib.chart.VChart
   IMPLEMENTS IChart
   ...
 END CHART
@@ -355,7 +355,7 @@ The package definition is contained in the header. It consists in defining where
 ----  
 CHART "Sold quantities per year"
   {
-  package com.kopiright.apps.sales;
+  package org.kopi.apps.sales;
   }
   ...
 END CHART
@@ -368,7 +368,7 @@ In this example, the chart belongs to the kopiRight firm and is a part of the ap
 ----  
 CHART "Sold quantities per year"
   {
-    package com.kopiright.apps.sales;
+    package org.kopi.apps.sales;
 
     import java.util.Hashtable
     import java.util.Vector
@@ -395,7 +395,7 @@ Actually every chart has a help menu that tries to describe the structure of the
 CHART "Ordered quantities per month"
 
   {
-    package com.kopiright.apps.orders;
+    package org.kopi.apps.orders;
 
     import java.util.Hashtable
     import java.util.Vector
@@ -426,7 +426,7 @@ MenuDefinition:   "MENU" SimpleName ["LABEL" String label]   "END" "MENU"
 CHART "Ordered quantities per month"
 
   {
-    package com.kopiright.apps.orders;
+    package org.kopi.apps.orders;
   }
   
   MENU newMenu
@@ -462,7 +462,7 @@ ActorDefinition:  "ACTOR" SimpleName
 CHART "Ordered quantities per month"
 
   {
-    package com.kopiright.apps.orders;
+    package org.kopi.apps.orders;
   }
   
   MENU newMenu
@@ -495,7 +495,7 @@ TypeDefinition:  "TYPE" SimplName "IS" FieldType  [TypeList] "END" "TYPE"
 ----  
 CHART "Ordered quantities per month"
   {
-    package com.kopiright.apps.orders;
+    package org.kopi.apps.orders;
   }
   
   TYPE Name IS
@@ -569,7 +569,7 @@ Calling an external action :
 ----
 COMMAND doAction
   ITEM Save
-  EXTERN com.kopiright.vkopi.lib.chart.Actions
+  EXTERN org.kopi.vkopi.lib.chart.Actions
 END COMMAND
 ----
 
@@ -601,7 +601,7 @@ Insert Definition : "INSERT" String filePath
 CHART "Orders"
  
   {
-    package com.kopiright.apps.orders;
+    package org.kopi.apps.orders;
   }
    
   INSERT "ChartDefault.vc"
@@ -660,7 +660,7 @@ Kopi actually defines 4 chart Triggers or chart Events :
 
  * PRECHART  : executed before the chart is displayed.
  * INIT      : executed at chart initialization.
- * CHARTTYPE : executed after the chart initialization. This trigger should return com.kopiright.vkopi.lib.chart.VChartType and will a fixed type for the chart.
+ * CHARTTYPE : executed after the chart initialization. This trigger should return org.kopi.vkopi.lib.chart.VChartType and will a fixed type for the chart.
  * POSTCHART : executed after the chart is closed.
 
 *Example*
