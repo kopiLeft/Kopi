@@ -45,10 +45,10 @@ public class Module {
     this.object = object;
     //!!! graf 2006.01.30: temporary work-around
     //!!! remove as soon as all modules have been
-    //!!! renamed to "org.kopi." at every
+    //!!! renamed to "com.kopiright." at every
     //!!! customer installation.
     if (this.object != null && this.object.startsWith("at.dms.")) {
-      this.object = "org.kopi." + this.object.substring("at.dms.".length());
+      this.object = "com.kopiright." + this.object.substring("at.dms.".length());
     }
     //!!! graf 2006.01.30: end
     this.access = access;
