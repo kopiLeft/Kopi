@@ -41,7 +41,14 @@ public class JApplicationContext extends ApplicationContext {
    * Returns the current PreviewRunner.
    */
   public PreviewRunner getPreviewRunner() {
-    return  previewRunner == null ? new JPreviewRunner() : previewRunner ;
+    return  previewRunner == null ? previewRunner = new JPreviewRunner() : previewRunner ;
+  }
+
+  /**
+   * Checks if we are in a web application context.
+   */
+  public boolean isWebApplicationContext() {
+    return false;
   }
   
   //--------------------------------------------------

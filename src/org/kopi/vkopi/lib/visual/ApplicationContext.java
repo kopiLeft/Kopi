@@ -386,6 +386,12 @@ public abstract class ApplicationContext {
    */
   public abstract PreviewRunner getPreviewRunner();
   
+  /**
+   * Returns <code>true</code> if we are in a web application context.
+   * @return <code>true</code> if we are in a web application context.
+   */
+  public abstract boolean isWebApplicationContext();
+  
   //-----------------------------------------------------------
   // DATA MEMBERS
   //-----------------------------------------------------------

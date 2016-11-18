@@ -50,7 +50,16 @@ public class VApplicationContext extends ApplicationContext {
    */
   @Override
   public PreviewRunner getPreviewRunner() {
-    return  previewRunner == null ? new VPreviewRunner() : previewRunner ;
+    return previewRunner == null ? previewRunner = new VPreviewRunner() : previewRunner;
+  }
+
+  /**
+   * Returns <code>true</code> if we are in a web application context.
+   * @return <code>true</code> if we are in a web application context.
+   */
+  @Override
+  public boolean isWebApplicationContext() {
+    return true;
   }
   
   //---------------------------------------------------

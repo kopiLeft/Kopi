@@ -32,7 +32,9 @@ import org.kopi.vkopi.lib.visual.VException;
 
 public class JPreviewRunner implements PreviewRunner {
 
-  @Override
+  /**
+   * Launch document preview
+   */
   public void run(PrintJob data, String command) throws IOException, PrintException {
     if (ApplicationConfiguration.getConfiguration().useAcroread()) {
       try {
