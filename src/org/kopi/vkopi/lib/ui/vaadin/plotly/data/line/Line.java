@@ -23,7 +23,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProprety;
+import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProperty;
 import org.kopi.vkopi.lib.ui.vaadin.plotly.base.Colors;
 
 import com.vaadin.shared.ui.colorpicker.Color;
@@ -31,7 +31,7 @@ import com.vaadin.shared.ui.colorpicker.Color;
 /**
  * A line properties.
  */
-public class Line implements ChartProprety {
+public class Line implements ChartProperty {
   
   //---------------------------------------------------------
   // CONSTRUCTOR

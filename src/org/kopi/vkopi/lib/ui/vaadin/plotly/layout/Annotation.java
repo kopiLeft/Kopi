@@ -23,9 +23,9 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProprety;
+import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProperty;
 
-public class Annotation implements ChartProprety {
+public class Annotation implements ChartProperty {
 
   //---------------------------------------------------------
   // CONSTRUCTORS

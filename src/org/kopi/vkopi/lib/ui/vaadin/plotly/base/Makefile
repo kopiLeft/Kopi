@@ -29,7 +29,7 @@ NONSTANDARDCOMPILER = true
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES +=	ChartProprety Colors PlotlyChart PlotlyChartFactory	\
+JAVAFILES +=	ChartProperty Colors PlotlyChart PlotlyChartFactory	\
 		PlotlyChartState Util
 
 JSFILES +=	connector plotly-latest.min

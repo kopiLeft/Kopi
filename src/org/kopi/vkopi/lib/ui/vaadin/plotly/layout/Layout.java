@@ -21,14 +21,14 @@ package org.kopi.vkopi.lib.ui.vaadin.plotly.layout;
 
 import java.util.Collection;
 
-import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProprety;
+import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProperty;
 
 import com.vaadin.shared.ui.colorpicker.Color;
 
 /**
  * The chart layout configuration
  */
-public abstract class Layout implements ChartProprety {
+public abstract class Layout implements ChartProperty {
 
   //---------------------------------------------------------
   // CONSTRUCTORS

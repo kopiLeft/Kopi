@@ -53,11 +53,11 @@ public final class Util {
    * @param properties The list of the chart properties.
    * @return The resulting JSON array.
    */
-  public static <T extends ChartProprety> JsonArray toJsonArrayProperties(Collection<T> properties) {
+  public static <T extends ChartProperty> JsonArray toJsonArrayProperties(Collection<T> properties) {
     JsonArrayBuilder      builder;
 
     builder = Json.createArrayBuilder();
-    for (ChartProprety property : properties) {
+    for (ChartProperty property : properties) {
       builder.add(property.getValue());
     }
     

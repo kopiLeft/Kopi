@@ -29,7 +29,7 @@
   <property name="package.name" value="org.kopi.vkopi.lib.ui.vaadin.plotly.base" />
   <property name="src" value="." />
   <property name="non.standard.build" value="yes" />
-  <property name="javafiles" value="ChartProprety.java Colors.java PlotlyChart.java
+  <property name="javafiles" value="ChartProperty.java Colors.java PlotlyChart.java
   	                            PlotlyChartFactory.java PlotlyChartState.java Util.java" />
   <property name="jsfiles" value="connector.js plotly-latest.min.js"/>
 	

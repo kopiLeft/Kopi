@@ -23,7 +23,7 @@ import java.util.Collection;
 
 import javax.json.JsonArray;
 
-import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProprety;
+import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProperty;
 import org.kopi.vkopi.lib.ui.vaadin.plotly.exceptions.DataMismatchException;
 
 import com.vaadin.shared.ui.colorpicker.Color;
@@ -31,7 +31,7 @@ import com.vaadin.shared.ui.colorpicker.Color;
 /**
  * A marker should provide its color and size.
  */
-public interface Marker extends ChartProprety {
+public interface Marker extends ChartProperty {
   
   /**
    * @return the series of colors in case of pie or donut.

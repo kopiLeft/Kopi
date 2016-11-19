@@ -21,13 +21,13 @@ package org.kopi.vkopi.lib.ui.vaadin.plotly.configuration;
 
 import javax.json.JsonValue;
 
-import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProprety;
+import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProperty;
 import org.kopi.vkopi.lib.ui.vaadin.plotly.layout.Layout;
 
 /**
  * The chart layout configuration.
  */
-public class LayoutConfiguration implements ChartProprety {
+public class LayoutConfiguration implements ChartProperty {
   
   //---------------------------------------------------------
   // CONSTRUCTOR

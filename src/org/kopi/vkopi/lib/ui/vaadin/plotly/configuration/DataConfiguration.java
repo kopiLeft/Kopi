@@ -28,7 +28,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import org.kopi.util.base.InconsistencyException;
-import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProprety;
+import org.kopi.vkopi.lib.ui.vaadin.plotly.base.ChartProperty;
 import org.kopi.vkopi.lib.ui.vaadin.plotly.base.Colors;
 import org.kopi.vkopi.lib.ui.vaadin.plotly.data.features.HoverInfo;
 import org.kopi.vkopi.lib.ui.vaadin.plotly.data.types.ChartData;
@@ -40,7 +40,7 @@ import com.vaadin.shared.ui.colorpicker.Color;
 /**
  * The chart data configuration
  */
-public class DataConfiguration implements ChartProprety {
+public class DataConfiguration implements ChartProperty {
 
   //---------------------------------------------------------
   // CONSTRUCTOR

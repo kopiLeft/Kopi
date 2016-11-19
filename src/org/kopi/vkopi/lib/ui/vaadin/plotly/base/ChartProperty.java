@@ -24,7 +24,7 @@ import javax.json.JsonValue;
 /**
  * A chart property that can be plotted.
  */
-public interface ChartProprety {
+public interface ChartProperty {
   
   /**
    * Returns the property JSON value.
