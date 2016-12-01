@@ -22,8 +22,8 @@ package org.kopi.vkopi.lib.visual;
 import java.util.Date;
 import java.util.Locale;
 
-import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.vkopi.lib.base.UComponent;
+import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.xkopi.lib.base.DBContext;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,47 @@ public class EnumValidationStrategy extends AllowAllValidationStrategy {
     }
     
     return true;
+  }
+  
+  @Override
+  public void checkType(final VInputTextField field, final String text) throws CheckTypeException {
+    if ("".equals(text)) {
+      field.setText(null);
+    } else {
+      /*
+       * -1:  no match
+       * >=0: one match
+       * -2:  two (or more) matches: cannot choose
+       */
+      int       found = -1;
+      String    newText;
+
+      newText = text.toLowerCase();
+      for (int i = 0; found != -2 && i < enumerations.length; i++) {
+        if (enumerations[i].toLowerCase().startsWith(newText)) {
+          if (enumerations[i].toLowerCase().equals(newText)) {
+            found = i;
+            break;
+          }
+          if (found == -1) {
+            found = i;
+          } else {
+            found = -2;
+          }
+        }
+      }
+      switch (found) {
+      case -1:  /* no match */
+        throw new CheckTypeException(field, "00001");
+      case -2:  /* two (or more) exact matches: cannot choose */
+        // show the suggestions list
+        FieldConnector.setDoNotLeaveActiveField(true);
+        field.getConnector().internalHandleQuery(text, true, true);
+        break;
+      default:
+        field.setText(enumerations[found]);
+      }
+    }
   }
 
   //---------------------------------------------------

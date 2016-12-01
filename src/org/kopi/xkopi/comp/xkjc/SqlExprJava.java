@@ -19,11 +19,11 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
+import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.xkopi.comp.sqlc.Expression;
 import org.kopi.xkopi.comp.sqlc.SqlVisitor;
-import org.kopi.compiler.base.PositionedError;
-import org.kopi.compiler.base.TokenReference;
 
 /**
  * This class represents a java expression within a Sql context

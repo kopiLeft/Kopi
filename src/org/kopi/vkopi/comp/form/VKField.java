@@ -19,10 +19,25 @@
 
 package org.kopi.vkopi.comp.form;
 
-import org.kopi.vkopi.comp.base.*;
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CParseClassContext;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.vkopi.comp.base.Commandable;
+import org.kopi.vkopi.comp.base.VKCommand;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
+import org.kopi.vkopi.comp.base.VKLocalizationWriter;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKStdType;
+import org.kopi.vkopi.comp.base.VKTrigger;
+import org.kopi.vkopi.comp.base.VKUtils;
 import org.kopi.xkopi.comp.xkjc.XNameExpression;
 
 /**

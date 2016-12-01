@@ -19,9 +19,9 @@
 
 package org.kopi.xkopi.comp.sqlc;
 
-import java.util.Stack;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.util.base.InconsistencyException;

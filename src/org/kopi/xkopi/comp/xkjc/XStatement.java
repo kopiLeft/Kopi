@@ -19,10 +19,13 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.GenerationContext;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.KjcVisitor;
 
 /**
  * This statement is a root class for extension statements

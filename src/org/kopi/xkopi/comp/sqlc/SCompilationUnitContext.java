@@ -21,9 +21,9 @@ package org.kopi.xkopi.comp.sqlc;
 
 import java.util.ArrayList;
 
-import org.kopi.kopi.comp.kjc.CTypeContext;
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
+import org.kopi.kopi.comp.kjc.CTypeContext;
 
 /**
  * This class represents a local context during checkSql

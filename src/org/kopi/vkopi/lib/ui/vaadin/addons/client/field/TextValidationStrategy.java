@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,4 +38,12 @@ public interface TextValidationStrategy {
    * @return {@code true} if the text is accepted.
    */
   public boolean validate(String text, int maxLength);
+  
+  /**
+   * Performs a check of the given text according to the strategy type.
+   * @param The concerned input area.
+   * @param text The text to be checked.
+   * @throws CheckTypeException when the given value is not valid.
+   */
+  public void checkType(VInputTextField field, String text) throws CheckTypeException;
 }

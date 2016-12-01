@@ -19,9 +19,9 @@
 
 package org.kopi.xkopi.comp.dbi;
 
-import org.kopi.xkopi.comp.sqlc.SqlVisitor;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.xkopi.comp.sqlc.SqlVisitor;
 
 /**
  * This class represents an SqlExpression

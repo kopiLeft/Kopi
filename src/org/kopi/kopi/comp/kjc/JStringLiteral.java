@@ -20,6 +20,7 @@
 package org.kopi.kopi.comp.kjc;
 
 import org.kopi.bytecode.classfile.PushLiteralInstruction;
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.util.base.InconsistencyException;
 

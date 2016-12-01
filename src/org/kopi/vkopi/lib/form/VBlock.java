@@ -407,6 +407,28 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
+  
+  /**
+   * Update the color properties of the given record.
+   * @param r The record number.
+   */
+  public void updateColor(int r) {
+    if (!isMulti()) {
+      // give up for non multi blocks. use VField#resetColor(int)
+      // for simple blocks
+      return;
+    }
+    
+    for (VField field : fields) {
+      if (!field.isInternal()) {
+	if (isRecordFilled(r)) {
+	  field.updateColor(r);
+	} else {
+	  field.resetColor(r);
+	}      
+      }
+    }
+  }
 
   /**
    * sort the records to order it by the value of the
@@ -499,6 +521,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
     return -1;
   }
+  
   public int getDataPosition(int rec) {
     if (!isMulti() || rec == -1) {
       return rec;
@@ -506,6 +529,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     return sortedRecords[rec];
   }
 
+  /**
+   * Returns the sorted records array.
+   * @return The sorted records array.
+   */
+  public int[] getSortedRecords() {
+    return sortedRecords;
+  }
 
   /**
    * nb record read (and not deleted)
@@ -908,6 +938,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void gotoNextField() throws VException {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
+    
     if (activeField == null) {
       return;
     }
@@ -2652,6 +2683,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public int getActiveRecord() {
     return activeRecord >= 0 && activeRecord < bufferSize ? activeRecord : -1;
   }
+  
+  /**
+   * Returns the record info value for the given record.
+   * @param rec The record number.
+   * @return The record info value.
+   */
+  public int getRecordInfoAt(int rec) {
+    return recordInfo[rec];
+  }
 
   /**
    * Returns true iff at least one record is filled
@@ -2835,6 +2875,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
       // inform listener that the number of rows changed
       fireValidRecordNumberChanged();
+      // inform that the record info has changed
+      fireRecordInfoChanged(rec, newValue);
     } else {
       // a value changed - access can change
       if (!ignoreAccessChange) {
@@ -2879,6 +2921,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       // inform listener that the number of rows changed
       fireValidRecordNumberChanged();
+      // inform that the record info has changed
+      fireRecordInfoChanged(rec, newValue);
     } else {
       // a value changed - access can change
       if (!ignoreAccessChange) {
@@ -2919,6 +2963,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
       // inform listener that the number of rows changed
       fireValidRecordNumberChanged();
+      // inform that the record info has changed
+      fireRecordInfoChanged(rec, newValue);
     } else {
       // a value changed - access can change
       if (!ignoreAccessChange) {
@@ -3367,7 +3413,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   /**
    * Returns true iff there is trigger associated with given event.
    */
-  protected boolean hasTrigger(int event) {
+  public boolean hasTrigger(int event) {
     return hasTrigger(event, 0);
   }
 
@@ -4093,6 +4139,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]== BlockListener.class) {
         ((BlockListener)listeners[i+1]).validRecordNumberChanged();
+      }
+    }
+  }
+  protected void fireRecordInfoChanged(int rec, int info) {
+    Object[]            listeners = blockListener.getListenerList();
+
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]== BlockListener.class) {
+        ((BlockListener)listeners[i+1]).recordInfoChanged(rec, info);
       }
     }
   }

@@ -23,7 +23,13 @@ import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.util.base.NotImplementedException;
-import org.kopi.vkopi.comp.base.*;
+import org.kopi.vkopi.comp.base.BaseMessages;
+import org.kopi.vkopi.comp.base.Commandable;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKType;
+import org.kopi.vkopi.comp.base.VKTypeDefinition;
 
 /**
  * A field type defined by a name

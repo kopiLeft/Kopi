@@ -25,8 +25,6 @@ import org.kopi.kopi.comp.kjc.ClassReader;
 import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.xkopi.comp.xkjc.XKjcEnvironment;
 
-import org.kopi.vkopi.comp.base.VKOptions;
-
 public class VKEnvironment extends XKjcEnvironment {
 
   public VKEnvironment(ClassReader classReader,

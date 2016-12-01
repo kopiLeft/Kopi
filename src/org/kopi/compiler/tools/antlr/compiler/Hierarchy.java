@@ -19,11 +19,13 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import java.util.Hashtable;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Enumeration;
-import java.io.*;
+import java.util.Hashtable;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.ANTLRException;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamException;
 
 public class Hierarchy {
   public Hierarchy() {

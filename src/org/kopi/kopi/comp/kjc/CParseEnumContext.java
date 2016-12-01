@@ -22,9 +22,9 @@ package org.kopi.kopi.comp.kjc;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavadocComment;
 import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.compiler.base.JavadocComment;
+import org.kopi.compiler.base.TokenReference;
 
 
 public class CParseEnumContext extends CParseClassContext {

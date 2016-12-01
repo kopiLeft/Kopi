@@ -19,8 +19,8 @@
 
 package org.kopi.vkopi.lib.util;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**

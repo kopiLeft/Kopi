@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,9 @@ import java.util.List;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockClientRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockServerRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockState;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockState.CachedColor;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockState.CachedValue;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockState.RecordInfo;
 
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.ui.AbstractSingleComponentContainer;
@@ -65,6 +68,38 @@ public abstract class Block extends AbstractSingleComponentContainer {
   }
   
   /**
+   * Sets the buffer size of this block.
+   * @param bufferSize The block buffer size.
+   */
+  public void setBufferSize(int bufferSize) {
+    getState().bufferSize = bufferSize;
+  }
+  
+  /**
+   * Sets the block display size.
+   * @param displaySize The display size.
+   */
+  public void setDisplaySize(int displaySize) {
+    getState().displaySize = displaySize;
+  }
+  
+  /**
+   * Sets the sorted records of this block.
+   * @param sortedRecords The sorted records.
+   */
+  public void setSortedRecords(int[] sortedRecords) {
+    getState().sortedRecords = sortedRecords;
+  }
+  
+  /**
+   * Sets the no move option for the block.
+   * @param noMove The no move option.
+   */
+  public void setNoMove(boolean noMove) {
+    getState().noMove = noMove;
+  }
+  
+  /**
    * Switches the block view.
    * @param detail Should be switch to the detail view ?
    */
@@ -98,6 +133,11 @@ public abstract class Block extends AbstractSingleComponentContainer {
   @Override
   protected BlockState getState() {
     return (BlockState) super.getState();
+  }
+  
+  @Override
+  protected BlockState getState(boolean markAsDirty) {
+    return (BlockState) super.getState(markAsDirty);
   }
   
   /**
@@ -201,6 +241,65 @@ public abstract class Block extends AbstractSingleComponentContainer {
       }
     }
   }
+  
+  /**
+   * Fired when the active record is changed from the client side.
+   * @param record The new active record.
+   * @param sortedTopRec The top sorted record.
+   */
+  protected void fireOnActiveRecordChange(int record, int sortedTopRec) {
+    for (BlockListener l : listeners) {
+      if (l != null) {
+        l.onActiveRecordChange(record, sortedTopRec);
+      }
+    }
+  }
+  
+  /**
+   * Sends the active record to the client side.
+   * @param record The new active record.
+   */
+  protected void fireActiveRecordChanged(int record) {
+    getState().activeRecord = record;
+  }
+  
+  /**
+   * Send the new records order to the client side.
+   * @param sortedRecords The new record orders.
+   */
+  protected void fireOrderChanged(int[] sortedRecords) {
+    setSortedRecords(sortedRecords);
+  }
+  
+  /**
+   * Sends the new records info to client side.
+   * @param rec The record number.
+   * @param info The record info value.
+   */
+  protected void fireRecordInfoChanged(int rec, int info ) {
+    getState().recordInfo.add(new RecordInfo(rec, info));
+  }
+  
+  /**
+   * Notify the client side that the value of the record has changed.
+   * @param col The column index.
+   * @param rec The record number.
+   * @param value The new record value.
+   */
+  protected void fireValueChanged(int col, int rec, String value) {
+    getState().cachedValues.add(new CachedValue(col, rec, value));
+  }
+  
+  /**
+   * Notify the client side that the color of the record has changed.
+   * @param col The column index.
+   * @param rec The record number.
+   * @param foreground The foreground color
+   * @param background The background color.
+   */
+  protected void fireColorChanged(int col, int rec, String foreground, String background) {
+    getState().cachedColors.add(new CachedColor(col, rec, foreground, background));
+  }
 
   //---------------------------------------------------
   // ABSTRACT METHODS
@@ -225,6 +324,33 @@ public abstract class Block extends AbstractSingleComponentContainer {
     @Override
     public void updateScrollPos(int value) {
       fireOnScroll(value);
+    }
+
+    @Override
+    public void updateActiveRecord(int record, int sortedTopRec) {
+      getState(false).activeRecord = record;
+      fireOnActiveRecordChange(record, sortedTopRec);
+    }
+
+    @Override
+    public void clearCachedValues(List<CachedValue> cachedValues) {
+      for (CachedValue cachedValue : cachedValues) {
+        getState(false).cachedValues.remove(cachedValue);
+      }
+    }
+
+    @Override
+    public void clearCachedColors(List<CachedColor> cachedColors) {
+      for (CachedColor cachedColor : cachedColors) {
+        getState(false).cachedColors.remove(cachedColor);
+      }
+    }
+
+    @Override
+    public void clearRecordInfo(List<RecordInfo> recordInfos) {
+      for (RecordInfo info : recordInfos) {
+        getState(false).recordInfo.remove(info);
+      }
     }
   };
 }

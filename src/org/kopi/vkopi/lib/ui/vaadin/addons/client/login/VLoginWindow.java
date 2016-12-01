@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -87,7 +87,7 @@ public class VLoginWindow extends SimplePanel implements ClickHandler, ChangeHan
    * Sets the welcome image.
    * @param welcomeImage The welcome image
    */
-  public void setWelcomeImage(String welcomeImage) {
+  public void setSloganImage(String welcomeImage) {
     loginBox.setWelcomeImage(welcomeImage);
   }
   

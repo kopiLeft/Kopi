@@ -26,7 +26,6 @@ import java.util.Vector;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-
 import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
 import org.kopi.kopi.comp.kjc.CExpressionContext;
 import org.kopi.kopi.comp.kjc.CReferenceType;
@@ -39,10 +38,9 @@ import org.kopi.kopi.comp.kjc.JNullLiteral;
 import org.kopi.kopi.comp.kjc.JTypeNameExpression;
 import org.kopi.kopi.comp.kjc.KjcEnvironment;
 import org.kopi.kopi.comp.kjc.TypeFactory;
-
 import org.kopi.util.base.Utils;
-import org.kopi.xkopi.comp.sqlc.SqlcMessages;
 import org.kopi.xkopi.comp.sqlc.Constants;
+import org.kopi.xkopi.comp.sqlc.SqlcMessages;
 
 public class XUtils extends org.kopi.util.base.Utils {
 

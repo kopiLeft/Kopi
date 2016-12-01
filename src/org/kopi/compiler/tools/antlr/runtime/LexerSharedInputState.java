@@ -19,8 +19,8 @@
 
 package org.kopi.compiler.tools.antlr.runtime;
 
-import java.io.Reader;
 import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * This object contains the data associated with an

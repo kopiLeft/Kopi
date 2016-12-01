@@ -19,10 +19,9 @@
 
 package org.kopi.vkopi.comp.chart;
 
+import org.jdom.Element;
 import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 import org.kopi.vkopi.comp.base.VKLocalizationWriter;
-
-import org.jdom.Element;
 
 /**
  * This class implements an  XML localization file generator

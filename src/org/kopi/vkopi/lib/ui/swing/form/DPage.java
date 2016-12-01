@@ -21,9 +21,10 @@ package org.kopi.vkopi.lib.ui.swing.form;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
+
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 public class DPage extends JPanel {
 

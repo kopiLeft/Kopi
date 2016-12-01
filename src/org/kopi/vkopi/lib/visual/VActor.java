@@ -19,10 +19,10 @@
 
 package org.kopi.vkopi.lib.visual;
 
+import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.l10n.ActorLocalizer;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.vkopi.lib.l10n.MenuLocalizer;
-import org.kopi.vkopi.lib.base.UComponent;
 
 @SuppressWarnings("serial")
 public class VActor implements VModel {
@@ -128,6 +128,11 @@ public class VActor implements VModel {
     handler.performAction(new KopiAction(menuItem + " in " + menuName) {
       public void execute() throws VException {
 	handler.executeVoidTrigger(number);
+      }
+      public boolean isCancellable() {
+        // quit an reset action cannot be cancelled. They will be executed even if the action
+        // queue is cleared. Implementations should care about this.
+        return !("quit".equalsIgnoreCase(actorIdent) || "break".equalsIgnoreCase(actorIdent));
       }
     }, false);
   }

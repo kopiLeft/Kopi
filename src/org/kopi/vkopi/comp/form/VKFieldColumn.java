@@ -20,15 +20,19 @@
 package org.kopi.vkopi.comp.form;
 
 
-import org.kopi.kopi.comp.kjc.JExpression;
-import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.vkopi.comp.base.*;
-import org.kopi.xkopi.comp.xkjc.XUtils;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKStdType;
+import org.kopi.vkopi.comp.base.VKUtils;
 import org.kopi.xkopi.comp.xkjc.XDatabaseColumn;
+import org.kopi.xkopi.comp.xkjc.XUtils;
 
 /**
  * A binding to database

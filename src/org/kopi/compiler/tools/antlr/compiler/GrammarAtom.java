@@ -19,7 +19,7 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.Token;
 
 /**
  * A GrammarAtom is either a token ref, a character ref, or string.

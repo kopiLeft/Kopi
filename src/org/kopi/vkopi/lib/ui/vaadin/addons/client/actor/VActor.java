@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -119,6 +119,15 @@ public class VActor extends VSpanPanel implements ClickHandler, HasAcceleratorKe
     return enabled;
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    listeners = null;
+    image = null;
+    label = null;
+    keyCombination = null;
+  }
+  
   /**
    * Fires the action. Notify all registered listeners.
    */
@@ -133,7 +142,7 @@ public class VActor extends VSpanPanel implements ClickHandler, HasAcceleratorKe
   //---------------------------------------------------
   
   private boolean				enabled;
-  private final List<ActionListener>		listeners;
+  private List<ActionListener>		        listeners;
   /*package*/ Element				image;
   /*package*/ Element				label;
   public AcceleratorKeyCombination		keyCombination;

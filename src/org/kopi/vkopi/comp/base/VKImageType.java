@@ -19,14 +19,15 @@
 
 package org.kopi.vkopi.comp.base;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.xkopi.comp.database.DatabaseColumn;
-import org.kopi.xkopi.comp.database.DatabaseImageColumn;
 import org.kopi.kopi.comp.kjc.CReferenceType;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JIntLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.util.base.NotImplementedException;
+import org.kopi.xkopi.comp.database.DatabaseColumn;
+import org.kopi.xkopi.comp.database.DatabaseImageColumn;
 
 /**
  * This class represents the definition of an image type

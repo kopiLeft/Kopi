@@ -23,6 +23,7 @@ import java.awt.Frame;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
+
 import org.kopi.vkopi.lib.ui.swing.base.Utils;
 
 /**

@@ -20,8 +20,11 @@
 package org.kopi.vkopi.comp.report;
 
 import java.util.ArrayList;
+
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CArrayType;
+import org.kopi.kopi.comp.kjc.CParseClassContext;
+import org.kopi.kopi.comp.kjc.JFieldDeclaration;
 import org.kopi.vkopi.comp.base.VKCommand;
 import org.kopi.vkopi.comp.base.VKTrigger;
 import org.kopi.vkopi.comp.base.VKUtils;

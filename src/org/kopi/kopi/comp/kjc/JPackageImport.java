@@ -20,11 +20,12 @@
 package org.kopi.kopi.comp.kjc;
 
 import java.util.ArrayList;
-import org.kopi.compiler.base.Compiler;
+
 import org.kopi.compiler.base.CWarning;
-import org.kopi.compiler.base.TokenReference;
+import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
 
 /**
  * This class represents the "package org.kopi.kopi.comp.kjc" statement

@@ -21,8 +21,8 @@ package org.kopi.xkopi.comp.sqlc;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.xkopi.lib.type.Time;
 import org.kopi.xkopi.lib.type.NotNullTime;
+import org.kopi.xkopi.lib.type.Time;
 
 public class JdbcTimeLiteral extends Literal {
 

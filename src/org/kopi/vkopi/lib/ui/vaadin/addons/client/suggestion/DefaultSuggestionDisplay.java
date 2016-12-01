@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,12 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion;
 import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.FieldConnector;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.HasAnimation;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -62,6 +63,10 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
   // IMPLEMENTATIONS
   //---------------------------------------------------
   
+  public int getSuggestionPopup() {
+    return suggestionPopup.hashCode();
+  }
+  
   @Override
   public void hideSuggestions() {
     suggestionPopup.hide();
@@ -70,6 +75,11 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
   @Override
   public boolean isAnimationEnabled() {
     return suggestionPopup.isAnimationEnabled();
+  }
+
+  @Override
+  public boolean isAboutShowingSuggestions() {
+    return isAboutShowingSuggestions;
   }
 
   /**
@@ -124,18 +134,35 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
   public void setSuggestionListHiddenWhenEmpty(boolean hideWhenEmpty) {
     this.hideWhenEmpty = hideWhenEmpty;
   }
+  
+  /**
+   * Sets the suggestion display to be modal.
+   * @param modal The display modality.
+   */
+  public void setModal(boolean modal) {
+    if (suggestionPopup != null) {
+      suggestionPopup.setModal(modal);
+    }
+  }
 
   /**
    * Create the PopupPanel that will hold the list of suggestions.
-   *
+   * @param connection The application connection.
    * @return the popup panel
    */
   protected VPopup createPopup(ApplicationConnection connection) {
-    VPopup 		popup = new VPopup(connection, false, false);
+    VPopup 		popup = new VPopup(connection, false);
     
     popup.setStyleName("k-suggestBoxPopup");
     popup.setPreviewingAllNativeEvents(true);
     popup.setAnimationType(AnimationType.ROLL_DOWN);
+    popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+      
+      @Override
+      public void onClose(CloseEvent<PopupPanel> event) {
+        FieldConnector.setDoNotLeaveActiveField(false);
+      }
+    });
     
     return popup;
   }
@@ -188,8 +215,6 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
     if (isSuggestionListShowing()) {
       // If nothing is selected, getSelectedItemIndex will return -1 and we
       // will select index 0 (the first item) by default.
-      /*suggestionMenu.selectItem(suggestionMenu.getSelectedItemIndex() + 1);
-      suggestionMenu.calculateVisibleRegion();*/
       table.shiftDown(1);
     }
   }
@@ -206,12 +231,6 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
       // fit below the text box). In this case, users would expect to be able
       // to use the up arrow to navigate to the suggestions.
       table.shiftUp(1);
-      /*if (suggestionMenu.getSelectedItemIndex() == -1) {
-	suggestionMenu.selectItem(suggestionMenu.getNumItems() - 1);
-      } else {
-	suggestionMenu.selectItem(suggestionMenu.getSelectedItemIndex() - 1);
-      }
-      suggestionMenu.calculateVisibleRegion();*/
     }
   }
 
@@ -235,90 +254,58 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
                               final boolean isDisplayStringHTML,
                               final boolean isAutoSelectEnabled,
                               final SuggestionCallback callback)
-  { 
-    // This horrible hack is copied from VFilterSelect
-    // Apparently, Vaadin layouts mess with paddings and margins, so we need to
-    // wait until the layout code has executed before computing the left/top offsets
-    Scheduler.get().scheduleFinally(new ScheduledCommand() {
-      
+  {
+    isAboutShowingSuggestions = true;
+    // Hide the popup if there are no suggestions to display.
+    boolean anySuggestions = (suggestions != null && suggestions.size() > 0);
+
+    if (!anySuggestions && hideWhenEmpty) {
+      hideSuggestions();
+      return;
+    } else if (anySuggestions && suggestions.size() == 1) {
+      callback.onSuggestionSelected(new DefaultSuggestion(suggestions.get(0), 0));
+      return;
+    }
+
+    // Hide the popup before we manipulate the menu within it. If we do not
+    // do this, some browsers will redraw the popup as items are removed
+    // and added to the menu.
+    if (suggestionPopup.isAttached()) {
+      suggestionPopup.hide();
+    }
+
+    table = new SuggestionTable(suggestions);
+    table.addClickHandler(new ClickHandler() {
+
       @Override
-      public void execute() {
-	// Hide the popup if there are no suggestions to display.
-	boolean anySuggestions = (suggestions != null && suggestions.size() > 0);
-	
-	if (!anySuggestions && hideWhenEmpty) {
-	  hideSuggestions();
-	  return;
-	} else if (anySuggestions && suggestions.size() == 1) {
-	  callback.onSuggestionSelected(new DefaultSuggestion(suggestions.get(0), 0));
-	  return;
-	}
+      public void onClick(ClickEvent event) {
+        int        row = table.getClickedRow(event);
 
-	// Hide the popup before we manipulate the menu within it. If we do not
-	// do this, some browsers will redraw the popup as items are removed
-	// and added to the menu.
-	if (suggestionPopup.isAttached()) {
-	  suggestionPopup.hide();
-	}
-	
-	table = new SuggestionTable(suggestions);
-	table.addClickHandler(new ClickHandler() {
-
-	  @Override
-	  public void onClick(ClickEvent event) {
-	    int	row = table.getClickedRow(event);
-
-	    if (row != -1 && callback != null) {
-	      if (table.getSuggestion(row) != null) {
-		suggestionPopup.hide();
-	      }
-	      callback.onSuggestionSelected(table.getSuggestion(row));
-	    }
-	  }
-	});
-	suggestionPopup.setWidget(decorateSuggestionList(table));
-	/*for (final Suggestion curSuggestion : suggestions) {
-	  final SuggestionMenuItem menuItem = new SuggestionMenuItem(curSuggestion, isDisplayStringHTML);
-	  
-	  menuItem.setScheduledCommand(new ScheduledCommand() {
-	    
-	    @Override
-	    public void execute() {
-	      if (menuItem.getSuggestion() != null) {
-		suggestionPopup.hide();
-	      }
-	      callback.onSuggestionSelected(menuItem.getSuggestion());
-	    }
-	  });
-
-	  suggestionMenu.addItem(menuItem);
-	}*/
-
-	if (isAutoSelectEnabled && anySuggestions) {
-	  // Select the first item in the suggestion menu.
-	  // suggestionMenu.selectItem(0);
-	  table.selectRow(0);
-	}
-
-	// Link the popup autoHide to the TextBox.
-	if (lastSuggestBox != suggestBox) {
-	  // If the suggest box has changed, free the old one first.
-	  if (lastSuggestBox != null) {
-	    suggestionPopup.removeAutoHidePartner(lastSuggestBox.getElement());
-	  }
-	  lastSuggestBox = suggestBox;
-	  suggestionPopup.addAutoHidePartner(suggestBox.getElement());
-	}
-
-	// Show the popup under the TextBox.
-	/*if (suggestBox.getElement().getClientWidth() <= 35) {
-	  suggestionMenu.setWidth(suggestBox.getElement().getClientWidth() + 10 + "px");
-	} else {
-	  suggestionMenu.setWidth(suggestBox.getElement().getClientWidth() + "px");
-	}*/
-	suggestionPopup.showRelativeTo(positionRelativeTo != null ? positionRelativeTo : suggestBox);
+        if (row != -1 && callback != null) {
+          callback.onSuggestionSelected(table.getSuggestion(row));
+        }
       }
     });
+    suggestionPopup.setWidget(decorateSuggestionList(table));
+
+    if (isAutoSelectEnabled && anySuggestions) {
+      // Select the first item in the suggestion menu.
+      // suggestionMenu.selectItem(0);
+      table.selectRow(0);
+    }
+
+    // Link the popup autoHide to the TextBox.
+    if (lastSuggestBox != suggestBox) {
+      // If the suggest box has changed, free the old one first.
+      if (lastSuggestBox != null) {
+        suggestionPopup.removeAutoHidePartner(lastSuggestBox.getElement());
+      }
+      lastSuggestBox = suggestBox;
+      suggestionPopup.addAutoHidePartner(suggestBox.getElement());
+    }
+    // Show the popup under the TextBox.
+    suggestionPopup.showRelativeTo(positionRelativeTo != null ? positionRelativeTo : suggestBox);
+    isAboutShowingSuggestions = false;
   }
 
   @Override
@@ -347,6 +334,8 @@ public class DefaultSuggestionDisplay extends SuggestionDisplay implements HasAn
 
   private final VPopup 			suggestionPopup;
   private SuggestionTable		table;
+  //flag indication that we are waiting to show suggestions
+  private boolean                       isAboutShowingSuggestions;
 
   /**
    * We need to keep track of the last {@link SuggestBox} because it acts as

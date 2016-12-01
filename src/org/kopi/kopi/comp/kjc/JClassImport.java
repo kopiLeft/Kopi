@@ -21,8 +21,9 @@ package org.kopi.kopi.comp.kjc;
 
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.Compiler;
-import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
 
 /**
  * JLS 7.5.1 Single-Type-Import Declaration.

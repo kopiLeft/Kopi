@@ -19,11 +19,17 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import java.util.Enumeration;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.BitSet;
+import org.kopi.compiler.tools.antlr.runtime.CharFormatter;
+import org.kopi.compiler.tools.antlr.runtime.CharStreamException;
+import org.kopi.compiler.tools.antlr.runtime.RecognitionException;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamException;
+import org.kopi.compiler.tools.antlr.runtime.Vector;
 
 /**
  * A Java code generator.

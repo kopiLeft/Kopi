@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.swing.form;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 

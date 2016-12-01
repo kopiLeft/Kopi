@@ -32,8 +32,8 @@ import org.kopi.xkopi.comp.sqlc.SimpleSubTableReference;
 import org.kopi.xkopi.comp.sqlc.SqlContext;
 import org.kopi.xkopi.comp.sqlc.TableAlias;
 import org.kopi.xkopi.comp.sqlc.TableReference;
-import org.kopi.xkopi.lib.base.DriverInterface;
 import org.kopi.xkopi.lib.base.As400DriverInterface;
+import org.kopi.xkopi.lib.base.DriverInterface;
 import org.kopi.xkopi.lib.type.Date;
 import org.kopi.xkopi.lib.type.Fixed;
 

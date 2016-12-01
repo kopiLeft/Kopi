@@ -50,7 +50,11 @@
 				    VULPanel.java
 				    VHiddenSeparator.java    
 				    VPopup.java     
-				    WidgetUtils.java" />
+				    WidgetUtils.java
+				    VConstants.java,
+				    ConnectorUtils.java
+				    LocalizedMessages.java
+  	                            DecimalFormatSymbols.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

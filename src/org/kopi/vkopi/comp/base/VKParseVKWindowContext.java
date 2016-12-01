@@ -22,7 +22,6 @@ package org.kopi.vkopi.comp.base;
 
 import org.kopi.kopi.comp.kjc.CParseClassContext;
 import org.kopi.kopi.comp.kjc.CParseCompilationUnitContext;
-import org.kopi.vkopi.comp.base.VKEnvironment;
 
 public class VKParseVKWindowContext extends VKParseContext {
 

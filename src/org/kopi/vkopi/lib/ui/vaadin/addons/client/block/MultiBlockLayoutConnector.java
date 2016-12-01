@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,8 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.block;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.MultiBlockLayout;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.FieldConnector;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.label.LabelConnector;
 
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.shared.ui.Connect;
@@ -58,6 +60,11 @@ public class MultiBlockLayoutConnector extends AbstractBlockLayoutConnector {
    * @param connector The simple layout connector.
    */
   protected void handleSimpleBlockLayout(SimpleBlockLayoutConnector connector) {
+    ColumnView          columnView;
+    LabelConnector      detailLabel;
+    
+    columnView = null;
+    detailLabel = null;
     getWidget().initDetailSize(connector.getState().columns, connector.getState().rows);
     for (ComponentConnector componentConnector : connector.getChildComponents()) {
       if (componentConnector != null) {
@@ -66,8 +73,28 @@ public class MultiBlockLayoutConnector extends AbstractBlockLayoutConnector {
 	constraints = connector.getState().constrains.get(componentConnector);
 	if (constraints != null) {
 	  getWidget().addToDetail(componentConnector.getWidget(), constraints);
+	  if (componentConnector instanceof LabelConnector) {
+	    detailLabel = (LabelConnector) componentConnector;
+	  } else if (componentConnector instanceof FieldConnector) {
+	    columnView = getBlock().getField(((FieldConnector) componentConnector).getColumnViewIndex());
+	    if (columnView != null) {
+	      // the column view is already created by the chart layout so we add the detail display field
+	      columnView.setDetailLabel(detailLabel);
+	      columnView.setDetailDisplay((FieldConnector) componentConnector);
+	    } else {
+	      // we create the column view and we add it to the block.
+	      columnView = new ColumnView(getBlock());
+	      columnView.setDetailDisplay((FieldConnector) componentConnector);
+	      columnView.setDetailLabel(detailLabel);
+	      getBlock().addField(columnView);
+	    }
+	  }
 	}
       }
+    }
+    // add last column view
+    if (columnView != null) {
+      getBlock().addField(columnView);
     }
   }
   
@@ -76,6 +103,9 @@ public class MultiBlockLayoutConnector extends AbstractBlockLayoutConnector {
    * @param connector The chart layout connector.
    */
   protected void handleChartBlockLayout(ChartBlockLayoutConnector connector) {
+    ColumnView           columnView;
+    
+    columnView = null;
     getWidget().initChartSize(connector.getState().columns, connector.getState().rows);
     for (ComponentConnector componentConnector : connector.getChildComponents()) {
       if (componentConnector != null) {
@@ -86,8 +116,23 @@ public class MultiBlockLayoutConnector extends AbstractBlockLayoutConnector {
 	  // correction should be done here for column position
 	  constraints.x -= 1; 
 	  getWidget().add(componentConnector.getWidget(), constraints);
+	  if (componentConnector instanceof LabelConnector) {
+	    if (columnView != null) {
+	      getBlock().addField(columnView);
+	    }
+	    columnView = new ColumnView(getBlock());
+	    columnView.setLabel((LabelConnector) componentConnector);
+	  } else if (componentConnector instanceof FieldConnector) {
+	    if (columnView != null) {
+	      columnView.addField((FieldConnector) componentConnector);
+	    }
+	  }
 	}
       }
+    }
+    // add last column view
+    if (columnView != null) {
+      getBlock().addField(columnView);
     }
   }
 

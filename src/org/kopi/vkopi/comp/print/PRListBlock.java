@@ -19,8 +19,8 @@
 
 package org.kopi.vkopi.comp.print;
 
-import org.kopi.kopi.comp.kjc.CParseClassContext;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CParseClassContext;
 
 /**
  * This class represents the definition of a block in a page

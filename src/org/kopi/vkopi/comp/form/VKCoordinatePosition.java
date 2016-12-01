@@ -20,15 +20,16 @@
 package org.kopi.vkopi.comp.form;
 
 import java.awt.Point;
-import org.kopi.vkopi.comp.base.VKContext;
-import org.kopi.vkopi.comp.base.VKPrettyPrinter;
-import org.kopi.vkopi.comp.base.VKUtils;
-import org.kopi.vkopi.comp.base.VKStdType;
-import org.kopi.kopi.comp.kjc.JExpression;
-import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKStdType;
+import org.kopi.vkopi.comp.base.VKUtils;
 
 /**
  * A position within a block given by x and y location

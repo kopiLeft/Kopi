@@ -20,6 +20,7 @@
 package org.kopi.vkopi.lib.ui.swing.visual;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 /**

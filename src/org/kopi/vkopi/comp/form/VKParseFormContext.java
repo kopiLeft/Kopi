@@ -19,13 +19,13 @@
 
 package org.kopi.vkopi.comp.form;
 
-import java.util.Vector;
 import java.util.Stack;
+import java.util.Vector;
 
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.vkopi.comp.base.*;
-import org.kopi.vkopi.comp.base.VKEnvironment;
+import org.kopi.kopi.comp.kjc.CReferenceType;
 import org.kopi.util.base.Utils;
+import org.kopi.vkopi.comp.base.VKEnvironment;
+import org.kopi.vkopi.comp.base.VKParseVKWindowContext;
 
 public class VKParseFormContext extends VKParseVKWindowContext {
 

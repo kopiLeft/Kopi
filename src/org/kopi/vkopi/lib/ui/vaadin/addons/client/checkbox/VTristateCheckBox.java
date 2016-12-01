@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -133,6 +133,31 @@ public class VTristateCheckBox extends VObjectField implements HasEnabled {
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
+  
+  @Override
+  protected boolean isNull() {
+    return inner.getState() != NULL;
+  }
+  
+  @Override
+  public void setValue(Object o) {
+    inner.setState(State.fromString((String) o));
+  }
+  
+  @Override
+  protected void setColor(String foreground, String background) {
+    // no colors
+  }
+  
+  @Override
+  protected Object getValue() {
+    return inner.getState().toString();
+  }
+  
+  @Override
+  protected void checkValue(int rec) {
+    // nothing to do.
+  }
 
   //---------------------------------------------------
   // INNER CLASSES
@@ -233,6 +258,11 @@ public class VTristateCheckBox extends VObjectField implements HasEnabled {
       } else {
 	return NULL;
       }
+    }
+    
+    @Override
+    public String toString() {
+      return getStyleName();
     }
   }
 

@@ -20,8 +20,8 @@
 package org.kopi.xkopi.comp.database;
 
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.CClassNameType;
 import org.kopi.kopi.comp.kjc.CArrayType;
+import org.kopi.kopi.comp.kjc.CClassNameType;
 import org.kopi.kopi.comp.kjc.CStdType;
 import org.kopi.kopi.comp.kjc.CType;
 import org.kopi.kopi.comp.kjc.JBooleanLiteral;

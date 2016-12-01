@@ -89,6 +89,11 @@ public interface UField extends UComponent {
    * Updates the field focus
    */
   public void updateFocus();
+  
+  /**
+   * Forces this field to get the focus in window.
+   */
+  public void forceFocus();
    
   /**
    * Updates the field color properties (background and foreground).

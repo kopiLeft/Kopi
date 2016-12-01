@@ -19,10 +19,26 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.JBlock;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
+import org.kopi.kopi.comp.kjc.JBreakStatement;
+import org.kopi.kopi.comp.kjc.JCheckedExpression;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JForStatement;
+import org.kopi.kopi.comp.kjc.JIfStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JStringLiteral;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.JTryFinallyStatement;
+import org.kopi.kopi.comp.kjc.KjcVisitor;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents cursor declaration in code part

@@ -20,10 +20,24 @@
 package org.kopi.xkopi.comp.xkjc;
 
 import java.util.Vector;
-import org.kopi.kopi.comp.kjc.*;
+
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.JCompoundStatement;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.JTypeDeclarationStatement;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.kopi.comp.kjc.JVariableDeclarationStatement;
+import org.kopi.kopi.comp.kjc.KjcVisitor;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents cursor declaration in code part

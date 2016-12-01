@@ -21,6 +21,7 @@ package org.kopi.kopi.comp.kjc;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.compiler.base.UnpositionedError;
 
 /**
  * This class represents a method context during check

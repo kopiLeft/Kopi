@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -231,6 +231,20 @@ public class VPositionPanel extends HorizontalPanel implements ClickHandler {
     }
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    listeners.clear();
+    listeners = null;
+    first = null;
+    last = null;
+    left = null;
+    right = null;
+    info = null;
+    connection = null;
+    locale = null;
+  }
+  
   /**
    * Sets the client connection.
    * @param connection The application connection.
@@ -266,12 +280,12 @@ public class VPositionPanel extends HorizontalPanel implements ClickHandler {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final List<PositionPanelListener>	listeners;
-  private final VButton				first;
-  private final VButton				last;
-  private final VButton				left;
-  private final VButton				right;
-  private final VAnchor				info;
+  private List<PositionPanelListener>           listeners;
+  private VButton				first;
+  private VButton				last;
+  private VButton				left;
+  private VButton				right;
+  private VAnchor				info;
   private ApplicationConnection			connection;
   private String				locale;
   private int 					current;

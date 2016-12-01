@@ -20,18 +20,7 @@
 package org.kopi.compiler.tools.optgen;
 
 
-import org.kopi.compiler.base.CompilerMessages;
-import org.kopi.compiler.base.PositionedError;
-import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.tools.antlr.runtime.ParserException;
-import org.kopi.util.base.InconsistencyException;
-
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -40,6 +29,7 @@ import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.kopi.util.base.InconsistencyException;
 
 
 /*package*/ class DefinitionFile {

@@ -19,10 +19,10 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.CWarning;
-import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
 
 /**
  * JLS 14.9: If Statement

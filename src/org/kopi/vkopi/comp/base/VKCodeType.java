@@ -19,8 +19,12 @@
 
 package org.kopi.vkopi.comp.base;
 
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JStringLiteral;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.util.base.InconsistencyException;
 
 /**

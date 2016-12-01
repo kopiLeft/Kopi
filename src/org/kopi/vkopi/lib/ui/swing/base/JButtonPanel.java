@@ -19,8 +19,13 @@
 
 package org.kopi.vkopi.lib.ui.swing.base;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 public class JButtonPanel extends JPanel  {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -116,11 +116,19 @@ public class VWaitWindow extends VerticalPanel implements CloseHandler<PopupPane
     event.getTarget().removeFromParent();
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    image = null;
+    text = null;
+    popup = null;
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VImage				image;
-  private final VSpan				text;
+  private VImage				image;
+  private VSpan				        text;
   private VPopup				popup;
 }

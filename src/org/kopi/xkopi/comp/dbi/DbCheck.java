@@ -24,6 +24,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
 import org.kopi.xkopi.comp.sqlc.Expression;
 import org.kopi.xkopi.comp.sqlc.InsertSource;
 import org.kopi.xkopi.comp.sqlc.InsertStatement;
@@ -32,8 +34,6 @@ import org.kopi.xkopi.comp.sqlc.SimpleIdentExpression;
 import org.kopi.xkopi.comp.sqlc.Statement;
 import org.kopi.xkopi.comp.sqlc.StringLiteral;
 import org.kopi.xkopi.comp.sqlc.ValueListInsertSource;
-import org.kopi.compiler.base.PositionedError;
-import org.kopi.compiler.base.TokenReference;
 
 public class DbCheck {
 

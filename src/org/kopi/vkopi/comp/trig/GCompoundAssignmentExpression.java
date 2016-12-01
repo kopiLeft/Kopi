@@ -19,11 +19,11 @@
 
 package org.kopi.vkopi.comp.trig;
 
-import org.kopi.xkopi.comp.xkjc.XCompoundAssignmentExpression;
-import org.kopi.kopi.comp.kjc.JExpression;
-import org.kopi.kopi.comp.kjc.CExpressionContext;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.xkopi.comp.xkjc.XCompoundAssignmentExpression;
 
 /**
  * This class implements the assignment operation

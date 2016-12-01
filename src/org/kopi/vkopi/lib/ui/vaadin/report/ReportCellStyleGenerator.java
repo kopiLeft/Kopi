@@ -26,6 +26,7 @@ import org.kopi.vkopi.lib.report.Parameters;
 import org.kopi.vkopi.lib.report.VReportColumn;
 import org.kopi.vkopi.lib.report.VSeparatorColumn;
 import org.kopi.vkopi.lib.ui.vaadin.report.StyleGenerator.CSSStyle;
+
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.CellStyleGenerator;
 import com.vaadin.ui.UI;

@@ -21,6 +21,7 @@ package org.kopi.vkopi.comp.form;
 
 import java.util.ArrayList;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CArrayType;
 import org.kopi.kopi.comp.kjc.CParseClassContext;

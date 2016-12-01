@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.upload;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
@@ -43,7 +44,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.ConnectorMap;
 import com.vaadin.client.ui.SimpleFocusablePanel;
 
 /**
@@ -314,7 +314,10 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
       @Override
       public void onClick(ClickEvent event) {
         ok.setEnabled(false);
-        cancel.setEnabled(false);
+        // The upload my block for network reasons
+        // we allow the user to cancel the upload
+        // and get the control of the browser again.
+        //cancel.setEnabled(false);
         form.submit();
       }
     });
@@ -339,7 +342,7 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
       
       @Override
       public void onClick(ClickEvent event) {
-        ((UploadConnector)ConnectorMap.get(form.client).getConnector(VUpload.this)).cancel();
+        ConnectorUtils.getConnector(form.client, VUpload.this, UploadConnector.class).cancel();
       }
     });
   }

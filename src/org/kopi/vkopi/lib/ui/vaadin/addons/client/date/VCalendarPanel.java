@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -180,6 +180,27 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       // update the inner element stylenames
       renderCalendar();
     }
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    prevYear = null;
+    nextYear = null;
+    prevMonth = null;
+    nextMonth = null;
+    days.clear();
+    days = null;
+    value = null;
+    dateTimeService = null;
+    displayedMonth = null;
+    focusedDate = null;
+    selectedDay = null;
+    focusedDay = null;
+    focusOutListener = null;
+    submitListener = null;
+    focusChangeListener = null;
+    mouseTimer = null;
   }
 
   /**

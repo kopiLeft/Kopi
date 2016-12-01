@@ -21,10 +21,13 @@ package org.kopi.xkopi.comp.database;
 import java.util.ArrayList;
 
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.kopi.comp.kjc.CClassNameType;
+import org.kopi.kopi.comp.kjc.CStdType;
 import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
 import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JIntLiteral;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 
 /**

@@ -19,7 +19,7 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.CharFormatter;
 
 class JavaCharFormatter implements CharFormatter {
 

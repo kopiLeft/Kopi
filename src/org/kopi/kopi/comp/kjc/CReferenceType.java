@@ -20,6 +20,7 @@
 package org.kopi.kopi.comp.kjc;
 
 import java.util.Hashtable;
+
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;

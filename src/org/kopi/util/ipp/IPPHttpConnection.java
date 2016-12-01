@@ -19,15 +19,15 @@
 
 package org.kopi.util.ipp;
 
-import java.net.URL;
-import java.net.Socket;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedInputStream;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.net.Socket;
+import java.net.URL;
 
 public class IPPHttpConnection {
 

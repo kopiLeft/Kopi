@@ -23,8 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
 import org.kopi.util.base.InconsistencyException;
 
 /**

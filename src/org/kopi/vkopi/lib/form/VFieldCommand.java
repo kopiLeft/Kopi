@@ -21,10 +21,10 @@ package org.kopi.vkopi.lib.form;
 
 import java.io.Serializable;
 
-import org.kopi.vkopi.lib.visual.VCommand;
-import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.ActionHandler;
 import org.kopi.vkopi.lib.visual.KopiAction;
+import org.kopi.vkopi.lib.visual.VCommand;
+import org.kopi.vkopi.lib.visual.VException;
 
 @SuppressWarnings("serial")
 public class VFieldCommand extends VCommand implements ActionHandler, Serializable {

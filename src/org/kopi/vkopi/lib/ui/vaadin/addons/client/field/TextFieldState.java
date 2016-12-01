@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
 import com.vaadin.shared.AbstractFieldState;
 import com.vaadin.shared.annotations.DelegateToWidget;
+import com.vaadin.shared.annotations.NoLayout;
 
 /**
  * The field shared state.
@@ -31,16 +32,19 @@ public class TextFieldState extends AbstractFieldState {
   /**
    * The column number.
    */
+  @NoLayout
   public int 				col;
   
   /**
    * The row number.
    */
+  @NoLayout
   public int 				rows;
   
   /**
    * The visible rows
    */
+  @NoLayout
   public int 				visibleRows;
   
   /**
@@ -49,32 +53,58 @@ public class TextFieldState extends AbstractFieldState {
    * Fixed new line means that we complete the messing field columns
    * with space character instead of using line separator.
    */
+  @NoLayout
   public boolean                        fixedNewLine;
   
   /**
    * Is it a password field ?
    */
+  @NoLayout
   public boolean 			noEcho;
   
   /**
    * Is it a scanner field ?
    */
+  @NoLayout
   public boolean 			scanner;
   
   /**
    * Is it a no edit field.
    */
+  @NoLayout
   public boolean 			noEdit;
   
   /**
    * The field text alignment.
    */
+  @NoLayout
   public int 				align;
   
   /**
    * The field type: integer, fixnum, date, time, timestamp, ...
    */
+  @NoLayout
   public int				type;
+  
+  /**
+   * The minimum value to be accepted by the field.
+   */
+  public Double                         minval;
+  
+  /**
+   * The maximum value to be accepted by the field.
+   */
+  public Double                         maxval;
+  
+  /**
+   * The max scale to be used with this field if it is a fixnum one.
+   */
+  public int                            maxScale;
+  
+  /**
+   * Is this field a fraction one ?
+   */
+  public boolean                        fraction;
 
   /**
    * The text in the field
@@ -96,4 +126,32 @@ public class TextFieldState extends AbstractFieldState {
    * The auto complete minimum length to begin querying for suggestions
    */
   public int				autocompleteLength;
+  
+  /**
+   * The convert type to be applied to the field.
+   */
+  public ConvertType                    convertType = ConvertType.NONE;
+  
+  /**
+   * The convert type to be applied to this text field.
+   * The convert type can be to upper case, to lower case or to name.
+   */
+  public static enum ConvertType {
+    /**
+     * no conversion.
+     */
+    NONE,
+    /**
+     * upper case conversion.
+     */
+    UPPER,
+    /**
+     * lower case conversion.
+     */
+    LOWER,
+    /**
+     * name conversion.
+     */
+    NAME
+  }
 }

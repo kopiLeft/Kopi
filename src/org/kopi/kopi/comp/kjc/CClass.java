@@ -19,15 +19,14 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
 
-import org.kopi.compiler.base.CWarning;
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.compiler.base.PositionedError;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.util.base.SimpleStringBuffer;
 

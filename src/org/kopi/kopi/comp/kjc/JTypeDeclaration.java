@@ -19,8 +19,8 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.JavaStyleComment;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -312,6 +312,18 @@ public abstract class VAbstractBlockLayout extends AdvancedFlexTable implements 
 
       adopt(widget);
     }
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    widgets = null;
+    aligns = null;
+    if (alignPane != null) {
+      alignPane.release();
+    }
+    alignPane = null;
+    align = null;
   }
   
   //---------------------------------------------------

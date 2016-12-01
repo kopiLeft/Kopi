@@ -32,6 +32,7 @@ public interface BlockListener extends EventListener, Serializable {
   void blockViewModeEntered(VBlock block, VField actviceField);
 
   void validRecordNumberChanged();
+  void recordInfoChanged(int rec, int info);
   void orderChanged();
 
   UBlock getCurrentDisplay(); // please do not use!

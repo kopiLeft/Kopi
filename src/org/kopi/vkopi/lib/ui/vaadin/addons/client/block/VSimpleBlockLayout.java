@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -129,6 +129,8 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
 
 	addInfoComponentdAt(comp, align.x, align.y);
       }
+      // free memory
+      manager.release();
     }
   }
 
@@ -271,7 +273,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
    * @return {@code true} if the given cell is leaf.
    */
   private boolean isLeaf(int row, int column, int rowspan) {
-    for (int r = row; r < row + rowspan; r++) {
+    for (int r = row; r < Math.min(getRowCount(), (row + rowspan)); r++) {
       for (int c = column + 1; c < getCellCount(r); c++) {
         if (getWidget(r, c) != null) {
           return false;
@@ -307,7 +309,16 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
     for (int row = 0; row < getRowCount(); row++) {
       for (int col = 0; col < getCellCount(row); col++) {
         if (getCellFormatter().getElement(row, col) != null && getWidget(row, col) != null) {
-          getCellFormatter().getElement(row, col).getStyle().setWidth(getWidget(row, col).getElement().getClientWidth(), Unit.PX);
+          Widget                widget;
+          int                   width;
+          
+          widget = getWidget(row, col);
+          if (widget instanceof VField) {
+            width = ((VField) widget).getWidth();
+          } else {
+            width = widget.getElement().getClientWidth();
+          }
+          getCellFormatter().getElement(row, col).getStyle().setWidth(width, Unit.PX);
         }
       }
     }
@@ -336,7 +347,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
   protected void onLoad() {
     super.onLoad();
     if (!cleaned) {
-      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+      Scheduler.get().scheduleFinally(new ScheduledCommand() {
 
 	@Override
 	public void execute() {
@@ -346,6 +357,19 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
 	}
       });
       cleaned = true;
+    }
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    if (follows != null) {
+      follows.clear();
+      follows = null;
+    }
+    if (followsAligns != null) {
+      followsAligns.clear();
+      followsAligns = null;
     }
   }
   

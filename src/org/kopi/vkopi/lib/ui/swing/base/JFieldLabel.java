@@ -22,6 +22,7 @@ package org.kopi.vkopi.lib.ui.swing.base;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
+
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 

@@ -22,16 +22,15 @@ package org.kopi.bytecode.optimize;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.kopi.bytecode.classfile.AccessorContainer;
 import org.kopi.bytecode.classfile.AbstractInstructionAccessor;
+import org.kopi.bytecode.classfile.AccessorContainer;
+import org.kopi.bytecode.classfile.HandlerInfo;
 import org.kopi.bytecode.classfile.Instruction;
 import org.kopi.bytecode.classfile.JumpInstruction;
 import org.kopi.bytecode.classfile.LineNumberInfo;
-import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.bytecode.classfile.LocalVarInstruction;
+import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.bytecode.classfile.SwitchInstruction;
-import org.kopi.bytecode.classfile.HandlerInfo;
-
 import org.kopi.util.base.InconsistencyException;
 
 /**

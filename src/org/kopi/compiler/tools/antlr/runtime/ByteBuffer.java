@@ -19,8 +19,8 @@
 
 package org.kopi.compiler.tools.antlr.runtime;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A Stream of characters fed to the lexer from a InputStream that can

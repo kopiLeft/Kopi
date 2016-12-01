@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -92,6 +92,13 @@ public abstract class SuggestionDisplay {
                                        boolean isDisplayStringHTML,
                                        boolean isAutoSelectEnabled,
                                        SuggestionCallback callback);
+  
+  
+  /**
+   * Returns {@code true} if we are waiting for suggestions.
+   * @return {@code true} if we are waiting for suggestions.
+   */
+  public abstract boolean isAboutShowingSuggestions();
 
   /**
    * This is here for legacy reasons. It is intentionally not visible.

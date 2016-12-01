@@ -20,7 +20,6 @@
 package org.kopi.vkopi.comp.form;
 
 import org.jdom.Element;
-
 import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 import org.kopi.vkopi.comp.base.VKLocalizationWriter;
 

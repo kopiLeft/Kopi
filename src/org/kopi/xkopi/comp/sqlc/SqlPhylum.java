@@ -21,9 +21,9 @@ package org.kopi.xkopi.comp.sqlc;
 
 import java.util.Vector;
 
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
 
 /**
  * This class represents an SqlPhylumession

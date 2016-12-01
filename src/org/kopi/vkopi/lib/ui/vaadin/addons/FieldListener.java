@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,4 +41,44 @@ public interface FieldListener extends Serializable {
    * Fired when the field is clicked.
    */
   public void onClick();
+  
+  /**
+   * Transfers the focus to this field.
+   */
+  public void transferFocus();
+  
+  /**
+   * Navigates to the next field.
+   */
+  public void gotoNextField();
+
+  /**
+   * Navigates to the previous field.
+   */
+  public void gotoPrevField();
+
+  /**
+   * Navigates to the next empty must fill field.
+   */
+  public void gotoNextEmptyMustfill();
+  
+  /**
+   * Navigates to the next record.
+   */
+  public void gotoNextRecord();
+  
+  /**
+   * Navigates to the previous record.
+   */
+  public void gotoPrevRecord();
+  
+  /**
+   * Navigates to the first record.
+   */
+  public void gotoFirstRecord();
+  
+  /**
+   * Navigates to the last record.
+   */
+  public void gotoLastRecord();
 }

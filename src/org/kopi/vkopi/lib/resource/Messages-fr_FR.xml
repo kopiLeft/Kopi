@@ -20,7 +20,7 @@
 <!-- ERRORS-->
   <message ident="00001" text="Erreur de saisie: Aucune valeur appropriée." />
   <message ident="00002" text="Erreur de saisie: Valeurs multiples." />
-  <message ident="00003" text="Erreur de saisie: Ce n'est pas une date valide." />
+  <message ident="00003" text="Erreur de saisie: Ce n''est pas une date valide." />
   <message ident="00004" text="Erreur de saisie: Ce n'est pas un entier." />
   <message ident="00005" text="Erreur de saisie: Ce n'est pas un mois valide." />
   <message ident="00006" text="Erreur de saisie: Ce nombre n'est pas valide." />
@@ -73,7 +73,7 @@
   <message ident="00054" text="Erreur durant la connection à la base de données" />
 <!-- MAIL (APPS.COMMON)-->
   <message ident="00055" text="L'emetteur n'a pas d'adresse mail" />
-  <message ident="00056" text="Impossible de envoyer." />
+  <message ident="00056" text="Impossible d'envoyer." />
 <!-- INFO TEXTS-->
   <message ident="00057" text="Aucune donnée à afficher." />
   <message ident="00058" text="Opération annulée." />

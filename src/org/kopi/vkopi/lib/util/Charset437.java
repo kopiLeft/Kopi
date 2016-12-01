@@ -19,8 +19,8 @@
 
 package org.kopi.vkopi.lib.util;
 
-import java.nio.CharBuffer;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;

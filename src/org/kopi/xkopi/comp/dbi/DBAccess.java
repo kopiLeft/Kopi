@@ -20,6 +20,7 @@
 package org.kopi.xkopi.comp.dbi;
 
 import java.sql.SQLException;
+
 import org.kopi.xkopi.lib.base.DBContext;
 
 public interface DBAccess {

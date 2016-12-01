@@ -19,8 +19,8 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.UnpositionedError;
 
 /**
  * Context type checking. Also used while loading binary classes.

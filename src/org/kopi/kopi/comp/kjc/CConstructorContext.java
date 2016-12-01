@@ -23,6 +23,7 @@ import java.util.Enumeration;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.compiler.base.UnpositionedError;
 
 /**
  * This class represents a method context during check

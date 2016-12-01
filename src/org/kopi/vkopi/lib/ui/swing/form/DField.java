@@ -30,6 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.form.UBlock;
 import org.kopi.vkopi.lib.form.UField;
 import org.kopi.vkopi.lib.form.VBlock;
@@ -39,11 +40,10 @@ import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VForm;
 import org.kopi.vkopi.lib.ui.swing.base.FieldStates;
 import org.kopi.vkopi.lib.ui.swing.base.JFieldButton;
-import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.ui.swing.base.Utils;
+import org.kopi.vkopi.lib.ui.swing.visual.SwingThreadHandler;
 import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VColor;
-import org.kopi.vkopi.lib.ui.swing.visual.SwingThreadHandler;
 import org.kopi.vkopi.lib.visual.VException;
 
 /**
@@ -189,6 +189,10 @@ public abstract class DField extends JPanel implements UField {
       form.setInformationText(getModel().getToolTip());
       form.setFieldSearchOperator(getModel().getSearchOperator());
     }
+  }
+  
+  public void forceFocus() {
+    // not used
   }
 
   public void updateAccess() {

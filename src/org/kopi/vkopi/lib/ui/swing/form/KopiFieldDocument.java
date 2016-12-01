@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.swing.form;
 
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.text.DecimalFormatSymbols;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -29,7 +30,9 @@ import javax.swing.text.PlainDocument;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.form.ModelTransformer;
 import org.kopi.vkopi.lib.form.VField;
+import org.kopi.vkopi.lib.form.VFixnumField;
 import org.kopi.vkopi.lib.ui.swing.base.Stateful;
+import org.kopi.vkopi.lib.visual.ApplicationContext;
 
 /**
  * !!! NEED COMMENTS
@@ -102,6 +105,15 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
 
     if (str == null) {
       return;
+    }
+    // special treatment for decimal separator
+    if (model instanceof VFixnumField && str.contains(".")) {
+      DecimalFormatSymbols      symbols;
+      
+      symbols = new DecimalFormatSymbols(ApplicationContext.getDefaultLocale());
+      if (symbols.getDecimalSeparator() != '.') {
+        str = str.replace('.', symbols.getDecimalSeparator());
+      }
     }
 
     String text = getText(0, getLength());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import com.vaadin.shared.ui.Connect.LoadStyle;
  * The warning notification connector.
  */
 @SuppressWarnings("serial")
-@Connect(value = WarningNotification.class, loadStyle = LoadStyle.LAZY)
+@Connect(value = WarningNotification.class, loadStyle = LoadStyle.EAGER)
 public class WarningNotificationConnector extends AbstractNotificationConnector {
   
   @Override

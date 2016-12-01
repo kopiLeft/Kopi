@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,11 +27,10 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.google.gwt.user.client.ui.TextBoxBase;
@@ -180,18 +179,26 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
   }
   
   /**
+   * Returns {@code true} when this window has a focused text box before it looses focus.
+   * @return {@code true} when this window has a focused text box before it looses focus.
+   */
+  public boolean hasLastFocusedTextBox() {
+    return lasFocusedTextBox != null && lasFocusedTextBox.isAttached();
+  }
+  
+  /**
    * Sets the focus to the last focused text box of this form.
    */
   public void goBackToLastFocusedTextBox() {
-    Scheduler.get().scheduleEntry(new ScheduledCommand() {
+    new Timer() {
       
       @Override
-      public void execute() {
+      public void run() {
         if (lasFocusedTextBox != null) {
           lasFocusedTextBox.getElement().focus();
-        } 
+        }
       }
-    });
+    }.schedule(100);
   }
   
   /**
@@ -209,7 +216,17 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
       maybeSetPopupWindowCaption(caption);
     }
   }
-    
+  
+  @Override
+  public void clear() {
+    super.clear();
+    connection = null;
+    keyHandler = null;
+    view.clear();
+    view = null;
+    lasFocusedTextBox = null;
+  }
+  
   /**
    * Returns the element associated with the actor menu to be used for tooltip.
    * @return The element associated with the actor menu.
@@ -217,7 +234,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
   protected Element getActorsMenuElement() {
     return view.getActorsMenuElement();
   }
-
+  
   /**
    * Sets the window caption if it belongs to the main window.
    * @param caption The window caption.

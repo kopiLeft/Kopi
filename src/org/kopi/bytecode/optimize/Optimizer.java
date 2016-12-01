@@ -20,6 +20,7 @@
 package org.kopi.bytecode.optimize;
 
 import java.util.Vector;
+
 import org.kopi.bytecode.classfile.AccessorContainer;
 import org.kopi.bytecode.classfile.AccessorTransformer;
 import org.kopi.bytecode.classfile.BadAccessorException;
@@ -29,7 +30,6 @@ import org.kopi.bytecode.classfile.Instruction;
 import org.kopi.bytecode.classfile.InstructionAccessor;
 import org.kopi.bytecode.classfile.LineNumberInfo;
 import org.kopi.bytecode.classfile.LocalVariableInfo;
-
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.util.base.Utils;
 

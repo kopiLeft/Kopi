@@ -22,10 +22,20 @@ package org.kopi.vkopi.comp.print;
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CParseClassContext;
+import org.kopi.kopi.comp.kjc.CParseCompilationUnitContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CTypeVariable;
+import org.kopi.kopi.comp.kjc.JClassDeclaration;
+import org.kopi.kopi.comp.kjc.JClassImport;
+import org.kopi.kopi.comp.kjc.JCompilationUnit;
+import org.kopi.kopi.comp.kjc.JPackageImport;
 import org.kopi.util.base.NotImplementedException;
-import org.kopi.vkopi.comp.base.*;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 import org.kopi.vkopi.comp.base.VKEnvironment;
+import org.kopi.vkopi.comp.base.VKInsert;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 
 /**
  * This class represents the definition of a form

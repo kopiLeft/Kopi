@@ -22,10 +22,12 @@ package org.kopi.vkopi.lib.ui.vaadin.form;
 import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.form.KopiAlignment;
 import org.kopi.vkopi.lib.form.VBlock;
+import org.kopi.vkopi.lib.form.VConstants;
 import org.kopi.vkopi.lib.ui.vaadin.addons.BlockLayout;
 import org.kopi.vkopi.lib.ui.vaadin.addons.BlockListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ChartBlockLayout;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VException;
 
 import com.vaadin.ui.Component;
@@ -84,6 +86,13 @@ public class DChartBlock extends DBlock implements BlockListener {
   }
   
   @Override
+  public void recordInfoChanged(int rec, int info) {
+    // send the new records info
+    fireRecordInfoChanged(rec, info);
+    getModel().updateColor(rec);
+  }
+  
+  @Override
   protected void refresh(boolean force) {
     super.refresh(force);
     // don't update scroll bar when the scroll position
@@ -110,6 +119,74 @@ public class DChartBlock extends DBlock implements BlockListener {
       } catch (VException e) {
         e.printStackTrace();
       }
+    }
+  }
+  
+  @Override
+  public void onActiveRecordChange(final int record, final int sortedTopRec) {
+    if (record != getModel().getActiveRecord()) {
+      getModel().getForm().performAsyncAction(new KopiAction() {
+
+        @Override
+        public void execute() throws VException {
+          if (fireTriggers()) {
+            sortedToprec = sortedTopRec;
+            getModel().gotoRecord(record);
+          } else {
+            getModel().setActiveRecord(record);
+            getModel().setCurrentRecord(record);
+            sortedToprec = sortedTopRec;
+            refresh(false);
+          }
+        }
+
+        /**
+         * Returns {@code true} if there some triggers that should be fired
+         * when changing the active record of the block model.
+         * @return {@code true} if there some triggers that should be fired.
+         * @throws VException Visual errors.
+         */
+        private boolean fireTriggers() throws VException {
+          return isActiveBlock() && (fireTriggerOnBlock() || fireTriggersOnActiveField());
+        }
+
+        /**
+         * Returns {@code true} if this block is the active block in the form.
+         * @return {@code true} if this block is the active block in the form.
+         * @throws VException Visual errors.
+         */
+        private boolean isActiveBlock() throws VException {
+          return getModel().getForm().getActiveBlock() != null
+            && getModel().getForm().getActiveBlock() == getModel();
+        }
+        
+        /**
+         * Returns {@code true} is there are trigger that should be fired on this block.
+         * @return {@code true} is there are trigger that should be fired on this block.
+         * @throws VException Visual errors.
+         */
+        private boolean fireTriggerOnBlock() throws VException {
+          return getModel().hasTrigger(VConstants.TRG_PREREC)
+           || getModel().hasTrigger(VConstants.TRG_VALREC);
+        }
+
+        /**
+         * Returns {@code true} is there are trigger that should be fired on the active field.
+         * @return {@code true} is there are trigger that should be fired on the active field.
+         * @throws VException Visual errors.
+         */
+        private boolean fireTriggersOnActiveField() throws VException {
+          if (getModel().getActiveField() != null) {
+            return getModel().getActiveField().hasTrigger(VConstants.TRG_POSTCHG)
+             || getModel().getActiveField().hasTrigger(VConstants.TRG_VALFLD)
+             || getModel().getActiveField().hasTrigger(VConstants.TRG_FORMAT)
+             || getModel().getActiveField().hasTrigger(VConstants.TRG_PREVAL)
+             || getModel().getActiveField().hasTrigger(VConstants.TRG_POSTFLD);
+          } else {
+            return false;
+          }
+        }
+      });
     }
   }
 

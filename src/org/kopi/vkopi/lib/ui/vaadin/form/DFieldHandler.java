@@ -21,7 +21,9 @@ package org.kopi.vkopi.lib.ui.vaadin.form;
 
 import org.kopi.vkopi.lib.form.AbstractFieldHandler;
 import org.kopi.vkopi.lib.form.VConstants;
+import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.VFieldUI;
+import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
 import org.kopi.vkopi.lib.visual.VException;
 
 /**
@@ -108,7 +110,17 @@ public class DFieldHandler extends AbstractFieldHandler {
       if (getRowController().getDetailDisplay() != null) {
         getRowController().getDetailDisplay().updateText();
       }
-    }	     	    
+    }
+    // fire value changed only for text fields.
+    if (getModel().getType() == VField.MDL_FLD_TEXT || getModel().getType() == VField.MDL_FLD_EDITOR) {
+      // store the record value in the client cache
+      // so that it can be used for free navigation
+      // when there is no communication needed to
+      // navigate between fields.
+      ((DBlock) getRowController().getBlockView()).fireValueChanged(getRowController().getIndex(),
+                                                                    r,
+                                                                    getRowController().getModel().getText(r));
+    }
   }
 
   @Override
@@ -123,5 +135,11 @@ public class DFieldHandler extends AbstractFieldHandler {
     if (getRowController().getBlockView().getDisplayLine(r) != -1) {
       getRowController().fireColorHasChanged(r);
     }
+    // store the color properties into the client cache
+    // so that it can be used for free navigation mode.
+    ((DBlock) getRowController().getBlockView()).fireColorChanged(getRowController().getIndex(),
+                                                                  r,
+                                                                  Utils.toString(getModel().getForeground(r)),
+                                                                  Utils.toString(getModel().getBackground(r)));
   }
 }

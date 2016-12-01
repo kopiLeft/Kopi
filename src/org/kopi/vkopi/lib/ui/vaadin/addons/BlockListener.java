@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,4 +31,11 @@ public interface BlockListener extends Serializable {
    * @param value The new scroll position.
    */
   public void onScroll(int value);
+  
+  /**
+   * Fired when the active record is changed from the client side.
+   * @param record The new active record.
+   * @param sortedTopRec The sorted top record.
+   */
+  public void onActiveRecordChange(int record, int sortedTopRec);
 }

@@ -2,7 +2,15 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.BitSet;
+import org.kopi.compiler.tools.antlr.runtime.NoViableAltException;
+import org.kopi.compiler.tools.antlr.runtime.ParserSharedInputState;
+import org.kopi.compiler.tools.antlr.runtime.RecognitionException;
+import org.kopi.compiler.tools.antlr.runtime.SemanticException;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.TokenBuffer;
+import org.kopi.compiler.tools.antlr.runtime.TokenStream;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamException;
 
 public class Preprocessor extends org.kopi.compiler.tools.antlr.runtime.LLkParser
        implements PreprocessorTokenTypes

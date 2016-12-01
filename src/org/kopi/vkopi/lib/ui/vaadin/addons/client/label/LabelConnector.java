@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,9 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.label;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.Label;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockConnector;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.WindowConnector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -83,7 +86,32 @@ public class LabelConnector extends AbstractComponentConnector implements ClickH
     if (!getWidget().isEnabled()) {
       return;
     }
-    
+    // send dirty values to the server side before.
+    getWindow().cleanDirtyValues(getBlock());
     getRpcProxy(LabelServerRpc.class).onClick();
+  }
+  
+  /**
+   * Returns {@code true} if the label has auto fill feature. 
+   * @return {@code true} if the label has auto fill feature. 
+   */
+  public boolean hasAutofill() {
+    return getState().hasAutofill;
+  }
+  
+  /**
+   * Returns the window that this label belongs to.
+   * @return The parent window of this label.
+   */
+  protected WindowConnector getWindow() {
+    return ConnectorUtils.getParent(this, WindowConnector.class);
+  }
+  
+  /**
+   * Returns the parent block connector.
+   * @return The parent block connector.
+   */
+  protected BlockConnector getBlock() {
+    return ConnectorUtils.getParent(this, BlockConnector.class);
   }
 }

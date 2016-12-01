@@ -19,13 +19,13 @@
 
 package org.kopi.vkopi.comp.base;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CReferenceType;
 import org.kopi.kopi.comp.kjc.JBooleanLiteral;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JIntLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
-import org.kopi.vkopi.lib.form.VFixnumField;
 import org.kopi.xkopi.comp.database.DatabaseColumn;
 import org.kopi.xkopi.comp.database.DatabaseFixedColumn;
 import org.kopi.xkopi.lib.type.Fixed;

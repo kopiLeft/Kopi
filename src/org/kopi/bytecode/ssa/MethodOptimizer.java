@@ -19,12 +19,12 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.MethodInfo;
 import org.kopi.bytecode.classfile.CodeInfo;
 import org.kopi.bytecode.classfile.HandlerInfo;
+import org.kopi.bytecode.classfile.Instruction;
 import org.kopi.bytecode.classfile.LineNumberInfo;
 import org.kopi.bytecode.classfile.LocalVariableInfo;
-import org.kopi.bytecode.classfile.Instruction;
+import org.kopi.bytecode.classfile.MethodInfo;
 
 /**
  * Optimize a method using the SSA framework.

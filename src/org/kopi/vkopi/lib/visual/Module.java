@@ -19,9 +19,9 @@
 
 package org.kopi.vkopi.lib.visual;
 
+import org.kopi.vkopi.lib.base.Image;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.vkopi.lib.l10n.ModuleLocalizer;
-import org.kopi.vkopi.lib.base.Image;
 import org.kopi.xkopi.lib.base.DBContext;
 
 

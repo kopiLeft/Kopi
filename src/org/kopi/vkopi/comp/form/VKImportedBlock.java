@@ -19,12 +19,18 @@
 
 package org.kopi.vkopi.comp.form;
 
-import org.kopi.vkopi.comp.base.VKWindow;
+import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.JClassDeclaration;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKLocalizationWriter;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.compiler.base.TokenReference;
+import org.kopi.vkopi.comp.base.VKWindow;
 
 /**
  * A block on a form

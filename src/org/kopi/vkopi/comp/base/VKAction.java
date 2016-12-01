@@ -19,10 +19,11 @@
 
 package org.kopi.vkopi.comp.base;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
-import org.kopi.kopi.comp.kjc.JStatement;
 import org.kopi.kopi.comp.kjc.JMethodDeclaration;
+import org.kopi.kopi.comp.kjc.JStatement;
 
 /**
  * This class represents an action, ie a list of java statement

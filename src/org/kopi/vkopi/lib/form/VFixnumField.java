@@ -26,8 +26,8 @@ import org.kopi.vkopi.lib.list.VFixnumColumn;
 import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
-import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
+import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.xkopi.lib.base.Query;
 import org.kopi.xkopi.lib.type.Fixed;
 import org.kopi.xkopi.lib.type.NotNullFixed;
@@ -129,6 +129,38 @@ public class VFixnumField extends VField {
   public String getTypeName() {
     return VlibProperties.getString("Fixed");
   }
+  
+  /**
+   * Returns the min permitted value.
+   * @return The min permitted value.
+   */
+  public Fixed getMinValue() {
+    return minval;
+  }
+  
+  /**
+   * Returns the max permitted value.
+   * @return The max permitted value.
+   */
+  public Fixed getMaxValue() {
+    return maxval;
+  }
+  
+  /**
+   * Returns the maximum scale to be used for this field.
+   * @return The maximum scale to be used for this field.
+   */
+  public int getMaxScale() {
+    return maxScale;
+  }
+  
+  /**
+   * Returns {@code true} if its is a fraction field.
+   * @return {@code true} if its is a fraction field.
+   */
+  public boolean isFraction() {
+    return fraction;
+  }
 
   /*
    * ----------------------------------------------------------------------
@@ -169,12 +201,12 @@ public class VFixnumField extends VField {
    * verify that value is valid (on exit)
    * @exception         org.kopi.vkopi.lib.visual.VException       an exception may be raised if text is bad
    */
-  public void checkType(Object o) throws VException {
+  public void checkType(int rec, Object o) throws VException {
     String      s = (String)o;
-    int         scale = currentScale[block.getActiveRecord()];
+    int         scale = currentScale[rec];
 
     if (s.equals("")) {
-      setNull(block.getActiveRecord());
+      setNull(rec);
     } else {
       Fixed   v;
 
@@ -198,7 +230,7 @@ public class VFixnumField extends VField {
           throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
         }
       }
-      setFixed(block.getActiveRecord(), v);
+      setFixed(rec, v);
     }
   }
 
@@ -361,7 +393,7 @@ public class VFixnumField extends VField {
   public void setFixed(int r, Fixed v) {
     // trails (backup) the record if necessary
     if (isChangedUI()
-        || value[r] == null
+        || (value[r] == null && v != null)
         || (value[r] != null && !value[r].equals(v))) {
       trail(r);
 
@@ -472,7 +504,19 @@ public class VFixnumField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Fixed               oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   /*

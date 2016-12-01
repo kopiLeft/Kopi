@@ -27,12 +27,18 @@ import java.util.Vector;
 
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.TabbedPrintWriter;
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.xkopi.comp.sqlc.TableReference;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JCompilationUnit;
+import org.kopi.kopi.comp.kjc.JCompoundStatement;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JFormalParameter;
+import org.kopi.kopi.comp.kjc.KjcPrettyPrinter;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.comp.trig.GKjcPrettyPrinter;
-import org.kopi.xkopi.lib.type.Fixed;
 import org.kopi.vkopi.lib.form.VConstants;
+import org.kopi.xkopi.comp.sqlc.TableReference;
+import org.kopi.xkopi.lib.type.Fixed;
 
 /**
  * This class implements a Kopi pretty printer

@@ -19,15 +19,14 @@
 
 package org.kopi.vkopi.comp.report;
 
-import java.util.Vector;
 import java.util.Stack;
+import java.util.Vector;
 
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CReferenceType;
-import org.kopi.vkopi.comp.base.VKParseVKWindowContext;
-import org.kopi.vkopi.comp.base.VKEnvironment;
-
 import org.kopi.util.base.Utils;
+import org.kopi.vkopi.comp.base.VKEnvironment;
+import org.kopi.vkopi.comp.base.VKParseVKWindowContext;
 
 public class VRParseReportContext extends VKParseVKWindowContext {
   public static VRParseReportContext getInstance(VKEnvironment environment) {

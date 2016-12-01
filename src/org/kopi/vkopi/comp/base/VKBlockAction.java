@@ -19,8 +19,18 @@
 
 package org.kopi.vkopi.comp.base;
 
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CTypeVariable;
+import org.kopi.kopi.comp.kjc.JBlock;
+import org.kopi.kopi.comp.kjc.JCompoundStatement;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JFormalParameter;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JMethodDeclaration;
+import org.kopi.kopi.comp.kjc.JStatement;
 
 /**
  * This class represents an action, ie a list of java statement

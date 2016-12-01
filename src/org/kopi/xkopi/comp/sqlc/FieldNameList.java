@@ -20,9 +20,10 @@
 package org.kopi.xkopi.comp.sqlc;
 
 import java.util.List;
+
+import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.CWarning;
 
 public class FieldNameList extends SqlPhylum {
 

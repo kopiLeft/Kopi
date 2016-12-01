@@ -19,10 +19,10 @@
 
 package org.kopi.util.ipp;
 
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class IPP {
 

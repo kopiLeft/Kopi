@@ -20,16 +20,16 @@
 package org.kopi.vkopi.comp.base;
 
 import java.io.File;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.Enumeration;
 
-import org.kopi.kopi.comp.kjc.JExpression;
-import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.compiler.base.CompilerMessages;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.compiler.base.CompilerMessages;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
 
 /**
  * The compilation unit for a VK element

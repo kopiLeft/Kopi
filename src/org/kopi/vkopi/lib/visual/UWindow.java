@@ -20,7 +20,6 @@
 package org.kopi.vkopi.lib.visual;
 
 import org.kopi.vkopi.lib.base.UComponent;
-import org.kopi.vkopi.lib.visual.FileProductionListener;
 
 /**
  * {@code UWindow} is the top-level interface that must be implemented

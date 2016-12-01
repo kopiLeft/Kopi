@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -152,10 +152,19 @@ public class VPage extends Composite {
     return super.getWidget();
   }
   
+  /**
+   * Releases this page
+   */
+  public void release() {
+    content.clear();
+    content = null;
+    last = null;
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final CellPanel			content;
+  private CellPanel                             content;
   private Widget				last; 
 }

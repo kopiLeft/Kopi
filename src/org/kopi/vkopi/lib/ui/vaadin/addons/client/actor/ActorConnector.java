@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.actor;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.Actor;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.AcceleratorKeyCombination;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.ActionListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
@@ -79,6 +81,7 @@ public class ActorConnector extends AbstractComponentConnector implements Action
   @Override
   public void onUnregister() {
     getWidget().clear();
+    item = null;
   }
   
   @OnStateChange({"acceleratorKey", "modifiersKey"})
@@ -119,7 +122,29 @@ public class ActorConnector extends AbstractComponentConnector implements Action
       item.setEnabled(getState().enabled);
     }
   }
+  
+  /**
+   * Sets the actor to be enabled.
+   * @param enabled The enabled status
+   */
+  public void setActorEnabled(boolean enabled) {
+   if (enabled != internalIsEnabled) {
+      getWidget().setEnabled(enabled);
+      if (item != null) {
+        item.setEnabled(enabled);
+      }
+      internalIsEnabled = enabled;
+    }
+  }
 
+  /**
+   * The actor is visible only if a resource is defined.
+   * @return {@code true} if the actor should be drawn.
+   */
+  public boolean isVisible() {
+    return getIcon() != null;
+  }
+  
   /**
    * Creates an equivalent menu Item for this actor.
    * @return The actor menu item.
@@ -150,20 +175,28 @@ public class ActorConnector extends AbstractComponentConnector implements Action
                                          getState().modifiersKey,
                                          getWidget()).toString(VMainWindow.getLocale());
   }
-
+  
   /**
-   * The actor is visible only if a resource is defined.
-   * @return {@code true} if the actor should be drawn.
+   * Returns the parent window connector.
+   * @return The parent window connector.
    */
-  public boolean isVisible() {
-    return getIcon() != null;
+  protected WindowConnector getWindow() {
+    return ConnectorUtils.getParent(this, WindowConnector.class);
+  }
+  
+  /**
+   * Returns the parent block connector.
+   * @return The parent block connector.
+   */
+  protected BlockConnector getBlock() {
+    return ConnectorUtils.getParent(VInputTextField.getLastFocusedConnector(), BlockConnector.class);
   }
   
   /**
    * Creates the key combination.
    * @return The key combination.
    */
-  private AcceleratorKeyCombination createKeyCombination() {
+  protected AcceleratorKeyCombination createKeyCombination() {
     return new AcceleratorKeyCombination(getState().acceleratorKey, getState().modifiersKey, getWidget());
   }
 
@@ -171,10 +204,15 @@ public class ActorConnector extends AbstractComponentConnector implements Action
   public void onAction() {
     // fire the actor action
     if (isEnabled()) {
-      // send focused text value to the server.
-      VInputTextField.communicateCurrentTextToServer();
+      // clean all dirty values in the client side of the parent window.
+      getWindow().cleanDirtyValues(getBlock());
       getRpcProxy(ActorServerRpc.class).actionPerformed();
     }
+  }
+  
+  @Override
+  public boolean isEnabled() {
+    return super.isEnabled() || internalIsEnabled;
   }
   
   //---------------------------------------------------
@@ -182,4 +220,5 @@ public class ActorConnector extends AbstractComponentConnector implements Action
   //---------------------------------------------------
   
   private VActorNavigationItem                  item;
+  private boolean                               internalIsEnabled;
 }

@@ -19,14 +19,14 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.form;
 
+import java.awt.event.KeyEvent;
+
 import org.kopi.vkopi.lib.form.ULabel;
 import org.kopi.vkopi.lib.form.VConstants;
 import org.kopi.vkopi.lib.form.VFieldUI;
-import org.kopi.vkopi.lib.form.VForm;
 import org.kopi.vkopi.lib.ui.vaadin.addons.SortableLabel;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import org.kopi.vkopi.lib.ui.vaadin.visual.VApplication;
-import org.kopi.vkopi.lib.visual.ApplicationContext;
+import org.kopi.vkopi.lib.visual.VActor;
 import org.kopi.vkopi.lib.visual.VCommand;
 
 @SuppressWarnings("serial")
@@ -40,7 +40,6 @@ public class DLabel extends SortableLabel implements ULabel {
    * Creates a new <code>DLabel</code> instance.
    * @param text The label text.
    * @param help The label help.
-   * @param commands The field commands.
    */
   public DLabel(String text, String help) {
     super(text);
@@ -205,20 +204,12 @@ public class DLabel extends SortableLabel implements ULabel {
       description = "<html>" + tooltip;
       
       for (int i = 0; i < commands.length; i++) {
-	switch (commands[i].getTrigger()) {
-	case VForm.CMD_AUTOFILL:
-	  description += "<br>" + localizeActor("Autofill") + " [F2]";
-	  break;
-	case VForm.CMD_EDITITEM:
-	  description += "<br>" + localizeActor("EditItem") + " [Shift-F2]";
-	  break;
-	case VForm.CMD_EDITITEM_S:
-	  description += "<br>" + localizeActor("EditItem_S") + " [F2]";
-	  break;
-	case VForm.CMD_NEWITEM:
-	  description += "<br>" + localizeActor("NewItem") +" [Shift-F4]";
-	  break;
-	}
+        if (commands[i].getActor() != null) {
+          if (description.trim().length() > 0) {
+            description += "<br>";
+          }
+          description+= getDescription(commands[i].getActor());
+        }
       }
     }
     
@@ -226,12 +217,20 @@ public class DLabel extends SortableLabel implements ULabel {
   }
   
   /**
-   * Localize the label actor.
-   * @param ident the actor identifier.
-   * @return THe localized actor.
+   * Creates the actor description.
+   * @param actor The actor model.
+   * @return The actor description.
    */
-  private String localizeActor(String ident) {
-    return ((VApplication) ApplicationContext.getApplicationContext().getApplication()).getLocalizationManager().getActorLocalizer(MENU_LOCALIZATION_RESOURCE, ident).getLabel();
+  private static String getDescription(VActor actor) {
+    if (actor.acceleratorKey > 0) {
+      if (actor.acceleratorModifier == 0) {
+        return actor.menuItem + " [" + KeyEvent.getKeyText(actor.acceleratorKey) + "]";
+      } else {
+        return actor.menuItem + " [" + KeyEvent.getKeyModifiersText(actor.acceleratorModifier) + "-" + KeyEvent.getKeyText(actor.acceleratorKey) + "]";
+      }
+    } else {
+      return actor.menuItem;
+    }
   }
  
   //---------------------------------------------------
@@ -241,5 +240,4 @@ public class DLabel extends SortableLabel implements ULabel {
   private String			infoText;
   private boolean			detailMode;
   private String			tooltip;
-  private static final String           MENU_LOCALIZATION_RESOURCE = "org/kopi/vkopi/lib/resource/Menu";
 }

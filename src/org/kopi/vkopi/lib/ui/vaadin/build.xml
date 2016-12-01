@@ -25,8 +25,14 @@
   <property name="topdir" value="../../../.." />
   <property name="node" value="yes"/>
   <target name="node.build" description="-->  Runs subbuild files ">
+<<<<<<< .working
     <ant dir="plotly"  		inheritAll="false" target="${target}" />
     <ant dir="addons"  		inheritAll="false" target="${target}" />
+||||||| .merge-left.r34972
+=======
+  	<ant dir="plotly"  		inheritAll="false" target="${target}" />
+  	<ant dir="addons"  		inheritAll="false" target="${target}" />
+>>>>>>> .merge-right.r34996
     <ant dir="base"  		inheritAll="false" target="${target}" />
     <ant dir="visual" 		inheritAll="false" target="${target}" />
     <ant dir="chart" 		inheritAll="false" target="${target}" />

@@ -20,9 +20,9 @@
 package org.kopi.bytecode.ssa;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 /**
  * The usual phi function.
  *

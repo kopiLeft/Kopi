@@ -19,12 +19,12 @@
 
 package org.kopi.vkopi.comp.form;
 
-import org.kopi.vkopi.comp.base.VKPhylum;
-import org.kopi.vkopi.comp.base.VKContext;
-import org.kopi.kopi.comp.kjc.JCompoundStatement;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.JCompoundStatement;
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKPhylum;
 
 /**
  * This class represents the root class for block elements

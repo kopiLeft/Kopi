@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -281,7 +281,7 @@ public class VInputTextArea extends VInputTextField {
           int   i;
     
           for (i = start + col - 1; i > start; i--) {
-            if (isWhitespace(source.charAt(i))) {
+            if (StringValidationStrategy.isWhitespace(source.charAt(i))) {
               break;
             }
           }
@@ -301,29 +301,6 @@ public class VInputTextArea extends VInputTextField {
     }
     
     return target.toString();
-  }
-  
-  /**
-   * Checks if the given character is a white space.
-   * The implementation is picked from java implementation
-   * since GWT does not contains the implementation of {@link Character#isWhitespace(char)}
-   * @param c The concerned character.
-   * @return {@code true} if the character is whitespace.
-   */
-  private static boolean isWhitespace(char c) {
-    return c == ' ' 
-      || c == '\u00A0' // SPACE_SEPARATOR
-      || c == '\u2007'   // LINE_SEPARATOR
-      || c == '\u202F'   // PARAGRAPH_SEPARATOR
-      || c == '\u0009'   // HORIZONTAL TABULATION.
-      || c == '\n'       // LINE FEED.
-      || c == '\u000B'   // VERTICAL TABULATION.
-      || c == '\u000C'   // FORM FEED.
-      || c == '\r'       // CARRIAGE RETURN.
-      || c == '\u001C'   // FILE SEPARATOR.
-      || c == '\u001D'   // GROUP SEPARATOR.
-      || c == '\u001E'   // RECORD SEPARATOR.
-      || c == '\u001F';  // UNIT SEPARATOR.
   }
   
   //---------------------------------------------------
@@ -371,6 +348,13 @@ public class VInputTextArea extends VInputTextField {
 	event.stopPropagation();
       }
     }
+  }
+  
+  @Override
+  public void release() {
+    super.release();
+    maxLengthHandler = null;
+    enterDownHandler = null;
   }
 
   //---------------------------------------------------

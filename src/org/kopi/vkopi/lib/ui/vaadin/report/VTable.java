@@ -27,11 +27,13 @@ import java.util.List;
 import org.kopi.vkopi.lib.report.MReport;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.ui.vaadin.report.VTable.TableModelItem;
+
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractInMemoryContainer;
 import com.vaadin.data.util.converter.Converter.ConversionException;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 
 /**

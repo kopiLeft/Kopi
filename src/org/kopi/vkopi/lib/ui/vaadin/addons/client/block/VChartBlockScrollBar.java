@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -77,6 +77,11 @@ public class VChartBlockScrollBar extends Composite implements ScrollHandler, Ha
         scrollbar.setScrollSize(scrollStep * maxValue);
         // Now set the scroll position which is the scroll reached value  multiplied by the scroll step
         scrollbar.setScrollPos(scrollStep * value);
+      } else {
+        scrollStep = 0;
+        scrollbar.setScrollPos(0);
+        scrollbar.setScrollSize(0);
+        scrollInfoQueue.clear();
       }
       // Now set the scroll bar ability
       setEnabled(enable);
@@ -214,7 +219,7 @@ public class VChartBlockScrollBar extends Composite implements ScrollHandler, Ha
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VerticalScrollBar               scrollbar;
+  private VerticalScrollBar                     scrollbar;
   private double                                scrollStep;
   private HandlerRegistration                   scrollHandlerRegistration;
   private LinkedList<ScrollInfo>                scrollInfoQueue;

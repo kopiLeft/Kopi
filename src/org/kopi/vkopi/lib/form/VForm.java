@@ -102,7 +102,7 @@ public abstract class VForm extends VWindow implements VConstants {
     initActors();
 
     // localize the form using the default locale
-    localize(Locale.getDefault());
+    localize(ApplicationContext.getDefaultLocale());
   }
 
   /**
@@ -263,7 +263,7 @@ public abstract class VForm extends VWindow implements VConstants {
   public void localize(Locale locale) {
     LocalizationManager         manager;
 
-    manager = new LocalizationManager(locale, ApplicationContext.getDefaultLocale());
+    manager = new LocalizationManager(locale, Locale.getDefault());
     super.localizeActors(manager); // localizes the actors in VWindow
     localize(manager);
     manager = null;
@@ -869,26 +869,29 @@ public abstract class VForm extends VWindow implements VConstants {
                                                description,
                                                localHelp,
                                                "");
-
-    try {
-      surl.append(new File(fileName).toURL().toString());
-    } catch (java.net.MalformedURLException mue) {
-      throw new InconsistencyException(mue);
-    }
-
-    field = getActiveBlock().getActiveField();
-    if (field != null) {
-      String    anchor = field.getLabel();
-
-      if (anchor == null) {
-	anchor = field.getName();
+    if (fileName == null) {
+      return null;
+    } else {
+      try {
+        surl.append(new File(fileName).toURL().toString());
+      } catch (java.net.MalformedURLException mue) {
+        throw new InconsistencyException(mue);
       }
-      anchor.replace(' ', '_');
 
-      surl.append("#" + field.getBlock().getTitle().replace(' ', '_') + anchor);
+      field = getActiveBlock().getActiveField();
+      if (field != null) {
+        String    anchor = field.getLabel();
+
+        if (anchor == null) {
+          anchor = field.getName();
+        }
+        anchor.replace(' ', '_');
+
+        surl.append("#" + field.getBlock().getTitle().replace(' ', '_') + anchor);
+      }
+
+      return surl.toString();
     }
-
-    return surl.toString();
   }
 
   public void showHelp(VForm form) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,13 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.form;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.Form;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.FormListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.PositionPanelListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.WindowConnector;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -95,22 +97,26 @@ public class FormConnector extends AbstractComponentContainerConnector implement
    */
   @OnStateChange({"currentPosition", "totalPositions"})
   /*package*/ void setPosition() {
-    getWidget().setPosition(getState().currentPosition, getState().totalPositions);
+    setCurrentPosition(getState().currentPosition, getState().totalPositions);
   }
 
   @Override
   public void onPageSelection(int page) {
+    // communicates the dirty values before leaving page
+    ConnectorUtils.getParent(this, WindowConnector.class).cleanDirtyValues(null);
+    disableAllBlocksActors();
     getRpcProxy(FormServerRpc.class).onPageSelection(page);
   }
   
   @Override
   public void onUnregister() {
+    getWidget().removeFormListener(this);
+    getWidget().removePositionPanelListener(this);
     if (getWidget().getParent() instanceof VWindow) {
       ((VWindow)getWidget().getParent()).clearFooter();
     }
     getWidget().clear();
-    getWidget().removeFormListener(this);
-    getWidget().removePositionPanelListener(this);
+    super.onUnregister();
   }
 
   @Override
@@ -139,9 +145,44 @@ public class FormConnector extends AbstractComponentContainerConnector implement
   }
   
   //---------------------------------------------------
-  // RPC IMPLEMENTATION
+  // UTILS
   //---------------------------------------------------
   
+  /**
+   * Sets the position in the position panel.
+   * @param current The current position.
+   * @param total The total number of positions.
+   */
+  public void setCurrentPosition(int current, int total) {
+    getWidget().setPosition(current, total);
+  }
+  
+  /**
+   * Cleans the dirty values of this form.
+   */
+  public void cleanDirtyValues(BlockConnector active, boolean transferFocus) {
+    for (ComponentConnector child : getChildComponents()) {
+      if (child instanceof BlockConnector) {
+        ((BlockConnector) child).cleanDirtyValues(active, transferFocus);
+      }
+    }
+  }
+  
+  /**
+   * Disables all block actors
+   */
+  public void disableAllBlocksActors() {
+    for (ComponentConnector child : getChildComponents()) {
+      if (child instanceof BlockConnector) {
+        ((BlockConnector) child).setColumnViewsActorsEnabled(false);
+      }
+    }
+  }
+  
+  //---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+
   private FormClientRpc			rpc = new FormClientRpc() {
     
     @Override

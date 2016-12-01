@@ -19,9 +19,12 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.RecognitionException;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamException;
 
 /**
  * Static implementation of the TokenManager, used for importVocab option

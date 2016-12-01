@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -102,6 +102,37 @@ public class VImageField extends VObjectField implements KeyDownHandler {
   protected void clearImage() {
     image.setSrc(null);
     ((ImageFieldConnector)getConnector()).fireRemoved();
+  }
+  
+  @Override
+  protected boolean isNull() {
+    return image == null || image.isEmpty();
+  }
+  
+  @Override
+  public void setValue(Object o) {
+    image.setSrc((String) o);
+  }
+  
+  @Override
+  protected void setColor(String foreground, String background) {
+    // no color for image field
+  }
+  
+  @Override
+  protected Object getValue() {
+    return image.getSrc();
+  }
+  
+  @Override
+  protected void checkValue(int rec) {
+    // nothing to perform
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    image = null;
   }
   
   //---------------------------------------------------

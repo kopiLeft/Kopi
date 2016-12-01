@@ -19,12 +19,11 @@
 
 package org.kopi.xkopi.lib.base;
 
-import java.util.Vector;
-import java.util.Hashtable;
-import java.util.Iterator;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * This class encapsulates specific JDBC driver properties.

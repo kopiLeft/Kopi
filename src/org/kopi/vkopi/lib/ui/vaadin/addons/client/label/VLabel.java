@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -177,6 +177,15 @@ public class VLabel extends VSpanPanel implements HasEnabled {
     });
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    info = null;
+    label = null;
+    anchor = null;
+    chartLayout = null;
+  }
+  
   /**
    * Handles the chart layout caption and scroll bar visibililty.
    */
@@ -191,9 +200,9 @@ public class VLabel extends VSpanPanel implements HasEnabled {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VSpan				info;
-  private final VSpan				label;
-  private final VAnchorPanel			anchor;
+  private VSpan                                 info;
+  private VSpan                                 label;
+  private VAnchorPanel                          anchor;
   private boolean				enabled;
   /**
    * Needed to update scroll bar and caption visibility

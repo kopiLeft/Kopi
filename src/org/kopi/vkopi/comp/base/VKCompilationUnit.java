@@ -19,10 +19,10 @@
 
 package org.kopi.vkopi.comp.base;
 
-import org.kopi.kopi.comp.kjc.JCompilationUnit;
-import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
+import org.kopi.kopi.comp.kjc.JCompilationUnit;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents the definition of a form

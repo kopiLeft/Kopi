@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,18 @@ public class LocalizedProperties {
    * @return The localized value of the given key.
    */
   public static String getString(String locale, String key) {
+    if (locale == null) {
+      return "";
+    }
+    
+    if (properties == null) {
+      properties = new HashMap<String, HashMap<String,String>>();
+    }
+    
+    if (properties.get(locale) == null) {
+      initProperties();
+    }
+    
     return properties.get(locale).get(key);
   }
   
@@ -259,9 +271,4 @@ public class LocalizedProperties {
   //---------------------------------------------------
   
   private static HashMap<String, HashMap<String, String>>	properties;
-  
-  static {
-    properties = new HashMap<String, HashMap<String,String>>();
-    initProperties();
-  }
 }

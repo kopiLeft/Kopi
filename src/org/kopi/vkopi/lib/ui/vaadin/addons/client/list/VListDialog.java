@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.list;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
@@ -38,11 +39,11 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.ConnectorMap;
 import com.vaadin.client.ui.calendar.schedule.FocusableComplexPanel;
 
 /**
@@ -76,19 +77,26 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
    * Shows the list dialog.
    * @param parent The parent where to attach the list. 
    */
-  public void show(HasWidgets parent) {
-    if (popup != null && table != null) {
-      parent.add(popup);
-      table.render();
-      popup.setWidget(this); // set the popup widget
-      add(table); // put table inside the focus panel
-      if (newForm != null ) {
-	add(newForm);
+  public void show(final HasWidgets parent) {
+    new Timer() {
+
+      @Override
+      public void run() {
+        if (popup != null && table != null) {
+          parent.add(popup);
+          table.render();
+          popup.setWidget(VListDialog.this); // set the popup widget
+          add(table); // put table inside the focus panel
+          if (newForm != null ) {
+            add(newForm);
+          }
+        }
+        if (VInputTextField.getLastFocusedTextField() != null) {
+          lastActiveWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
+        }  // TODO Auto-generated method stub
+
       }
-    }
-    if (VInputTextField.getLastFocusedTextField() != null) {
-      lastActiveWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
-    }
+    }.schedule(50); //!!! delay it to ensure that it is shown after a field focus
   }
   
   /**
@@ -175,6 +183,7 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
     if (table != null) {
       char      c = event.getCharCode();
       int       row =  0;
+      int       col = 0;
       
       if (current == null) {
         current = "";
@@ -183,7 +192,7 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
       
       current += ("" + c).toLowerCase().charAt(0);
       columnsLoop:
-      for (int col = 0; col < table.getColumnCount(); col++) {
+      for (col = 0; col < table.getColumnCount(); col++) {
         for (row = 0; row < table.getModelRowCount(); row++) {
           if (table.getDisplayedValueAt(row, col).toLowerCase().startsWith(current)) {
             table.setCurrentRow(row);
@@ -193,7 +202,7 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
         }
       }
       
-      if (row == table.getModelRowCount()) {
+      if (row == table.getModelRowCount() && col == table.getColumnCount()) {
         current = "";
         table.unhighlightCell();
       }
@@ -294,11 +303,7 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
    * @return The list dialog connector.
    */
   protected ListDialogConnector getConnector() {
-    if (connection != null) {
-      return (ListDialogConnector) ConnectorMap.get(connection).getConnector(this);
-    } else {
-      return null;
-    }
+    return ConnectorUtils.getConnector(connection, this, ListDialogConnector.class);
   }
   
   @Override
@@ -345,6 +350,21 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
         }
       }
     });
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    connection = null;
+    table.clear();
+    table.release();
+    table = null;
+    popup = null;
+    handlerRegistration.removeHandler();
+    handlerRegistration = null;
+    reference = null;
+    newForm = null;
+    lastActiveWindow = null;
   }
   
   /**

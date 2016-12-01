@@ -19,9 +19,10 @@
 
 package org.kopi.vkopi.comp.form;
 
-import org.kopi.vkopi.comp.base.VKType;
-import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKType;
 
 public class VKDefinitionType extends VKFieldType {
 

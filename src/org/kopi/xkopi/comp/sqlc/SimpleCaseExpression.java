@@ -20,6 +20,7 @@
 package org.kopi.xkopi.comp.sqlc;
 
 import java.util.ArrayList;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 

@@ -19,10 +19,11 @@
 
 package org.kopi.bytecode.ssa;
 
-import java.util.Vector;
 import java.util.Stack;
-import org.kopi.bytecode.classfile.LocalVarInstruction;
+import java.util.Vector;
+
 import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.LocalVarInstruction;
 /**
  * Class used to generate quadruple variable.
  * Simulate the stack to generate stack variables.

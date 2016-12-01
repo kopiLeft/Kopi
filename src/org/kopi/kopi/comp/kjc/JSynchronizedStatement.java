@@ -19,10 +19,10 @@
 
 package org.kopi.kopi.comp.kjc;
 
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.compiler.base.JavaStyleComment;
 
 /**
  * JLS 14.18: Synchronized Statement

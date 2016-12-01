@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.comp.report;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;

@@ -121,7 +121,7 @@ public abstract class VField implements VConstants, VModel {
     this.indices = indices;
     this.priority = priority;
     this.align = align;
-    if (this instanceof VFixnumField) {
+    if (this instanceof VFixnumField || this instanceof VIntegerField) {
       // move it to compiler !!!
       this.align = ALG_RIGHT;
     }
@@ -412,6 +412,15 @@ public abstract class VField implements VConstants, VModel {
    * @return    true if the text is valid
    */
   public abstract boolean checkText(String s);
+  
+  /**
+   * verify that value is valid (on exit)
+   *
+   * @param     rec             the concerned record.
+   * @param     s               the object to check
+   * @exception VException      an exception is raised if text is bad
+   */
+  public abstract void checkType(int rec, Object s) throws VException;
 
   /**
    * verify that value is valid (on exit)
@@ -419,7 +428,9 @@ public abstract class VField implements VConstants, VModel {
    * @param     s               the object to check
    * @exception VException      an exception is raised if text is bad
    */
-  protected abstract void checkType(Object s) throws VException;
+  public void checkType(Object s) throws VException {
+    checkType(getBlock().getActiveRecord(), s);
+  }
 
   /**
    * text has changed (key typed on a display)
@@ -1671,6 +1682,14 @@ public abstract class VField implements VConstants, VModel {
     setColor(r, null, null);
   }
   
+  /**
+   * Update the foreground and the background colors.
+   * @param r The record number.
+   */
+  public void updateColor(int r) {
+    setColor(r, getForeground(r), getBackground(r));
+  }
+  
   public VColor getForeground(int r) {
     return foreground[r];
   }
@@ -1772,6 +1791,14 @@ public abstract class VField implements VConstants, VModel {
 
   public boolean isChangedUI() {
     return changedUI;
+  }
+  
+  /**
+   * Sets this field to be changed by the UI.
+   * @param changedUI changed UI.
+   */
+  public void setChangedUI(boolean changedUI) {
+    this.changedUI = changedUI;
   }
 
   /**
@@ -2400,7 +2427,7 @@ public abstract class VField implements VConstants, VModel {
   /**
    * return if there is trigger associated with event
    */
-  private boolean hasTrigger(int event) {
+  public boolean hasTrigger(int event) {
     return getBlock().hasTrigger(event, index + 1);
   }
 

@@ -19,9 +19,9 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.Instruction;
-
 import java.util.Vector;
+
+import org.kopi.bytecode.classfile.Instruction;
 
 /**
  * To generate classfile instructions of a method

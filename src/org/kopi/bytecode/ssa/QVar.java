@@ -19,9 +19,9 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.util.base.InconsistencyException;
-import org.kopi.bytecode.classfile.LocalVarInstruction;
 import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.LocalVarInstruction;
+import org.kopi.util.base.InconsistencyException;
 
 /**
  * A class to represent variable for quadruple instructions.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.notification;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
@@ -32,7 +33,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ComponentConnector;
-import com.vaadin.client.ConnectorMap;
 
 /**
  * Error type notification widget.
@@ -156,11 +156,7 @@ public class VErrorNotification extends VAbstractNotification {
    * @return The component connector.
    */
   protected ErrorNotificationConnector getConnector() {
-    if (client == null) {
-      return null;
-    }
-    
-    return (ErrorNotificationConnector) ConnectorMap.get(client).getConnector(this);
+    return ConnectorUtils.getConnector(client, this, ErrorNotificationConnector.class);
   }
   
   @Override

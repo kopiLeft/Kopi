@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -134,7 +134,7 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
             }
           });  
         }
-      }.schedule(80); // delay it after a popup close to ensure that it will not show behind the glass pane
+      }.schedule(200); // delay it after a popup close to ensure that it will not show behind the glass pane
     }
   }
   
@@ -244,6 +244,20 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
     this.yesIsDefault = yesIsDefault;
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    listeners.clear();
+    listeners = null;
+    popup = null;
+    table = null;
+    title = null;
+    image = null;
+    message = null;
+    buttons = null;
+    lastFocusedWindow = null;
+  }
+  
   //-------------------------------------------------
   // ABSTRACT METHODS
   //-------------------------------------------------
@@ -264,13 +278,13 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
   // CONSTRUCTOR
   //-------------------------------------------------
   
-  private final List<NotificationListener>      listeners;
+  private List<NotificationListener>            listeners;
   protected VPopup                              popup;
-  private final FlexTable                       table;
-  private final VSpan                           title;
-  protected final VImage                        image;
-  private final VSpan                           message;
-  protected final VSpanPanel                    buttons;
+  private FlexTable                             table;
+  private VSpan                                 title;
+  protected VImage                              image;
+  private VSpan                                 message;
+  protected VSpanPanel                          buttons;
   protected boolean				yesIsDefault;
   private VWindow                               lastFocusedWindow;
 }

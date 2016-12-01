@@ -21,11 +21,11 @@ package org.kopi.vkopi.lib.ui.vaadin.report;
 
 import java.awt.Color;
 
-import org.vaadin.cssinject.CSSInject;
-
 import org.kopi.vkopi.lib.report.ColumnStyle;
 import org.kopi.vkopi.lib.report.Parameters;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.vaadin.cssinject.CSSInject;
+
 import com.vaadin.ui.UI;
 
 /**

@@ -49,6 +49,16 @@ public abstract class KopiAction implements Runnable {
       throw new VRuntimeException(e.getMessage(), e);
     }
   }
+  
+  /**
+   * Returns {@code true} is this action can be cancelled in an action queue context.
+   * This means that the action can be removed from an action queue when performing
+   * a clear operation. By default, all actions can be cancelled.
+   * @return {@code true} is this action can be cancelled in an action queue context.
+   */
+  public boolean isCancellable() {
+    return true;
+  }
 
   public String toString() {
     return super.toString()+" "+name;

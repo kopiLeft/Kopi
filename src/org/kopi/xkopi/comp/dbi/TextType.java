@@ -20,10 +20,11 @@
 package org.kopi.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import org.kopi.xkopi.comp.database.DatabaseColumn;
-import org.kopi.xkopi.comp.database.DatabaseTextColumn;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.xkopi.comp.database.DatabaseColumn;
+import org.kopi.xkopi.comp.database.DatabaseTextColumn;
 import org.kopi.xkopi.comp.sqlc.BlobType;
 
 public class TextType extends BlobType implements DbiType {

@@ -20,9 +20,10 @@
 package org.kopi.xkopi.comp.sqlc;
 
 import java.util.ArrayList;
-import org.kopi.kopi.comp.kjc.CTypeContext;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CTypeContext;
 
 public class DeleteStatement extends Statement implements SqlContext {
 

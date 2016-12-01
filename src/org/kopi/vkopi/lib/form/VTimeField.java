@@ -23,8 +23,8 @@ import java.sql.SQLException;
 
 import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.list.VTimeColumn;
-import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.MessageCode;
+import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.xkopi.lib.base.KopiUtils;
 import org.kopi.xkopi.lib.base.Query;
@@ -115,11 +115,9 @@ public class VTimeField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception is raised if text is bad
    */
-  public void checkType(Object o) throws VException {
-    int         record = block.getActiveRecord();
-
+  public void checkType(int rec, Object o) throws VException {
     if (((String)o).equals("")) {
-      setNull(record);
+      setNull(rec);
     } else {
       int	hours = -1;
       int	minutes	= 0;
@@ -197,13 +195,13 @@ public class VTimeField extends VField {
       }
 
       if (hours == -1) {
-	setNull(record);
+	setNull(rec);
       } else {
 	if (! isTime(hours, minutes)) {
 	  throw new VFieldException(this, MessageCode.getMessage("VIS-00007"));
 	}
 
-	setTime(record, new NotNullTime(hours, minutes));
+	setTime(rec, new NotNullTime(hours, minutes));
       }
     }
   }
@@ -224,7 +222,7 @@ public class VTimeField extends VField {
    */
   public void setTime(int r, Time v) {
     if (isChangedUI() 
-        || value[r] == null 
+        || (value[r] == null && v != null)
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -298,7 +296,19 @@ public class VTimeField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Time                oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   // ----------------------------------------------------------------------

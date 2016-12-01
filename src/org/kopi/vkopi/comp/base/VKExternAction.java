@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.comp.base;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JExpressionStatement;

@@ -25,10 +25,24 @@
  */
 package org.kopi.kopi.comp.kjc;
 
-import java.util.Stack;
 import java.util.ArrayList;
+import java.util.Stack;
 
-import org.kopi.bytecode.classfile.*;
+import org.kopi.bytecode.classfile.AccessorContainer;
+import org.kopi.bytecode.classfile.AccessorTransformer;
+import org.kopi.bytecode.classfile.BadAccessorException;
+import org.kopi.bytecode.classfile.ClassRefInstruction;
+import org.kopi.bytecode.classfile.FieldRefInstruction;
+import org.kopi.bytecode.classfile.HandlerInfo;
+import org.kopi.bytecode.classfile.Instruction;
+import org.kopi.bytecode.classfile.InstructionAccessor;
+import org.kopi.bytecode.classfile.JumpInstruction;
+import org.kopi.bytecode.classfile.LineNumberInfo;
+import org.kopi.bytecode.classfile.LocalVarInstruction;
+import org.kopi.bytecode.classfile.LocalVariableInfo;
+import org.kopi.bytecode.classfile.MethodRefInstruction;
+import org.kopi.bytecode.classfile.NewarrayInstruction;
+import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.util.base.InconsistencyException;
 
 public final class CodeSequence extends org.kopi.util.base.Utils implements Constants {

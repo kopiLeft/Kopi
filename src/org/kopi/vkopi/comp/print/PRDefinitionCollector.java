@@ -22,10 +22,10 @@ package org.kopi.vkopi.comp.print;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.kopi.vkopi.comp.base.VKDefinitionCollector;
-import org.kopi.vkopi.comp.base.VKDefinition;
-import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.compiler.base.PositionedError;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKDefinition;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 
 /**
  * The compilation unit for a PR element

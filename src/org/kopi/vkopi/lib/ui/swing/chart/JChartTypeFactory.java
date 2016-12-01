@@ -20,10 +20,10 @@
 package org.kopi.vkopi.lib.ui.swing.chart;
 
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.vkopi.lib.chart.CConstants;
 import org.kopi.vkopi.lib.chart.ChartTypeFactory;
 import org.kopi.vkopi.lib.chart.UChartType;
 import org.kopi.vkopi.lib.chart.VChartType;
-import org.kopi.vkopi.lib.chart.CConstants;
 
 /**
  * Swing implementation of the chart type factory.

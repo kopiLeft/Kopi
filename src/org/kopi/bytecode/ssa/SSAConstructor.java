@@ -19,12 +19,12 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.Constants;
-
-import java.util.Iterator;
 import java.util.BitSet;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
+
+import org.kopi.bytecode.classfile.Constants;
 /**
  * Transform all the variables of a control flow graph of a method
  * in SSA form.

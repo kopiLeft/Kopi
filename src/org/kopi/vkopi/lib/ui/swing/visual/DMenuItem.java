@@ -21,10 +21,10 @@ package org.kopi.vkopi.lib.ui.swing.visual;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import javax.swing.AbstractAction;
 import javax.swing.MenuSelectionManager;
 
 /**

@@ -22,6 +22,7 @@ package org.kopi.kopi.comp.kjc;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.util.base.InconsistencyException;
 
 /**

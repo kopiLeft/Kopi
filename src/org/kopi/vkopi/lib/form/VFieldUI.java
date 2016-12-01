@@ -42,11 +42,24 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   // ----------------------------------------------------------------------
 
   /**
-   * Constructor
+   * Creates a new field UI model without index indication.
+   * @param blockView The block view.
+   * @param model The field model.
    */
-  public VFieldUI(UBlock blockView, VField model) {
+  protected VFieldUI(UBlock blockView, VField model) {
+    this(blockView, model, 0);
+  }
+  
+  /**
+   * Creates a new field UI model.
+   * @param blockView The block view.
+   * @param model The field model.
+   * @param index The row controller index.
+   */
+  protected VFieldUI(UBlock blockView, VField model, int index) {
     this.blockView = blockView;
     this.model = model;
+    this.index = index;
     activeCommands = new Vector<VCommand>();
     fieldHandler = createFieldHandler();
     model.addFieldListener(fieldHandler);
@@ -76,7 +89,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
     }
 
     hasAutofill = model.hasAutofill() && !hasAutofillCommand();
-
+    commands = cmd;
     if (model.getList() != null) {
       if (model.getList().getNewForm() != null || model.getList().getAction() != -1) {
 	hasEditItem = hasNewItem = true;
@@ -130,7 +143,6 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   // ACCESSORS
   // ----------------------------------------------------------------------
 
-
   /**
    * Display error
    */
@@ -148,6 +160,9 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       transferFocus(display);
     } catch (VException e) {
       throw new InconsistencyException();
+    } finally {
+      // ensure that the field gain focus again
+      display.forceFocus();
     }
   }
 
@@ -353,6 +368,14 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   public VCommand getDecrementCommand() {
     return decrementCommand;
   }
+  
+  /**
+   * Returns the index of this row controller.
+   * @return The index of this row controller.
+   */
+  public int getIndex() {
+    return index;
+  }
 
   // ----------------------------------------------------------------------
   // PROTECTED BUILDING METHODS
@@ -375,9 +398,9 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
         if (!model.noChart()) {
           // is the first column filled with detailViewButton
           final int   leftOffset = (getBlock().noDetail()) ?  -1 : 0;
-
-          blockView.add(dl, new KopiAlignment(chartPos + leftOffset, 0, 1, false));
-
+          
+          blockView.add(dl, new KopiAlignment(chartPos + leftOffset, 0, 1, (model.getAlign() == VConstants.ALG_RIGHT)));
+         
           // the fields for the values
           displays = new UField[getBlock().getDisplaySize()];
           for (int i = 0; i < getBlock().getDisplaySize(); i++) {
@@ -440,6 +463,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
         }
       }
     }
+    fireDisplayCreated();
     // building = false;
   }
 
@@ -465,6 +489,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
 
   /**
    * Transfers focus to next accessible field (tab typed)
+   * @param display The field display.
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception may be raised in leave()
    */
   public void transferFocus(UField display) throws VException {
@@ -624,6 +649,15 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   public VBlock getBlock() {
     return model.getBlock();
   }
+  
+  /**
+   * Called when the display is created for this row controller.
+   * This may be used to execute actions after creating the field
+   * displays.
+   */
+  protected void fireDisplayCreated() {
+    // to be redefined if needed
+  }
 
   // ----------------------------------------------------------------------
   // SNAPSHOT PRINTING
@@ -674,6 +708,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
 
   private final FieldHandler    	fieldHandler;
 
+  private final int                     index;
   // static (compiled) data
   private final boolean		        hasAutofill;	// RE
   private	boolean			hasNewItem;	// MO

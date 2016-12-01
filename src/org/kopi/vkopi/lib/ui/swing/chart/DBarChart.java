@@ -20,7 +20,6 @@
 package org.kopi.vkopi.lib.ui.swing.chart;
 
 import org.jfree.chart.plot.PlotOrientation;
-
 import org.kopi.vkopi.lib.chart.VDataSeries;
 
 @SuppressWarnings("serial")

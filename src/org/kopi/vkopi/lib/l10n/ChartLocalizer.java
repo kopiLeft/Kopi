@@ -21,7 +21,6 @@ package org.kopi.vkopi.lib.l10n;
 
 import org.jdom.Document;
 import org.jdom.Element;
-
 import org.kopi.util.base.InconsistencyException;
 
 public class ChartLocalizer extends Localizer {

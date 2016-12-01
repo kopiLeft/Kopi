@@ -33,7 +33,6 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-
 import org.kopi.util.base.InconsistencyException;
 
 /**

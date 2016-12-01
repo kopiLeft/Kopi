@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.ActorServerRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.ActorState;
 
 import com.vaadin.server.Resource;
+import com.vaadin.shared.communication.SharedState;
 import com.vaadin.ui.AbstractComponent;
 
 /**
@@ -96,6 +97,20 @@ public class Actor extends AbstractComponent {
    */
   public void removeActionListener(ActionListener listener) {
     removeListener(ActionEvent.class, listener, ActionListener.ACTOR_ACTION_METHOD);
+  }
+  
+  /**
+   * Always enable this connector to allow RPC communications
+   * even if the {@link SharedState#enabled} is set to {@code false}.
+   * The actor ability in the client side is controlled by {@link SharedState#enabled}
+   * value but this actor still always enabled to allow RPC communications when the owner field
+   * is focused in the client side using the free navigation mechanism. In this case, actors are
+   * not controlled by the server side but by the client side using the {@link ActorState#number}
+   * value to identify the actor in the client side.
+   */
+  @Override
+  public boolean isConnectorEnabled() {
+    return true;
   }
 
   //---------------------------------------------------

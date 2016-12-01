@@ -19,12 +19,12 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.ReferenceConstant;
-import org.kopi.bytecode.classfile.InterfaceConstant;
-import org.kopi.bytecode.classfile.MethodRefConstant;
-import org.kopi.bytecode.classfile.InvokeinterfaceInstruction;
-import org.kopi.bytecode.classfile.MethodRefInstruction;
 import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.InterfaceConstant;
+import org.kopi.bytecode.classfile.InvokeinterfaceInstruction;
+import org.kopi.bytecode.classfile.MethodRefConstant;
+import org.kopi.bytecode.classfile.MethodRefInstruction;
+import org.kopi.bytecode.classfile.ReferenceConstant;
 
 /**
  * A class to represent method call with a result (non void).

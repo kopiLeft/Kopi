@@ -27,9 +27,9 @@ import org.kopi.vkopi.lib.l10n.FieldLocalizer;
 import org.kopi.vkopi.lib.l10n.TypeLocalizer;
 import org.kopi.vkopi.lib.list.VList;
 import org.kopi.vkopi.lib.list.VListColumn;
+import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
-import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 
 @SuppressWarnings("serial")
@@ -127,11 +127,11 @@ public abstract class VCodeField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception is raised if text is bad
    */
-  public void checkType(Object o) throws VException {
+  public void checkType(int rec, Object o) throws VException {
     String s = (String)o;
 
     if (s.equals("")) {
-      setNull(block.getActiveRecord());
+      setNull(rec);
     } else {
       /*
        * -1:  no match
@@ -186,13 +186,13 @@ public abstract class VCodeField extends VField {
                                     new Object[][]{ codes });
         selected = listDialog.selectFromDialog(getForm(), null, this);
         if (selected != -1) {
-          setCode(block.getActiveRecord(), selectedToModel[selected]);
+          setCode(rec, selectedToModel[selected]);
         } else {
           throw new VFieldException(this, MessageCode.getMessage("VIS-00002"));
         }
         break;
       default:
-	setCode(block.getActiveRecord(), found);
+	setCode(rec, found);
       }
     }
   }
@@ -378,7 +378,15 @@ public abstract class VCodeField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    int                 oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize() && oldValue != value[t]) {
+      setChanged(t);
+    }
   }
 
   /*

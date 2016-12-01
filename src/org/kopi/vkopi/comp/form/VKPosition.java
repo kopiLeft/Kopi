@@ -19,15 +19,15 @@
 
 package org.kopi.vkopi.comp.form;
 
+import java.awt.Point;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.util.base.InconsistencyException;
-import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
-
-import java.awt.Point;
 /**
  * A position within a block
  */

@@ -2,7 +2,14 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.BitSet;
+import org.kopi.compiler.tools.antlr.runtime.NoViableAltException;
+import org.kopi.compiler.tools.antlr.runtime.ParserSharedInputState;
+import org.kopi.compiler.tools.antlr.runtime.RecognitionException;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.TokenBuffer;
+import org.kopi.compiler.tools.antlr.runtime.TokenStream;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamException;
 
 /** Simple lexer/parser for reading token definition files
   in support of the import/export vocab option for grammars.

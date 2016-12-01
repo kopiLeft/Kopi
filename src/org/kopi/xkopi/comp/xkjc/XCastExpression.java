@@ -19,11 +19,26 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
+import org.kopi.kopi.comp.kjc.JByteLiteral;
+import org.kopi.kopi.comp.kjc.JCastExpression;
+import org.kopi.kopi.comp.kjc.JCharLiteral;
+import org.kopi.kopi.comp.kjc.JDoubleLiteral;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JFloatLiteral;
+import org.kopi.kopi.comp.kjc.JIntLiteral;
+import org.kopi.kopi.comp.kjc.JLongLiteral;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JShortLiteral;
+import org.kopi.kopi.comp.kjc.KjcMessages;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents a cast expression '((byte)2)'

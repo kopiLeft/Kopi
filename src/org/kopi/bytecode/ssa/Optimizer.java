@@ -22,6 +22,7 @@ package org.kopi.bytecode.ssa;
 import org.kopi.bytecode.classfile.ClassInfo;
 import org.kopi.bytecode.classfile.CodeInfo;
 import org.kopi.bytecode.classfile.MethodInfo;
+import org.kopi.compiler.base.UnpositionedError;
 
 /**
  * This class is the entry point for the optimizer.

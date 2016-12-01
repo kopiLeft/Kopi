@@ -21,7 +21,7 @@ package org.kopi.compiler.tools.antlr.compiler;
 
 import java.io.IOException;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.Token;
 
 /**
  * Parser-specific grammar subclass

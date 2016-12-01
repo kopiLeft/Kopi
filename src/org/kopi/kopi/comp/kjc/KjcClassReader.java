@@ -19,8 +19,9 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import java.util.Hashtable;
 import java.util.HashSet;
+import java.util.Hashtable;
+
 import org.kopi.bytecode.classfile.ClassInfo;
 import org.kopi.bytecode.classfile.ClassPath;
 import org.kopi.compiler.base.UnpositionedError;

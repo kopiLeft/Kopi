@@ -21,10 +21,9 @@ package org.kopi.vkopi.comp.trig;
 
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.util.base.InconsistencyException;
-
 import org.kopi.kopi.comp.kjc.CReferenceType;
 import org.kopi.kopi.comp.kjc.ClassReader;
+import org.kopi.util.base.InconsistencyException;
 
 
 /**

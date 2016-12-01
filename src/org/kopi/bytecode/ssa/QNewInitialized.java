@@ -22,10 +22,10 @@ package org.kopi.bytecode.ssa;
 import org.kopi.bytecode.classfile.ClassConstant;
 import org.kopi.bytecode.classfile.ClassRefInstruction;
 import org.kopi.bytecode.classfile.Constants;
-import org.kopi.bytecode.classfile.ReferenceConstant;
 import org.kopi.bytecode.classfile.MethodRefConstant;
-import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.bytecode.classfile.MethodRefInstruction;
+import org.kopi.bytecode.classfile.NoArgInstruction;
+import org.kopi.bytecode.classfile.ReferenceConstant;
 
 
 /**

@@ -19,8 +19,8 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import java.util.Enumeration;
 import java.io.IOException;
+import java.util.Enumeration;
 
 class GrammarDefinition {
   private String name;

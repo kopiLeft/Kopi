@@ -19,12 +19,28 @@
 
 package org.kopi.vkopi.comp.trig;
 
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.compiler.base.JavaStyleComment;
-import org.kopi.xkopi.comp.xkjc.*;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JCompoundStatement;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionListStatement;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.TypeFactory;
+import org.kopi.xkopi.comp.xkjc.XCursorField;
+import org.kopi.xkopi.comp.xkjc.XExecSqlStatement;
+import org.kopi.xkopi.comp.xkjc.XKjcMessages;
+import org.kopi.xkopi.comp.xkjc.XProtectedStatement;
+import org.kopi.xkopi.comp.xkjc.XSqlExpr;
+import org.kopi.xkopi.comp.xkjc.XStdType;
 
 /**
  * This class represents cursor declaration in code part

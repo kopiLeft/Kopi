@@ -30,10 +30,10 @@ import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.AttributedCharacterIterator;
 
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.util.base.NotImplementedException;
-import java.text.AttributedCharacterIterator;
 
 /**
  * A class to paint in a postscript file instead of screen

@@ -19,10 +19,10 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.Vector;
 
 /**
  * A simple indexed vector: a normal vector except that you must

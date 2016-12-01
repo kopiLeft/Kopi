@@ -19,10 +19,10 @@
 
 package org.kopi.bytecode.ssa;
 
-import java.util.LinkedList;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * To remove unuse variable and instruction

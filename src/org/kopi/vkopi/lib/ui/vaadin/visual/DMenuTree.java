@@ -153,14 +153,25 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
    */
   protected void addShortcutsInDatabase(int id) {
     try {
+      Query                     query;
+      
       getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-      new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-                                + "{fn NEXTVAL(FAVORITENId)}" + ", "
-                                + (int)(System.currentTimeMillis()/1000) + ", "
-                                + getModel().getUserID() + ", "
-                                + id
-                                + ")");
-
+      query = new Query(getModel());
+      if (getModel().getMenuTreeUser() != null) {
+        query.run("INSERT INTO FAVORITEN VALUES ("
+          + "{fn NEXTVAL(FAVORITENId)}" + ", "
+          + (int)(System.currentTimeMillis()/1000) + ", "
+          + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + getModel().getMenuTreeUser() + "\')" + ", "
+          + id
+          + ")");
+      } else {
+        query.run("INSERT INTO FAVORITEN VALUES ("
+          + "{fn NEXTVAL(FAVORITENId)}" + ", "
+          + (int)(System.currentTimeMillis()/1000) + ", "
+          + getModel().getUserID() + ", "
+          + id
+          + ")");
+      }
       getModel().getDBContext().commitWork();
     } catch (SQLException e) {
       try {
@@ -177,8 +188,17 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
    */
   protected void removeShortcutsFromDatabase(int id) {
     try {
+      Query                     query;
+      
       getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-      new Query(getModel()).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID() + " AND Modul = " + id);
+      query = new Query(getModel());
+      if (getModel().getMenuTreeUser() != null) {
+        query.run("DELETE FROM FAVORITEN WHERE Benutzer = "
+          + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + getModel().getMenuTreeUser() + "\')"
+          + " AND Modul = " + id);
+      } else {
+        query.run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID() + " AND Modul = " + id);
+      }
       getModel().getDBContext().commitWork();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -375,9 +395,33 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   // ACCESSORS
   // --------------------------------------------------------------------
 
+  @SuppressWarnings("serial")
   @Override
   public UBookmarkPanel getBookmark() {
-    return null;
+    return new UBookmarkPanel() {
+      
+      @Override
+      public void setVisible(boolean visible) {}
+      
+      @Override
+      public void setEnabled(boolean enabled) {}
+      
+      @Override
+      public boolean isVisible() {
+        return false;
+      }
+      
+      @Override
+      public boolean isEnabled() {
+        return false;
+      }
+      
+      @Override
+      public void toFront() {}
+      
+      @Override
+      public void show() {}
+    };
   }
   
   @Override

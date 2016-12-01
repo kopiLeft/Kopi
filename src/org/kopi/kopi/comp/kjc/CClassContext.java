@@ -23,9 +23,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.kopi.compiler.base.CWarning;
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.compiler.base.PositionedError;
 import org.kopi.util.base.InconsistencyException;
 
 /**

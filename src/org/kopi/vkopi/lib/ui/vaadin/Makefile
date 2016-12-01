@@ -19,8 +19,7 @@
 
 TOPDIR =	../../../..
 
-SUBDIRS =	plotly addons base form visual chart 	\
-		report	preview resource
+SUBDIRS =	plotly addons base form visual chart report preview resource
 
 ## ----------------------------------------------------------------------
 ## GOALS

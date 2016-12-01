@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -119,6 +119,13 @@ public class VProgressBar extends SimplePanel {
    */
   public float getProgress() {
     return progress;
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    elementsGrid = null;
+    percentageLabel = null;
   }
   
   //---------------------------------------------------

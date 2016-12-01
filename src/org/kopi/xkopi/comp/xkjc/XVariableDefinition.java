@@ -19,10 +19,29 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
+import org.kopi.kopi.comp.kjc.CArrayType;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.Constants;
+import org.kopi.kopi.comp.kjc.JArrayInitializer;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
+import org.kopi.kopi.comp.kjc.JByteLiteral;
+import org.kopi.kopi.comp.kjc.JCastExpression;
+import org.kopi.kopi.comp.kjc.JCharLiteral;
+import org.kopi.kopi.comp.kjc.JDoubleLiteral;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JFloatLiteral;
+import org.kopi.kopi.comp.kjc.JIntLiteral;
+import org.kopi.kopi.comp.kjc.JLongLiteral;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JShortLiteral;
+import org.kopi.kopi.comp.kjc.JVariableDefinition;
+import org.kopi.kopi.comp.kjc.KjcMessages;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents a local variable definition in the syntax tree

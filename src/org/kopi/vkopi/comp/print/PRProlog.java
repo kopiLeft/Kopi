@@ -19,16 +19,22 @@
 
 package org.kopi.vkopi.comp.print;
 
+import java.util.StringTokenizer;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CClassNameType;
+import org.kopi.kopi.comp.kjc.CLineError;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKUtils;
-
-import java.util.StringTokenizer;
 
 /**
  * This class represents the definition of a block in a page

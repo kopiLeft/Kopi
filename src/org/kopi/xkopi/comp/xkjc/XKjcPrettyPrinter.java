@@ -24,7 +24,14 @@ import java.util.Vector;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TabbedPrintWriter;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CModifier;
+import org.kopi.kopi.comp.kjc.JBlock;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionListStatement;
+import org.kopi.kopi.comp.kjc.JFieldDeclaration;
+import org.kopi.kopi.comp.kjc.JFormalParameter;
+import org.kopi.kopi.comp.kjc.KjcPrettyPrinter;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.xkopi.comp.sqlc.SqlPhylum;
 
 /**

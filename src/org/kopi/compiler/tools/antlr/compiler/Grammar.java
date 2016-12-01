@@ -19,11 +19,13 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.CommonToken;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.Vector;
 
 /**
  * A Grammar holds a set of rules (which are stored

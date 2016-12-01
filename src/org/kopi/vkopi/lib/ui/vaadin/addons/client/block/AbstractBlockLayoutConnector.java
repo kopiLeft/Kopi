@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,8 @@
  */
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.block;
+
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
@@ -47,7 +49,7 @@ public abstract class AbstractBlockLayoutConnector extends AbstractComponentCont
   @Override
   public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
     if (!handleHierarchyChange) {
-      return; // we do need to layout components. we suit here.
+      return; // we do need to layout components. we stop here.
     }
     if (event.getOldChildren() == null || event.getOldChildren().size() == 0) {
       initSize();
@@ -68,6 +70,14 @@ public abstract class AbstractBlockLayoutConnector extends AbstractComponentCont
    */
   protected ComponentConstraint getConstraint(ComponentConnector connector) {
     return getState().constrains.get(connector);
+  }
+  
+  /**
+   * Returns the block where this layout belongs to.
+   * @return The parent block.
+   */
+  protected BlockConnector getBlock() {
+    return ConnectorUtils.getParent(this, BlockConnector.class);
   }
   
   /**

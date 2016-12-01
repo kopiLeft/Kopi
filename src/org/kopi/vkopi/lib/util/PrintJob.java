@@ -28,10 +28,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.kopi.vkopi.lib.base.Utils;
+
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
-
-import org.kopi.vkopi.lib.base.Utils;
 
 
 /**

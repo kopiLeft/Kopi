@@ -33,7 +33,6 @@ import org.kopi.xkopi.comp.sqlc.SqlContext;
 import org.kopi.xkopi.comp.sqlc.Type;
 import org.kopi.xkopi.lib.base.DriverInterface;
 import org.kopi.xkopi.lib.base.OpenEdgeDriverInterface;
-import org.kopi.xkopi.lib.base.PostgresDriverInterface;
 import org.kopi.xkopi.lib.type.Date;
 import org.kopi.xkopi.lib.type.Fixed;
 

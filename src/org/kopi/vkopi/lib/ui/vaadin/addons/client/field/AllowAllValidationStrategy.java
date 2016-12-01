@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,12 +31,21 @@ public class AllowAllValidationStrategy implements TextValidationStrategy {
 
   @Override
   public boolean validate(String text, int maxLength) {    
-    for (int i = 0; i < text.length(); i++) {
-      if (!validate(text.charAt(i))) {
-	return false;
+    if (text == null) {
+      return true; // null text is considered as valid one
+    } else {
+      for (int i = 0; i < text.length(); i++) {
+        if (!validate(text.charAt(i))) {
+          return false;
+        }
       }
+
+      return true;
     }
-    
-    return true;
+  }
+
+  @Override
+  public void checkType(VInputTextField field, String text) throws CheckTypeException {
+    // nothing to do, all is accepted
   }
 }

@@ -19,7 +19,20 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.*;
+import org.kopi.bytecode.classfile.ClassRefInstruction;
+import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.FieldRefInstruction;
+import org.kopi.bytecode.classfile.IincInstruction;
+import org.kopi.bytecode.classfile.Instruction;
+import org.kopi.bytecode.classfile.InvokeinterfaceInstruction;
+import org.kopi.bytecode.classfile.JumpInstruction;
+import org.kopi.bytecode.classfile.LocalVarInstruction;
+import org.kopi.bytecode.classfile.MethodRefInstruction;
+import org.kopi.bytecode.classfile.MultiarrayInstruction;
+import org.kopi.bytecode.classfile.NewarrayInstruction;
+import org.kopi.bytecode.classfile.NoArgInstruction;
+import org.kopi.bytecode.classfile.PushLiteralInstruction;
+import org.kopi.bytecode.classfile.SwitchInstruction;
 import org.kopi.util.base.InconsistencyException;
 
 /**

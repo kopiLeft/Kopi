@@ -19,9 +19,9 @@
 
 package org.kopi.kopi.comp.kjc;
 
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
 
 /**
  * JLS 14.15: Continue Statement

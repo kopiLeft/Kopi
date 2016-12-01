@@ -35,8 +35,11 @@ import org.kopi.vkopi.lib.form.VWeekField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ContextMenu;
 import org.kopi.vkopi.lib.ui.vaadin.addons.TextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.TextValueChangeListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldState.ConvertType;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
+import org.kopi.vkopi.lib.visual.KopiAction;
+import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickEvent;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickListener;
@@ -101,6 +104,21 @@ public class DTextField extends DField implements UTextField, VConstants {
 	  checkText(newText, isChanged(oldText, newText));
 	}
       }
+
+      @Override
+      public void onTextChange(final int rec, final String text) {
+        // other dirty values has been sent ==> affect them directly to the model.
+        getModel().getForm().performAsyncAction(new KopiAction("check_type") {
+
+          @Override
+          public void execute() throws VException {
+            if (isChanged(getModel().getText(rec), transformer.toModel(text))) {
+              getModel().setChangedUI(true);
+              checkText(rec, text);
+            }
+          }
+        });
+      }
       
       /**
        * Returns {@code true} if there is a difference between the old and the new text.
@@ -159,9 +177,12 @@ public class DTextField extends DField implements UTextField, VConstants {
     if (getModel() instanceof VStringField) {
       // string field
       textfield.setType(TextField.Type.STRING);
+      textfield.setConvertType(getConvertType());
     } else if (getModel() instanceof VIntegerField) {
       // integer field
       textfield.setType(TextField.Type.INTEGER);
+      textfield.setMinValue((double) ((VIntegerField)getModel()).getMinValue());
+      textfield.setMaxValue((double) ((VIntegerField)getModel()).getMaxValue());
     } else if (getModel() instanceof VMonthField) {
       // month field
       textfield.setType(TextField.Type.MONTH);
@@ -181,6 +202,14 @@ public class DTextField extends DField implements UTextField, VConstants {
     } else if (getModel() instanceof VFixnumField) {
       // fixnum field
       textfield.setType(TextField.Type.FIXNUM);
+      if (((VFixnumField)getModel()).getMinValue() != null) {
+        textfield.setMinValue(((VFixnumField)getModel()).getMinValue().doubleValue());
+      }
+      if (((VFixnumField)getModel()).getMaxValue() != null) {
+        textfield.setMaxValue(((VFixnumField)getModel()).getMaxValue().doubleValue());
+      }
+      textfield.setMaxScale(((VFixnumField)getModel()).getMaxScale());
+      textfield.setFraction(((VFixnumField)getModel()).isFraction());
     } else if (getModel() instanceof VTimestampField) {
       // timestamp field
       textfield.setType(TextField.Type.TIMESTAMP);
@@ -191,6 +220,25 @@ public class DTextField extends DField implements UTextField, VConstants {
     textfield.addTextFieldListener(new KeyNavigator(getModel(), textfield));
 
     return textfield;
+  }
+  
+  /**
+   * Returns the convert type for the string field.
+   * @return The convert type for the string field.
+   */
+  private ConvertType getConvertType() {
+    switch (((VStringField)getModel()).getTypeOptions() & FDO_CONVERT_MASK) {
+    case FDO_CONVERT_NONE:
+      return ConvertType.NONE;
+    case FDO_CONVERT_UPPER:
+      return ConvertType.UPPER;
+    case FDO_CONVERT_LOWER:
+      return ConvertType.LOWER;
+    case FDO_CONVERT_NAME:
+      return ConvertType.NAME;
+    default:
+      return ConvertType.NONE;
+    }
   }
 
   // ----------------------------------------------------------------------
@@ -236,11 +284,10 @@ public class DTextField extends DField implements UTextField, VConstants {
       @Override
       public void run() {
 	if (field != null) {
-	  if (getForeground() == null && getBackground() == null) {
-	    field.removeStyleName(getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
-	  } else {
-	    Styles		styles;
+	  Styles               styles;
 	  
+	  field.removeStyleName(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
+	  if (getBackground() != null || getForeground() != null) {
 	    field.addStyleName(getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
 	    styles = Page.getCurrent().getStyles();
 	    styles.add(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition() + " input.k-textinput {"
@@ -270,6 +317,11 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
 
     super.updateFocus();
+  }
+  
+  @Override
+  public void forceFocus() {
+    enterMe();
   }
 
   /**
@@ -327,6 +379,24 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
 
     getModel().setChanged(changed);
+  }
+  
+  /**
+   * Check the given text against model definition.
+   * @param r The record number.
+   * @param s The text to be verified.
+   * @throws VException Errors occurs during check.
+   */
+  private void checkText(int r, String s) throws VException {
+    String      text = transformer.toModel(s);
+
+    if (!transformer.checkFormat(text)) {
+      return;
+    }
+    
+    if (getModel().checkText(text)) {
+      getModel().checkType(r, text);
+    }
   }
 
   // --------------------------------------------------

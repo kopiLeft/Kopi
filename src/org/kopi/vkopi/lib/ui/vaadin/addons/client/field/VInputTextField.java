@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,12 +19,19 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.DecimalFormatSymbols;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockConnector;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldState.ConvertType;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.DefaultSuggestionDisplay;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.SuggestionCallback;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.SuggestionDisplay;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.SuggestionHandler;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.WindowConnector;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -57,7 +64,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.SuggestBox.DefaultSuggestionDisplay;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Callback;
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
@@ -66,7 +72,6 @@ import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.BrowserInfo;
-import com.vaadin.client.ConnectorMap;
 
 /**
  * A text field widget that can support many validation
@@ -125,28 +130,44 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   
   @Override
   public void onKeyPress(KeyPressEvent event) {
-    if (event.isAnyModifierKeyDown()
+    // block any key when a suggestions query is launched.
+    if (getConnector().isQueryingForSuggestions()) {
+      cancelKey();
+      return;
+    }
+    
+    if (event.isControlKeyDown() || event.isAltKeyDown() || event.isMetaKeyDown()
 	|| (String.valueOf(event.getCharCode()).trim().length() == 0
-	&& event.getNativeEvent().getCharCode() != KeyCodes.KEY_SPACE))
+	&& event.getNativeEvent().getKeyCode() != KeyCodes.KEY_SPACE))
     {
       return;
     }
+    
+    if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_SPACE
+        && getSelectedText() != null
+        && getSelectedText().equals(getText()))
+    {
+      setText(null); // clear text
+      cancelKey();
+      return;
+    }
+    
     // if the content if the input is selected, validate only the typed character.
     // this is typically used for enumeration fields to allow the content to be overwritten
-    if (getSelectedText() != null && getSelectedText().equals(getText())
+    if (getSelectedText() != null
+        && getSelectedText().equals(getText())
 	&& validationStrategy != null
 	&& validationStrategy instanceof EnumValidationStrategy)
     {
       if (!validationStrategy.validate(String.valueOf(event.getCharCode()), getMaxLength())) {
-	cancelKey();
+        cancelKey();
       }
-      
       return;
     }
     // validate the whole text input.
     if (validationStrategy != null) {
       if (!validationStrategy.validate(getText() + String.valueOf(event.getCharCode()), getMaxLength())) {
-	cancelKey();
+        cancelKey();
       }
     }
   }
@@ -164,6 +185,17 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
 	  public void execute() {
 	    if (!validationStrategy.validate(getText(), getMaxLength())) {
 	      setText(before);
+	    } else {
+	      // even if it is not really correct, we mark the field as dirty after
+	      // a paste event. The action is delayed until the user releases the shortcut keys.
+	      new Timer() {
+
+	        @Override
+	        public void run() {
+	          getFieldConnector().setChanged(true);
+	          getFieldConnector().markAsDirty(getRecord());
+	        }
+	      }.schedule(100); // enough time to release paste shortcut keys
 	    }
 	  }
 	});
@@ -175,15 +207,68 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   
   @Override
   public void setText(String text) {
+    // set record to synchronize view and model even field is not focused
+    setRecord();
     // set only valid inputs
-    if (!(validationStrategy instanceof NoeditValidationStrategy)
-	&& validationStrategy.validate(text, getMaxLength()))
+    if (validationStrategy instanceof NoeditValidationStrategy
+        || validationStrategy.validate(text, getMaxLength()))
     {
-      super.setText(text);
-    } else {
-      // for no edit strategy, no validation is performed.
+      if (text == null) {
+        text = ""; // avoid NullPointerException
+      }
+      if (!text.equals(getText())) {
+        getFieldConnector().setChanged(true);
+      }
       super.setText(text);
     }
+    if (text != null) {
+      valueBeforeEdit = text;
+    }
+  }
+  
+  /**
+   * Sets the input text foreground and background colors.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  public void setColor(String foreground, String background) {
+    String              style;
+    
+    // clear server color styles if necessary
+    if ((foreground == null || foreground.length() == 0)
+        && (background == null || background.length() == 0))
+    {
+      clearServerStyles();
+    }
+    style = "text-align : " + this.align + ";";
+    if (foreground != null && foreground.length() > 0) {
+      // set color directly on element style
+      style += "color : " + foreground + " !important;";
+    }
+    
+    if (background != null && background.length() > 0) {
+      // set color directly on element style
+      style += "background-color : " + background + " !important;";
+    }
+    
+    getElement().setAttribute("style", style);
+  }
+  
+  /**
+   * Removes the color styles generated by the server
+   */
+  protected void clearServerStyles() {
+    for (String style : getConnector().getWidget().getStyleName().split("\\s")) {
+      if (style.endsWith("-" + getFieldConnector().getPosition())) {
+        getConnector().getWidget().removeStyleName(style);
+      }
+    }
+  }
+  
+  @Override
+  public void setAlignment(TextAlignment align) {
+    super.setAlignment(align);
+    this.align = align.toString().toLowerCase();
   }
   
   /**
@@ -288,8 +373,31 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    * @param text The new text field content.
    */
   public void updateFieldContent(final String text) {
-    setText(text);
-    lastCommunicatedValue = text;
+    super.setText(text);
+    getFieldConnector().unsetDirty();
+  }
+  
+  /**
+   * Sets the record number from the display line
+   */
+  protected void setRecord() {
+    int                 position;
+
+    position = getFieldConnector().getPosition();
+    recordNumber = getFieldConnector().getColumnView().getRecordFromDisplayLine(position);
+  }
+  
+  /**
+   * Returns the record number of this input widget.
+   * @return The record number of this input widget.
+   */
+  protected int getRecord() {
+    if (recordNumber == -1) {
+      // get the record from the display line when it is not set
+      setRecord();
+    }
+    
+    return recordNumber;
   }
 
   /**
@@ -300,27 +408,217 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    * @param blurred true if the field was blurred
    */
   public void valueChange(boolean blurred) {
-    communicateTextValueToServer();
+    // if field is not changed give up
+    // this can happen when the dirty values
+    // are sent before blurring this field
+    if (!getFieldConnector().isChanged()) {
+      return;
+    }
+    
+    int         rec;
+    
+    rec = getRecord();
+    // mark the field as dirty only when really changed
+    if (!getText().equals(getFieldConnector().getCachedValueAt(rec))) {
+      getFieldConnector().markAsDirty(rec, getText());
+    }
+    // field is left and a showing suggestions are
+    // displayed ==> restore the old value of the field
+    if (blurred) {
+      maybeRestoreOldValue();
+      if (getFieldConnector().isDirty()) {
+        maybeSynchronizeWithServerSide();
+      }
+    } else {      
+      handleEnumerationFields(rec);
+      maybeCheckValue(rec);
+    }
+  }
+  
+  /**
+   * Restores the old value of the field when it is needed.
+   * This can happen when the field is blurred and the suggestions
+   * popup is showing.
+   */
+  protected void maybeRestoreOldValue() {
+    if (isShowingSuggestions()) {
+      setText(getFieldConnector().getColumnView().getValueAt(getFieldConnector().getPosition()));
+    }
+  }
+  
+  /**
+   * When the field is blurred and the navigation of this
+   * field is delegated to server side, the state of this component
+   * should be synchronized with the server side to have all necessary
+   * triggers executed
+   */
+  protected void maybeSynchronizeWithServerSide() {
+    if (delegateNavigationToServer()
+        && getConnector().needsSynchronization()
+        && !isAlreadySynchronized())
+    {
+      sendDirtyValuesToServerSide();
+    }
+  }
+  
+  /**
+   * Checks the value of this input field when it is needed.
+   * @param rec The record number of the field.
+   */
+  protected void maybeCheckValue(final int rec) {
+    Timer               lazyValueChecker;
+    
+    // The value check must be delayed to allow selected
+    // item capture from the suggestion display if it is showing.
+    // Otherwise, it can cause strange behavior.
+    lazyValueChecker = new Timer() {
+      
+      @Override
+      public void run() {
+        if (!isCheckingValue && !delegateNavigationToServer()) {
+          try {
+            checkValue(rec);
+          } catch (CheckTypeException e) {
+            e.displayError();
+          }
+        }
+      }
+    };
+    
+    lazyValueChecker.schedule(60); //!!! experimental
+  }
+  
+  /**
+   * Special handling for enumeration fields.
+   * @param rec The field record number
+   */
+  protected void handleEnumerationFields(int rec) {
+    if (!isShowingSuggestions() && validationStrategy instanceof EnumValidationStrategy) {
+      getFieldConnector().markAsDirty(rec, getText());
+    }
+  }
+  
+  /**
+   * Sends all dirty values to the server side.
+   * This will send all pending dirty values to be sure
+   * that all necessary values are sent to the server model.
+   */
+  protected void sendDirtyValuesToServerSide() {
+    WindowConnector             window;
+    BlockConnector              block;
+    
+    window = ConnectorUtils.getParent(getConnector(), WindowConnector.class);
+    block = ConnectorUtils.getParent(getConnector(), BlockConnector.class);
+    if (block != null) {
+      window.cleanDirtyValues(block);
+    }
+    // now the field is synchronized with server side.
+    setAlreadySynchronized(true);
+  }
+  
+  /**
+   * Should the navigation be delegated to server side ?
+   * @return {@code true} if the navigation is delegated to serevr side.
+   */
+  protected boolean delegateNavigationToServer() {
+    return getFieldConnector().delegateNavigationToServer();
   }
 
+  /**
+   * Returns {@code true} if word wrap is used.
+   * @return {@code true} if word wrap is used.
+   */
   protected boolean isWordwrap() {
     String wrap = getElement().getAttribute("wrap");
     return !"off".equals(wrap);
   }
   
+  /**
+   * Sets this field to be checking it value.
+   * @param isCheckingValue Are we checking the field value ?
+   */
+  public void setCheckingValue(boolean isCheckingValue) {
+    this.isCheckingValue = isCheckingValue;
+  }
+  
+  /**
+   * Sets this field to be already synchronized with the server side.
+   * @param isAlreadySynchronized The synchrinization state.
+   */
+  public void setAlreadySynchronized(boolean isAlreadySynchronized) {
+    this.isAlreadySynchronized = isAlreadySynchronized;
+  }
+  
+  /**
+   * Returns {@code true} if the state of this field is not synchronized with server side.
+   * @return {@code true} if the state of this field is not synchronized with server side.
+   */
+  public boolean isAlreadySynchronized() {
+    return isAlreadySynchronized;
+  }
+  
   @Override
   public void onKeyUp(KeyUpEvent event) {
     // After every user key input, refresh the popup's suggestions.
-    if (hasAutocomplete) {
+    if (hasAutocomplete && !getConnector().isQueryingForSuggestions()) {
       switch (event.getNativeKeyCode()) {
       case KeyCodes.KEY_DOWN:
+      case KeyCodes.KEY_PAGEDOWN:
       case KeyCodes.KEY_UP:
+      case KeyCodes.KEY_PAGEUP:
+      case KeyCodes.KEY_LEFT:
+      case KeyCodes.KEY_RIGHT:
       case KeyCodes.KEY_ENTER:
       case KeyCodes.KEY_TAB:
+      case KeyCodes.KEY_SHIFT:
+      case KeyCodes.KEY_CTRL:
+      case KeyCodes.KEY_ALT:
+      case KeyCodes.KEY_ESCAPE:
 	break;
       default :
         refreshSuggestions();
 	break;
+      }
+    }
+    // look if the decimal separator must be changed.
+    maybeReplaceDecimalSeparator();
+    // check if the field has really changed.
+    if (isChanged()) {
+      getFieldConnector().setChanged(true);
+    }
+    valueBeforeEdit = getText();
+  }
+  
+  /**
+   * Returns {@code true} when the field context is changed. 
+   * @return {@code true} when the field context is changed.
+   */
+  protected boolean isChanged() {
+    if (validationStrategy instanceof StringValidationStrategy) {
+      StringValidationStrategy          strategy = (StringValidationStrategy) validationStrategy;
+      
+      // look to the lower and upper convert type to detect if the field value has really changed
+      if (strategy.getConvertType() == ConvertType.UPPER) {
+        return !getText().toUpperCase().equals(valueBeforeEdit.toUpperCase());
+      } else if (strategy.getConvertType() == ConvertType.LOWER) {
+        return !getText().toLowerCase().equals(valueBeforeEdit.toLowerCase());
+      } else {
+        return !getText().equals(valueBeforeEdit);
+      }
+    } else {
+      return !getText().equals(valueBeforeEdit);
+    }
+  }
+  
+  /**
+   * Checks if the decimal separator must be changed.
+   */
+  protected void maybeReplaceDecimalSeparator() {
+    if (validationStrategy instanceof FixnumValidationStrategy && getText().contains(".")) {
+      DecimalFormatSymbols      dfs = DecimalFormatSymbols.get(VMainWindow.getLocale());
+      
+      if (dfs.getDecimalSeparator() != '.') {
+        super.setText(getText().replace('.', dfs.getDecimalSeparator()));
       }
     }
   }
@@ -333,7 +631,12 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
 
   @Override
   public void onKeyDown(KeyDownEvent event) {
-    if (hasAutocomplete) {
+    if (hasAutocomplete && !getConnector().isQueryingForSuggestions()) {
+      if (isShowingSuggestions()) {
+        // stop the propagation to parent elements when
+        // the suggestions display is showing.
+        event.stopPropagation();
+      }
       switch (event.getNativeKeyCode()) {
       case KeyCodes.KEY_DOWN:
 	display.moveSelectionDown();
@@ -346,8 +649,8 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
 	break;
       case KeyCodes.KEY_ENTER:
       case KeyCodes.KEY_TAB:
-	Suggestion suggestion = display.getCurrentSelection();
-
+	Suggestion     suggestion = display.getCurrentSelection();
+	
 	if (suggestion == null) {
 	  display.hideSuggestions();
 	} else {
@@ -380,6 +683,15 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
     return false;
   }
   
+  /**
+   * Fires a goto next field event.
+   */
+  public void gotoNextBlockTextInput() {
+    // first send dirty values to server side.
+    sendDirtyValuesToServerSide();
+    getFieldConnector().getColumnView().gotoNextField();
+  }
+  
   @Override
   protected void onLoad() {
     super.onLoad();
@@ -402,7 +714,8 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
     removeStyleDependentName("focus");
     focusedTextField = null;
     valueChange(true);
-    hideSuggestions();
+    lazyHideSuggestions();
+    recordNumber = -1; // set this field is not related to any record
   }
 
   @Override
@@ -412,13 +725,21 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
       return;
     }
     focusedTextField = this;
+    setRecord();
+    getFieldConnector().getColumnView().disableAllBlocksActors();
     addStyleDependentName("focus");
-    // ensure the selection of the field content.
-    maybeSelectAll();
     setLastFocusedInput();
     // cancel the fetch of suggestions list on field focus
     // when the field is not empty
     maybeCancelSuggestions();
+    getFieldConnector().getColumnView().setAsActiveField(-1);
+    getFieldConnector().setChanged(false);
+    setAlreadySynchronized(false);
+    valueBeforeEdit = getText();
+    // activate all actors related to this field.
+    getFieldConnector().setActorsEnabled(true);
+    // ensure the selection of the field content.
+    maybeSelectAll();
   }
   
   @Override
@@ -518,57 +839,29 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    * Returns the widget connector.
    * @return The widget connector.
    */
-  private TextFieldConnector getConnector() {
-    return (TextFieldConnector) ConnectorMap.get(client).getConnector(getParent());
+  protected TextFieldConnector getConnector() {
+    return ConnectorUtils.getConnector(client, getParent(), TextFieldConnector.class);
   }
-
+  
   /**
-   * Communicate text changes to server side.
+   * Checks the value of this text field.
+   * @param rec The active record.
+   * @throws CheckTypeException When field content is not valid
    */
-  /*package*/ void communicateTextValueToServer() {
-    String              text;
-    
-    text = getText();
-    if (text == null) {
-      // avoid null pointer exception when comparing
-      text = "";
+  /*package*/ void checkValue(int rec) throws CheckTypeException {
+    isCheckingValue = true; //!!! don't check twice on field blur
+    if (validationStrategy != null) {
+      validationStrategy.checkType(this, getText() == null ? "" : getText().trim());
+      if (!getText().equals(getFieldConnector().getCachedValueAt(rec))) {
+        getConnector().markAsDirty(rec, getText());
+      }
     }
-    
-    if (!text.equals(lastCommunicatedValue)) {
-      getConnector().sendTextToServer(text);
-      lastCommunicatedValue = text;
-    }
-  }
-
-  /**
-   * Returns the last communicated string to server side.
-   * @return the last communicated string to server side.
-   */
-  protected String getLastCommunicatedString() {
-    return lastCommunicatedValue;
+    isCheckingValue = false;
   }
   
   @Override
   public HandlerRegistration addContextMenuHandler(ContextMenuHandler handler) {
     return addDomHandler(handler, ContextMenuEvent.getType());
-  }
-
-  //---------------------------------------------------
-  // STATIC METHODS
-  //---------------------------------------------------
-  
-  /**
-   * Sent the text value of the focused text field
-   * to the server.
-   * This method will force a text change event.
-   */
-  public static void communicateCurrentTextToServer() {
-    if (focusedTextField != null) {
-      // a suggestion popup may be shown
-      // ==> hide it before communicating text value.
-      focusedTextField.hideSuggestions();
-      focusedTextField.valueChange(false);
-    }
   }
   
   //---------------------------------------------------
@@ -589,15 +882,11 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   private void refreshSuggestions() {
     // Get the raw text.
     String	text = getText();
-
-    if (text == null || text.length() == 0) {
+    if (text == null || text.length() == 0 || text.length() == getMaxLength()) {
       hideSuggestions();
-    } else if (text.equals(currentText)) {
-      return;
     } else {
       currentText = text;
     }
-    isAboutShowingSuggestions = true;
     showSuggestions(text);
   }
 
@@ -612,6 +901,7 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
       setText(currentText);
       fireSuggestionEvent(curSuggestion);
       hideSuggestions();
+      gotoNextBlockTextInput();
     }
   }
   
@@ -619,9 +909,17 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    * Hides auto complete suggestions.
    */
   /*package*/ void hideSuggestions() {
-    isAboutShowingSuggestions = false;
-    if (display != null) {
+    if (display != null && display.isSuggestionListShowingImpl()) {
       display.hideSuggestions();
+    }
+  }
+  
+  /**
+   * Hides auto complete suggestions with a delay.
+   */
+  /*package*/ void lazyHideSuggestions() {
+    if (display.isSuggestionListShowingImpl()) {
+      lazySuggestionsHider.schedule(200);
     }
   }
   
@@ -630,7 +928,7 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    * @return {@code true} if we are waiting for suggestions.
    */
   /*package*/ boolean isAboutShowingSuggestions() {
-    return isAboutShowingSuggestions;
+    return display != null && display.isAboutShowingSuggestions();
   }
   
   /**
@@ -644,7 +942,23 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    * Allows to query suggestions from server side.
    */
   /*package*/ void allowSuggestions() {
-    getConnector().allowSSuggestionsQuery();
+    getConnector().allowSuggestionsQuery();
+  }
+  
+  /**
+   * Returns the parent field connector.
+   * @return The parent field connector.
+   */
+  protected FieldConnector getFieldConnector() {
+    return ConnectorUtils.getParent(getConnector(), FieldConnector.class);
+  }
+  
+  /**
+   * Checks if the content of this field is empty.
+   * @return {@code true} if this field is empty.
+   */
+  /*package*/ boolean isNull() {
+    return getText() == null || "".equals(getText());
   }
   
   /**
@@ -674,6 +988,10 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
     return selectsFirstItem;
   }
 
+  /**
+   * Fires a suggestion selection event.
+   * @param selectedSuggestion The selected suggestion.
+   */
   private void fireSuggestionEvent(Suggestion selectedSuggestion) {
     SelectionEvent.fire(this, selectedSuggestion);
   }
@@ -753,6 +1071,16 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   public void setDisplay(SuggestionDisplay display) {
     this.display = display;
   }
+  
+  /**
+   * Sets the suggestion display modality.
+   * @param modal The display modality.
+   */
+  public void setDisplayModality(boolean modal) {
+    if (display != null && display instanceof DefaultSuggestionDisplay) {
+      ((DefaultSuggestionDisplay)display).setModal(modal);
+    }
+  }
 
   /**
    * Sets the limit to the number of suggestions the oracle should provide. It
@@ -769,11 +1097,29 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
    *
    * @param enabled <code>true</code> to enable the widget, <code>false</code> to disable it
    */
+  @Override
   public void setEnabled(boolean enabled) {
     super.setEnabled(enabled);
     if (!enabled && display != null) {
       display.hideSuggestions();
     }
+  }
+  
+  /**
+   * Releases the content of this input field.
+   */
+  public void release() {
+    client = null;
+    validationStrategy = null;
+    currentText = null;
+    oracle = null;
+    display = null;
+    valueBeforeEdit = null;
+    align = null;
+    parent = null;
+    lazySuggestionsHider = null;
+    callback = null;
+    suggestionCallback = null;
   }
   
   /**
@@ -823,6 +1169,18 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   public static VInputTextField getLastFocusedTextField() {
     return lastFocusedTextField;
   }
+  
+  /**
+   * Returns the last focused field connector.
+   * @return the last focused text connector.
+   */
+  public static FieldConnector getLastFocusedConnector() {
+    if (lastFocusedTextField != null) {
+      return lastFocusedTextField.getFieldConnector();
+    } else {
+      return null;
+    }
+  }
 
   //---------------------------------------------------
   // DATA MEMBERS
@@ -840,12 +1198,21 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   private int 				limit = 20;
   private boolean 			selectsFirstItem = true;
   private boolean			hasAutocomplete;
-  //flag indication that we are waiting to show suggestions
-  private boolean			isAboutShowingSuggestions;
-  private String                        lastCommunicatedValue;
+  private String                        valueBeforeEdit = "";
+  private String                        align;
   private VWindow                       parent;
+  private boolean                       isCheckingValue;
+  private boolean                       isAlreadySynchronized;
+  private int                           recordNumber = -1; // The record number corresponding to this text input
+  private Timer                         lazySuggestionsHider = new Timer() {
+    
+    @Override
+    public void run() {
+      hideSuggestions();
+    }
+  };
   
-  private final Callback		callback = new Callback() {
+  private Callback                      callback = new Callback() {
     
     @Override
     public void onSuggestionsReady(Request request, Response response) {
@@ -866,13 +1233,10 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
     }
   };
   
-  private final SuggestionCallback suggestionCallback = new SuggestionCallback() {
+  private SuggestionCallback            suggestionCallback = new SuggestionCallback() {
     
     @Override
     public void onSuggestionSelected(Suggestion suggestion) {
-      if (focusedTextField != VInputTextField.this) {
-        VInputTextField.this.setFocus(true);
-      }
       setNewSelection(suggestion);
     }
   };

@@ -19,7 +19,9 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.BitSet;
+import org.kopi.compiler.tools.antlr.runtime.CharFormatter;
+import org.kopi.compiler.tools.antlr.runtime.Vector;
 import org.kopi.util.base.InconsistencyException;
 
 /**

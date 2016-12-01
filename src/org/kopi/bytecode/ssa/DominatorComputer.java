@@ -19,10 +19,10 @@
 
 package org.kopi.bytecode.ssa;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Calculate the dominators in a graph using Lengauer and Tarjan algorithm

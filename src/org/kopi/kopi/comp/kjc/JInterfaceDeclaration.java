@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.JavadocComment;
-import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.compiler.base.UnpositionedError;
 
 /**
  * This class represents a Java interface declaration in the syntax tree.

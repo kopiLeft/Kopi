@@ -22,8 +22,8 @@ package org.kopi.vkopi.lib.form;
 import java.sql.SQLException;
 
 import org.kopi.util.base.InconsistencyException;
-import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.list.VIntegerCodeColumn;
+import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.xkopi.lib.base.Query;
 
 @SuppressWarnings("serial")

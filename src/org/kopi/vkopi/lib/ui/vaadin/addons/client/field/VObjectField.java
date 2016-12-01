@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,21 +19,25 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ShortcutAction;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ShortcutActionHandler;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.ConnectorMap;
 import com.vaadin.client.ui.SimpleFocusablePanel;
 
 /**
  * An object field widget used to represent objects as a kopi field.
  * An object field can be an image field.
  */
-public abstract class VObjectField extends SimpleFocusablePanel implements HasEnabled {
+public abstract class VObjectField extends SimpleFocusablePanel implements HasEnabled, FocusHandler, BlurHandler {
   
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -71,17 +75,68 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
     }
   }
   
+  @Override
+  public void onFocus(FocusEvent event) {
+    getFieldConnector().getColumnView().setAsActiveField();;
+  }
+  
+  @Override
+  public void onBlur(BlurEvent event) {
+    getFieldConnector().getColumnView().unsetAsActiveField();
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    client = null;
+  }
+  
   /**
    * Returns the field getConnector().
    * @return The field getConnector().
    */
   protected ObjectFieldConnector getConnector() {
-    if (client == null) {
-      return null;
-    }
-    
-    return (ObjectFieldConnector) ConnectorMap.get(client).getConnector(this);
+    return ConnectorUtils.getConnector(client, this, ObjectFieldConnector.class);
   }
+  
+  /**
+   * Returns the parent field connector.
+   * @return The parent field connector.
+   */
+  protected FieldConnector getFieldConnector() {
+    return (FieldConnector) getConnector().getParent();
+  }
+  
+  /**
+   * Returns {@code true} if this object field is {@code null}.
+   * @return {@code true} if this object field is {@code null}.
+   */
+  protected abstract boolean isNull();
+  
+  /**
+   * Sets the object field value.
+   * @param o The new field value.
+   */
+  protected abstract void setValue(Object o);
+  
+  /**
+   * Sets the object field color properties.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  protected abstract void setColor(String foreground, String background);
+  
+  /**
+   * Returns the object field value.
+   * @return The object field value.
+   */
+  protected abstract Object getValue();
+  
+  /**
+   * Checks the internal value of this field.
+   * @param rec The active record.
+   */
+  protected abstract void checkValue(int rec);
   
   //---------------------------------------------------
   // INNER CLASSES
@@ -107,33 +162,31 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
     
     @Override
     public void performAction() {
+      if (getFieldConnector() == null) {
+        return;
+      }
+      
+      getConnector().sendValueToServer();
       switch (code) {
       case KEY_TAB:
-	getConnector().sendValueToServer();
-	getConnector().getServerRpc().gotoNextField();
+        getFieldConnector().getColumnView().gotoNextField();
 	break;
       case KEY_STAB:
-	getConnector().sendValueToServer();
-	getConnector().getServerRpc().gotoPrevField();
+        getFieldConnector().getColumnView().gotoPrevField();
 	break;
       case KEY_REC_UP:
-	getConnector().sendValueToServer();
-	getConnector().getServerRpc().gotoPrevRecord();
+        getFieldConnector().getColumnView().gotoPrevRecord();
 	break;
       case KEY_REC_DOWN:
-	getConnector().sendValueToServer();
-	getConnector().getServerRpc().gotoNextRecord();
+        getFieldConnector().getColumnView().gotoNextRecord();
 	break;
       case KEY_REC_FIRST:
-	getConnector().sendValueToServer();
-	getConnector().getServerRpc().gotoFirstRecord();
+        getFieldConnector().getColumnView().gotoFirstRecord();
 	break;
       case KEY_REC_LAST:
-	getConnector().sendValueToServer();
-	getConnector().getServerRpc().gotoLastRecord();
+        getFieldConnector().getColumnView().gotoLastRecord();
 	break;
       case KEY_BLOCK:
-	getConnector().sendValueToServer();
 	getConnector().getServerRpc().gotoNextBlock();
 	break;
       default:
@@ -171,7 +224,7 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
     
     /**
      * Creates the navigation actions.
-     * @param connector The text field getConnector().
+     * @param fieldConnector The text field getConnector().
      */
     protected void createNavigatorKeys() {
       addKeyNavigator(KEY_TAB, KeyCodes.KEY_ENTER, 0);
@@ -190,7 +243,7 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
     
     /**
      * Adds a key navigator action to this handler.
-     * @param connector The object field connector
+     * @param fieldConnector The object field connector
      * @param code The navigator code.
      * @param key The key code.
      * @param modifiers The modifiers.

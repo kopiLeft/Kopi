@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,8 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.DefaultSuggestOracl
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.QueryListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.SuggestionDisplay;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -183,6 +185,13 @@ public class VTextField extends SimplePanel implements HasEnabled {
     }
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    textField.release();
+    textField = null;
+  }
+  
   /**
    * Sets the auto complete ability.
    * @param hasAutocomplete the auto complete ability.
@@ -200,6 +209,16 @@ public class VTextField extends SimplePanel implements HasEnabled {
   public void setSuggestionDisplay(SuggestionDisplay display) {
     if (textField != null) {
       textField.setDisplay(display);
+    }
+  }
+  
+  /**
+   * Sets the suggestion display modality.
+   * @param modal The display modality.
+   */
+  public void setSuggestionDisplayModality(boolean modal) {
+    if (textField != null) {
+      textField.setDisplayModality(modal);
     }
   }
   
@@ -260,6 +279,78 @@ public class VTextField extends SimplePanel implements HasEnabled {
   /*package*/ void hideSuggestions() {
     if (textField != null) {
       textField.hideSuggestions();
+    }
+  }
+  
+  /**
+   * Sets the value of this text field.
+   * @param o The new text field value.
+   */
+  /*package*/ void setValue(final Object o) {
+    // The color property set should be delayed since at form load
+    // the text input is not yet attached to the DOM.
+    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+      
+      @Override
+      public void execute() {
+        if (textField != null) {
+          textField.setText((String) o);
+        }
+      }
+    });
+  }
+  
+  /**
+   * Sets the field color properties.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  /*package*/ void setColor(final String foreground, final String background) {
+    // The color property set should be delayed since at form load
+    // the text input is not yet attached to the DOM.
+    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+      
+      @Override
+      public void execute() {
+        if (textField != null) {
+          textField.setColor(foreground, background);
+        }
+      }
+    });
+  }
+  
+  /**
+   * Returns the field value.
+   * @return The field value.
+   */
+  /*package*/ String getValue() {
+    if (textField != null) {
+      return textField.getText();
+    } else {
+      return null;
+    }
+  }
+  
+  /**
+   * Checks if the content of this field is empty.
+   * @return {@code true} if this field is empty.
+   */
+  /*package*/ boolean isNull() {
+    if (textField != null) {
+      return textField.isNull();
+    } else {
+      return true;
+    }
+  }
+  
+  /**
+   * Checks the value of this text field.
+   * @param The active record.
+   * @throws CheckTypeException When field content is not valid
+   */
+  /*package*/ void checkValue(int rec) throws CheckTypeException {
+    if (textField != null) {
+      textField.checkValue(rec);
     }
   }
 

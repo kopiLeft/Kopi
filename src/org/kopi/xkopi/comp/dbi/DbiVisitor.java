@@ -24,7 +24,13 @@ import java.util.List;
 
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
-import org.kopi.xkopi.comp.sqlc.*;
+import org.kopi.xkopi.comp.sqlc.Expression;
+import org.kopi.xkopi.comp.sqlc.FieldNameList;
+import org.kopi.xkopi.comp.sqlc.JdbcDateLiteral;
+import org.kopi.xkopi.comp.sqlc.SelectStatement;
+import org.kopi.xkopi.comp.sqlc.SqlVisitor;
+import org.kopi.xkopi.comp.sqlc.TableReference;
+import org.kopi.xkopi.comp.sqlc.Type;
 import org.kopi.xkopi.lib.type.Date;
 import org.kopi.xkopi.lib.type.Fixed;
 

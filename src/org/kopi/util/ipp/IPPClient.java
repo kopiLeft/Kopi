@@ -19,15 +19,14 @@
 
 package org.kopi.util.ipp;
 
-import java.net.URL;
-import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import java.util.List;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ArrayList;
+import java.util.List;
 
 public class IPPClient {
 

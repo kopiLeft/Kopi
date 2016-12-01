@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,10 +42,13 @@ public class WelcomeView extends AbstractComponent {
    * Creates the welcome view server component.
    * @param locale The application locale.
    * @param languages The supported languages.
+   * @param slogan The slogan to be used in login panel.
    * @param logo The application logo
+   * @param href The link to navigate through when the logo is clicked.
    */
   public WelcomeView(Locale locale,
                      Locale[] languages,
+                     Resource slogan,
                      Resource logo,
                      String href)
   {
@@ -56,7 +59,8 @@ public class WelcomeView extends AbstractComponent {
       getState().languages.put(language.getDisplayName(), language.toString());
     }
     getState().href = href;
-    setIcon(logo);
+    setResource("logo", logo);
+    setResource("slogan", slogan);
   }
 
   //---------------------------------------------------

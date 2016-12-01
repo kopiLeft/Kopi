@@ -19,14 +19,14 @@
 
 package org.kopi.vkopi.comp.trig;
 
-import org.kopi.kopi.comp.kjc.Constants;
-import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
-import org.kopi.kopi.comp.kjc.CReferenceType;
-import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
+import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.Constants;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * Root for type hierarchy

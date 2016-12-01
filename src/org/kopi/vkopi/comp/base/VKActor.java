@@ -22,10 +22,10 @@ package org.kopi.vkopi.comp.base;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import org.kopi.kopi.comp.kjc.JExpression;
-import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 
 /**
  * This class represents an actor, ie a menu element with a name and may be an icon, a shortcut

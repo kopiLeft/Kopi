@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -122,6 +122,13 @@ public class VWindowView extends FlexTable {
    */
   protected Element getActorsMenuElement() {
     return actors.getActorsNavigationElement();
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    actors.clear();
+    actors = null;
   }
 
   //---------------------------------------------------

@@ -21,7 +21,12 @@ package org.kopi.vkopi.comp.print;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JClassDeclaration;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JFieldDeclaration;
+import org.kopi.kopi.comp.kjc.JVariableDefinition;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPhylum;

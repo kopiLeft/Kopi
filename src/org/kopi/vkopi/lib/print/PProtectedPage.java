@@ -26,14 +26,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.kopi.util.base.InconsistencyException;
-import org.kopi.vkopi.lib.visual.Message;
+import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.vkopi.lib.util.PrintException;
 import org.kopi.vkopi.lib.util.PrintJob;
-import org.kopi.vkopi.lib.base.Utils;
+import org.kopi.vkopi.lib.visual.Message;
+import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
 import org.kopi.vkopi.lib.visual.VRuntimeException;
-import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.xkopi.lib.base.DBContext;
 import org.kopi.xkopi.lib.base.DBContextHandler;
 import org.kopi.xkopi.lib.base.DBDeadLockException;

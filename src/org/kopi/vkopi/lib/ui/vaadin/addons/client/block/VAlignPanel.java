@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -68,6 +68,10 @@ public class VAlignPanel extends AbsolutePanel {
    * Layouts the block content.
    */
   protected void layout() {
+    if (align == null) {
+      return;
+    }
+    
     VAbstractBlockLayout 	ori = (VAbstractBlockLayout)align.getBlock().getLayout();
 
     if (ori == null || ori.getCellFormatter() == null) {
@@ -131,7 +135,14 @@ public class VAlignPanel extends AbsolutePanel {
     });
   }
   
+  /**
+   * Calculates the size of the content panel.
+   */
   protected void setPanelSize() {
+    if (aligns == null) {
+      return;
+    }
+    
     int		width = 0;
     int		height = 0;
     
@@ -150,11 +161,20 @@ public class VAlignPanel extends AbsolutePanel {
     setPixelSize(width, height);
   }
   
+  /**
+   * Releases this align block.
+   */
+  public void release() {
+    widgets = null;
+    aligns = null;
+    align = null;
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
   private LinkedList<Widget>			widgets;
   private LinkedList<ComponentConstraint>	aligns;
-  private final BlockAlignment 			align;
+  private BlockAlignment 			align;
 }

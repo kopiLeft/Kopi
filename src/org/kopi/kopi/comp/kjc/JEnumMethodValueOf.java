@@ -21,11 +21,6 @@ package org.kopi.kopi.comp.kjc;
 
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.CReferenceType;
-import org.kopi.kopi.comp.kjc.CType;
-import org.kopi.kopi.comp.kjc.CTypeVariable;
-import org.kopi.kopi.comp.kjc.JBlock;
-import org.kopi.kopi.comp.kjc.JFormalParameter;
 
 /**
  * This class represents a Java method declaration in the syntax tree.

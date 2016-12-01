@@ -19,11 +19,15 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.xkopi.comp.sqlc.SqlPhylum;
-import org.kopi.xkopi.comp.sqlc.SqlContext;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.TypeFactory;
+import org.kopi.xkopi.comp.sqlc.SqlContext;
+import org.kopi.xkopi.comp.sqlc.SqlPhylum;
 
 /**
  * an sql text with java inserted

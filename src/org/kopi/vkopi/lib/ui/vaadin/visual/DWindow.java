@@ -20,6 +20,9 @@
 package org.kopi.vkopi.lib.ui.vaadin.visual;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.AbstractNotification;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ConfirmNotification;
@@ -31,7 +34,6 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.ProgressDialog;
 import org.kopi.vkopi.lib.ui.vaadin.addons.WaitDialog;
 import org.kopi.vkopi.lib.ui.vaadin.addons.WaitWindow;
 import org.kopi.vkopi.lib.ui.vaadin.addons.WarningNotification;
-import org.kopi.vkopi.lib.ui.vaadin.addons.Window;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.ui.vaadin.base.ExportResource;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
@@ -47,6 +49,7 @@ import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.WaitInfoListener;
 
 import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.ErrorHandler;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 
@@ -56,7 +59,7 @@ import com.vaadin.ui.UI;
  * and reduce the window load time.
  */
 @SuppressWarnings({ "serial", "deprecation"})
-public abstract class DWindow extends Window implements UWindow {
+public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window implements UWindow {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -86,6 +89,7 @@ public abstract class DWindow extends Window implements UWindow {
     addActorsToGUI(model.getActors());
     progressDialog = new ProgressDialog();
     waitDialog = new WaitDialog();
+    actionsQueue = new ConcurrentLinkedQueue<QueuedAction>();
     addAttachDetachListeners();
   }
 	  
@@ -130,15 +134,20 @@ public abstract class DWindow extends Window implements UWindow {
     VWindow     model = this.model; //destroyed in release()
     
     try {
-      model.destroyModel();
+      release();
+      dispose();
+      if (model != null) {
+        model.destroyModel();
+      }
     } finally {
-      synchronized (model) {
-        // set the return code
-        returnCode = code;
-        // Inform all threads who wait for this panel
-        release();
-        dispose();
-        model.notifyAll();
+      // model can be destroyed here
+      if (model != null) {
+        synchronized (model) {
+          // set the return code
+          returnCode = code;
+          // Inform all threads who wait for this panel
+          model.notifyAll();
+        }
       }
     }
   }
@@ -218,9 +227,9 @@ public abstract class DWindow extends Window implements UWindow {
    * @param asynch Should the action run asynchronously ?
    */
   private void performActionImpl(final KopiAction action, boolean asynch) {
-    BackgroundThreadHandler.updateUI(); // send pending tasks before
-    
     if (inAction == true) {
+      // put the action in the queue to be executed after the current action is finished
+      actionsQueue.add(new QueuedAction(action, asynch));
       return;
     }
     
@@ -275,10 +284,23 @@ public abstract class DWindow extends Window implements UWindow {
    * <p>Removes all components added to this window</p>
    */
   public synchronized void release() {
-    model.removeVActionListener(this);
-    model.removeWaitInfoListener(waitInfoHandler);
-    model.removeMessageListener(messageHandler);
+    if (model != null) {
+      model.removeVActionListener(this);
+      model.removeWaitInfoListener(waitInfoHandler);
+      model.removeMessageListener(messageHandler);
+    }
     model = null;
+    inAction = false;
+    currentAction = null;
+    runtimeDebugInfo = null;
+    returnCode = -1;
+    progressDialog = null;
+    isProgressDialogAttached = false;
+    waitDialog = null;
+    isWaitDialogAttached = false;    
+    askUser = false;
+    actionsQueue.clear();
+    org.kopi.vkopi.lib.base.Utils.freeMemory();
   }
 
   /**
@@ -814,7 +836,7 @@ public abstract class DWindow extends Window implements UWindow {
    * <p>There is only one instance of ActionRunner.
    * It calls user actions.</p>
    */
-  /*package*/ class ActionRunner implements Runnable {
+  /*package*/ class ActionRunner implements Runnable, ErrorHandler {
     
     //---------------------------------------
     // IMPLEMENTATIONS
@@ -823,40 +845,48 @@ public abstract class DWindow extends Window implements UWindow {
     @Override
     public void run() {
       try {
-	if (currentAction == null) {
-	  return;
+	if (currentAction != null) {
+	  runAction();
 	}
-	currentAction.run();
-        if (getModel() != null) {
-          // actions which close the window also
-          // set the referenced model to null
-          getModel().executedAction(currentAction);
-        }
       } catch (VRuntimeException v) {
-	v.printStackTrace();
-        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
-        unsetWaitInfo();
-	reportError(v);
-	//getModel().error(v.getMessage());
-      } catch (ArrayIndexOutOfBoundsException ar) {
-	// Ignore out of bound exception in position requestor
-        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
-        unsetWaitInfo();
+        handleRuntimeException(v);
       } catch (Throwable exc) {
-	//exc.printStackTrace();
-        // close the wait info window if it is attached to avoid connector hierarchy corruption.  
-        unsetWaitInfo();
-	setWindowError(exc);
-	if (getModel() != null) {
-	  getModel().fatalError(getModel(), "VWindow.performActionImpl(final KopiAction action)", exc);
-	} else {
-	  getApplication().displayError(null, MessageCode.getMessage("VIS-00041"));
-	}
+        // when unlocking the session in error handling implementation
+        // all statements that previously locked the session will try to
+        // release it. But since it is already done, a IllegalMonitorStateException
+        // will be thrown. We will ignore this case since it is a fake error and caused
+        // by a non standard treatment.
+        if (sessionAlreadyUnlocked && exc instanceof IllegalMonitorStateException) {
+          sessionAlreadyUnlocked = false;
+        } else {
+          handleAnyException(exc);
+        }
       } finally {
-	setInAction();
-	synchronized (getApplication()) {
-	  BackgroundThreadHandler.updateUI();
-	}
+        endAction();
+      }
+    }
+
+    @Override
+    public void error(com.vaadin.server.ErrorEvent event) {
+      try {
+        // unlock session when it is locked
+        // this will release the communication
+        // again and let the popup error to be displayed again.
+        if (getApplication().getSession().hasLock()) {
+          getApplication().getSession().unlock();
+          sessionAlreadyUnlocked = true;
+        }
+        // The {@link event#getThrowable()} gives the ExecutionException
+        // thrown by the AccessFuture created for running the action.
+        // The original error is set as the cause of the ExecutionException
+        // error so it would be the base of all exception handling here.
+        if (event.getThrowable().getCause() instanceof VRuntimeException) {
+          handleRuntimeException((VRuntimeException) event.getThrowable().getCause());
+        } else {
+          handleAnyException(event.getThrowable().getCause());
+        }
+      } finally {
+        endAction();
       }
     }
 
@@ -865,25 +895,160 @@ public abstract class DWindow extends Window implements UWindow {
      */
     public synchronized void setInAction() {
       try {
-	currentAction = null;
-	inAction = false;
+        currentAction = null;
+        inAction = false;
 
-	setWindowFocusEnabled(true);
-
-	if (getModel() != null) {
-	  // commands like "Beenden" destroy the model
-	  // so it must be tested, that there is still a model
-	  getModel().setCommandsEnabled(true);
-	}	    
-      } catch (Exception e) {
-	e.printStackTrace();
+        setWindowFocusEnabled(true);
+      } finally {
+        if (getModel() != null) {
+          // commands like "Beenden" destroy the model
+          // so it must be tested, that there is still a model
+          getModel().setCommandsEnabled(true);
+          runNextPendingAction();
+        }
       }
     }
+    
+    /**
+     * Clears the action queue. This will remove all
+     * action that can be cancelled.
+     */
+    protected void clearActionQueue() {
+      for (Iterator<QueuedAction> actions = actionsQueue.iterator(); actions.hasNext();) {
+        QueuedAction    action = (QueuedAction) actions.next();
+        
+        if (action.isCancellable()) {
+          actions.remove();
+        }
+      }
+    }
+    
+    /**
+     * Handles the visual runtime errors.
+     * @param v The runtime error exception
+     */
+    protected void handleRuntimeException(VRuntimeException v) {
+      v.printStackTrace();
+      // close the wait info window if it is attached to avoid connector hierarchy corruption.  
+      unsetWaitInfo();
+      reportError(v);
+      // in case of error cancel all pending and cancellable actions
+      clearActionQueue();
+    }
+    
+    /**
+     * Handles any errors that can occur during the action execution.
+     * @param exc The exception instance.
+     */
+    protected void handleAnyException(Throwable exc) {
+      exc.printStackTrace();
+      // close the wait info window if it is attached to avoid connector hierarchy corruption.  
+      unsetWaitInfo();
+      setWindowError(exc);
+      if (getModel() != null) {
+        getModel().fatalError(getModel(), "VWindow.performActionImpl(final KopiAction action)", exc);
+      } else {
+        getApplication().displayError(null, MessageCode.getMessage("VIS-00041"));
+      }
+    }
+    
+    /**
+     * Starts the execution of the action.
+     */
+    protected void runAction() {
+      getApplication().setErrorHandler(this);
+      currentAction.run();
+      if (getModel() != null) {
+        // actions which close the window also
+        // set the referenced model to null
+        getModel().executedAction(currentAction);
+      }
+    }
+    
+    /**
+     * Executed when action execution is terminated
+     */
+    protected void endAction() {
+      setInAction();
+      synchronized (getApplication()) {
+        BackgroundThreadHandler.updateUI();
+      }
+      getApplication().setErrorHandler(null);
+    }
+    
+    /**
+     * Runs the next pending action in the queue.
+     */
+    public void runNextPendingAction() {
+      if (!actionsQueue.isEmpty()) {
+        QueuedAction            action;
+        
+        action = actionsQueue.poll();
+        if (action != null) {
+          action.execute();
+        }
+      }
+    }
+    
+    //---------------------------------------
+    // DATA MEMBERS
+    //---------------------------------------
+    
+    private boolean             sessionAlreadyUnlocked;
   }
   
-  //----------------------------------------------
+  /**
+   * Queued action hold information about action delayed in term
+   * of execution because there is another action running when
+   * this action comes.
+   */
+  /*package*/ class QueuedAction implements Serializable {
+    
+    //---------------------------------------
+    // CONSTRUCTOR
+    //---------------------------------------
+    
+    /**
+     * Creates a new queued action instance.
+     * @param action The kopi action to be executed.
+     * @param asynch Asynchronous execution ?
+     */
+    public QueuedAction(KopiAction action, boolean asynch) {
+      this.action = action;
+      this.asynch = asynch;
+    }
+    
+    //---------------------------------------
+    // IMPLEMENTATIONS
+    //---------------------------------------
+    
+    /**
+     * Runs this queued action. The action will be executed
+     * with window mechanism and will block other actions.
+     */
+    public void execute() {
+      performActionImpl(action, asynch);
+    }
+    
+    /**
+     * Returns {@code true} is this action can be cancelled.
+     * @return {@code true} is this action can be cancelled.
+     */
+    public boolean isCancellable() {
+      return action.isCancellable();
+    }
+    
+    //---------------------------------------
+    // DATA MEMBERS
+    //---------------------------------------
+    
+    private final KopiAction            action;
+    private final boolean               asynch;
+  }
+  
+  //---------------------------------------------------
   // FILE PRODUCTION IMPLEMENTATION
-  //----------------------------------------------
+  //---------------------------------------------------
    
   @Override
   public void fileProduced(File file) {
@@ -915,4 +1080,5 @@ public abstract class DWindow extends Window implements UWindow {
   private boolean                                       isWaitDialogAttached;    
   private boolean					askUser;
   private final ActionRunner    	      	        actionRunner;
+  private final ConcurrentLinkedQueue<QueuedAction>     actionsQueue;
 }

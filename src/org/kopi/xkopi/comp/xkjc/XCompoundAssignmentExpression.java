@@ -19,10 +19,27 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JAddExpression;
+import org.kopi.kopi.comp.kjc.JArrayAccessExpression;
+import org.kopi.kopi.comp.kjc.JBitwiseExpression;
+import org.kopi.kopi.comp.kjc.JCheckedExpression;
+import org.kopi.kopi.comp.kjc.JCompoundAssignmentExpression;
+import org.kopi.kopi.comp.kjc.JDivideExpression;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JFieldAccessExpression;
+import org.kopi.kopi.comp.kjc.JLocalVariableExpression;
+import org.kopi.kopi.comp.kjc.JMinusExpression;
+import org.kopi.kopi.comp.kjc.JModuloExpression;
+import org.kopi.kopi.comp.kjc.JMultExpression;
+import org.kopi.kopi.comp.kjc.JShiftExpression;
+import org.kopi.kopi.comp.kjc.KjcMessages;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.util.base.InconsistencyException;
 
 /**

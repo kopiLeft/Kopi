@@ -23,14 +23,15 @@ import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
 
-import com.graphbuilder.math.Expression;
-import com.graphbuilder.math.ExpressionTree;
-import com.graphbuilder.math.FuncMap;
-import com.graphbuilder.math.VarMap;
 import org.kopi.util.base.Utils;
 import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
 import org.kopi.xkopi.lib.type.NotNullFixed;
+
+import com.graphbuilder.math.Expression;
+import com.graphbuilder.math.ExpressionTree;
+import com.graphbuilder.math.FuncMap;
+import com.graphbuilder.math.VarMap;
 
 public class MReport implements Constants, Serializable {
 

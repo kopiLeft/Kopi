@@ -30,8 +30,8 @@ import javax.swing.JScrollBar;
 
 import org.kopi.vkopi.lib.form.KopiLayoutManager;
 import org.kopi.vkopi.lib.form.VBlock;
-import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.ui.swing.visual.SwingThreadHandler;
+import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VException;
 
 public class DChartBlock extends DBlock {

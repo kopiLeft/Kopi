@@ -19,8 +19,8 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.NoArgInstruction;
 
 /**
  * A class to represent an access to the length of an array

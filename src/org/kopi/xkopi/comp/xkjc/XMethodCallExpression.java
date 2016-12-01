@@ -19,10 +19,19 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
+import org.kopi.kopi.comp.kjc.CClass;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CMethodNotFoundError;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JOwnerExpression;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents methods call

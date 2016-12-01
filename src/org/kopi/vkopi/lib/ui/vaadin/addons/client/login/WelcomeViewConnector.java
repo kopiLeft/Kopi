@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,8 +22,6 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.login;
 import java.util.Map;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.WelcomeView;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.LoginWindowListener;
 
 import com.vaadin.client.annotations.OnStateChange;
@@ -54,7 +52,6 @@ public class WelcomeViewConnector extends AbstractComponentConnector implements 
   @Override
   protected void init() {
     super.init();
-    getWidget().setWelcomeImage(ResourcesUtil.getThemeURL(getConnection(), Icons.SLOGAN));
     getWidget().addLoginWindowListener(this);
   }
 
@@ -74,11 +71,15 @@ public class WelcomeViewConnector extends AbstractComponentConnector implements 
   }
   
   @OnStateChange("resources")
-  /*package*/ void setLogo() {
-    String		uri = getIconUri();
+  /*package*/ void setResources() {
+    String		logo = getResourceUrl("logo");
+    String              slogan = getResourceUrl("slogan");
     
-    if (uri != null) {
-      getWidget().setImage(uri, null);
+    if (logo != null) {
+      getWidget().setLogo(logo, null);
+    }
+    if (slogan != null) {
+      getWidget().setSloganImage(slogan);
     }
   }
   

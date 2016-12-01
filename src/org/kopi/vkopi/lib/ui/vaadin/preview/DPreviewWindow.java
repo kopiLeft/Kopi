@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.kopi.vkopi.lib.preview.VPreviewWindow;
 import org.kopi.vkopi.lib.ui.vaadin.visual.DWindow;
+
 import com.vaadin.server.FileResource;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.UI;

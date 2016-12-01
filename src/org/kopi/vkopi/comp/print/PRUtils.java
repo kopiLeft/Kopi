@@ -19,10 +19,20 @@
 
 package org.kopi.vkopi.comp.print;
 
-import java.util.Vector;
 import java.awt.Color;
-import org.kopi.kopi.comp.kjc.*;
+import java.util.Vector;
+
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.JCastExpression;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JParenthesedExpression;
+import org.kopi.kopi.comp.kjc.JStringLiteral;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.vkopi.comp.base.VKUtils;
 
 /**

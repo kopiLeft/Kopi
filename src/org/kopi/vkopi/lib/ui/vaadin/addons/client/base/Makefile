@@ -31,7 +31,9 @@ JAVAFILES += 	AcceleratorKeyCombination AcceleratorKeyHandler Icons	\
 		ShortcutAction	Styles	VAnchorPanel VHiddenSeparator	\
 		VInputButton VInputLabel VInputPassword VInputText	\
 		VParagraphPanel VPopup VScrollablePanel VSeparator	\
-		VSingleRowTable VSpanPanel VULPanel WidgetUtils
+		VSingleRowTable VSpanPanel VULPanel WidgetUtils		\
+		VConstants ConnectorUtils LocalizedMessages		\
+		DecimalFormatSymbols
 
 ## ----------------------------------------------------------------------
 ## FILES

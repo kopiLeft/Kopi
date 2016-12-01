@@ -19,7 +19,10 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.ClassReader;
+import org.kopi.kopi.comp.kjc.KjcEnvironment;
+import org.kopi.kopi.comp.kjc.KjcOptions;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  */

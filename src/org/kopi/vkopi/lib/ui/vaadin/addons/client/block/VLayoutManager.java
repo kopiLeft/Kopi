@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,6 +74,15 @@ public class VLayoutManager {
   protected void layout() {
     handler.handleColSpan();
     handler.layout(layout);
+  }
+  
+  /**
+   * Releases the content of this layout manager
+   */
+  public void release() {
+    handler.release();
+    handler = null;
+    layout = null;
   }
 
   //---------------------------------------------------
@@ -236,17 +245,25 @@ public class VLayoutManager {
       }
     }
     
+    /**
+     * Releases the content of this constraint handler
+     */
+    public void release() {
+      constraints.clear();
+      constraints = null;
+    }
+    
     //---------------------------------------
     // DATA MEMBERS
     //---------------------------------------
     
-    private final List<ConstraintWrapper>	constraints;
+    private List<ConstraintWrapper>     constraints;
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VAbstractBlockLayout			layout;
-  private final ConstraintsHandler			handler;
+  private VAbstractBlockLayout                  layout;
+  private ConstraintsHandler			handler;
 }

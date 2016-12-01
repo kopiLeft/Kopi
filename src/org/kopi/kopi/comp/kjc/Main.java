@@ -21,10 +21,10 @@ package org.kopi.kopi.comp.kjc;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.io.PrintWriter;
-import java.util.Vector;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Vector;
 
 //import org.kopi.bytecode.classfile.ClassPath;
 import org.kopi.bytecode.classfile.ClassFileFormatException;

@@ -21,11 +21,17 @@ package org.kopi.xkopi.comp.xkjc;
 
 import java.util.ArrayList;
 
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.xkopi.comp.sqlc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JVariableDefinition;
+import org.kopi.kopi.comp.kjc.KjcVisitor;
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.xkopi.comp.sqlc.Expression;
+import org.kopi.xkopi.comp.sqlc.FieldReference;
+import org.kopi.xkopi.comp.sqlc.SelectElem;
+import org.kopi.xkopi.comp.sqlc.SqlPhylum;
+import org.kopi.xkopi.comp.sqlc.SqlVisitor;
 
 /**
  * This class represents a typed column in a Sql SELECT

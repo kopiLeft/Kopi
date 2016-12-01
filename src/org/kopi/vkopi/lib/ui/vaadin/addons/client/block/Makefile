@@ -34,7 +34,8 @@ JAVAFILES += 	AbstractBlockLayoutConnector AbstractBlockLayoutState	\
 		MultiBlockLayoutState SimpleBlockLayoutConnector	\
 		SimpleBlockLayoutState VAbstractBlockLayout VAlignPanel	\
 		VSimpleBlockLayout VChartBlockLayout VMultiBlockLayout	\
-		VScrollBar VLayoutManager VChartBlockScrollBar
+		VScrollBar VLayoutManager VChartBlockScrollBar		\
+		ColumnView
 
 
 ## ----------------------------------------------------------------------

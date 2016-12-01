@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,12 +19,13 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.TextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.AutocompleteSuggestion;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.DefaultSuggestion;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.DefaultSuggestionDisplay;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.QueryListener;
 
@@ -32,6 +33,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.vaadin.client.BrowserInfo;
@@ -74,16 +76,16 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
     if (getWidget().textField == null) {
       getWidget().setTextField(createTextInput());
       getWidget().setConnection(getConnection());
+      getWidget().setHasAutocomplete(getState().hasAutocomplete);
+      getWidget().setSuggestionDisplay(new DefaultSuggestionDisplay(getConnection()));
+      getWidget().setOracle(getState().autocompleteLength);
+      // now we can set the query listener and selection listener
+      getWidget().setQueryListener(this);
+      getWidget().addSelectionHandler(this);
     }
     if (getState().text != null && getState().text.length() > 0) {
       getWidget().setText(getState().text);
     }
-    getWidget().setHasAutocomplete(getState().hasAutocomplete);
-    getWidget().setSuggestionDisplay(new DefaultSuggestionDisplay(getConnection()));
-    getWidget().setOracle(getState().autocompleteLength);
-    // now we can set the query listener and selection listener
-    getWidget().setQueryListener(this);
-    getWidget().addSelectionHandler(this);
   }
   
   @Override
@@ -97,7 +99,8 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
       
       @Override
       public void execute() {
-	getServerRpc().onSuggestion(((DefaultSuggestion) event.getSelectedItem()).getWrappedSuggestion());
+        //!!! not used in server side. we let it commented for potential future use.
+	//getServerRpc().onSuggestion(((DefaultSuggestion) event.getSelectedItem()).getWrappedSuggestion());
       }
     });
   }
@@ -105,9 +108,69 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
   @Override
   public void handleQuery(String query) {
     if (isSuggestionsQueryCanceled) {
-      allowSSuggestionsQuery();
+      allowSuggestionsQuery();
+    } else if (getState().type == CODE) {
+      isQueryingForSuggestions = true;
+      // for code fields we know the possible values so we don't query the server
+      internalHandleQuery(query, false, false);
     } else {
+      isQueryingForSuggestions = true;
       getServerRpc().onQuery(query);
+    }
+  }
+  
+  /**
+   * Internally handle suggestions query.
+   * This is especially done for enumeration fields
+   * where the suggestions are known in the client side.
+   * @param query The searched text.
+   * @param startsWith Look for suggestions that starts with the given query ?
+   * @param modal The suggestion display modality.
+   */
+  protected void internalHandleQuery(final String query, final boolean startsWith, boolean modal) {
+    // block every suggestion query on this field if we show a modal popup.
+    // this is the case of a field leave and an auto complete suggestion.
+    if (modal) {
+      isSuggestionsQueryCanceled = true;
+    }
+    getWidget().setSuggestionDisplayModality(modal);
+    getWidget().setSuggestions(internalCreateSuggestions(query, startsWith));
+    isQueryingForSuggestions = false;
+  }
+  
+  /**
+   * Internally creates suggestions list for an enumeration field.
+   * @param query The searched text.
+   * @param startsWith Look for suggestions that starts with the given query ?
+   * @return The suggestions list.
+   */
+  protected List<AutocompleteSuggestion> internalCreateSuggestions(String query,  boolean startsWith) {
+    if (query == null || "".equals(query)) {
+      return new ArrayList<AutocompleteSuggestion>(); //empty list
+    } else {
+      List<AutocompleteSuggestion>                suggestions;
+
+      suggestions = new ArrayList<AutocompleteSuggestion>();
+      for (int i = 0; i < getState().enumerations.length; i++) {
+        AutocompleteSuggestion          suggestion;
+
+        suggestion = new AutocompleteSuggestion();
+        suggestion.setId(i);
+        suggestion.setQuery(query);
+        if (startsWith) {
+          if (getState().enumerations[i].toLowerCase().startsWith(query.toLowerCase())) {
+            suggestion.setDisplayStrings(new String[] {getState().enumerations[i]});
+            suggestions.add(suggestion);
+          }
+        } else {
+          if (getState().enumerations[i].toLowerCase().contains(query.toLowerCase())) {
+            suggestion.setDisplayStrings(new String[] {getState().enumerations[i]});
+            suggestions.add(suggestion);
+          }
+        }
+      }
+      
+      return suggestions;
     }
   }
   
@@ -116,14 +179,24 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
    */
   protected void cancelSuggestionsQuery() {
     isSuggestionsQueryCanceled = true;
+    isQueryingForSuggestions = false;
   }
   
   /**
    * Allows suggestions to be fetched form
    * server side.
    */
-  protected void allowSSuggestionsQuery() {
+  protected void allowSuggestionsQuery() {
     isSuggestionsQueryCanceled = false;
+    isQueryingForSuggestions = false;
+  }
+  
+  /**
+   * Returns {@code true} if a suggestion query is sent to the server side.
+   * @return {@code true} if a suggestion query is sent to the server side.
+   */
+  protected boolean isQueryingForSuggestions() {
+    return isQueryingForSuggestions;
   }
   
   /**
@@ -218,13 +291,13 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
   protected void setValidationStrategy(VInputTextField text) {
     switch (getState().type) {
     case STRING:
-      text.setTextValidationStrategy(new AllowAllValidationStrategy());
+      text.setTextValidationStrategy(new StringValidationStrategy(getState().col, getState().rows, getState().fixedNewLine, getState().convertType));
       break;
     case INTEGER:
-      text.setTextValidationStrategy(new IntegerValidationStrategy());
+      text.setTextValidationStrategy(new IntegerValidationStrategy(getState().minval, getState().maxval));
       break;
     case FIXNUM:
-      text.setTextValidationStrategy(new FixnumValidationStrategy());
+      text.setTextValidationStrategy(new FixnumValidationStrategy(getState().maxScale, getState().fraction, getState().col, getState().minval, getState().maxval));
       break;
     case DATE:
       text.setTextValidationStrategy(new DateValidationStrategy());
@@ -239,7 +312,7 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
       text.setTextValidationStrategy(new WeekValidationStrategy());
       break;
     case TIMESTAMP:
-      text.setTextValidationStrategy(new AllowAllValidationStrategy());
+      text.setTextValidationStrategy(new TimestampValidationStrategy());
       break;
     case CODE:
       text.setTextValidationStrategy(new EnumValidationStrategy(getState().enumerations));
@@ -250,36 +323,67 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
   }
   
   /**
-   * Send the current text field to the server.
+   * Communicates the widget text to server side.
    */
   protected void sendTextToServer() {
-    sendTextToServer(getWidget().getText());
+    if (isEnabled() && needsSynchronization()) {
+      getRpcProxy(TextChangeServerRpc.class).onTextChange(getWidget().getText());
+      this.lastCommunicatedValue = getWidget().getText();
+    }
   }
   
   /**
-   * Sends the widget text to the server.
-   * @param text The widget text.
+   * Sends the dirty values to the server side.
+   * @param values The field values per record.
    */
-  protected void sendTextToServer(final String text) {
-    getRpcProxy(TextChangeServerRpc.class).onTextChange(text);
+  protected void sendDirtyValuesToServer(Map<Integer, String> values) {
+    if (isEnabled()) {
+      getRpcProxy(TextChangeServerRpc.class).onDirtyValues(values);
+    }
+  }
+  
+  /**
+   * Marks the connector to be dirty for the given record.
+   * This means that before performing any action, the value of this field
+   * for the given record should be communicated to the server.
+   * @param rec The active record.
+   * @param value The new field value.
+   */
+  protected void markAsDirty(int rec, String value) {
+    ((FieldConnector)getParent()).markAsDirty(rec, value);
+  }
+  
+  /**
+   * Returns {@code true} if the last communicated value is different from the widget value.
+   * @return {@code true} if the last communicated value is different from the widget value.
+   */
+  protected boolean needsSynchronization() {
+    return !lastCommunicatedValue.equals(getWidget().getText());
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
+  private String                        lastCommunicatedValue = "";
   private boolean                       isSuggestionsQueryCanceled;
+  private boolean                       isQueryingForSuggestions;
   private TextFieldClientRpc		rpc = new TextFieldClientRpc() {
     
     @Override
     public void setFocus(final boolean focused) {
-      Scheduler.get().scheduleEntry(new ScheduledCommand() {
+      // The field focus is delayed to ensure that it is
+      // executed after the page selection event when it occurs.
+      // If a page selection event and a field focus are called
+      // at the same time, the browser is frozen and the application
+      // cannot be used anymore
+      new Timer() {
         
         @Override
-        public void execute() {
+        public void run() {
           getWidget().setFocus(focused);
         }
-      });
+      }.schedule(60); //!!! experimental : ensure after a page selection event fixed at 60ms.
     }
 
     @Override
@@ -315,6 +419,7 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
 	  } else {
 	    getWidget().setSuggestions(suggestions);
 	  }
+	  isQueryingForSuggestions = false;
 	}
       });
     }

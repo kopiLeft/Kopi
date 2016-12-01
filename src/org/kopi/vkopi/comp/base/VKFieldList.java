@@ -19,10 +19,14 @@
 
 package org.kopi.vkopi.comp.base;
 
-import org.kopi.xkopi.comp.sqlc.TableReference;
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JClassExpression;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.xkopi.comp.sqlc.TableReference;
 
 /**
  * This class represent a list of data from the database

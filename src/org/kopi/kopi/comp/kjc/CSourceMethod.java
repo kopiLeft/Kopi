@@ -22,10 +22,10 @@ package org.kopi.kopi.comp.kjc;
 import java.util.ArrayList;
 
 import org.kopi.bytecode.classfile.ClassFileFormatException;
+import org.kopi.bytecode.classfile.CodeEnv;
+import org.kopi.bytecode.classfile.CodeInfo;
 import org.kopi.bytecode.classfile.MethodDescription;
 import org.kopi.bytecode.classfile.MethodInfo;
-import org.kopi.bytecode.classfile.CodeInfo;
-import org.kopi.bytecode.classfile.CodeEnv;
 import org.kopi.util.base.SimpleStringBuffer;
 
 /**

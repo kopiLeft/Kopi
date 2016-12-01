@@ -74,6 +74,7 @@ import org.kopi.vkopi.lib.visual.VRuntimeException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.xkopi.lib.type.Date;
 import org.kopi.xkopi.lib.type.Time;
+
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -559,6 +560,7 @@ public class DForm extends DWindow implements UForm, DPositionPanelListener {
     }
 
     public void validRecordNumberChanged() {}
+    public void recordInfoChanged(int rec, int info) {}
     public void orderChanged() {}
     public UBlock getCurrentDisplay() {
       // use another listener:

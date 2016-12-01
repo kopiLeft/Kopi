@@ -33,7 +33,7 @@
   	                            TristateCheckBoxConnector.java
   	                            TristateCheckBoxServerRpc.java
   	                            TristateCheckBoxState.java
-  	                            VTristateCheckBox.java" />
+   	                            VTristateCheckBox.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

@@ -106,7 +106,7 @@ public class VMenuTree extends VWindow {
     setActors(actors);
 
     localizeActors(ApplicationContext.getDefaultLocale());
-    createTree(loadFavorites);
+    createTree(isSuperUser ? true : loadFavorites);
     localizeModules(ApplicationContext.getDefaultLocale());
   }
 
@@ -416,7 +416,13 @@ public class VMenuTree extends VWindow {
   private void fetchFavorites() throws SQLException {
     Query       getFavorites = new Query(getDBContext().getDefaultConnection());
 
-    getFavorites.open("SELECT F.Modul, F.ID FROM FAVORITEN F WHERE F.Benutzer = " + getUserID() + " ORDER BY 2");
+    if (isSuperUser && userName != null) {
+      getFavorites.open("SELECT F.Modul, F.ID FROM FAVORITEN F WHERE F.Benutzer = "
+        + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + userName + "\')"
+        + " ORDER BY 2");
+    } else {
+      getFavorites.open("SELECT F.Modul, F.ID FROM FAVORITEN F WHERE F.Benutzer = " + getUserID() + " ORDER BY 2");
+    }
     while (getFavorites.next()) {
       int       id = getFavorites.getInt(1);
 
@@ -481,10 +487,14 @@ public class VMenuTree extends VWindow {
    * Sets the title of the frame
    */
   public void setTitle(String s) {
-    if (getTitle().contains(VlibProperties.getString("program_menu"))) {
-      super.setTitle(s);
+    if (s != null) {
+      if (s.contains(VlibProperties.getString("program_menu"))) {
+	super.setTitle(s);
+      } else {
+	super.setTitle(s + " - " + VlibProperties.getString("program_menu"));
+      }
     } else {
-      super.setTitle(s + " - " + VlibProperties.getString("program_menu"));
+      super.setTitle(VlibProperties.getString("program_menu"));
     }
   }
 
@@ -546,7 +556,14 @@ public class VMenuTree extends VWindow {
   public int getType() {
     return Constants.MDL_MENU_TREE;
   }
-
+  
+  /**
+   * Returns the user loaded with this menu tree instance.
+   * @return The user loaded with this menu tree instance.
+   */
+  public String getMenuTreeUser() {
+    return userName;
+  }
   
   public UMenuTree getDisplay() {
     return (UMenuTree) super.getDisplay();

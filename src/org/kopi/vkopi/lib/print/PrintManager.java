@@ -19,9 +19,9 @@
 
 package org.kopi.vkopi.lib.print;
 
+import org.kopi.vkopi.lib.util.Printer;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VWindow;
-import org.kopi.vkopi.lib.util.Printer;
 
 public interface PrintManager {
   /**

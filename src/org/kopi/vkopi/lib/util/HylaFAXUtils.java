@@ -24,11 +24,11 @@ import java.net.ConnectException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.kopi.vkopi.lib.base.Utils;
+
 import gnu.hylafax.HylaFAXClient;
 import gnu.hylafax.HylaFAXClientProtocol;
 import gnu.inet.ftp.ServerResponseException;
-
-import org.kopi.vkopi.lib.base.Utils;
 
 public class HylaFAXUtils {
 

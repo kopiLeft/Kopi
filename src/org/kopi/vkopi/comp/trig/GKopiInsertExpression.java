@@ -24,9 +24,28 @@ import java.util.ArrayList;
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CArrayType;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JArrayInitializer;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNewArrayExpression;
+import org.kopi.kopi.comp.kjc.JStringLiteral;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.xkopi.comp.sqlc.SqlcMessages;
-import org.kopi.xkopi.comp.xkjc.*;
+import org.kopi.xkopi.comp.xkjc.XDatabaseColumn;
+import org.kopi.xkopi.comp.xkjc.XDatabaseTable;
+import org.kopi.xkopi.comp.xkjc.XExpression;
+import org.kopi.xkopi.comp.xkjc.XKjcMessages;
+import org.kopi.xkopi.comp.xkjc.XKjcPrettyPrinter;
+import org.kopi.xkopi.comp.xkjc.XMutableType;
+import org.kopi.xkopi.comp.xkjc.XNameExpression;
+import org.kopi.xkopi.comp.xkjc.XProtectedStatement;
+import org.kopi.xkopi.comp.xkjc.XStdType;
+import org.kopi.xkopi.comp.xkjc.XUtils;
 
 /**
  * This class represents cursor declaration in code part

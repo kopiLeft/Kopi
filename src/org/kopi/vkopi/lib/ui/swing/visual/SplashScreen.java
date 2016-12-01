@@ -31,8 +31,6 @@ import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import org.kopi.vkopi.lib.ui.swing.visual.DObject;
-
 
 public class SplashScreen extends Window {
 

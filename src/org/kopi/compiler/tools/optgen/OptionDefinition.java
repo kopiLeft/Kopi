@@ -21,6 +21,7 @@ package org.kopi.compiler.tools.optgen;
 
 import java.io.PrintWriter;
 import java.util.Hashtable;
+
 import org.kopi.util.base.InconsistencyException;
 
 class OptionDefinition {

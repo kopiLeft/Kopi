@@ -19,8 +19,8 @@
 
 package org.kopi.xkopi.comp.dbi;
 
-import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.PositionedError;
+import org.kopi.compiler.base.TokenReference;
 import org.kopi.xkopi.comp.sqlc.Type;
 
 /**

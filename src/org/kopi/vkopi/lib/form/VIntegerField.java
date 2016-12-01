@@ -21,11 +21,11 @@ package org.kopi.vkopi.lib.form;
 
 import java.sql.SQLException;
 
-import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.list.VIntegerColumn;
-import org.kopi.vkopi.lib.visual.VlibProperties;
+import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
+import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.xkopi.lib.base.Query;
 
 /**
@@ -84,6 +84,22 @@ public class VIntegerField extends VField {
   public String getTypeName() {
     return VlibProperties.getString("Long");
   }
+  
+  /**
+   * Returns the min permitted value.
+   * @return The min permitted value.
+   */
+  public int getMinValue() {
+    return minval;
+  }
+  
+  /**
+   * Returns the max permitted value.
+   * @return The max permitted value.
+   */
+  public int getMaxValue() {
+    return maxval;
+  }
 
   // ----------------------------------------------------------------------
   // Interface Display
@@ -122,11 +138,11 @@ public class VIntegerField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception may be raised if text is bad
    */
-  public void checkType(Object o) throws VException {
+  public void checkType(int rec, Object o) throws VException {
     String s = (String)o;
 
     if (s.equals("")) {
-      setNull(block.getActiveRecord());
+      setNull(rec);
     } else {
       int	v;
 
@@ -143,7 +159,7 @@ public class VIntegerField extends VField {
 	throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ new Integer(maxval) }));
       }
 
-      setInt(block.getActiveRecord(), new Integer(v));
+      setInt(rec, new Integer(v));
     }
   }
 
@@ -163,7 +179,7 @@ public class VIntegerField extends VField {
    */
   public void setInt(int r, Integer v) {
     if (isChangedUI()
-        || value[r] == null
+        || (value[r] == null && v != null)
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -249,7 +265,19 @@ public class VIntegerField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Integer             oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   // ----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,8 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.block;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.SimpleBlockLayout;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.FieldConnector;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.label.LabelConnector;
 
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.shared.ui.Connect;
@@ -44,6 +46,9 @@ public class SimpleBlockLayoutConnector extends AbstractBlockLayoutConnector {
 
   @Override
   protected void handleHierarchyChange() {
+    ColumnView           columnView;
+    
+    columnView = null;
     for (ComponentConnector componentConnector : getChildComponents()) {
       if (componentConnector != null) {
 	ComponentConstraint			constraints;
@@ -51,8 +56,31 @@ public class SimpleBlockLayoutConnector extends AbstractBlockLayoutConnector {
 	constraints = getConstraint(componentConnector);
 	if (constraints != null) {
 	  getWidget().add(componentConnector.getWidget(), constraints);
+	  if (componentConnector instanceof LabelConnector) {
+	    if (columnView != null) {
+	      getBlock().addField(columnView);
+	    }
+	    columnView = new ColumnView(getBlock());
+	    columnView.setLabel((LabelConnector) componentConnector);
+	  } else if (componentConnector instanceof FieldConnector) {
+	    // a follow field has no label
+	    if (constraints.width < 0) {
+	      if (columnView != null) {
+	        getBlock().addField(columnView);
+	      }
+              columnView = new ColumnView(getBlock());
+              columnView.setLabel(null);
+              columnView.addField((FieldConnector) componentConnector);
+            } else if (columnView != null) {
+              columnView.addField((FieldConnector) componentConnector);
+            }
+          }
 	}
       }
+    }
+    // add last column view
+    if (columnView != null) {
+      getBlock().addField(columnView);
     }
   }
 

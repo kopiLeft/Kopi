@@ -20,13 +20,20 @@
 package org.kopi.vkopi.comp.form;
 
 import java.util.Vector;
-import org.kopi.vkopi.comp.base.VKPhylum;
-import org.kopi.vkopi.comp.base.VKContext;
-import org.kopi.vkopi.comp.base.VKPrettyPrinter;
-import org.kopi.vkopi.comp.base.VKUtils;
-import org.kopi.kopi.comp.kjc.*;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKUtils;
 
 /**
  * This class describe the alignment of multi blocks

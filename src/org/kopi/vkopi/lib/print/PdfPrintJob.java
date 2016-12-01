@@ -26,6 +26,7 @@ import java.io.InputStream;
 
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.util.PrintJob;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;

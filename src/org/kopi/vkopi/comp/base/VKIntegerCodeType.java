@@ -19,10 +19,15 @@
 
 package org.kopi.vkopi.comp.base;
 
+import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JIntLiteral;
 import org.kopi.xkopi.comp.database.DatabaseColumn;
 import org.kopi.xkopi.comp.database.DatabaseIntegerColumn;
-import org.kopi.kopi.comp.kjc.*;
 
 /**
  * This class represents the definition of a type

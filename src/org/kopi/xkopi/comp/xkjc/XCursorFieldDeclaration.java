@@ -19,11 +19,16 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.JavadocComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CClassContext;
+import org.kopi.kopi.comp.kjc.CModifier;
+import org.kopi.kopi.comp.kjc.CSourceField;
+import org.kopi.kopi.comp.kjc.JFieldDeclaration;
+import org.kopi.kopi.comp.kjc.JVariableDefinition;
+import org.kopi.kopi.comp.kjc.KjcMessages;
 
 /**
  * This class represents a java class in the syntax tree

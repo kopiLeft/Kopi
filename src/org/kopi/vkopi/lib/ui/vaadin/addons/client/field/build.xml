@@ -60,7 +60,10 @@
   				    ImageFieldState.java
 				    TextFieldServerRpc.java
   				    IntegerValidationStrategy.java
-				    TextFieldState.java" />
+				    TextFieldState.java
+				    StringValidationStrategy.java
+				    TimestampValidationStrategy.java
+				    CheckTypeException.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

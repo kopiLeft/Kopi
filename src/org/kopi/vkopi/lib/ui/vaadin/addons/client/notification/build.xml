@@ -41,7 +41,8 @@
 				    ErrorNotificationConnector.java
 				    VErrorMessagePopup.java
 				    InformationNotificationConnector.java
-				    VErrorNotification.java" />
+				    VErrorNotification.java
+				    NotificationUtils.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

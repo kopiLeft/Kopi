@@ -21,11 +21,15 @@ package org.kopi.vkopi.comp.base;
 
 import java.util.Vector;
 
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.CWarning;
+import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CParseClassContext;
+import org.kopi.kopi.comp.kjc.CParseCompilationUnitContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.JCompilationUnit;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * This class represents the definition of a form

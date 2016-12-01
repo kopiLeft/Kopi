@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ import com.vaadin.shared.ui.Connect.LoadStyle;
  * The progress dialog connector.
  */
 @SuppressWarnings("serial")
-@Connect(value = ProgressDialog.class, loadStyle = LoadStyle.LAZY)
+@Connect(value = ProgressDialog.class, loadStyle = LoadStyle.EAGER)
 public class ProgressDialogConnector extends AbstractComponentConnector {
   
   //--------------------------------------------------
@@ -75,6 +75,7 @@ public class ProgressDialogConnector extends AbstractComponentConnector {
   
   @Override
   public void onUnregister() {
+    getWidget().removeFromParent();
     cancelPolling();
     super.onUnregister();
   }

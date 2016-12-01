@@ -23,12 +23,12 @@ import java.sql.SQLException;
 
 import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.list.VWeekColumn;
-import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
+import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.xkopi.lib.base.Query;
-import org.kopi.xkopi.lib.type.Week;
 import org.kopi.xkopi.lib.type.NotNullWeek;
+import org.kopi.xkopi.lib.type.Week;
 
 @SuppressWarnings("serial")
 public class VWeekField extends VField {
@@ -103,17 +103,17 @@ public class VWeekField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception is raised if text is bad
    */
-  public void checkType(Object o) throws VException {
+  public void checkType(int rec, Object o) throws VException {
     String	s = (String)o;
 
     if (s.equals("")) {
-      setNull(block.getActiveRecord());
+      setNull(rec);
     } else {
-      parseWeek(s);
+      parseWeek(rec, s);
     }
   }
 
-  private void parseWeek(String s) throws VFieldException {
+  private void parseWeek(int rec, String s) throws VFieldException {
     int	week = 0;
     int	year = -1;
     int	bp = 0;
@@ -219,7 +219,7 @@ public class VWeekField extends VField {
       year += 1900;
     }
 
-    setWeek(block.getActiveRecord(), new NotNullWeek(year, week));
+    setWeek(rec, new NotNullWeek(year, week));
   }
 
   // ----------------------------------------------------------------------
@@ -238,7 +238,7 @@ public class VWeekField extends VField {
    */
   public void setWeek(int r, Week v) {
     if (isChangedUI() 
-        || value[r] == null
+        || (value[r] == null && v != null)
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -316,7 +316,19 @@ public class VWeekField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Week                oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   // ----------------------------------------------------------------------

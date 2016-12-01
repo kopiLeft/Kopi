@@ -19,6 +19,14 @@
 
 package org.kopi.bytecode.ssa;
 
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Vector;
+
 import org.kopi.bytecode.classfile.AccessorContainer;
 import org.kopi.bytecode.classfile.AccessorTransformer;
 import org.kopi.bytecode.classfile.BadAccessorException;
@@ -31,17 +39,7 @@ import org.kopi.bytecode.classfile.JumpInstruction;
 import org.kopi.bytecode.classfile.LocalVarInstruction;
 import org.kopi.bytecode.classfile.MethodInfo;
 import org.kopi.bytecode.classfile.SwitchInstruction;
-
 import org.kopi.util.base.InconsistencyException;
-
-
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * The control flow graph of a method.

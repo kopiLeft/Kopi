@@ -19,11 +19,11 @@
 
 package org.kopi.vkopi.lib.util;
 
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
-import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 /**
  * This class is used to set a hierachical structure for handling propreties:

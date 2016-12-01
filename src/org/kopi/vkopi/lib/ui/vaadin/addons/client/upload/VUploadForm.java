@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.upload;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -36,7 +38,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.BrowserInfo;
-import com.vaadin.client.ConnectorMap;
 import com.vaadin.client.VConsole;
 
 /**
@@ -228,11 +229,7 @@ public class VUploadForm extends SimplePanel {
    * @return The upload connector.
    */
   protected UploadConnector getConnector() {
-    if (client != null) {
-      return (UploadConnector) ConnectorMap.get(client).getConnector(this);
-    }
-    
-    return null;
+    return ConnectorUtils.getConnector(client, this, UploadConnector.class);
   }
 
   private static native void setEncoding(Element form, String encoding)

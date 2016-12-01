@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -114,6 +114,17 @@ public class VMultiBlockLayout extends VAbstractBlockLayout {
     chartLayout.updateScroll(pageSize, maxValue, enable, value);
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    pane.clear();
+    pane = null;
+    detailLayout.clear();
+    chartLayout.clear();
+    detailLayout = null;
+    chartLayout = null;
+  }
+  
   /**
    * Switch from the chart view to the detail view and vis versa.
    * Switch is only performed when it is a multi block.
@@ -131,7 +142,7 @@ public class VMultiBlockLayout extends VAbstractBlockLayout {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final DeckPanel		pane;
+  private DeckPanel		        pane;
   private VSimpleBlockLayout		detailLayout;
   private VChartBlockLayout		chartLayout;
 }

@@ -19,14 +19,13 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 import org.kopi.bytecode.classfile.ClassInfo;
 import org.kopi.bytecode.classfile.FieldInfo;
 import org.kopi.bytecode.classfile.InnerClassInfo;
 import org.kopi.bytecode.classfile.MethodInfo;
-
 import org.kopi.compiler.base.UnpositionedError;
 
 /**

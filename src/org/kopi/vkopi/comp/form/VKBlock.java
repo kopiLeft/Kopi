@@ -49,7 +49,6 @@ import org.kopi.kopi.comp.kjc.JFieldAccessExpression;
 import org.kopi.kopi.comp.kjc.JFormalParameter;
 import org.kopi.kopi.comp.kjc.JIntLiteral;
 import org.kopi.kopi.comp.kjc.JLocalVariable;
-import org.kopi.kopi.comp.kjc.JMethodCallExpression;
 import org.kopi.kopi.comp.kjc.JMethodDeclaration;
 import org.kopi.kopi.comp.kjc.JNameExpression;
 import org.kopi.kopi.comp.kjc.JNewArrayExpression;

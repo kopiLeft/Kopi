@@ -19,7 +19,15 @@
 
 package org.kopi.bytecode.memcnt;
 
-import org.kopi.bytecode.classfile.*;
+import org.kopi.bytecode.classfile.ClassInfo;
+import org.kopi.bytecode.classfile.CodeInfo;
+import org.kopi.bytecode.classfile.FieldInfo;
+import org.kopi.bytecode.classfile.FieldRefInstruction;
+import org.kopi.bytecode.classfile.Instruction;
+import org.kopi.bytecode.classfile.MethodInfo;
+import org.kopi.bytecode.classfile.MethodRefInstruction;
+import org.kopi.bytecode.classfile.NoArgInstruction;
+import org.kopi.bytecode.classfile.PushLiteralInstruction;
 
 /**
  * This class instruments a class info.

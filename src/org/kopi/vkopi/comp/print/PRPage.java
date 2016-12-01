@@ -21,17 +21,49 @@ package org.kopi.vkopi.comp.print;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CLineError;
+import org.kopi.kopi.comp.kjc.CParseClassContext;
+import org.kopi.kopi.comp.kjc.CParseCompilationUnitContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CTypeVariable;
+import org.kopi.kopi.comp.kjc.JBlock;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
+import org.kopi.kopi.comp.kjc.JClassDeclaration;
+import org.kopi.kopi.comp.kjc.JClassImport;
+import org.kopi.kopi.comp.kjc.JCompilationUnit;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JFieldDeclaration;
+import org.kopi.kopi.comp.kjc.JFormalParameter;
+import org.kopi.kopi.comp.kjc.JIntLiteral;
+import org.kopi.kopi.comp.kjc.JLocalVariable;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JMethodDeclaration;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JPackageImport;
+import org.kopi.kopi.comp.kjc.JReturnStatement;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JSuperExpression;
+import org.kopi.kopi.comp.kjc.JSwitchGroup;
+import org.kopi.kopi.comp.kjc.JSwitchLabel;
+import org.kopi.kopi.comp.kjc.JSwitchStatement;
+import org.kopi.kopi.comp.kjc.KjcEnvironment;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.util.base.Utils;
-import org.kopi.vkopi.comp.base.*;
+import org.kopi.vkopi.comp.base.VKCompilationUnit;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 
 /**
  * This class represents the definition of a page

@@ -32,6 +32,7 @@ import org.kopi.vkopi.lib.util.PrintException;
 import org.kopi.vkopi.lib.util.PrintJob;
 import org.kopi.vkopi.lib.util.Printer;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;

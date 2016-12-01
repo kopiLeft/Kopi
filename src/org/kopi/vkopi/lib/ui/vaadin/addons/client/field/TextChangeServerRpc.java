@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
+import java.util.Map;
+
 import com.vaadin.shared.annotations.NoLoadingIndicator;
 import com.vaadin.shared.communication.ServerRpc;
 
@@ -33,4 +35,11 @@ public interface TextChangeServerRpc extends ServerRpc {
    */
   @NoLoadingIndicator
   public void onTextChange(String text);
+  
+  /**
+   * Fired when the text content has changed for the mentioned records in the map key.
+   * @param values The field value per record number..
+   */
+  @NoLoadingIndicator
+  public void onDirtyValues(Map<Integer, String> values);
 }

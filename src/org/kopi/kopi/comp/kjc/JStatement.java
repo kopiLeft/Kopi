@@ -19,11 +19,11 @@
 
 package org.kopi.kopi.comp.kjc;
 
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
-import org.kopi.util.base.MessageDescription;
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.util.base.MessageDescription;
 
 /**
  * JLS 14.5: Statement

@@ -105,13 +105,11 @@ public class VTimestampField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception is raised if text is bad
    */
-  public void checkType(Object o) throws VException {
-    int         record = block.getActiveRecord();
-
+  public void checkType(int rec, Object o) throws VException {
     if (((String)o).equals("")) {
-      setNull(record);
+      setNull(rec);
     } else {
-      setTimestamp(record, Timestamp.now()); // !!! laurent : TO MODIFY
+      setTimestamp(rec, Timestamp.now()); // !!! laurent : TO MODIFY
     }
   }
 
@@ -131,7 +129,7 @@ public class VTimestampField extends VField {
    */
   public void setTimestamp(int r, Timestamp v) {
     if (isChangedUI()
-        || value[r] == null
+        || (value[r] == null && v != null)
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -215,7 +213,19 @@ public class VTimestampField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Timestamp           oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   public boolean fillField(PredefinedValueHandler handler) throws VException {

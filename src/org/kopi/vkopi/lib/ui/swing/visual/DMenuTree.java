@@ -141,7 +141,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
 	}
       }
     }
-    if (!getModel().getShortcutsID().isEmpty()) {
+    if (!getModel().getShortcutsID().isEmpty() && !getModel().isSuperUser()) {
       toolbar.show();
       toolbar.toFront();
     }
@@ -254,14 +254,16 @@ public class DMenuTree extends DWindow implements UMenuTree {
    * Move the focus from the activated frame to favorites frame.
    */
   public void gotoShortcuts() {
-    try {
-      if (toolbar.isVisible()) {
-        toolbar.setVisible(false);
+    if (!getModel().isSuperUser()) {
+      try {
+        if (toolbar.isVisible()) {
+          toolbar.setVisible(false);
+        }
+        toolbar.setVisible(true);
+        toolbar.toFront();
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-      toolbar.setVisible(true);
-      toolbar.toFront();
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 

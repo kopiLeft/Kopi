@@ -23,11 +23,8 @@ import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-
-import org.kopi.kopi.comp.kjc.JBooleanLiteral;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
-
 import org.kopi.xkopi.comp.sqlc.SqlcMessages;
 import org.kopi.xkopi.comp.sqlc.TableName;
 import org.kopi.xkopi.comp.sqlc.TableReference;

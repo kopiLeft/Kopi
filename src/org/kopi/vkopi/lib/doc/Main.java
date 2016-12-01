@@ -35,10 +35,10 @@ import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.vkopi.lib.form.LatexPrintWriter;
 import org.kopi.vkopi.lib.form.UForm;
 import org.kopi.vkopi.lib.form.VForm;
-import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.vkopi.lib.visual.ApplicationConfiguration;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.Module;

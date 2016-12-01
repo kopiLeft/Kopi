@@ -485,6 +485,9 @@ public class DBlock extends JPanel implements UBlock {
 
   public void validRecordNumberChanged() {
   }
+  
+  public void recordInfoChanged(int rec, int info) {  
+  }
 
   public UBlock getCurrentDisplay() {
     return this;

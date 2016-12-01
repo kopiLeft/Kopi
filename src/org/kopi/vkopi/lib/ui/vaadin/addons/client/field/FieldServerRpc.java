@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,4 +44,52 @@ public interface FieldServerRpc extends ServerRpc {
    */
   @NoLoadingIndicator
   public void onClick();
+  
+  /**
+   * Transfers the focus to this field in the model side.
+   */
+  @NoLoadingIndicator
+  public void transferFocus();
+  
+  /**
+   * A goto the next field performed by the server side.
+   */
+  @NoLoadingIndicator
+  public void gotoNextField();
+  
+  /**
+   * A goto the previous field performed by the server side.
+   */
+  @NoLoadingIndicator
+  public void gotoPrevField();
+  
+  /**
+   * A goto the next empty must fill field performed by the server side.
+   */
+  @NoLoadingIndicator
+  public void gotoNextEmptyMustfill();
+  
+  /**
+   * A goto the next record performed by the server side.
+   */
+  @NoLoadingIndicator
+  public void gotoNextRecord();
+  
+  /**
+   * A goto the previous record performed by the server side.
+   */
+  @NoLoadingIndicator
+  public void gotoPrevRecord();
+
+  /**
+   * Performs a request to go to the first record.
+   */
+  @NoLoadingIndicator
+  public void gotoFirstRecord();
+
+  /**
+   * Performs a request to go to the last field.
+   */
+  @NoLoadingIndicator
+  public void gotoLastRecord();
 }

@@ -27,8 +27,8 @@ COPYSOURCES =	true
 ## TOOLS
 
 JAVAFILES += 	TristateChangeListener TristateCheckBoxClientRpc	\
-		TristateCheckBoxConnector TristateCheckBoxServerRpc	\
-		TristateCheckBoxState VTristateCheckBox
+                TristateCheckBoxConnector TristateCheckBoxServerRpc	\
+                TristateCheckBoxState VTristateCheckBox
 
 ## ----------------------------------------------------------------------
 ## FILES

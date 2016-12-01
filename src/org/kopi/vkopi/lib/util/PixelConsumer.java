@@ -21,8 +21,8 @@ package org.kopi.vkopi.lib.util;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.image.ImageConsumer;
 import java.awt.image.ColorModel;
+import java.awt.image.ImageConsumer;
 
 public class PixelConsumer implements ImageConsumer {
 

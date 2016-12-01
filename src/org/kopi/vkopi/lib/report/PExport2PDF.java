@@ -26,13 +26,14 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.vkopi.lib.report.UReport.UTable;
 import org.kopi.vkopi.lib.util.PPaperType;
 import org.kopi.vkopi.lib.util.PrintJob;
 import org.kopi.vkopi.lib.visual.VlibProperties;
-import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.xkopi.lib.type.Date;
 import org.kopi.xkopi.lib.type.Time;
+
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;

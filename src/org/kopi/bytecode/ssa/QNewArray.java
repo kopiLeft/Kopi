@@ -19,8 +19,8 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.NewarrayInstruction;
 import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.NewarrayInstruction;
 /**
  * A class to represent instruction newarray
  */

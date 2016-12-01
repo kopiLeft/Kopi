@@ -50,6 +50,7 @@ import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.WindowBuilder;
 import org.kopi.vkopi.lib.visual.WindowController;
 import org.kopi.xkopi.lib.base.DBContextHandler;
+
 import com.lowagie.text.Rectangle;
 
 /**

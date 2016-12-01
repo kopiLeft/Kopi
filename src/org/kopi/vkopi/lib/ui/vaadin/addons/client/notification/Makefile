@@ -32,7 +32,7 @@ JAVAFILES += 	AbstractNotificationConnector AbstractNotificationState	\
 		VAbstractNotification VConfirmNotification		\
 		VErrorMessagePopup VErrorNotification			\
 		VInformationNotification VWarningNotification		\
-		WarningNotificationConnector
+		WarningNotificationConnector NotificationUtils
 
 ## ----------------------------------------------------------------------
 ## FILES

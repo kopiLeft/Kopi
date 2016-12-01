@@ -28,14 +28,14 @@ import java.util.List;
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.CompilerMessages;
 import org.kopi.compiler.base.PositionedError;
-import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.compiler.tools.antlr.extra.InputBuffer;
 import org.kopi.compiler.tools.antlr.runtime.ParserException;
 import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
 import org.kopi.kopi.comp.kjc.JCompilationUnit;
-import org.kopi.kopi.comp.kjc.KjcPrettyPrinter;
 import org.kopi.kopi.comp.kjc.KjcEnvironment;
+import org.kopi.kopi.comp.kjc.KjcPrettyPrinter;
 import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**

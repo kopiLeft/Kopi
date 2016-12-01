@@ -110,6 +110,14 @@ public class VCommand {
   public int getKey() {
     return actor != null ? actor.acceleratorKey : 0;
   }
+  
+  /**
+   * Returns the actor associated with this command.
+   * @return The actor associated with this command.
+   */
+  public VActor getActor() {
+    return actor;
+  }
 
   // ----------------------------------------------------------------------
   // HELP HANDLING

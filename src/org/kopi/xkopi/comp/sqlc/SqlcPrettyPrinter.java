@@ -23,8 +23,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ListIterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Stack;
 
 import org.kopi.compiler.base.PositionedError;

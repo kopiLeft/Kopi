@@ -19,11 +19,11 @@
 
 package org.kopi.vkopi.lib.util;
 
-import java.net.Socket;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.LineNumberReader;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
+import java.net.Socket;
 
 /**
  * Remote execution client

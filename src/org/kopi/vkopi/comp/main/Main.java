@@ -40,12 +40,23 @@ import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
 import org.kopi.kopi.comp.kjc.JCompilationUnit;
 import org.kopi.kopi.comp.kjc.KjcClassReader;
 import org.kopi.kopi.comp.kjc.KjcMessages;
-import org.kopi.xkopi.comp.xkjc.XKjcSignatureParser;
-import org.kopi.vkopi.comp.base.*;
+import org.kopi.vkopi.comp.base.BaseMessages;
+import org.kopi.vkopi.comp.base.BaseParser;
+import org.kopi.vkopi.comp.base.VKCompilationUnit;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKEnvironment;
+import org.kopi.vkopi.comp.base.VKInsert;
+import org.kopi.vkopi.comp.base.VKInsertParser;
+import org.kopi.vkopi.comp.base.VKKjcTypeFactory;
+import org.kopi.vkopi.comp.base.VKOptions;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKStdType;
+import org.kopi.vkopi.comp.base.VKTopLevel;
 import org.kopi.vkopi.comp.chart.ChartParser;
 import org.kopi.vkopi.comp.form.FormParser;
 import org.kopi.vkopi.comp.print.PrintParser;
 import org.kopi.vkopi.comp.report.ReportParser;
+import org.kopi.xkopi.comp.xkjc.XKjcSignatureParser;
 
 /**
  * This class implements the entry point of the Kopi compiler

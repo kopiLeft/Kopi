@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
-
 import org.kopi.util.base.InconsistencyException;
 
 /**

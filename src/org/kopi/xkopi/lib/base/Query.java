@@ -34,8 +34,6 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.xkopi.lib.type.Date;

@@ -27,9 +27,9 @@ import org.kopi.kopi.comp.kjc.JFieldAccessExpression;
 import org.kopi.kopi.comp.kjc.JNewArrayExpression;
 import org.kopi.kopi.comp.kjc.JStringLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.xkopi.comp.sqlc.Constants;
 import org.kopi.xkopi.comp.xkjc.XDatabaseColumn;
 import org.kopi.xkopi.comp.xkjc.XDatabaseTable;
-import org.kopi.xkopi.comp.sqlc.Constants;
 
 /**
  * The type of a field which represents a table in Database.k

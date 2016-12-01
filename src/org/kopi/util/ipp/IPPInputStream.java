@@ -19,9 +19,9 @@
 
 package org.kopi.util.ipp;
 
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.kopi.util.base.InconsistencyException;
 

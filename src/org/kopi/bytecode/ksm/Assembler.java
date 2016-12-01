@@ -19,7 +19,11 @@
 
 package org.kopi.bytecode.ksm;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.kopi.bytecode.classfile.ClassFileFormatException;
 import org.kopi.bytecode.classfile.ClassInfo;

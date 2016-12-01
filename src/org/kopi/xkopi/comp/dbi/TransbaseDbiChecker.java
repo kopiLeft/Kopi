@@ -25,7 +25,12 @@ import java.util.ListIterator;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.util.base.InconsistencyException;
-import org.kopi.xkopi.comp.sqlc.*;
+import org.kopi.xkopi.comp.sqlc.CastPrimary;
+import org.kopi.xkopi.comp.sqlc.Expression;
+import org.kopi.xkopi.comp.sqlc.FieldNameList;
+import org.kopi.xkopi.comp.sqlc.JdbcDateLiteral;
+import org.kopi.xkopi.comp.sqlc.SqlContext;
+import org.kopi.xkopi.comp.sqlc.Type;
 import org.kopi.xkopi.lib.base.DriverInterface;
 import org.kopi.xkopi.lib.base.TbxDriverInterface;
 import org.kopi.xkopi.lib.type.Date;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -66,6 +66,12 @@ public class ImageFieldConnector extends ObjectFieldConnector {
   @Override
   public boolean delegateCaptionHandling() {
     return false;
+  }
+  
+  @Override
+  public void onUnregister() {
+    getWidget().clear();
+    super.onUnregister();
   }
   
   /**

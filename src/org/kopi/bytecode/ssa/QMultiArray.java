@@ -19,8 +19,8 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.MultiarrayInstruction;
 import org.kopi.bytecode.classfile.Constants;
+import org.kopi.bytecode.classfile.MultiarrayInstruction;
 /**
  * A class to represent instruction multiarray
  */

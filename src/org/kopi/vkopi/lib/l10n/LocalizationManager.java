@@ -24,7 +24,6 @@ import java.util.Locale;
 
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
-
 import org.kopi.util.base.InconsistencyException;
 
 /**

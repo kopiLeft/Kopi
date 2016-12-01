@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -513,7 +513,28 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
       }
     }
   }
-
+  
+  @Override
+  public void clear() {
+    super.clear();
+    listeners.clear();
+    listeners = null;
+    header = null;
+    windowsLink = null;
+    welcome = null;
+    content = null;
+    container = null;
+    locale = null;
+    windows.clear();
+    windows = null;
+    shownInPopupWindow.clear();
+    shownInPopupWindow = null;
+    originalWindowTitle = null;
+    windowsMenu = null;
+    currentWindow = null;
+    instance = null;
+  }
+  
   @Override
   protected void onLoad() {
     super.onLoad();
@@ -556,6 +577,14 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
    */
   public static String getLocale() {
     return instance.locale;
+  }
+  
+  /**
+   * Returns the current shown window. 
+   * @return the current shown window. 
+   */
+  public Widget getCurrentWindow() {
+    return currentWindow;
   }
   
   //---------------------------------------------------

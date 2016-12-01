@@ -19,11 +19,9 @@
 
 package org.kopi.vkopi.comp.base;
 
-import java.util.Vector;
-
-import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.JExpression;
 
 /**
  * This class represent a command, ie a link between an actor and

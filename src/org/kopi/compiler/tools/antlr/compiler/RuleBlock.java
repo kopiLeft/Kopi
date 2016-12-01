@@ -21,7 +21,8 @@ package org.kopi.compiler.tools.antlr.compiler;
 
 import java.util.Hashtable;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.Vector;
 
 /**
  * A list of alternatives and info contained in

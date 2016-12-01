@@ -19,12 +19,12 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.bytecode.classfile.Constants;
-
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
+
+import org.kopi.bytecode.classfile.Constants;
 
 /**
  * A SSA variable

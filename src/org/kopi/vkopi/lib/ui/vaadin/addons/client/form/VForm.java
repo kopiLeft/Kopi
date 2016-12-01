@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,20 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VScrollablePanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VCaption;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VTabSheet;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.FormListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.PositionPanelListener;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -138,23 +134,9 @@ public class VForm extends SimplePanel {
         @Override
         public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
           // before leaving page, send current focused text field value to the server side. 
-          VInputTextField.communicateCurrentTextToServer();
           if (fireSelectionEvent) {
             event.cancel();
             firePageSelected(event.getItem().intValue());
-          }
-        }
-      });
-      
-      tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
-        
-        @Override
-        public void onSelection(SelectionEvent<Integer> event) {
-          VScrollablePanel              parent;
-          
-          parent = WidgetUtils.getParent(VForm.this, VScrollablePanel.class);
-          if (parent != null) {
-            parent.resize(Window.getClientWidth(), Window.getClientHeight());
           }
         }
       });
@@ -167,16 +149,25 @@ public class VForm extends SimplePanel {
    * Selects the given page
    * @param page The page index.
    */
-  public void selectPage(int page) {
-    if (tabPanel != null) {
-      fireSelectionEvent = false;
-      // for some reasons, the page ability event is fired after
-      // the page selection event. A workaround is to enable the 
-      // selected page before to allow selection.
-      setEnabled(true, page);
-      tabPanel.selectTab(page);
-      fireSelectionEvent = true;
-    }
+  public void selectPage(final int page) {
+    // we delay the page selection event since it can
+    // cause browser freeze when a field focus is called
+    // at the same time.
+    new Timer() {
+      
+      @Override
+      public void run() {
+        if (tabPanel != null) {
+          fireSelectionEvent = false;
+          // for some reasons, the page ability event is fired after
+          // the page selection event. A workaround is to enable the 
+          // selected page before to allow selection.
+          setEnabled(true, page);
+          tabPanel.selectTab(page);
+          fireSelectionEvent = true;
+        }
+      }
+    }.schedule(40);
   }
   
   /**
@@ -284,14 +275,31 @@ public class VForm extends SimplePanel {
       }
     }
   }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    listeners.clear();
+    listeners = null;
+    for (VPage page : pages) {
+      page.release();
+    }
+    pages = null;
+    if (tabPanel != null) {
+      tabPanel.clear();
+    }
+    tabPanel = null;
+    blockInfo.clear();
+    blockInfo = null;
+  }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final List<FormListener>		listeners;
+  private List<FormListener>		        listeners;
   private VPage[]				pages;
   private VTabSheet				tabPanel;
   private boolean				fireSelectionEvent = true;
-  private final VPositionPanel			blockInfo;
+  private VPositionPanel			blockInfo;
 }

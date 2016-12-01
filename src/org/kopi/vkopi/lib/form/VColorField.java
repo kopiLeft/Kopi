@@ -27,8 +27,8 @@ import java.sql.SQLException;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.list.VColorColumn;
 import org.kopi.vkopi.lib.list.VListColumn;
-import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.VException;
+import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.xkopi.lib.base.Query;
 
 @SuppressWarnings("serial")
@@ -100,7 +100,7 @@ public class VColorField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception is raised if text is bad
    */
-  public void checkType(Object o) {
+  public void checkType(int rec, Object o) {
   }
 
   public int getType() {
@@ -222,7 +222,19 @@ public class VColorField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Color               oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   /**

@@ -20,8 +20,8 @@
 package org.kopi.kopi.comp.kjc;
 
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.util.base.SimpleStringBuffer;
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.util.base.SimpleStringBuffer;
 
 /**
  * This class represents class type in the type structure

@@ -19,17 +19,17 @@
 
 package org.kopi.bytecode.ssa;
 
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Vector;
+
 import org.kopi.bytecode.classfile.Instruction;
 import org.kopi.bytecode.classfile.JumpInstruction;
 import org.kopi.bytecode.classfile.LocalVarInstruction;
 import org.kopi.bytecode.classfile.SwitchInstruction;
-
-import java.util.BitSet;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Vector;
 
 /**
  * A basic block of the flow graph.

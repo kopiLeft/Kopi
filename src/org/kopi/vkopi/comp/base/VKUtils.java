@@ -20,7 +20,26 @@
 package org.kopi.vkopi.comp.base;
 
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JArrayInitializer;
+import org.kopi.kopi.comp.kjc.JAssignmentExpression;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JFieldAccessExpression;
+import org.kopi.kopi.comp.kjc.JFieldDeclaration;
+import org.kopi.kopi.comp.kjc.JFloatLiteral;
+import org.kopi.kopi.comp.kjc.JFormalParameter;
+import org.kopi.kopi.comp.kjc.JIntLiteral;
+import org.kopi.kopi.comp.kjc.JLocalVariable;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNewArrayExpression;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JStringLiteral;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.kopi.comp.kjc.JVariableDefinition;
 import org.kopi.xkopi.comp.xkjc.XStdType;
 import org.kopi.xkopi.lib.type.Fixed;
 

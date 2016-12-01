@@ -30,6 +30,7 @@ import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.ui.vaadin.addons.Block;
 import org.kopi.vkopi.lib.ui.vaadin.addons.BlockLayout;
 import org.kopi.vkopi.lib.ui.vaadin.addons.SimpleBlockLayout;
+import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
 
@@ -54,6 +55,10 @@ public class DBlock extends Block implements UBlock {
    */
   public DBlock(DForm parent, VBlock model) {
     super(model.isDroppable());
+    setBufferSize(model.getBufferSize());
+    setDisplaySize(model.getDisplaySize());
+    setSortedRecords(model.getSortedRecords());
+    setNoMove(model.noMove());
     this.maxRowPos = model.getMaxRowPos();
     this.maxColumnPos = model.getMaxColumnPos();
     this.displayedFields = model.getDisplayedFields();
@@ -77,6 +82,16 @@ public class DBlock extends Block implements UBlock {
       setDropHandler(new DBlockDropHandler(model));
       setDragStartMode(DragStartMode.HTML5);
     }
+    
+    // fire record info change event
+    // this is needed to notify view side with the record
+    // info changes done when the block listener is not yet
+    // installed.
+    for (int i = 0; i < model.getBufferSize(); i++) {
+      if (model.getRecordInfoAt(i) != 0) {
+        fireRecordInfoChanged(i, model.getRecordInfoAt(i));
+      }
+    }
   }
   
   //------------------------------------------------
@@ -87,11 +102,15 @@ public class DBlock extends Block implements UBlock {
    * Creates block fields
    */
   protected void createFields() {
-    VField[]  fields = model.getFields();
+    VField[]    fields = model.getFields();
+    int         index = 0;
 
     columnViews = new VFieldUI[fields.length];
     for (int i = 0; i < fields.length; i++) {
-      columnViews[i] = createFieldDisplays(fields[i]);
+      columnViews[i] = createFieldDisplays(index, fields[i]);
+      if (columnViews[i] != null) {
+        index += 1;
+      }
     }
   }
 
@@ -148,11 +167,11 @@ public class DBlock extends Block implements UBlock {
    * @param model The field model.
    * @return The row controller.
    */
-  private VFieldUI createFieldDisplays(VField model) {
+  private VFieldUI createFieldDisplays(int index, VField model) {
     if (!model.isInternal() /*hidden field */) {
       VFieldUI  	ui;
 
-      ui = new DFieldUI(this, model);
+      ui = new DFieldUI(this, model, index);
       return ui;
     } else {
       return null;
@@ -252,6 +271,51 @@ public class DBlock extends Block implements UBlock {
         }
       }
     }
+    // sends the model active record to client side.
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        fireActiveRecordChanged(model.getActiveRecord());
+      }
+    });
+  }
+  
+  @Override
+  protected void fireValueChanged(final int col, final int rec, final String value) {
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        DBlock.super.fireValueChanged(col, rec, value);
+      }
+    });
+  }
+  
+  @Override
+  protected void fireColorChanged(final int col,
+                                  final int rec,
+                                  final String foreground,
+                                  final String background)
+  {
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        DBlock.super.fireColorChanged(col, rec, foreground, background);
+      }
+    });
+  }
+  
+  @Override
+  protected void fireRecordInfoChanged(final int rec, final int info) {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        DBlock.super.fireRecordInfoChanged(rec, info);
+      }
+    });
   }
 
   /**
@@ -437,21 +501,29 @@ public class DBlock extends Block implements UBlock {
   }
 
   @Override
-  public void blockAccessChanged(VBlock block, boolean newAccess) {
-    refresh(true);
-  }
+  public void blockAccessChanged(VBlock block, boolean newAccess) {}
 
   @Override
-  public void blockViewModeLeaved(VBlock block, VField actviceField) {}
+  public void blockViewModeLeaved(VBlock block, VField activeField) {}
 
   @Override
-  public void blockViewModeEntered(VBlock block, VField actviceField) {}
+  public void blockViewModeEntered(VBlock block, VField activeField) {}
 
   @Override
   public void validRecordNumberChanged() {}
   
   @Override
+  public void recordInfoChanged(int rec, int info) {}
+  
+  @Override
   public void orderChanged() {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        DBlock.super.fireOrderChanged(getModel().getSortedRecords());
+      }
+    });
     refresh(true);
   }
 
@@ -474,7 +546,7 @@ public class DBlock extends Block implements UBlock {
   protected final int			displayedFields;
 	  
   // cached infos
-  private  int				sortedToprec;		// first record displayed
+  protected  int		        sortedToprec;		// first record displayed
   private  int[]			sortedRecToDisplay;
   private  int[]			displayToSortedRec;
 }

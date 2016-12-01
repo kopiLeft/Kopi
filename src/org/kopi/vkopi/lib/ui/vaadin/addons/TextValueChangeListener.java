@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,4 +32,11 @@ public interface TextValueChangeListener extends Serializable {
    * @param newText The new text value.
    */
   public void onTextChange(String oldText, String newText);
+  
+  /**
+   * Fired when the text content has changed.
+   * @param rec The concerned record.
+   * @param text The text value.
+   */
+  public void onTextChange(int rec, String text);
 }

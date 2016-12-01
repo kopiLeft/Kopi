@@ -29,13 +29,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 
+import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.form.KopiAlignment;
 import org.kopi.vkopi.lib.form.KopiLayoutManager;
 import org.kopi.vkopi.lib.form.UMultiBlock;
 import org.kopi.vkopi.lib.form.VBlock;
 import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.ViewBlockAlignment;
-import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VRuntimeException;
 

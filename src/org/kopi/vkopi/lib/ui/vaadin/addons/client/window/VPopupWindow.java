@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VScrollablePanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -207,7 +208,13 @@ public class VPopupWindow extends FlexTable implements CloseHandler<PopupPanel> 
     parent.add(popup);
     popup.setWidget(this);
     popup.setAnimationEnabled(true);
-    if (VInputTextField.getLastFocusedTextField() != null) {
+    if (isModalWindowShowing() && modalWindows.get(modalWindows.size() - 1).getContent() instanceof VWindow) {
+      // try to pick it from the last opened modal window
+      lastActiveWindow = (VWindow) modalWindows.get(modalWindows.size() - 1).getContent();
+    } else if (VMainWindow.get().getCurrentWindow() instanceof VWindow) {
+      // try to get it from the main window current shown window.
+      lastActiveWindow = (VWindow) VMainWindow.get().getCurrentWindow();
+    } else if (VInputTextField.getLastFocusedTextField() != null) {
       lastActiveWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
     }
     popup.show();
@@ -245,7 +252,12 @@ public class VPopupWindow extends FlexTable implements CloseHandler<PopupPanel> 
   @Override
   public void onClose(CloseEvent<PopupPanel> event) {
     if (lastActiveWindow != null) {
-      lastActiveWindow.goBackToLastFocusedTextBox();
+      // focus the window itself to activate attached actors.
+      lastActiveWindow.focus();
+      if (lastActiveWindow.hasLastFocusedTextBox()) {
+        // focus last text focused text box if available
+        lastActiveWindow.goBackToLastFocusedTextBox();
+      }
     }
   }
 
@@ -303,6 +315,23 @@ public class VPopupWindow extends FlexTable implements CloseHandler<PopupPanel> 
 
       popup.setPopupPosition(absX - dragStartX, absY - dragStartY);
     }
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    popup = null;
+    caption = null;
+    content = null;
+    lastActiveWindow = null;
+  }
+  
+  /**
+   * Returns the popup content widget
+   * @return the popup content widget
+   */
+  protected Widget getContent() {
+    return content;
   }
 
   /**
@@ -374,7 +403,7 @@ public class VPopupWindow extends FlexTable implements CloseHandler<PopupPanel> 
   //---------------------------------------------------
   
   private VPopup				popup;
-  private final VSpan				caption;
+  private VSpan				        caption;
   private Widget				content;
   private boolean 				dragging;
   private int 					dragStartX;

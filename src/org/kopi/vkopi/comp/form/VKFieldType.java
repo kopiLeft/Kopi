@@ -24,8 +24,16 @@ import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JReturnStatement;
 import org.kopi.kopi.comp.kjc.TypeFactory;
-import org.kopi.vkopi.comp.base.*;
 import org.kopi.util.base.NotImplementedException;
+import org.kopi.vkopi.comp.base.BaseMessages;
+import org.kopi.vkopi.comp.base.Commandable;
+import org.kopi.vkopi.comp.base.VKActor;
+import org.kopi.vkopi.comp.base.VKContext;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKType;
+import org.kopi.vkopi.comp.base.VKUtils;
 
 /**
  * This class represents a type for a field (an link to a typer defintition)

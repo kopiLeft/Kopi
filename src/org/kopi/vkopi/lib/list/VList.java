@@ -22,8 +22,8 @@ package org.kopi.vkopi.lib.list;
 import java.io.Serializable;
 
 import org.kopi.vkopi.lib.form.VForm;
-import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.vkopi.lib.l10n.ListLocalizer;
+import org.kopi.vkopi.lib.l10n.LocalizationManager;
 
 @SuppressWarnings("serial")
 public class VList implements VConstants, Serializable {

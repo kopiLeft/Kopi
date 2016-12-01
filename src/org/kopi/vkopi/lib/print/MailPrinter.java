@@ -27,11 +27,11 @@ import java.util.List;
 
 import org.kopi.util.mailer.Attachment;
 import org.kopi.util.mailer.Mailer;
+import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.vkopi.lib.util.AbstractPrinter;
 import org.kopi.vkopi.lib.util.CachePrinter;
 import org.kopi.vkopi.lib.util.PrintException;
 import org.kopi.vkopi.lib.util.PrintJob;
-import org.kopi.vkopi.lib.base.Utils;
 import org.kopi.vkopi.lib.visual.MessageCode;
 
 /**

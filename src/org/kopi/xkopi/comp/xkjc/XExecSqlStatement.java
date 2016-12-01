@@ -19,13 +19,39 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
-import org.kopi.xkopi.comp.sqlc.*;
 import org.kopi.compiler.base.CWarning;
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-import org.kopi.compiler.base.JavaStyleComment;
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JAssignmentExpression;
+import org.kopi.kopi.comp.kjc.JBlock;
+import org.kopi.kopi.comp.kjc.JCompoundStatement;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionListStatement;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JIfStatement;
+import org.kopi.kopi.comp.kjc.JLogicalComplementExpression;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNameExpression;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JThisExpression;
+import org.kopi.kopi.comp.kjc.JThrowStatement;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
+import org.kopi.kopi.comp.kjc.JVariableDeclarationStatement;
+import org.kopi.kopi.comp.kjc.JVariableDefinition;
+import org.kopi.kopi.comp.kjc.KjcVisitor;
+import org.kopi.kopi.comp.kjc.TypeFactory;
+import org.kopi.xkopi.comp.sqlc.Expression;
+import org.kopi.xkopi.comp.sqlc.SelectElem;
+import org.kopi.xkopi.comp.sqlc.SelectElemExpression;
+import org.kopi.xkopi.comp.sqlc.SelectStatement;
+import org.kopi.xkopi.comp.sqlc.SetFunction;
 
 /**
  * This class represents cursor declaration in code part

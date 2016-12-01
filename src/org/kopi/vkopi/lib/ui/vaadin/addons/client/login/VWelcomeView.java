@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -84,10 +84,10 @@ public class VWelcomeView extends FlowPanel {
   
   /**
    * Sets the company logo image.
-   * @param url The image URL.
+   * @param url The logo image URL.
    * @param alt The alternate text.
    */
-  public void setImage(String url, String alt) {
+  public void setLogo(String url, String alt) {
     header.setImage(url, alt);
   }
   
@@ -133,11 +133,11 @@ public class VWelcomeView extends FlowPanel {
   }
   
   /**
-   * Sets the welcome image.
-   * @param welcomeImage The welcome image
+   * Sets the slogan image.
+   * @param slogan The slogan image URL.
    */
-  public void setWelcomeImage(String welcomeImage) {
-    loginWindow.setWelcomeImage(welcomeImage);
+  public void setSloganImage(String slogan) {
+    loginWindow.setSloganImage(slogan);
   }
   
   /**
@@ -182,12 +182,20 @@ public class VWelcomeView extends FlowPanel {
       }
     });
   }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    header = null;
+    main = null;
+    loginWindow = null;
+  }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VHeader				header;
-  private final VMain				main;
-  private final VLoginWindow			loginWindow;
+  private VHeader				header;
+  private VMain				        main;
+  private VLoginWindow                          loginWindow;
 }

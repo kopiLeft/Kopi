@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.visual;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import org.kopi.vkopi.lib.util.Rexec;
 /**
  * Manages Applicatin configuration data

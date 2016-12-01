@@ -29,6 +29,7 @@ import org.kopi.vkopi.lib.report.VIntegerColumn;
 import org.kopi.vkopi.lib.report.VReportColumn;
 import org.kopi.vkopi.lib.report.VSeparatorColumn;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Component;

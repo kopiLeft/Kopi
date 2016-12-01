@@ -23,9 +23,9 @@ import java.util.Vector;
 
 import org.kopi.bytecode.classfile.SwitchInstruction;
 import org.kopi.compiler.base.CWarning;
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.util.base.InconsistencyException;
 
 /**

@@ -19,11 +19,10 @@
 
 package org.kopi.util.ipp;
 
-import java.io.OutputStream;
 import java.io.IOException;
-
-import java.nio.charset.Charset;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 public class IPPOutputStream {
 

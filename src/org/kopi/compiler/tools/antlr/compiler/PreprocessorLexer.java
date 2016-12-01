@@ -5,7 +5,22 @@ package org.kopi.compiler.tools.antlr.compiler;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Hashtable;
-import org.kopi.compiler.tools.antlr.runtime.*;
+
+import org.kopi.compiler.tools.antlr.runtime.ANTLRHashString;
+import org.kopi.compiler.tools.antlr.runtime.BitSet;
+import org.kopi.compiler.tools.antlr.runtime.ByteBuffer;
+import org.kopi.compiler.tools.antlr.runtime.CharBuffer;
+import org.kopi.compiler.tools.antlr.runtime.CharStreamException;
+import org.kopi.compiler.tools.antlr.runtime.CharStreamIOException;
+import org.kopi.compiler.tools.antlr.runtime.InputBuffer;
+import org.kopi.compiler.tools.antlr.runtime.LexerSharedInputState;
+import org.kopi.compiler.tools.antlr.runtime.NoViableAltForCharException;
+import org.kopi.compiler.tools.antlr.runtime.RecognitionException;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.TokenStream;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamException;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamIOException;
+import org.kopi.compiler.tools.antlr.runtime.TokenStreamRecognitionException;
 
 public class PreprocessorLexer extends org.kopi.compiler.tools.antlr.runtime.CharScanner implements PreprocessorTokenTypes, TokenStream
  {

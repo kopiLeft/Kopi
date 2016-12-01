@@ -19,9 +19,6 @@
 
 package org.kopi.xkopi.comp.sqlc;
 
-import org.kopi.compiler.base.PositionedError;
-import org.kopi.compiler.base.TokenReference;
-
 /**
  * This class represents a reference to an outer join
  */

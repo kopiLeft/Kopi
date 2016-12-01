@@ -19,7 +19,6 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.util.base.SimpleStringBuffer;

@@ -20,12 +20,13 @@
 package org.kopi.xkopi.comp.dbi;
 
 import java.sql.SQLException;
-import org.kopi.xkopi.comp.database.DatabaseColorColumn;
-import org.kopi.xkopi.comp.database.DatabaseColumn;
-import org.kopi.kopi.comp.kjc.CStdType;
-import org.kopi.kopi.comp.kjc.CType;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.xkopi.comp.database.DatabaseColorColumn;
+import org.kopi.xkopi.comp.database.DatabaseColumn;
 import org.kopi.xkopi.comp.sqlc.BlobType;
 
 public class ColorType extends BlobType implements DbiType {

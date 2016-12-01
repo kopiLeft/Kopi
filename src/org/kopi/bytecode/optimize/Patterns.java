@@ -19,12 +19,11 @@
 
 package org.kopi.bytecode.optimize;
 
-import org.kopi.bytecode.classfile.JumpInstruction;
 import org.kopi.bytecode.classfile.Instruction;
-import org.kopi.bytecode.classfile.NoArgInstruction;
+import org.kopi.bytecode.classfile.JumpInstruction;
 import org.kopi.bytecode.classfile.LocalVarInstruction;
+import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.bytecode.classfile.PushLiteralInstruction;
-
 import org.kopi.util.base.InconsistencyException;
 
 /**

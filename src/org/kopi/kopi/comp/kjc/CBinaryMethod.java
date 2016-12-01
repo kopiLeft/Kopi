@@ -19,8 +19,8 @@
 
 package org.kopi.kopi.comp.kjc;
 
-import org.kopi.bytecode.classfile.MethodInfo;
 import org.kopi.bytecode.classfile.MethodDescription;
+import org.kopi.bytecode.classfile.MethodInfo;
 import org.kopi.compiler.base.UnpositionedError;
 
 /**

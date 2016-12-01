@@ -37,6 +37,7 @@ import org.kopi.vkopi.lib.ui.swing.visual.JApplication;
 import org.kopi.vkopi.lib.util.PrintJob;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.xkopi.lib.base.DBContext;
+
 import com.lowagie.text.Rectangle;
 
 /**

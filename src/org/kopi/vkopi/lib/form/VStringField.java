@@ -115,11 +115,11 @@ public class VStringField extends VField {
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception may be raised if text is bad
    */
   @SuppressWarnings("deprecation")
-  public void checkType(Object o) throws VException {
+  public void checkType(int rec, Object o) throws VException {
     String s = (String)o;
 
     if (s == null || s.equals("")) {
-      setNull(block.getActiveRecord());
+      setNull(rec);
     } else {
       switch (convert & FDO_CONVERT_MASK) {
       case FDO_CONVERT_NONE:
@@ -143,7 +143,7 @@ public class VStringField extends VField {
       if (! checkText(s)) {
 	throw new VExecFailedException();
       }
-      setString(block.getActiveRecord(), s);
+      setString(rec, s);
     }
   }
 
@@ -189,7 +189,7 @@ public class VStringField extends VField {
 //       throw new IllegalArgumentException(MessageCode.getMessage("VIS-00065", Integer.toString(width), Integer.toString(height)));
 //     }
     if (isChangedUI()
-        || value[r] == null
+        || (value[r] == null && modelVal != null)
         || (value[r] != null && !value[r].equals(modelVal))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -259,7 +259,19 @@ public class VStringField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    String              oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   // ----------------------------------------------------------------------

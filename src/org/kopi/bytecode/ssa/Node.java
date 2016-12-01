@@ -19,8 +19,8 @@
 
 package org.kopi.bytecode.ssa;
 
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * A node of a graph.

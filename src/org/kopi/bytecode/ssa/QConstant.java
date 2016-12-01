@@ -19,10 +19,10 @@
 
 package org.kopi.bytecode.ssa;
 
-import org.kopi.util.base.InconsistencyException;
 import org.kopi.bytecode.classfile.Constants;
 import org.kopi.bytecode.classfile.NoArgInstruction;
 import org.kopi.bytecode.classfile.PushLiteralInstruction;
+import org.kopi.util.base.InconsistencyException;
 
 
 /**

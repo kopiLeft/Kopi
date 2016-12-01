@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Element;
-
 import org.kopi.util.base.InconsistencyException;
 
 /**

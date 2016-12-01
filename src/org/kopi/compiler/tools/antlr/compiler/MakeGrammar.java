@@ -20,8 +20,8 @@
 package org.kopi.compiler.tools.antlr.compiler;
 
 import org.kopi.compiler.tools.antlr.runtime.CommonToken;
-import org.kopi.compiler.tools.antlr.runtime.Token;
 import org.kopi.compiler.tools.antlr.runtime.SemanticException;
+import org.kopi.compiler.tools.antlr.runtime.Token;
 import org.kopi.compiler.tools.antlr.runtime.Vector;
 
 public class MakeGrammar extends DefineGrammarSymbols {

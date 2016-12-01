@@ -112,12 +112,11 @@ public class VMonthField extends VField {
    * verify that value is valid (on exit)
    * @exception	org.kopi.vkopi.lib.visual.VException	an exception is raised if text is bad
    */
-  public void checkType(Object o) throws VException {
-    int         record = block.getActiveRecord();
-
+  public void checkType(int rec, Object o) throws VException {
     String s = (String)o;
+    
     if (s.equals("")) {
-      setNull(record);
+      setNull(rec);
     } else {
       if (s.indexOf(".") != -1 && s.indexOf(".") == s.lastIndexOf(".")) {
 	// one "." and only one
@@ -132,7 +131,7 @@ public class VMonthField extends VField {
 	  }
 
 	  if (isMonth(month, year)) {
-	    setMonth(record, new NotNullMonth(year, month));
+	    setMonth(rec, new NotNullMonth(year, month));
 	  } else {
 	    throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
 	  }
@@ -146,7 +145,7 @@ public class VMonthField extends VField {
 	  int		year = new GregorianCalendar().get(Calendar.YEAR);
 
 	  if (isMonth(month, year)) {
-	    setMonth(record, new NotNullMonth(year, month));
+	    setMonth(rec, new NotNullMonth(year, month));
 	  } else {
 	    throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
 	  }
@@ -175,7 +174,7 @@ public class VMonthField extends VField {
    */
   public void setMonth(int r, Month v) {
     if (isChangedUI() 
-        || value[r] == null
+        || (value[r] == null && v != null)
         || (value[r] != null && !value[r].equals(v))) {
       // trails (backup) the record if necessary
       trail(r);
@@ -275,7 +274,19 @@ public class VMonthField extends VField {
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
+    Month               oldValue;
+    
+    oldValue = value[t];
     value[t] = value[f];
+    // inform that value has changed for non backup records
+    // only when the value has really changed.
+    if (t < getBlock().getBufferSize()
+        && ((oldValue != null && value[t] == null)
+            || (oldValue == null && value[t] != null)
+            || (oldValue != null && !oldValue.equals(value[t]))))
+    {
+      setChanged(t);
+    }
   }
 
   // ----------------------------------------------------------------------

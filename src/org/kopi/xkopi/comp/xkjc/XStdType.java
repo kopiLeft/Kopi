@@ -19,15 +19,15 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
-import org.kopi.kopi.comp.kjc.CReferenceType;
-import org.kopi.kopi.comp.kjc.CType;
-import org.kopi.kopi.comp.kjc.CStdType;
-import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.compiler.base.Compiler;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
+import org.kopi.kopi.comp.kjc.CBinaryTypeContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CStdType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 
 /**
  * library of XType

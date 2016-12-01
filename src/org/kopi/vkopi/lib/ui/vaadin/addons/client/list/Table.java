@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -420,6 +420,19 @@ public class Table extends AdvancedFlexTable implements SortListener {
   }
   
   /**
+   * Releases the list dialog attributes.
+   */
+  public void release() {
+    connection = null;
+    model = null;
+    headers.clear();
+    headers = null;
+    columns.clear();
+    columns = null;
+    modelRows = null;
+  }
+  
+  /**
    * Updates the table styles for vertical scroll
    */
   protected void updateTableStyle() {
@@ -523,7 +536,7 @@ public class Table extends AdvancedFlexTable implements SortListener {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final ApplicationConnection		connection;
+  private ApplicationConnection		        connection;
   private TableModel				model;
   private List<TableHeader>			headers;
   private List<TableColumn>			columns;

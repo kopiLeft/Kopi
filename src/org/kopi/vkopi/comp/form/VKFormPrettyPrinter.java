@@ -27,7 +27,11 @@ import org.kopi.compiler.base.TabbedPrintWriter;
 import org.kopi.kopi.comp.kjc.JClassDeclaration;
 import org.kopi.kopi.comp.kjc.JCompilationUnit;
 import org.kopi.kopi.comp.kjc.TypeFactory;
-import org.kopi.vkopi.comp.base.*;
+import org.kopi.vkopi.comp.base.VKCommand;
+import org.kopi.vkopi.comp.base.VKDefinitionCollector;
+import org.kopi.vkopi.comp.base.VKPhylum;
+import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKTrigger;
 import org.kopi.vkopi.lib.form.VConstants;
 
 /**

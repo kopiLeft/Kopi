@@ -51,7 +51,8 @@
 				    SimpleBlockLayoutConnector.java  
 				    VSimpleBlockLayout.java
   	                            VLayoutManager.java
-  	                            VChartBlockScrollBar.java" />
+  	                            VChartBlockScrollBar.java
+				    ColumnView.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

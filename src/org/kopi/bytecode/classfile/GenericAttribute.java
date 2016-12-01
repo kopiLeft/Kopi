@@ -20,8 +20,8 @@
 package org.kopi.bytecode.classfile;
 
 import java.io.DataInput;
-import java.io.IOException;
 import java.io.DataOutput;
+import java.io.IOException;
 
 /**
  * This is an opaque attribute that lets you add an uninterpreted

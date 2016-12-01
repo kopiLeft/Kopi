@@ -24,7 +24,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
-
 import org.kopi.vkopi.lib.chart.VDataSeries;
 
 @SuppressWarnings("serial")

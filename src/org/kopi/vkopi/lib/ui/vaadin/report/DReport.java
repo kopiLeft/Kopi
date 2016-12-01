@@ -21,11 +21,6 @@ package org.kopi.vkopi.lib.ui.vaadin.report;
 
 import java.awt.Color;
 
-import org.vaadin.peter.contextmenu.ContextMenu;
-import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItem;
-import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickEvent;
-import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickListener;
-
 import org.kopi.vkopi.lib.report.MReport;
 import org.kopi.vkopi.lib.report.Parameters;
 import org.kopi.vkopi.lib.report.Point;
@@ -39,6 +34,11 @@ import org.kopi.vkopi.lib.ui.vaadin.visual.DWindow;
 import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
+import org.vaadin.peter.contextmenu.ContextMenu;
+import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItem;
+import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickEvent;
+import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickListener;
+
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -47,12 +47,12 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Table.ColumnReorderEvent;
 import com.vaadin.ui.Table.ColumnReorderListener;
 import com.vaadin.ui.Table.HeaderClickEvent;
 import com.vaadin.ui.Table.HeaderClickListener;
+import com.vaadin.ui.UI;
 
 /**
  * The <code>DReport</code> is the visual part of the {@link VReport} model.
@@ -364,11 +364,16 @@ public class DReport extends DWindow implements UReport {
 	if (event.getButton() == ClickEvent.BUTTON_LEFT) {
 	  if (event.isDoubleClick()) {
 	    if (currentModel.isRowLine(row)) {
-	      try {
-		report.editLine();
-	      } catch (VException ef) {
-	    	ef.printStackTrace();
-	      }
+	      getModel().performAsyncAction(new KopiAction("edit_line") {
+		public void execute() throws VException {
+		  try {
+		    report.editLine();
+		  } catch(VException ve) {
+		    // exception thrown by trigger.
+		    throw ve;
+		  }
+		}
+	      });
 	    } else {
 	      if (row >= 0) {
 		if (currentModel.isRowFold(row, col)) {

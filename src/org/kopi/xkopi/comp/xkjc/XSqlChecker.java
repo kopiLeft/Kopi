@@ -24,13 +24,27 @@ import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.compiler.base.UnpositionedError;
-
+import org.kopi.kopi.comp.kjc.CBodyContext;
+import org.kopi.kopi.comp.kjc.CExpressionContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JAddExpression;
+import org.kopi.kopi.comp.kjc.JCheckedExpression;
+import org.kopi.kopi.comp.kjc.JConditionalExpression;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JLocalVariable;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JNullLiteral;
+import org.kopi.kopi.comp.kjc.JParenthesedExpression;
+import org.kopi.kopi.comp.kjc.JStringLiteral;
+import org.kopi.kopi.comp.kjc.JTypeNameExpression;
+import org.kopi.kopi.comp.kjc.KjcMessages;
+import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.xkopi.comp.sqlc.FieldReference;
-import org.kopi.xkopi.comp.sqlc.SqlcMessages;
+import org.kopi.xkopi.comp.sqlc.SearchCondition;
 import org.kopi.xkopi.comp.sqlc.SqlContext;
 import org.kopi.xkopi.comp.sqlc.SqlPhylum;
-import org.kopi.xkopi.comp.sqlc.SearchCondition;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.xkopi.comp.sqlc.SqlcMessages;
 
 /**
  * This class implements a Java pretty printer

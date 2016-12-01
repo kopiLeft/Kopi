@@ -118,15 +118,28 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
   }
   
   /**
-   * Returns the corresponding CSS color of a given {@link Color}.
-   * @param color The AWT color.
+   * Returns the corresponding CSS color of a given {@link VColor}.
+   * @param color The color model.
    * @return The CSS color.
    */
   public static String getCSSColor(VColor color) {
     if (color == null) {
-      return "inherit !important ;";
+      return "inherit;";
     } else {
-      return "rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ") !important ;";
+      return "rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ") ;";
+    }
+  }
+  
+  /**
+   * Returns the string representation of the given {@link VColor}.
+   * @param color The color model.
+   * @return The equivalent String color or empty string if the color is {@code null}.
+   */
+  public static String toString(VColor color) {
+    if (color == null) {
+      return "";
+    } else {
+      return "rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ")";
     }
   }
 	  

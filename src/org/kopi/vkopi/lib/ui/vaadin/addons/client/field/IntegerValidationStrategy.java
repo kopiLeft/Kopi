@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +23,83 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
  * An integer validation strategy.
  */
 public class IntegerValidationStrategy extends AllowAllValidationStrategy {
-
+  
+  //---------------------------------------------------
+  // CONSTRUCTOR
+  //---------------------------------------------------
+  
+  /**
+   * Creates a new integer validation strategy instance.
+   * @param minval The minimum accepted value.
+   * @param maxval The maximum accepted value.
+   */
+  public IntegerValidationStrategy(Double minval, Double maxval) {
+    Integer             min;
+    Integer             max;
+    
+    if (minval == null) {
+      min = null;
+    } else {
+      min = new Integer(minval.intValue());
+    }
+    
+    if (maxval == null) {
+      max = null;
+    } else {
+      max = new Integer(maxval.intValue());
+    }
+    
+    this.minval = min;
+    this.maxval = max;
+  }
+  
+  /**
+   * Creates a new integer validation strategy instance.
+   * @param minval The minimum accepted value.
+   * @param maxval The maximum accepted value.
+   */
+  public IntegerValidationStrategy(Integer minval, Integer maxval) {
+    this.minval = minval;
+    this.maxval = maxval;
+  }
+  
+  //---------------------------------------------------
+  // IMPLEMENTATIONS
+  //---------------------------------------------------
+  
   @Override
   public boolean validate(char c) {
     return Character.isDigit(c) || c == '.' || c == '-';
   }
+  
+  @Override
+  public void checkType(VInputTextField field, String text) throws CheckTypeException {
+    if ("".equals(text)) {
+      field.setText(null);
+    } else {
+      int       v;
+
+      try {
+        v = Integer.parseInt(text);
+      } catch (NumberFormatException e) {
+        throw new CheckTypeException(field, "00006");
+      }
+
+      if (minval != null && v < minval) {
+        throw new CheckTypeException(field, "00012", minval);
+      }
+      if (maxval != null && v > maxval) {
+        throw new CheckTypeException(field, "00009", maxval);
+      }
+
+      field.setText(text);
+    }
+  }
+  
+  //---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+  
+  private final Integer                         minval;
+  private final Integer                         maxval;
 }

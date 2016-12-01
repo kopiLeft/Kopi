@@ -20,8 +20,9 @@
 package org.kopi.bytecode.dis;
 
 import java.util.Vector;
-import org.kopi.bytecode.classfile.AccessorContainer;
+
 import org.kopi.bytecode.classfile.AbstractInstructionAccessor;
+import org.kopi.bytecode.classfile.AccessorContainer;
 import org.kopi.bytecode.classfile.ClassConstant;
 import org.kopi.bytecode.classfile.ClassRefInstruction;
 import org.kopi.bytecode.classfile.FieldRefConstant;

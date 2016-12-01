@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import org.kopi.compiler.base.Phylum;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.UnpositionedError;
 import org.kopi.xkopi.comp.sqlc.SqlPhylum;
 import org.kopi.xkopi.comp.sqlc.Statement;
 import org.kopi.xkopi.lib.base.DBContext;

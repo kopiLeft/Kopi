@@ -187,10 +187,12 @@ public class DForm extends DWindow implements UForm, FormListener {
    * Releases the form.
    */
   public void release() {
-    getVForm().removeFormListener(this);
-    
-    for (int i = 0; i < blockViews.length; i++) {
-      getVForm().getBlock(i).removeBlockListener(blockListener);
+    if (getVForm() != null) {
+      getVForm().removeFormListener(this);
+
+      for (int i = 0; i < blockViews.length; i++) {
+        getVForm().getBlock(i).removeBlockListener(blockListener);
+      }
     }
 
     super.release();
@@ -420,6 +422,9 @@ public class DForm extends DWindow implements UForm, FormListener {
 
     @Override
     public void validRecordNumberChanged() {}
+    
+    @Override
+    public void recordInfoChanged(int rec, int info) {}
 
     @Override
     public void orderChanged() {}

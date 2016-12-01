@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -135,28 +136,34 @@ public class VDateChooser extends FlowPanel implements CloseHandler<PopupPanel> 
    * Shows the calendar panel.
    * @param parent The widget parent.
    */
-  public void openCalendarPanel(HasWidgets parent) {
-    if (popup != null) {
-      if (selected != null) {
-	calendarPanel.setDate(selected);
-      }
-      calendarPanel.renderCalendar();
-      popup.setWidget(this);
-      parent.add(popup);
-      if (reference != null) {
-	popup.showRelativeTo(reference);
-      } else {
-	popup.center();
-      }
-      // focus the widget to activate key navigation.
-      Scheduler.get().scheduleFinally(new ScheduledCommand() {
-        
-        @Override
-        public void execute() {
-          focus();
+  public void openCalendarPanel(final HasWidgets parent) {
+    new Timer() {
+      
+      @Override
+      public void run() {
+        if (popup != null) {
+          if (selected != null) {
+            calendarPanel.setDate(selected);
+          }
+          calendarPanel.renderCalendar();
+          popup.setWidget(VDateChooser.this);
+          parent.add(popup);
+          if (reference != null) {
+            popup.showRelativeTo(reference);
+          } else {
+            popup.center();
+          }
+          // focus the widget to activate key navigation.
+          Scheduler.get().scheduleFinally(new ScheduledCommand() {
+            
+            @Override
+            public void execute() {
+              focus();
+            }
+          });
         }
-      });
-    }
+      }
+    }.schedule(50); //!!! ensure that is show afetr a field focus.
   }
   
   @Override
@@ -166,6 +173,19 @@ public class VDateChooser extends FlowPanel implements CloseHandler<PopupPanel> 
     if (event.isAutoClosed()) {
       fireOnClose(null);
     }
+  }
+  
+  @Override
+  public void clear() {
+    super.clear();
+    listeners.clear();
+    listeners = null;
+    calendarPanel.clear();
+    calendarPanel = null;
+    popup = null;
+    reference = null;
+    selected = null;
+    today = null;
   }
   
   /**
@@ -224,6 +244,14 @@ public class VDateChooser extends FlowPanel implements CloseHandler<PopupPanel> 
     for (DateChooserListener l : listeners) {
       if (l != null) {
 	if (selected != null) {
+	  Date         now;
+	  
+	  // set the time same as now to avoid one day shift
+	  // due to -60 timezone offset.
+	  now = new Date();
+	  selected.setHours(now.getHours());
+	  selected.setMinutes(now.getMinutes());
+	  selected.setSeconds(now.getSeconds());
 	  l.onClose(selected, selected.getTimezoneOffset());
 	} else {
 	  l.onClose(null, 0);
@@ -272,9 +300,9 @@ public class VDateChooser extends FlowPanel implements CloseHandler<PopupPanel> 
   //---------------------------------------------------
   
   private List<DateChooserListener>	listeners = new ArrayList<DateChooserListener>();  
-  private final VCalendarPanel 		calendarPanel;
+  private VCalendarPanel 		calendarPanel;
   private VPopup			popup;
   private Widget 			reference;
   private Date 				selected;
-  private final VInputButton		today;
+  private VInputButton		        today;
 }

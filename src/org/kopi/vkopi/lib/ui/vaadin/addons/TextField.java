@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,11 +21,13 @@ package org.kopi.vkopi.lib.ui.vaadin.addons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextChangeServerRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldClientRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldServerRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldState;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldState.ConvertType;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.AutocompleteSuggestion;
 
 import com.vaadin.ui.AbstractField;
@@ -109,6 +111,46 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
    */
   public void setHasAutocomplete(boolean hasAutocomplete) {
     getState().hasAutocomplete = hasAutocomplete;
+  }
+  
+  /**
+   * Sets the convert type to be applied to this text field.
+   * @param convertType The convert type.
+   */
+  public void setConvertType(ConvertType convertType) {
+    getState().convertType = convertType;
+  }
+  
+  /**
+   * Sets the minimum value to be accepted by this field.
+   * @param minval The minimum value.
+   */
+  public void setMinValue(Double minval) {
+    getState().minval = minval;
+  }
+  
+  /**
+   * Sets the maximum value to be accepted by this field.
+   * @param maxval The maximum value.
+   */
+  public void setMaxValue(Double maxval) {
+    getState().maxval = maxval;
+  }
+  
+  /**
+   * Sets the max scale to be used with this field.
+   * @param maxScale The max Scale to be used with this field.
+   */
+  public void setMaxScale(int maxScale) {
+    getState().maxScale = maxScale;
+  }
+  
+  /**
+   * Sets this field to be a fraction one.
+   * @param fraction Is it a fraction field ?
+   */
+  public void setFraction(boolean fraction) {
+    getState().fraction = fraction;
   }
   
   /**
@@ -359,12 +401,25 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
   }
   
   /**
-   * Fires a close window event on this text field.
+   * Fires a text change event on this text field.
    */
   protected void fireTextChanged(String oldText, String newText) {
     for (TextValueChangeListener l : textChangelisteners) {
       if (l != null) {
 	l.onTextChange(oldText, newText);
+      }
+    }
+  }
+  
+  /**
+   * Fires a text change event on this text field for the given record.
+   * @param rec The concerned record.
+   * @param text The text value.
+   */
+  protected void fireTextChanged(int rec, String text) {
+    for (TextValueChangeListener l : textChangelisteners) {
+      if (l != null) {
+        l.onTextChange(rec, text);
       }
     }
   }
@@ -556,6 +611,13 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
 	if (wasModified != isModified()) {
 	  markAsDirty();
 	}
+      }
+    }
+
+    @Override
+    public void onDirtyValues(Map<Integer, String> values) {
+      for (Map.Entry<Integer, String> value : values.entrySet()) {
+        fireTextChanged(value.getKey(), value.getValue());
       }
     }
   };

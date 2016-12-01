@@ -54,6 +54,7 @@ import org.kopi.vkopi.lib.visual.VerifyConfiguration;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.WindowController;
 import org.kopi.xkopi.lib.base.DBContext;
+import org.kopi.xkopi.lib.base.Query;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
@@ -294,6 +295,9 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     // check if context is created
     if (context == null) {
       throw new SQLException(MessageCode.getMessage("VIS-00054"));
+    } else {
+      // set query trace level
+      setTraceLevel();
     }
   }
   
@@ -507,6 +511,24 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   }
   
   /**
+   * Sets the query trace level.
+   */
+  protected void setTraceLevel() {
+    String              trace;
+
+    trace = getInitParameter("trace");
+    if (trace != null) {
+      try {
+        int           level;
+        level = Integer.parseInt(getInitParameter("trace"));
+        Query.setTraceLevel(level);
+      } catch (NumberFormatException e) {
+        System.err.println("Warning: cannot set query trace level");
+      }
+    }
+  }
+  
+  /**
    * Closes the application and logout
    */
   public void logout() {
@@ -568,7 +590,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       setContent(null);
     }
     // creates the welcome screen
-    welcomeView = new WelcomeView(getDefaultLocale(), getSupportedLocales(), getLogoImage(), getLogoHref());
+    welcomeView = new WelcomeView(getDefaultLocale(), getSupportedLocales(), getSologanImage(), getLogoImage(), getLogoHref());
     welcomeView.setSizeFull(); // important to get the full screen size.
     welcomeView.addWelcomeViewListener(this);
     setContent(welcomeView);
@@ -654,6 +676,12 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    * @return The supported locales that can be used with this application.
    */
   protected abstract Locale[] getSupportedLocales();
+  
+  /**
+   * Returns the SLOGAN image to be used in welcome screen.
+   * @return The SLOGAN image to be used in welcome screen.
+   */
+  protected abstract Resource getSologanImage();
   
   /**
    * Returns the LOGO image to be used with application.

@@ -19,9 +19,9 @@
 
 package org.kopi.bytecode.ssa;
 
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * To reprensent exception handler with basic blocks.

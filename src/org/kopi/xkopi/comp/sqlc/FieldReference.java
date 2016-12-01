@@ -21,9 +21,10 @@ package org.kopi.xkopi.comp.sqlc;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+
+import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.compiler.base.CWarning;
 
 public class FieldReference extends Expression {
 

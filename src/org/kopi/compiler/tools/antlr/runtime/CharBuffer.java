@@ -19,6 +19,8 @@
 
 package org.kopi.compiler.tools.antlr.runtime;
 
+import java.io.IOException;
+
 /**
  * A Stream of characters fed to the lexer from a InputStream that can
  * be rewound via mark()/rewind() methods.
@@ -34,7 +36,6 @@ package org.kopi.compiler.tools.antlr.runtime;
  */
 
 import java.io.Reader; // SAS: changed to properly read text files
-import java.io.IOException;
 
 // SAS: Move most functionality into InputBuffer -- just the file-specific
 //      stuff is in here

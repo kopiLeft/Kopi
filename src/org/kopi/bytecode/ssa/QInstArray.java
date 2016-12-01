@@ -19,8 +19,8 @@
 
 package org.kopi.bytecode.ssa;
 
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * To represent an array of 3-adress instructions for a basic block

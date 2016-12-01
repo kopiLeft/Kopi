@@ -20,6 +20,7 @@
 package org.kopi.vkopi.lib.ui.swing.base;
 
 import java.awt.MediaTracker;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 

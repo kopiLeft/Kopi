@@ -29,8 +29,8 @@ import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 
-import org.kopi.vkopi.lib.visual.Module;
 import org.kopi.vkopi.lib.ui.swing.base.Utils;
+import org.kopi.vkopi.lib.visual.Module;
 
 class MenuItemRenderer extends JLabel implements TreeCellRenderer {
 

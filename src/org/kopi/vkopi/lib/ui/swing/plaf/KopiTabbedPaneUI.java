@@ -19,12 +19,23 @@
 
 package org.kopi.vkopi.lib.ui.swing.plaf;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
+import javax.swing.text.View;
 
 public class KopiTabbedPaneUI extends MetalTabbedPaneUI {
 

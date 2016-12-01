@@ -20,17 +20,18 @@
 package org.kopi.vkopi.lib.ui.swing.spellchecker;
 
 import java.awt.Frame;
-import java.util.Iterator;
-import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
-import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.ui.swing.base.Utils;
+import org.kopi.vkopi.lib.visual.VlibProperties;
 
 public class SpellChecker {
 

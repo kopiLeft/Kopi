@@ -19,8 +19,8 @@
 
 package org.kopi.xkopi.lib.base;
 
-import java.io.PrintStream;
 import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Hashtable;

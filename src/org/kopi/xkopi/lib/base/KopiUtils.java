@@ -19,13 +19,6 @@
 
 package org.kopi.xkopi.lib.base;
 
-import org.kopi.xkopi.lib.type.Date;
-import org.kopi.xkopi.lib.type.Fixed;
-import org.kopi.xkopi.lib.type.Month;
-import org.kopi.xkopi.lib.type.Time;
-import org.kopi.xkopi.lib.type.Timestamp;
-import org.kopi.xkopi.lib.type.Week;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,6 +27,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.kopi.xkopi.lib.type.Date;
+import org.kopi.xkopi.lib.type.Fixed;
+import org.kopi.xkopi.lib.type.Month;
+import org.kopi.xkopi.lib.type.Time;
+import org.kopi.xkopi.lib.type.Timestamp;
+import org.kopi.xkopi.lib.type.Week;
 
 /**
  * This class represents kopi fixed types (not null)

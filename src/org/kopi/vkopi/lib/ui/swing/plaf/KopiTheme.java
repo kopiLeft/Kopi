@@ -18,7 +18,7 @@
  */
 
 package org.kopi.vkopi.lib.ui.swing.plaf;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 
 

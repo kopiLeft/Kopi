@@ -36,7 +36,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.report.UReport.UTable;
 import org.kopi.vkopi.lib.visual.VlibProperties;

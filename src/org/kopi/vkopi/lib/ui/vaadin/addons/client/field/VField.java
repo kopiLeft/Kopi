@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
@@ -40,7 +41,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.ConnectorMap;
 import com.vaadin.client.ui.VDragAndDropWrapper;
 
 /**
@@ -158,11 +158,23 @@ public class VField extends VSpanPanel implements HasEnabled {
     return enabled;
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    listeners.clear();
+    listeners = null;
+    incr = null;
+    decr = null;
+    textField = null;
+    objectField = null;
+    client = null;
+  }
+  
   /**
    * Sets the field visible height;
    * @param visibleHeight The field visible height.
    */
-  public void setApplicationConnectiont(ApplicationConnection client) {
+  public void setApplicationConnection(ApplicationConnection client) {
     this.client = client;
   }
   
@@ -176,7 +188,7 @@ public class VField extends VSpanPanel implements HasEnabled {
     }
     
     // Get it from state since the connector hierarchy is fired before state change event.
-    return ((FieldConnector)ConnectorMap.get(client).getConnector(this)).getState().visibleHeight;
+    return ConnectorUtils.getConnector(client, this, FieldConnector.class).getState().visibleHeight;
   }
   
   @Override
@@ -265,7 +277,7 @@ public class VField extends VSpanPanel implements HasEnabled {
   @Override
   protected void onLoad() {
     super.onLoad();
-    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+    Scheduler.get().scheduleFinally(new ScheduledCommand() {
       
       @Override
       public void execute() {
@@ -277,6 +289,139 @@ public class VField extends VSpanPanel implements HasEnabled {
         }
       }
     });
+  }
+  
+  /**
+   * Checks the content of this field.
+   * @param rec The active record.
+   * @throws CheckTypeException When the field content is not valid
+   */
+  public void checkValue(int rec) throws CheckTypeException {
+    if (textField != null) {
+      textField.checkValue(rec);
+    } else if (objectField != null) {
+      objectField.checkValue(rec);
+    }
+  }
+  
+  /**
+   * Sets the value of the this field.
+   * @param o The field value.
+   */
+  public void setValue(Object o) {
+    if (textField != null) {
+      textField.setValue(o);
+    } else if (objectField != null) {
+      objectField.setValue(o);
+    }
+  }
+  
+  /**
+   * Sets the field background and foreground colors.
+   * @param foreground The foreground color.
+   * @param background The background color.
+   */
+  public void setColor(String foreground, String background) {
+    if (textField != null) {
+      textField.setColor(foreground, background);
+    } else if (objectField != null) {
+      objectField.setColor(foreground, background);
+    }
+  }
+  
+  /**
+   * Returns the field value.
+   * @return The field value.
+   */
+  public Object getValue() {
+    if (textField != null) {
+      return textField.getValue();
+    } else if (objectField != null) {
+      return objectField.getValue();
+    } else {
+      return null;
+    }
+  }
+  
+  /**
+   * Checks if the content of this field is empty.
+   * @return {@code true} if this field is empty.
+   */
+  public boolean isNull() {
+    if (textField != null) {
+      return textField.isNull();
+    } else if (objectField != null) {
+      return objectField.isNull();
+    } else {
+      return true;
+    }
+  }
+  
+  /**
+   * Gains the focus on this field.
+   */
+  public void focus() {
+    if (textField != null) {
+      textField.setFocus(true);
+    } else if (objectField != null) {
+      objectField.focus();
+    }
+  }
+  
+  /**
+   * Returns the increment button width.
+   * @return The increment button width.
+   */
+  protected int getIncrementButtonWidth() {
+    if (incr != null) {
+      return incr.getElement().getClientWidth();
+    } else {
+      return 0;
+    }
+  }
+  
+  /**
+   * Returns the decrement button width.
+   * @return The decrement button width.
+   */
+  protected int getDecrementButtonWidth() {
+    if (decr != null) {
+      return decr.getElement().getClientWidth();
+    } else {
+      return 0;
+    }
+  }
+  
+  /**
+   * Returns the text field component width.
+   * @return The text field component width.
+   */
+  protected int getTextFieldWidth() {
+    if (textField != null) {
+      return textField.getElement().getClientWidth();
+    } else {
+      return 0;
+    }
+  }
+  
+  /**
+   * Returns the buttons width.
+   * @return The buttons width.
+   */
+  protected int getButtonsWidth() {
+    return getIncrementButtonWidth() + getDecrementButtonWidth();
+  }
+  
+  /**
+   * Returns the estimated width of this field.
+   * @return The estimated width of this field.
+   */
+  public int getWidth() {
+    if (getElement().getClientWidth() >= getTextFieldWidth() + getButtonsWidth()) {
+      return getElement().getClientWidth();
+    } else {
+      return getElement().getClientWidth() + getButtonsWidth();
+    }
   }
 
   //---------------------------------------------------

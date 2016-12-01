@@ -19,6 +19,10 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.form;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.form.UBlock;
 import org.kopi.vkopi.lib.form.UField;
@@ -29,13 +33,16 @@ import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VForm;
 import org.kopi.vkopi.lib.form.VImageField;
 import org.kopi.vkopi.lib.form.VStringField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.Actor;
 import org.kopi.vkopi.lib.ui.vaadin.addons.Field;
 import org.kopi.vkopi.lib.ui.vaadin.addons.FieldListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.LabelEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.LabelListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.FieldState.NavigationDelegationMode;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VColor;
+import org.kopi.vkopi.lib.visual.VCommand;
 import org.kopi.vkopi.lib.visual.VException;
 
 /**
@@ -56,7 +63,7 @@ public abstract class DField extends Field implements UField, FieldListener {
    * @param options The field options.
    * @param detail Is it a detail view ?
    */
-  public DField(VFieldUI model,
+  public DField(final VFieldUI model,
                 DLabel label,
                 int align,
                 int options,
@@ -88,9 +95,25 @@ public abstract class DField extends Field implements UField, FieldListener {
       
       @Override
       public void onClick(LabelEvent event) {
-        performAutoFillAction();
+        UField                  display;
+        
+        // The label click listener will be registered for the displayed size of the block
+        // to be sure that the auto fill action is fired on the active record field, we will
+        // test of the active record field display is the same field as this one and only in
+        // this condition the auto fill action is fired.
+        display = model.getDisplays()[model.getBlockView().getDisplayLine(model.getBlock().getActiveRecord())];
+        if (display == DField.this) {
+          performAutoFillAction();
+        }
       }
     };
+    setNoChart(getModel().noChart());
+    setNoDetail(getModel().noDetail());
+    setNavigationDelegationMode(getNavigationDelegationMode());
+    setDefaultAccess(getModel().getDefaultAccess());
+    setIndex(model.getIndex());
+    setHasPreFieldTrigger(getModel().hasTrigger(VConstants.TRG_PREFLD));
+    addActors(getActors());
     enableAutofill(getModel().getDefaultAccess());
   }	
    
@@ -121,8 +144,15 @@ public abstract class DField extends Field implements UField, FieldListener {
    * Field cell renderer
    */
   @Override
-  public void setPosition(int pos) {
+  public void setPosition(final int pos) {
     this.pos = pos;
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        DField.super.setPosition(pos);
+      }
+    });
   }
 
   /**
@@ -202,12 +232,18 @@ public abstract class DField extends Field implements UField, FieldListener {
   }
   
   @Override
+  public void forceFocus() {
+    // to be implemented by subclasses
+  }
+  
+  @Override
   public void updateAccess() {
     BackgroundThreadHandler.access(new Runnable() {
       
       @Override
       public void run() {
 	access = getAccess();
+	setDynAccess(access);
 	updateStyles(access);
 	setVisible(access != VConstants.ACS_HIDDEN);
 	update(label);
@@ -271,6 +307,60 @@ public abstract class DField extends Field implements UField, FieldListener {
     } else {
       label.removeLabelListener(listener);
     }
+  }
+  
+  /**
+   * Returns the navigation delegation to server mode.
+   * For POSTFLD AND PREFLD triggers we always delegate the navigation to server.
+   * For POSTCHG, PREVAL, VALFLD and FORMAT triggers we delegate the navigation to server if
+   * the field value has changed.
+   * @return The navigation delegation to server mode.
+   */
+  private NavigationDelegationMode getNavigationDelegationMode() {
+    if (getModel().hasTrigger(VConstants.TRG_POSTFLD)) {
+      return NavigationDelegationMode.ALWAYS;
+    } else if (getModel().hasTrigger(VConstants.TRG_PREFLD)) {
+      return NavigationDelegationMode.ALWAYS;
+    } else if (getModel().getBlock().hasTrigger(VConstants.TRG_PREREC)) {
+      return NavigationDelegationMode.ALWAYS;
+    } else if (getModel().getBlock().hasTrigger(VConstants.TRG_POSTREC)) {
+      return NavigationDelegationMode.ALWAYS;
+    } else if (getModel().getBlock().hasTrigger(VConstants.TRG_VALREC)) {
+      return NavigationDelegationMode.ALWAYS;
+    } else if (getModel().getList() != null) {
+      return NavigationDelegationMode.ONVALUE;
+    } else if (getModel().hasTrigger(VConstants.TRG_POSTCHG)) {
+      return NavigationDelegationMode.ONCHANGE;
+    } else if (getModel().hasTrigger(VConstants.TRG_PREVAL)) {
+      return NavigationDelegationMode.ONCHANGE;
+    } else if (getModel().hasTrigger(VConstants.TRG_VALFLD)) {
+      return NavigationDelegationMode.ONCHANGE;
+    } else if (getModel().hasTrigger(VConstants.TRG_FORMAT)) {
+      return NavigationDelegationMode.ONCHANGE;
+    } else {
+      return NavigationDelegationMode.NONE;
+    }
+  }
+  
+  /**
+   * Returns the actors associated with this field. 
+   * @return The actors associated with this field. 
+   */
+  private Collection<Actor> getActors() {
+    Set<Actor>          actors;
+    
+    actors = new HashSet<Actor>();
+    for (VCommand cmd : model.getAllCommands()) {
+      if (cmd != null) {
+        // for field commands this is needed to have the actor model instance
+        cmd.setEnabled(false);
+        if ( cmd.getActor() != null) {
+          actors.add((Actor)cmd.getActor().getDisplay());
+        }
+      }
+    }
+    
+    return actors;
   }
  
   //-------------------------------------------------
@@ -420,7 +510,7 @@ public abstract class DField extends Field implements UField, FieldListener {
       // an empty row in a chart has not calculated
       // the access for each field (ACCESS Trigger)
       if (model.getBlock().isMulti()) {
-	final int	recno = getBlockView().getRecordFromDisplayLine(DField.this.getPosition());
+	final int	recno = getBlockView().getRecordFromDisplayLine(getPosition());
 
         if (! model.getBlock().isRecordFilled(recno)) {
 	  model.getBlock().updateAccess(recno);
@@ -445,24 +535,168 @@ public abstract class DField extends Field implements UField, FieldListener {
       }
     }
   }
+  
+  /**
+   * !!! We never change transfer a focus to a field that belongs
+   * to another block than this field model block. If we do it, it
+   * can cause assertion errors when validating blocks caused by
+   * actors actions.
+   */
+  @Override
+  public void transferFocus() {
+    if (!modelHasFocus()) {
+      // an empty row in a chart has not calculated
+      // the access for each field (ACCESS Trigger)
+      if (model.getBlock().isMulti()) {
+        final int       recno = getBlockView().getRecordFromDisplayLine(getPosition());
 
+        if (! model.getBlock().isRecordFilled(recno)) {
+          model.getBlock().updateAccess(recno);
+        }
+      }
+
+      if (!model.getBlock().isMulti() 
+          || model.getBlock().isDetailMode() == isInDetail()
+          || model.getBlock().noChart())
+      {
+        KopiAction      action = new KopiAction("mouse1") {
+
+          @Override
+          public void execute() throws VException {
+            // proceed only of we are in the same block context.
+            if (getModel().getBlock() == getModel().getForm().getActiveBlock()) {
+              int       recno = getBlockView().getRecordFromDisplayLine(getPosition());
+              
+              // go to the correct record if necessary
+              // but only if we are in the correct block now
+              if (getModel().getBlock().isMulti()
+                  && recno != getModel().getBlock().getActiveRecord()
+                  && getModel().getBlock().isRecordAccessible(recno))
+              {
+                getModel().getBlock().gotoRecord(recno);
+              }
+
+              // go to the correct field if already necessary
+              // but only if we are in the correct record now
+              if (recno == getModel().getBlock().getActiveRecord()
+                  && getModel() != getModel().getBlock().getActiveField()
+                  && getAccess() >= VConstants.ACS_VISIT)
+              {  
+                getModel().getBlock().gotoField(getModel());
+              }
+            }
+          }
+        };
+        // execute it as model transforming thread
+        // it is not allowed to execute it not with
+        // the method performAsync/BasicAction.
+        model.performAsyncAction(action);
+      }
+    }
+  }
+  
+  @Override
+  public void gotoNextField() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_TAB") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().getForm().getActiveBlock().gotoNextField();
+        }
+      }
+    });
+  }
+  
+  @Override
+  public void gotoPrevField() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_STAB") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().getForm().getActiveBlock().gotoPrevField();
+        }
+      }
+    });
+  }
+  
+  @Override
+  public void gotoNextEmptyMustfill() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_ALTENTER") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().getForm().getActiveBlock().gotoNextEmptyMustfill();
+        }
+      }
+    });
+  }
+
+
+  @Override
+  public void gotoPrevRecord() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_REC_UP") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().gotoPrevRecord();
+        }
+      }
+    });
+  }
+
+  @Override
+  public void gotoNextRecord() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_REC_DOWN") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().gotoNextRecord();
+        }
+      }
+    });
+  }
+
+  @Override
+  public void gotoFirstRecord() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_REC_FIRST") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().getForm().getActiveBlock().gotoFirstRecord();
+        }
+      }
+    });
+  }
+
+  @Override
+  public void gotoLastRecord() {
+    getModel().getForm().performAsyncAction(new KopiAction("keyKEY_REC_LAST") {
+
+      @Override
+      public void execute() throws VException {
+        if (getModel() != null) {
+          getModel().getBlock().getForm().getActiveBlock().gotoLastRecord();
+        }
+      }
+    });
+  }
+  
   /**
    * Performs the auto fill action.
    */
   public final void performAutoFillAction() {
     getModel().getForm().performAsyncAction(new KopiAction("autofill") {
-      
+
       @Override
       public void execute() throws VException {
-	UField			display;
-	
-	// for chart blocks, this DField instance is always situated in the first record.
-	// we will get the field display from the active record using the block view.
-	display = model.getDisplays()[model.getBlockView().getDisplayLine(model.getBlock().getActiveRecord())];
-	if (display != null) {
-	  model.transferFocus(display);
-	  model.autofillButton();
-	}
+        model.transferFocus(DField.this);
+        model.autofillButton();
       }
     });     
   }

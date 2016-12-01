@@ -26,10 +26,9 @@ import java.sql.SQLException;
 
 import javax.swing.event.EventListenerList;
 
-import org.kopi.vkopi.lib.l10n.LocalizationManager;
-import org.kopi.vkopi.lib.visual.FileProductionListener;
 import org.kopi.vkopi.lib.base.Image;
 import org.kopi.vkopi.lib.base.UComponent;
+import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.xkopi.lib.base.DBContext;
 import org.kopi.xkopi.lib.base.DBContextHandler;
 import org.kopi.xkopi.lib.base.DBDeadLockException;

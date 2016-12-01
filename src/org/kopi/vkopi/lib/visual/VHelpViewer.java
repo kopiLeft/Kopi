@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.Locale;
 
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
-import org.kopi.vkopi.lib.visual.VlibProperties;
 
 /**
  * A special window that display an html help
@@ -82,8 +81,10 @@ public class VHelpViewer extends VWindow {
    * The user want to show an help
    */
   public void showHelp(String surl) {
-    setURL(surl);
-    WindowController.getWindowController().doNotModal(this);
+    if (surl != null) {
+      setURL(surl);
+      WindowController.getWindowController().doNotModal(this);
+    }
   }
 
   // ----------------------------------------------------------------------

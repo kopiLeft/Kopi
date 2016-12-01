@@ -19,9 +19,18 @@
 
 package org.kopi.xkopi.comp.xkjc;
 
-import org.kopi.kopi.comp.kjc.*;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
+import org.kopi.kopi.comp.kjc.CClassContext;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.CSourceMethod;
+import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.CTypeVariable;
+import org.kopi.kopi.comp.kjc.Constants;
+import org.kopi.kopi.comp.kjc.JBlock;
+import org.kopi.kopi.comp.kjc.JFormalParameter;
+import org.kopi.kopi.comp.kjc.JLocalVariable;
+import org.kopi.kopi.comp.kjc.JMethodDeclaration;
 
 /**
  * This class represents a java class in the syntax tree

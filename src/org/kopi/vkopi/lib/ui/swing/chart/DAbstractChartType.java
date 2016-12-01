@@ -32,7 +32,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.util.ResourceBundleWrapper;
-
 import org.kopi.vkopi.lib.chart.UChartType;
 import org.kopi.vkopi.lib.chart.VDataSeries;
 import org.kopi.vkopi.lib.chart.VDimensionData;
@@ -40,6 +39,7 @@ import org.kopi.vkopi.lib.chart.VMeasureData;
 import org.kopi.vkopi.lib.chart.VPrintOptions;
 import org.kopi.vkopi.lib.util.PPaperType;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Rectangle;

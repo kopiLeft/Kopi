@@ -21,8 +21,8 @@ package org.kopi.bytecode.classfile;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Vector;
 
 import org.kopi.util.base.InconsistencyException;
 

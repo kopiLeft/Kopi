@@ -20,9 +20,9 @@
 package org.kopi.vkopi.lib.form;
 
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.list.VStringColumn;
-import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.visual.Module;
 import org.kopi.vkopi.lib.visual.UIFactory;
 import org.kopi.vkopi.lib.visual.VException;

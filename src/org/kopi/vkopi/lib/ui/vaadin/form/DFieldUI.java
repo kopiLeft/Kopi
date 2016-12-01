@@ -30,6 +30,7 @@ import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VImageField;
 import org.kopi.vkopi.lib.form.VTextField;
+import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
 
 /**
  * The <code>DFieldUI</code> is the vaadin UI components implementation of
@@ -47,8 +48,8 @@ public class DFieldUI extends VFieldUI {
    * @param blockView The block view.
    * @param model The field model.
    */
-  public DFieldUI(UBlock blockView, VField model) {
-    super(blockView, model);
+  public DFieldUI(UBlock blockView, VField model, int index) {
+    super(blockView, model, index);
   }
   
   // --------------------------------------------------
@@ -61,7 +62,7 @@ public class DFieldUI extends VFieldUI {
 
     switch (model.getType()) {
     case VField.MDL_FLD_EDITOR:
-      field = new DTextEditor(this, (DLabel)label, model.getAlign(),  model.getOptions(), ((VTextField) model).getHeight(), detail);
+      field = new DTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
       break;
     case VField.MDL_FLD_TEXT:
       field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
@@ -93,5 +94,30 @@ public class DFieldUI extends VFieldUI {
                                                OrderModel model)
   {
     return new DChartHeaderLabel(text, help, index, model);
+  }
+  
+  /**
+   * If the fields values are set in the model before display creation,
+   * The {@link DFieldHandler#valueChanged(int)} is not called since the
+   * listener is not registered yet. We will call the value change event for
+   * every block record here to fill out the client side cached values.
+   */
+  @Override
+  protected void fireDisplayCreated() {
+    for (int r = 0; r < getBlock().getBufferSize(); r++) {
+      // fire value changed only for text fields and when text value is not empty.
+      if (getModel().getType() == VField.MDL_FLD_TEXT || getModel().getType() == VField.MDL_FLD_EDITOR) {
+        if (getModel().getText(r) != null && getModel().getText(r).length() > 0) {
+          ((DBlock)getBlockView()).fireValueChanged(getIndex(), r, getModel().getText(r));
+        }
+      }
+      // fire color changed for non empty colors
+      if (Utils.toString(getModel().getForeground(r)).length() > 0 || Utils.toString(getModel().getBackground(r)).length() > 0) {
+        ((DBlock)getBlockView()).fireColorChanged(getIndex(),
+                                                  r,
+                                                  Utils.toString(getModel().getForeground(r)),
+                                                  Utils.toString(getModel().getBackground(r)));
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 2013-2015 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -185,17 +185,28 @@ public class VSortableLabel extends VLabel {
     deck.getElement().getStyle().setMarginLeft(margin, Unit.PX);
   }
   
+  @Override
+  public void clear() {
+    super.clear();
+    asc = null;
+    desc = null;
+    none = null;
+    deck = null;
+    listeners.clear();
+    listeners = null;
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VImage				asc;
-  private final VImage				desc;
-  private final VImage				none;
-  private final DeckPanel			deck;
+  private VImage				asc;
+  private VImage				desc;
+  private VImage				none;
+  private DeckPanel                             deck;
   private int 					sortMode;
   private boolean				sortable;
-  private final List<SortableLabelListener>	listeners;
+  private List<SortableLabelListener>           listeners;
   /**
    * Constants defining the current direction of the sort.
    */

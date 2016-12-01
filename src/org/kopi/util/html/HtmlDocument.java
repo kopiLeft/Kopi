@@ -25,7 +25,6 @@ import java.io.StringWriter;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-
 import org.kopi.util.base.InconsistencyException;
 
 public class HtmlDocument extends Element {

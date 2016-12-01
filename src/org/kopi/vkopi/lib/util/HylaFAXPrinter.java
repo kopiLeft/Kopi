@@ -20,19 +20,19 @@
 package org.kopi.vkopi.lib.util;
 
 import java.awt.Dimension;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import gnu.hylafax.Job;
+import org.kopi.util.base.InconsistencyException;
+
 import gnu.hylafax.HylaFAXClient;
 import gnu.hylafax.HylaFAXClientProtocol;
+import gnu.hylafax.Job;
 import gnu.inet.ftp.FtpClientProtocol;
 import gnu.inet.ftp.ServerResponseException;
-
-import org.kopi.util.base.InconsistencyException;
 
 /**
  * Fax printer

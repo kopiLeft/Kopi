@@ -29,7 +29,6 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.TableOrder;
-
 import org.kopi.vkopi.lib.chart.VDataSeries;
 import org.kopi.vkopi.lib.chart.VMeasureData;
 import org.kopi.vkopi.lib.visual.ApplicationContext;

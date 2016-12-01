@@ -24,10 +24,10 @@ import java.util.Vector;
 
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
-import org.kopi.vkopi.lib.visual.VWindow;
 import org.kopi.vkopi.lib.visual.VRuntimeException;
-import org.kopi.xkopi.lib.base.DBContextHandler;
+import org.kopi.vkopi.lib.visual.VWindow;
 import org.kopi.xkopi.lib.base.DBContext;
+import org.kopi.xkopi.lib.base.DBContextHandler;
 
 @SuppressWarnings("serial")
 public abstract class VDictionaryForm extends VForm implements VDictionary {

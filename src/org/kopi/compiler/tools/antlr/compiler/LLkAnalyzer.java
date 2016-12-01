@@ -19,7 +19,11 @@
 
 package org.kopi.compiler.tools.antlr.compiler;
 
-import org.kopi.compiler.tools.antlr.runtime.*;
+import org.kopi.compiler.tools.antlr.runtime.BitSet;
+import org.kopi.compiler.tools.antlr.runtime.CharFormatter;
+import org.kopi.compiler.tools.antlr.runtime.FileLineFormatter;
+import org.kopi.compiler.tools.antlr.runtime.Token;
+import org.kopi.compiler.tools.antlr.runtime.Vector;
 
 /**
  * A linear-approximate LL(k) grammar analzyer.

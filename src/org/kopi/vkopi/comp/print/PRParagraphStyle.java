@@ -23,7 +23,12 @@ import java.awt.Color;
 
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
-import org.kopi.kopi.comp.kjc.*;
+import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.JExpression;
+import org.kopi.kopi.comp.kjc.JExpressionStatement;
+import org.kopi.kopi.comp.kjc.JMethodCallExpression;
+import org.kopi.kopi.comp.kjc.JStatement;
+import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKContext;
