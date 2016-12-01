@@ -88,6 +88,35 @@ public abstract class ResourcesUtil {
     
     return connection.translateVaadinUri("theme://img/" + name);
   }
+  
+  /**
+   * Returns the resource simple name from its application URI.
+   * A theme resource URI have this general form : ${APPLICATION_PATH}/VAADIN/themes/${theme}/name.extension.
+   * What we want is to retrieve the resource name.
+   * @param uri The resource application URI.
+   * @return The simple name of the resource.
+   */
+  public static String getResourceName(String uri) {
+    int                 lastDotIndex;
+    int                 lastSlashIndex;
+    
+    // look for the last /
+    lastSlashIndex = uri.lastIndexOf('/');
+    // look for the last .
+    lastDotIndex = uri.lastIndexOf('.');
+    if (lastDotIndex == -1 && lastSlashIndex == -1) {
+      return uri;
+    } else if (lastDotIndex != -1 && lastSlashIndex != 1) {
+      // found it is OK now, the resource name is between the the / and the .
+      return uri.substring(lastSlashIndex + 1, lastDotIndex);
+    } else if (lastDotIndex != -1 && lastSlashIndex == 1) {
+      // no / found, the resource name starts from the beginning.
+      return uri.substring(0, lastDotIndex);
+    } else {
+      // no . found take it until the end
+      return uri.substring(lastSlashIndex);
+    }
+  }
 
   //---------------------------------------------------
   // DATA MEMBERS

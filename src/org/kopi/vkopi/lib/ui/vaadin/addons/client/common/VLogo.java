@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.common;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VAnchorPanel;
 
 import com.google.gwt.dom.client.Document;
@@ -57,6 +58,7 @@ public class VLogo extends VAnchorPanel {
     }
     image.setPropertyInt("border", 0);
     image.setClassName("logo-image");
+    image.addClassName(ResourcesUtil.getResourceName(url));
   }
 
   //---------------------------------------------------

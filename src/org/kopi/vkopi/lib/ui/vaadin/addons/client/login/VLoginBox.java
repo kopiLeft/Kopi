@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.login;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VHiddenSeparator;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
@@ -273,7 +274,9 @@ public class VLoginBox extends SimplePanel {
      * @param uri The welcome image URI.
      */
     public void setWelcomeImage(String uri) {
+      welcomeImage.setClassName(Styles.LOGIN_BOX_IMAGE);
       welcomeImage.setAttribute("src", uri);
+      welcomeImage.addClassName(ResourcesUtil.getResourceName(uri));
     }
     
     /**
