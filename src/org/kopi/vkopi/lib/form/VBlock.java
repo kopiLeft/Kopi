@@ -1988,6 +1988,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     if (!isMulti()) {
       if (!isRecordFetched(0)) {
+        clearRecord(0);
       } else {
         deleteRecord(0);
       }
