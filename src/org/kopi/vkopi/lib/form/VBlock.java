@@ -1987,7 +1987,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
 
     if (!isMulti()) {
-      deleteRecord(0);
+      if (!isRecordFetched(0)) {
+      } else {
+        deleteRecord(0);
+      }
     } else {
       for (int i = 0; i < getBufferSize(); i++) {
         if (!isRecordFetched(i)) {
