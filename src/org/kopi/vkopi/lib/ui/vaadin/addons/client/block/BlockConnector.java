@@ -336,7 +336,16 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
 
   @Override
   public void onValueChange(ValueChangeEvent<Integer> event) {
-    setScrollPos(event.getValue());
+    // when active record is set from the display. It means that
+    // one block field has fired a click event. Extra scroll event
+    // are blocked cause some FF version fire scroll events with
+    // wrong scroll position and force UI to refresh and change its
+    // content.
+    if (activeRecordSetFromDisplay) {
+      activeRecordSetFromDisplay = false;
+    } else {
+      setScrollPos(event.getValue());
+    }
   }
   
   //---------------------------------------------------
@@ -985,6 +994,17 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
       this.activeRecord = activeRecord;
     }
   }
+   
+  /**
+   * Sets the block active record from a given display line.
+   * @param displayLine The display line.
+   */
+  public void setActiveRecordFromDisplay(int displayLine) {
+    activeRecordSetFromDisplay = true;
+    setActiveRecord(getRecordFromDisplayLine(displayLine));
+    fireActiveRecordChanged();
+    refresh(false);
+  }
   
   /**
    * Sets the active field of this block.
@@ -1416,6 +1436,13 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
   private  int[]                        displayToSortedRec;
   private boolean                       initialized;
   private boolean                       doNotUpdateScrollPosition;
+  /*
+   * Some browsers fires extra scroll event with wrong scroll position
+   * when a chart block field is clicked. This flag is used to prevent
+   * these events from propagation to the block UI and thus block view refresh
+   * with wron top scroll record.
+   */
+  private boolean                       activeRecordSetFromDisplay;
   
   /**
    * The client RPC implementation.
