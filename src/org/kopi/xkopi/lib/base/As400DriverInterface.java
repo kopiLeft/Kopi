@@ -153,7 +153,12 @@ public class As400DriverInterface extends DriverInterface {
    * @return    the corresponding kopi DBException
    */
   public DBException convertException(String query, SQLException from) {
-    return new DBUnspecifiedException(query, from);
+    switch (from.getErrorCode()) {
+    case -913:  // Deadlock or timeout occurred without automatic rollback.
+      return new DBDeadLockException(query, from);
+    default:
+      return new DBUnspecifiedException(query, from);
+    }
   }
 
   /**
