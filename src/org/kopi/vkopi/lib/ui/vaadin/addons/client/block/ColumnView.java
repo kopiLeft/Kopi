@@ -652,9 +652,7 @@ public class ColumnView {
    */
   public void setBlockActiveRecordFromDisplayLine(int displayLine) {
     if (block != null) {
-      block.setActiveRecord(getRecordFromDisplayLine(displayLine));
-      block.fireActiveRecordChanged();
-      block.refresh(false);
+      block.setActiveRecordFromDisplay(getRecordFromDisplayLine(displayLine));
     }
   }
   
