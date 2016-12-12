@@ -652,7 +652,7 @@ public class ColumnView {
    */
   public void setBlockActiveRecordFromDisplayLine(int displayLine) {
     if (block != null) {
-      block.setActiveRecordFromDisplay(getRecordFromDisplayLine(displayLine));
+      block.setActiveRecordFromDisplay(displayLine);
     }
   }
   
