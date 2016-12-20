@@ -19,16 +19,24 @@
 
 package org.kopi.vkopi.lib.print;
 
+import java.awt.Color;
+
 public class PTextStyle extends PBodyStyle {
 
   /**
    * Construct a style
    */
-  public PTextStyle(String ident, String font, int style, int size) {
+  public PTextStyle(String ident,
+                    String font,
+                    int style,
+                    int size,
+                    Color color)
+  {
     super(ident);
     this.font = font;
     this.style = style;
     this.size = size;
+    this.color = color;
   }
 
   // ----------------------------------------------------------------------
@@ -44,6 +52,7 @@ public class PTextStyle extends PBodyStyle {
     int style;
     String font;
     int size;
+    Color color;
 
     if (this.font != null && !this.font.equals(engine.getFont())) {
       changed = true;
@@ -70,8 +79,15 @@ public class PTextStyle extends PBodyStyle {
       style = engine.getStyle();
     }
 
+    if (this.color != null && !this.font.equals(engine.getColor())) {
+      changed = true;
+      color = this.color;
+    } else {
+      color = engine.getColor();
+    }
+    
     if (changed) {
-      engine.setFont(font, style, size);
+      engine.setFont(font, style, size, color);
     }
   }
 
@@ -96,4 +112,5 @@ public class PTextStyle extends PBodyStyle {
   private String	font;
   private int		style;
   private int		size;
+  private Color         color;
 }

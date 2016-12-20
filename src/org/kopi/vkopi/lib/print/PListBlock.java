@@ -81,7 +81,7 @@ public abstract class PListBlock extends PTextBlock {
 
     engine = new PLayoutEngine(engine == null ? true : engine.needDescend());
     if (getAutoBreak() && oldEngine != null) {
-      engine.setFont(oldEngine.getFont(), oldEngine.getStyle(), oldEngine.getFontSize());
+      engine.setFont(oldEngine.getFont(), oldEngine.getStyle(), oldEngine.getFontSize(), oldEngine.getColor());
     }
     if (!wholebody) {
       fillBlock();

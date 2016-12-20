@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.print;
 
+import java.awt.Color;
 import java.util.Vector;
 
 import org.kopi.vkopi.lib.form.VBooleanField;
@@ -157,7 +158,7 @@ public abstract class PTextBlock extends PBlock {
           currentHeight += engine.getHeight();
           engine = new PLayoutEngine(engine.needDescend());
           if (auto) {
-            engine.setFont(oldEngine.getFont(), oldEngine.getStyle(), oldEngine.getFontSize());
+            engine.setFont(oldEngine.getFont(), oldEngine.getStyle(), oldEngine.getFontSize(), oldEngine.getColor());
           }
         }
       } else {
@@ -401,7 +402,7 @@ public abstract class PTextBlock extends PBlock {
   protected final void initTrigger() throws PSPrintException {
     paragraphStyle = DEFAULT_BLOCK_STYLE;
     newLine = true;
-    engine.setFont(DEFAULT_FONT, DEFAULT_STYLE, DEFAULT_SIZE);
+    engine.setFont(DEFAULT_FONT, DEFAULT_STYLE, DEFAULT_SIZE, DEFAULT_COLOR);
   }
 
 
@@ -506,6 +507,7 @@ public abstract class PTextBlock extends PBlock {
   private static final String          	        DEFAULT_FONT = "Courier";
   private static final int              	DEFAULT_STYLE = 0;
   private static final int              	DEFAULT_SIZE = 12;
+  private static final Color                    DEFAULT_COLOR = Color.black;
   private static final PParagraphStyle  	DEFAULT_BLOCK_STYLE = new PParagraphStyle("!@#$%", null, PStyle.ALN_LEFT, 5, -1, -1, 0, 0, null, false, null);
 
   private Thread                		worker;

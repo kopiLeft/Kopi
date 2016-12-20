@@ -216,7 +216,7 @@ class PLayoutEngine {
   /**
    * Sets the current font (style tag reached) [cached]
    */
-  public void setFont(String name, int style, int size) {
+  public void setFont(String name, int style, int size, Color color) {
     try {
       this.font = name;
       this.style = style;
@@ -254,7 +254,7 @@ class PLayoutEngine {
           fontStyle = Font.ITALIC;
         }
 
-        currentFont = FontFactory.getFont(name, BaseFont.CP1252, size, fontStyle);
+        currentFont = FontFactory.getFont(name, BaseFont.CP1252, size, fontStyle, color);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -274,6 +274,13 @@ class PLayoutEngine {
    */
   public String getFont() {
     return font;
+  }
+  
+  /**
+   * Accessors to current styles for style toggling
+   */
+  public Color getColor() {
+    return color;
   }
 
   /**
@@ -526,6 +533,7 @@ class PLayoutEngine {
   private	String	font;
   private	int	style;
   private	int	size;
+  private       Color   color;
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS

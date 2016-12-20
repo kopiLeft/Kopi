@@ -74,6 +74,7 @@ public class PRTextStyle extends PRStyle {
     this.face = face;
     this.font = font;
     this.size = size;
+    this.color = foreground;
   }
 
   // ----------------------------------------------------------------------
@@ -105,7 +106,8 @@ public class PRTextStyle extends PRStyle {
 							  VKUtils.toExpression(ref, getIdent()),
 							  VKUtils.toExpression(ref, font),
 							  VKUtils.toExpression(ref, face),
-							  VKUtils.toExpression(ref, size)
+							  VKUtils.toExpression(ref, size),
+							  PRUtils.toExpression(ref, color)
 							});
     expr = new JMethodCallExpression(ref, null, "addStyle", new JExpression[]{ expr });
 
@@ -143,4 +145,5 @@ public class PRTextStyle extends PRStyle {
   private int		face;
   private String	font;
   private int		size;
+  private Color         color;
 }
