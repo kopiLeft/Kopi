@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -299,6 +300,22 @@ public abstract class PPage {
     }
     printJob.setPrintInformation(title, format, getCurrentPage());
     return printJob;
+  }
+  
+  public void setWatermark(byte[] watermarkBytes) {
+    try {
+      watermark = new PdfReader(watermarkBytes);
+    } catch (IOException e) {
+      throw new InconsistencyException(e);
+    }
+  }
+  
+  public void setWatermark(InputStream watermarkStream) {
+    try {
+      watermark = new PdfReader(watermarkStream);
+    } catch (IOException e) {
+      throw new InconsistencyException(e);
+    }
   }
 
   public void setWatermark(String watermarkResource) {
