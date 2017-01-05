@@ -119,7 +119,11 @@ public class PExport2PDF extends PExport implements Constants {
       // 2 to be sure to print the border
       if (pconfig.reportScale == PConfig.MIN_REPORT_SCALE) {
         scale = (float) getScale(PConfig.MIN_REPORT_SCALE, PConfig.MAX_REPORT_SCALE, 0.1);
-        pconfig.reportScale = scale;
+        //!!! hacheni 20170104 : commented to force scale calculation when the scale is not
+        //                       mentioned by the print options. This is needed when the page
+        //                       layout is changed in the print options or the number of visible
+        //                       columns are changed in the report view.
+        //pconfig.reportScale = scale;
       } else {
         scale = pconfig.reportScale;
         formatColumns();
