@@ -81,7 +81,6 @@ public class VChartBlockScrollBar extends Composite implements ScrollHandler, Ha
         scrollStep = 0;
         scrollbar.setScrollPos(0);
         scrollbar.setScrollSize(0);
-        scrollInfoQueue.clear();
       }
       // Now set the scroll bar ability
       setEnabled(enable);
