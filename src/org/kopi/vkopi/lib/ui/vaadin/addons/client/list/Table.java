@@ -403,17 +403,25 @@ public class Table extends AdvancedFlexTable implements SortListener {
       
       @Override
       public void execute() {
+        boolean         calculateTableSize;
+        
+        calculateTableSize = false;
 	// scroll table body when it is needed
 	if (getTableHeight() > Math.max(0, Window.getClientHeight() - getAbsoluteTop())) {
-	  updateTableStyle();
-	  updateCellsSizes();
 	  getBodyElement().getStyle().setOverflowX(Overflow.HIDDEN);
+	  calculateTableSize = true;
 	}
 	
 	if (getTableWidth() > Window.getClientWidth()) {
-	  calculateTableWidth();
 	  getElement().getStyle().setOverflowX(Overflow.AUTO);
 	  getElement().getStyle().setWidth(Window.getClientWidth(), Unit.PX);
+	  calculateTableSize = true;
+	}
+	
+	if (calculateTableSize) {
+          updateTableStyle();
+          updateCellsSizes();
+	  calculateTableWidth();
 	}
       }
     });
@@ -463,7 +471,7 @@ public class Table extends AdvancedFlexTable implements SortListener {
    */
   protected void updateCellsSizes() {
     for (int column = 0; column < columns.size(); column++) {
-      int	width = Math.max(getHeaderElement(column).getClientWidth(), getMaxCellWidth(column));
+      int	width = Math.max(getHeaderElement(column).getOffsetWidth(), getMaxCellWidth(column));
       
       getHeaderElement(column).getStyle().setWidth(width, Unit.PX);
       if (column == columns.size() - 1) {
@@ -473,7 +481,6 @@ public class Table extends AdvancedFlexTable implements SortListener {
 	getCellFormatter().getElement(row, column).getStyle().setWidth(width, Unit.PX);
       }
     }
-    setRowsWidth(getTHeadElement().getClientWidth());
   }
   
   /**
@@ -483,7 +490,7 @@ public class Table extends AdvancedFlexTable implements SortListener {
     int		width = 0;
     
     for (int column = 0; column < getCellCount(0); column++) {
-      width += getHeaderElement(column).getClientWidth();
+      width += getHeaderElement(column).getOffsetWidth();
     }
     
     // set table width.
@@ -497,6 +504,8 @@ public class Table extends AdvancedFlexTable implements SortListener {
   public void setTableWidth(int width) {
     getBodyElement().getStyle().setWidth(width, Unit.PX);
     getTHeadElement().getStyle().setWidth(width, Unit.PX);
+    getTHeadElement().getFirstChildElement().getStyle().setWidth(width, Unit.PX);
+    setRowsWidth(width);
   }
   
   /**
@@ -508,7 +517,7 @@ public class Table extends AdvancedFlexTable implements SortListener {
     int		width = 0;
     
     for (int row = 0; row < getRowCount(); row++) {
-      width = Math.max(width, getCellFormatter().getElement(row, column).getClientWidth());
+      width = Math.max(width, getCellFormatter().getElement(row, column).getOffsetWidth());
     }
 
     return width;
