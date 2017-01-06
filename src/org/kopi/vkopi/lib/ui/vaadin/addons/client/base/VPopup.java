@@ -32,6 +32,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.VTooltip;
 import com.vaadin.client.ui.VOverlay;
 
 /**
@@ -163,6 +164,19 @@ public class VPopup extends VOverlay {
       resizeRegistration.removeHandler();
       resizeRegistration = null;
       glassShowing = false;
+    }
+  }
+  
+  /**
+   * Hides any showing application tooltip 
+   */
+  private void maybeHideTootip() {
+    if (connection != null) {
+      VTooltip  tooltip = connection.getVTooltip();
+      
+      if (tooltip != null) {
+        tooltip.hideTooltip();
+      }
     }
   }
 
