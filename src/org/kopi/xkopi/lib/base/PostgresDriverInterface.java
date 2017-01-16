@@ -170,6 +170,8 @@ public class PostgresDriverInterface extends DriverInterface {
     case 8001:	// sqlclient_unable_to_establish_sqlconnection
     case 8004:  // sqlserver_rejected_establishment_of_sqlconnection
     case 8007:  // transaction_resolution_unknown
+      // Class 40 — Transaction Rollback : we could use 40P01 (deadlock_detected) for general case
+    case 40001: // serialization_failure
       return new DBDeadLockException(query, from);
       // Class 23 — Integrity Constraint Violation
     case 23505:	// unique_violation
