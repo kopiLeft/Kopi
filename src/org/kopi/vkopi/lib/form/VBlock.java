@@ -91,7 +91,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
     setCurrentRecord(-1);
 
-    detailMode = (displaySize == 1);
+    detailMode = (!isMulti() && displaySize == 1);
     if (isMulti()) {
       sortedRecords  = new int[getBufferSize()];
     } else {
