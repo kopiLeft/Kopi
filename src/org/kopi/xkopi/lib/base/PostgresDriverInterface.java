@@ -460,7 +460,11 @@ public class PostgresDriverInterface extends DriverInterface {
 	
       case 33: // CAST/2
         return cast(arguments.elementAt(0), (String) arguments.elementAt(1));
-
+      
+      case 34: // TO_NUMBER/1
+        // use TO_NUMBER postgresql that takes two parameters : the input string and the output number format.
+        // the number format is simply replacing every digit in the input string with 9
+        return "TO_NUMBER(" + arguments.elementAt(0) + ", " + ((String)arguments.elementAt(0)).replaceAll("\\d", "9") + ")";
       default:
 	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
 				   "/" + arguments.size());
@@ -508,5 +512,6 @@ public class PostgresDriverInterface extends DriverInterface {
     functions.put("COALESCE/2", new Integer(31));
     functions.put("NEXTVAL/1", new Integer(32));
     functions.put("CAST/2", new Integer(33));
+    functions.put("TO_NUMBER/1", new Integer(34));
   }
 }
