@@ -170,6 +170,9 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
         cancelKey();
       }
     }
+    if (event.getCharCode() == '.') {
+      periodPressed = true;
+    }
   }
   
   @Override
@@ -580,8 +583,13 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
 	break;
       }
     }
-    // look if the decimal separator must be changed.
-    maybeReplaceDecimalSeparator();
+    // if period press is detected in key press event
+    // we try to replace the decimal separator.
+    if (periodPressed) {
+      // look if the decimal separator must be changed.
+      maybeReplaceDecimalSeparator();
+      periodPressed = false;
+    }
     // check if the field has really changed.
     if (isChanged()) {
       getFieldConnector().setChanged(true);
@@ -1191,6 +1199,7 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   /*package*/ ApplicationConnection     client;
   // used while checking if FF has set input prompt as value
   private TextValidationStrategy	validationStrategy;
+  private boolean                       periodPressed;
   private String			currentText;
   private SuggestOracle 		oracle;
   private SuggestionDisplay 		display;

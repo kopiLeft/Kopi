@@ -107,7 +107,7 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
       return;
     }
     // special treatment for decimal separator
-    if (model instanceof VFixnumField && str.contains(".")) {
+    if (model instanceof VFixnumField && str.equals(".")) {
       DecimalFormatSymbols      symbols;
       
       symbols = new DecimalFormatSymbols(ApplicationContext.getDefaultLocale());
