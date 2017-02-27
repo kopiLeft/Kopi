@@ -71,8 +71,8 @@ public class As400DriverInterface extends DriverInterface {
    * Give an access to an user or create an user
    *
    *
-   * @param	conn		the connection
-   * @param	user		the login of the user
+   * @param     conn            the connection
+   * @param     user            the login of the user
    * @param     password        the initial password
    */
   public void grantAccess(Connection conn, String user, String password) throws SQLException {
@@ -85,8 +85,8 @@ public class As400DriverInterface extends DriverInterface {
    * Removed an access to an user or delete an user
    *
    *
-   * @param	conn		the connection
-   * @param	user		the login of the user
+   * @param     conn            the connection
+   * @param     user            the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
     //!!! graf FIXME 20150126 - avoid SQL injection
@@ -109,7 +109,7 @@ public class As400DriverInterface extends DriverInterface {
   /**
    * Locks a table in exclusive mode.
    *
-   * @param	conn		the connection
+   * @param     conn            the connection
    * @param     tableName       the name of the table to lock
    */
   public void lockTable(Connection conn, String table)
@@ -123,12 +123,12 @@ public class As400DriverInterface extends DriverInterface {
    * Transforms a SQL query string from KOPI syntax to the syntax
    * accepted by the corresponding driver
    *
-   * @param	from		the SQL query string in KOPI syntax
-   * @return	the string in the syntax of the driver
+   * @param     from            the SQL query string in KOPI syntax
+   * @return    the string in the syntax of the driver
    */
   public String convertSql(String from) {
     try {
-      As400Parser	parser = new As400Parser(from);
+      As400Parser       parser = new As400Parser(from);
 
       if (trace) {
         System.err.println("-- NATIVE SQL: ");
@@ -220,7 +220,19 @@ public class As400DriverInterface extends DriverInterface {
    * CAST/2: Converts a value from one data type to a given target type.
    */
   protected String translateCast(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    String      type = arg2.replaceAll("\'", "");
+    
+    if (type.equalsIgnoreCase("INT") || type.startsWith("NUMERIC") || type.startsWith("FIXED")) {
+      return "INTEGER(" + arg1 + ")";
+    } else if (type.startsWith("STRING") || type.startsWith("CHAR")) {
+      return "CHAR(" + arg1 + ")";
+    } else if (type.equals("DATETIME[YY:DD]")|| type.equalsIgnoreCase("YYYYMMDD")) {
+      return "RTRIM(CHAR(YEAR(" + arg1 + "))) || REPEAT('0', 2 - LENGTH(RTRIM(CHAR(MONTH(" + arg1 + "))))) || RTRIM(CHAR(MONTH(" + arg1 + "))) || REPEAT('0', 2 - LENGTH(RTRIM(CHAR(DAY(" + arg1 + "))))) || RTRIM(CHAR(DAY(" + arg1 + ")))";
+    } else if (type.equals("TIMESPAN[MI]")|| type.equalsIgnoreCase("MM")) {
+      return "REPEAT('0', 2 - LENGTH(RTRIM(CHAR(MONTH(" + arg1 + "))))) || RTRIM(CHAR(MONTH(" + arg1 + ")))";
+    } else {
+      return arg1;
+    }
   }
 
   /**
@@ -229,7 +241,7 @@ public class As400DriverInterface extends DriverInterface {
    * expression
    */
   protected String translateCoalesce(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "VALUE(" + arg1 + ", " + arg2 + ")";
   }
 
   /**
@@ -301,7 +313,7 @@ public class As400DriverInterface extends DriverInterface {
    * GREATEST/2: Returns the greatest of the given list of two expressions.
    */
   protected String translateGreatest(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+     return "MAX(" + arg1 + ", " + arg2 + ")";
   }
 
   /**
@@ -318,7 +330,7 @@ public class As400DriverInterface extends DriverInterface {
    * INT2STRING/1: Converts a given number to a value of string datatype.
    */
   protected String translateInt2string(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return  "CHAR(" + arg1 + ")";
   }
 
   /**
@@ -327,7 +339,7 @@ public class As400DriverInterface extends DriverInterface {
    * the given date.
    */
   protected String translateLastDay(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+     return " LAST_DAY(" + arg1 + ")";
   }
 
   /**
@@ -372,7 +384,7 @@ public class As400DriverInterface extends DriverInterface {
    * specified length.
    */
   protected String translateLpad(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "REPEAT(' ', " + arg2 + " - LENGTH(" + arg1 + ")) || " + arg1;
   }
 
   /**
@@ -383,7 +395,13 @@ public class As400DriverInterface extends DriverInterface {
    * into the specified length.
    */
   protected String translateLpad(String arg1, String arg2, String arg3) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    int         len = Integer.parseInt(arg2);
+
+    if (len >= (arg1.length() - 2)) {
+      return " REPEAT(" + arg3 + "," + arg2 + " - LENGTH(" + arg1 + ")) || " + arg1;
+    } else{
+      throw new InconsistencyException("Assignment impossible, text value too long");
+    }
   }
 
   /**
@@ -400,7 +418,7 @@ public class As400DriverInterface extends DriverInterface {
    * argument.
    */
   protected String translateMod(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "MOD(" + arg1 + ", " + arg2 + ")";
   }
 
   /**
@@ -462,7 +480,7 @@ public class As400DriverInterface extends DriverInterface {
    * ROWID/0: Returns the address or the ID of the row.
    */
   protected String translateRowid() throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "row_number() over()";
   }
 
   /**
@@ -478,7 +496,7 @@ public class As400DriverInterface extends DriverInterface {
    * ROWIDEXT/0: Returns the address or the ID of the row.
    */
   protected String translateRowidext() throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "row_number() over()";
   }
 
   /**
@@ -496,7 +514,7 @@ public class As400DriverInterface extends DriverInterface {
    * result set, starting at 1 for the first row in each partition.
    */
   protected String translateRowno() throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "row_number() over()";
   }
 
   /**
@@ -518,7 +536,13 @@ public class As400DriverInterface extends DriverInterface {
    * into the specified length.
    */
   protected String translateRpad(String arg1, String arg2, String arg3) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    int         len = Integer.parseInt(arg2);
+
+    if (len >= (arg1.length() - 2)) {
+      return arg1 + "|| REPEAT(" + arg3 + "," + arg2 + " - LENGTH(" + arg1 + "))";
+    } else{
+      throw new InconsistencyException("Assignment impossible, text value too long");
+    }
   }
 
   /**
@@ -542,7 +566,7 @@ public class As400DriverInterface extends DriverInterface {
    * STRING2INT/1: Converts the given string number into an integer.
    */
   protected String translateString2int(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "INTEGER(" + arg1 + ")";
   }
 
   /**
@@ -560,7 +584,7 @@ public class As400DriverInterface extends DriverInterface {
    * position
    */
   protected String translateSubstring(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "SUBSTRING (" + arg1 + ", " + arg2 + ")";
   }
 
   /**
@@ -577,7 +601,7 @@ public class As400DriverInterface extends DriverInterface {
    * TO_CHAR/1: Converts a given number to a value of string datatype.
    */
   protected String translateToChar(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "CHAR(" + arg1 + ")";
   }
 
   /**
@@ -594,7 +618,7 @@ public class As400DriverInterface extends DriverInterface {
    * TO_DATE/1: Converts a given datetime into a date format.
    */
   protected String translateToDate(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "DATE('" + arg1.replaceAll("\'", "") + "')";
   }
 
   /**
@@ -621,7 +645,7 @@ public class As400DriverInterface extends DriverInterface {
    * TO_NUMBER/1: Converts a given expression to a value of Integer type.
    */
   protected String translateToNumber(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "INTEGER(" + arg1 + ")";
   }
 
   /**
@@ -630,7 +654,7 @@ public class As400DriverInterface extends DriverInterface {
    * places.
    */
   protected String translateTrunc(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "TRUNC(" + arg1 + "," + arg2 + ")";
   }
 
   /**
@@ -639,7 +663,7 @@ public class As400DriverInterface extends DriverInterface {
    * The value returned is always of database date type.
    */
   protected String translateTruncDate(String arg1) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "DATE(" + arg1 + ")";
   }
 
   /**
