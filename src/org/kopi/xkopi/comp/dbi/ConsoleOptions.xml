@@ -25,8 +25,8 @@
   <param longname="datasource"
          shortname="d"
          type="String"
-         default="tbx"
-         help="Sets the source to connect to (sap | tbx | pg | ora | ora10g | mysql | ingres | as400)" />
+         default="pg"
+         help="Sets the source to connect to (sap | pg | ora10g | as400)" />
   <param longname="host"
          shortname="H"
          type="String"

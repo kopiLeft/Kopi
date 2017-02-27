@@ -39,6 +39,14 @@ public abstract class DriverInterface {
   }
   
   /**
+   * Checks whether an SQL function with specified name and arity is known
+   * by the translator.
+   */
+  public static boolean functionKnown(String name, int arity) {
+    return JdbcParser.functionKnown(name, arity);
+  }
+
+  /**
    * Count the maximum size for an ORDER BY clause on the
    * driver (data base)
    *

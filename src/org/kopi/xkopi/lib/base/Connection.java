@@ -467,26 +467,14 @@ public class Connection {
 
     final String driverName = d.getClass().getName();
 
-    if (driverName.equals("org.kopi.kconnect.Driver")) {
-      driver = new KconnectDriverInterface(url);
-    } else if (driverName.equals("COM.ibm.db2.jdbc.app.DB2Driver")) {
-      driver = new Db2UdbDriverInterface();
-    } else if (driverName.equals("com.ibm.as400.access.AS400JDBCDriver")) {
+    if (driverName.equals("com.ibm.as400.access.AS400JDBCDriver")) {
       driver = new As400DriverInterface();
     } else if (driverName.equals("com.sap.dbtech.jdbc.DriverSapDB")) {
       driver = new SapdbDriverInterface();
-    } else if (driverName.equals("transbase.jdbc.Driver")) {
-      driver = new TbxDriverInterface();
-    } else if (driverName.equals("com.mysql.jdbc.Driver")) {
-      driver = new MysqlDriverInterface();
     } else if (driverName.equals("org.postgresql.Driver")) {
       driver = new PostgresDriverInterface();
     } else if (driverName.equals("com.impossibl.postgres.jdbc.PGDriver")) {
       driver = new PostgresDriverInterface();
-    } else if (driverName.equals("ca.edbc.jdbc.EdbcDriver")) {
-      driver = new IngresDriverInterface();
-    } else if (driverName.equals("sun.jdbc.odbc.JdbcOdbcDriver")) {
-      driver = new ODBCDriverInterface();
     } else if (driverName.equals("com.ddtek.jdbc.openedge.OpenEdgeDriver")) {
       driver = new OpenEdgeDriverInterface();
     } else {

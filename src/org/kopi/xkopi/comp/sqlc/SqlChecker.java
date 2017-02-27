@@ -29,6 +29,7 @@ import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.xkopi.lib.base.DriverInterface;
 import org.kopi.xkopi.lib.type.Date;
 import org.kopi.xkopi.lib.type.Fixed;
 import org.kopi.xkopi.lib.type.Time;
@@ -598,6 +599,12 @@ public class SqlChecker implements SqlVisitor {
                                 ExpressionList params)
     throws PositionedError
   {
+    if (! DriverInterface.functionKnown(name, params == null ? 0 : params.elemNumber())) {
+      reportTrouble(new CWarning(self.getTokenReference(),
+                                 SqlcMessages.FUNCTION_UNKNOWN,
+                                 name + "/" + (params == null ? 0 : params.elemNumber())));
+    }
+
     current.append("{fn ");
     current.append(name);
     current.append("(");
@@ -1296,16 +1303,9 @@ public class SqlChecker implements SqlVisitor {
                                     SubTableExpression table)
     throws PositionedError
   {
-    // laurent 20020304 Removed the brackets because it is specific
-    // only to Transbase. Furthermore Transbase seems to accept the
-    // syntax without brackets
-    //    current.append("[");
-    // lackner 20041230 oracle needs "(" and ")"
-    // transbase and maxdb work with "(" and ")" too
     current.append("(");
     exprs.accept(this);
     current.append(")");
-    //    current.append("]");
     if (hasNot) {
       current.append(" NOT");
     }

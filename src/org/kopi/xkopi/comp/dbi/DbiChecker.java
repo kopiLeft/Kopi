@@ -65,20 +65,12 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
   public static DbiChecker create(String syntax, SqlContext context) {
     if (syntax.equals("sap")) {
       return new SapdbDbiChecker(context);
-    } else if (syntax.equals("tbx")) {
-      return new TransbaseDbiChecker(context);
     } else if (syntax.equals("pg")) {
       return new PostgresDbiChecker(context);
     } else if (syntax.equals("ora")) {
       return new OracleDbiChecker(context);
-    } else if (syntax.equals("mysql")) {
-      return new MysqlDbiChecker(context);
-    } else if (syntax.equals("ingres")) {
-      return new IngresDbiChecker(context);
     } else if (syntax.equals("as400")) {
       return new As400DbiChecker(context);
-    } else if (syntax.equals("tbspool")) {
-      return new TbSpoolerDbiChecker(context);
     } else if (syntax.equals("oraspool")) {
       return new OraSpoolerDbiChecker(context);
     } else if (syntax.equals("oe")) {

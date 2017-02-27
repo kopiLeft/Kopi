@@ -42,11 +42,9 @@
                    KopiUtils.java Query.java
                    XInterruptProtectedException.java 
                    As400DriverInterface.java 
-                   Db2UdbDriverInterface.java KconnectDriverInterface.java 
-                   MysqlDriverInterface.java OracleDriverInterface.java 
+                   OracleDriverInterface.java 
                    PostgresDriverInterface.java SapdbDriverInterface.java 
-                   TbxDriverInterface.java ODBCDriverInterface
-                   ConnectionOptions.java IngresDriverInterface.java
+                   ConnectionOptions.java
   		   OpenEdgeDriverInterface.java" />
 
   <property name="options" 

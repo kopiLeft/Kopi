@@ -682,18 +682,10 @@ public class Console extends Compiler implements Constants {
 
       if (name.equals("sap")) {
         dataSource = new SapDBDataSource();
-      } else if (name.equals("tbx")) {
-        dataSource = new TbxDataSource();
       } else if (name.equals("pg")) {
         dataSource = new PostgresDataSource();
-      } else if (name.equals("ora")) {
-        dataSource = new OracleDataSource();
       } else if (name.equals("ora10g")) {
         dataSource = new Oracle10gDataSource();
-      } else if (name.equals("mysql")) {
-        dataSource = new MysqlDataSource();
-      } else if (name.equals("ingres")) {
-        dataSource = new IngresDataSource();
       } else if (name.equals("as400")) {
         dataSource = new As400DataSource();
       } else if (name.equals("oe")) {
@@ -782,26 +774,6 @@ public class Console extends Compiler implements Constants {
     }
   }
 
-  private abstract static class KConnectDataSource extends DbiDataSource {
-    KConnectDataSource(String dbms, String syntax) {
-      super("org.kopi.kconnect.Driver",
-            "jdbc:kconnect:" + dbms + ":",
-            syntax);
-    }
-  }
-
-  private static final class TbxDataSource extends KConnectDataSource {
-    TbxDataSource() {
-      super("tb", "tbx");
-    }
-  }
-
-  private static final class OracleDataSource extends KConnectDataSource {
-    OracleDataSource() {
-      super("ora", "ora");
-    }
-  }
-
   private static final class Oracle10gDataSource extends DbiDataSource {
     Oracle10gDataSource() {
       super("oracle.jdbc.driver.OracleDriver",
@@ -815,22 +787,6 @@ public class Console extends Compiler implements Constants {
       super("com.impossibl.postgres.jdbc.PGDriver",
             "jdbc:pgsql:",
             "pg");
-    }
-  }
-
-  private static final class MysqlDataSource extends DbiDataSource {
-    MysqlDataSource() {
-      super("com.mysql.jdbc.Driver",
-            "jdbc:mysql:",
-            "mysql");
-    }
-  }
-
-  private static final class IngresDataSource extends DbiDataSource {
-    IngresDataSource() {
-      super("ca.edbc.jdbc.EdbcDriver",
-            "jdbc:edbc:",
-            "ingres");
     }
   }
 

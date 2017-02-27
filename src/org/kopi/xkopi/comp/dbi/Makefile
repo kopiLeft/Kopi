@@ -58,12 +58,11 @@ JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		SCompilationUnit ScriptHeadStatement			\
 		SequenceDefinition DropSequenceStatement		\
 		ShortType SpoolFileStatement				\
-		SpoolTableStatement StringType TransbaseDbiChecker	\
+		SpoolTableStatement StringType				\
 		TableConstraint TableDefinition				\
 		TablePrivilege TextType TimeType			\
 		TimestampType UniqueConstraintDefinition		\
-		ViewColumn ViewDefinition WeekType  MysqlDbiChecker	\
-		IngresDbiChecker TbSpoolerDbiChecker 			\
+		ViewColumn ViewDefinition WeekType			\
 		OraSpoolerDbiChecker OpenEdgeDbiChecker
 
 OPTIONS =	DbiOptions  ConsoleOptions

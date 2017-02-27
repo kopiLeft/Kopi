@@ -36,6 +36,7 @@
 <msg identifier="NUMBER_COLUMNS_NOT_CORRECT" format="The number of columns isn&apos;t correct." reference="SQLC" level="2"/>
 <msg identifier="NUMBER_COLUMNS_VALUES_NOT_EQUAL" format="The number of columns in the ORDER BY isn&apos;t correct." reference="SQLC" level="2"/>
 <msg identifier="SET_FUNCTION_IS_SQL" format="\&quot;{0}\&quot; is defined in the grammar: it should not be enclosed in fn-escapes" reference="SQLC" level="2"/>
+<msg identifier="FUNCTION_UNKNOWN" format="SQL function \&quot;{0}\&quot; is not known" reference="SQLC" level="2"/>
 <msg identifier="BAD_DATABASE_TYPE" format="The column \&quot;{0}\&quot; is not compatible with \&quot;{1}\&quot;" reference="SQLC" level="2"/>
 <msg identifier="NOT_ANSI_SYNTAX" format="Not ANSI syntax, use a AS" reference="SQLC" level="2"/>
 <msg identifier="ASSIGN_NULL" format="Not ANSI syntax, use \&quot;IS NULL\&quot; instead of \&quot;= NULL\&quot;" reference="SQLC" level="2"/>

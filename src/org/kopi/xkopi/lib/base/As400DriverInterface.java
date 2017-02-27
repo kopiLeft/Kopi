@@ -21,8 +21,6 @@ package org.kopi.xkopi.lib.base;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Hashtable;
-import java.util.Vector;
 
 import org.kopi.util.base.InconsistencyException;
 
@@ -200,127 +198,480 @@ public class As400DriverInterface extends DriverInterface {
   // ----------------------------------------------------------------------
 
   /**
-   * Converts a function call in JDBC syntax to native syntax
-   *
-   * @param	function	the name of the function
-   * @param	arguments	the arguments to the function
-   * @return	a string representing the function call in native syntax
-   *		or null no specific translation is defined for the function
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ADD_DAYS/2: Adds a specified number of days to a given valid character
+   * string representation of a date.
    */
-  protected String convertFunctionCall(String functor, Vector arguments)
-    throws SQLException
-  {
-    Object	function = functions.get(functor.toUpperCase() + "/" + arguments.size());
+  protected String translateAddDays(String arg1, String arg2) throws SQLException {
+    return "((" + arg1 + ") + ( " + arg2 + ") DAYS)";
+  }
 
-    if (function == null) {
-      return null;
-    } else {
-      // ugly, but more efficient than creating a command class for each functor
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ADD_YEARS/2:Adds a specified number of years to a given valid character
+   * string representation of a date.
+   */
+  protected String translateAddYears(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
 
-      switch (((Integer)function).intValue()) {
-      case 1:	// TOMONTH/1
-	return "((" + arguments.elementAt(0) + ") CAST DATETIME[YY:MO])";
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * CAST/2: Converts a value from one data type to a given target type.
+   */
+  protected String translateCast(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
 
-      case 2:	// ADD_DAYS/2
-	return "((" + arguments.elementAt(0) + ") + ( " + arguments.elementAt(1) + ") DAYS)";
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * COALESCE/2: Returns the first non-null expression of the two given
+   * expression
+   */
+  protected String translateCoalesce(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
 
-      case 4:	// MONTH/2
-	return "DATETIME[YY:MO](" + arguments.elementAt(0) + "-" + arguments.elementAt(1) + ")";
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * CONCAT/2: Returns a string that is the result of concatenating two string
+   * values.
+   */
+  protected String translateConcat(String arg1, String arg2) throws SQLException {
+    return "(" + arg1 + " + " + arg2 + ")";
+  }
 
-      case 5:	// EXTRACT/2
-	{
-	  String	arg1 = (String)arguments.elementAt(1);
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * CURRENTDATE/0: Returns the current date in the connected user time zone.
+   */
+  protected String translateCurrentdate() throws SQLException {
+    return "CURRENT_DATE";
+  }
 
-	  if (arg1.length() != 4 || arg1.charAt(0) != '\'' || arg1.charAt(3) != '\'') {
-	    throw new SQLException("invalid argument to EXTRACT/2: " + arg1);
-	  }
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * CURRENTTIME/0: Returns the current database system time as a datetime
+   * value.
+   */
+  protected String translateCurrenttime() throws SQLException {
+    return "CURRENT_TIME";
+  }
 
-	  return "(" + arg1.substring(1, 3) + " OF (" + arguments.elementAt(0) + "))";
-	}
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * CURRENTTIMESTAMP/0: Returns the current database system timestamp as a
+   * datetime value.
+   */
+  protected String translateCurrenttimestamp() throws SQLException {
+    return "CURRENT TIMESTAMP";
+  }
 
-      case 7:	// POSITION/2
-	return "POSITION (" + arguments.elementAt(0) + " IN " + arguments.elementAt(1) + ")";
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * DATEDIFF/2: Calculates the difference between two given dates in days.
+   */
+  protected String translateDatediff(String arg1, String arg2) throws SQLException {
+    return "DATEDIFF(" + arg1 + "," + arg2 + ")";
+  }
 
-      case 8:	// SUBSTRING/2
-	return "SUBSTRING (" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
-
-      case 9:	// SUBSTRING/3
-	return "SUBSTRING (" + arguments.elementAt(0) + ", " + arguments.elementAt(1)  + ", " +
-	  arguments.elementAt(2) + ")";
-
-      case 10:	// SIZE_OF/1
-	return "SIZE OF (" + arguments.elementAt(0) + ")";
-
-      case 11:	// UPPER/1
-	return "UCASE(" + arguments.elementAt(0) + ")";
-
-      case 12:	// LOWER/1
-	return "LCASE(" + arguments.elementAt(0) + ")";
-
-      case 13:	// LTRIM/1
-	return "LTRIM(" + arguments.elementAt(0) + ")";
-
-      case 14:	// RTRIM/1
-	return "RTRIM(" + arguments.elementAt(0) + ")";
-
-      case 15:	// REPLACE/3
-	return "REPLACE (" + arguments.elementAt(0) + " BY " + arguments.elementAt(1) + " IN " +
-	  arguments.elementAt(2) + ")";
-
-      case 16:	// REPEAT/2
-	return "REPEAT (" + arguments.elementAt(0) + ", " + arguments.elementAt(1) + ")";
-
-      case 17:	// CURRENTDATE
-	return "CURRENT_DATE";
-
-      case 18:	// USER
-	return "USER";
-
-      case 19:	// SPACE
-	return "REPEAT (" + "' '" + ", " + arguments.elementAt(0) + ")";
-
-      case 20:	// RIGHT
-        return "SUBSTRING (" + arguments.elementAt(0) + " FROM " +  "(" +
-	  "SIZE OF (" + arguments.elementAt(0) + ")" + ") - " + arguments.elementAt(1) + " + 1" + ")";
-
-      case 21 : // LEFT
-        return "SUBSTRING (" + arguments.elementAt(0) + " FROM " + "1" + " FOR " + arguments.elementAt(1) + ")";
-
-      case 22 : // CONCAT
-	return arguments.elementAt(0) + " + " + arguments.elementAt(1);
-
-      case 23 : // LOCATE
-        return "POSITION (" + arguments.elementAt(0) + " IN " + arguments.elementAt(1) + ")";
-
-      case 24:	// TRUE
-	return "1";
-
-      case 25:	// FALSE
-	return "0";
-
-      case 26: // LENGTH
-	return "LENGTH(" + arguments.elementAt(0) + ")";
-
-      case 27:	// CURRENTTIME
-	return "CURRENT_TIME";
-
-      case 28:	// CURRENTTIMESTAMP
-	return "CURRENT TIMESTAMP";
-
-      case 29:	// WEEK/2
-	return "((" + arguments.elementAt(0) + ") * 53 + (" + arguments.elementAt(1) + ") - 1)";
-
-      case 30: //DATEDIFF
-	return "DATEDIFF(" + arguments.elementAt(0) + "," + arguments.elementAt(1) + ")";
-
-      case 37: // NEXTVAL/1
-        return  "NEXT VALUE FOR " + arguments.elementAt(0);
-
-      default:
-	throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR " + functor.toUpperCase() +
-				   "/" + arguments.size());
-      }
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * EXTRACT/2: Extracts and returns the value of a specified datetime field
+   * from a datetime.
+   */
+  protected String translateExtract(String arg1, String arg2) throws SQLException {
+    if (arg2.length() != 4 || arg2.charAt(0) != '\'' || arg2.charAt(3) != '\'') {
+      throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
     }
+    
+    return "(" + arg2.substring(1, 3) + " OF (" + arg1 + "))";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * FALSE/0: Returns the boolean false value.
+   */
+  protected String translateFalse() throws SQLException {
+    return "0";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * GREATEST/2: Returns the greatest of the given list of two expressions.
+   */
+  protected String translateGreatest(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * INSTR/2: Returns the position of the first occurrence of a substring in a
+   * host string.
+   */
+  protected String translateInstr(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * INT2STRING/1: Converts a given number to a value of string datatype.
+   */
+  protected String translateInt2string(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LAST_DAY/1: Returns the date of the last day of the month that contains
+   * the given date.
+   */
+  protected String translateLastDay(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LENGTH/1: Returns the length of a given string.
+   */
+  protected String translateLength(String arg1) throws SQLException {
+    return "SIZE OF (" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LEFT/2: Returns the left part of a character string with the specified
+   * number of characters.
+   */
+  protected String translateLeft(String arg1, String arg2) throws SQLException {
+    return "SUBSTRING (" + arg1 + " FROM 1 FOR " + arg2 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LOCATE/2: Returns the position of the first occurrence of a substring in
+   * a host string.
+   */
+  protected String translateLocate(String arg1, String arg2) throws SQLException {
+    return "POSITION (" + arg1 + " IN " + arg2 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LOWER/1: Converts all characters in the specified string to lowercase.
+   */
+  protected String translateLower(String arg1) throws SQLException {
+    return "LCASE(" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LPAD/2: Returns an expression, left-padded to a given length with blanks
+   * or, when the expression to be padded is longer than the length specified
+   * after padding, only that portion of the expression that fits into the
+   * specified length.
+   */
+  protected String translateLpad(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LPAD/3: Returns an expression, left-padded to a given length with a given
+   * string or, when the expression to be padded is longer than the length
+   * specified after padding, only that portion of the expression that fits
+   * into the specified length.
+   */
+  protected String translateLpad(String arg1, String arg2, String arg3) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * LTRIM/1: Removes all blanks from the left end of a given string.
+   */
+  protected String translateLtrim(String arg1) throws SQLException {
+    return "LTRIM(" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * MOD/2: Returns the remainder of the second argument divided by the first
+   * argument.
+   */
+  protected String translateMod(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * MONTH/2: Converts the given year and month (YYYY and MM respectively) into
+   * an integer representing the combined month in the form YYYYMM.
+   */
+  protected String translateMonth(String arg1, String arg2) throws SQLException {
+    return "DATETIME[YY:MO](" + arg1 + "-" + arg2 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * NEXTVAL/1: Increments the given sequence and returns its new current
+   * value.
+   */
+  protected String translateNextval(String arg1) throws SQLException {
+    return  "NEXT VALUE FOR " + arg1;
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * POSITION/2: Returns the position of the first occurrence of a substring in
+   * a host string.
+   */
+  protected String translatePosition(String arg1, String arg2) throws SQLException {
+    return "POSITION (" + arg1 + " IN " + arg2 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * REPEAT/2: Returns a string by repeating a given count times a given
+   * expression.
+   */
+  protected String translateRepeat(String arg1, String arg2) throws SQLException {
+    return "REPEAT (" + arg1 + ", " + arg2 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * REPLACE/3: Returns a string with every occurrence of a given searched
+   * string replaced with given replacement string
+   */
+  protected String translateReplace(String arg1, String arg2, String arg3) throws SQLException {
+    return "REPLACE (" + arg1 + " BY " + arg2 + " IN " + arg3 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * RIGHT/2: Returns the right part of a character string with the specified
+   * number of characters.
+   */
+  protected String translateRight(String arg1, String arg2) throws SQLException {
+    return "SUBSTRING (" + arg1 + " FROM " +  "(SIZE OF (" + arg1 + ")) - " + arg2 + " + 1)";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ROWID/0: Returns the address or the ID of the row.
+   */
+  protected String translateRowid() throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ROWID/1: Returns the address or the ID of the row in a given table.
+   */
+  protected String translateRowid(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ROWIDEXT/0: Returns the address or the ID of the row.
+   */
+  protected String translateRowidext() throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ROWIDEXT/1: Returns the address or the ID of the row of a given external
+   * table.
+   */
+  protected String translateRowidext(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ROWNO/0: Returns the sequential number of a row within a partition of a
+   * result set, starting at 1 for the first row in each partition.
+   */
+  protected String translateRowno() throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * RPAD/2: Returns an expression, right-padded to a given length with blanks
+   * or, when the expression to be padded is longer than the length specified
+   * after padding, only that portion of the expression that fits into the
+   * specified length.
+   */
+  protected String translateRpad(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * RPAD/3: Returns an expression, right-padded to a given length with a given
+   * string or, when the expression to be padded is longer than the length
+   * specified after padding, only that portion of the expression that fits
+   * into the specified length.
+   */
+  protected String translateRpad(String arg1, String arg2, String arg3) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * RTRIM/1: Removes all blanks from the right end of a given string.
+   */
+  protected String translateRtrim(String arg1) throws SQLException {
+    return "RTRIM(" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * SPACE/1: Returns a given number of spaces.
+   */
+  protected String translateSpace(String arg1) throws SQLException {
+    return "REPEAT (' ', " + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * STRING2INT/1: Converts the given string number into an integer.
+   */
+  protected String translateString2int(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * STRPOS/2: Returns the position of the first occurrence of a substring in a
+   *  host string.
+   */
+  protected String translateStrpos(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * SUBSTRING/2: Returns a portion of a given string beginning at a given
+   * position
+   */
+  protected String translateSubstring(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * SUBSTRING/3: Returns a portion of a given string beginning at a given
+   * position having the given length (third parameter).
+   */
+  protected String translateSubstring(String arg1, String arg2, String arg3) throws SQLException {
+    return "SUBSTRING (" + arg1 + ", " + arg2  + ", " + arg3 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TO_CHAR/1: Converts a given number to a value of string datatype.
+   */
+  protected String translateToChar(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TO_CHAR/2: Converts a given valid character string representation of a
+   * date into a given format and returns a date in database date format.
+   */
+  protected String translateToChar(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TO_DATE/1: Converts a given datetime into a date format.
+   */
+  protected String translateToDate(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TO_DATE/2: Converts a given valid character string representation of a
+   * date into a given format and returns a date in database date format.
+   */
+  protected String translateToDate(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TOMONTH/1: Returns the month (as integer) of a date in the form YYYYMM,
+   * the argument must be a valid character string representation of a date in
+   * the form YYYY-MM-DD.
+   */
+  protected String translateTomonth(String arg1) throws SQLException {
+    return "((" + arg1 + ") CAST DATETIME[YY:MO])";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TO_NUMBER/1: Converts a given expression to a value of Integer type.
+   */
+  protected String translateToNumber(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TRUNC/2: Returns the first given number truncated to second number decimal
+   * places.
+   */
+  protected String translateTrunc(String arg1, String arg2) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TRUNC_DATE/1: returns date with the time portion of the day truncated.
+   * The value returned is always of database date type.
+   */
+  protected String translateTruncDate(String arg1) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * TRUE/0: Returns the boolean true value.
+   */
+  protected String translateTrue() throws SQLException {
+    return "1";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * UPPER/1: Converts all characters in the specified string to uppercase.
+   */
+  protected String translateUpper(String arg1) throws SQLException {
+    return "UCASE(" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * USER/0:Returns the name of the current user.
+   */
+  protected String translateUser() throws SQLException {
+    return "USER";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * WEEK/1: Returns the week number (from 1 to 53) for a given date.
+   */
+  protected String translateWeek(String arg1) throws SQLException {
+    return "((" + arg1 + ") * 53 + (" + arg1 + ") - 1)";
   }
 
   protected String parseWhereCurrent() throws SQLException {
@@ -337,69 +688,4 @@ public class As400DriverInterface extends DriverInterface {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  private static Hashtable      functions;
-
-  static {
-    functions = new Hashtable();
-
-    functions.put("TOMONTH/1", new Integer(1));
-    functions.put("ADD_DAYS/2", new Integer(2));
-    //unused
-    functions.put("MONTH/2", new Integer(4));
-    functions.put("EXTRACT/2", new Integer(5));
-    //unused
-    functions.put("POSITION/2", new Integer(7));
-    functions.put("SUBSTRING/2", new Integer(8));
-    functions.put("SUBSTRING/3", new Integer(9));
-    functions.put("SIZE_OF/1", new Integer(10));
-    functions.put("UPPER/1", new Integer(11));
-    functions.put("LOWER/1", new Integer(12));
-    functions.put("LTRIM/1", new Integer(13));
-    functions.put("RTRIM/1", new Integer(14));
-    functions.put("REPLACE/3", new Integer(15));
-    functions.put("REPEAT/2", new Integer(16));
-    functions.put("CURRENTDATE/0", new Integer(17));
-    functions.put("USER/0", new Integer(18));
-    functions.put("SPACE/1", new Integer(19));
-    functions.put("RIGHT/2", new Integer(20));
-    functions.put("LEFT/2", new Integer(21));
-    functions.put("CONCAT/2", new Integer(22));
-    functions.put("LOCATE/2", new Integer(23));
-    functions.put("TRUE/0", new Integer(24));
-    functions.put("FALSE/0", new Integer(25));
-    functions.put("LENGTH/1", new Integer(26));
-    functions.put("CURRENTTIME/0", new Integer(27));
-    functions.put("CURRENTTIMESTAMP/0", new Integer(28));
-    functions.put("WEEK/2", new Integer(29));
-    functions.put("DATEDIFF/2", new Integer(30));
-    /*
-    functions.put("COALESCE/2", new Integer(31));
-    functions.put("ROWNO/0", new Integer(32));
-    functions.put("STRING2INT/1", new Integer(33));
-    functions.put("GREATEST/2", new Integer(34));
-    functions.put("INT2STRING/1", new Integer(35));
-    functions.put("MOD/2", new Integer(36));
-    */
-    functions.put("NEXTVAL/1", new Integer(37));
-    /*
-    functions.put("CAST/2", new Integer(38));
-    functions.put("NVL/2", new Integer(39));
-    functions.put("TO_NUMBER/1", new Integer(40));
-    functions.put("INSTR/2", new Integer(41));
-    functions.put("SYSDATE/0", new Integer(42));
-    functions.put("TRUNC_DATE/1", new Integer(43));
-    functions.put("TO_CHAR/1", new Integer(44));
-    functions.put("TO_CHAR/2", new Integer(45));
-    functions.put("TO_DATE/1", new Integer(46));
-    functions.put("TO_DATE/2", new Integer(47));
-    functions.put("UCASE/1", new Integer(48));
-    functions.put("LPAD/3", new Integer(49));
-    functions.put("RPAD/3", new Integer(50));
-    functions.put("ROWID/0", new Integer(51));
-    functions.put("ROWID/1", new Integer(52));
-    functions.put("LAST_DAY/1", new Integer(53));
-    functions.put("ROWIDEXT/0", new Integer(54));
-    functions.put("ROWIDEXT/1", new Integer(55));
-    */
-  }
 }
