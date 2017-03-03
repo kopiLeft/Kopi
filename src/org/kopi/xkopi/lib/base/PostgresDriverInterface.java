@@ -729,7 +729,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * date into a given format and returns a date in database date format.
    */
   protected String translateToDate(String arg1, String arg2) throws SQLException {
-    return "TO_CHAR(" + arg1 + "::date, " + arg2 + ")";
+    return "TO_DATE(" + arg1 + ", " + arg2 + ")";
   }
 
   /**
