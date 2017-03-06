@@ -436,7 +436,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * host string.
    */
   protected String translateInstr(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "POSITION(" + arg2 + " IN " + arg1 + ")";
   }
 
   /**
@@ -677,7 +677,7 @@ public class PostgresDriverInterface extends DriverInterface {
    *  host string.
    */
   protected String translateStrpos(String arg1, String arg2) throws SQLException {
-    throw new SQLException("NOT YET IMPLEMENTED");
+    return "POSITION(" + arg2 + " IN " + arg1 + ")";
   }
 
   /**
