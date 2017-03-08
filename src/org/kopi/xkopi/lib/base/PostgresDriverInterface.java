@@ -411,7 +411,7 @@ public class PostgresDriverInterface extends DriverInterface {
       throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
     }
     
-    return "(" + extract(arg1.substring(1, 3), arg2) + ")";
+    return "(" + extract(arg2.substring(1, 3), arg1) + ")";
   }
 
   /**
