@@ -22,8 +22,6 @@ package org.kopi.xkopi.lib.base;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.kopi.util.base.InconsistencyException;
-
 /**
  * This class encapsulates specific properties of the POSTGRES JDBC driver.
  */

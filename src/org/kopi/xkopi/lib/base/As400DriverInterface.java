@@ -347,7 +347,7 @@ public class As400DriverInterface extends DriverInterface {
    * LENGTH/1: Returns the length of a given string.
    */
   protected String translateLength(String arg1) throws SQLException {
-    return "SIZE OF (" + arg1 + ")";
+    return "LENGTH(" + arg1 + ")";
   }
 
   /**
