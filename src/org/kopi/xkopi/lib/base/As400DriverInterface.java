@@ -293,11 +293,22 @@ public class As400DriverInterface extends DriverInterface {
    * from a datetime.
    */
   protected String translateExtract(String arg1, String arg2) throws SQLException {
-    if (arg2.length() != 4 || arg2.charAt(0) != '\'' || arg2.charAt(3) != '\'') {
-      throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
+    final String[][]    portions = {
+      { "'YY'", "YEAR" },
+      { "'MO'", "MONTH" },
+      { "'DD'", "DAY" },
+      { "'HH'", "HOUR" },
+      { "'MI'", "MINUTE" },
+      { "'SS'", "SECOND" }
+    };
+
+    for (String[] p : portions) {
+      if (p[0].equals(arg2)) {
+        return p[1] + "(" + arg1 + ")";
+      }
     }
     
-    return "(" + arg2.substring(1, 3) + " OF (" + arg1 + "))";
+    throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
   }
 
   /**
