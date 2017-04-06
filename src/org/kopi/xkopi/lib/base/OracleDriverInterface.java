@@ -722,10 +722,10 @@ class OracleParser extends JdbcParser {
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
-   * WEEK/1: Returns the week number (from 1 to 53) for a given date.
+   * WEEK/2: Returns the week number (from 1 to 53) for a given date.
    */
-  protected String translateWeek(String arg1) throws SQLException {
-    return "((" + arg1 + ") * 100 + (" + arg1 + "))";
+  protected String translateWeek(String arg1, String arg2) throws SQLException {
+    return "((" + arg1 + ") * 100 + (" + arg2 + "))";
   }
 
   // ----------------------------------------------------------------------

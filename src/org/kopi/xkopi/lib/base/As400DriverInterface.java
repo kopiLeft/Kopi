@@ -705,8 +705,8 @@ public class As400DriverInterface extends DriverInterface {
    * Translates the following SQL function to the dialect of this DBMS:
    * WEEK/1: Returns the week number (from 1 to 53) for a given date.
    */
-  protected String translateWeek(String arg1) throws SQLException {
-    return "((" + arg1 + ") * 53 + (" + arg1 + ") - 1)";
+  protected String translateWeek(String arg1, String arg2) throws SQLException {
+    return "((" + arg1 + ") * 53 + (" + arg2 + ") - 1)";
   }
 
   protected String parseWhereCurrent() throws SQLException {

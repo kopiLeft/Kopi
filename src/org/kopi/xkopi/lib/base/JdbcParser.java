@@ -717,8 +717,8 @@ loop:
         return translateCurrenttime();
       case 28:  // CURRENTTIMESTAMP/0
         return translateCurrenttimestamp();
-      case 29:  // WEEK/1
-        return translateWeek((String)arguments.get(0));
+      case 29:  // WEEK/2
+        return translateWeek((String)arguments.get(0), (String)arguments.get(1));
       case 30:  // DATEDIFF/2
         return translateDatediff((String)arguments.get(0), (String)arguments.get(1));
       case 31:  // COALESCE/2
@@ -1210,9 +1210,9 @@ loop:
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
-   * WEEK/1: Returns the week number (from 1 to 53) for a given date.
+   * WEEK/2: Returns the week number (from 1 to 53) for a given date.
    */
-  protected abstract String translateWeek(String arg1) throws SQLException;
+  protected abstract String translateWeek(String arg1, String arg2) throws SQLException;
 
   // ----------------------------------------------------------------------
   // IMPLEMENTATION
@@ -1290,7 +1290,7 @@ loop:
     functions.put("LENGTH/1", new Integer(26));
     functions.put("CURRENTTIME/0", new Integer(27));
     functions.put("CURRENTTIMESTAMP/0", new Integer(28));
-    functions.put("WEEK/1", new Integer(29));
+    functions.put("WEEK/2", new Integer(29));
     functions.put("DATEDIFF/2", new Integer(30));
     functions.put("COALESCE/2", new Integer(31));
     functions.put("ROWNO/0", new Integer(32));
