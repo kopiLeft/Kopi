@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
+import org.kopi.vkopi.lib.print.PrintManager;
 import org.kopi.vkopi.lib.ui.vaadin.addons.AbstractNotification;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ConfirmNotification;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ErrorNotification;
@@ -45,6 +46,7 @@ import org.kopi.vkopi.lib.visual.ImageHandler;
 import org.kopi.vkopi.lib.visual.Message;
 import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.MessageListener;
+import org.kopi.vkopi.lib.visual.PrinterManager;
 import org.kopi.vkopi.lib.visual.PropertyException;
 import org.kopi.vkopi.lib.visual.Registry;
 import org.kopi.vkopi.lib.visual.UIFactory;
@@ -244,6 +246,36 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   @Override
   public boolean allowQuit() {
     return getInitParameter("allowQuit") == null ? true : Boolean.parseBoolean(getInitParameter("allowQuit"));
+  }
+  
+  @Override
+  public PrintManager getPrintManager() {
+    return printManager;
+  }
+  
+  @Override
+  public void setPrintManager(PrintManager printManager) {
+    this.printManager = printManager;
+  }
+  
+  @Override
+  public PrinterManager getPrinterManager() {
+    return printerManager;
+  }
+  
+  @Override
+  public void setPrinterManager(PrinterManager printerManager) {
+    this.printerManager = printerManager;
+  }
+  
+  @Override
+  public ApplicationConfiguration getApplicationConfiguration() {
+    return configuration;
+  }
+  
+  @Override
+  public void setApplicationConfiguration(ApplicationConfiguration configuration) {
+    this.configuration = configuration;
   }
   
   // --------------------------------------------------
@@ -709,7 +741,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   // DATA MEMBEERS
   //---------------------------------------------------
   	
-  private VMenuTree                   	        menuTree;	
+  private VMenuTree                   	        menuTree;
   private DBContext                   	        context;
   private Registry 		       	        registry;
   private boolean		       	        isGeneratingHelp;
@@ -719,6 +751,9 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   private DModuleMenu				moduleMenu;
   private MainWindow				mainWindow;
   private int                                   askAnswer;
+  private PrintManager                          printManager;
+  private PrinterManager                        printerManager;
+  private ApplicationConfiguration              configuration;
   
   // ---------------------------------------------------------------------
   // Failure cause informations

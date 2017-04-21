@@ -27,11 +27,11 @@ import org.kopi.vkopi.lib.util.Printer;
 public abstract class PrinterManager {
 
   public static PrinterManager getPrinterManager() {
-    return printerManager;
+    return ApplicationContext.getApplicationContext().getApplication().getPrinterManager();
   }
 
   public static void setPrinterManager(PrinterManager manager) {
-    printerManager = manager;
+    ApplicationContext.getApplicationContext().getApplication().setPrinterManager(manager);
   }
 
   /**
@@ -69,10 +69,4 @@ public abstract class PrinterManager {
    * Returns the default Printer for a kind of document
    */
   public abstract Printer getPrinterByDocumentType(String documentType);
-
-  // ---------------------------------------------------------------------
-  // DATA MEMBERS
-  // ---------------------------------------------------------------------
-
-  private static PrinterManager         printerManager;
 }

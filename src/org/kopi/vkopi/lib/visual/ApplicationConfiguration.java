@@ -29,11 +29,13 @@ import org.kopi.vkopi.lib.util.Rexec;
 public abstract class ApplicationConfiguration {
 
   public static ApplicationConfiguration getConfiguration() {
-    return configuration;
+    return ApplicationContext.getApplicationContext().getApplication().getApplicationConfiguration();
   }
+  
   public static void setConfiguration(ApplicationConfiguration conf) {
     assert conf != null : "configuration must not be null";
-    configuration = conf;
+    
+    ApplicationContext.getApplicationContext().getApplication().setApplicationConfiguration(conf);
   }
   // --------------------------------------------------------------
   //   Application Properties
@@ -216,5 +218,4 @@ public abstract class ApplicationConfiguration {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   public static final String            STANDARD_PRINTER_NAME = "<Standard>";
-  private static      ApplicationConfiguration       configuration;
 }

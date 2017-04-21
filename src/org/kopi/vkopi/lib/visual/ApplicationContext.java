@@ -71,10 +71,10 @@ public abstract class ApplicationContext {
   //-----------------------------------------------------------
 
   /**
-   * Get the default configuration of the Application
+   * Returns the default configuration of the Application
    */
   public static ApplicationConfiguration getDefaults() {
-    return applicationContext.getApplication() == null ? null : ApplicationConfiguration.getConfiguration();
+    return applicationContext.getApplication().getApplicationConfiguration();
   }
 
   /**

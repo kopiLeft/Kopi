@@ -21,11 +21,13 @@ package org.kopi.vkopi.lib.print;
 
 import org.kopi.vkopi.lib.util.PrintException;
 import org.kopi.vkopi.lib.util.Printer;
+import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
 import org.kopi.vkopi.lib.visual.VWindow;
 
 public class DefaultPrintManager implements PrintManager {
+  
   /**
    * Handle printing
    * @param	parent	the form that initiate the printing process
@@ -39,7 +41,9 @@ public class DefaultPrintManager implements PrintManager {
 		    int copies,
 		    Printer printer,
 		    String fax,
-		    String mail) throws VException {
+		    String mail)
+    throws VException
+  {
     try {
       report.createPrintJob();
     } catch (PrintException exc) {
@@ -48,15 +52,14 @@ public class DefaultPrintManager implements PrintManager {
   }
 
   public static void setPrintManager(PrintManager printCopies) {
-    DefaultPrintManager.printCopies = printCopies;
+    ApplicationContext.getApplicationContext().getApplication().setPrintManager(printCopies);
   }
 
   public static PrintManager getPrintManager() {
-    if (printCopies == null) {
+    if (ApplicationContext.getApplicationContext().getApplication().getPrintManager() == null) {
       return new DefaultPrintManager();
     }
-    return printCopies;
+    
+    return ApplicationContext.getApplicationContext().getApplication().getPrintManager();
   }
-
-  private static PrintManager printCopies;
 }

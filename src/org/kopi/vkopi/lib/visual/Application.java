@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
+import org.kopi.vkopi.lib.print.PrintManager;
 import org.kopi.xkopi.lib.base.DBContext;
 
 /**
@@ -41,7 +42,7 @@ public interface Application extends MessageListener {
    * @param schema The database schema.
    * @return The {@link DBContext} containing database connection information.
    */
-  public abstract DBContext login(String database, String driver, String username, String password, String schema);
+  public DBContext login(String database, String driver, String username, String password, String schema);
 
   /**
    * Starts the application.
@@ -119,4 +120,40 @@ public interface Application extends MessageListener {
    * @param message The message to be displayed.
    */
   public void displayError(UComponent parent, String message);
+  
+  /**
+   * Returns the print manager of the application instance.
+   * @return The print manager of the application instance.
+   */
+  public PrintManager getPrintManager();
+  
+  /**
+   * Sets the print manager to the application.
+   * @param printManager The print manager instance.
+   */
+  public void setPrintManager(PrintManager printManager);
+  
+  /**
+   * Returns the printer manger of the application.
+   * @return The printer manger of the application.
+   */
+  public PrinterManager getPrinterManager();
+  
+  /**
+   * Sets the printer manager of the application instance.
+   * @param printerManager The printer manager.
+   */
+  public void setPrinterManager(PrinterManager printerManager);
+  
+  /**
+   * Returns the application configuration instance.
+   * @return The application configuration instance.
+   */
+  public ApplicationConfiguration getApplicationConfiguration();
+  
+  /**
+   * Sets the application configuration.
+   * @param configuration The application configuration instance.
+   */
+  public void setApplicationConfiguration(ApplicationConfiguration configuration);
 }

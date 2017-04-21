@@ -28,13 +28,16 @@ import javax.swing.UIManager;
 
 import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
+import org.kopi.vkopi.lib.print.PrintManager;
 import org.kopi.vkopi.lib.visual.Application;
+import org.kopi.vkopi.lib.visual.ApplicationConfiguration;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.FileHandler;
 import org.kopi.vkopi.lib.visual.ImageHandler;
 import org.kopi.vkopi.lib.visual.KopiExecutable;
 import org.kopi.vkopi.lib.visual.ModelCloseListener;
 import org.kopi.vkopi.lib.visual.Module;
+import org.kopi.vkopi.lib.visual.PrinterManager;
 import org.kopi.vkopi.lib.visual.PropertyException;
 import org.kopi.vkopi.lib.visual.Registry;
 import org.kopi.vkopi.lib.visual.UIFactory;
@@ -144,6 +147,30 @@ public abstract class JApplication implements Application {
   
   public boolean allowQuit() {
     return true;
+  }
+  
+  public PrintManager getPrintManager() {
+    return printManager;
+  }
+  
+  public void setPrintManager(PrintManager printManager) {
+    this.printManager = printManager;
+  }
+  
+  public PrinterManager getPrinterManager() {
+    return printerManager;
+  }
+  
+  public void setPrinterManager(PrinterManager printerManager) {
+    this.printerManager = printerManager;
+  }
+  
+  public ApplicationConfiguration getApplicationConfiguration() {
+    return configuration;
+  }
+  
+  public void setApplicationConfiguration(ApplicationConfiguration configuration) {
+    this.configuration = configuration;
   }
 
   // ---------------------------------------------------------------------
@@ -438,6 +465,9 @@ public abstract class JApplication implements Application {
   private Registry                      	registry;
   private Locale                        	defaultLocale;
   private LocalizationManager           	localizationManager;
+  private PrintManager                          printManager;
+  private PrinterManager                        printerManager;
+  private ApplicationConfiguration              configuration;
 
   // ---------------------------------------------------------------------
   // Failure cause informations
