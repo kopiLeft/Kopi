@@ -57,16 +57,43 @@ public class VTabSheet extends AdvancedTabPanel {
   //-----------------------------------------------------
   
   @Override
-  public void render() {
-    super.render();
+  public void setSelected(int index) {
+    oldSelected = getSelected();
+    super.setSelected(index);
   }
   
   @Override
   protected void renderTabs() {
-    super.renderTabs();
+    if (this.tabsWidget == null || oldCount != count()) {
+      tabsWidget = (FlexTable) getPosition().getRenderer().render(this);
+      TabPosition.LayoutPosition layoutPosition = getPosition().getLayoutPosition();
+      
+      switch (layoutPosition) {
+      case LEFT:
+        getLayout().setWidget(1, 0, tabsWidget);
+        break;
+      case RIGHT:
+        getLayout().setWidget(1, 2, tabsWidget);
+        break;
+      case BOTTOM:
+        getLayout().setWidget(2, 1, tabsWidget);
+        break;
+      case TOP:
+      default:
+        getLayout().setWidget(0, 1, tabsWidget);
+      }
+      
+      oldCount = count();
+    }
+    updateTabsStyles();
     Element parent = DOM.getParent(((Widget) getContentBorder()).getElement());
     DOM.setStyleAttribute(parent, "height", "100%");
-    DOM.setStyleAttribute(parent, "width", "");
+    
+    Widget      content = getContent(getTab(getSelected()));
+    
+    if (getSelected() != -1 && (content != getContentBorder().getWidget() || getContentBorder().getWidget() == null)) {
+        getContentBorder().setWidget(getContent(getTab(getSelected())));
+    }
     // do it deferred to get the right calculated dimensions.
     Scheduler.get().scheduleFinally(new ScheduledCommand() {
       
@@ -75,6 +102,22 @@ public class VTabSheet extends AdvancedTabPanel {
         calculateLastTabWidth();
       }
     });
+  }
+  
+  /**
+   * Updates the styles for tabs. Sets the selected and the unselected styles
+   */
+  protected void updateTabsStyles() {
+    if (tabsWidget != null) {
+      HTMLTable.CellFormatter     formatter = tabsWidget.getCellFormatter();
+
+      if (oldSelected >= 0) {
+        formatter.setStyleName(0, (2 * oldSelected) + 1, "unselected");
+      }
+      if (getSelected() >= 0) {
+        formatter.setStyleName(0, (2 * getSelected()) + 1, "selected");
+      }
+    }
   }
   
   /**
@@ -87,13 +130,21 @@ public class VTabSheet extends AdvancedTabPanel {
     int                     cellCount;
     Element                 lastEmpty;
     
-    layout = ((FlexTable)getWidget());
+    layout = getLayout();
     tabs = (FlexTable) layout.getWidget(0, 1);
     tabsCellWidth = layout.getCellFormatter().getElement(0, 1).getClientWidth();
     cellCount = tabs.getCellCount(0);
     lastEmpty = tabs.getCellFormatter().getElement(0, cellCount - 1);
     // set the width of the last cell of the first row in tabs cell table division
     lastEmpty.getStyle().setWidth(tabsCellWidth - lastEmpty.getOffsetLeft(), Unit.PX);
+  }
+  
+  /**
+   * Returns the layout widget.
+   * @return The layout widget.
+   */
+  protected FlexTable getLayout() {
+    return (FlexTable) getWidget();
   }
 
   //-----------------------------------------------------
@@ -151,4 +202,12 @@ public class VTabSheet extends AdvancedTabPanel {
     
     private final String		separator;
   }
+  
+  //-----------------------------------------------
+  // DATA MEMBERS
+  //-----------------------------------------------
+  
+  private int                   oldSelected = -1;
+  private int                   oldCount;
+  private FlexTable             tabsWidget;
 }

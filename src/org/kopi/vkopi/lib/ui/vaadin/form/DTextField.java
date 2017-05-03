@@ -375,7 +375,7 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
 
     if (getModel().checkText(text) && changed) {
-      getModel().onTextChange(text);
+      getModel().setChangedUI(true);
     }
 
     getModel().setChanged(changed);

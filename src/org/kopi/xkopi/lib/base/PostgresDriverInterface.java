@@ -154,7 +154,7 @@ public class PostgresDriverInterface extends DriverInterface {
       // SQLState is a char sequence.
       // For common errors it would be an integer code.
       // In other cases, -1 will be returned indicating that is an unspecified exception.
-      errorCode = Integer.parseInt(from.getSQLState()); // SQLState is used in postgres.
+      errorCode = Integer.parseInt(from.getSQLState()); // SQLState is used in postgresql.
     } catch (NumberFormatException e) {
       errorCode = -1; // This means that we will treat the error as unspecified exception.
     }
@@ -166,7 +166,7 @@ public class PostgresDriverInterface extends DriverInterface {
     case 8001:	// sqlclient_unable_to_establish_sqlconnection
     case 8004:  // sqlserver_rejected_establishment_of_sqlconnection
     case 8007:  // transaction_resolution_unknown
-      // Class 40 — Transaction Rollback : we could use 40P01 (deadlock_detected) for general case
+      // Class 40 — Transaction Rollback :
     case 40001: // serialization_failure
       return new DBDeadLockException(query, from);
       // Class 23 — Integrity Constraint Violation
@@ -180,7 +180,13 @@ public class PostgresDriverInterface extends DriverInterface {
       return new DBConstraintException(query, from);
 
     default:
-      return new DBUnspecifiedException(query, from);
+      // treat deadlock detection as a special case. SQL STATE is not a number
+      // in this case
+      if ("40P01".equals(from.getSQLState())) { // deadlock_detected
+        return new DBDeadLockException(query, from);
+      } else {
+        return new DBUnspecifiedException(query, from);
+      }
     }
   }
 

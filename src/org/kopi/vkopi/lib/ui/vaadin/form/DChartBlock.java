@@ -28,7 +28,9 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.BlockListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ChartBlockLayout;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.visual.KopiAction;
+import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
+import org.kopi.vkopi.lib.visual.VExecFailedException;
 
 import com.vaadin.ui.Component;
 
@@ -129,6 +131,14 @@ public class DChartBlock extends DBlock implements BlockListener {
 
         @Override
         public void execute() throws VException {
+          // go to the correct block if necessary
+          if (getModel() != getModel().getForm().getActiveBlock()) {
+            if (! getModel().isAccessible()) {
+              throw new VExecFailedException(MessageCode.getMessage("VIS-00025"));
+            }
+            getModel().getForm().gotoBlock(getModel());
+          }
+
           if (fireTriggers()) {
             sortedToprec = sortedTopRec;
             getModel().gotoRecord(record);

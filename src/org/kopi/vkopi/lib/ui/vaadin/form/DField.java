@@ -95,14 +95,14 @@ public abstract class DField extends Field implements UField, FieldListener {
       
       @Override
       public void onClick(LabelEvent event) {
-        UField                  display;
+        int                     displayLine;
         
         // The label click listener will be registered for the displayed size of the block
         // to be sure that the auto fill action is fired on the active record field, we will
         // test of the active record field display is the same field as this one and only in
         // this condition the auto fill action is fired.
-        display = model.getDisplays()[model.getBlockView().getDisplayLine(model.getBlock().getActiveRecord())];
-        if (display == DField.this) {
+        displayLine = model.getBlockView().getDisplayLine(model.getBlock().getActiveRecord());
+        if (displayLine != -1 && model.getDisplays()[displayLine] == DField.this) {
           performAutoFillAction();
         }
       }

@@ -377,13 +377,19 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
       // If a page selection event and a field focus are called
       // at the same time, the browser is frozen and the application
       // cannot be used anymore
-      new Timer() {
+      Scheduler.get().scheduleFinally(new ScheduledCommand() {
         
         @Override
-        public void run() {
-          getWidget().setFocus(focused);
+        public void execute() {
+          new Timer() {
+
+            @Override
+            public void run() {
+              getWidget().setFocus(focused);
+            }
+          }.schedule(60); //!!! experimental : ensure after a page selection event fixed at 60ms.  
         }
-      }.schedule(60); //!!! experimental : ensure after a page selection event fixed at 60ms.
+      });
     }
 
     @Override

@@ -739,8 +739,9 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
         activeField.leave(getActiveRecord());
       }
       this.oldActiveRecord = getActiveRecord();
-      setActiveRecord(-1);
     }
+    setActiveField(null);
+    setActiveRecord(-1);
   }
   
   /**
@@ -748,10 +749,8 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * @param recno The new record.
    */
   protected void enterRecord(int recno) {
-    if (isMulti() && getActiveRecord() == -1 && getActiveField() == null) {
-      setActiveRecord(recno);
-      refresh(true);
-    }
+    setActiveRecord(recno);
+    refresh(true);
   }
   
   /**
@@ -866,8 +865,9 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
         }
         recno++;
       }
-
-      if (getActiveField() != null) {
+      if (noMove() || isSortedRecordDeleted(getDataPosition(recno))) {
+        NotificationUtils.showError(getConnection(), null, VMainWindow.get(), VMainWindow.getLocale(), "00025");
+      } else {
         int             lastVisibleRec = recno;
         int             nbDisplay = getState().displaySize - 1;
         int             activeRecord = getActiveRecord();
@@ -904,13 +904,6 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
           } else {
             changeActiveRecord(nextRec);
           }
-        }
-      } else {
-        if (noMove() || isSortedRecordDeleted(getDataPosition(recno))) {
-          NotificationUtils.showError(getConnection(), null, VMainWindow.get(), VMainWindow.getLocale(), "00025");
-        } else {
-          sortedToprec = recno;
-          refresh(true);
         }
       }
     }

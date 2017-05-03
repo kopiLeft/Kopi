@@ -78,7 +78,9 @@ public abstract class AbstractFieldHandler implements FieldHandler {
     final UField 	field;
 
     field = getCurrentDisplay();
-    if (field instanceof UTextField) {
+    if (field == null) {
+      return null;
+    } else if (field instanceof UTextField) {
       String	text = ((UTextField)field).getText();
       if (!trim){
 	return text;
@@ -122,10 +124,10 @@ public abstract class AbstractFieldHandler implements FieldHandler {
     VDictionary			dictionnary;
 
     id = -1;
-    if (getModel().getList().getNewForm() != null) {
+    if (getModel().getList() != null && getModel().getList().getNewForm() != null) {
       // OLD SYNTAX
       dictionnary = (VDictionary)Module.getKopiExecutable(getModel().getList().getNewForm());
-    } else if (getModel().getList().getAction() != -1) {
+    } else if (getModel().getList() != null && getModel().getList().getAction() != -1) {
       // NEW SYNTAX
       dictionnary = (VDictionary)getModel().getBlock().executeObjectTrigger(getModel().getList().getAction());
     } else {

@@ -217,5 +217,6 @@ public abstract class ApplicationConfiguration {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
+
   public static final String            STANDARD_PRINTER_NAME = "<Standard>";
 }

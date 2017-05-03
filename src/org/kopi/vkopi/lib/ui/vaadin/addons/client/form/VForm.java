@@ -32,7 +32,6 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -133,7 +132,7 @@ public class VForm extends SimplePanel {
         
         @Override
         public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
-          // before leaving page, send current focused text field value to the server side. 
+          // before leaving page, send current focused text field value to the server side.
           if (fireSelectionEvent) {
             event.cancel();
             firePageSelected(event.getItem().intValue());
@@ -150,24 +149,15 @@ public class VForm extends SimplePanel {
    * @param page The page index.
    */
   public void selectPage(final int page) {
-    // we delay the page selection event since it can
-    // cause browser freeze when a field focus is called
-    // at the same time.
-    new Timer() {
-      
-      @Override
-      public void run() {
-        if (tabPanel != null) {
-          fireSelectionEvent = false;
-          // for some reasons, the page ability event is fired after
-          // the page selection event. A workaround is to enable the 
-          // selected page before to allow selection.
-          setEnabled(true, page);
-          tabPanel.selectTab(page);
-          fireSelectionEvent = true;
-        }
-      }
-    }.schedule(40);
+    if (tabPanel != null) {
+      fireSelectionEvent = false;
+      // for some reasons, the page ability event is fired after
+      // the page selection event. A workaround is to enable the 
+      // selected page before to allow selection.
+      setEnabled(true, page);
+      tabPanel.selectTab(page);
+      fireSelectionEvent = true;
+    }
   }
   
   /**

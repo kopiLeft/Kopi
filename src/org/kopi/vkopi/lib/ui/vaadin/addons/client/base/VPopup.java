@@ -85,6 +85,7 @@ public class VPopup extends VOverlay {
 
   @Override
   public void show() {
+    maybeHideTootip();
     maybeShowGlass(true);
     super.show();
   }
