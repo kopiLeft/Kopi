@@ -23,20 +23,30 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.kopi.vkopi.lib.util.Rexec;
+
 /**
- * Manages Applicatin configuration data
+ * Manages Application configuration data
  */
 public abstract class ApplicationConfiguration {
 
   public static ApplicationConfiguration getConfiguration() {
-    return ApplicationContext.getApplicationContext().getApplication().getApplicationConfiguration();
+    if (ApplicationContext.getApplicationContext() != null) {
+      return ApplicationContext.getApplicationContext().getApplication().getApplicationConfiguration();
+    } else {
+      return configuration;
+    }
   }
   
   public static void setConfiguration(ApplicationConfiguration conf) {
     assert conf != null : "configuration must not be null";
     
-    ApplicationContext.getApplicationContext().getApplication().setApplicationConfiguration(conf);
+    if (ApplicationContext.getApplicationContext() != null) {
+      ApplicationContext.getApplicationContext().getApplication().setApplicationConfiguration(conf);
+    } else {
+      configuration = conf;
+    }
   }
+  
   // --------------------------------------------------------------
   //   Application Properties
   // --------------------------------------------------------------
@@ -218,5 +228,11 @@ public abstract class ApplicationConfiguration {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 
-  public static final String            STANDARD_PRINTER_NAME = "<Standard>";
+  public static final String                    STANDARD_PRINTER_NAME = "<Standard>";
+  
+  /**
+   * A static instance that used to store an application configuration
+   * when no application context is set
+   */
+  private static ApplicationConfiguration       configuration;
 }
