@@ -32,7 +32,7 @@
   	           DChartHeaderLabel.java DField.java DFieldHandler.java DFieldUI.java
   	           DForm.java DImageField.java DLabel.java DListDialog.java
   	           DMultiBlock.java DObjectField.java DTextEditor.java DTextField.java
-  	           KeyNavigator.java VPredefinedValueHandler.java" />
+  	           KeyNavigator.java VPredefinedValueHandler.java DActorField.java" />
 	
   <import file="${topdir}/defs.xml" />
 </project>

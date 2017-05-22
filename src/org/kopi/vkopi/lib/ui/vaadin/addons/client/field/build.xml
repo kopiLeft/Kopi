@@ -63,7 +63,11 @@
 				    TextFieldState.java
 				    StringValidationStrategy.java
 				    TimestampValidationStrategy.java
-				    CheckTypeException.java" />
+				    CheckTypeException.java
+				    ActorFieldConnector.java
+				    ActorFieldServerRpc.java
+				    ActorFieldState.java
+				    VActorField.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

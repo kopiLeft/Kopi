@@ -120,6 +120,7 @@ public class VActorsRootMenu extends VModuleListMenu {
       anchor.add(icon);
       anchor.add(label);
       setRoot(false);
+      icon.setName("align-justify");
       icon.addStyleDependentName("actors");
     }
 

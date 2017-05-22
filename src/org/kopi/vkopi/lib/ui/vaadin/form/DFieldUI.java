@@ -65,7 +65,11 @@ public class DFieldUI extends VFieldUI {
       field = new DTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
       break;
     case VField.MDL_FLD_TEXT:
-      field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
+      if (model.getIcon() != null) {
+        field = new DActorField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
+      } else {
+        field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
+      }
       break;
     case VField.MDL_FLD_IMAGE:
       field = new DImageField(this, (DLabel)label, model.getAlign(), 0, ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight(), detail);
@@ -107,12 +111,12 @@ public class DFieldUI extends VFieldUI {
     for (int r = 0; r < getBlock().getBufferSize(); r++) {
       // fire value changed only for text fields and when text value is not empty.
       if (getModel().getType() == VField.MDL_FLD_TEXT || getModel().getType() == VField.MDL_FLD_EDITOR) {
-        if (getModel().getText(r) != null && getModel().getText(r).length() > 0) {
+        if (getModel().getIcon() == null && getModel().getText(r) != null && getModel().getText(r).length() > 0) {
           ((DBlock)getBlockView()).fireValueChanged(getIndex(), r, getModel().getText(r));
         }
       }
       // fire color changed for non empty colors
-      if (Utils.toString(getModel().getForeground(r)).length() > 0 || Utils.toString(getModel().getBackground(r)).length() > 0) {
+      if (getModel().getIcon() == null && Utils.toString(getModel().getForeground(r)).length() > 0 || Utils.toString(getModel().getBackground(r)).length() > 0) {
         ((DBlock)getBlockView()).fireColorChanged(getIndex(),
                                                   r,
                                                   Utils.toString(getModel().getForeground(r)),

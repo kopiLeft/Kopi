@@ -43,6 +43,7 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.plaf.metal.MetalButtonUI;
 
 import org.kopi.vkopi.lib.base.Utils;
+import org.kopi.vkopi.lib.ui.swing.base.JActorFieldButton;
 import org.kopi.vkopi.lib.ui.swing.base.JFieldButton;
 import org.kopi.vkopi.lib.ui.swing.base.JMenuButton;
 import org.kopi.vkopi.lib.ui.swing.base.KnownBugs;
@@ -57,7 +58,7 @@ public class KopiButtonUI extends MetalButtonUI {
   public void installDefaults(AbstractButton b) {
     super.installDefaults(b);
     b.setRolloverEnabled(true);
-    if (b instanceof JMenuButton) {
+    if (b instanceof JMenuButton || b instanceof JActorFieldButton) {
       b.setBorder(border_empty);
       b.setFont(font);
       b.setIconTextGap(textIconGap);
@@ -70,6 +71,8 @@ public class KopiButtonUI extends MetalButtonUI {
     super.paint(g, c);
     if (c instanceof JMenuButton) {
       paintAcceleratorTip(g, c);
+    } else if (c instanceof JActorFieldButton) {
+      paintActorFieldValue(g, c);
     }
   }
 
@@ -84,7 +87,7 @@ public class KopiButtonUI extends MetalButtonUI {
     viewRect.width = c.getWidth() - (i.right + viewRect.x);
     viewRect.height = c.getHeight() - (i.bottom + viewRect.y);
 
-    if (c instanceof JMenuButton) {
+    if (c instanceof JMenuButton || c instanceof JActorFieldButton) {
       g.setColor(backColorMenu);
       g.fillRect(0, 0, c.getWidth(), c.getHeight());
 
@@ -169,23 +172,26 @@ public class KopiButtonUI extends MetalButtonUI {
     ButtonModel         model = b.getModel();
     FontMetrics         fm = g.getFontMetrics();
     int                 mnemonicIndex = b.getDisplayedMnemonicIndex();
-
+    int                 x = textRect.x + (model.isEnabled() ? getTextShiftOffset() : 0);
+    int                 y = textRect.y + fm.getAscent() + (model.isEnabled() ? getTextShiftOffset() : 0);
+    
+    if (c instanceof JActorFieldButton) {
+      x = 24 + (c.getWidth() - (int)fm.getStringBounds(text, g).getWidth() - 24) / 2;       
+      y -= 8;
+    }
     /* Draw the Text */
-    if(model.isEnabled()) {
+    if (model.isEnabled()) {
       g.setColor(b.getForeground());
-      BasicGraphicsUtils.drawStringUnderlineCharAt(g,text, mnemonicIndex,
-                                                   textRect.x + getTextShiftOffset(),
-                                                   textRect.y + fm.getAscent() + getTextShiftOffset());
+      BasicGraphicsUtils.drawStringUnderlineCharAt(g, text, mnemonicIndex, x, y);
     } else {
       /*** paint the text disabled ***/
       g.setColor(b.getBackground().darker());
-      BasicGraphicsUtils.drawStringUnderlineCharAt(g,text, mnemonicIndex,
-                                                   textRect.x, textRect.y + fm.getAscent());
+      BasicGraphicsUtils.drawStringUnderlineCharAt(g,text, mnemonicIndex, x, y);
     }
   }
 
   protected void paintButtonPressed(Graphics g, AbstractButton b){
-    if (b instanceof JMenuButton) {
+    if (b instanceof JMenuButton || b instanceof JActorFieldButton) {
       if ( b.isContentAreaFilled() ) {
         Dimension size = b.getSize();
         
@@ -252,6 +258,25 @@ public class KopiButtonUI extends MetalButtonUI {
     g.drawString(acceleratorText, c.getWidth()-width-2, 10);
     g.setFont(font);
   }
+  
+  /**
+   * Paints the actor field value.
+   */
+  private void paintActorFieldValue(Graphics g, JComponent c) {
+    String              value = ((JActorFieldButton) c).getValue();
+    FontMetrics         fm = g.getFontMetrics();
+    int                 width = (int) fm.getStringBounds(value, g).getWidth();
+    Font                font = g.getFont();
+    
+    g.setFont(actorFieldValueFont);
+    if (((AbstractButton) c).getModel().isEnabled()) {
+      g.setColor(actorFieldValueColor);
+    } else {
+      g.setColor(((AbstractButton) c).getBackground().darker());
+    }
+    g.drawString(value, 14 + ((c.getWidth() - width - 24) / 2), 20);
+    g.setFont(font);
+  }
 
   protected void paintFocus(Graphics g, AbstractButton b,
                             Rectangle viewRect, Rectangle textRect, Rectangle iconRect){
@@ -272,6 +297,8 @@ public class KopiButtonUI extends MetalButtonUI {
   private static final Color    borderColor = UIManager.getColor("MenuButton.border");
   private static final Color    keyTipColor = UIManager.getColor("MenuButton.keytip.color");
   private static final Font     keyTipFont = UIManager.getFont("MenuButton.keytip.font");
+  private static final Color    actorFieldValueColor = UIManager.getColor("ActorField.value.color");
+  private static final Font     actorFieldValueFont = UIManager.getFont("ActorField.value.font");
   private static final Color    rollColor = UIManager.getColor("MenuButton.rollover");
   private static final Color    backColorMenu = UIManager.getColor("ButtonPanel.back");
   private static final int      border_arcMenu = UIManager.getInt("MenuButton.border.arc");

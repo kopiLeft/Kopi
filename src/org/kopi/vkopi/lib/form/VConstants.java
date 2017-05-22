@@ -76,6 +76,7 @@ public interface VConstants extends org.kopi.vkopi.lib.visual.Constants {
   int TRG_FORMAT			= 24;
   int TRG_PREDROP                       = 33;
   int TRG_POSTDROP                      = 34;
+  int TRG_ACTION                        = 35;
 
   int TRG_PREFORM			= 25;
   int TRG_POSTFORM			= 26;
@@ -194,7 +195,7 @@ public interface VConstants extends org.kopi.vkopi.lib.visual.Constants {
     "TRG_CHANGED", "TRG_POSTCHG", "TRG_PREFLD", "TRG_POSTFLD", "TRG_PREVAL",
     "TRG_VALFLD", "TRG_FORMAT", "TRG_PREFORM", "TRG_POSTFORM", "TRG_ACCESS",
     "TRG_FLDACCESS", "TRG_VALUE", "TRG_AUTOLEAVE", "TRG_QUITFORM", "TRG_CMDACCESS",
-    "TRG_PREDROP", "TRG_POSTDROP"
+    "TRG_PREDROP", "TRG_POSTDROP", "TRG_ACTION"
   };
 
   int[] TRG_TYPES			= new int[] {
@@ -204,7 +205,7 @@ public interface VConstants extends org.kopi.vkopi.lib.visual.Constants {
     TRG_BOOLEAN, TRG_VOID, TRG_VOID, TRG_VOID, TRG_VOID,
     TRG_VOID, TRG_VOID, TRG_VOID, TRG_VOID, TRG_BOOLEAN,
     TRG_INT, TRG_OBJECT, TRG_BOOLEAN, TRG_BOOLEAN, TRG_BOOLEAN,
-    TRG_VOID, TRG_VOID
+    TRG_VOID, TRG_VOID, TRG_VOID
   };
 
   // ---------------------------------------------------------------------

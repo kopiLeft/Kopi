@@ -30,7 +30,8 @@ PACKAGE =	org/kopi/vkopi/lib/ui/swing/base
 JAVAFILES += 	JFieldLabel FieldStates JMenuButton			\
 		KopiTitledBorder JButtonPanel ListDialogCellRenderer	\
 		JFieldButton JDisablePanel TextSelecter Stateful 	\
-		Utils MultiLineToolTip MultiLineToolTipUI KnownBugs
+		Utils MultiLineToolTip MultiLineToolTipUI KnownBugs	\
+		JActorFieldButton
 
 OPTIONS =
 

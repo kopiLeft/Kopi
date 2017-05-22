@@ -99,7 +99,8 @@
 			  	    WelcomeView.java
 			  	    WelcomeViewEvent.java
 			  	    WelcomeViewListener.java
-			  	    Window.java" />
+			  	    Window.java
+				    ActorField.java" />
 
   <!--==============================================================
       Default target:	builds messages, options and java sources 

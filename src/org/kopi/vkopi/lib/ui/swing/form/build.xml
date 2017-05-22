@@ -38,7 +38,7 @@
   	           DTextField.java Environment.java ImageFileChooser.java
   	           JFieldHandler.java JPredefinedValueHandler.java KeyNavigator.java
   	           KopiFieldDocument.java KopiMultiBlockLayout.java KopiScanDocument.java
-  	           KopiSimpleBlockLayout.java" />
+  	           KopiSimpleBlockLayout.java DActorField.java" />
 	
   <import file="${topdir}/defs.xml" />
 

@@ -99,6 +99,7 @@ public KopiLookAndFeel() {
     Font        fixFont = new Font("dialoginput", Font.PLAIN, 12);
     Font        propFontSmall = new Font("helvetica", Font.PLAIN, 10);
     Font        keyTipFont = new Font("helvetica", Font.PLAIN, 9);
+    Font        actorFieldValueFont = new Font("helvetica", Font.BOLD, 18);
     Font        infoFont = new Font("dialoginput", Font.PLAIN, 10);
 
     table.put("KopiLabel.skipped.color",                LBL_COLOR_SKIPPED);  
@@ -233,6 +234,9 @@ public KopiLookAndFeel() {
     table.put("MenuButton.textIconGap",         new Integer(8));
     table.put("MenuButton.keytip.color",        KopiTheme.USER_COLORS.COLOR_9);
     table.put("MenuButton.keytip.font",         keyTipFont);
+    
+    table.put("ActorField.value.color",         Color.black);
+    table.put("ActorField.value.font",          actorFieldValueFont);
 
     table.put("FieldButton.border.disabled",    KopiTheme.USER_COLORS.COLOR_3);
     table.put("FieldButton.border.color",       KopiTheme.USER_COLORS.COLOR_9);

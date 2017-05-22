@@ -19,51 +19,59 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.common;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-
-import com.google.gwt.aria.client.Roles;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Font Awesome icon widget.
+ * a widget that holds a small HTML tag inside. 
  */
-public class VIcon extends Widget implements HasClickHandlers {
+public class VSmall extends Widget {
 
   //---------------------------------------------------
   // CONSTRUCTOR
   //---------------------------------------------------
   
   /**
-   * Creates the FontAwesome icon widget.
+   * Creates a new small widget.
    */
-  public VIcon() {
-    setElement(Document.get().createElement("i"));
-    setStyleName(Styles.FONT_AWESOME); // as defined in CSS
-    sinkEvents(Event.ONCLICK);
-    Roles.getImgRole().setAriaHiddenState(getElement(), true);
-  }
-
-  //---------------------------------------------------
-  // IMPLEMENTATION
-  //---------------------------------------------------
-  
-  @Override
-  public HandlerRegistration addClickHandler(ClickHandler handler) {
-    return addHandler(handler, ClickEvent.getType());
+  public VSmall() {
+    setElement(Document.get().createElement("small"));
   }
   
   /**
-   * Sets the icon name. The name is based on the CSS definition in font awesome pack.
-   * We add a style dependent name with the name of the icon. The inita
-   * @param name
+   * Creates a small with a text.
+   * @param text The small text.
    */
-  public void setName(String name) {
-    addStyleDependentName(name);
+  public VSmall(String text) {
+    this();
+    setText(text);
+  }
+
+  //---------------------------------------------------
+  // IMPLEMENTATIONS
+  //---------------------------------------------------
+  
+  /**
+   * Sets the inner text of this small widget.
+   * @param text The text to be set.
+   */
+  public void setText(String text) {
+    getElement().setInnerText(text);
+  }
+  
+  /**
+   * Returns the small inner text.
+   * @return The small inner text.
+   */
+  public String getText() {
+    return getElement().getInnerText();
+  }
+  
+  /**
+   * Sets the inner HTML of this small widget.
+   * @param html The HTML to be set.
+   */
+  public void setHtml(String html) {
+    getElement().setInnerHTML(html);
   }
 }

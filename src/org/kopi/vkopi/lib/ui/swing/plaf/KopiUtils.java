@@ -36,6 +36,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
 import org.kopi.vkopi.lib.ui.swing.base.FieldStates;
+import org.kopi.vkopi.lib.ui.swing.base.JActorFieldButton;
 import org.kopi.vkopi.lib.ui.swing.base.Stateful;
 
 public class KopiUtils {
@@ -207,14 +208,19 @@ public class KopiUtils {
       AbstractButton    ab = (AbstractButton) c;
 
       if (ab.getModel().isEnabled()) {
- 	if (ab.getModel().isPressed()) {
+        if (ab.getModel().isPressed()) {
           return BRD_BTN_PRESSED;
- 	} else if (ab.getModel().isRollover()) {
-           return BRD_BTN_ROLL;
- 	}
-       }
-       return BRD_BTN_EMPTY;
-     }
+        } else if (ab.getModel().isRollover()) {
+          return BRD_BTN_ROLL;
+        }
+      }
+      
+      if (ab instanceof JActorFieldButton) {
+        return BRD_BTN_ACTOR_FLD;
+      } else {
+        return BRD_BTN_EMPTY;
+      }
+    }
   }
 
   static class ButtonRollBorder extends LineBorder {
@@ -301,7 +307,9 @@ public class KopiUtils {
   protected static final Color  color_back_mustfill;
   protected static final Color  color_back_visit;
   protected static final Color  color_back_skipped;
-
+  
+  private static Border         BRD_BTN_ACTOR_FLD = new ButtonLineBorder(color_underline);
+  
   static {
     color_focused       = UIManager.getColor("KopiField.focused.color");
     color_skipped       = UIManager.getColor("KopiField.skipped.color");
@@ -313,5 +321,4 @@ public class KopiUtils {
     color_back_visit    = UIManager.getColor("KopiField.background.visit.color");
     color_back_mustfill = UIManager.getColor("KopiField.background.mustfill.color");
   }
-
 }

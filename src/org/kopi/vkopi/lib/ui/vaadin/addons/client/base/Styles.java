@@ -141,5 +141,16 @@ public abstract class Styles {
 
   public static final String                    POPUP_WINDOW = "k-popup-window";
   public static final String                    POPUP_WINDOW_CAPTION = "k-popup-window-caption";
-  public static final String                    POPUP_WINDOW_CONTENT = "k-popup-window-content"; 
+  public static final String                    POPUP_WINDOW_CONTENT = "k-popup-window-content";
+  
+  // font awesome icon primary style
+  public static final String                    FONT_AWESOME = "fa";
+  
+  // actor field styles
+  public static final String                    ACTOR_FIELD = "actor-field";
+  public static final String                    ACTOR_FIELD_INNER = "actor-field-inner";
+  public static final String                    ACTOR_FIELD_INFO = "actor-field-info";
+  public static final String                    ACTOR_FIELD_VALUE = "actor-field-value";
+  public static final String                    ACTOR_FIELD_CAPTION = "actor-field-caption";
+  public static final String                    ACTOR_FIELD_ICON = "actor-field-icon";
 }

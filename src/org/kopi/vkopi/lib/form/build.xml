@@ -62,7 +62,7 @@
   	           DListDialog.java UField.java VListDialog.java
   	           UBlock.java UChartLabel.java UForm.java ULabel.java 
   	           UListDialog.java UMultiBlock.java UTextField.java
-  	           FieldHandler.java VDictionary.java" />
+  	           FieldHandler.java VDictionary.java UActorField.java" />
 	
   <import file="${topdir}/defs.xml" />
 

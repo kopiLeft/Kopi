@@ -33,7 +33,7 @@ JAVAFILES +=	DateChooser DBlock DBlockDropTargetHandler DChartBlock	\
                 DObjectField DPage DTextEditor DTextField Environment   \
                 ImageFileChooser JFieldHandler JPredefinedValueHandler  \
                 KeyNavigator KopiFieldDocument KopiMultiBlockLayout     \
-                KopiScanDocument KopiSimpleBlockLayout
+                KopiScanDocument KopiSimpleBlockLayout DActorField
 
 ## ----------------------------------------------------------------------
 ## GOALS

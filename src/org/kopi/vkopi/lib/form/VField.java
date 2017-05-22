@@ -95,6 +95,7 @@ public abstract class VField implements VConstants, VModel {
    * set information on the field.
    */
   public void setInfo(String name,
+                      String icon,
                       int index,
                       int posInArray,
                       int options,
@@ -109,6 +110,7 @@ public abstract class VField implements VConstants, VModel {
                       VField alias)
   {
     this.name = name;
+    this.icon = icon;
     this.index = index;
     this.posInArray = posInArray;
     this.options = options;
@@ -151,6 +153,14 @@ public abstract class VField implements VConstants, VModel {
    */
   public String getName() {
     return name;
+  }
+  
+  /**
+   * Returns the field icon.
+   * @return The field icon.
+   */
+  public String getIcon() {
+    return icon;
   }
 
   /**
@@ -2821,6 +2831,7 @@ public abstract class VField implements VConstants, VModel {
   private       int             priority;       // order in select results
   private       int             indices;        // bitset of unique indices
   private       String          name;           // field name (for dumps)
+  private       String          icon;           // field icon (optional)
   private       String          label;          // field label
   private       int             options;        // options
   private       String          help;           // help text

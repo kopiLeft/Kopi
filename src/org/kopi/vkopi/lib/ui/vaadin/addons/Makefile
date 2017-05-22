@@ -54,7 +54,7 @@ JAVAFILES +=	AbstractBlockLayout AbstractNotification ActionEvent	\
 		UploadStartedEvent UploadStartedListener		\
 		UploadSucceededEvent UploadSucceededListener WaitDialog	\
 		WaitWindow WarningNotification WelcomeView		\
-		WelcomeViewEvent WelcomeViewListener Window
+		WelcomeViewEvent WelcomeViewListener Window ActorField
 
 WIDGETSETS +=	KopiAddonsWidgetset.gwt
 

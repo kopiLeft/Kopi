@@ -39,7 +39,9 @@ JAVAFILES += 	AllowAllValidationStrategy DateValidationStrategy	\
 		VInputPasswordField VInputTextArea VInputTextField	\
 		VObjectField WeekValidationStrategy TextFieldState	\
 		TextFieldConnector StringValidationStrategy 		\
-		TimestampValidationStrategy CheckTypeException
+		TimestampValidationStrategy CheckTypeException		\
+		ActorFieldConnector ActorFieldServerRpc 		\
+		ActorFieldState VActorField
 
 ## ----------------------------------------------------------------------
 ## FILES

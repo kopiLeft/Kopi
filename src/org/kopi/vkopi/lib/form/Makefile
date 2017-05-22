@@ -52,7 +52,8 @@ JAVAFILES +=	AbstractFieldHandler BlockAlignment Commands		\
 		PredefinedValueHandler AbstractPredefinedValueHandler	\
 		Accessor ModelTransformer UBlock UChartLabel UField 	\
 		UForm ULabel UMultiBlock UTextField UListDialog		\
-		VBlockDefaultOuterJoin VBlockOracleOuterJoin
+		VBlockDefaultOuterJoin VBlockOracleOuterJoin		\
+		UActorField
 
 ## ----------------------------------------------------------------------
 ## GOALS
