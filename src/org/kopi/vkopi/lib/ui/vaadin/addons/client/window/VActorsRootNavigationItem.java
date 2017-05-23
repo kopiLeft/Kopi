@@ -51,6 +51,7 @@ public class VActorsRootNavigationItem extends Widget {
     icon = new VIcon();
     anchor.setHref("#");
     icon.addStyleDependentName("actors");
+    icon.setName("bars");
     DOM.appendChild(inner, anchor);
     DOM.appendChild(anchor, icon.getElement());
     DOM.appendChild(anchor, label.getElement());
