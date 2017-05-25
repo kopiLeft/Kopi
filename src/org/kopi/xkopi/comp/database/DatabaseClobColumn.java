@@ -46,7 +46,7 @@ public class DatabaseClobColumn extends DatabaseColumn{
    * @return the type
    */
   protected CType getStandardType(boolean isNullable) {
-    return CStdType.Object;
+    return CStdType.String;
   } 
 
   /**
