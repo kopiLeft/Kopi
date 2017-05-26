@@ -23,6 +23,8 @@ import org.kopi.xkopi.lib.type.Fixed;
 import org.kopi.xkopi.lib.type.NotNullFixed;
 import org.kopi.util.base.InconsistencyException;
 
+import java.math.BigDecimal;
+
 /**
  * This class implements all overloaded operators for fixed point numbers
  * and some utilities
@@ -71,7 +73,7 @@ public class XFixed {
     if (i == null) {
       return null;
     } else {
-      return new NotNullFixed(i.doubleValue());
+      return toFixed(i);
     }
   }
 
@@ -83,7 +85,7 @@ public class XFixed {
     if (i == null) {
       throw new NullValueInCastOperator("(NotNullFixed)null");
     }
-    return new NotNullFixed(i.doubleValue());
+    return (NotNullFixed)toFixed(i);
   }
 
   /**
@@ -115,10 +117,10 @@ public class XFixed {
   }
 
   /**
-   * Assignments from double to Fixed
+   * Assignments from Number to Fixed
    */
   public static Fixed operator:=(Number i) {
-    return new NotNullFixed(i.doubleValue());
+    return toFixed(i);
   }
 
   /**
@@ -346,7 +348,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + ">" + r);
     }
-    return l.doubleValue() > r.doubleValue();
+    return l.compareTo(toFixed(r)) > 0;
   }
 
   /**
@@ -362,7 +364,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + ">=" + r);
     }
-    return l.doubleValue() >= r.doubleValue();
+    return l.compareTo(toFixed(r)) >= 0;
   }
 
   /**
@@ -378,7 +380,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + "<" + r);
     }
-    return l.doubleValue() < r.doubleValue();
+    return l.compareTo(toFixed(r)) < 0;
   }
 
   /**
@@ -394,7 +396,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + "<=" + r);
     }
-    return l.doubleValue() <= r.doubleValue();
+    return l.compareTo(toFixed(r)) <= 0;
   }
 
   /**
@@ -427,7 +429,7 @@ public class XFixed {
     } else if (l == null || r == null) {
       return true;
     } else {
-    return !toFixed(l).equals(r);
+      return !toFixed(l).equals(r);
     }
   }
 
@@ -445,7 +447,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + ">" + r);
     }
-    return l.doubleValue() > r.doubleValue();
+    return toFixed(l).compareTo(r) > 0;
   }
 
   /**
@@ -461,7 +463,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + ">=" + r);
     }
-    return l.doubleValue() >= r.doubleValue();
+    return toFixed(l).compareTo(r) >= 0;
   }
 
   /**
@@ -477,7 +479,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + "<" + r);
     }
-    return l.doubleValue() < r.doubleValue();
+    return toFixed(l).compareTo(r) < 0;
   }
 
   /**
@@ -493,7 +495,7 @@ public class XFixed {
     if (l == null || r == null) {
       throw new NullValueInComparison("" + l + "<=" + r);
     }
-    return l.doubleValue() <= r.doubleValue();
+    return toFixed(l).compareTo(r) <= 0;
   }
 
   /**
@@ -909,7 +911,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return l.add(new NotNullFixed(r.doubleValue()));
+    return l.add((NotNullFixed)toFixed(r));
   }
 
   /**
@@ -927,7 +929,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return r.add(new NotNullFixed(l.doubleValue()));
+    return r.add((NotNullFixed)toFixed(l));
   }
 
   // ----------------------------------------------------------------------
@@ -1057,7 +1059,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return l.subtract(new NotNullFixed(r.doubleValue()));
+    return l.subtract((NotNullFixed)toFixed(r));
   }
 
   /**
@@ -1075,7 +1077,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return new NotNullFixed(l.doubleValue()).subtract((NotNullFixed)r);
+    return toFixed(l).subtract((NotNullFixed)r);
   }
 
   // ----------------------------------------------------------------------
@@ -1205,7 +1207,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return l.multiply(new NotNullFixed(r.doubleValue()));
+    return l.multiply((NotNullFixed)toFixed(r));
   }
 
   /**
@@ -1223,7 +1225,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return new NotNullFixed(l.doubleValue()).multiply((NotNullFixed)r);
+    return toFixed(l).multiply((NotNullFixed)r);
   }
 
   // ----------------------------------------------------------------------
@@ -1353,7 +1355,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return l.divide(new NotNullFixed(r.doubleValue()));
+    return l.divide((NotNullFixed)toFixed(r));
   }
 
   /**
@@ -1371,7 +1373,7 @@ public class XFixed {
     if (l == null || r == null) {
       return null;
     }
-    return new NotNullFixed(l.doubleValue()).divide((NotNullFixed)r);
+    return toFixed(l).divide((NotNullFixed)r);
   }
 
   // ----------------------------------------------------------------------
@@ -1532,21 +1534,24 @@ public class XFixed {
   protected static Fixed toFixed(Number n) {
     if (n == null) {
       return null;
-    }
-    if (n instanceof Integer) {
+    } else if (n instanceof Integer) {
       return new NotNullFixed(((Integer) n).intValue());
+    } else if (n instanceof BigDecimal) {
+      return new NotNullFixed((BigDecimal)n);
+    } else if (n instanceof java.math.BigInteger) {
+      return new NotNullFixed((java.math.BigInteger)n);
     } else if (n instanceof Float) {
-      return new NotNullFixed(((Float) n).floatValue());
+      return new NotNullFixed(((Float)n).floatValue());
     } else if (n instanceof Double) {
-      return new NotNullFixed(((Double) n).doubleValue());
+      return new NotNullFixed(((Double)n).doubleValue());
     } else if (n instanceof Long) {
-      return new NotNullFixed(((Long) n).longValue());
+      return new NotNullFixed(((Long)n).longValue());
     } else if (n instanceof Short) {
-      return new NotNullFixed(((Short) n).shortValue());
+      return new NotNullFixed(((Short)n).shortValue());
     } else if (n instanceof Byte) {
-      return new NotNullFixed(((Byte) n).byteValue());
+      return new NotNullFixed(((Byte)n).byteValue());
+    } else {
+      return (Fixed)n;
     }
-
-    return (Fixed) n;
   }
 }
