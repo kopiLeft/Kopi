@@ -100,7 +100,8 @@ public class XNameExpression extends JNameExpression {
         throw new InconsistencyException("no class: " + ident + " at " + ref);
       }
 
-      if (access.getSuperClass().equals(factory.createReferenceType(XTypeFactory.RFT_CURSOR).getCClass())) {
+      if (access.getSuperClass() != null
+          && access.getSuperClass().equals(factory.createReferenceType(XTypeFactory.RFT_CURSOR).getCClass())) {
 	return new XCursorFieldExpression(getTokenReference(), prefix, ident, hasSuffix);
       } else {
 	return new JFieldAccessExpression(ref, prefix, ident);
