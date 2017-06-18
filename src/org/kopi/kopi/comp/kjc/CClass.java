@@ -278,14 +278,14 @@ public abstract class CClass extends CMember {
    * @param     ident           the name of the field
    */
   public CField getField(String ident) {
-    return (CField)fields.get(ident);
+    return fields == null ? null : (CField)fields.get(ident);
   }
 
   /**
    * Returns the number of fields.
    */
   public int getFieldCount() {
-    return fields.size();
+    return fields == null ? 0 : fields.size();
   }
 
   /**
@@ -467,7 +467,7 @@ public abstract class CClass extends CMember {
       return true;
     }
 
-    for (int i=0; i < interfaces.length; i++) {
+    for (int i = 0; interfaces != null && i < interfaces.length; i++) {
       if (interfaces[i].getCClass() == from) {
         return true;
       }
@@ -673,7 +673,7 @@ public abstract class CClass extends CMember {
       field = getSuperClass().lookupField(caller, primary, ident);
     }
 
-    for (int i = 0; i < interfaces.length; i++) {
+    for (int i = 0; interfaces != null && i < interfaces.length; i++) {
       CField    newField = interfaces[i].getCClass().lookupField(caller, primary, ident);
 
       if ((field != null) && (newField != null) && (field.getOwner() != newField.getOwner())) {
@@ -873,7 +873,7 @@ public abstract class CClass extends CMember {
       }
       superClassType.getCClass().checkOverriding(context, method, newSubstitution, bridges);
     }
-    for (int i = 0; i < interfaces.length; i++) {
+    for (int i = 0; interfaces != null && i < interfaces.length; i++) {
       CReferenceType[]      actualTypeArgs = interfaces[i].getArguments();
       CReferenceType[]      newSubstitution;
 
@@ -903,7 +903,7 @@ public abstract class CClass extends CMember {
                                        ArrayList bridges)
     throws UnpositionedError
   {
-    for (int i = 0; i < methods.length; i++) {
+    for (int i = 0; methods != null && i < methods.length; i++) {
       CMethod   method = methods[i];
 
       boolean   direct;  //direct overriding?
@@ -968,7 +968,7 @@ public abstract class CClass extends CMember {
     ArrayList   container = new ArrayList();
 
     // C explicitly contains a declaration of an abstract method.
-    for (int i = 0; i < methods.length; i++) {
+    for (int i = 0; methods != null && i < methods.length; i++) {
       if (methods[i].isAbstract()) {
         container.add(methods[i]);
       }
@@ -999,7 +999,7 @@ public abstract class CClass extends CMember {
     // declares nor inherits a method that implements it.
     ArrayList         interfaceMethods = new ArrayList();
 
-    for (int i = 0; i < interfaces.length; i++) {
+    for (int i = 0; interfaces != null && i < interfaces.length; i++) {
       CMethod[] inherited;
 
       inherited = interfaces[i].getCClass().getAbstractMethods(context, false);
@@ -1169,7 +1169,7 @@ public abstract class CClass extends CMember {
                                        CType[] actuals,
                                        CReferenceType[] substitution) {
     // look in current class
-    for (int i = 0; i < methods.length; i++) {
+    for (int i = 0; methods != null && i < methods.length; i++) {
       if (methods[i].isApplicableTo(context, ident, actuals, substitution)) {
         container.add(methods[i]);
       }
@@ -1200,7 +1200,7 @@ public abstract class CClass extends CMember {
         getSuperClass().collectApplicableMethods(context, container, ident, actuals, newSubstitution);
       }
 
-      for (int i = 0; i < interfaces.length; i++) {
+      for (int i = 0; interfaces != null && i < interfaces.length; i++) {
         CReferenceType[]        actualArgs = interfaces[i].getArguments();
         CReferenceType[]        newSubstitution = new CReferenceType[actualArgs.length];
 
