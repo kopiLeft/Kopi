@@ -231,8 +231,8 @@ public class PostgresDriverInterface extends DriverInterface {
   /**
    * Parses a PostgreSQL integrity violation exception.
    * The message of an integrity violation has the following form:
-   * </p><i>ERROR: update or delete (or it can be insert or update) on table {referenced_table} violates foreign key constraint
-   * {fk_name} on table {reference_table}</i></p>
+   * </p><i>ERROR: update or delete (or it can be insert or update) on table {referencing_table} violates foreign key constraint
+   * {fk_name} on table {referenced_table}</i></p>
    * We need to extract the FK name and the tables in relation to create the corresponding {@link DBForeignKeyException} instance.
    */
   private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
@@ -240,12 +240,18 @@ public class PostgresDriverInterface extends DriverInterface {
     String[]    exception = from.getMessage().split("\\s");
     
     // As described above: 
-    // The referenced table will be the word number 6
+    // The referencing table will be the word number 6
     // The FK name will be the word number 11
-    // The referencing table will be the word number 14
+    // The referenced table will be the word number 14
     // The message of the FK error is standard message from posgreSQL. Each change in the form
     // of the FK error should be followed by an update of this message partition.
-    return new DBForeignKeyException(query, from, exception[10], exception[5], exception[13]);
+    if (exception.length >= 14) {
+      return new DBForeignKeyException(query, from, exception[10], exception[5], exception[13]);
+    } else if (exception.length >= 11) {
+      return new DBForeignKeyException(query, from, exception[10], exception[5], "?");
+    } else {
+      return new DBForeignKeyException(query, from, "?");
+    }
   }
 }
 
