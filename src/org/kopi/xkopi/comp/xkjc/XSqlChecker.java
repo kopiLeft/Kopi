@@ -250,7 +250,7 @@ public class XSqlChecker extends org.kopi.xkopi.comp.sqlc.SqlChecker implements 
       if (!asText) {
 	this.expr = new JAddExpression(ref, this.expr, new JStringLiteral(ref, "NULL"));
       } else {
-	this.expr = expr;
+        // append null as text -> nothing to do
       }
       return;
     }
