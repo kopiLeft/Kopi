@@ -32,7 +32,12 @@
   	           DChartHeaderLabel.java DField.java DFieldHandler.java DFieldUI.java
   	           DForm.java DImageField.java DLabel.java DListDialog.java
   	           DMultiBlock.java DObjectField.java DTextEditor.java DTextField.java
-  	           KeyNavigator.java VPredefinedValueHandler.java DActorField.java" />
+  	           KeyNavigator.java VPredefinedValueHandler.java DGridBlock.java
+  	           DGridMultiBlock.java DGridBlockContainer.java DGridEditorImageField.java
+  	           DGridBlockDetailsGenerator.java DGridBlockFieldHandler.java
+  	           DGridBlockFieldUI.java DGridEditorField.java DGridEditorLabel.java
+  	           DGridTextEditorField.java DActorField.java DGridEditorActorField.java
+		   DBooleanField.java DGridEditorBooleanField.java DGridBlockItemSorter.java" />
 	
   <import file="${topdir}/defs.xml" />
 </project>

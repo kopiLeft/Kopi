@@ -37,15 +37,14 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.TextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.TextValueChangeListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldState.ConvertType;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
+import org.kopi.vkopi.lib.ui.vaadin.base.StylesInjector;
+import org.kopi.vkopi.lib.ui.vaadin.visual.VApplication;
+import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickEvent;
 import org.vaadin.peter.contextmenu.ContextMenu.ContextMenuItemClickListener;
-
-import com.vaadin.server.Page;
-import com.vaadin.server.Page.Styles;
 
 /**
  * The <code>DTextField</code> is the vaadin implementation
@@ -98,11 +97,7 @@ public class DTextField extends DField implements UTextField, VConstants {
       
       @Override
       public void onTextChange(String oldText, String newText) {
-	// ensure that the active field is this field to check text
-        // to fire the autoleave trigger on the right field.
-	if (getModel() == getModel().getBlock().getActiveField()) {
-	  checkText(newText, isChanged(oldText, newText));
-	}
+        checkText(newText, isChanged(oldText, newText));
       }
 
       @Override
@@ -172,6 +167,7 @@ public class DTextField extends DField implements UTextField, VConstants {
 	                      align);
     textfield.setAutocompleteLength(getModel().getAutocompleteLength());
     textfield.setHasAutocomplete(getModel().hasAutocomplete());
+    textfield.setHasAutofill(model.hasAutofill());
     // set field type according to the model
     // this will set the validation strategy on the client side.
     if (getModel() instanceof VStringField) {
@@ -247,8 +243,8 @@ public class DTextField extends DField implements UTextField, VConstants {
 
   @Override
   public synchronized void updateAccess() {
-    DTextField.super.updateAccess();
-    label.update(model, getPosition());
+    super.updateAccess();
+    label.update(model, getBlockView().getRecordFromDisplayLine(getPosition()));
     BackgroundThreadHandler.access(new Runnable() {
       
       @Override
@@ -283,20 +279,10 @@ public class DTextField extends DField implements UTextField, VConstants {
       
       @Override
       public void run() {
-	if (field != null) {
-	  Styles               styles;
-	  
-	  field.removeStyleName(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
-	  if (getBackground() != null || getForeground() != null) {
-	    field.addStyleName(getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition());
-	    styles = Page.getCurrent().getStyles();
-	    styles.add(".v-app .k-textfield" + "-" + getModel().getBlock().getName() + "-" + getModel().getName() + "-" + getPosition() + " input.k-textinput {"
-	      + "background-color: " + Utils.getCSSColor(getBackground())
-	      + "color: " + Utils.getCSSColor(getForeground())
-	      + "}"
-	    );
-	  }
-	}
+        StylesInjector              injector;
+        
+        injector = ((VApplication)ApplicationContext.getApplicationContext().getApplication()).getStylesInjector();
+        field.addStyleName(injector.createAndInjectStyle(getModel().getAlign(), getForeground(), getBackground())); 
       }
     });
   }
@@ -323,7 +309,7 @@ public class DTextField extends DField implements UTextField, VConstants {
   public void forceFocus() {
     enterMe();
   }
-
+  
   /**
    * Gets the focus to this field.
    */

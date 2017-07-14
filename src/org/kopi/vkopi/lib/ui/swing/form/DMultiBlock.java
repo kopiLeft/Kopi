@@ -81,7 +81,7 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
     int         displaySize = getModel().getDisplaySize();
 
     for (int i= 0; i < displaySize + 1; i++) {
-      chartPane.add(new JLabel(""), new KopiAlignment(0, i, 1, false));
+      chartPane.add(new JLabel(""), new KopiAlignment(0, i, 1, 1, false));
     }
   }
 

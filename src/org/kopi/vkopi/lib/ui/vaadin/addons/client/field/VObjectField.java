@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 2013-2017 kopiLeft Development Services
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,6 +50,8 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
     getElement().setAttribute("hideFocus", "true");
     getElement().getStyle().setProperty("outline", "0px");
     addKeyDownHandler(new NavigationHandler());
+    addFocusHandler(this);
+    addBlurHandler(this);
     sinkEvents(Event.ONKEYDOWN);
   }
   
@@ -68,7 +70,7 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
     if (getWidget() instanceof HasEnabled) {
       ((HasEnabled)getWidget()).setEnabled(enabled);
     }
-    if (enabled) {
+    if (!enabled) {
       addStyleName("v-disabled");
     } else {
       removeStyleName("v-disabled");
@@ -137,6 +139,12 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
    * @param rec The active record.
    */
   protected abstract void checkValue(int rec);
+  
+  /**
+   * Sets the component visibility from the parent field.
+   * @param visible The visibility state
+   */
+  protected abstract void setParentVisibility(boolean visible);
   
   //---------------------------------------------------
   // INNER CLASSES
@@ -232,7 +240,7 @@ public abstract class VObjectField extends SimpleFocusablePanel implements HasEn
       addKeyNavigator(KEY_STAB, KeyCodes.KEY_TAB, KeyCodes.KEY_SHIFT);
       addKeyNavigator(KEY_BLOCK, KeyCodes.KEY_ENTER, KeyCodes.KEY_SHIFT);
       addKeyNavigator(KEY_REC_UP, KeyCodes.KEY_PAGEUP, 0);
-      addKeyNavigator(KEY_REC_DOWN, KeyCodes.KEY_PAGEUP, 0);
+      addKeyNavigator(KEY_REC_DOWN, KeyCodes.KEY_PAGEDOWN, 0);
       addKeyNavigator(KEY_REC_FIRST, KeyCodes.KEY_HOME, 0);
       addKeyNavigator(KEY_REC_LAST, KeyCodes.KEY_END, 0);
       addKeyNavigator(KEY_STAB, KeyCodes.KEY_LEFT, KeyCodes.KEY_CTRL);

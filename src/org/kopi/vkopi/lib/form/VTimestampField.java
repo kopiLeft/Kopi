@@ -82,6 +82,10 @@ public class VTimestampField extends VField {
     super.build();
     value = new Timestamp[2 * block.getBufferSize()];
   }
+  
+  public boolean isNumeric() {
+    return true;
+  }
 
   // ----------------------------------------------------------------------
   // Interface Display
@@ -184,6 +188,30 @@ public class VTimestampField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    if (o == null) {
+      return VConstants.EMPTY_TEXT;
+    } else {
+      String            text;
+
+      text = o.toString();
+      // this is work around to display the timestamp in yyyy-MM-dd hh:mm:ss format
+      // The proper way is to change the method Timestamp#toString(Locale) but this
+      // will affect the SQL representation of the timestamp value.
+      return text.substring(0, Math.min(getWidth(), text.length()));
+    }
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    if (s.equals("")) {
+      return null;
+    } else {
+      return Timestamp.parse(s, "yyyy-MM-dd HH:mm:ss"); // !!! laurent : TO MODIFY
+    }
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -224,10 +252,17 @@ public class VTimestampField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
   }
-
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Timestamp.class;
+  }
+  
   public boolean fillField(PredefinedValueHandler handler) throws VException {
     if (list == null) {
       setTimestamp(block.getActiveRecord(), Timestamp.now());

@@ -59,13 +59,16 @@ public abstract class DObjectField extends DField implements ObjectFieldListener
   @Override
   public void enter(boolean refresh) {
     super.enter(refresh);
-    //layout.focus();
-    setBlink(true);
+    if (blinkOnFocus()) {
+      setBlink(true);
+    }
   }
 
   @Override
   public void leave() {
-    setBlink(false);
+    if (blinkOnFocus()) {
+      setBlink(false);
+    }
     super.leave();
   }
   
@@ -158,5 +161,13 @@ public abstract class DObjectField extends DField implements ObjectFieldListener
     if (action != null && model != null) {
       getModel().getForm().performAsyncAction(action);
     }
+  }
+  
+  /**
+   * Returns true if the field should be blinked when a focus event is triggered.
+   * @return True if the field should be blinked when a focus event is triggered.
+   */
+  protected boolean blinkOnFocus() {
+    return true;
   }
 }

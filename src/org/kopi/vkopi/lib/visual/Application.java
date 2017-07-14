@@ -45,6 +45,11 @@ public interface Application extends MessageListener {
   public DBContext login(String database, String driver, String username, String password, String schema);
 
   /**
+   * Signs out from the application.
+   */
+  public void logout();
+  
+  /**
    * Starts the application.
    */
   public void startApplication();

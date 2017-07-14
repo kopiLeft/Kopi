@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,11 +27,12 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VContent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VHeader;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VLink;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VMain;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.date.VDateChooser;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.MainWindowListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.VGridListDialog;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.VListDialog;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.menu.VModuleList;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.notification.VAbstractNotification;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.progress.VProgressDialog;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.upload.VUpload;
@@ -45,9 +46,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ui.FocusableFlowPanel;
@@ -81,10 +85,10 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
     windowsLink = new VWindows();
     windowsMenu = new VWindowsDisplay();
     content = new VContent();
-    content.setContent(container, false);
+    content.setContent(container);
     add(header);
-    header.setWelcome(welcome);
     header.setWindows(windowsLink);
+    header.setWelcome(welcome);
     main.setContent(content);
     main.setWidth("100%");
     main.setHeight("100%");
@@ -101,11 +105,44 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
   //---------------------------------------------------
   
   /**
-   * Sets the module list widget.
+   * Initializes this main window.
+   * @param connection The application connection.
+   */
+  protected void init(ApplicationConnection connection) {
+    welcome.init(connection);
+  }
+  
+  /**
+   * Sets the main menu widget.
    * @param moduleList The module list widget.
    */
-  public void setModuleList(Widget moduleList) {
-    header.setModuleList(moduleList, 1);
+  public void setMainMenu(VModuleList moduleList) {
+    header.setMainMenu(moduleList);
+  }
+  
+  /**
+   * Sets the user menu attached to this main window.
+   * @param moduleList The user menu.
+   */
+  public void setUserMenu(VModuleList moduleList) {
+    welcome.setUserMenu(moduleList);
+  }
+  
+  /**
+   * Sets the admin menu attached to this main window.
+   * @param moduleList The admin menu.
+   */
+  public void setAdminMenu(VModuleList moduleList) {
+    welcome.setAdminMenu(moduleList);
+  }
+  
+  /**
+   * Sets the bookmarks menu attached to this main window.
+   * @param menu The favorites menu.
+   */
+  public void setBookmarksMenu(VModuleList menu) {
+    welcome.setBookmarksMenu(menu);
+    welcome.setWorkspaceContextItemMenu(menu);
   }
   
   /**
@@ -223,6 +260,16 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
   }
   
   /**
+   * Shows a grid based list dialog.
+   * @param dialog The list dialog.
+   */
+  public void showGridListDialog(VGridListDialog dialog) {
+    if (dialog != null) {
+      dialog.show(this);
+    }
+  }
+  
+  /**
    * Shows the date chooser popup.
    * @param chooser The date chooser widget.
    */
@@ -329,22 +376,6 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
   }
   
   /**
-   * Adds a link without separator.
-   * @param link The link to be added.
-   */
-  public void addLink(VLink link) {
-    header.addLink(link);
-  }
-  
-  /**
-   * Adds a link with separator.
-   * @param link The link to be added.
-   */
-  public void addLinkWithSeparator(VLink link) {
-    header.addLinkWithSeparator(link);
-  }
-  
-  /**
    * Sets the opened windows link localized text.
    */
   protected void setWindowsText() {
@@ -354,35 +385,13 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
     
     this.windowsLink.setText(LocalizedProperties.getString(locale, "windowsText"));
   }
-
-  /**
-   * Sets the welcome text.
-   */
-  protected void setWelcomeText() {
-    if (locale == null) {
-      return;
-    }
-    
-    this.welcome.setWelcomeText(LocalizedProperties.getString(locale, "welcomeText") + ", ");
-  }
   
   /**
-   * Sets the welcome link text.
-   * @param text The welcome link text.
+   * Sets the connected user.
+   * @param username The connected user..
    */
-  protected void setWelcomeLink(String text) {
-    welcome.setWelcomeLink(text);
-  }
-  
-  /**
-   * Sets the logout link text.
-   * @param text The logout link text.
-   */
-  protected void setLogoutLink() {
-    if (locale == null) {
-      return;
-    }
-    welcome.setLogoutLink(LocalizedProperties.getString(locale, "logoutText"));
+  protected void setConnectedUser(String username) {
+    welcome.setConnectedUser(username);
   }
   
   /**
@@ -398,14 +407,7 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
    * @param text The text to be shown.
    */
   public void showAboutText(ApplicationConnection connection, String text) {
-    /*VPopupWindow		popup;
-    
-    popup = new VPopupWindow(connection, false, true);
-    popup.setHeaderText("Information");
-    popup.setWidth("300px");
-    popup.setHeight("200px");
-    //popup.setContent(new ); set content
-    popup.showRelativeTo(about);*/
+    // TODO
   }
   
   /**
@@ -413,7 +415,18 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
    * @param connection The application connection
    */
   public void showWindowsMenu(ApplicationConnection connection) {
-    windowsMenu.showMenuRelativeTo(connection, this, windowsLink);
+    if (windowsMenu.isShowing()) {
+      windowsMenu.hideMenu();
+    } else {
+      windowsMenu.showMenuRelativeTo(connection, this, windowsLink, new CloseHandler<PopupPanel>() {
+      
+        @Override
+        public void onClose(CloseEvent<PopupPanel> event) {
+          windowsLink.hideLabel();
+          windowsLink.setFocused(false);
+        }
+      });
+    }
   }
   
   /**
@@ -425,22 +438,10 @@ public class VMainWindow extends FocusableFlowPanel implements KeyDownHandler {
       @Override
       public void onClick(ClickEvent event) {
 	if (windowsLink.isEnabled()) {
+	  windowsLink.showLabel();
+	  windowsLink.setFocused(true);
 	  fireWindowsClicked();
 	}
-      }
-    });
-    welcome.addLogoutClickHandler(new ClickHandler() {
-      
-      @Override
-      public void onClick(ClickEvent event) {
-        fireLogoutClicked();
-      }
-    });
-    welcome.addWelcomeClickHandler(new ClickHandler() {
-      
-      @Override
-      public void onClick(ClickEvent event) {
-        fireUserClicked();
       }
     });
   }

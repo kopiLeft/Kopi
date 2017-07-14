@@ -25,13 +25,13 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.ActionListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.VEditorTextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.WindowConnector;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.ui.AbstractComponentConnector;
-import com.vaadin.client.ui.Icon;
 import com.vaadin.shared.Connector;
 import com.vaadin.shared.ui.Connect;
 import com.vaadin.shared.ui.Connect.LoadStyle;
@@ -95,17 +95,9 @@ public class ActorConnector extends AbstractComponentConnector implements Action
     }
   }
 
-  @OnStateChange("resources")
-  /*package*/ void onResourceChange() {
-    if (getWidget().image.getAttribute("src") != null) {
-      getWidget().image.removeAttribute("src");
-    }
-    
-    Icon	icon = getIcon();
-
-    if (icon != null) {
-      getWidget().image.setAttribute("src", icon.getUri());
-    }
+  @OnStateChange("icon")
+  /*package*/ void setIcon() {
+    getWidget().icon.setName(getState().icon);
   }
 
   @OnStateChange("caption")
@@ -142,7 +134,7 @@ public class ActorConnector extends AbstractComponentConnector implements Action
    * @return {@code true} if the actor should be drawn.
    */
   public boolean isVisible() {
-    return getIcon() != null;
+    return getState().icon != null;
   }
   
   /**
@@ -154,6 +146,7 @@ public class ActorConnector extends AbstractComponentConnector implements Action
       item = new VActorNavigationItem(getState().caption,
                                       getState().menu,
                                       getAcceleratorKey(),
+                                      getState().icon,
                                       new ScheduledCommand()
       {
         @Override
@@ -206,6 +199,10 @@ public class ActorConnector extends AbstractComponentConnector implements Action
     if (isEnabled()) {
       // clean all dirty values in the client side of the parent window.
       getWindow().cleanDirtyValues(getBlock());
+      if (VEditorTextField.getLastFocusedEditor() != null) {
+        // fires text change event for grid editors 
+        VEditorTextField.getLastFocusedEditor().valueChanged(false);
+      }
       getRpcProxy(ActorServerRpc.class).actionPerformed();
     }
   }

@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.list;
 
+import org.kopi.xkopi.lib.type.Time;
+
 @SuppressWarnings("serial")
 public class VTimeColumn extends VListColumn {
 
@@ -31,5 +33,13 @@ public class VTimeColumn extends VListColumn {
    */
   public VTimeColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 5, sortAscending);
+  }
+
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return Time.class;
   }
 }

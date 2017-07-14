@@ -50,6 +50,14 @@ public class DFieldHandler extends AbstractFieldHandler {
   // --------------------------------------------------
   
   @Override
+  public void updateModel() throws VException {
+    // model needs to be updated only when UI value has changed
+    if (getModel().isChangedUI() && getModel().hasFocus()) {
+      getModel().checkType(getDisplayedValue(true));
+    }
+  }
+  
+  @Override
   public boolean predefinedFill() throws VException {
     boolean     filled;
 
@@ -117,9 +125,12 @@ public class DFieldHandler extends AbstractFieldHandler {
       // so that it can be used for free navigation
       // when there is no communication needed to
       // navigate between fields.
-      ((DBlock) getRowController().getBlockView()).fireValueChanged(getRowController().getIndex(),
-                                                                    r,
-                                                                    getRowController().getModel().getText(r));
+      // we don't cache values for actor fields
+      if (getModel().getIcon() == null) {
+        ((DBlock) getRowController().getBlockView()).fireValueChanged(getRowController().getIndex(),
+                                                                      r,
+                                                                      getRowController().getModel().getText(r));
+      }
     }
   }
 
@@ -137,9 +148,12 @@ public class DFieldHandler extends AbstractFieldHandler {
     }
     // store the color properties into the client cache
     // so that it can be used for free navigation mode.
-    ((DBlock) getRowController().getBlockView()).fireColorChanged(getRowController().getIndex(),
-                                                                  r,
-                                                                  Utils.toString(getModel().getForeground(r)),
-                                                                  Utils.toString(getModel().getBackground(r)));
+    // we don't cache color for actor fields.
+    if (getModel().getIcon() == null) {
+      ((DBlock) getRowController().getBlockView()).fireColorChanged(getRowController().getIndex(),
+                                                                    r,
+                                                                    Utils.toString(getModel().getForeground(r)),
+                                                                    Utils.toString(getModel().getBackground(r)));
+    }
   }
 }

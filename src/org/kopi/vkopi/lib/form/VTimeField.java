@@ -84,6 +84,10 @@ public class VTimeField extends VField {
     super.build();
     value = new Time[2 * block.getBufferSize()];
   }
+  
+  public boolean isNumeric() {
+    return true;
+  }
 
   // ----------------------------------------------------------------------
   // Interface Display
@@ -277,6 +281,103 @@ public class VTimeField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    return o == null ? "" : ((Time)o).toString();
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    if (s.equals("")) {
+     return null;
+    } else {
+      int       hours = -1;
+      int       minutes = 0;
+      String    buffer = s + '\0';
+      int       bp = 0;
+      int       state;
+
+      for (state = 1; state > 0; bp += 1) {
+        switch (state) {
+        case 1: /* The first hours' digit */
+          if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+            hours = buffer.charAt(bp) - '0';
+            state = 2;
+          } else if (buffer.charAt(bp) == '\0') {
+            state = 0;
+          } else {
+            state = -1;
+          }
+          break;
+
+        case 2: /* The second hours' digit */
+          if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+            hours = 10*hours + (buffer.charAt(bp) - '0');
+            state = 3;
+          } else if (buffer.charAt(bp) == ':') {
+            state = 4;
+          } else if (buffer.charAt(bp) == '\0') {
+            state = 0;
+          } else {
+            state = -1;
+          }
+          break;
+
+        case 3: /* The point between hours and minutes */
+          if (buffer.charAt(bp) == ':') {
+            state = 4;
+          } else if (buffer.charAt(bp) == '\0') {
+            state = 0;
+          } else {
+            state = -1;
+          }
+          break;
+
+        case 4: /* The first minutes' digit */
+          if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+            minutes = buffer.charAt(bp) - '0';
+            state = 5;
+          } else if (buffer.charAt(bp) == '\0') {
+            state = 0;
+          } else {
+            state = -1;
+          }
+          break;
+
+        case 5: /* The second minutes' digit */
+          if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+            minutes = 10*minutes + (buffer.charAt(bp) - '0');
+            state = 6;
+          } else {
+            state = -1;
+          }
+          break;
+
+        case 6: /* The end */
+          if (buffer.charAt(bp) == '\0') {
+            state = 0;
+          } else {
+            state = -1;
+          }
+        }
+      }
+
+      if (state == -1) {
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00007"));
+      }
+
+      if (hours == -1) {
+        return null;
+      } else {
+        if (! isTime(hours, minutes)) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00007"));
+        }
+
+        return new NotNullTime(hours, minutes);
+      }
+    }
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -307,8 +408,15 @@ public class VTimeField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Time.class;
   }
 
   // ----------------------------------------------------------------------

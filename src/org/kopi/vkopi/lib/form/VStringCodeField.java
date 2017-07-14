@@ -142,6 +142,13 @@ public class VStringCodeField extends VCodeField {
       "NULL" :
       org.kopi.xkopi.lib.base.KopiUtils.toSql(codes[value[r]]);
   }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return String.class;
+  }
 
   /*
    * ----------------------------------------------------------------------

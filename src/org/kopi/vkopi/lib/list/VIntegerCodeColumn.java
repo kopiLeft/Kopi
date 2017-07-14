@@ -54,6 +54,10 @@ public class VIntegerCodeColumn extends VCodeColumn {
     this(title, column, names, makeObjectArray(codes), sortAscending);
   }
 
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /*
    *
    */
@@ -79,6 +83,10 @@ public class VIntegerCodeColumn extends VCodeColumn {
     }
 
     throw new InconsistencyException("bad code value " + ((Integer)value));
+  }
+  
+  public Class getDataType() {
+    return Integer.class;
   }
 
   // --------------------------------------------------------------------

@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.VActorsNavigationPanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VSpanPanel;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -33,6 +32,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
@@ -40,7 +41,7 @@ import com.vaadin.client.ApplicationConnection;
 /**
  * The actor components container.
  */
-public class VActorPanel extends SimplePanel implements ResizeHandler {
+public class VActorPanel extends FlowPanel implements ResizeHandler {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -53,13 +54,19 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
   public VActorPanel(ApplicationConnection connection) {
     setStyleName(Styles.WINDOW_VIEW_ACTORS);
     getElement().setId("actors");
-    content = new VSpanPanel();
-    setWidget(content);
+    actorsContainer = new FlowPanel();
+    actorsPane = new SimplePanel();
+    menu = new SimplePanel();
+    menu.getElement().setId("menu");
+    actorsContainer.setStyleName("actors-slide-menu");
+    actorsPane.setWidget(actorsContainer);
+    add(menu);
+    add(actorsPane);
     actors = new LinkedList<Widget>();
     actorsWidths = new HashMap<Widget, Integer>();
     moreActors = new VMoreActors(connection);
     actorsNavigationItem = new VActorsRootNavigationItem(connection);
-    content.add(actorsNavigationItem);
+    menu.setWidget(actorsNavigationItem);
     Window.addResizeHandler(this);
   }
 
@@ -73,7 +80,7 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
    */
   public void addActor(Widget actor) {
     actors.add(actor);
-    content.add(actor);
+    actorsContainer.add(actor);
   }
   
   /**
@@ -90,7 +97,7 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
    */
   protected void removeActor(Widget actor) {
     actors.remove(actor);
-    content.remove(actor);
+    actorsContainer.remove(actor);
   }
   
   /**
@@ -132,7 +139,8 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
    * Renders the more actors list.
    * @param width The browser window width.
    */
-  protected void addMoreActors(final int width) {
+  @SuppressWarnings("unchecked")
+  protected <T extends Widget & HasEnabled> void addMoreActors(final int width) {
     LinkedList<Widget>		extraActors;
     
     extraActors = getExtraActors(width);
@@ -140,7 +148,7 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
       if (moreActors.isEmpty()) {
 	for (Widget actor : extraActors) {
 	  if (actor != null) {
-	    moreActors.addActor(actor);
+	    moreActors.addActor((T)actor);
 	  }
 	}
       } else {
@@ -151,7 +159,7 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
 	moreActors.clear();
 	for (Widget actor : allActors) {
 	  if (actor != null) {
-	    moreActors.addActor(actor);
+	    moreActors.addActor((T)actor);
 	  }
 	}
       }
@@ -264,23 +272,27 @@ public class VActorPanel extends SimplePanel implements ResizeHandler {
   @Override
   public void clear() {
     super.clear();
-    content.clear();
-    content = null;
+    actorsContainer.clear();
+    actorsContainer = null;
     actors.clear();
     actors = null;
     moreActors = null;
     actorsWidths.clear();
     actorsWidths = null;
     actorsNavigationItem = null;
+    menu = null;
+    actorsPane = null; 
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private VSpanPanel				content;
-  private LinkedList<Widget>			actors;
-  private VMoreActors				moreActors;
-  private Map<Widget, Integer>			actorsWidths;
+  private FlowPanel                             actorsContainer;
+  private SimplePanel                           menu;
+  private SimplePanel                           actorsPane;
+  private LinkedList<Widget>                    actors;
+  private VMoreActors                           moreActors;
+  private Map<Widget, Integer>                  actorsWidths;
   private VActorsRootNavigationItem             actorsNavigationItem;
 }

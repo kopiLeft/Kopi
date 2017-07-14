@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,9 +24,9 @@ import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VScrollablePanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.VEditorTextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 
 import com.google.gwt.core.client.Scheduler;
@@ -54,6 +54,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ui.VPanel;
@@ -112,7 +113,7 @@ public class VPopupWindow extends FlexTable implements CloseHandler<PopupPanel> 
           @Override
           public void execute() {
             // we should focus the window for accelerators activation when it is a help view
-            if (((VScrollablePanel)((VWindow) content).getContent()).getWidget() instanceof VPanel) {
+            if (((ScrollPanel)((VWindow) content).getContent()).getWidget() instanceof VPanel) {
               ((VWindow) content).focus();
             }
           }
@@ -216,6 +217,10 @@ public class VPopupWindow extends FlexTable implements CloseHandler<PopupPanel> 
       lastActiveWindow = (VWindow) VMainWindow.get().getCurrentWindow();
     } else if (VInputTextField.getLastFocusedTextField() != null) {
       lastActiveWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
+    }
+    // it can be an editor widget
+    if (lastActiveWindow == null && VEditorTextField.getLastFocusedEditor() != null) {
+      lastActiveWindow = VEditorTextField.getLastFocusedEditor().getWindow();
     }
     popup.show();
     // try to center the popup later

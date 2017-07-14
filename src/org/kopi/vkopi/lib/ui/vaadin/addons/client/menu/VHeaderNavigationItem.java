@@ -66,6 +66,11 @@ public class VHeaderNavigationItem extends VNavigationItem {
   public void setDescription(String text) {
     // not used
   }
+  
+  @Override
+  public void setIcon(String icon) {
+    // not used
+  }
 
   @Override
   public boolean isEnabled() {

@@ -22,10 +22,16 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.window;
 import java.util.LinkedList;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VAnchor;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HasEnabled;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
@@ -49,8 +55,10 @@ public class VMoreActors extends SimplePanel implements ClickHandler {
   public VMoreActors(ApplicationConnection connection) {
     super(Document.get().createSpanElement());
     menu = new VMoreActorsMenu(connection);
+    icon = new VIcon();
     anchor = new VAnchor();
-    anchor.setText(">>");
+    icon.setName("angle-double-right");
+    DOM.appendChild(anchor.getElement(), icon.getElement());
     anchor.setHref("#");
     anchor.addClickHandler(this);
     setWidget(anchor);
@@ -65,14 +73,14 @@ public class VMoreActors extends SimplePanel implements ClickHandler {
    * Adds an extra actor to this more actors item.
    * @param actor The actor to be added.
    */
-  public void addActor(Widget actor) {
+  public <T extends Widget & HasEnabled> void addActor(final T actor) {
     if (actor != null) {
       menu.addActor(actor);
       actor.addDomHandler(new ClickHandler() {
         
         @Override
         public void onClick(ClickEvent event) {
-          if (menu.isPopupShowing()) {
+          if (menu.isPopupShowing() && actor.isEnabled()) {
             menu.close();
           }
         }
@@ -123,7 +131,19 @@ public class VMoreActors extends SimplePanel implements ClickHandler {
   @Override
   public void onClick(ClickEvent event) {
     if (!menu.isEmpty()) {
-      menu.openPopup(this);
+      if (menu.isPopupShowing()) {
+        menu.close();
+      } else {
+        menu.openPopup(this);
+        addStyleName("open");
+        menu.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+          @Override
+          public void onClose(CloseEvent<PopupPanel> event) {
+            removeStyleName("open");
+          }
+        });
+      }
     }
   }
 
@@ -132,5 +152,6 @@ public class VMoreActors extends SimplePanel implements ClickHandler {
   //---------------------------------------------------
   
   private final VAnchor				anchor;
+  private final VIcon                           icon;
   private final VMoreActorsMenu			menu;
 }

@@ -29,6 +29,7 @@ import org.kopi.vkopi.lib.report.VIntegerColumn;
 import org.kopi.vkopi.lib.report.VReportColumn;
 import org.kopi.vkopi.lib.report.VSeparatorColumn;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
@@ -334,7 +335,7 @@ public class DTable extends Table implements UTable, ItemClickListener {
 	                              Object propertyId)
     {
       if (propertyId != null) {
-        return model.getModel().getAccessibleColumn(((Integer) propertyId).intValue()).getHelp();
+        return Utils.createTooltip(model.getModel().getAccessibleColumn(((Integer) propertyId).intValue()).getHelp());
       } else {
         return null;
       }

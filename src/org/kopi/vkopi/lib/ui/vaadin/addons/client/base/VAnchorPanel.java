@@ -68,7 +68,11 @@ public class VAnchorPanel extends ComplexPanel {
    * @param href the anchor's href
    */
   public void setHref(String href) {
-    getAnchorElement().setHref(href);
+    if (href != null) {
+      getAnchorElement().setHref(href);
+    } else if (getAnchorElement().hasAttribute("href")) {
+      getAnchorElement().removeAttribute("href");
+    }
   }
   
   /**

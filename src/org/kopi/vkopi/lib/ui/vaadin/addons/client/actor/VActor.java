@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.AcceleratorKeyCombination
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.AcceleratorKeyHandler.HasAcceleratorKey;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VSpanPanel;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.ActionListener;
 
 import com.google.gwt.dom.client.AnchorElement;
@@ -60,11 +61,10 @@ public class VActor extends VSpanPanel implements ClickHandler, HasAcceleratorKe
     anchor.setHref("#");
     anchor.setClassName(Styles.ACTOR_ANCHOR);
     DOM.appendChild(getElement(), anchor);
-    image = DOM.createImg();
-    image.setClassName(Styles.ACTOR_IMAGE);
+    icon = new VIcon();
     label = DOM.createSpan();
     label.setClassName(Styles.ACTOR_LABEL);
-    DOM.appendChild(anchor, image);
+    DOM.appendChild(anchor, icon.getElement());
     DOM.appendChild(anchor, label);
     addDomHandler(this, ClickEvent.getType());
   }
@@ -123,7 +123,7 @@ public class VActor extends VSpanPanel implements ClickHandler, HasAcceleratorKe
   public void clear() {
     super.clear();
     listeners = null;
-    image = null;
+    icon = null;
     label = null;
     keyCombination = null;
   }
@@ -143,7 +143,7 @@ public class VActor extends VSpanPanel implements ClickHandler, HasAcceleratorKe
   
   private boolean				enabled;
   private List<ActionListener>		        listeners;
-  /*package*/ Element				image;
+  /*package*/ VIcon				icon;
   /*package*/ Element				label;
   public AcceleratorKeyCombination		keyCombination;
 }

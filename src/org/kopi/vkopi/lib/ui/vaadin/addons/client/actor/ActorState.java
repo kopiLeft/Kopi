@@ -28,6 +28,13 @@ import com.vaadin.shared.annotations.NoLayout;
 public class ActorState extends AbstractComponentState {
 
   /**
+   * The icon name. The name will be translated after to a
+   * font awesome icon.
+   */
+  @NoLayout
+  public String                 icon;
+  
+  /**
    * The actor accelerator key.
    */
   @NoLayout

@@ -31,8 +31,8 @@ JAVAFILES += 	AbstractUIExecutor BackgroundThreadHandler		\
 		CommunicationStatistics	CurrentUIExecutor		\
 		DynamicPollingManualPushUIExecutor ExportResource	\
 		FileUploader Image KopiServlet StrategyUIExecutor Tree	\
-		UIExecutor UIRunnable UIRunnableFuture Utils
-		
+		UIExecutor UIRunnable UIRunnableFuture FontMetrics	\
+		Utils StylesInjector
 OPTIONS =
 
 PROPERTIES =

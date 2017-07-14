@@ -41,6 +41,8 @@
 			  	    UIExecutor.java
 			  	    UIRunnable.java
 			  	    UIRunnableFuture.java
-			  	    Utils.java" />
+				    FontMetrics.java
+			  	    Utils.java
+				    StylesInjector.java" />
   <import file="${topdir}/defs.xml" />
 </project>

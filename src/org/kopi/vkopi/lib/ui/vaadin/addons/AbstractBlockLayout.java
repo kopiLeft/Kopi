@@ -86,12 +86,13 @@ public abstract class AbstractBlockLayout extends AbstractComponentContainer imp
                            int x,
                            int y,
                            int width,
+                           int height,
                            boolean alignRight,
                            boolean useAll)
   {
     ComponentConstraint		constraints;
     
-    constraints = new ComponentConstraint(x, y, width, alignRight, useAll);
+    constraints = new ComponentConstraint(x, y, width, height, alignRight, useAll);
     addComponent(component, constraints);
     // really attach to the connector hierarchy
     components.add(component);

@@ -26,6 +26,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.WidgetUtil;
@@ -42,15 +43,14 @@ public class VScrollablePanel extends ScrollPanel implements ResizeHandler {
   /**
    * Creates the scrollable panel instance.
    */
-  public VScrollablePanel(final Widget content, String style) {
+  public VScrollablePanel(final Widget content) {
+    this.content = content;
     getElement().setAttribute("hideFocus", "true");
     getElement().getStyle().setProperty("outline", "0px");
     if (content != null) {
       add(content);
     }
-    if (style != null) {
-      setStyleName(style);
-    }
+    
     Window.addResizeHandler(this);
   }
   
@@ -65,7 +65,7 @@ public class VScrollablePanel extends ScrollPanel implements ResizeHandler {
 
       @Override
       public void execute() {
-	resize(Window.getClientWidth(), Window.getClientHeight());
+        resize(Window.getClientWidth(), Window.getClientHeight());
       }
     });
   }
@@ -81,7 +81,11 @@ public class VScrollablePanel extends ScrollPanel implements ResizeHandler {
    * @param height The window height.
    */
   public void resize(int width, int height) {
-    if (WidgetUtil.getRequiredHeight(this) > height - getElement().getAbsoluteTop() - 28) {
+    if (getWidget() == null) {
+      return;
+    }
+    
+    if (WidgetUtil.getRequiredHeight(getWidget()) > height - getElement().getAbsoluteTop() - 28) {
       // make scrollable in y axis
       getElement().getStyle().setOverflowY(Overflow.AUTO);
       getElement().getStyle().setHeight(Math.max(0, height -  getElement().getAbsoluteTop() - 28), Unit.PX);
@@ -90,7 +94,7 @@ public class VScrollablePanel extends ScrollPanel implements ResizeHandler {
       getElement().getStyle().setProperty("height", "auto");
     }
 
-    if (WidgetUtil.getRequiredWidth(this) > width - getElement().getAbsoluteLeft() - 10) {
+    if (WidgetUtil.getRequiredWidth(getWidget()) > width - getElement().getAbsoluteLeft() - 10) {
       // make scrollable in x axis
       getElement().getStyle().setOverflowX(Overflow.AUTO);
       getElement().getStyle().setWidth(Math.max(0, width -  getElement().getAbsoluteLeft() - 10), Unit.PX);
@@ -99,4 +103,25 @@ public class VScrollablePanel extends ScrollPanel implements ResizeHandler {
       getElement().getStyle().setProperty("width", "auto");
     }
   }
+  
+  /**
+   * Clears the grid escalator.
+   * @param escalator The escalator instance.
+   */
+  public static native void clearScrollElement(VScrollablePanel panel) /*-{
+    panel.@com.google.gwt.user.client.ui.ScrollPanel::containerElem = null;
+    panel.@com.google.gwt.user.client.ui.ScrollPanel::scrollableElem = null;
+  }-*/;
+  
+  @Override
+  public void clear() {
+    if (content instanceof CellPanel) {
+      ((CellPanel)content).clear();
+    }
+    remove(content);
+    super.clear();
+    content = null;
+  }
+  
+  private Widget                content;
 }

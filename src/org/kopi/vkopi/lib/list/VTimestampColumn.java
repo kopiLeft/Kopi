@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.list;
 
+import org.kopi.xkopi.lib.type.Timestamp;
+
 @SuppressWarnings("serial")
 public class VTimestampColumn extends VListColumn {
 
@@ -47,5 +49,9 @@ public class VTimestampColumn extends VListColumn {
     // The proper way is to change the method Timestamp#toString(Locale) but this
     // will affect the SQL representation of the timestamp value.
     return val.substring(0, Math.min(19, val.length()));
+  }
+  
+  public Class getDataType() {
+    return Timestamp.class;
   }
 }

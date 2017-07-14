@@ -36,7 +36,8 @@
 				    WelcomeViewServerRpc.java
 				    VLoginView.java
 				    WelcomeViewClientRpc.java
-				    WelcomeViewState.java" />
+				    WelcomeViewState.java
+				    FontMetrics.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

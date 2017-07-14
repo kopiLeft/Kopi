@@ -48,7 +48,8 @@
   		   ApplicationContext.java UIFactory.java 
   		   ImageHandler.java FileHandler.java FileProductionListener.java
   		   UWindow.java VMenuTree.java UMenuTree.java
-		   UBookmarkPanel.java UTree.java PreviewRunner.java" />
+		   UBookmarkPanel.java UTree.java PreviewRunner.java LogoutModule.java
+		   RootMenu.java" />
 
   <import file="${topdir}/defs.xml" />
 

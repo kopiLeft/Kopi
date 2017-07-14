@@ -48,4 +48,12 @@ public class VULPanel extends ComplexPanel {
   public void add(Widget child) {
     super.add(child, getElement());
   }
+  
+  /**
+   * Sets the anchor panel ID.
+   * @param id The panel ID.
+   */
+  public void setId(String id) {
+    getElement().setId(id);
+  }
 }

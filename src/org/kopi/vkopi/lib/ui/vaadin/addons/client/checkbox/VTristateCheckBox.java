@@ -158,6 +158,9 @@ public class VTristateCheckBox extends VObjectField implements HasEnabled {
   protected void checkValue(int rec) {
     // nothing to do.
   }
+  
+  @Override
+  protected void setParentVisibility(boolean visible) {}
 
   //---------------------------------------------------
   // INNER CLASSES

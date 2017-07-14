@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,4 +40,10 @@ public interface VConstants {
   int RCI_CHANGED                       = 0x00000002;
   int RCI_DELETED                       = 0x00000004;
   int RCI_TRAILED                       = 0x00000008;
+  
+  // menus types
+  int MAIN_MENU                         = -1;
+  int USER_MENU                         = -2;
+  int ADMIN_MENU                        = -3;
+  int BOOKMARK_MENU                     = -4;
 }

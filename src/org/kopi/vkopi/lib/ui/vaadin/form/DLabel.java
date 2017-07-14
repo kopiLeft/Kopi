@@ -26,6 +26,7 @@ import org.kopi.vkopi.lib.form.VConstants;
 import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.ui.vaadin.addons.SortableLabel;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
 import org.kopi.vkopi.lib.visual.VActor;
 import org.kopi.vkopi.lib.visual.VCommand;
 
@@ -83,7 +84,7 @@ public class DLabel extends SortableLabel implements ULabel {
       @Override
       public void run() {
 	setCaption(text);
-	setDescription(toolTip);
+	setDescription(Utils.createTooltip(toolTip));
       }
     });
   }
@@ -125,11 +126,11 @@ public class DLabel extends SortableLabel implements ULabel {
 	if (model.getModel().getAccess(row) == VConstants.ACS_SKIPPED) {
 	  // Only show base help on a skipped field
 	  // Actors are not shown since they are not active.
-	  setDescription(tooltip);
+	  setDescription(Utils.createTooltip(tooltip));
 	} else {
-	  setDescription(buildDescription(model, tooltip));
+	  setDescription(Utils.createTooltip(buildDescription(model, tooltip)));
 	}
-	setAutofill(model.hasAutofill());
+	setHasAction(!model.hasIcon() && model.hasAction());
 	if (model.getModel().getAccess(row) == VConstants.ACS_HIDDEN) {
 	  if (getState().visible) {
 	    setVisible(false);
@@ -153,6 +154,7 @@ public class DLabel extends SortableLabel implements ULabel {
     removeStyleName("mustfill");
     removeStyleName("hidden");
     removeStyleName("focused");
+    setMandatory(access == VConstants.ACS_MUSTFILL);
     // The focus style is the major style
     if (focused) {
       addStyleName("focused");      
@@ -208,7 +210,7 @@ public class DLabel extends SortableLabel implements ULabel {
           if (description.trim().length() > 0) {
             description += "<br>";
           }
-          description+= getDescription(commands[i].getActor());
+          description += getDescription(commands[i].getActor());
         }
       }
     }

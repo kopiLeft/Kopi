@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,13 +48,13 @@ public class TextFieldState extends AbstractFieldState {
   public int 				visibleRows;
   
   /**
-   * Use fixed new line transformer in multiple line field ?
+   * Use default line transformer in multiple line field ?
    * Dynamic new line means that we use '\n' for line break.
    * Fixed new line means that we complete the messing field columns
    * with space character instead of using line separator.
    */
   @NoLayout
-  public boolean                        fixedNewLine;
+  public boolean                        dynamicNewLine;
   
   /**
    * Is it a password field ?
@@ -121,6 +121,11 @@ public class TextFieldState extends AbstractFieldState {
    * If the field has the auto complete feature.
    */
   public boolean			hasAutocomplete;
+  
+  /**
+   * Tells if the field has an autofill command
+   */
+  public boolean                        hasAutofill;
   
   /**
    * The auto complete minimum length to begin querying for suggestions

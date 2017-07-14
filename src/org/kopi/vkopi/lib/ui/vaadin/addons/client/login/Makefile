@@ -28,7 +28,7 @@ COPYSOURCES =	true
 
 JAVAFILES += 	VEmptyModuleList VLoginBox VLoginView VLoginWindow	\
 		VWelcomeView WelcomeViewClientRpc WelcomeViewConnector	\
-		WelcomeViewServerRpc WelcomeViewState
+		WelcomeViewServerRpc WelcomeViewState FontMetrics
 
 ## ----------------------------------------------------------------------
 ## FILES

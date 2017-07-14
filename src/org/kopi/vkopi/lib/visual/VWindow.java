@@ -814,11 +814,18 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    * Notifies all listeners that the report file is produced.
    */
   public void fireFileProduced(File file) {
+    fireFileProduced(file, file.getName());
+  }
+  
+  /**
+   * Notifies all listeners that the report file is produced.
+   */
+  public void fireFileProduced(File file, String name) {
     Object[]		listeners = listenerList.getListenerList();
 
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
       if (listeners[i] == FileProductionListener.class) {
-	((FileProductionListener)listeners[i+1]).fileProduced(file);
+	((FileProductionListener)listeners[i+1]).fileProduced(file, name);
       }
     }
   }

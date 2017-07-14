@@ -90,6 +90,7 @@ public abstract class VKPosition extends VKPhylum {
   public abstract int getLine();
   public abstract int getColumn();
   public abstract int getColumnEnd();
+  public abstract int getLineEnd();
 
   // ----------------------------------------------------------------------
   // CODE GENERATION

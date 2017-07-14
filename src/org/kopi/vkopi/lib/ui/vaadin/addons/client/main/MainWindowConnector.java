@@ -22,11 +22,13 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.main;
 import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.MainWindow;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VScrollablePanel;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VConstants;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.date.DateChooserConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.date.VDateChooser;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.MainWindowListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.GridListDialogConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.ListDialogConnector;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.VGridListDialog;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.VListDialog;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.menu.ModuleListConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.notification.AbstractNotificationConnector;
@@ -42,13 +44,14 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.PopupWindowConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VPopupWindow;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.ConnectorMap;
+import com.vaadin.client.ServerConnector;
 import com.vaadin.client.annotations.OnStateChange;
+import com.vaadin.client.connectors.GridConnector;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
 import com.vaadin.client.ui.VScrollTable;
 import com.vaadin.shared.ui.Connect;
@@ -64,6 +67,7 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
   @Override
   protected void init() {
     super.init();
+    getWidget().init(getConnection());
     getWidget().addMainWindowListener(this);
   }
   
@@ -92,14 +96,12 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
     // add global links if we have locale
     getWidget().addLinksListeners();
     getWidget().setWindowsText();
-    getWidget().setWelcomeText();
-    getWidget().setLogoutLink();
   }
   
   
   @OnStateChange("username")
   /*package*/ void setUsername() {
-    getWidget().setWelcomeLink(getState().username);
+    getWidget().setConnectedUser(getState().username);
   }
   
   @OnStateChange("href")
@@ -126,7 +128,7 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
   @Override
   public void onWindowVisible(Widget window) {
     /*
-     * This is a workaround for VAADIN tables :
+     * This is a workaround for VAADIN tables and grids :
      * When the table became invisible cause it is not the 
      * component shown in main window, its size is reseted and it is
      * not restored even if the table becomes visible in the main window
@@ -136,21 +138,30 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
     if (window instanceof VWindow) {
       final Widget      content = ((VWindow) window).getContent();
       
-      if (content instanceof VScrollablePanel) {
-        if (((VScrollablePanel) content).getWidget() instanceof VScrollTable) {
-          ConnectorMap.get(getConnection()).getConnector(((VScrollablePanel) content).getWidget()).getLayoutManager().forceLayout();
+      if (content instanceof ScrollPanel) {
+        if (((ScrollPanel) content).getWidget() instanceof VScrollTable) {
+          ConnectorMap.get(getConnection()).getConnector(((ScrollPanel) content).getWidget()).getLayoutManager().forceLayout();
         } else {
-          new Timer() {
-            
-            @Override
-            public void run() {
-              // call resize twice ==> a work around for chrome browsers to force resizing with calculated
-              // size of the scroll panel window content.
-              ((VScrollablePanel) content).resize(Window.getClientWidth(), Window.getClientHeight());
-              ((VScrollablePanel) content).resize(Window.getClientWidth(), Window.getClientHeight());
-            }
-          }.schedule(500);
+          ComponentConnector    connector = ConnectorMap.get(getConnection()).getConnector(((ScrollPanel) content).getWidget());
+          
+          if (connector != null) {
+            refreshGrids(connector);
+          }
         }
+      }
+    }
+  }
+  
+  /**
+   * Refreshes the vaadin grid contents.
+   * @param The parent server connector.
+   */
+  protected void refreshGrids(ServerConnector connector) {
+    if (connector instanceof GridConnector) {
+      ((GridConnector) connector).getLayoutManager().forceLayout();
+    } else {
+      for (ServerConnector child : connector.getChildren()) {
+        refreshGrids(child);
       }
     }
   }
@@ -178,11 +189,12 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
       if (event.getOldChildren().contains(child)) {
 	continue;
       }
-      
       if (child instanceof ModuleListConnector) {
-	getWidget().setModuleList(child.getWidget());
+        handleMenuList((ModuleListConnector) child);
       } else if (child instanceof ListDialogConnector) {
 	handleListDialog((ListDialogConnector) child);
+      } else if (child instanceof GridListDialogConnector) {
+        handleGridListDialog((GridListDialogConnector) child);
       } else if (child instanceof DateChooserConnector) {
 	handleDateChooser((DateChooserConnector) child);
       } else if (child instanceof PopupWindowConnector) {
@@ -204,6 +216,29 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
   }
   
   /**
+   * Handles the module list case.
+   * @param connector The module list connector
+   */
+  protected void handleMenuList(ModuleListConnector connector) {
+    switch (connector.getState().type) {
+    case VConstants.MAIN_MENU:
+      getWidget().setMainMenu(connector.getWidget());
+      break;
+    case VConstants.USER_MENU:
+      getWidget().setUserMenu(connector.getWidget());
+      break;
+    case VConstants.ADMIN_MENU:
+      getWidget().setAdminMenu(connector.getWidget());
+      break;
+    case VConstants.BOOKMARK_MENU:
+      getWidget().setBookmarksMenu(connector.getWidget());
+      break;
+    default:
+      break;
+    }
+  }
+  
+  /**
    * Handles the list dialog case.
    * @param connector The list dialog connector.
    */
@@ -211,7 +246,7 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
     VListDialog			widget;
     
     widget = connector.getWidget();
-    // force state variables cause the hearchy change event is fired befor the state change event.
+    // force state variables cause the hierarchy change event is fired before the state change event.
     widget.setModel(connector.getState().model);
     if (connector.getState().reference != null) {
       widget.showRelativeTo(((ComponentConnector)connector.getState().reference).getWidget());
@@ -219,6 +254,22 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
     widget.setNewText(connector.getState().newText);
     // now show the list dialog
     getWidget().showListDialog(widget);
+  }
+  
+  /**
+   * Handles the grid based list dialog case.
+   * @param connector The list dialog connector.
+   */
+  protected void handleGridListDialog(GridListDialogConnector connector) {
+    VGridListDialog             widget;
+
+    widget = connector.getWidget();
+    if (connector.getState().reference != null) {
+      widget.showRelativeTo(((ComponentConnector)connector.getState().reference).getWidget());
+    }
+    widget.setNewText(connector.getState().newText);
+    // now show the list dialog
+    getWidget().showGridListDialog(widget);
   }
   
   /**

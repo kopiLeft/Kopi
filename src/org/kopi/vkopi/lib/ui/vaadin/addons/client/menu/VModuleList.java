@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.menu;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
@@ -111,17 +112,39 @@ public class VModuleList extends SimplePanel implements ResizeHandler {
   protected void onLoad() {
     super.onLoad();
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-      
+
       @Override
       public void execute() {
-	menu.render(Window.getClientWidth());
+        if (isMain) {
+          getElement().getStyle().setWidth(Window.getClientWidth() - RESERVED_WIDTH, Unit.PX);
+          menu.render(Window.getClientWidth() - RESERVED_WIDTH);
+        }
       }
-    });
+    }); 
   }
 
   @Override
   public void onResize(ResizeEvent event) {
-    menu.render(event.getWidth());
+    if (isMain) {
+      // 250 px is the width reserved for logo and extra menus 
+      menu.render(event.getWidth() - RESERVED_WIDTH);
+    }
+  }
+  
+  /**
+   * Sets this module list to handle main menu
+   * @param isMain Should handle main menu ?
+   */
+  public void setMain(boolean isMain) {
+    this.isMain = isMain;
+  }
+  
+  /**
+   * Returns the module list menu.
+   * @return The module list menu.
+   */
+  public VModuleListMenu getMenu() {
+    return menu;
   }
   
   //---------------------------------------------------
@@ -129,4 +152,10 @@ public class VModuleList extends SimplePanel implements ResizeHandler {
   //---------------------------------------------------
   
   private VModuleListMenu			menu;
+  private boolean                               isMain;
+  /*
+   * Reserved width for company logo and extra menus
+   * 180 (logo) + 200 (extra menu) + 70 (windows link)
+   */
+  private static final int                      RESERVED_WIDTH = 450;
 }

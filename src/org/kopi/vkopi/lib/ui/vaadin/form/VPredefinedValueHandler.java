@@ -69,7 +69,11 @@ public class VPredefinedValueHandler extends AbstractPredefinedValueHandler {
 
   @Override
   public Date selectDate(Date date) throws VException {
-    return DateChooser.selectDate(date, (Component) field.getDisplay());
+    if (field.getDisplay() instanceof DGridEditorField<?>) {
+      return DateChooser.selectDate(date, ((DGridEditorField<?>)field.getDisplay()).getEditor());
+    } else {
+      return DateChooser.selectDate(date, (Component)field.getDisplay());
+    }
   }
 
  /**

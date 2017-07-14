@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,17 +20,18 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.block;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VH4;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.form.VPage;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The Block widget.
  */
-public class VBlock extends Composite {
+public class VBlock extends SimplePanel {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -40,8 +41,6 @@ public class VBlock extends Composite {
    * Creates a simple block widget.
    */
   public VBlock() {
-    initWidget(pane = new VerticalPanel());
-    setSpacing(10);
     setStyleName(Styles.BLOCK);
   }
 
@@ -58,7 +57,7 @@ public class VBlock extends Composite {
       return;
     }
     
-    pane.add(content);
+    setWidget(content);
   }
 
   /**
@@ -106,18 +105,7 @@ public class VBlock extends Composite {
    * @return The parent block page.
    */
   protected VPage getParentPage() {
-    Widget		page;
-    
-    page = getParent();
-    while (page != null) {
-      if (page instanceof VPage) {
-	return (VPage) page;
-      }
-      
-      page = page.getParent();
-    }
-    
-    return null;
+    return WidgetUtils.getParent(this, VPage.class);
   }
   
   /**
@@ -141,29 +129,27 @@ public class VBlock extends Composite {
     }
   }
   
-  /**
-   * Clears the widget.
-   */
-  protected void clear() {
-    pane.clear();
-    pane = null;
-    layout = null;
+  @Override
+  public void clear() {
+    super.clear();
+    if (getWidget() instanceof HasWidgets) {
+      ((HasWidgets)getWidget()).clear();
+    }
+    if (layout != null) {
+      try {
+        layout.clear();
+      } catch (IndexOutOfBoundsException e) {
+        // ignore cause it can be cleared before
+      }
+      layout = null;
+    }
     caption = null;
-  }
-  
-  /**
-   * Sets the block cell spacing.
-   * @param spacing The cell spacing.
-   */
-  public void setSpacing(int spacing) {
-    pane.setSpacing(spacing);
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private VerticalPanel				pane;
   private BlockLayout				layout;
   private VH4					caption;
 }

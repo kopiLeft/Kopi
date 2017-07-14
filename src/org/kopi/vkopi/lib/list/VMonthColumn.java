@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.list;
 
+import org.kopi.xkopi.lib.type.Month;
+
 @SuppressWarnings("serial")
 public class VMonthColumn extends VListColumn {
 
@@ -31,5 +33,13 @@ public class VMonthColumn extends VListColumn {
    */
   public VMonthColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 7, sortAscending);
+  }
+
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return Month.class;
   }
 }

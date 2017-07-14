@@ -19,6 +19,10 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.login;
 
+import java.util.List;
+
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsResponse;
+
 import com.vaadin.shared.communication.ServerRpc;
 
 /**
@@ -32,6 +36,7 @@ public interface WelcomeViewServerRpc extends ServerRpc {
    * @param username The login username.
    * @param password The login password.
    * @param language The login language.
+   * @param fontMetrics The calculated font metrics based on the root window browser panel
    */
-  public void onLogin(String username, String password, String language);
+  public void onLogin(String username, String password, String language, List<FontMetricsResponse> fontMetrics);
 }

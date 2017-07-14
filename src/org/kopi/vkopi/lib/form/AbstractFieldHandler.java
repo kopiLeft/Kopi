@@ -79,9 +79,10 @@ public abstract class AbstractFieldHandler implements FieldHandler {
 
     field = getCurrentDisplay();
     if (field == null) {
-      return null;
+      return ""; // avoir null pointer exception when display is not defined
     } else if (field instanceof UTextField) {
       String	text = ((UTextField)field).getText();
+      
       if (!trim){
 	return text;
       } else if (getModel().getHeight() == 1) {

@@ -21,7 +21,6 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.window;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.VActorsNavigationPanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VScrollablePanel;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -80,7 +79,7 @@ public class VWindowView extends FlexTable {
   public void setContent(Widget content) {
     if (content != null) {
       content.setStyleName(Styles.WINDOW_VIEW_CONTENT);
-      setWidget(1, 0, new VScrollablePanel(content, Styles.WINDOW_VIEW_CONTENT_WRAPPER));
+      setWidget(1, 0, content);
     }
   }
   

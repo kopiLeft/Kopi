@@ -21,12 +21,14 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.menu;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VAnchorPanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VSpanPanel;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -44,11 +46,7 @@ public class VModuleItem extends ComplexPanel {
    */
   public VModuleItem() {
     setElement(createInnerElement());
-    tabLeft = new VSpanPanel();
-    tabLeft.getElement().setInnerText(" ");
     tab = new VSpanPanel();
-    tabRight = new VSpanPanel();
-    tabRight.getElement().setInnerText(" ");
     anchor = new VAnchorPanel();
     anchor.setHref("#");
   }
@@ -68,14 +66,22 @@ public class VModuleItem extends ComplexPanel {
   /**
    * Builds the item content.
    */
-  protected void buildContent() {
+  public void buildContent() {
     super.clear();
-    if (root) {
+    if (root && !shortcutNavigation) {
       // add all tabs
-      add(tabLeft);
       add(tab);
+      tab.setStyleName("root");
       tab.add(anchor);
-      add(tabRight);
+    } else if (shortcutNavigation) {
+      VStrongPanel      strong;
+      
+      anchor.clear();
+      strong = new VStrongPanel();
+      icon = new VIcon();
+      strong.setWidget(anchor);
+      anchor.add(icon);
+      add(strong);
     } else {
       // only add central anchor
       add(anchor);
@@ -89,13 +95,9 @@ public class VModuleItem extends ComplexPanel {
   protected void setSelectionStyle(boolean selected) {
     if (root) {
       if (!selected) {
-        tabLeft.setStyleName("notCurrentTabLeft");
-        tab.setStyleName("notCurrentTab");
-        tabRight.setStyleName("notCurrentTabRight");
+        tab.removeStyleName("selected");
       } else {
-        tabLeft.setStyleName("currentTabLeft");
-        tab.setStyleName("currentTab");
-        tabRight.setStyleName("currentTabRight");
+        tab.setStyleName("selected");
       }
     } else {
       if (selected) {
@@ -136,6 +138,23 @@ public class VModuleItem extends ComplexPanel {
   }
   
   /**
+   * Sets this item to be a shortcut navigation. A shortcut navigation is a special
+   * item that has an icon inside.
+   * @param shortcutNavigation Is is a  shortcut navigation item ?
+   */
+  public void setShortcutNavigation(boolean shortcutNavigation) {
+    this.shortcutNavigation = shortcutNavigation;
+  }
+  
+  /**
+   * Returns true if it is a shortcut navigation item.
+   * @return True if it is a shortcut navigation item.
+   */
+  public boolean isShortcutNavigation() {
+    return shortcutNavigation;
+  }
+  
+  /**
    * Returns the item caption.
    * @return The item caption.
    */
@@ -148,8 +167,28 @@ public class VModuleItem extends ComplexPanel {
    * @param caption The item caption.
    */
   public void setCaption(String caption) {
+    anchor.clear();
     this.caption = caption;
-    anchor.getElement().setInnerText(caption);
+    if (!shortcutNavigation || icon == null) {
+      anchor.setText(caption);
+    } else {
+      // sets the inner HTML instead to not remove the added icon.
+      if (icon == null) {
+        icon = new VIcon();
+      }
+      anchor.setText(caption);
+      anchor.add(icon);
+    }
+  }
+  
+  /**
+   * Sets the icon name.
+   * @param name The icon name.
+   */
+  public void setIcon(String name) {
+    if (shortcutNavigation && icon != null) {
+      icon.setName(name);
+    }
   }
   
   /**
@@ -221,7 +260,6 @@ public class VModuleItem extends ComplexPanel {
       subMenu.setAnimationEnabled(parentMenu.isAnimationEnabled());
       subMenu.setFocusOnHoverEnabled(parentMenu.isFocusOnHoverEnabled());
     }
-    addChildrenIndicator();
   }
   
   /**
@@ -254,19 +292,32 @@ public class VModuleItem extends ComplexPanel {
     
     super.clear();
   }
+  
+  /**
+   * A simple panel that wraps a strong element inside. 
+   */
+  private static class VStrongPanel extends SimplePanel {
+    
+    /**
+     * Creates a new strong panel.
+     */
+    public VStrongPanel() {
+      super(Document.get().createElement("strong"));
+    }
+  }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VSpanPanel			tabLeft;
   private final VSpanPanel			tab;
-  private final VSpanPanel			tabRight;
   protected final VAnchorPanel			anchor;
+  private VIcon                                 icon;
   
   private String				id;
   private String				caption;
   private boolean				root;
+  private boolean                               shortcutNavigation;
   private VModuleListMenu			parentMenu;
   private VModuleListMenu			subMenu;
   private ScheduledCommand			command;

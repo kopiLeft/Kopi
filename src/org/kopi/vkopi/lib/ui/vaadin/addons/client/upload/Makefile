@@ -29,7 +29,8 @@ COPYSOURCES =	true
 JAVAFILES += 	UploadClientRpc UploadConnector				\
 		UploadIFrameOnloadStrategy UploadServerRpc UploadState	\
 		VFileUpload VUpload VUploadForm VUploadProgress		\
-		VUploadTextInput
+		VUploadTextInput UploadProgressClientRpc		\
+		UploadProgressConnector
 
 ## ----------------------------------------------------------------------
 ## FILES

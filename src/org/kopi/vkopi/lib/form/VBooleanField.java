@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.form;
 
+import org.kopi.vkopi.lib.list.VBooleanColumn;
+import org.kopi.vkopi.lib.list.VListColumn;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 
 @SuppressWarnings("serial")
@@ -57,6 +59,13 @@ public class VBooleanField extends VBooleanCodeField {
     return booleanNames[o.booleanValue() ? 0 : 1];
   }
 
+  /**
+   * Returns a list column for list.
+   */
+  protected VListColumn getListColumn() {
+    return new VBooleanColumn(getHeader(), null, getPriority() >= 0);
+  }
+  
   /*
    * ----------------------------------------------------------------------
    * DATA MEMBERS

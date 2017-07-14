@@ -35,10 +35,18 @@ public class VImageColumn extends VListColumn {
     super(title, column, ALG_LEFT, 7, sortAscending);
   }
 
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /**
    * Returns a string representation of value
    */
   public Object formatObject(Object value) {
     return value == null ? VConstants.EMPTY_TEXT : (Object)ImageHandler.getImageHandler().getImage((byte[])value);
+  }
+  
+  public Class getDataType() {
+    return byte[].class;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,20 +22,22 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.progress;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VH4;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.ui.FocusableFlowPanel;
 
 /**
  * The progress dialog widget.
  */
-public class VProgressDialog extends FocusPanel implements CloseHandler<PopupPanel> {
+public class VProgressDialog extends FocusableFlowPanel implements CloseHandler<PopupPanel> {
 
   //-------------------------------------------------
   // CONSTRUCTOR
@@ -47,25 +49,16 @@ public class VProgressDialog extends FocusPanel implements CloseHandler<PopupPan
    */
   public VProgressDialog() {
     setStyleName(Styles.PROGRESS_DIALOG);
-    
-    table = new FlexTable();
-    table.setCellSpacing(5);
-    table.setCellPadding(2);
-    table.getElement().setPropertyString("align", "center");
-    
+    content = new FlowPanel();
     title = new VH4();
-    table.setWidget(0, 0, title);
-    table.getFlexCellFormatter().setStyleName(0, 0, Styles.PROGRESS_TITLE);
-    
-    message = new VSpan();
-    table.setWidget(1, 0, message);
-    table.getFlexCellFormatter().setStyleName(1, 0, Styles.PROGRESS_MESSAGE);
-    
-    bar = new VProgressBar();
-    table.setWidget(2, 0, bar);
-    
-    table.setStyleName(Styles.PROGRESS_DIALOG + "-table");
-    setWidget(table);
+    message = new VParagraph();
+    bar = new VProgressBar(this);
+    percentageLabel = new VParagraph();
+    content.add(message);
+    content.add(bar);
+    content.add(percentageLabel);
+    add(title);
+    add(content);
   }
   
   /**
@@ -87,7 +80,7 @@ public class VProgressDialog extends FocusPanel implements CloseHandler<PopupPan
     if (popup != null) {
       popup.setWidget(this);
       parent.add(popup);
-      popup.center();
+      popup.center(VMainWindow.get().getCurrentWindow());
       popup.setWaiting();
     }
   }
@@ -101,6 +94,14 @@ public class VProgressDialog extends FocusPanel implements CloseHandler<PopupPan
       popup.hide();
     }
   }
+
+  /**
+   * Sets the percentage text.
+   * @param percentage The percentage text.
+   */
+  public void setPercentageText(float percentage) {
+    percentageLabel.setText(new Float(percentage).intValue() + "%");
+  }
   
   @Override
   public void onClose(CloseEvent<PopupPanel> event) {
@@ -111,7 +112,7 @@ public class VProgressDialog extends FocusPanel implements CloseHandler<PopupPan
   @Override
   public void clear() {
     super.clear();
-    table = null;
+    content = null;
     popup = null;
     title = null;
     message = null;
@@ -171,12 +172,36 @@ public class VProgressDialog extends FocusPanel implements CloseHandler<PopupPan
   }
   
   //-------------------------------------------------
+  // INNER CLASSES
+  //-------------------------------------------------
+  
+  
+  /**
+   * A simple panel that wraps a p html tag. 
+   */
+  private static class VParagraph extends Widget {
+    
+    public VParagraph() {
+      setElement(Document.get().createElement("p"));
+    }
+    
+    /**
+     * Sets the inner text for this widget element.
+     * @param text The widget inner text.
+     */
+    public void setText(String text) {
+      getElement().setInnerText(text);
+    }
+  }
+  
+  //-------------------------------------------------
   // DATA MEMBERS
   //-------------------------------------------------
   
-  private FlexTable                      	table;
-  private VPopup                          	popup;
-  private VH4                           	title;
-  private VSpan                           	message;
-  private VProgressBar                    	bar;
+  private FlowPanel                             content;
+  private VPopup                                popup;
+  private VH4                                   title;
+  private VParagraph                            message;
+  private VProgressBar                          bar;
+  private VParagraph                            percentageLabel;
 }

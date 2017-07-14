@@ -49,11 +49,11 @@ public class Label extends AbstractComponent {
   //---------------------------------------------------
   
   /**
-   * Sets the auto fill ability. 
-   * @param autofill the auto fill ability. 
+   * Sets the action trigger ability. 
+   * @param hasAction the action trigger ability. 
    */
-  public void setAutofill(boolean autofill) {
-    getState().hasAutofill = autofill;
+  public void setHasAction(boolean hasAction) {
+    getState().hasAction = hasAction;
   }
   
   /**
@@ -62,6 +62,14 @@ public class Label extends AbstractComponent {
    */
   public void setInfoText(String infoText) {
     getState().infoText = infoText;
+  }
+  
+  /**
+   * Sets the field label to be mandatory.
+   * @param mandatory Is it a mandatory field ?
+   */
+  public void setMandatory(boolean mandatory) {
+    getState().mandatory = mandatory;
   }
   
   @Override

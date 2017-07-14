@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,8 +20,10 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.form;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VScrollablePanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.VBlock;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.CellPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -46,11 +48,12 @@ public class VPage extends Composite {
    * @param content The wrapped widget
    */
   public VPage(CellPanel content) {
-    initWidget(content);
-    setStyleName(Styles.FORM_PAGE);
     this.content = content;
     this.content.setSpacing(0);
     this.content.setStyleName(Styles.FORM_PAGE_CONTENT);
+    this.scrollPanel = new VScrollablePanel(this.content);
+    initWidget(this.scrollPanel);
+    setStyleName(Styles.FORM_PAGE);
   }
 
   //---------------------------------------------------
@@ -144,27 +147,29 @@ public class VPage extends Composite {
       }
       content.setCellHorizontalAlignment(caption, HasHorizontalAlignment.ALIGN_LEFT);
       content.setCellVerticalAlignment(caption, HasVerticalAlignment.ALIGN_TOP);
+      DOM.getParent(caption.getElement()).setClassName("caption-container");;
     }
   }
-  
-  @Override
-  public Widget getWidget() {
-    return super.getWidget();
-  }
-  
+
   /**
    * Releases this page
    */
   public void release() {
+    if (last instanceof VBlock) {
+      ((VBlock)last).clear();
+    }
+    last = null;
+    scrollPanel.clear();
+    scrollPanel = null;
     content.clear();
     content = null;
-    last = null;
   }
   
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
+  private VScrollablePanel                      scrollPanel;
   private CellPanel                             content;
-  private Widget				last; 
+  private Widget				last;
 }

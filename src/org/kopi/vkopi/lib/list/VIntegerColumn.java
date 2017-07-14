@@ -32,4 +32,12 @@ public class VIntegerColumn extends VListColumn {
   public VIntegerColumn(String title, String column, int align, int width, boolean sortAscending) {
     super(title, column, align, width, sortAscending);
   }
+
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return Integer.class;
+  }
 }

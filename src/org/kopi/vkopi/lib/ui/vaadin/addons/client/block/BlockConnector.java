@@ -100,7 +100,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
   
   @OnStateChange("displaySize")
   /*package*/ void setDisplaySize() {
-    setDetailMode((getState().displaySize == 1));
+    setDetailMode(getState().displaySize == 1);
   }
   
   @OnStateChange("activeRecord")
@@ -348,6 +348,16 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     }
   }
   
+  /**
+   * Called when a column view is unregistered from a grid row detail.
+   * We need to clear block fields cause layout was unregistered
+   */
+  protected void clearFields() {
+    if (isLayoutBelongsToGridDetail() && fields != null) {
+      fields.clear();
+    }
+  }
+  
   //---------------------------------------------------
   // NAVIGATION
   //---------------------------------------------------
@@ -373,8 +383,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
         if (index == fields.size()) {
           index = 0;
         }
-
-        if (fields.get(i) != null && fields.get(index).getAccess() >= VConstants.ACS_VISIT
+        if (fields.get(index) != null && fields.get(index).getAccess() >= VConstants.ACS_VISIT
             && ((detailMode && !fields.get(index).noDetail())
                 || (!detailMode && !fields.get(index).noChart())))
         {
@@ -387,6 +396,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
       } else if (target.hasPreFieldTrigger() && activeField.getServerRpc() != null) {
         // the target field has a PREFLD trigger
         // delegate navigation to server side.
+        activeField.getServerRpc().transferFocus();
         activeField.getServerRpc().gotoNextField();
       } else {
         // leave the active field
@@ -422,8 +432,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
           index = fields.size();
         }
         index -= 1;
-
-        if (fields.get(i) != null && fields.get(index).getAccess() >= VConstants.ACS_VISIT
+        if (fields.get(index) != null && fields.get(index).getAccess() >= VConstants.ACS_VISIT
             && ((detailMode && !fields.get(index).noDetail())
                 || (!detailMode && !fields.get(index).noChart()))) {
           target = fields.get(index);
@@ -435,6 +444,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
       } else if (target.hasPreFieldTrigger() && activeField.getServerRpc() != null) {
         // the target field has a PREFLD trigger
         // delegate navigation to server side.
+        activeField.getServerRpc().transferFocus();
         activeField.getServerRpc().gotoPrevField();
       } else {
         // leave the active field
@@ -512,15 +522,15 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * This act is delegated to the server side when the target field contains triggers to be executed.
    */
   public void gotoNextRecord() {
-    if (activeField == null) {
+    if (isLayoutBelongsToGridDetail() || activeField == null) {
       return;
     }
-    
+
     // first check if the navigation should be delegated to server side.
     if (activeField.delegateNavigationToServer() && activeField.getServerRpc() != null) {
       activeField.getServerRpc().gotoNextRecord();
     } else {
-      if (isMulti()) {
+      if (isMulti() && !detailMode) {
         int               currentRec = getActiveRecord();
         int               i;
 
@@ -554,14 +564,14 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * This act is delegated to the server side when the target field contains triggers to be executed.
    */
   public void gotoPrevRecord() {
-    if (activeField == null) {
+    if (isLayoutBelongsToGridDetail() || activeField == null) {
       return;
     }
     // first check if the navigation should be delegated to server side.
     if (activeField.delegateNavigationToServer() && activeField.getServerRpc() != null) {
       activeField.getServerRpc().gotoPrevRecord();
     } else {
-      if (isMulti()) {
+      if (isMulti() && !detailMode) {
         int               currentRec = getActiveRecord();
         int               i;
 
@@ -595,7 +605,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * This act is delegated to the server side when the target field contains triggers to be executed.
    */
   public void gotoFirstRecord() {
-    if (activeField == null) {
+    if (isLayoutBelongsToGridDetail() || activeField == null) {
       return;
     }
     // first check if the navigation should be delegated to server side.
@@ -647,7 +657,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * This act is delegated to the server side when the target field contains triggers to be executed.
    */
   public void gotoLastRecord() {
-    if (activeField == null) {
+    if (isLayoutBelongsToGridDetail() || activeField == null) {
       return;
     }
     // first check if the navigation should be delegated to server side.
@@ -760,7 +770,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     boolean             redisplay = false;
     int                 recno; // row in view
 
-    if (!isMulti()) {
+    if (isLayoutBelongsToGridDetail() || !isMulti() || noChart()) {
       return;
     }
 
@@ -1097,6 +1107,14 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
   }
   
   /**
+   * Returns {@code true} if this block display only one record.
+   * @return {@code true} if this block display only one record.
+   */
+  public boolean noChart() {
+    return getState().noChart;
+  }
+  
+  /**
    * Returns {@code true} if the block do not allow record move.
    * @return {@code true} if the block do not allow record move.
    */
@@ -1239,6 +1257,13 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * @return The display line.
    */
   public int getDisplayLine(int recno) {
+    // if the block layout belongs to a grid row detail
+    // display line is always 0 cause it acts like a simple
+    // block even is buffer size is > 1
+    if (isLayoutBelongsToGridDetail() || noChart()) {
+      return 0;
+    }
+    
     if (recno < 0) {
       return -1;
     }
@@ -1406,6 +1431,22 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     return current;
   }
   
+  /**
+   * Sets the layout of this block belongs to the grid detail component.
+   * @param layoutBelongsToGridDetail Is the layout belongs to grid details ?
+   */
+  public void setLayoutBelongsToGridDetail(boolean layoutBelongsToGridDetail) {
+    this.layoutBelongsToGridDetail = layoutBelongsToGridDetail;
+  }
+  
+  /**
+   * Returns true if the layout of this block belongs to the grid row detail.
+   * @return true if the layout of this block belongs to the grid row detail.
+   */
+  public boolean isLayoutBelongsToGridDetail() {
+    return layoutBelongsToGridDetail;
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
@@ -1436,6 +1477,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * with wron top scroll record.
    */
   private boolean                       activeRecordSetFromDisplay;
+  private boolean                       layoutBelongsToGridDetail;
   
   /**
    * The client RPC implementation.

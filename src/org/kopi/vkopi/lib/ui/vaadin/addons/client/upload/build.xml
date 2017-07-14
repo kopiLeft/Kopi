@@ -37,7 +37,9 @@
   	                            VUpload.java
   	                            VUploadForm.java
   	                            VUploadProgress.java
-  	                            VUploadTextInput.java" />
+  	                            VUploadTextInput.java
+				    UploadProgressClientRpc.java
+				    UploadProgressConnector.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

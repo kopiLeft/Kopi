@@ -482,15 +482,16 @@ vkPosition []
   String                field = null;
   int                   line;
   int                   column;
-  int                   end = 0;
+  int                   endColumn = 0;
+  int                   endLine = 0; 
   TokenReference	sourceRef = buildTokenReference();	// !!! add comments;
 }
 :
   ( "AT"
-    LT line = vkInteger[]
+    LT line = vkInteger[] ( MINUS endLine = vkInteger[] )?
       (
-        COMMA column = vkInteger[] ( MINUS end = vkInteger[] )?
-          { self = new VKCoordinatePosition(sourceRef, line, column, end); }
+        COMMA column = vkInteger[] ( MINUS endColumn = vkInteger[] )?
+          { self = new VKCoordinatePosition(sourceRef, line, endLine, column, endColumn); }
       |
         { self = new VKMultiFieldPosition(sourceRef, line); }
       )

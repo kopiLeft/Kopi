@@ -219,24 +219,24 @@ public class KeyNavigator implements TextFieldListener {
 
   @Override
   public void onQuery(final String query) {
-    try {
-      final String[][]		suggestions;
+    model.getForm().performAsyncAction(new KopiAction() {
       
-      suggestions = model.getSuggestions(query);
-      if (box != null && suggestions != null) {
-	BackgroundThreadHandler.access(new Runnable() {
-	  
-	  @Override
-	  public void run() {
-	    box.setSuggestions(suggestions, query);
-	  }
-	});
+      @Override
+      public void execute() throws VException {
+        final String[][]           suggestions;
+        
+        suggestions = model.getSuggestions(query);
+        if (box != null && suggestions != null) {
+          BackgroundThreadHandler.access(new Runnable() {
+            
+            @Override
+            public void run() {
+              box.setSuggestions(suggestions, query);
+            }
+          });
+        } 
       }
-    } catch (VException e) {
-      // ignore errors on auto completion process
-      // just print stack trace for debugging
-      e.printStackTrace();
-    }
+    });
   }
 
   @Override
@@ -245,6 +245,11 @@ public class KeyNavigator implements TextFieldListener {
     // serialized. We will set the field value at the client side and fire a go to next field
     // here to convert the field displayed value to model value.
     // model.setObject(model.getBlock().getActiveRecord(), suggestion.getValue());
+  }
+  
+  @Override
+  public void autofill() {
+    ((DField)model.getDisplay()).performAutoFillAction();
   }
   
   /**

@@ -26,7 +26,6 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.PopupPanel.AnimationType;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,7 +36,7 @@ import com.vaadin.client.ApplicationConnection;
  * This widget will be the responsible of displaying
  * the open windows menu.
  */
-public class VWindowsDisplay extends SimplePanel implements CloseHandler<PopupPanel>{
+public class VWindowsDisplay extends SimplePanel implements CloseHandler<PopupPanel> {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -132,14 +131,14 @@ public class VWindowsDisplay extends SimplePanel implements CloseHandler<PopupPa
    */
   public void showMenuRelativeTo(ApplicationConnection connection,
                                  HasWidgets parent,
-                                 UIObject target)
+                                 UIObject target,
+                                 CloseHandler<PopupPanel> handler)
   {
     popup = new VPopup(connection, true, false);
     parent.add(popup);
-    popup.setAnimationEnabled(true);
     popup.setWidget(this);
     popup.addCloseHandler(this);
-    popup.setAnimationType(AnimationType.ROLL_DOWN);
+    popup.addCloseHandler(handler);
     popup.showRelativeTo(target);
   }
   
@@ -149,6 +148,18 @@ public class VWindowsDisplay extends SimplePanel implements CloseHandler<PopupPa
   public void hideMenu() {
     if (popup != null) {
       popup.hide();
+    }
+  }
+  
+  /**
+   * Returns true if the popup of this display is showing.
+   * @return True if the popup of this display is showing.
+   */
+  public boolean isShowing() {
+    if (popup != null) {
+      return popup.isShowing();
+    } else {
+      return false;
     }
   }
   

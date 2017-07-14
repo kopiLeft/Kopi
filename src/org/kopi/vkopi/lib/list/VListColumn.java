@@ -87,6 +87,12 @@ public abstract class VListColumn implements VConstants, ObjectFormater {
   public Object formatObject(Object value) {
     return value == null ? VConstants.EMPTY_TEXT : value.toString();
   }
+  
+  /**
+   * Returns the data type provided by this list.
+   * @return The data type provided by this list.
+   */
+  public abstract Class getDataType();
 
   // ----------------------------------------------------------------------
   // LOCALIZATION

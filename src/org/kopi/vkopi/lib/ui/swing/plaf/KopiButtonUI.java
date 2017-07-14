@@ -209,6 +209,8 @@ public class KopiButtonUI extends MetalButtonUI {
 
       if (c instanceof JMenuButton) {
         super.paintIcon(g, c, new Rectangle(iconRect.x, iconRect.y+8, iconRect.width, iconRect.height));
+      } else if (c instanceof JActorFieldButton) {
+        super.paintIcon(g, c, new Rectangle(iconRect.x - 32, iconRect.y + 10, 28, 28));
       } else {
         super.paintIcon(g, c, iconRect);
       }

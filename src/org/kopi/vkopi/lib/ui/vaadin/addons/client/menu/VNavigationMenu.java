@@ -21,6 +21,8 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.menu;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.VEditorTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -68,11 +70,15 @@ public class VNavigationMenu extends VPopup {
     if (target != null) {
       showRelativeTo(target);
     } else {
-      center();
+      center(VMainWindow.get().getCurrentWindow());
     }
     isOpened = true;
     if (VInputTextField.getLastFocusedTextField() != null) {
       lastFocusedWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
+    }
+    // it can be an editor widget
+    if (lastFocusedWindow == null && VEditorTextField.getLastFocusedEditor() != null) {
+      lastFocusedWindow = VEditorTextField.getLastFocusedEditor().getWindow();
     }
   }
   

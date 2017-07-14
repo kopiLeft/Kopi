@@ -32,7 +32,7 @@ NONSTANDARDCOMPILER = true
 ## FILES
 
 JAVAFILES +=	AbstractBlockLayout AbstractNotification ActionEvent	\
-  	        ActionListener Actor Block BlockLayout BlockListener	\
+	        ActionListener Actor Block BlockLayout BlockListener	\
 		ChartBlockLayout CloseListener ConfirmNotification	\
 		ContextMenu DateChooser DateChooserListener		\
 		ErrorNotification Field FieldListener Form		\
@@ -54,7 +54,17 @@ JAVAFILES +=	AbstractBlockLayout AbstractNotification ActionEvent	\
 		UploadStartedEvent UploadStartedListener		\
 		UploadSucceededEvent UploadSucceededListener WaitDialog	\
 		WaitWindow WarningNotification WelcomeView		\
-		WelcomeViewEvent WelcomeViewListener Window ActorField
+		WelcomeViewEvent WelcomeViewListener Window		\
+		GridEditorDateField GridEditorEnumField GridEditorField	\
+		GridEditorFixnumField GridEditorHandlingExtension	\
+		GridEditorIntegerField GridEditorLabel			\
+		GridEditorMonthField GridEditorTextAreaField		\
+		GridEditorTextField GridEditorTimeField			\
+		GridEditorTimestampField GridEditorWeekField		\
+		SingleComponentBlockLayout ActorField 			\
+		GridEditorActorField GridListDialog			\
+		GridEditorImageField BooleanField BooleanRenderer	\
+		GridEditorBooleanField UploadProgress
 
 WIDGETSETS +=	KopiAddonsWidgetset.gwt
 

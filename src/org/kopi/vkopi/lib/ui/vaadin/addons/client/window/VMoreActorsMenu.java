@@ -23,16 +23,24 @@ import java.util.LinkedList;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VULPanel;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.HasCloseHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.WidgetUtil;
 
 /**
  * The more actors menu widget.
  */
-public class VMoreActorsMenu extends VULPanel implements CloseHandler<PopupPanel> {
+public class VMoreActorsMenu extends VULPanel implements CloseHandler<PopupPanel>, HasCloseHandlers<PopupPanel> {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -50,6 +58,15 @@ public class VMoreActorsMenu extends VULPanel implements CloseHandler<PopupPanel
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
+  
+  @Override
+  public HandlerRegistration addCloseHandler(CloseHandler<PopupPanel> handler) {
+    if (popup != null) {
+      return popup.addCloseHandler(handler);
+    } else {
+      return null;
+    }
+  }
   
   /**
    * Adds an actor to this menu.
@@ -92,8 +109,7 @@ public class VMoreActorsMenu extends VULPanel implements CloseHandler<PopupPanel
     
     popup = new VMoreActorsPopup(connection);
     popup.addCloseHandler(this);
-    popup.setAnimationEnabled(true);
-    popup.setRollDownAnimation();
+    popup.setAnimationEnabled(false);
     popup.setWidget(this);
     popup.showRelativeTo(parent);
   }
@@ -140,6 +156,21 @@ public class VMoreActorsMenu extends VULPanel implements CloseHandler<PopupPanel
   public void clear() {
     super.clear();
     items.clear();
+  }
+  
+  @Override
+  protected void onLoad() {
+    super.onLoad();
+    Scheduler.get().scheduleFinally(new ScheduledCommand() {
+      
+      @Override
+      public void execute() {
+        if (WidgetUtil.getRequiredHeight(VMoreActorsMenu.this) + getAbsoluteTop() > Window.getClientHeight() - 24) {
+          getElement().getStyle().setHeight(Window.getClientHeight() - (24 + getAbsoluteTop()), Unit.PX);
+          getElement().getStyle().setOverflowX(Overflow.AUTO);
+        }
+      }
+    });
   }
 
   //---------------------------------------------------

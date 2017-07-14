@@ -20,6 +20,7 @@
 package org.kopi.vkopi.lib.list;
 
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.xkopi.lib.type.Month;
 
 @SuppressWarnings("serial")
 public class VStringCodeColumn extends VCodeColumn {
@@ -36,6 +37,10 @@ public class VStringCodeColumn extends VCodeColumn {
     this.codes = codes;
   }
 
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /*
    * Returns the index.of given object
    */
@@ -47,6 +52,10 @@ public class VStringCodeColumn extends VCodeColumn {
     }
 
     throw new InconsistencyException("bad code value " + value);
+  }
+  
+  public Class getDataType() {
+    return String.class;
   }
 
   // --------------------------------------------------------------------

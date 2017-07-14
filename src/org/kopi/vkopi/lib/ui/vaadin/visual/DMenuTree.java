@@ -116,8 +116,8 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
       tree.setValue(null);
       tree.setNullSelectionAllowed(false);
       // allow scrolling when an overflow is detected
-      content.setWidth(310, Unit.PIXELS);
-      content.setHeight(410, Unit.PIXELS);
+      content.setWidth(455, Unit.PIXELS);
+      content.setHeight(600, Unit.PIXELS);
       setContent(content);
     }
   }

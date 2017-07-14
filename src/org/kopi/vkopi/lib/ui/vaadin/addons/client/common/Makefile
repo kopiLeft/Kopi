@@ -29,7 +29,7 @@ COPYSOURCES =	true
 JAVAFILES += 	VAnchor VBromine VButton VCaption VClearPanel		\
 		VCompanyLogo VContent VGlobalLinks VH4 VHeader		\
 		VImage VLine VLinkGroup	VLink VLogo VMain VPopupWindow	\
-		VSpan VStrong VTabSheet VIcon
+		VSpan VStrong VTabSheet VIcon VSmall
 
 
 ## ----------------------------------------------------------------------

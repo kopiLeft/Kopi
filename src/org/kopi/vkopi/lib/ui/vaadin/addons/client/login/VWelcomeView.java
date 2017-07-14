@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.login;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VContent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VHeader;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VLink;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VMain;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.LoginWindowListener;
 
@@ -54,12 +53,12 @@ public class VWelcomeView extends FlowPanel {
     loginWindow = new VLoginWindow();
     add(header);
     add(main);
-    header.setModuleList(new VEmptyModuleList(), 0);
+    header.setMainMenu(new VEmptyModuleList());
     content = new VContent();
     main.setContent(content);
     loginView = new VLoginView();
     loginView.setLoginWindow(loginWindow);
-    content.setContent(loginView, true);
+    content.setContent(loginView);
   }
 
   //---------------------------------------------------
@@ -89,22 +88,6 @@ public class VWelcomeView extends FlowPanel {
    */
   public void setLogo(String url, String alt) {
     header.setImage(url, alt);
-  }
-  
-  /**
-   * Adds a link without separator.
-   * @param link The link to be added.
-   */
-  public void addLink(VLink link) {
-    header.addLink(link);
-  }
-  
-  /**
-   * Adds a link with separator.
-   * @param link The link to be added.
-   */
-  public void addLinkWithSeparator(VLink link) {
-    header.addLinkWithSeparator(link);
   }
   
   /**

@@ -635,6 +635,7 @@ public class VInputTextField extends TextBoxBase implements ValueChangeHandler<S
   public void onValueChange(ValueChangeEvent<String> event) {
     // FIXME : this causes the block of the UI after suggestion selection
     // delegateEvent(this, event);
+    valueChange(false);
   }
 
   @Override

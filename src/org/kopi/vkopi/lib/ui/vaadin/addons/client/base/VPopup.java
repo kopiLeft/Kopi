@@ -31,6 +31,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.UIObject;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.VTooltip;
 import com.vaadin.client.ui.VOverlay;
@@ -85,8 +86,8 @@ public class VPopup extends VOverlay {
 
   @Override
   public void show() {
-    maybeHideTootip();
     maybeShowGlass(true);
+    maybeHideTootip();
     super.show();
   }
   
@@ -127,6 +128,23 @@ public class VPopup extends VOverlay {
     this.glassStyleName = glassStyleName;
     if (glass != null) {
       glass.setClassName(glassStyleName);
+    }
+  }
+  
+  /**
+   * Centers the overlay according to a reference object.
+   * @param reference The reference object
+   */
+  public void center(UIObject reference) {
+    int                 left;
+    int                 top;
+    
+    center();
+    if (reference != null) {
+      left = (reference.getOffsetWidth() - getOffsetWidth()) >> 1;
+      top = (reference.getOffsetHeight() - getOffsetHeight()) >> 1;
+      setPopupPosition(Math.max(Window.getScrollLeft() + left, reference.getAbsoluteLeft()),
+                       Math.max(Window.getScrollTop() + top, reference.getAbsoluteTop()));
     }
   }
   

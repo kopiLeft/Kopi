@@ -36,4 +36,10 @@ public class ModuleListState extends AbstractComponentState {
    */
   @NoLayout
   public boolean 			animated = true;
+  
+  /**
+   * The module list type
+   */
+  @NoLayout
+  public int                            type = -1;
 }

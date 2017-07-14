@@ -27,9 +27,9 @@ import org.kopi.vkopi.lib.l10n.FieldLocalizer;
 import org.kopi.vkopi.lib.l10n.TypeLocalizer;
 import org.kopi.vkopi.lib.list.VList;
 import org.kopi.vkopi.lib.list.VListColumn;
-import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VExecFailedException;
+import org.kopi.vkopi.lib.visual.MessageCode;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 
 @SuppressWarnings("serial")
@@ -361,6 +361,26 @@ public abstract class VCodeField extends VField {
   public String getString(int r) {
     throw new InconsistencyException();
   }
+  
+  @Override
+  public String toText(Object o) {
+    for (int i = 0; i < getCodes().length; i++) {
+      if (getCodes()[i].equals(o)) {
+        return labels[i];
+      }
+    }
+    return "";
+  }
+  
+  @Override
+  public Object toObject(String s) {
+    for (int i = 0; i < labels.length; i++) {
+      if (labels[i].equals(s)) {
+        return getCodes()[i];
+      }
+    }
+    return null;
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -385,7 +405,7 @@ public abstract class VCodeField extends VField {
     // inform that value has changed for non backup records
     // only when the value has really changed.
     if (t < getBlock().getBufferSize() && oldValue != value[t]) {
-      setChanged(t);
+      fireValueChanged(t);
     }
   }
 

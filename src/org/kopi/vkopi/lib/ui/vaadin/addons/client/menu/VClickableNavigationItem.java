@@ -21,6 +21,8 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.menu;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VAnchor;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -80,12 +82,12 @@ public class VClickableNavigationItem extends VNavigationItem {
   @Override
   protected Element[] createInnerElements() {
     caption = new VAnchor();
-    acceleratorKey = new VAnchor();
+    acceleratorKey = new VSpan();
+    icon = new VIcon();
     caption.setHref("#");
-    acceleratorKey.setHref("#");
     acceleratorKey.setStyleName("acceleratorKey");
     
-    return new Element[] {acceleratorKey.getElement(), caption.getElement()};
+    return new Element[] {icon.getElement(), caption.getElement(), acceleratorKey.getElement()};
   }
 
   @Override
@@ -109,6 +111,11 @@ public class VClickableNavigationItem extends VNavigationItem {
   }
   
   @Override
+  public void setIcon(String icon) {
+    this.icon.setName(icon);
+  }
+  
+  @Override
   public boolean isEnabled() {
     return enabled;
   }
@@ -128,7 +135,8 @@ public class VClickableNavigationItem extends VNavigationItem {
   //---------------------------------------------------
   
   private VAnchor                               caption;
-  private VAnchor                               acceleratorKey;
+  private VSpan                                 acceleratorKey;
+  private VIcon                                 icon;
   private boolean                               enabled;
   private static final String                   DEPENDENT_STYLENAME_DISABLED_ITEM = "disabled";
 }

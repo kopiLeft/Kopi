@@ -23,7 +23,10 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.VEditorTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.core.client.Scheduler;
@@ -42,6 +45,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ui.calendar.schedule.FocusableComplexPanel;
@@ -86,15 +90,19 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
           parent.add(popup);
           table.render();
           popup.setWidget(VListDialog.this); // set the popup widget
-          add(table); // put table inside the focus panel
+          content.add(close);
+          content.add(table); // put table inside the focus panel
           if (newForm != null ) {
-            add(newForm);
+            content.add(newForm);
           }
         }
         if (VInputTextField.getLastFocusedTextField() != null) {
           lastActiveWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
-        }  // TODO Auto-generated method stub
-
+        }
+        // it can be an editor widget
+        if (lastActiveWindow == null && VEditorTextField.getLastFocusedEditor() != null) {
+          lastActiveWindow = VEditorTextField.getLastFocusedEditor().getWindow();
+        }
       }
     }.schedule(50); //!!! delay it to ensure that it is shown after a field focus
   }
@@ -108,6 +116,9 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
       throw new IllegalArgumentException("Application connection should be provided");
     }
     this.connection = connection;
+    content = new VerticalPanel();
+    close = new VIcon();
+    close.setName("close");
     popup = new VPopup(connection, false, true);
     popup.addCloseHandler(this);
     popup.setAnimationEnabled(true);
@@ -115,6 +126,14 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
     table = new Table(connection);
     table.setStyleName(Styles.LIST_DIALOG_TABLE);
     handlerRegistration = table.addClickHandler(this);
+    close.addClickHandler(new ClickHandler() {
+      
+      @Override
+      public void onClick(ClickEvent event) {
+        handleRowSelection(-1, true, false);
+      }
+    });
+    add(content);
   }
   
   /**
@@ -163,8 +182,9 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
     if (popup == null) {
       return;
     }
-    
-    popup.center();
+    popup.setGlassEnabled(true);
+    popup.setGlassStyleName(Styles.LIST_DIALOG + "-glass");
+    popup.center(VMainWindow.get().getCurrentWindow());
   }
   
   @Override
@@ -330,6 +350,7 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
 	}
 	if (reference != null) {
 	  popup.showRelativeTo(reference);
+	  popup.getElement().getStyle().setMarginTop(-16, Unit.PX);
 	} else {
 	  showCentred();
 	}
@@ -355,6 +376,7 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
   @Override
   public void clear() {
     super.clear();
+    close = null;
     connection = null;
     table.clear();
     table.release();
@@ -386,4 +408,6 @@ public class VListDialog extends FocusableComplexPanel implements ClickHandler, 
   private VInputButton				newForm;
   private VWindow                               lastActiveWindow;
   private String                                current;
+  private VIcon                                 close;
+  private VerticalPanel                         content;
 }

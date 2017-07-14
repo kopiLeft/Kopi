@@ -48,15 +48,23 @@ public class ShortcutActionHandler implements KeyDownHandler {
   // IMPLEMENTATIONS
   //---------------------------------------------------
   
-  @Override
-  public void onKeyDown(KeyDownEvent event) {
-    ShortcutAction		action;
+  /**
+   * Handles the action of a given key down event.
+   * @param event The key down event.
+   */
+  public void handleAction(KeyDownEvent event) {
+    ShortcutAction              action;
 
     action = actions.get(ShortcutAction.createKey(event.getNativeKeyCode(), getKeyboardModifiers(event)));
     if (action != null) {
       event.preventDefault(); // prevent default action.
       action.performAction();
-    }
+    }    
+  }
+  
+  @Override
+  public void onKeyDown(KeyDownEvent event) {
+    handleAction(event);
   }
   
   //---------------------------------------------------

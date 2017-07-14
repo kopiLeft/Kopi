@@ -47,7 +47,6 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Table.ColumnReorderEvent;
 import com.vaadin.ui.Table.ColumnReorderListener;
 import com.vaadin.ui.Table.HeaderClickEvent;
@@ -95,7 +94,7 @@ public class DReport extends DWindow implements UReport {
   @Override
   public void build() {
     // load personal configuration
-    parameters = new Parameters(new Color(2, 71, 166));
+    parameters = new Parameters(new Color(71, 184, 221));
     table = new DTable(new VTable(model));
     table.setSelectable(true);
     table.setMultiSelect(false);
@@ -537,22 +536,6 @@ public class DReport extends DWindow implements UReport {
                        + model.getVisibleRowCount());
   }
   
-  /**
-   * Returns the parent report tab sheet.
-   * @return The parent report tab sheet.
-   */
-  public Tab getParentTab() {
-    return parentTab;
-  }
-  
-  /**
-   * Sets the parent report tab sheet.
-   * @param parentTab The parent report tab sheet.
-   */
-  public void setParentTab(Tab parentTab) {
-    this.parentTab = parentTab;
-  }
-  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
@@ -562,5 +545,4 @@ public class DReport extends DWindow implements UReport {
   private DTable				table;
   private Parameters				parameters;
   private int					selectedColumn;
-  private Tab					parentTab;
 }

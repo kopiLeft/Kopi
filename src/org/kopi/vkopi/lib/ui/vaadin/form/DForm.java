@@ -58,8 +58,6 @@ public class DForm extends DWindow implements UForm, FormListener {
     super(model);
     content = new Form(getPageCount(), model.getPages());
     content.setLocale(getApplication().getDefaultLocale().toString());
-    setSizeFull();
-    content.setSizeFull();
     model.addFormListener(this);
     content.addFormListener(this);
     blockRecordHandler = new BlockRecordHandler();
@@ -108,9 +106,9 @@ public class DForm extends DWindow implements UForm, FormListener {
       if (blockModel.noChart()) {
         blockView = new DBlock(this, blockModel);
       } else if (blockModel.noDetail()) {
-        blockView = new DChartBlock(this, blockModel);
+        blockView = new DGridBlock(this, blockModel);
       } else {
-        blockView = new DMultiBlock(this, blockModel);
+        blockView = new DGridMultiBlock(this, blockModel);
       }
     }
     
@@ -311,6 +309,9 @@ public class DForm extends DWindow implements UForm, FormListener {
   public void currentBlockChanged(VBlock oldBlock, VBlock newBlock) {
     if (oldBlock != null) {
       oldBlock.removeBlockRecordListener(blockRecordHandler);
+      if (getBlockView(oldBlock) instanceof DGridBlock) {
+        ((DGridBlock)getBlockView(oldBlock)).clear();
+      }
     }
 
     if (newBlock != null) {
@@ -320,7 +321,10 @@ public class DForm extends DWindow implements UForm, FormListener {
 
     if (newBlock != null) {
       if (newBlock.getPageNumber() != getCurrentPage()) {
-	gotoPage(newBlock.getPageNumber());
+        gotoPage(newBlock.getPageNumber());
+        if (getBlockView(oldBlock) instanceof DGridBlock) {
+          ((DGridBlock)getBlockView(oldBlock)).scrollToStart();
+        }
       }
     }
   }
@@ -360,7 +364,10 @@ public class DForm extends DWindow implements UForm, FormListener {
   
   @Override
   public void launchDocumentPreview(String file) throws VException { 
-    fileProduced(new File(file));
+    File                f;
+    
+    f = new File(file);
+    fileProduced(f, f.getName());
   }
   
   //---------------------------------------------------

@@ -27,9 +27,10 @@ PACKAGE =	org/kopi/vkopi/lib/ui/vaadin/visual
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES += 	DActor DModuleMenu DMenuTree DWindow VFileHandler	\
-		DHelpViewer VApplicationContext VApplication		\
-		VUIFactory VImageHandler VWindowController
+JAVAFILES += 	DActor DMenuTree DWindow VFileHandler DHelpViewer 	\
+		VApplicationContext VApplication VUIFactory 		\
+		VImageHandler VWindowController DAdminMenu 		\
+		DBookmarkMenu DMainMenu DMenu DUserMenu
 
 OPTIONS =	
 

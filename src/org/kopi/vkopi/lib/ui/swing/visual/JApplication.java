@@ -96,6 +96,11 @@ public abstract class JApplication implements Application {
   // APPLICATION IMPLEMENTATION
   // ---------------------------------------------------------------------
 
+  public void logout() {
+    if (allowQuit()) {
+      menuTree.getDisplay().closeWindow();
+    }
+  }
   
   public void startApplication() {
     if (options.form != null) {

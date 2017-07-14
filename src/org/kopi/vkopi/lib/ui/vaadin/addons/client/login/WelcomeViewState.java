@@ -19,7 +19,10 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.login;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.vaadin.shared.AbstractComponentState;
@@ -35,17 +38,64 @@ public class WelcomeViewState extends AbstractComponentState {
    * The application locale
    */
   @NoLayout
-  public String			locale = "";
+  public String                         locale = "";
   
   /**
    * The supported languages.
    */
   @NoLayout
-  public Map<String, String>	languages = new HashMap<String, String>();
+  public Map<String, String>            languages = new HashMap<String, String>();
+  
+  /**
+   * A list of a font to calculate their metrics.
+   * The value of the map is the text to be used with the font.
+   */
+  @NoLayout
+  public List<FontMetricsRequest>       fontMetricsRequests = new ArrayList<FontMetricsRequest>();
   
   /**
    * The logo link
    */
   @NoLayout
-  public String			href;
+  public String                         href;
+  
+  /**
+   * A font metrics request
+   */
+  public static class FontMetricsRequest implements Serializable {
+    
+    public FontMetricsRequest() {}
+    
+    public FontMetricsRequest(String fontFamily, int fontSize, String text) {
+      this.fontFamily = fontFamily;
+      this.fontSize = fontSize;
+      this.text = text;
+    }
+    
+    public String               fontFamily;
+    public int                  fontSize;
+    public String               text;
+  }
+  
+  /**
+   * A font metrics response.
+   */
+  public static class FontMetricsResponse implements Serializable {
+    
+    public FontMetricsResponse() {}
+    
+    public FontMetricsResponse(String fontFamily, int fontSize, String text, int width, int height) {
+      this.fontFamily = fontFamily;
+      this.fontSize = fontSize;
+      this.text = text;
+      this.width = width;
+      this.height = height;
+    }
+    
+    public String               fontFamily;
+    public int                  fontSize;
+    public int                  width;
+    public String               text;
+    public int                  height;
+  }
 }

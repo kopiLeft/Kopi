@@ -27,6 +27,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.widgets.Grid;
 
 /**
  * An absolute panel widget.
@@ -76,31 +77,58 @@ public class VAlignPanel extends AbsolutePanel {
 
     if (ori == null || ori.getCellFormatter() == null) {
       return;
-    }
+    } else if (ori.getWidget(0, 0) instanceof Grid<?>) {
+      // block contains a VAADIN grid inside
+      // -> we align according to grid column position
+      Grid<?>           grid;
 
-    for (int i = 0; i < aligns.size(); i++) {
-      ComponentConstraint	align;
+      grid = (Grid<?>) ori.getWidget(0, 0);
+      for (int i = 0; i < aligns.size(); i++) {
+        ComponentConstraint     align;
+        Element                 body;
 
-      align = aligns.get(i);
-      if (align.x != -1) {
-	try {
-	  Element		cell = ori.getCellFormatter().getElement(ori.getRowCount() - 1, align.x);
+        align = aligns.get(i);
+        body = (Element) grid.getEscalator().getBody().getElement();
+        if (align.x != -1 && body.getLastChild() != null) {
+          Element       cell = (Element) body.getLastChild().getChild(align.x);
+          
+          if (cell != null) {
+            int         offsetWidth = 0;
+            Widget      overlap = getOverlappingWidget(i, align.x, align.y);
 
-	  if (cell != null) {
-	    int		offsetWidth = 0;
-	    Widget	overlap = getOverlappingWidget(i, align.x, align.y);
-	    
-	    if (overlap != null) {
-	      offsetWidth = overlap.getElement().getClientWidth() + 10; // horizontal gap
-	    }
-	    setWidgetPosition(getWidget(i),
-		              (cell.getOffsetLeft() + offsetWidth) - (align.x == 0 ? 0 : Math.max(0, getWidget(i).getElement().getClientWidth() - cell.getClientWidth())),
-		              align.y * 21); // text fields height is 15px
-	  }
-	} catch (IndexOutOfBoundsException e) {
-	  // hide the widget.
-	  getWidget(i).setVisible(false);
-	}
+            if (overlap != null) {
+              offsetWidth = overlap.getElement().getClientWidth() + 10; // horizontal gap
+            }
+            setWidgetPosition(getWidget(i),
+                              (cell.getOffsetLeft() + offsetWidth) - (align.x == 0 ? 0 : Math.max(0, getWidget(i).getElement().getClientWidth() - cell.getClientWidth())),
+                              align.y * 21); // text fields height is 15px
+          }
+        }
+      }
+    } else {
+      for (int i = 0; i < aligns.size(); i++) {
+        ComponentConstraint	align;
+
+        align = aligns.get(i);
+        if (align.x != -1) {
+          try {
+            Element		cell = ori.getCellFormatter().getElement(ori.getRowCount() - 1, align.x);
+
+            if (cell != null) {
+              int		offsetWidth = 0;
+              Widget	overlap = getOverlappingWidget(i, align.x, align.y);
+
+              if (overlap != null) {
+                offsetWidth = overlap.getElement().getClientWidth() + 10; // horizontal gap
+              }
+              setWidgetPosition(getWidget(i),
+                                (cell.getOffsetLeft() + offsetWidth) - (align.x == 0 ? 0 : Math.max(0, getWidget(i).getElement().getClientWidth() - cell.getClientWidth())),
+                                align.y * 21); // text fields height is 15px
+            }
+          } catch (IndexOutOfBoundsException e) {
+            getWidget(i).setVisible(false);
+          }
+        }
       }
     }
   }

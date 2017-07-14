@@ -37,7 +37,10 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.WarningNotification;
 import org.kopi.vkopi.lib.ui.vaadin.addons.WelcomeView;
 import org.kopi.vkopi.lib.ui.vaadin.addons.WelcomeViewEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.WelcomeViewListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsResponse;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.kopi.vkopi.lib.ui.vaadin.base.FontMetrics;
+import org.kopi.vkopi.lib.ui.vaadin.base.StylesInjector;
 import org.kopi.vkopi.lib.visual.Application;
 import org.kopi.vkopi.lib.visual.ApplicationConfiguration;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
@@ -115,6 +118,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       // really need to do this ?
       push();
     }
+    stylesInjector = new StylesInjector();
     this.askAnswer = MessageListener.AWR_UNDEF;
   }
   
@@ -230,17 +234,48 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   // ---------------------------------------------------------------------
   
   @Override
+  public void logout() {
+    final ConfirmNotification           dialog;
+    
+    dialog = new ConfirmNotification(VlibProperties.getString("Question"), Message.getMessage("confirm_quit"));
+    dialog.setYesIsDefault(false);
+    dialog.addNotificationListener(new NotificationListener() {
+      
+      @Override
+      public void onClose(boolean yes) {
+        detachComponent(dialog);
+        if (yes) {
+          // close DB connection
+          closeConnection();
+          // show welcome screen
+          gotoWelcomeView();
+        }
+        push();
+      }
+    });
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        attachComponent(dialog);
+        push();
+      }
+    });
+  }
+  
+  @Override
   public void startApplication() {
     String		url = getURL();
     
     menuTree = new VMenuTree(context);
     menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
-    moduleMenu = new DModuleMenu(menuTree);
     mainWindow = new MainWindow(getDefaultLocale(), getLogoImage(), getLogoHref());
     mainWindow.addMainWindowListener(this);
     mainWindow.setConnectedUser(getUserName());
-    // mainWindow.setSizeFull();
-    mainWindow.setModuleList(moduleMenu);
+    mainWindow.addMenu(new DMainMenu(menuTree));
+    mainWindow.addMenu(new DUserMenu(menuTree));
+    mainWindow.addMenu(new DAdminMenu(menuTree));
+    mainWindow.addMenu(new DBookmarkMenu(menuTree));
   }
   
   @Override
@@ -284,6 +319,8 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   
   @Override
   public void onLogin(WelcomeViewEvent event) {
+    // set font metrics width and height from client side
+    handleFontMetricsResponse(event);
     // reset application locale before.
     setLocalizationContext(new Locale(event.getLocale().substring(0, 2), event.getLocale().substring(3, 5)));
     // now try to connect to database
@@ -302,6 +339,40 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     } finally {
       push();
     }
+  }
+  
+  /**
+   * handles the response for the font metrics request.
+   * @param event The event holding the response.
+   */
+  protected void handleFontMetricsResponse(WelcomeViewEvent event) {
+    for (FontMetricsResponse fmr : event.getFontMetrics()) {
+      FontMetrics       fm;
+      
+      fm = getFontMetrics(fmr);
+      if (fm != null) {
+        fm.setWidth(fmr.width);
+        fm.setHeight(fmr.height);
+      }
+    }
+  }
+  
+  /**
+   * Returns the font metrics for a given response.
+   * @param fmr The font metrics client side response.
+   * @return The font metrics object.
+   */
+  protected FontMetrics getFontMetrics(FontMetricsResponse fmr) {
+    for (FontMetrics fm : FONT_METRICS) {
+      if (fm.getFontFamily().equals(fmr.fontFamily)
+          && fm.getFontSize() == fmr.fontSize
+          && fm.getText().equals(fmr.text))
+      {
+        return fm;
+      }
+    }
+    
+    return null;
   }
   
   // --------------------------------------------------
@@ -561,38 +632,6 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   }
   
   /**
-   * Closes the application and logout
-   */
-  public void logout() {
-    final ConfirmNotification		dialog;
-    
-    dialog = new ConfirmNotification(VlibProperties.getString("Question"), Message.getMessage("confirm_quit"));
-    dialog.setYesIsDefault(false);
-    dialog.addNotificationListener(new NotificationListener() {
-      
-      @Override
-      public void onClose(boolean yes) {
-        detachComponent(dialog);
-	if (yes) {
-	  // close DB connection
-	  closeConnection();
-	  // show welcome screen
-	  gotoWelcomeView();
-	}
-        push();
-      }
-    });
-    BackgroundThreadHandler.access(new Runnable() {
-      
-      @Override
-      public void run() {
-	attachComponent(dialog);
-	push();
-      }
-    });
-  }
-  
-  /**
    * Closes the database connection
    */
   protected void closeConnection() {
@@ -608,6 +647,26 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   }
   
   /**
+   * Returns the client side calculated font metrics for a given font.
+   * @param fontFamily The font family.
+   * @param fontSize The font size.
+   * @param text The text.
+   * @return The text width in the given font.
+   */
+  public int getWidth(String fontFamily, int fontSize, String text) {
+    for (FontMetrics fm : FONT_METRICS) {
+      if (fm.getFontFamily().equals(fontFamily)
+          && fm.getFontSize() == fontSize
+          && fm.getText().equals(text))
+      {
+        return fm.getWidth();
+      }
+    }
+    
+    return 0;
+  }
+  
+  /**
    * Shows the welcome view.
    */
   protected void gotoWelcomeView() {
@@ -616,13 +675,15 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       AbstractSingleComponentContainer.removeFromParent(mainWindow);
       mainWindow = null;
       menuTree = null;
-      moduleMenu = null;
       localizationManager = null;
       isGeneratingHelp = false;
       setContent(null);
     }
     // creates the welcome screen
     welcomeView = new WelcomeView(getDefaultLocale(), getSupportedLocales(), getSologanImage(), getLogoImage(), getLogoHref());
+    for (FontMetrics fm : FONT_METRICS) {
+      welcomeView.addFontMetricsRequest(fm.getFontFamily(), fm.getFontSize(), fm.getText());
+    }
     welcomeView.setSizeFull(); // important to get the full screen size.
     welcomeView.addWelcomeViewListener(this);
     setContent(welcomeView);
@@ -695,6 +756,14 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     return VaadinServlet.getCurrent().getInitParameter(key);
   }
   
+  /**
+   * Returns the styles injector attached with this application instance.
+   * @return The styles injector attached with this application instance.
+   */
+  public StylesInjector getStylesInjector() {
+    return stylesInjector;
+  }
+  
   //---------------------------------------------------
   // ABSTRACT METHODS
   // --------------------------------------------------
@@ -748,24 +817,28 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   private Locale                                defaultLocale;
   private LocalizationManager                   localizationManager;
   private WelcomeView				welcomeView;
-  private DModuleMenu				moduleMenu;
   private MainWindow				mainWindow;
   private int                                   askAnswer;
   private PrintManager                          printManager;
   private PrinterManager                        printerManager;
   private ApplicationConfiguration              configuration;
+  private StylesInjector                        stylesInjector;
+  private static final FontMetrics[]            FONT_METRICS = new FontMetrics[] {
+    FontMetrics.DIGIT,
+    FontMetrics.LETTER
+  };
   
   // ---------------------------------------------------------------------
   // Failure cause informations
   // ---------------------------------------------------------------------
   
   private final Date             		 startupTime = new Date(); // remembers the startup time
-  
+
   static {  
     ApplicationContext.setApplicationContext(new VApplicationContext());
     FileHandler.setFileHandler(new VFileHandler());
     ImageHandler.setImageHandler(new VImageHandler());
     WindowController.setWindowController(new VWindowController());
-    UIFactory.setUIFactory(new VUIFactory());  
+    UIFactory.setUIFactory(new VUIFactory());
   }
 }

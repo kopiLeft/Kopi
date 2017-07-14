@@ -51,7 +51,7 @@ public class TimestampValidationStrategy extends AllowAllValidationStrategy {
       nanos = 1000000000 + nanos;
       date.setTime(((date.getTime()/1000)-1)*1000);
     }
-    tmp = new StringBuffer(DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date));
+    tmp = new StringBuffer(DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss").format(date));
     if (nanos >= 100) {
       tmp.append(nanos);
     } else if (nanos >= 10) {

@@ -97,6 +97,11 @@ public class FieldConnector extends AbstractSingleComponentContainerConnector im
       getWidget().setDnDWrapper((VDragAndDropWrapper) content);
     }
   }
+  
+  @Override
+  public ComponentConnector getContent() {
+    return super.getContent();
+  }
 
   @Override
   public void onIncrement() {

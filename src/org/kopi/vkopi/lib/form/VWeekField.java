@@ -58,6 +58,10 @@ public class VWeekField extends VField {
   public boolean hasAutofill() {
     return true;
   }
+  
+  public boolean isNumeric() {
+    return true;
+  }
 
   /**
    * return the name of this field
@@ -293,6 +297,125 @@ public class VWeekField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    return o == null ? "" : toText((Week)o);
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    if (s.equals("")) {
+      return null;
+    }
+    
+    int week = 0;
+    int year = -1;
+    int bp = 0;
+    int state;
+    String      buffer = s + '\0';
+
+    for (state = 1; state > 0; bp += 1) {
+      switch (state) {
+      case 1: /* The first week's digit */
+        if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+          week = buffer.charAt(bp) - '0';
+          state = 2;
+        } else {
+          state = -1;
+        }
+        break;
+
+      case 2: /* The second week's digit  */
+        if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+          week = 10*week + (buffer.charAt(bp) - '0');
+          state = 3;
+          } else if (buffer.charAt(bp) == '.' || buffer.charAt(bp) == '/') {
+            state = 4;
+          } else if (buffer.charAt(bp) == '\0') {
+            state = 0;
+          } else {
+            state = -1;
+          }
+        break;
+
+      case 3: /* The first point : between week and year */
+        if (buffer.charAt(bp) == '.' || buffer.charAt(bp) == '/') {
+          state = 4;
+        } else if (buffer.charAt(bp) == '\0') {
+          state = 0;
+        } else {
+          state = -1;
+        }
+        break;
+
+      case 4: /* The first year's digit */
+        if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+          year = buffer.charAt(bp) - '0';
+          state = 5;
+        } else if (buffer.charAt(bp) == '\0') {
+          state = 0;
+        } else {
+          state = -1;
+        }
+        break;
+
+      case 5: /* The second year's digit */
+        if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+          year = 10*year + (buffer.charAt(bp) - '0');
+          state = 6;
+        } else {
+          state = -1;
+        }
+        break;
+
+      case 6: /* The third year's digit */
+        if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+          year = 10*year + (buffer.charAt(bp) - '0');
+          state = 7;
+        } else if (buffer.charAt(bp) == '\0') {
+          state = 0;
+        } else {
+          state = -1;
+        }
+        break;
+
+      case 7:   /* The fourth year's digit */
+        if (buffer.charAt(bp) >= '0' && buffer.charAt(bp) <= '9') {
+          year = 10*year + (buffer.charAt(bp) - '0');
+          state = 8;
+        } else {
+          state = -1;
+        }
+        break;
+
+      case 8:   /* The end */
+        if (buffer.charAt(bp)  == '\0') {
+          state = 0;
+        } else {
+          state = -1;
+        }
+        break;
+      default:
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00008"));
+      }
+    }
+    if (state == -1) {
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00008"));
+    }
+
+    if (year == -1) {
+      NotNullWeek       now = Week.now();
+
+      year  = now.getYear();
+    } else if (year < 50) {
+      year += 2000;
+    } else if (year < 100) {
+      year += 1900;
+    }
+
+    return new NotNullWeek(year, week);
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -327,8 +450,15 @@ public class VWeekField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Week.class;
   }
 
   // ----------------------------------------------------------------------

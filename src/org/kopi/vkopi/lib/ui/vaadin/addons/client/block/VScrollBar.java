@@ -57,8 +57,8 @@ public class VScrollBar extends Composite implements HasEnabled, HasValue<Intege
     up.setStyleName("scroll-button");
     down = new VButton();
     down.setStyleName("scroll-button");
-    up.setImage(ResourcesUtil.getImageURL(connection, Icons.UP));
-    down.setImage(ResourcesUtil.getImageURL(connection, Icons.DOWN));
+    up.setIcon("caret-up");
+    down.setIcon("caret-down");
     up.getElement().setAttribute("hideFocus", "true");
     up.getElement().getStyle().setProperty("outline", "0px");
     down.getElement().setAttribute("hideFocus", "true");

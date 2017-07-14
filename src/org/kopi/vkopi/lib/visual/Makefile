@@ -41,7 +41,7 @@ JAVAFILES +=	ActionHandler Application ApplicationContext		\
 		PrinterManager PropertyException ModelCloseListener	\
 		UserConfiguration Message VlibProperties UWindow	\
 		UMenuTree ImageHandler VModel UIFactory UActor		\
-		FileProductionListener
+		FileProductionListener LogoutModule RootMenu
 
 ## ----------------------------------------------------------------------
 ## GOALS

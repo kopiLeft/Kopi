@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.list;
 
+import java.awt.Color;
 
 /**
  * laurent :<br>
@@ -36,5 +37,13 @@ public class VColorColumn extends VListColumn {
    */
   public VColorColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 7, sortAscending);
+  }
+  
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return Color.class;
   }
 }

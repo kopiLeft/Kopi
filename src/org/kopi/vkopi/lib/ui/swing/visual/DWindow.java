@@ -895,7 +895,7 @@ public abstract class DWindow extends JPanel implements UWindow {
     waitInfoHandler.unsetWaitInfo();
   }
   
-  public void fileProduced(File file) {
+  public void fileProduced(File file, String name) {
     // not used in swing version.
   }
 

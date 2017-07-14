@@ -47,6 +47,7 @@ import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.WindowBuilder;
 import org.kopi.vkopi.lib.visual.WindowController;
 import org.kopi.xkopi.lib.base.DBContextHandler;
+import org.kopi.xkopi.lib.type.Date;
 
 @SuppressWarnings("serial")
 public abstract class VReport extends VWindow implements Constants, VConstants, Printable {
@@ -341,16 +342,19 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   public void export(File file, int type) throws org.kopi.vkopi.lib.visual.VException {
     setWaitInfo(VlibProperties.getString("export-message"));
 
+    String      extension;
     PExport     exporter;
 
     switch (type) {
     case TYP_CSV:
+      extension = ".csv";
       exporter = new PExport2CSV(((UReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
                                  pageTitle);
       break;
     case TYP_PDF:
+      extension = ".pdf";
       exporter = new PExport2PDF(((UReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
@@ -358,6 +362,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
                                  firstPageHeader);
       break;
     case TYP_XLS:
+      extension = ".xls";
       exporter = new PExport2XLS(((UReport)getDisplay()).getTable(),
                                  model,
                                  pconfig,
@@ -368,7 +373,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     }
     exporter.export(file);
     unsetWaitInfo();
-    fireFileProduced(file);
+    fireFileProduced(file, pageTitle + "_" + Date.now().format("yyyyMMdd") + extension);
   }
 
   /**

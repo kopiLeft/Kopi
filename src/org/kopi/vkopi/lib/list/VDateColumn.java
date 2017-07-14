@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.list;
 
+import org.kopi.xkopi.lib.type.Date;
+
 @SuppressWarnings("serial")
 public class VDateColumn extends VListColumn {
 
@@ -31,5 +33,13 @@ public class VDateColumn extends VListColumn {
    */
   public VDateColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 10, sortAscending);
+  }
+  
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return Date.class;
   }
 }

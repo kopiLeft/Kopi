@@ -37,5 +37,5 @@ public interface BlockLayout extends HasComponents {
    * @param alignRight Is it right aligned ?
    * @param useAll Use all available area ?
    */
-  public void addComponent(Component component, int x, int y, int width, boolean alignRight, boolean useAll);
+  public void addComponent(Component component, int x, int y, int width, int height, boolean alignRight, boolean useAll);
 }

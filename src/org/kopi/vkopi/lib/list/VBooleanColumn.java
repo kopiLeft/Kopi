@@ -34,7 +34,11 @@ public class VBooleanColumn extends VListColumn {
   public VBooleanColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, Math.max(trueRep.length(), falseRep.length()), sortAscending);
   }
-
+  
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /**
    * Returns a string representation of value
    */
@@ -42,6 +46,10 @@ public class VBooleanColumn extends VListColumn {
     return value == null ?
       VConstants.EMPTY_TEXT :
       ((Boolean)value).booleanValue() ? trueRep : falseRep;
+  }
+  
+  public Class getDataType() {
+    return Boolean.class;
   }
 
   // --------------------------------------------------------------------

@@ -19,15 +19,12 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.notification;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.vaadin.client.ApplicationConnection;
 
 /**
  * Warning type notification widget.
@@ -52,8 +49,8 @@ public class VWarningNotification extends VAbstractNotification {
   }
   
   @Override
-  public void setImage(ApplicationConnection connection) {
-    image.setSrc(ResourcesUtil.getImageURL(connection, Icons.WARNING));
+  protected String getIconName() {
+    return "warning";
   }
   
   @Override

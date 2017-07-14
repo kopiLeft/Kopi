@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,18 +25,20 @@ import java.util.Map;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.TextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.TextFieldState.ConvertType;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.AutocompleteSuggestion;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.DefaultSuggestionDisplay;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.QueryListener;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Style.TextTransform;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
-import com.vaadin.client.BrowserInfo;
+import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractFieldConnector;
 import com.vaadin.shared.ui.Connect;
@@ -74,7 +76,7 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
     super.onStateChanged(stateChangeEvent);
     // set the input widget.
     if (getWidget().textField == null) {
-      getWidget().setTextField(createTextInput());
+      getWidget().setTextField(getConnection(), createTextInput(), getState().hasAutofill);
       getWidget().setConnection(getConnection());
       getWidget().setHasAutocomplete(getState().hasAutocomplete);
       getWidget().setSuggestionDisplay(new DefaultSuggestionDisplay(getConnection()));
@@ -85,6 +87,15 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
     }
     if (getState().text != null && getState().text.length() > 0) {
       getWidget().setText(getState().text);
+    }
+  }
+  
+  @OnStateChange("styles")
+  /*package*/ void setStyles() {
+    if (getWidget().textField != null && getState().styles != null) {
+      for (String style : getState().styles) {
+        getWidget().textField.addStyleName(style);
+      }
     }
   }
   
@@ -208,6 +219,7 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
     
     text = createInputWidget();
     setValidationStrategy(text);
+    setTextTransform(text);
     setAlign(text);
     if (getState().noEdit) {
       text.setTextValidationStrategy(new NoeditValidationStrategy());
@@ -224,6 +236,7 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
   protected VInputTextField createInputWidget() {
     VInputTextField	text;
     int			col;
+    int                 size;
     
     col = getState().col;
     if (getState().noEcho && getState().rows == 1) {
@@ -238,19 +251,29 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
       ((VInputTextArea)text).setCols(col);
       ((VInputTextArea)text).setWordwrap(true);
       // if fixed new line mode is used, we remove scroll bar from text area
-      ((VInputTextArea)text).setFixedNewLine(getState().fixedNewLine);
+      ((VInputTextArea)text).setFixedNewLine(!getState().dynamicNewLine);
     } else {
       text = new VInputTextField();
     }
-    if (BrowserInfo.get().isChrome()) {
-      // for webkit browsers, we need to substract 1 from the field size.
-      text.setSize(Math.max(1, col -1));
+    size = col;
+    // numeric fields are considered as monospaced fields
+    if (isNumeric()) {
+      size -= 1;
     } else {
-      text.setSize(col);
+      // upper characters take wider place
+      if (getState().convertType.equals(ConvertType.UPPER)) {
+        size += 2;
+      }
     }
+    // let the place to the autofill icon
+    if (getState().hasAutofill) {
+      size += 1;
+    }
+    text.setSize(Math.max(1, size));
     text.setMaxLength(col * getState().rows);
     // add navigation handler.
     text.addKeyDownHandler(TextFieldNavigationHandler.newInstance(this, text, getState().rows > 1));
+    
     return text;
   }
   
@@ -278,6 +301,9 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
       break;
     case Styles.RIGHT:
       text.setAlignment(TextAlignment.RIGHT);
+      if (getState().hasAutofill) {
+        text.addStyleDependentName("right-aligned");
+      }
       break;
     default:
       break;
@@ -291,7 +317,7 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
   protected void setValidationStrategy(VInputTextField text) {
     switch (getState().type) {
     case STRING:
-      text.setTextValidationStrategy(new StringValidationStrategy(getState().col, getState().rows, getState().fixedNewLine, getState().convertType));
+      text.setTextValidationStrategy(new StringValidationStrategy(getState().col, getState().rows, !getState().dynamicNewLine, getState().convertType));
       break;
     case INTEGER:
       text.setTextValidationStrategy(new IntegerValidationStrategy(getState().minval, getState().maxval));
@@ -320,6 +346,35 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
     default:
       text.setTextValidationStrategy(new AllowAllValidationStrategy());
     }
+  }
+  
+  /**
+   * Sets the text transformation applied to the text widget according to the convert text
+   * @param text The text widget.
+   */
+  protected void setTextTransform(VInputTextField text) {
+    switch (getState().convertType) {
+    case UPPER:
+      text.getElement().getStyle().setTextTransform(TextTransform.UPPERCASE);
+      break;
+    case LOWER:
+      text.getElement().getStyle().setTextTransform(TextTransform.LOWERCASE);
+      break;
+    case NAME:
+      text.getElement().getStyle().setTextTransform(TextTransform.CAPITALIZE);
+    case NONE:
+      text.getElement().getStyle().setTextTransform(TextTransform.NONE);
+    default:
+      // nothing to do
+    }
+  }
+  
+  /**
+   * Returns true if the field should contains only digits.
+   * @return True if the field should contains only digits.
+   */
+  protected boolean isNumeric() {
+    return getState().type != STRING && getState().type != CODE;
   }
   
   /**

@@ -47,6 +47,7 @@
     <ant dir="progress"		inheritAll="false" target="${target}" />
     <ant dir="upload"		inheritAll="false" target="${target}" />
     <ant dir="window"		inheritAll="false" target="${target}" />
+    <ant dir="grid"		inheritAll="false" target="${target}" />
     <ant dir="field"		inheritAll="false" target="${target}" />
     <ant dir="label"		inheritAll="false" target="${target}" />
     <ant dir="login"		inheritAll="false" target="${target}" />

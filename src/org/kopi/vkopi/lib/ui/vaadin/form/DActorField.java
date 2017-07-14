@@ -53,7 +53,7 @@ public class DActorField extends DField implements UActorField, ClickListener {
     field.setMaxWidth(model.getModel().getWidth());
     field.setCaption(getModel().getLabel());
     if (getModel().getIcon() != null) {
-      field.setIcon(getModel().getIcon());
+      field.setIcon(Utils.getFontAwesomeIcon(getModel().getIcon()));
     }
     field.setEnabled(getModel().getDefaultAccess() >= VConstants.ACS_VISIT);
     field.addClickListener(this);

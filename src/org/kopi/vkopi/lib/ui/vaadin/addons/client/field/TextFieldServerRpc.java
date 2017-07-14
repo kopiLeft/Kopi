@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -113,4 +113,9 @@ public interface TextFieldServerRpc extends ServerRpc {
    * @param suggestion The selected suggestion.
    */
   public void onSuggestion(AutocompleteSuggestion suggestion);
+  
+  /**
+   * Fired when an auto fill action is triggedred by the connector widget
+   */
+  public void autofill();
 }

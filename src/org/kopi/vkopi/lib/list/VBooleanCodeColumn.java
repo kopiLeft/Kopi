@@ -43,7 +43,11 @@ public class VBooleanCodeColumn extends VCodeColumn {
   public VBooleanCodeColumn(String title, String column, String[] names, boolean[] codes, boolean sortAscending) {
     this(title, column, names, makeObjectArray(codes), sortAscending);
   }
-
+  
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /*
    *
    */
@@ -69,6 +73,10 @@ public class VBooleanCodeColumn extends VCodeColumn {
     }
 
     throw new InconsistencyException("bad code value " + value);
+  }
+  
+  public Class getDataType() {
+    return Boolean.class;
   }
 
   // --------------------------------------------------------------------

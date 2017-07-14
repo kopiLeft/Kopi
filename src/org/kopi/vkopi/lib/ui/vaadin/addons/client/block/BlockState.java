@@ -81,6 +81,12 @@ public class BlockState extends AbstractComponentState {
   public boolean                                noMove;
   
   /**
+   * No chart option
+   */
+  @NoLayout
+  public boolean                                noChart;
+  
+  /**
    * The model active record to be communicated to the client side.
    */
   @NoLayout

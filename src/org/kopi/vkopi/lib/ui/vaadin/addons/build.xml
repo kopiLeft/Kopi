@@ -49,6 +49,19 @@
 			  	    FieldListener.java
 			  	    Form.java
 			  	    FormListener.java
+  	                            GridEditorDateField.java
+  	                            GridEditorEnumField.java
+  	                            GridEditorField.java
+  	                            GridEditorFixnumField.java
+  	                            GridEditorHandlingExtension.java
+  	                            GridEditorIntegerField.java
+  	                            GridEditorLabel.java
+  	                            GridEditorMonthField.java
+  	                            GridEditorTextAreaField.java
+  	                            GridEditorTextField.java
+  	                            GridEditorTimeField.java
+  	                            GridEditorTimestampField.java
+  	                            GridEditorWeekField.java
 			  	    ImageField.java
 			  	    ImageFieldListener.java
 			  	    InformationNotification.java
@@ -73,6 +86,7 @@
 			  	    PopupWindow.java
 			  	    ProgressDialog.java
 			  	    SimpleBlockLayout.java
+  	                            SingleComponentBlockLayout.java
 			  	    SortableLabel.java
 			  	    SortableLabelListener.java
 			  	    TextField.java
@@ -100,7 +114,14 @@
 			  	    WelcomeViewEvent.java
 			  	    WelcomeViewListener.java
 			  	    Window.java
-				    ActorField.java" />
+	                            ActorField.java
+  	                            GridEditorActorField.java
+				    GridListDialog.java
+				    GridEditorImageField.java
+				    BooleanField.java
+				    BooleanRenderer.java
+				    GridEditorBooleanField.java
+				    UploadProgress.java" />
 
   <!--==============================================================
       Default target:	builds messages, options and java sources 

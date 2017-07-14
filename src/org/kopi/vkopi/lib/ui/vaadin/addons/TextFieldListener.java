@@ -101,4 +101,9 @@ public interface TextFieldListener extends Serializable {
    * @param suggestion The selected suggestion.
    */
   public void onSuggestion(AutocompleteSuggestion suggestion);
+  
+  /**
+   * Fires an autofill action for thie attached field.
+   */
+  public void autofill();
 }

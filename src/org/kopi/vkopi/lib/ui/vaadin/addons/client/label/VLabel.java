@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.label;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VAnchorPanel;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VSpanPanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.VChartBlockLayout;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
@@ -43,7 +42,7 @@ import com.vaadin.client.VTooltip;
 /**
  * The field label widget.
  */
-public class VLabel extends VSpanPanel implements HasEnabled {
+public class VLabel extends VAnchorPanel implements HasEnabled {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -55,18 +54,19 @@ public class VLabel extends VSpanPanel implements HasEnabled {
   public VLabel() {
     label = new VSpan();
     label.setStyleName("label");
-    anchor = new VAnchorPanel();
     info = new VSpan();
     info.setStyleName("info-text");
+    mandatory = new VSpan();
+    mandatory.setStyleName("mandatory");
     setStyleName(Styles.LABEL);
     sinkEvents(VTooltip.TOOLTIP_EVENTS | Event.ONCLICK);
-    add(anchor);
-    anchor.add(label);
-    anchor.add(info);
+    add(label);
+    add(mandatory);
+    add(info);
     // Hide focus outline in Mozilla/Webkit/Opera
-    anchor.getElement().getStyle().setProperty("outline", "0px");
+    getElement().getStyle().setProperty("outline", "0px");
     // Hide focus outline in IE 6/7
-    anchor.getElement().setAttribute("hideFocus", "true");
+    getElement().setAttribute("hideFocus", "true");
   }
 
   //---------------------------------------------------
@@ -122,6 +122,18 @@ public class VLabel extends VSpanPanel implements HasEnabled {
   }
   
   /**
+   * Sets this label to indicate that its field is mandatory.
+   * @param mandatory Is the field of this label is mandatory
+   */
+  public void setMandatory(boolean mandatory) {
+    if (mandatory) {
+      this.mandatory.setText("*");
+    } else {
+      this.mandatory.setText("");
+    }
+  }
+  
+  /**
    * Sets the info text.
    * @param text The info text.
    */
@@ -132,9 +144,9 @@ public class VLabel extends VSpanPanel implements HasEnabled {
   /**
    * Sets the label in auto fill mode.
    */
-  public void setAutofill() {
-    addStyleDependentName("autofill");
-    anchor.setHref("#");
+  public void setHasAction() {
+    addStyleDependentName("has-action");
+    setHref("#");
   }
   
   /**
@@ -154,11 +166,11 @@ public class VLabel extends VSpanPanel implements HasEnabled {
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
     if (!enabled) {
-      anchor.addStyleName("v-disabled");
+      addStyleName("v-disabled");
       label.addStyleName("v-disabled");
       info.addStyleName("v-disabled");
     } else {
-      anchor.removeStyleName("v-disabled");
+      removeStyleName("v-disabled");
       label.removeStyleName("v-disabled");
       info.removeStyleName("v-disabled");
     }
@@ -182,7 +194,7 @@ public class VLabel extends VSpanPanel implements HasEnabled {
     super.clear();
     info = null;
     label = null;
-    anchor = null;
+    mandatory = null;
     chartLayout = null;
   }
   
@@ -202,7 +214,7 @@ public class VLabel extends VSpanPanel implements HasEnabled {
   
   private VSpan                                 info;
   private VSpan                                 label;
-  private VAnchorPanel                          anchor;
+  private VSpan                                 mandatory;
   private boolean				enabled;
   /**
    * Needed to update scroll bar and caption visibility

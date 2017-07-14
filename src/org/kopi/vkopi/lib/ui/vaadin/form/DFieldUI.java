@@ -26,6 +26,7 @@ import org.kopi.vkopi.lib.form.UChartLabel;
 import org.kopi.vkopi.lib.form.UField;
 import org.kopi.vkopi.lib.form.ULabel;
 import org.kopi.vkopi.lib.form.VBlock.OrderModel;
+import org.kopi.vkopi.lib.form.VBooleanField;
 import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VImageField;
@@ -67,6 +68,8 @@ public class DFieldUI extends VFieldUI {
     case VField.MDL_FLD_TEXT:
       if (model.getIcon() != null) {
         field = new DActorField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
+      } else if (model instanceof VBooleanField) {
+        field = new DBooleanField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
       } else {
         field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
       }
@@ -87,7 +90,7 @@ public class DFieldUI extends VFieldUI {
   }
 
   @Override
-  protected ULabel createLabel(String text, String help) {
+  protected ULabel createLabel(String text, String help, boolean detail) {
     return new DLabel(text, help);
   }
 
@@ -98,6 +101,11 @@ public class DFieldUI extends VFieldUI {
                                                OrderModel model)
   {
     return new DChartHeaderLabel(text, help, index, model);
+  }
+  
+  @Override
+  protected boolean includeBooleanAutofillCommand() {
+    return false; // boolean fields are handled differently
   }
   
   /**

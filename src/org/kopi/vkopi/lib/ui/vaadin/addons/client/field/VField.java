@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,14 +16,13 @@
  *
  * $Id$
  */
+
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VSpanPanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VButton;
@@ -85,9 +84,10 @@ public class VField extends VSpanPanel implements HasEnabled {
                    boolean hasIncrement,
                    boolean hasDecrement)
   {
-    if (hasDecrement) {
+    //!!! spinner buttons are removed. See ticket srd#1074431
+    /*if (hasDecrement) {
       decr = new VButton();
-      decr.setImage(ResourcesUtil.getThemeURL(connection, Icons.DECREMENT));
+      decr.setIcon("caret-left");
       add(decr);
       decr.addClickHandler(new ClickHandler() {
         
@@ -100,7 +100,7 @@ public class VField extends VSpanPanel implements HasEnabled {
     
     if (hasIncrement) {
       incr = new VButton();
-      incr.setImage(ResourcesUtil.getThemeURL(connection, Icons.INCREMENT));
+      incr.setIcon("caret-right");
       add(incr);
       incr.addClickHandler(new ClickHandler() {
         
@@ -109,7 +109,7 @@ public class VField extends VSpanPanel implements HasEnabled {
           fireIncremented();
         }
       });
-    }
+    }*/
     
     addDomHandler(new ClickHandler() {
       
@@ -160,7 +160,6 @@ public class VField extends VSpanPanel implements HasEnabled {
   
   @Override
   public void clear() {
-    super.clear();
     listeners.clear();
     listeners = null;
     incr = null;
@@ -168,6 +167,7 @@ public class VField extends VSpanPanel implements HasEnabled {
     textField = null;
     objectField = null;
     client = null;
+    super.clear();
   }
   
   /**
@@ -193,6 +193,7 @@ public class VField extends VSpanPanel implements HasEnabled {
   
   @Override
   public void setVisible(final boolean visible) {
+    this.visible = visible;
     if (!visible) {
       getElement().getStyle().setVisibility(Visibility.HIDDEN);
       if (DOM.getParent(getElement()) != null) {
@@ -204,6 +205,14 @@ public class VField extends VSpanPanel implements HasEnabled {
         DOM.getParent(getElement()).getStyle().setVisibility(Visibility.VISIBLE);
       }
     }
+    if (objectField != null) {
+      objectField.setParentVisibility(visible);
+    }
+  }
+  
+  @Override
+  public boolean isVisible() {
+    return visible;
   }
   
   @Override
@@ -374,7 +383,7 @@ public class VField extends VSpanPanel implements HasEnabled {
    */
   protected int getIncrementButtonWidth() {
     if (incr != null) {
-      return incr.getElement().getClientWidth();
+      return incr.getElement().getOffsetWidth() + 5;
     } else {
       return 0;
     }
@@ -386,7 +395,7 @@ public class VField extends VSpanPanel implements HasEnabled {
    */
   protected int getDecrementButtonWidth() {
     if (decr != null) {
-      return decr.getElement().getClientWidth();
+      return decr.getElement().getOffsetWidth();
     } else {
       return 0;
     }
@@ -398,7 +407,9 @@ public class VField extends VSpanPanel implements HasEnabled {
    */
   protected int getTextFieldWidth() {
     if (textField != null) {
-      return textField.getElement().getClientWidth();
+      return textField.getElement().getOffsetWidth();
+    } else if (objectField != null) {
+      return objectField.getElement().getOffsetWidth();
     } else {
       return 0;
     }
@@ -417,10 +428,10 @@ public class VField extends VSpanPanel implements HasEnabled {
    * @return The estimated width of this field.
    */
   public int getWidth() {
-    if (getElement().getClientWidth() >= getTextFieldWidth() + getButtonsWidth()) {
-      return getElement().getClientWidth();
+    if (getElement().getOffsetWidth() >= getTextFieldWidth() + getButtonsWidth()) {
+      return getElement().getOffsetWidth();
     } else {
-      return getElement().getClientWidth() + getButtonsWidth();
+      return getElement().getOffsetWidth() + getButtonsWidth();
     }
   }
 
@@ -430,6 +441,7 @@ public class VField extends VSpanPanel implements HasEnabled {
   
   private List<FieldListener>		listeners;
   private boolean			enabled;
+  private boolean                       visible;
   private VButton			incr;
   private VButton			decr;
   private VTextField			textField;

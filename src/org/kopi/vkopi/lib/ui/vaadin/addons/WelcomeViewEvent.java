@@ -19,6 +19,11 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsResponse;
+
 import com.vaadin.ui.Component.Event;
 
 /**
@@ -41,12 +46,14 @@ public class WelcomeViewEvent extends Event {
   public WelcomeViewEvent(WelcomeView source,
                           String username,
                           String password,
-                          String locale)
+                          String locale,
+                          List<FontMetricsResponse>fontMetrics)
   {
     super(source);
     this.username = username;
     this.password = password;
     this.locale = locale;
+    this.fontMetrics = fontMetrics;
   }
   
   //---------------------------------------------------
@@ -85,6 +92,14 @@ public class WelcomeViewEvent extends Event {
     return locale;
   }
   
+  /**
+   * returns a non modifiable list of a font metrics.
+   * @return A non modifiable list of a font metrics.
+   */
+  public List<FontMetricsResponse> getFontMetrics() {
+    return Collections.unmodifiableList(fontMetrics);
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
@@ -92,4 +107,5 @@ public class WelcomeViewEvent extends Event {
   private final String				username;
   private final String				password;
   private final String				locale;
+  private final List<FontMetricsResponse>       fontMetrics;
 }

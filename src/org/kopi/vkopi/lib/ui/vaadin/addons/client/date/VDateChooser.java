@@ -29,6 +29,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.DateChooserListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -151,7 +152,7 @@ public class VDateChooser extends FlowPanel implements CloseHandler<PopupPanel> 
           if (reference != null) {
             popup.showRelativeTo(reference);
           } else {
-            popup.center();
+            popup.center(VMainWindow.get().getCurrentWindow());
           }
           // focus the widget to activate key navigation.
           Scheduler.get().scheduleFinally(new ScheduledCommand() {

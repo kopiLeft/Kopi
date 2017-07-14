@@ -19,8 +19,12 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.main;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VAnchor;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VAnchorPanel;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VULPanel;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasEnabled;
@@ -43,11 +47,21 @@ public class VWindows extends SimplePanel implements HasEnabled {
    */
   public VWindows() {
     getElement().setId("windows");
-    windowsLink = new VAnchor();
-    windowsLink.setHref("#");
+    windowsLink = new VULPanel();
+    inner = new VLIPanel();
+    anchor = new VAnchorPanel();
+    label = new VSpan();
+    icon = new VIcon();
+    windowsLink.add(inner);
+    anchor.setHref("#");
     windowsLink.setId("windows_link");
+    label.setStyleName("hide");
+    inner.setWidget(anchor);
     setWidget(windowsLink);
-    setEnabled(false);
+    anchor.add(label);
+    anchor.add(icon);
+    icon.setName("clone");
+    hideLabel();
   }
   
   //---------------------------------------------------
@@ -59,7 +73,35 @@ public class VWindows extends SimplePanel implements HasEnabled {
    * @param text The link text.
    */
   public void setText(String text) {
-    windowsLink.setText(text);
+    label.setText(text);
+  }
+  
+  /**
+   * Shows the link localized label.
+   */
+  public void showLabel() {
+    label.setVisible(true);
+  }
+  
+  /**
+   * Hides the link localized label.
+   */
+  public void hideLabel() {
+    label.setVisible(false);
+  }
+  
+  /**
+   * Sets this windows link to be focused.
+   * @param focus The focus state.
+   */
+  public void setFocused(boolean focus) {
+    if (focus) {
+      windowsLink.addStyleName("focus");
+      inner.addStyleName("active");
+    } else {
+      windowsLink.removeStyleName("focus");
+      inner.removeStyleName("active");
+    }
   }
   
   /**
@@ -68,7 +110,7 @@ public class VWindows extends SimplePanel implements HasEnabled {
    * @return The registration handler.
    */
   public HandlerRegistration addClickHandler(ClickHandler handler) {
-    return windowsLink.addClickHandler(handler);
+    return anchor.addClickHandler(handler);
   }
 
   @Override
@@ -86,10 +128,24 @@ public class VWindows extends SimplePanel implements HasEnabled {
     }
   }
   
+  /**
+   * A simple panel that wraps an <li> element inside.
+   */
+  private static final class VLIPanel extends SimplePanel {
+    
+    public VLIPanel() {
+      super(Document.get().createLIElement());
+    }
+  }
+  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VAnchor			windowsLink;
-  private boolean			enabled;
+  private final VULPanel                windowsLink;
+  private final VLIPanel                inner;
+  private final VAnchorPanel            anchor;
+  private final VSpan                   label;
+  private final VIcon                   icon;
+  private boolean                       enabled;
 }

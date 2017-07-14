@@ -20,6 +20,7 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.menu;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.ModuleList;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VConstants;
 
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
@@ -70,6 +71,11 @@ public class ModuleListConnector extends AbstractHasComponentsConnector {
   /*package*/ void setAnimated() {
     getWidget().setAnimation(getState().animated);
   }
+  
+  @OnStateChange("type")
+  /*package*/ void setMain() {
+    getWidget().setMain(isMainMenu());
+  }
 
   @Override
   public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
@@ -79,7 +85,7 @@ public class ModuleListConnector extends AbstractHasComponentsConnector {
     for (ComponentConnector child : getChildComponents()) {
       if (child instanceof ModuleItemConnector) {
 	// it should be
-	rootMenu.addItem(((ModuleItemConnector)child).getWidget(), true);
+	rootMenu.addItem(((ModuleItemConnector)child).getWidget(), true, false);
       }
     }
     // sets the root menu.
@@ -94,6 +100,14 @@ public class ModuleListConnector extends AbstractHasComponentsConnector {
   @Override
   public void onUnregister() {
     getWidget().clear();
+  }
+  
+  /**
+   * Returns true if this menu represents the application main menu.
+   * @return True if this menu represents the application main menu.
+   */
+  protected boolean isMainMenu() {
+    return getState().type == VConstants.MAIN_MENU;
   }
   
   /**

@@ -20,10 +20,6 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.common;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -42,10 +38,6 @@ public class VContent extends SimplePanel {
   public VContent() {
     super(Document.get().createDivElement());
     getElement().setId("content");
-    table = new FlexTable();
-    setWidget(table);
-    table.setWidth("100%"); // full size.
-    table.setHeight("100%"); // full size.
   }
 
   //---------------------------------------------------
@@ -56,16 +48,8 @@ public class VContent extends SimplePanel {
    * Sets the content of this main container.
    * @param content The main container content.
    */
-  public void setContent(Widget content, boolean separate) {
-    table.setWidget(0, 0, content); // we will only use the first column of the table.
-    // add separators.
-    if (separate) {
-      DOM.appendChild(table.getCellFormatter().getElement(0, 0), Document.get().createBRElement());
-      DOM.appendChild(table.getCellFormatter().getElement(0, 0), Document.get().createBRElement());
-    } else {
-      table.getCellFormatter().setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_TOP);
-      table.getCellFormatter().setHeight(0, 0, "100%");
-    }
+  public void setContent(Widget content) {
+    setWidget(content);
     empty = false;
   }
   
@@ -73,7 +57,7 @@ public class VContent extends SimplePanel {
    * Clears the content.
    */
   public void clearContent() {
-    table.removeCell(0, 0);
+    clear();
     empty = true;
   }
   
@@ -89,6 +73,5 @@ public class VContent extends SimplePanel {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final FlexTable			table;
   private boolean				empty = true;
 }

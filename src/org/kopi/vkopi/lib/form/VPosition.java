@@ -31,11 +31,19 @@ public class VPosition implements VConstants, Serializable {
   /**
    * Constructs a list column.
    */
-  public VPosition(int line, int column, int columnEnd) {
-    this(line, column, columnEnd, -1);
+  public VPosition(int line, int lineEnd, int column, int columnEnd) {
+    this(line, lineEnd, column, columnEnd, -1);
   }
-  public VPosition(int line, int column, int columnEnd, int chartPos) {
+
+  /**
+   * Constructs a list column.
+   */
+  public VPosition(int line, int lineEnd, int column) {
+    this(line, lineEnd, column, -1, -1);
+  }
+    public VPosition(int line, int lineEnd, int column, int columnEnd, int chartPos) {
     this.line = line;
+    this.lineEnd = lineEnd;
     this.column = column;
     this.columnEnd = columnEnd;
     this.chartPos = chartPos;
@@ -46,6 +54,7 @@ public class VPosition implements VConstants, Serializable {
   // --------------------------------------------------------------------
 
   public final int line;
+  public final int lineEnd;
   public final int column;
   public final int columnEnd;
   public final int chartPos;

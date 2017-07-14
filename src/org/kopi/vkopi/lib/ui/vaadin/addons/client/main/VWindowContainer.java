@@ -26,9 +26,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VCaption;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DeckPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  * That's why deck panel is used.
  * The control of the displayed widget will be from outside.
  */
-/*package*/ class VWindowContainer extends SimplePanel {
+/*package*/ class VWindowContainer extends FlowPanel {
   
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -48,21 +46,20 @@ import com.google.gwt.user.client.ui.Widget;
    * Creates a new container widget.
    */
   public VWindowContainer() {
+    SimplePanel         captionWrapper;
+    
+    captionWrapper = new SimplePanel();
     setStyleName("k-window-container");
-    content = new FlexTable();
-    content.setStyleName("k-container-content");
     pane = new DeckPanel();
     pane.setStyleName("k-container-pane");
-    caption = new VCaption();
+    caption = new VCaption(false);
     caption.setStyleName("k-window-caption");
     widgetToIndexMap = new HashMap<Widget, Integer>();
     widgetToCaptionMap = new HashMap<Widget, String>();
-    setWidget(content);
-    content.setWidget(0, 0, caption);
-    content.setWidget(1, 0, pane);
-    content.getCellFormatter().setStyleName(0, 0, "k-content-caption");
-    content.getCellFormatter().setStyleName(0, 1, "k-content-pane");
-    content.getCellFormatter().setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT, HasVerticalAlignment.ALIGN_MIDDLE);
+    captionWrapper.getElement().setId("session");
+    captionWrapper.setWidget(caption);
+    add(captionWrapper);
+    add(pane);
   }
   
   //---------------------------------------------------
@@ -221,5 +218,4 @@ import com.google.gwt.user.client.ui.Widget;
   private final Map<Widget, String>		widgetToCaptionMap;
   private final DeckPanel			pane;
   private final VCaption			caption;
-  private final FlexTable			content;
 }

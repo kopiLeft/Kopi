@@ -191,6 +191,13 @@ public class VFixnumCodeField extends VCodeField {
   public String getSqlImpl(int r) {
     return value[r] == -1 ? "NULL" : codes[value[r]].toSql();
   }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Fixed.class;
+  }
 
   /*
    * ----------------------------------------------------------------------

@@ -33,6 +33,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.annotations.OnStateChange;
+import com.vaadin.client.connectors.GridConnector;
 import com.vaadin.client.ui.AbstractComponentContainerConnector;
 import com.vaadin.shared.ui.Connect;
 import com.vaadin.shared.ui.Connect.LoadStyle;
@@ -74,20 +75,28 @@ public class FormConnector extends AbstractComponentContainerConnector implement
   }
 
   @Override
-  public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-    getWidget().init(getConnection(),
-	             getState().locale,
-	             getState().pageCount,
-	             getState().titles,
-	             ResourcesUtil.getImageURL(getConnection(), "single.gif"));
-    // look for blocks
-    for (ComponentConnector child : getChildComponents()) {
-      if (child instanceof BlockConnector) {
-	BlockComponentData	data = getState().blocksData.get(child);
-	
-	if (data != null) {
-	  getWidget().addBlock(child.getWidget(), data.page, data.isFollow, data.isChart);
-	}
+  public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
+    if (event.getOldChildren() == null || event.getOldChildren().size() == 0) {
+      getWidget().init(getConnection(),
+                       getState().locale,
+                       getState().pageCount,
+                       getState().titles,
+                       ResourcesUtil.getImageURL(getConnection(), "single.gif"));
+      // look for blocks
+      for (ComponentConnector child : getChildComponents()) {
+        if (child instanceof BlockConnector) {
+          BlockComponentData	data = getState().blocksData.get(child);
+
+          if (data != null) {
+            getWidget().addBlock(child.getWidget(), data.page, data.isFollow, data.isChart);
+          }
+        } else if (child instanceof GridConnector) {
+          BlockComponentData      data = getState().blocksData.get(child);
+
+          if (data != null) {
+            getWidget().addBlock(child.getWidget(), data.page, data.isFollow, data.isChart);
+          }
+        }
       }
     }
   }

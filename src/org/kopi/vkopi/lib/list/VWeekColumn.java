@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.list;
 
+import org.kopi.xkopi.lib.type.Week;
+
 @SuppressWarnings("serial")
 public class VWeekColumn extends VListColumn {
 
@@ -31,5 +33,14 @@ public class VWeekColumn extends VListColumn {
    */
   public VWeekColumn(String title, String column, boolean sortAscending) {
     super(title, column, ALG_LEFT, 7, sortAscending);
+  }
+
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  @Override
+  public Class getDataType() {
+    return Week.class;
   }
 }

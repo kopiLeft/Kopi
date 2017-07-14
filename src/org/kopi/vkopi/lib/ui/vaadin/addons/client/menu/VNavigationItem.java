@@ -80,4 +80,10 @@ public abstract class VNavigationItem extends Widget implements HasEnabled {
    * @param text The item description.
    */
   public abstract void setDescription(String text);
+  
+  /**
+   * Sets the icon of this navigation item.
+   * @param icon The icon name.
+   */
+  public abstract void setIcon(String icon);
 }

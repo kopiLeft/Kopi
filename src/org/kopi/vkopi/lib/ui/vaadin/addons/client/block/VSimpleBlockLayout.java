@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,8 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.widgets.Escalator;
+import com.vaadin.client.widgets.Grid;
 
 /**
  * The simple block layout widget.
@@ -95,6 +97,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
       newConstraint = new ComponentConstraint(align.getTargetPos(constraints.x),
 	                                      constraints.y,
 	                                      constraints.width,
+	                                      constraints.height,
 	                                      constraints.alignRight,
 	                                      constraints.useAll);
       // adds an extra widget to the block.
@@ -116,7 +119,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
 	    manager.setWidget(widgets[x][y],
 		              aligns[x][y],
 		              Math.min(aligns[x][y].width, getAllocatedWidth(x, y)),
-		              Math.min(getComponentHeight(widgets[x][y]), getAllocatedHeight(x, y)));
+		              Math.min(aligns[x][y].height, getAllocatedHeight(x, y)));
 	    setAlignment(aligns[x][y].y, aligns[x][y].x, aligns[x][y].alignRight);
 	  }
 	}
@@ -131,6 +134,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
       }
       // free memory
       manager.release();
+      manager = null;
     }
   }
 
@@ -214,6 +218,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
     HorizontalPanel	content = new HorizontalPanel();
     
     content.setStyleName("info-content");
+//    content.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
     content.setSpacing(0);
     content.add(widgets[x][y]);
     content.add(info);
@@ -292,7 +297,7 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
       for (int y = 0; y < widgets[0].length; y++) {
 	try {
 	  if (getWidget(y, x) instanceof VLabel) {
-	    ((VLabel)getWidget(y, x)).setWidth(getCellFormatter().getElement(y, x).getClientWidth());
+	    ((VLabel)getWidget(y, x)).setWidth(getWidget(y, x).getElement().getOffsetWidth() + 4);
 	  }
 	} catch (IndexOutOfBoundsException e) {
 	  // ignore all errors
@@ -315,6 +320,11 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
           widget = getWidget(row, col);
           if (widget instanceof VField) {
             width = ((VField) widget).getWidth();
+            getCellFormatter().setStyleName(row, col, "field-cell");
+          } else if (widget instanceof HorizontalPanel) {
+            // info fields
+            getCellFormatter().setStyleName(row, col, "field-cell");
+            width = widget.getElement().getClientWidth();
           } else {
             width = widget.getElement().getClientWidth();
           }
@@ -349,12 +359,16 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
     if (!cleaned) {
       Scheduler.get().scheduleFinally(new ScheduledCommand() {
 
-	@Override
-	public void execute() {
-	  clean();
-	  setLabelsWidth();
-	  calculateCellsWidth();
-	}
+        @Override
+        public void execute() {
+          // do not calculate when this layout does not
+          // belong to the main window visible widget.
+          if (getElement().getClientWidth() > 0) {
+            clean();
+            setLabelsWidth();
+            calculateCellsWidth();
+          }
+        }
       });
       cleaned = true;
     }
@@ -362,6 +376,13 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
   
   @Override
   public void clear() {
+    try {
+      if (getWidget(0, 0) instanceof Grid<?>) {
+        clearGridBlock((Grid<?>) getWidget(0, 0));
+      }
+    } catch (IndexOutOfBoundsException e) {
+      // may be cleared by another process
+    }
     super.clear();
     if (follows != null) {
       follows.clear();
@@ -372,6 +393,44 @@ public class VSimpleBlockLayout extends VAbstractBlockLayout {
       followsAligns = null;
     }
   }
+  
+  /**
+   * Clears the grid block content
+   * @param grid
+   */
+  private void clearGridBlock(Grid<?> grid) {
+    clearGrid(grid);
+    clearEscalator(grid.getEscalator());
+  }
+  
+  /**
+   * Clears the grid escalator.
+   * @param escalator The escalator instance.
+   */
+  private static native void clearEscalator(Escalator escalator) /*-{
+    escalator.@com.vaadin.client.widgets.Escalator::positions = null;
+  }-*/;
+  
+  /**
+   * Clear the grid widget.
+   * @param table The grid instance.
+   */
+  private static native void clearGrid(Grid<?> table) /*-{
+    table.@com.vaadin.client.widgets.Grid::cellFocusHandler = null;
+    table.@com.vaadin.client.widgets.Grid::rowReference = null;
+    table.@com.vaadin.client.widgets.Grid::cellReference = null;
+    table.@com.vaadin.client.widgets.Grid::rendererCellReference = null;
+    table.@com.vaadin.client.widgets.Grid::eventCell = null;
+    table.@com.vaadin.client.widgets.Grid::keyDown = null;
+    table.@com.vaadin.client.widgets.Grid::keyUp = null;
+    table.@com.vaadin.client.widgets.Grid::keyPress = null;
+    table.@com.vaadin.client.widgets.Grid::clickEvent = null;
+    table.@com.vaadin.client.widgets.Grid::doubleClickEvent = null;
+    table.@com.vaadin.client.widgets.Grid::header = null;
+    table.@com.vaadin.client.widgets.Grid::footer = null;
+    table.@com.vaadin.client.widgets.Grid::sidebar = null;
+    table.@com.vaadin.client.widgets.Grid::cellOnPrevMouseDown = null;
+  }-*/;
   
   //---------------------------------------------------
   // DATA MEMBERS

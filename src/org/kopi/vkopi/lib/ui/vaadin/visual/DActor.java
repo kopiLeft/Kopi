@@ -25,14 +25,12 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.ActionEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ActionListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.Actor;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import org.kopi.vkopi.lib.ui.vaadin.base.Image;
 import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
 import org.kopi.vkopi.lib.visual.UActor;
 import org.kopi.vkopi.lib.visual.VActor;
 
 import com.vaadin.event.ShortcutAction.ModifierKey;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 
 /**
@@ -58,9 +56,9 @@ public class DActor extends Actor implements UActor, ActionListener {
    */
   public DActor(VActor model) {
     super(model.menuItem,
-	  getDescription(model),
+	  Utils.createTooltip(getDescription(model)),
 	  model.menuName,
-	  loadResource(model.iconName),
+	  Utils.getFontAwesomeIcon(model.iconName),
 	  correctAcceleratorKey(model.acceleratorKey),
 	  correctAcceleratorModifier(model.acceleratorModifier));
     this.model = model;
@@ -120,25 +118,6 @@ public class DActor extends Actor implements UActor, ActionListener {
     } else {
       return model.help;
     }
-  }
-	
-  /**
-   * Loads the actor icon.
-   * @param iconName The icon name.
-   */
-  private static Resource loadResource(String iconName) {
-    if (iconName == null) {
-      return null;
-    }
-    
-    Image  		image;
-
-    image = Utils.getImage(iconName + ".png");
-    if (image == null || image == Utils.UKN_IMAGE) {
-      image = Utils.getImage(iconName + ".gif");
-    }
-    
-    return image.getResource();
   }
 
   /**

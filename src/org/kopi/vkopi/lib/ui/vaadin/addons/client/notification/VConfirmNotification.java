@@ -19,9 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.notification;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,7 +27,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.Event;
-import com.vaadin.client.ApplicationConnection;
 
 /**
  * Confirm type notification widget.
@@ -64,11 +61,6 @@ public class VConfirmNotification extends VAbstractNotification {
   }
   
   @Override
-  public void setImage(ApplicationConnection connection) { 
-    image.setSrc(ResourcesUtil.getImageURL(connection, Icons.QUESTION));
-  }
-  
-  @Override
   public void focus() {
     if (yesIsDefault && ok != null) {
       ok.focus();
@@ -79,6 +71,11 @@ public class VConfirmNotification extends VAbstractNotification {
       okFocused = false;
       cancelFocused = true;
     }
+  }
+  
+  @Override
+  protected String getIconName() {
+    return "question-circle";
   }
   
   @Override

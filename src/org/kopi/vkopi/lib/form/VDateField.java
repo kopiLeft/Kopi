@@ -73,6 +73,10 @@ public class VDateField extends VField {
   public String getTypeName() {
     return VlibProperties.getString("Date");
   }
+  
+  public boolean isNumeric() {
+    return true;
+  }
 
   // ----------------------------------------------------------------------
   // Interface Display
@@ -237,6 +241,58 @@ public class VDateField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  public String toText(Object o) {
+    return o == null ? "" : toText((Date)o);
+  }
+  
+  public Object toObject(String s) throws VException {
+    if (s.equals("")) {
+      return null;
+    }
+    
+    int                 day = 0;
+    int                 month = 0;
+    int                 year = -2;
+    StringTokenizer     tokens = new StringTokenizer(s, "/.#");
+
+    if (!tokens.hasMoreTokens()) {
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));
+    }
+    day = stringToInt(tokens.nextToken());
+    if (tokens.hasMoreTokens()) {
+      month = stringToInt(tokens.nextToken());
+    }
+    if (tokens.hasMoreTokens()) {
+      year = stringToInt(tokens.nextToken());
+    }
+    if (tokens.hasMoreTokens() || day == -1 || month == -1 || year == -1) {
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));
+    }
+
+    if (month == 0) {
+      NotNullDate       now = Date.now();
+      month = now.getMonth();
+      year  = now.getYear();
+    } else if (year == -2) {
+      NotNullDate       now = Date.now();
+      year  = now.getYear();
+    } else if (year < 50) {
+      year += 2000;
+    } else if (year < 100) {
+      year += 1900;
+    } else if (year < 1000) {
+      // less than 4 digits cause an error in database while paring the 
+      // sql statement
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));      
+    }
+
+    if (!isDate(day, month, year)) {
+      throw new VFieldException(this, MessageCode.getMessage("VIS-00003"));
+    }
+    
+    return new NotNullDate(year, month, day);
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -271,8 +327,15 @@ public class VDateField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Date.class;
   }
 
   // ----------------------------------------------------------------------

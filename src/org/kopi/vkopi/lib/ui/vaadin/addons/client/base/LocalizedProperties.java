@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -76,7 +76,7 @@ public class LocalizedProperties {
     properties.put("position-number", "Numéro de position");
     properties.put("TO", "à");
     properties.put("welcomeText", "Bienvenue");
-    properties.put("windowsText", "Fenêtre");
+    properties.put("windowsText", "Changer de fenêtre");
     properties.put("informationText", "Veuillez saisir votre nom d'utilisateur et votre mot de passe.");
     properties.put("usernameLabel", "Nom d'utilisateur:");
     properties.put("passwordLabel", "Mot de passe:");
@@ -126,7 +126,7 @@ public class LocalizedProperties {
     properties.put("position-number", "Position number");
     properties.put("TO", "to");
     properties.put("welcomeText", "Welcome to");
-    properties.put("windowsText", "Window");
+    properties.put("windowsText", "Switch window");
     properties.put("informationText", "Please enter your user name and password.");
     properties.put("usernameLabel", "User Name:");
     properties.put("passwordLabel", "Password:");
@@ -177,7 +177,7 @@ public class LocalizedProperties {
     properties.put("position-number", "Positionszahl");
     properties.put("TO", "von");
     properties.put("welcomeText", "Willkommen");
-    properties.put("windowsText", "Fenster");
+    properties.put("windowsText", "Fenster wechseln");
     properties.put("informationText", "Bitte geben Sie Ihren Benutzer und Ihr kennwort ein.");
     properties.put("usernameLabel", "Benutzer:");
     properties.put("passwordLabel", "Kennwort:");
@@ -228,7 +228,7 @@ public class LocalizedProperties {
     properties.put("position-number", "رقم الموضع");
     properties.put("TO", "إلى");
     properties.put("welcomeText", "مرحباً");
-    properties.put("windowsText", "نافذة");
+    properties.put("windowsText", "تبديل نافذة");
     properties.put("informationText", "الرجاء إدخال إسم المستخدم وكلمة السر.");
     properties.put("usernameLabel", "إسم المستخدم:");
     properties.put("passwordLabel", "كلمة السر:");

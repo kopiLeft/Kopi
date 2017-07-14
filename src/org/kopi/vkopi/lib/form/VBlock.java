@@ -3128,7 +3128,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Returns the index of field in block
    */
   @SuppressWarnings("deprecation")
-  protected int getFieldIndex(VField fld) {
+  public int getFieldIndex(VField fld) {
     for (int i = 0; i < fields.length; i++) {
       if (fld == fields[i]) {
         return i;

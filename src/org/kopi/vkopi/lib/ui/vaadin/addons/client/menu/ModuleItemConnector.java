@@ -81,7 +81,7 @@ public class ModuleItemConnector extends AbstractHasComponentsConnector {
     for (ComponentConnector child : getChildComponents()) {
       if (child instanceof ModuleItemConnector) {
 	// it should be
-	subMenu.addItem(((ModuleItemConnector)child).getWidget(), false);
+	subMenu.addItem(((ModuleItemConnector)child).getWidget(), false, false);
       }
     }
     

@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License version 2.1 as published by the Free Software Foundation.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  $Id$
+-->
+
+<!--==================================================================
+    package:
+    ==================================================================-->
+<project default="build" basedir="." >
+
+  <property name="topdir" value="../../../../../../.." />
+  <property name="package" value="org/kopi/vkopi/lib/ui/vaadin/addons/client/grid" />
+  <property name="package.name" value="org.kopi.vkopi.lib.ui.vaadin.addons.client.grid" />
+  <property name="src" value="." />
+  <property name="copy.sources" value="yes" />
+  <property name="javafiles" value="EditorDateFieldConnector.java
+  	                            EditorEnumFieldConnector.java
+  	                            EditorEnumFieldState.java
+  	                            EditorField.java
+  	                            EditorFieldClickServerRpc.java
+  	                            EditorFieldClientRpc.java
+  	                            EditorFieldConnector.java
+			  	    EditorFieldNavigationServerRpc.java
+			  	    EditorFieldState.java
+			  	    EditorFixnumFieldConnector.java
+			  	    EditorFixnumFieldState.java
+			  	    EditorHandlingExtensionConnector.java
+			  	    EditorHandlingExtensionServerRpc.java
+			  	    EditorIntegerFieldConnector.java
+			  	    EditorIntegerFieldState.java
+			  	    EditorLabelClickServerRpc.java
+			  	    EditorLabelConnector.java
+			  	    EditorLabelState.java
+			  	    EditorMonthFieldConnector.java
+			  	    EditorTextAreaFieldConnector.java
+			  	    EditorTextAreaFieldState.java
+			  	    EditorTextChangeServerRpc.java
+			  	    EditorTextFieldConnector.java
+			  	    EditorTextFieldState.java
+			  	    EditorTimeFieldConnector.java
+			  	    EditorTimestampFieldConnector.java
+			  	    EditorWeekFieldConnector.java
+			  	    InvalidEditorFieldException.java
+			  	    VEditorDateField.java
+			  	    VEditorEnumField.java
+			  	    VEditorFixnumField.java
+			  	    VEditorIntegerField.java
+			  	    VEditorLabel.java
+			  	    VEditorMonthField.java
+			  	    VEditorTextAreaField.java
+			  	    VEditorTextField.java
+			  	    VEditorTimeField.java
+			  	    VEditorTimestampField.java
+			  	    VEditorWeekField.java
+  	                            EditorActorFieldConnector.java
+  	                            EditorActorFieldState.java
+  	                            VEditorActorField.java
+				    EditorImageFieldConnector.java
+				    EditorImageFieldState.java
+				    VEditorImageField.java
+				    BooleanRendererConnector.java
+				    BooleanRendererState.java
+				    EditorBooleanFieldConnector.java
+				    EditorBooleanFieldState.java
+				    EditorBooleanFieldValueChangeServerRpc.java
+				    VBooleanRenderer.java
+				    VEditorBooleanField.java
+				    VFocusableEditorField.java
+				    EditorSuggestionsQueryClientRpc.java
+				    EditorSuggestionsQueryServerRpc.java
+				    EditorBooleanFieldClientRpc.java
+				    BooleanRendererValueChangeServerRpc.java" />
+  
+  <import file="${topdir}/defs.xml" />
+</project>

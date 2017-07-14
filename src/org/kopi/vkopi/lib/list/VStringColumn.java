@@ -51,4 +51,12 @@ public class VStringColumn extends VListColumn {
 
     return str;
   }
+  
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return String.class;
+  }
 }

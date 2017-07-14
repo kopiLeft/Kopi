@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,8 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.progress;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -37,7 +33,8 @@ public class VProgressBar extends SimplePanel {
   // CONSTRUCTOR
   //---------------------------------------------------
 
-  public VProgressBar() {
+  public VProgressBar(VProgressDialog parent) {
+    this.parent = parent;
     setStyleName(Styles.PROGRESS_BAR);
   }
 
@@ -45,13 +42,9 @@ public class VProgressBar extends SimplePanel {
   // IMPLEMENTATION
   //---------------------------------------------------
 
-  public void createProgressBar(int jobs) { 
-    HorizontalPanel pane = new HorizontalPanel();
-    pane.setStyleName(Styles.PROGRESS_BAR + "-pane");
-    pane.setSpacing(5);
+  public void createProgressBar(int jobs) {
     elements = jobs;
     progress = 0;
-    percentageLabel = new VSpan();
     elementsGrid = new Grid(1, DEFAULT_BAR_NUMBER);
     elementsGrid.setCellPadding(0);
     elementsGrid.setCellSpacing(0);
@@ -62,14 +55,8 @@ public class VProgressBar extends SimplePanel {
     }
 
     elementsGrid.setWidth("100%");
-    pane.add(elementsGrid);
-    pane.add(percentageLabel);
-    pane.setCellHorizontalAlignment(elementsGrid, HasHorizontalAlignment.ALIGN_CENTER);
-    pane.setCellHorizontalAlignment(percentageLabel, HasHorizontalAlignment.ALIGN_CENTER);
-    pane.setCellVerticalAlignment(elementsGrid, HasVerticalAlignment.ALIGN_MIDDLE);
-    pane.setCellVerticalAlignment(percentageLabel, HasVerticalAlignment.ALIGN_MIDDLE);
-    add(pane);
-    setPercentageText(0f);
+    add(elementsGrid);
+    setProgress(0f);
   }
 
   /**
@@ -99,18 +86,18 @@ public class VProgressBar extends SimplePanel {
           elementsGrid.getCellFormatter().getElement(0, i).addClassName(Styles.PROGRESS_BAR_FULL);
         }
       }
-      setPercentageText(percentage * 100);
+      setProgressPercentage(percentage * 100);
     } else {
-      setPercentageText(100f);
+      setProgressPercentage(100f);
     }
   }
 
   /**
-   * Sets the percentage text.
-   * @param percentage The percentage text.
+   * Sets the progress percentage.
+   * @param percentage The percentage of the progress.
    */
-  public void setPercentageText(float percentage) {
-    percentageLabel.setText(new Float(percentage).intValue() + "%");
+  public void setProgressPercentage(float percentage) {
+    parent.setPercentageText(percentage);
   }
 
   /**
@@ -125,16 +112,15 @@ public class VProgressBar extends SimplePanel {
   public void clear() {
     super.clear();
     elementsGrid = null;
-    percentageLabel = null;
   }
   
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
 
-  private int                            elements;
-  private float                          progress;
-  private Grid                           elementsGrid;         
-  private VSpan                          percentageLabel;
-  private static final int               DEFAULT_BAR_NUMBER = 60;
+  private int                           elements;
+  private float                         progress;
+  private Grid                          elementsGrid;
+  private final VProgressDialog         parent;
+  private static final int              DEFAULT_BAR_NUMBER = 60;
 }

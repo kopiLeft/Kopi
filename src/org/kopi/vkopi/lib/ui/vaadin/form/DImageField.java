@@ -108,7 +108,7 @@ public class DImageField extends DObjectField implements DropHandler, ImageField
 
   @Override
   public void updateAccess() {
-     label.update(model, getPosition());
+    label.update(model, getPosition());
   }
 
   @Override

@@ -20,7 +20,7 @@
 TOPDIR =	../../../../../..
 
 SUBDIRS =	actor base suggestion block checkbox common date event	\
-		field form label list login main menu notification	\
+		grid field form label list login main menu notification	\
 		progress upload scrollbar wait window
 
 PACKAGE = 	org/kopi/vkopi/lib/ui/vaadin/addons/client

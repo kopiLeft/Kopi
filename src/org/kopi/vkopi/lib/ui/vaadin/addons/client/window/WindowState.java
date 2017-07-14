@@ -25,4 +25,5 @@ import com.vaadin.shared.AbstractComponentState;
  * Window shared state.
  */
 @SuppressWarnings("serial")
-public class WindowState extends AbstractComponentState {}
+public class WindowState extends AbstractComponentState {
+}

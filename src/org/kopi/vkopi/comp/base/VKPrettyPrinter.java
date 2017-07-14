@@ -124,13 +124,18 @@ public class VKPrettyPrinter {
   /**
    * prints a compilation unit
    */
-  public void printCoordinatePosition(int l,
-				      int c,
-				      int end)
+  public void printCoordinatePosition(int line,
+                                      int endLine,
+				      int column,
+				      int endColumn)
   {
-    print(" AT <" + l + ", " + c);
-    if (end != c) {
-      print("-" + end);
+    print(" AT <" + line);
+    if (endLine != line){
+      print("-" + endLine);
+    }
+    print(", " + column);
+    if (endColumn != column) {
+      print("-" + endColumn);
     }
     print(">");
   }

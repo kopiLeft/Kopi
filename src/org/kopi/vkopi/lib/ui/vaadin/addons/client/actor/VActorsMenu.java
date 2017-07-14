@@ -67,13 +67,13 @@ public class VActorsMenu extends VModuleListMenu {
     
     parent = getItem(isHelpMenu(item.getMenu()) ? "help" : item.getMenu());
     if (parent == null) {
-      parent = addItem(isHelpMenu(item.getMenu()) ? "help" : item.getMenu(), item.getMenu(), false);
+      parent = addItem(isHelpMenu(item.getMenu()) ? "help" : item.getMenu(), item.getMenu(), false, false);
       parent.setSubMenu(new VModuleListMenu(connection, false));
       parent.setStyleName("actor-menu");
       parent.getSubMenu().setStyleName("actor-submenu");
     }
     // now add the actor as an item to the parent sub menu.
-    parent.getSubMenu().addItem(item, false);
+    parent.getSubMenu().addItem(item, false, false);
   }
   
   @Override

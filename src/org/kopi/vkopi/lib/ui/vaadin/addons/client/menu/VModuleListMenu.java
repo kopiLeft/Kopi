@@ -28,6 +28,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -46,6 +48,7 @@ import com.google.gwt.user.client.ui.PopupListener;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.impl.FocusImpl;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.WidgetUtil;
 
 /**
  * The module list menu bar.
@@ -204,6 +207,21 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
     super.onBrowserEvent(event);
   }
   
+  @Override
+  protected void onLoad() {
+    super.onLoad();
+    Scheduler.get().scheduleFinally(new ScheduledCommand() {
+      
+      @Override
+      public void execute() {
+        if (WidgetUtil.getRequiredHeight(VModuleListMenu.this) + getAbsoluteTop() > Window.getClientHeight() - 24) {
+          getElement().getStyle().setHeight(Window.getClientHeight() - (24 + getAbsoluteTop()), Unit.PX);
+          getElement().getStyle().setOverflowX(Overflow.AUTO);
+        }
+      }
+    });
+  }
+  
   //---------------------------------------------------
   // UTILS
   //---------------------------------------------------
@@ -214,8 +232,9 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
    * @param item the item to be added
    * @return the {@link VModuleItem} object
    */
-  public VModuleItem addItem(VModuleItem item, boolean root) {
+  public VModuleItem addItem(VModuleItem item, boolean root, boolean shortcutNavigation) {
     item.setRoot(root);
+    item.setShortcutNavigation(shortcutNavigation);
     item.buildContent();
     return insertItem(item);
   }
@@ -239,13 +258,13 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
    * @param caption The item caption.
    * @return The added item.
    */
-  public VModuleItem addItem(String id, String caption, boolean root) {
+  public VModuleItem addItem(String id, String caption, boolean root, boolean shortcutNavigation) {
     VModuleItem			item;
     
     item = new VModuleItem();
     item.setId(id);
     item.setCaption(caption);
-    return addItem(item, root);
+    return addItem(item, root, shortcutNavigation);
   }
   
   @Override
@@ -294,6 +313,7 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
     }
 
     if (selectedItem != null) {
+      selectedItem.removeStyleName("active");
       selectedItem.setSelectionStyle(false);
     }
 
@@ -440,6 +460,10 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
       shownChildMenu.onHide(focus);
       popup.hide();
       shownChildMenu = null;
+    }
+    
+    if (selectedItem == item && item.isRoot() || item.isShortcutNavigation()) {
+      item.addStyleName("active");
     }
   }
 
@@ -729,7 +753,7 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
     // the item (below if this is a horizontal menu bar, to the
     // right if it's a vertical bar).
     popup = new VMenuPopup(connection, this, item);
-    popup.setAnimationEnabled(isAnimationEnabled);
+    //popup.setAnimationEnabled(isAnimationEnabled);
     if (!vertical) {
       popup.setRollDownAnimation();
     } else {
@@ -747,9 +771,9 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
 	if (vertical) {
 	  if (item.getAbsoluteLeft() + item.getParentMenu().getOffsetWidth() + offsetWidth > Window.getClientWidth()) {
 	    popup.setCenterAnimation(); // show it from the center
-	    popup.setPopupPosition(VModuleListMenu.this.getAbsoluteLeft() - offsetWidth + 10, item.getAbsoluteTop() - 12);
+	    popup.setPopupPosition(VModuleListMenu.this.getAbsoluteLeft() - offsetWidth + 16, item.getAbsoluteTop() + 10);
 	  } else {
-	    popup.setPopupPosition(VModuleListMenu.this.getAbsoluteLeft() + VModuleListMenu.this.getOffsetWidth() + 1, item.getAbsoluteTop() - 12);
+	    popup.setPopupPosition(VModuleListMenu.this.getAbsoluteLeft() + VModuleListMenu.this.getOffsetWidth() + 6, item.getAbsoluteTop() + 10);
 	  }
 	} else {
 	  if (item.getAbsoluteLeft() + offsetWidth > Window.getClientWidth()) {
@@ -920,8 +944,14 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
 	  protected void addChildrenIndicator() {
 	    // do not add children indicator for items
 	  }
+	  
+	  @Override
+	  public void buildContent() {
+	    setShortcutNavigation(true);
+	    super.buildContent();
+	    setIcon("angle-double-right");
+	  }
 	};
-	moreItem.setCaption(">>");
 	moreItem.setParentMenu(this);
       }
       subMenu = moreItem.getSubMenu();
@@ -932,8 +962,7 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
       if (!alreadyHasItems) {
 	for (VModuleItem item : extraItems) {
 	  if (item != null) {
-	    subMenu.addItem(item, false);
-	    item.addChildrenIndicator();
+	    subMenu.addItem(item, false, false);
 	  }
 	}
       } else {
@@ -951,14 +980,13 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
 	// add the new extra items.
 	for (VModuleItem item : newExtraItems) {
 	  if (item != null) {
-	    subMenu.addItem(item, false);
-	    item.addChildrenIndicator();
+	    subMenu.addItem(item, false, false);
 	  }
 	}
       }
       if (!items.contains(moreItem)) {
 	moreItem.setSubMenu(subMenu);
-	addItem(moreItem, true);
+	addItem(moreItem, true, false);
       }
     }
   }
@@ -981,7 +1009,7 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
 	// the item should be restored
 	moreItem.getSubMenu().removeItem(item);
 	removeItem(moreItem);
-	addItem(item, true);
+	addItem(item, true, false);
 	item.removeChildrenIndicator(); // if it exists
 	// if the more item is empty, remove it
 	if (moreItem.getSubMenu().getItems().isEmpty()) {
@@ -989,14 +1017,14 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
 	  moreItem = null;
 	  break;
 	} else {
-	  addItem(moreItem, true);
+	  addItem(moreItem, true, false);
 	}
       } else {
 	break;
       }
     }
     // if the more item is empty, remove it
-    if (moreItem.getSubMenu().getItems().isEmpty()) {
+    if (moreItem != null && moreItem.getSubMenu().getItems().isEmpty()) {
       removeItem(moreItem);
       moreItem = null;
     }

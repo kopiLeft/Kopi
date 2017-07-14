@@ -55,18 +55,19 @@ public class DBlock extends Block implements UBlock {
    */
   public DBlock(DForm parent, VBlock model) {
     super(model.isDroppable());
+    this.model = model;
+    this.maxRowPos = model.getMaxRowPos();
+    this.maxColumnPos = model.getMaxColumnPos();
+    this.displayedFields = model.getDisplayedFields();
+    this.formView = parent;
+    setBorder(model.getBorder(), model.getTitle());
+    model.addBlockListener(this);
     setBufferSize(model.getBufferSize());
     setDisplaySize(model.getDisplaySize());
     setSortedRecords(model.getSortedRecords());
     setNoMove(model.noMove());
-    this.maxRowPos = model.getMaxRowPos();
-    this.maxColumnPos = model.getMaxColumnPos();
-    this.displayedFields = model.getDisplayedFields();
-    this.model = model;
-    this.formView = parent;
-    setBorder(model.getBorder(), model.getTitle());
-    model.addBlockListener(this);
-
+    setNoChart(model.noChart());
+    
     if (model.isMulti()) {
       sortedRecToDisplay   = new int[model.getBufferSize()];
       displayToSortedRec   = new int[model.getDisplaySize()];
@@ -171,11 +172,15 @@ public class DBlock extends Block implements UBlock {
     if (!model.isInternal() /*hidden field */) {
       VFieldUI  	ui;
 
-      ui = new DFieldUI(this, model, index);
+      ui = createFieldDisplay(index, model);
       return ui;
     } else {
       return null;
     }
+  }
+  
+  protected VFieldUI createFieldDisplay(int index, VField model) {
+    return new DFieldUI(this, model, index);
   }
 
   /**
@@ -454,6 +459,7 @@ public class DBlock extends Block implements UBlock {
 	         constraints.x,
 	         constraints.y,
 	         constraints.width,
+	         constraints.height,
 	         constraints.alignRight,
 	         constraints.useAll);
   }
@@ -538,7 +544,7 @@ public class DBlock extends Block implements UBlock {
 
   protected   final DForm		formView;
   protected final VBlock		model;
-  private   VFieldUI[]            	columnViews;
+  protected   VFieldUI[]            	columnViews;
   // protected KopiLayout  		layout;
 
   protected final int			maxRowPos;

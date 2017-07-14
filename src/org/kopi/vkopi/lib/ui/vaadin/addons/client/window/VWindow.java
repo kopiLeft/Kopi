@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,10 +33,12 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
-import com.vaadin.client.ui.SimpleFocusablePanel;
+import com.vaadin.client.ui.FocusableFlowPanel;
 
 /**
  * The window component. Composed of three major parts:
@@ -46,7 +48,7 @@ import com.vaadin.client.ui.SimpleFocusablePanel;
  *   <li>The window footer</li>
  * </ul>
  */
-public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandlerOwner {
+public class VWindow extends FocusableFlowPanel implements AcceleratorKeyHandlerOwner {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -69,9 +71,8 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    */
   protected void init(ApplicationConnection connection) {
     this.connection = connection;
-    view = new VWindowView(connection);
-    view.setWidth("100%");
-    setWidget(view);
+    actors = new VActorPanel(connection);
+    add(actors);
   }
   
   /**
@@ -102,7 +103,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @param actor The actor to be added.
    */
   public void addActor(Widget actor) {
-    view.addActor(actor);
+    actors.addActor(actor);
   }
   
   /**
@@ -110,7 +111,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @param panel The menu to be shown.
    */
   public void addActorsNavigationPanel(VActorsNavigationPanel panel) {
-    view.addActorsNavigationPanel(panel);
+    actors.addActorsNavigationPanel(panel);
   }
   
   /**
@@ -118,7 +119,11 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @param content The content.
    */
   public void setContent(Widget content) {
-    view.setContent(content);
+    if (this.content != null) {
+      remove(this.content);
+    }
+    this.content = new ScrollPanel(content);
+    insert(this.content, 1);
   }
   
   /**
@@ -126,7 +131,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @return The window content.
    */
   public Widget getContent() {
-    return view.getContent();
+    return content;
   }
   
   /**
@@ -134,7 +139,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @param footer The foter widget.
    */
   public void setFooter(Widget footer) {
-    view.setFooter(footer);
+    // not supported anymore
   }
   
   /**
@@ -143,14 +148,14 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @param vAlign The vertical alignment.
    */
   public void setFooterAlignment(HorizontalAlignmentConstant hAlign, VerticalAlignmentConstant vAlign) {
-    view.setFooterAlignment(hAlign, vAlign);
+    // not supported anymore
   }
   
   /**
    * Clears the footer content.
    */
   public void clearFooter() {
-    view.clearFooter();
+    // not supported anymore
   }
   
   /**
@@ -195,7 +200,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
       @Override
       public void run() {
         if (lasFocusedTextBox != null) {
-          lasFocusedTextBox.getElement().focus();
+          lasFocusedTextBox.setFocus(true);
         }
       }
     }.schedule(100);
@@ -222,8 +227,12 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
     super.clear();
     connection = null;
     keyHandler = null;
-    view.clear();
-    view = null;
+    if (content instanceof HasWidgets) {
+      ((HasWidgets)content).clear();
+    }
+    content = null;
+    actors.clear();
+    actors = null;
     lasFocusedTextBox = null;
   }
   
@@ -232,7 +241,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
    * @return The element associated with the actor menu.
    */
   protected Element getActorsMenuElement() {
-    return view.getActorsMenuElement();
+    return actors.getActorsNavigationElement();
   }
   
   /**
@@ -275,6 +284,7 @@ public class VWindow extends SimpleFocusablePanel implements AcceleratorKeyHandl
   
   private ApplicationConnection			connection;
   private AcceleratorKeyHandler			keyHandler;
-  private VWindowView				view;
+  private VActorPanel                           actors;
+  private Widget                                content;
   private TextBoxBase                           lasFocusedTextBox;
 }

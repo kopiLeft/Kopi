@@ -228,6 +228,16 @@ public class VImageField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    throw new InconsistencyException("UNEXPECTD GET TEXT");
+  }
+  
+  @Override
+  public String toObject(String s) {
+    throw new InconsistencyException("UNEXPECTD GET TEXT");
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -258,7 +268,7 @@ public class VImageField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !Arrays.equals(oldValue, value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
   }
 
@@ -290,6 +300,13 @@ public class VImageField extends VField {
     } else {
       return new ByteArrayInputStream(value[r]);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return byte[].class;
   }
 
   /*

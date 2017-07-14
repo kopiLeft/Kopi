@@ -38,9 +38,9 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.UploadStartedEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.UploadStartedListener;
 import org.kopi.vkopi.lib.ui.vaadin.visual.VApplication;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
-import org.kopi.vkopi.lib.visual.VException;
 
 import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 
 /**
  * The <code>FileUploader</code> handles all client to server file upload operations.
@@ -160,9 +160,10 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   
   @Override
   public void uploadFailed(UploadFailedEvent event) {
+    System.out.println("UPDLOAD FAILED ----- " + event.getReason());
     if (event.getReason() != null) {
       event.getReason().printStackTrace(System.err);
-      getApplication().displayError(null, event.getReason().getMessage());
+      uploadFinished(null);
     }
   }
 
@@ -173,7 +174,25 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
 
   @Override
   public void uploadStarted(UploadStartedEvent event) {
-    if (mimeType != null && !event.getMIMEType().startsWith(getParentMIMEType())) {
+    String[]            mimeTypes;
+    boolean             accepted;
+    
+    accepted = false;
+    if (mimeType == null) {
+      mimeTypes = null;
+    } else {
+      mimeTypes = mimeType.split(",");
+    }
+
+    if (mimeTypes != null) {
+      for (String mimeType : mimeTypes) {
+        if (event.getMIMEType().startsWith(getParentMIMEType(mimeType))) {
+          accepted = true;
+          break;
+        }
+      }
+    }
+    if (!accepted) {
       uploader.interruptUpload();
     }
     this.filename = event.getFilename();
@@ -185,8 +204,9 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   }
   
   @Override
-  public void updateProgress(final long readBytes, final long contentLength) {
+  public void updateProgress(long readBytes, long contentLength) {
     uploader.fireOnProgress(contentLength, readBytes);
+    UI.getCurrent().push();
   }
   
   /**
@@ -194,12 +214,10 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
    * @param filename The uploaded file name.
    * @param mimeType The uploaded mime type.
    * @param uploaded The uploaded bytes.
-   * @throws VException Upload errors.
    */
   protected void fireUploadFinished(String filename,
 			            String mimeType,
 	                            byte[] uploaded)
-    throws VException
   {
     for (FileUploadListener listener : listeners) {
       if (listener != null) {
@@ -220,8 +238,12 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
    * Returns the parent mime type of the holded mime type.
    * @return The parent mime type of the holded mime type.
    */
-  private String getParentMIMEType() {
-    return mimeType.substring(0, mimeType.indexOf('/'));
+  private String getParentMIMEType(String mimeType) {
+    if (mimeType.indexOf('/') != -1) {
+      return mimeType.substring(0, mimeType.indexOf('/')).trim();
+    } else {
+      return mimeType.trim();
+    }
   }
   
   //---------------------------------------------------
@@ -238,7 +260,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
      * Fired when the upload operation has been successfully executed;
      * @param event The upload event
      */
-    public void uploadFinished(UploadEvent event) throws VException;
+    public void uploadFinished(UploadEvent event);
   }
   
   //---------------------------------------------------

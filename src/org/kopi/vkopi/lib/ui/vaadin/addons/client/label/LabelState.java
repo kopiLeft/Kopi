@@ -20,6 +20,7 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.label;
 
 import com.vaadin.shared.AbstractComponentState;
+import com.vaadin.shared.annotations.DelegateToWidget;
 import com.vaadin.shared.annotations.NoLayout;
 
 /**
@@ -34,10 +35,10 @@ public class LabelState extends AbstractComponentState {
   public String				infoText = "";
   
   /**
-   * The label can execute auto fill triggers.
+   * The label can execute field action trigger.
    */
   @NoLayout
-  public boolean			hasAutofill = false;
+  public boolean			hasAction = false;
   
   /**
    * Is it a sortable label ?
@@ -48,4 +49,11 @@ public class LabelState extends AbstractComponentState {
    * The label visibility
    */
   public boolean			visible = true;
+  
+  /**
+   * Is this a mandatory field ?
+   */
+  @NoLayout
+  @DelegateToWidget
+  public boolean                        mandatory = false;
 }

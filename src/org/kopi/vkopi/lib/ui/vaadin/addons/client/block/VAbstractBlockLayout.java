@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -138,7 +137,6 @@ public abstract class VAbstractBlockLayout extends AdvancedFlexTable implements 
    */
   protected void setAlignment(int row, int column, boolean right) {
     getCellFormatter().setHorizontalAlignment(row, column, right ? HasHorizontalAlignment.ALIGN_RIGHT : HasHorizontalAlignment.ALIGN_LEFT);
-    getCellFormatter().setVerticalAlignment(row, column, HasVerticalAlignment.ALIGN_TOP);
   }
   
   @SuppressWarnings("unchecked")

@@ -48,7 +48,14 @@ public class StyleGenerator {
    * @param separator Is it a separator column ? 
    * @return The created {@link CSSStyle}.
    */
-  public static CSSStyle getStyle(UI target, Parameters parameters, ColumnStyle columnStyle, int level, int column, String align, boolean separator) {
+  public static CSSStyle getStyle(UI target,
+                                  Parameters parameters,
+                                  ColumnStyle columnStyle,
+                                  int level,
+                                  int column,
+                                  String align,
+                                  boolean separator)
+  {
     return new CSSStyle(target, parameters, columnStyle, level, column, align, separator);
   }
 
@@ -84,7 +91,14 @@ public class StyleGenerator {
      * @param align The column alignment.
      * @param separator Is it a separator.
      */
-    public CSSStyle(final UI target, final Parameters parameters, final ColumnStyle columnStyle, final int level, final int column, final String align, final boolean separator) {
+    public CSSStyle(final UI target,
+                    final Parameters parameters,
+                    final ColumnStyle columnStyle,
+                    final int level,
+                    final int column,
+                    final String align,
+                    final boolean separator)
+    {
       this.level = level;
       this.column = column;
       this.separator = separator; 
@@ -101,7 +115,7 @@ public class StyleGenerator {
       BackgroundThreadHandler.access(new Runnable() {
 	
         @Override
-        public void run() {    
+        public void run() {
           if (separator) {
           style = new CSSInject(target);
           style.setStyles(".v-table-cell-content-separator{"
@@ -111,7 +125,7 @@ public class StyleGenerator {
           } else {
 	    style = new CSSInject(target);
             setStyle();
-          }   
+          }
         }
       });
     }
@@ -190,7 +204,7 @@ public class StyleGenerator {
      * Returns the encapsulated CSS style.
      */
     public void setStyle() {
-      style.setStyles(".v-table-cell-content-level-" + level + "-column-" + column + "{"
+      style.setStyles(".v-table-cell-content-" + getName() + "{"
         + "background-color: " + getCSSColor(background)
         + "color: " + getCSSColor(foreground)
         + "font-size: " + fontSize + " !important;"
@@ -199,7 +213,7 @@ public class StyleGenerator {
         + "font-style: " + fontStyle + " !important;"
         + "font-weight: " +fontWeight + " !important;"
         + "}"
-        + ".v-table-cell-content-level-" + level + "-column-" + column + " .v-table-cell-wrapper {"
+        + ".v-table-cell-content-" + getName() + " .v-table-cell-wrapper {"
         + "text-align: " + align + " !important;"
         + "}"
       );

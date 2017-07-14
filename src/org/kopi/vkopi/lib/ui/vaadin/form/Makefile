@@ -31,8 +31,13 @@ JAVAFILES +=	DateChooser DBlock DBlockDropHandler DChartBlock	\
 		DChartHeaderLabel DField DFieldHandler DFieldUI		\
 		DForm DImageField DLabel DListDialog DMultiBlock	\
 		DObjectField DTextEditor DTextField KeyNavigator 	\
-		VPredefinedValueHandler DActorField
-
+		VPredefinedValueHandler DGridBlock DGridMultiBlock	\
+		DGridBlockCellStyleGenerator DGridBlockContainer 	\
+		DGridBlockFieldHandler DGridBlockFieldUI 		\
+		DGridEditorField DGridEditorLabel DGridTextEditorField	\
+		DActorField DGridEditorActorField DGridEditorImageField	\
+		DBooleanField DGridEditorBooleanField 			\
+		DGridBlockItemSorter
 
 ## ----------------------------------------------------------------------
 ## GOALS

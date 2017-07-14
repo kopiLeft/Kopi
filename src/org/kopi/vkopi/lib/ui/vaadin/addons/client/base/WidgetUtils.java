@@ -22,6 +22,7 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.base;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.TooltipInfo;
 
 /**
  * Some widget utilities.
@@ -121,6 +122,43 @@ public class WidgetUtils {
    * @return {@code true} if the element is visible.
    */
   public static boolean isVisible(Element element) {
-    return element.getStyle().getVisibility().equalsIgnoreCase(Visibility.VISIBLE.getCssName());
+    // elements that has no visibility style are considered as visible.
+    if (element.getStyle().getVisibility() == null || element.getStyle().getVisibility().length() == 0) {
+      return true;
+    } else {
+      return element.getStyle().getVisibility().equalsIgnoreCase(Visibility.VISIBLE.getCssName());
+    }
+  }
+  
+  /**
+   * Checks if the given character is a white space.
+   * The implementation is picked from java implementation
+   * since GWT does not contains the implementation of {@link Character#isWhitespace(char)}
+   * @param c The concerned character.
+   * @return {@code true} if the character is whitespace.
+   */
+  public static boolean isWhitespace(char c) {
+    return c == ' ' 
+      || c == '\u00A0' // SPACE_SEPARATOR
+      || c == '\u2007'   // LINE_SEPARATOR
+      || c == '\u202F'   // PARAGRAPH_SEPARATOR
+      || c == '\u0009'   // HORIZONTAL TABULATION.
+      || c == '\n'       // LINE FEED.
+      || c == '\u000B'   // VERTICAL TABULATION.
+      || c == '\u000C'   // FORM FEED.
+      || c == '\r'       // CARRIAGE RETURN.
+      || c == '\u001C'   // FILE SEPARATOR.
+      || c == '\u001D'   // GROUP SEPARATOR.
+      || c == '\u001E'   // RECORD SEPARATOR.
+      || c == '\u001F';  // UNIT SEPARATOR.
+  }
+  
+  /**
+   * Creates a HTML tooltip that wraps a string content. 
+   * @param tooltip The content (String or html).
+   * @return The decorated tooltip
+   */
+  public static TooltipInfo createTooltipInfo(String tooltip) {
+    return new TooltipInfo("<div class=\"info\"><i class=\"fa fa-sort-asc\" aria-hidden=\"true\"></i>" + tooltip + "</div>");
   }
 }

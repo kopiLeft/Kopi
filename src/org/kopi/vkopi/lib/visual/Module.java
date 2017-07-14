@@ -25,7 +25,7 @@ import org.kopi.vkopi.lib.l10n.ModuleLocalizer;
 import org.kopi.xkopi.lib.base.DBContext;
 
 
-public class Module {
+public class Module implements Comparable<Module> {
 
   /**
    * Constructor
@@ -36,6 +36,7 @@ public class Module {
                 String source,
                 String object,
                 int access,
+                int priority,
                 String icon)
   {
     this.id = id;
@@ -52,6 +53,7 @@ public class Module {
     }
     //!!! graf 2006.01.30: end
     this.access = access;
+    this.priority = priority;
     if (icon != null) {
       this.icon = ImageHandler.getImageHandler().getImage(icon);
       smallIcon = ImageHandler.getImageHandler().getImage(icon);
@@ -232,6 +234,13 @@ public class Module {
     }
   }
 
+  public int compareTo(Module module) {
+    if (priority == module.priority) {
+      return description.compareTo(module.description);
+    } else {
+      return priority - module.priority;
+    }
+  }
 
   // ---------------------------------------------------------------------
   // DATA MEMBERS
@@ -249,6 +258,7 @@ public class Module {
   private String               	 	help;
   private String                	source;
   private int                   	access;
+  private int                           priority;
   private Image             		icon;
   private Image             		smallIcon;
 }

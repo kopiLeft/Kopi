@@ -32,10 +32,4 @@ public interface UploadClientRpc extends ClientRpc {
    */
   @NoLayout
   public void submitUpload();
-  
-  /**
-   * Fired when the upload is finished
-   */
-  @NoLayout
-  public void onProgress(long contentLength, long receivedBytes);
 }

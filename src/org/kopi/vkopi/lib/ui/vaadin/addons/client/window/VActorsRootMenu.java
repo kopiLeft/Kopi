@@ -67,7 +67,7 @@ public class VActorsRootMenu extends VModuleListMenu {
    * @param image The item image.
    */
   public void createRootItem(String caption) {
-    rootItem = (RootItem) addItem(new RootItem(), false);
+    rootItem = (RootItem) addItem(new RootItem(), false, false);
     if (caption != null) {
       rootItem.setCaption(caption);
     }

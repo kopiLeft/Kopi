@@ -71,10 +71,11 @@ public class MultiBlockLayout extends AbstractBlockLayout {
                           int x,
                           int y,
                           int width,
+                          int height,
                           boolean alignRight,
                           boolean useAll)
   {
-    detailLayout.addComponent(component, x, y, width, alignRight, useAll);
+    detailLayout.addComponent(component, x, y, width, height, alignRight, useAll);
   }
   
   @Override
@@ -82,10 +83,11 @@ public class MultiBlockLayout extends AbstractBlockLayout {
                            int x,
                            int y,
                            int width,
+                           int height,
                            boolean alignRight,
                            boolean useAll)
   {
-    chartLayout.addComponent(component, x, y, width, alignRight, useAll);
+    chartLayout.addComponent(component, x, y, width, height, alignRight, useAll);
   }
   
   /**

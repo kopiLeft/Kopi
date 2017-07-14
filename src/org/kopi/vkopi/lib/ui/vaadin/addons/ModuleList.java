@@ -128,6 +128,15 @@ public class ModuleList extends AbstractComponent implements HasComponents {
   }
   
   /**
+   * Sets the module list type.
+   * The type is the root menu ID associated with this module list.
+   * @param type The menu type
+   */
+  public void setType(int type) {
+    getState().type = type;
+  }
+  
+  /**
    * Registers a module list listener on this component.
    * @param listener The listener to be registered.
    */

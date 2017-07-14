@@ -61,9 +61,16 @@ public class MainWindow extends AbstractComponentContainer {
   // IMPLEMENTATION
   //---------------------------------------------------
   
-  public void setModuleList(ModuleList moduleList) {
-    this.moduleList = moduleList;
-    this.moduleList.setImmediate(true);
+  /**
+   * Adds a menu to this main window.
+   * @param moduleList The module menu to be added
+   */
+  public void addMenu(ModuleList moduleList) {
+    if (this.menus == null) {
+      this.menus = new ArrayList<ModuleList>();
+    }
+    this.menus.add(moduleList);
+    moduleList.setImmediate(true);
     addComponent(moduleList);
   }
   
@@ -111,7 +118,7 @@ public class MainWindow extends AbstractComponentContainer {
     List<Component>		components;
     
     components = new ArrayList<Component>();
-    components.add(moduleList);
+    components.addAll(menus);
     components.addAll(windows);
     
     return components.iterator();
@@ -124,7 +131,7 @@ public class MainWindow extends AbstractComponentContainer {
 
   @Override
   public int getComponentCount() {
-    return windows.size() + (moduleList != null ? 1 : 0);
+    return windows.size() + (menus != null ? 1 : 0);
   }
   
   /**
@@ -202,7 +209,7 @@ public class MainWindow extends AbstractComponentContainer {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private ModuleList			moduleList;
+  private List<ModuleList>              menus;
   private LinkedList<Component>		windows;
   private List<MainWindowListener>	listeners;
   private MainWindowServerRpc		rpc = new MainWindowServerRpc() {

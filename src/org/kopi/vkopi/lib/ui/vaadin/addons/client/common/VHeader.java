@@ -36,16 +36,8 @@ public class VHeader extends FlowPanel {
    */
   public VHeader() {
     logo = new VCompanyLogo();
-    links = new VGlobalLinks();
     getElement().setId("header");
     add(logo);
-    add(links);
-    add(new VClearPanel());
-    add(new VClearPanel());
-    add(new VBromine());
-    //add(new VBromine()); !!! not really nice
-    add(new VClearPanel());
-    add(new VLine());
   }
 
   //---------------------------------------------------
@@ -53,12 +45,12 @@ public class VHeader extends FlowPanel {
   //---------------------------------------------------
   
   /**
-   * Sets the module list widget.
+   * Sets the main menu widget.
    * @param moduleList The module list widget.
    * @param offset Offset to use to position the lodule list
    */
-  public void setModuleList(Widget moduleList, int offset) {
-    insert(moduleList, 7 + offset);
+  public void setMainMenu(Widget moduleList) {
+    insert(moduleList, 1);
   }
   
   /**
@@ -66,7 +58,7 @@ public class VHeader extends FlowPanel {
    * @param windows The link widgets
    */
   public void setWindows(Widget windows) {
-    insert(windows, 3);
+    add(windows);
   }
   
   /**
@@ -74,7 +66,7 @@ public class VHeader extends FlowPanel {
    * @param welcome The welcome widget.
    */
   public void setWelcome(Widget welcome) {
-    insert(welcome, 2);
+    insert(welcome, 1);
   }
   
   /**
@@ -102,26 +94,10 @@ public class VHeader extends FlowPanel {
     logo.setImage(url, alt);
   }
   
-  /**
-   * Adds a link without separator.
-   * @param link The link to be added.
-   */
-  public void addLink(VLink link) {
-    links.addLink(link);
-  }
-  
-  /**
-   * Adds a link with separator.
-   * @param link The link to be added.
-   */
-  public void addLinkWithSeparator(VLink link) {
-    links.addLinkWithSeparator(link);
-  }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
   private final VCompanyLogo			logo;
-  private final VGlobalLinks			links; 
 }

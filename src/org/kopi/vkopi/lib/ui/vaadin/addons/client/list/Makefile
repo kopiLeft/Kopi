@@ -28,7 +28,10 @@ COPYSOURCES =	true
 
 JAVAFILES +=	ListDialogConnector ListDialogServerRpc ListDialogState	\
 		Sortable SortListener TableCell TableColumn TableHeader	\
-		Table TableModel VListDialog
+		Table TableModel VListDialog				\
+		GridListDialogCloseServerRpc GridListDialogConnector	\
+		GridListDialogSelectionServerRpc GridListDialogState	\
+		VGridListDialog GridListDialogSearchServerRpc
 
 ## ----------------------------------------------------------------------
 ## FILES

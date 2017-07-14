@@ -241,6 +241,17 @@ public class VStringField extends VField {
     return value[r];
   }
 
+  @Override
+  public String toText(Object o) {
+    // TODO Auto-generated method stub
+    return o == null ? "" : (String)o;
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    return s.equals("") ? null : s;
+  }
+  
   /**
    * Returns the display representation of field value of given record.
    */
@@ -270,8 +281,15 @@ public class VStringField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return String.class;
   }
 
   // ----------------------------------------------------------------------

@@ -19,11 +19,14 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewClientRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewServerRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsRequest;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsResponse;
 
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbstractComponent;
@@ -67,6 +70,16 @@ public class WelcomeView extends AbstractComponent {
   // IMPLEMENTATIONS
   //---------------------------------------------------
   
+  /**
+   * Adds a font metrics request in the welcome view state.
+   * @param fontFamily The font family.
+   * @param fontSize The font size.
+   * @param text The text to be dimensioned.
+   */
+  public void addFontMetricsRequest(String fontFamily, int fontSize, String text) {
+    getState().fontMetricsRequests.add(new FontMetricsRequest(fontFamily, fontSize, text));
+  }
+  
   @Override
   protected WelcomeViewState getState() {
     return (WelcomeViewState) super.getState();
@@ -91,8 +104,8 @@ public class WelcomeView extends AbstractComponent {
   /**
    * Fires an action performed event to all registered listeners.
    */
-  protected void fireLogin(String username, String password, String language) {
-    fireEvent(new WelcomeViewEvent(this, username, password, language));
+  protected void fireLogin(String username, String password, String language, List<FontMetricsResponse> fontMetrics) {
+    fireEvent(new WelcomeViewEvent(this, username, password, language, fontMetrics));
   }
   
   /**
@@ -110,8 +123,8 @@ public class WelcomeView extends AbstractComponent {
   private WelcomeViewServerRpc			rpc = new WelcomeViewServerRpc() {
     
     @Override
-    public void onLogin(String username, String password, String language) {
-      fireLogin(username, password, language);
+    public void onLogin(String username, String password, String language, List<FontMetricsResponse> fontMetrics) {
+      fireLogin(username, password, language, fontMetrics);
     }
   };
 }

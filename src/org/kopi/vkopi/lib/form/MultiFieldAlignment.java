@@ -25,7 +25,7 @@ package org.kopi.vkopi.lib.form;
 @SuppressWarnings("serial")
 public class MultiFieldAlignment extends KopiAlignment {
 
-  public MultiFieldAlignment(int x, int y, int width, boolean alignRight) {
-    super(x, y, width, alignRight);
+  public MultiFieldAlignment(int x, int y, int width, int height, boolean alignRight) {
+    super(x, y, width, height, alignRight);
   }
 }

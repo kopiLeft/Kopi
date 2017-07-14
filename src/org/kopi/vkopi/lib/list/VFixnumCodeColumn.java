@@ -41,6 +41,10 @@ public class VFixnumCodeColumn extends VCodeColumn {
     this.codes = codes;
   }
 
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /*
    * Returns the index.of given object
    */
@@ -52,6 +56,10 @@ public class VFixnumCodeColumn extends VCodeColumn {
     }
 
     throw new InconsistencyException("bad code value " + ((Fixed)value));
+  }
+  
+  public Class getDataType() {
+    return Fixed.class;
   }
 
   // --------------------------------------------------------------------

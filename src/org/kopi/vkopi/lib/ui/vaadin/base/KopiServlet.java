@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.base;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -34,8 +35,11 @@ import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.SystemMessages;
 import com.vaadin.server.SystemMessagesInfo;
 import com.vaadin.server.SystemMessagesProvider;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinResponse;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
+import com.vaadin.server.VaadinSession;
 
 /**
  * A customized servlet that handles the localization
@@ -80,26 +84,19 @@ public class KopiServlet extends VaadinServlet implements SessionInitListener {
   protected VaadinServletService createServletService(DeploymentConfiguration deploymentConfiguration)
     throws ServiceException
   {
-    if (isCommunicationStatisticsEnabled()) {
-      if (statistics == null) {
-        statistics = new CommunicationStatistics(getDisplayStatisticsInterval(), isShowCommunicatedMessages());
-        statistics.installBroadcasterListener();
-        statistics.start();
+    VaadinServletService        service = new VaadinServletService(this, deploymentConfiguration) {
+      
+      @Override
+      public void requestEnd(VaadinRequest request, VaadinResponse response, VaadinSession session) {
+        super.requestEnd(request, response, session);
+        if (isDebugMode() && session != null) {
+          log(session, request);
+        }
       }
-
-      return statistics.createServletService(this, deploymentConfiguration);
-    } else {
-      return super.createServletService(deploymentConfiguration);
-    }
-  }
-  
-  @Override
-  public void destroy() {
-    if (statistics != null) {
-      statistics.stop();
-    }
+    };
+    service.init();
     
-    super.destroy();
+    return service;
   }
   
   /**
@@ -143,31 +140,33 @@ public class KopiServlet extends VaadinServlet implements SessionInitListener {
   }
   
   /**
-   * Returns the display statistics interval in seconds.
-   * @return The display statistics interval in seconds.
+   * Traces the session request statistics.
+   * @param session The session instance.
+   * @param request The request object.
    */
-  protected int getDisplayStatisticsInterval() {
-    if (getInitParameter("displayStatisticsInterval") == null) {
-      return 60; // 1 minutes by default
+  @SuppressWarnings("deprecation")
+  private void log(VaadinSession session, VaadinRequest request) {
+    try {
+      session.lock();
+      System.out.println(request.getRemoteAddr() + " - - "
+        + session.getCsrfToken() + " - "
+        + new Date(session.getLastRequestTimestamp()) + " - "
+        + session.getBrowser().getBrowserApplication() + " - "
+        + request.getMethod() + " / "
+        + request.getContentType() + " - "
+        + session.getLastRequestDuration() + " / "
+        + session.getCumulativeRequestDuration());
+    } finally {
+      session.unlock();
     }
-    
-    return Integer.parseInt(getInitParameter("displayStatisticsInterval"));
   }
   
   /**
-   * Returns <code>true</code> if we should show the communicated messages.
-   * @return <code>true</code> if we should show the communicated messages.
+   * Returns true is the requests exchanges times should be shown on log file.
+   * @return true is the requests exchanges times should be shown on log file.
    */
-  protected boolean isShowCommunicatedMessages() {
-    return Boolean.parseBoolean(getInitParameter("showCommunicatedMessages"));
-  }
-  
-  /**
-   * Returns <code>true</code> if we should display the communication statistics.
-   * @return <code>true</code> if we should display the communication statistics.
-   */
-  protected boolean isCommunicationStatisticsEnabled() {
-    return Boolean.parseBoolean(getInitParameter("communicationStatisticsEnabled"));
+  private boolean isDebugMode() {
+    return Boolean.parseBoolean(getInitParameter("debugMode"));
   }
   
   // --------------------------------------------------
@@ -175,6 +174,5 @@ public class KopiServlet extends VaadinServlet implements SessionInitListener {
   // --------------------------------------------------
 
   private Locale				locale;
-  private CommunicationStatistics               statistics;
   private final static String 			VLIB_PROPERTIES_RESOURCE_FILE = "org/kopi/vkopi/lib/resource/VlibProperties" ;
 }

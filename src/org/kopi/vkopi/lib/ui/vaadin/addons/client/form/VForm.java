@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,9 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -77,7 +80,8 @@ public class VForm extends SimplePanel {
                    String[] titles,
                    String separator)
   { 
-    createBlockInfoWidget(connection, locale);
+    // not used any more but we keep it may be we will used again
+    //createBlockInfoWidget(connection, locale);
     pages = new VPage[pageCount == 0 ? 1 : pageCount];
     for (int i = 0; i < pages.length; i++) {
       if (pageCount != 0) {
@@ -132,11 +136,28 @@ public class VForm extends SimplePanel {
         
         @Override
         public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
-          // before leaving page, send current focused text field value to the server side.
+          lastSelected = tabPanel.getSelected();
+          // before leaving page, send current focused text field value to the server side. 
           if (fireSelectionEvent) {
             event.cancel();
             firePageSelected(event.getItem().intValue());
           }
+        }
+      });
+      
+      tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
+        
+        @Override
+        public void onSelection(SelectionEvent<Integer> event) {
+          new Timer() {
+            
+            @Override
+            public void run() {
+              if (lastSelected != -1) {
+                ((VCaption)tabPanel.getTab(lastSelected)).setActive(false);
+              }  
+            }
+          }.schedule(10);
         }
       });
       
@@ -156,6 +177,7 @@ public class VForm extends SimplePanel {
       // selected page before to allow selection.
       setEnabled(true, page);
       tabPanel.selectTab(page);
+      ((VCaption)tabPanel.getTab(tabPanel.getSelected())).setActive(true);
       fireSelectionEvent = true;
     }
   }
@@ -168,7 +190,7 @@ public class VForm extends SimplePanel {
   protected VCaption createCaption(String title) {
     VCaption		caption;
     
-    caption = new VCaption();
+    caption = new VCaption(true);
     caption.setCaption(title.endsWith("<CENTER>") ? title.substring(0,  title.length() - 8) : title);
     return caption;
   }
@@ -268,11 +290,11 @@ public class VForm extends SimplePanel {
   
   @Override
   public void clear() {
-    super.clear();
     listeners.clear();
     listeners = null;
-    for (VPage page : pages) {
-      page.release();
+    for (int i = 0; i < pages.length; i++) {
+      pages[i].release();
+      pages[i] = null;
     }
     pages = null;
     if (tabPanel != null) {
@@ -281,6 +303,7 @@ public class VForm extends SimplePanel {
     tabPanel = null;
     blockInfo.clear();
     blockInfo = null;
+    super.clear();
   }
 
   //---------------------------------------------------
@@ -290,6 +313,7 @@ public class VForm extends SimplePanel {
   private List<FormListener>		        listeners;
   private VPage[]				pages;
   private VTabSheet				tabPanel;
+  private int                                   lastSelected = -1;
   private boolean				fireSelectionEvent = true;
   private VPositionPanel			blockInfo;
 }

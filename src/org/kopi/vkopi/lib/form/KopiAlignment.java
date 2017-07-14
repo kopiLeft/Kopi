@@ -30,21 +30,23 @@ public class KopiAlignment implements Serializable {
   public boolean		ALG_LEFT	= false;
   public boolean		ALG_RIGHT	= true;
 
-  public KopiAlignment(int x, int y, int width, boolean alignRight) {
-    this(x, y, width, alignRight, false);
+  public KopiAlignment(int x, int y, int width, int height, boolean alignRight) {
+    this(x, y, width, height, alignRight, false);
   }
 
-  public KopiAlignment(int x, int y, int width, boolean alignRight, boolean useAll) {
+  public KopiAlignment(int x, int y, int width, int height, boolean alignRight, boolean useAll) {
     this.x = x;
     this.y = y;
     this.alignRight = alignRight;
     this.width = width;
+    this.height = height;
     this.useAll = useAll;
   }
 
   public int		x;		// position in x
   public int		y;		// position in y
   public int		width;		// number of column
+  public int            height;         // number of lines
   public boolean	alignRight;	// position in alignRight
   public boolean	useAll;         // use the whole possible width of the column
 }

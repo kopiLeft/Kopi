@@ -19,11 +19,9 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.wait;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VImage;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -48,8 +46,8 @@ public class VWaitWindow extends VerticalPanel implements CloseHandler<PopupPane
    * Creates a new <code>VWaitPanel</code> widget
    */
   public VWaitWindow() {
-    image = new VImage();
-    image.setStyleName(Styles.WAIT_WINDOW_IMAGE);
+    image = new VIcon();
+    image.addStyleName(Styles.WAIT_WINDOW_IMAGE);
     text = new VSpan();
     text.setStyleName(Styles.WAIT_WINDOW_TEXT);
     add(image);
@@ -70,7 +68,8 @@ public class VWaitWindow extends VerticalPanel implements CloseHandler<PopupPane
    * @param connection The application connection.
    */
   public void init(ApplicationConnection connection) {
-    image.setSrc(ResourcesUtil.getImageURL(connection, Icons.WAIT));
+    image.setName("spinner");
+    image.addStyleName("fa-spin");
     popup = new VPopup(connection, false, true);
     popup.addCloseHandler(this);
     popup.setGlassEnabled(true);
@@ -128,7 +127,7 @@ public class VWaitWindow extends VerticalPanel implements CloseHandler<PopupPane
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private VImage				image;
-  private VSpan				        text;
-  private VPopup				popup;
+  private VIcon                         image;
+  private VSpan                         text;
+  private VPopup                        popup;
 }

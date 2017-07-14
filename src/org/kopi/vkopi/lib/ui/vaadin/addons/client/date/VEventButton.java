@@ -43,4 +43,15 @@ public class VEventButton extends VInputButton {
     addMouseOutHandler(cal);
     addMouseUpHandler(cal);
   }
+  
+  /**
+   * Sets the event button HTML value.
+   * @param value The event button HTML value.
+   */
+  public void setHtmlValue(String value) {
+    // this is a hack to GWT cause GWT don't handle html values inside an input element
+    setHTML(value);
+    getInputElement().setValue(getHTML());
+    setHTML("");
+  }
 }

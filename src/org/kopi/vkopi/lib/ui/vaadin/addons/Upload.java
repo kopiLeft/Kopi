@@ -34,12 +34,12 @@ import com.vaadin.server.NoOutputStreamException;
 import com.vaadin.server.PaintException;
 import com.vaadin.server.PaintTarget;
 import com.vaadin.shared.EventId;
-import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractSingleComponentContainer;
 import com.vaadin.ui.LegacyComponent;
 import com.vaadin.util.ReflectTools;
 
 @SuppressWarnings({ "serial", "deprecation" })
-public class Upload extends AbstractComponent implements LegacyComponent {
+public class Upload extends AbstractSingleComponentContainer implements LegacyComponent {
 
   //---------------------------------------------------
   // CONSTRUCTORS
@@ -63,6 +63,7 @@ public class Upload extends AbstractComponent implements LegacyComponent {
 	fireEvent(new UploadFailedEvent(Upload.this, null, null, 0));
       }
     });
+    setContent(progress = new UploadProgress());
   }
 
   /**
@@ -292,6 +293,15 @@ public class Upload extends AbstractComponent implements LegacyComponent {
       }
     }
   }
+  
+  /**
+   * Notifies the client side the the upload is on progress.
+   * @param contentLength The total length of the upload.
+   * @param receivedBytes The received bytes.
+   */
+  public void fireOnProgress(long contentLength, long receivedBytes) {
+    progress.setProgress(contentLength, receivedBytes);
+  }
 
   /**
    * Returns the current receiver.
@@ -403,15 +413,6 @@ public class Upload extends AbstractComponent implements LegacyComponent {
   }
   
   /**
-   * Notifies the client side the the upload is on progress.
-   * @param contentLength The total length of the upload.
-   * @param receivedBytes The received bytes.
-   */
-  public void fireOnProgress(long contentLength, long receivedBytes) {
-    getRpcProxy(UploadClientRpc.class).onProgress(contentLength, receivedBytes);
-  }
-  
-  /**
    * Sets the upload locale.
    * @param locale The upload locale
    */
@@ -460,7 +461,7 @@ public class Upload extends AbstractComponent implements LegacyComponent {
 	  if (getReceiver() == null) {
 	    throw new IllegalStateException("Upload cannot be performed without a receiver set");
 	  }
-	  
+
 	  OutputStream receiveUpload = getReceiver().receiveUpload(lastStartedEvent.getFileName(), lastStartedEvent.getMimeType());
 	  lastStartedEvent = null;
 	  return receiveUpload;
@@ -511,6 +512,7 @@ public class Upload extends AbstractComponent implements LegacyComponent {
   // DATA MEMBERS
   //---------------------------------------------------
 
+  private final UploadProgress                  progress;
   /**
    * The output of the upload is redirected to this receiver.
    */

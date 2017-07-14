@@ -100,6 +100,14 @@ public abstract class Block extends AbstractSingleComponentContainer {
   }
   
   /**
+   * Sets the block to not display the chart view even if it is a multi block.
+   * @param noChart The no chart ability.
+   */
+  public void setNoChart(boolean noChart) {
+    getState().noChart = noChart;
+  }
+  
+  /**
    * Switches the block view.
    * @param detail Should be switch to the detail view ?
    */
@@ -153,10 +161,11 @@ public abstract class Block extends AbstractSingleComponentContainer {
                            int x,
                            int y,
                            int width,
+                           int height,
                            boolean alignRight,
                            boolean useAll)
   {
-    getLayout().addComponent(component, x, y, width, alignRight, useAll);
+    getLayout().addComponent(component, x, y, width, height, alignRight, useAll);
   }
   
   /**

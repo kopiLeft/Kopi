@@ -111,6 +111,14 @@ public class VKMultiFieldPosition extends VKPosition {
   public int getColumnEnd() {
     return column;
   }
+  
+  /**
+   * Return the line end pos
+   */
+  public int getLineEnd() {
+    return line;
+  }
+  
   /**
    * Returns the point that is on the most right and bottom from the location
    * of the object and the parameter

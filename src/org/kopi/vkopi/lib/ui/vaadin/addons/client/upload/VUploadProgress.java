@@ -19,15 +19,11 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.upload;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VImage;
-
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.vaadin.client.ApplicationConnection;
 
 /**
  * The upload progress bar widget.
@@ -42,18 +38,17 @@ public class VUploadProgress extends Composite {
    * Creates the upload progress widget
    */
   public VUploadProgress() {
-    grid = new Grid(1, 51);
+    grid = new Grid(1, CELLS_NUMBER + 1);
     grid.setStyleName("k-upload-progress-bar");
     grid.setCellPadding(0);
     grid.setCellSpacing(0);
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < CELLS_NUMBER; i++) {
       grid.getCellFormatter().getElement(0, i).setClassName("k-upload-progress-empty-cell");
     }
-    waitImage = new VImage();
-    waitImage.setStyleName("k-upload-progress-wait");
-    grid.setWidget(0, 50, waitImage);
-    grid.getCellFormatter().setAlignment(0, 50, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+    grid.getCellFormatter().setAlignment(0, CELLS_NUMBER, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
+    grid.getCellFormatter().getElement(0, CELLS_NUMBER).setClassName("k-upload-percentage");
     initWidget(grid);
+    removeStyleName("v-widget");
   }
   
   //---------------------------------------------------
@@ -70,11 +65,16 @@ public class VUploadProgress extends Composite {
   }
   
   /**
-   * Sets the wait image.
-   * @param connection The application connection.
+   * Sets the progress of the upload.
+   * @param receivedBytes The received bytes.
+   * @param contentLength The content length.
    */
-  public void setWaitImage(ApplicationConnection connection) {
-    waitImage.setSrc(ResourcesUtil.getImageURL(connection, "wait_progress.gif"));
+  public void setProgress(long receivedBytes, long contentLength) {
+    setTotalJobs(contentLength);
+    if (contentLength > 0) {
+      setVisible(true);
+    }
+    setProgress(receivedBytes);
   }
   
   /**
@@ -89,16 +89,18 @@ public class VUploadProgress extends Composite {
    * Set the progress bar to the given job.
    * @param job progress to set
    */
-  public void setProgress(long currentJob) {
+  public void setProgress(float currentJob) {
     if (currentJob <= totalJobs) {
       int           completed;   
       float         percentage;
 
       percentage = (currentJob / totalJobs) * 1f;
-      completed = (int)(percentage * 50);
-      for (int i = 0; i < 50; i++) {
+      completed = (int)(percentage * CELLS_NUMBER);
+      for (int i = 0; i < CELLS_NUMBER; i++) {
         if (i <= completed) {
+          grid.getCellFormatter().getElement(0, i).removeClassName("k-upload-progress-empty-cell");
           grid.getCellFormatter().getElement(0, i).setClassName("k-upload-progress-full-cell");
+          grid.getCellFormatter().getElement(0, CELLS_NUMBER).setInnerText(String.valueOf((int) (percentage * 100)) + "%");
         }
       }
     }
@@ -110,5 +112,5 @@ public class VUploadProgress extends Composite {
   
   private final Grid                            grid;
   private long                                  totalJobs;
-  private final VImage                          waitImage;
+  private static final int                      CELLS_NUMBER = 170;
 }

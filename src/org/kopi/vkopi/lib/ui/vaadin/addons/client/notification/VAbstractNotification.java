@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,32 +25,33 @@ import java.util.List;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VSpanPanel;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VImage;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.NotificationListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.VEditorTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.ui.FocusableFlowPanel;
 
 /**
  * An abstract implementation of notification components such as
  * warnings, errors, confirms and informations.
  */
-public abstract class VAbstractNotification extends FocusPanel implements CloseHandler<PopupPanel>, KeyPressHandler {
+public abstract class VAbstractNotification extends FocusableFlowPanel implements CloseHandler<PopupPanel>, KeyPressHandler {
   
   //-------------------------------------------------
   // CONSTRUCTOR
@@ -65,32 +66,19 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
     getElement().getStyle().setProperty("outline", "0px");
     setStyleName(Styles.NOTIFICATION);
     listeners = new ArrayList<NotificationListener>();
-    table = new FlexTable();
-    table.setCellSpacing(5);
-    table.setCellPadding(2);
-    table.getElement().setPropertyString("align", "center");
-    
-    title = new VSpan();
-    table.setWidget(0, 0, title);
-    table.getFlexCellFormatter().setStyleName(0, 0, Styles.NOTIFICATION_TITLE);    
-    table.getFlexCellFormatter().setColSpan(0, 0, 2);;
-    
-    image = new VImage();
-    image.setStyleName(Styles.NOTIFICATION_IMAGE);
-    table.setWidget(1, 0, image);
-    table.getCellFormatter().setAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-    
-    message = new VSpan();
+    title = new VH3();
+    icon = new VIcon();
+    icon.setName(getIconName());
+    content = new FlowPanel();
+    message = new VParagraph();
     message.setStyleName(Styles.NOTIFICATION_MESSAGE);
-    table.setWidget(1, 1, message);
-
     buttons = new VSpanPanel();
     buttons.setStyleName(Styles.NOTIFICATION_BUTTONS);
-    table.setWidget(2, 0, buttons);
-    table.getFlexCellFormatter().setAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-    table.getFlexCellFormatter().setColSpan(2, 0, 2);
-    table.setWidth("100%");
-    setWidget(table);
+    add(title);
+    add(content);
+    content.add(icon);
+    content.add(message);
+    content.add(buttons);
     addKeyPressHandler(this);
     sinkEvents(Event.ONKEYDOWN | Event.ONKEYPRESS);
   }
@@ -100,7 +88,6 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
    * @param connection  The application connection.
    */
   public void init(ApplicationConnection connection) {
-    setImage(connection);
     popup = new VPopup(connection, false, true);
     popup.addCloseHandler(this);
     popup.setAnimationEnabled(true);
@@ -122,9 +109,13 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
           setButtons(locale); 
           parent.add(popup);
           popup.setWidget(VAbstractNotification.this);
-          popup.center();
+          popup.center(VMainWindow.get().getCurrentWindow());
           if (VInputTextField.getLastFocusedTextField() != null) {
             lastFocusedWindow = VInputTextField.getLastFocusedTextField().getParentWindow();
+          }
+          // it can be an editor widget
+          if (lastFocusedWindow == null && VEditorTextField.getLastFocusedEditor() != null) {
+            lastFocusedWindow = VEditorTextField.getLastFocusedEditor().getWindow();
           }
           Scheduler.get().scheduleFinally(new ScheduledCommand() {
 
@@ -132,7 +123,7 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
             public void execute() {
               focus();
             }
-          });  
+          });
         }
       }.schedule(200); // delay it after a popup close to ensure that it will not show behind the glass pane
     }
@@ -230,13 +221,6 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
   }
   
   /**
-   * Focus a component.
-   */
-  protected void focus() {
-    // focus a component.
-  }
-  
-  /**
    * Sets yes is a default answer.
    * @param yesIsDefault Yes is the default answer.
    */
@@ -250,11 +234,10 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
     listeners.clear();
     listeners = null;
     popup = null;
-    table = null;
     title = null;
-    image = null;
     message = null;
     buttons = null;
+    content = null;
     lastFocusedWindow = null;
   }
   
@@ -269,21 +252,61 @@ public abstract class VAbstractNotification extends FocusPanel implements CloseH
   public abstract void setButtons(String locale);
   
   /**
-   * Sets the notification image.
-   * @param applicationConnection The application connection.
+   * Returns the icon name to be used with this notification.
+   * @return The icon name to be used with this notification.
    */
-  public abstract void setImage(ApplicationConnection applicationConnection);
+  protected abstract String getIconName();
+  
+  //-------------------------------------------------
+  // INNER CLASSES
+  //-------------------------------------------------
+  
+  /**
+   * GWT widget that wraps a h3 HTML tag.
+   */
+  private static class VH3 extends Widget {
+    
+    public VH3() {
+      setElement(Document.get().createElement("h3"));
+    }
+    
+    /**
+     * Sets the inner text for this widget element.
+     * @param text The widget inner text.
+     */
+    public void setText(String text) {
+      getElement().setInnerText(text);
+    }
+  }
+  
+  /**
+   * A simple panel that wraps a p html tag. 
+   */
+  private static class VParagraph extends Widget {
+    
+    public VParagraph() {
+      setElement(Document.get().createElement("p"));
+    }
+    
+    /**
+     * Sets the inner HTML for this widget element.
+     * @param html The widget inner HTML.
+     */
+    public void setHtml(String html) {
+      getElement().setInnerHTML(html);
+    }
+  }
     
   //-------------------------------------------------
-  // CONSTRUCTOR
+  // DATA MEMBERS
   //-------------------------------------------------
   
   private List<NotificationListener>            listeners;
   protected VPopup                              popup;
-  private FlexTable                             table;
-  private VSpan                                 title;
-  protected VImage                              image;
-  private VSpan                                 message;
+  private VIcon                                 icon;
+  private VH3                                   title;
+  private FlowPanel                             content;
+  private VParagraph                            message;
   protected VSpanPanel                          buttons;
   protected boolean				yesIsDefault;
   private VWindow                               lastFocusedWindow;

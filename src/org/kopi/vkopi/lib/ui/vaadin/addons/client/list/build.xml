@@ -38,7 +38,13 @@
 				    VListDialog.java
 				    ListDialogState.java
 				    TableCell.java
-				    Table.java" />
+				    Table.java
+				    GridListDialogCloseServerRpc.java
+				    GridListDialogConnector.java
+				    GridListDialogSelectionServerRpc.java
+				    GridListDialogState.java
+				    VGridListDialog.java
+				    GridListDialogSearchServerRpc.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

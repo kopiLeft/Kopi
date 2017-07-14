@@ -86,7 +86,8 @@
   	  	   Menu-en_GB.xml Window-en_GB.xml Messages-en_GB.xml
   	  	   VKMessages-en_GB.xml VlibProperties-en_GB.xml General-ar_TN.xml
   	           HelpViewer-ar_TN.xml Preview-ar_TN.xml Menu-ar_TN.xml Window-ar_TN.xml
-  	           Messages-ar_TN.xml VKMessages-ar_TN.xml VlibProperties-ar_TN.xml" />
+  	           Messages-ar_TN.xml VKMessages-ar_TN.xml VlibProperties-ar_TN.xml
+		   RootMenu-ar_TN.xml RootMenu-fr_FR.xml RootMenu-de_AT.xml RootMenu-en_GB.xml" />
 	
   <property name="files" value="${pngfiles} ${giffiles} ${psfiles} ${otherfiles} ${localizationfiles}" />
 

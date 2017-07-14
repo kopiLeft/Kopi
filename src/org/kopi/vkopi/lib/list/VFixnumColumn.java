@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.list;
 
+import org.kopi.xkopi.lib.type.Fixed;
+
 @SuppressWarnings("serial")
 public class VFixnumColumn extends VListColumn {
 
@@ -36,5 +38,13 @@ public class VFixnumColumn extends VListColumn {
                        int scale,
                        boolean sortAscending) {
     super(title, column, align, width, sortAscending);
+  }
+
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
+  public Class getDataType() {
+    return Fixed.class;
   }
 }

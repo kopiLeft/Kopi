@@ -154,6 +154,13 @@ public class VIntegerCodeField extends VCodeField {
   public String getSqlImpl(int r) {
     return org.kopi.xkopi.lib.base.KopiUtils.toSql(value[r] == -1 ? null : codes[value[r]]);
   }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Integer.class;
+  }
 
   // ----------------------------------------------------------------------
   // FORMATTING VALUES WRT FIELD TYPE

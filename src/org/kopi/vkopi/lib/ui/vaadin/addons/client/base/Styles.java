@@ -55,7 +55,7 @@ public abstract class Styles {
   
   public static final String			ACTOR = "k-actor";
   public static final String			ACTOR_ANCHOR = "k-actor-anchor";
-  public static final String			ACTOR_IMAGE = "k-actor-image";
+  public static final String			ACTOR_IMAGE = "k-actor-icon";
   public static final String			ACTOR_LABEL = "k-actor-label";
   
   public static final String			INPUT_BUTTON = "k-input-button";
@@ -153,4 +153,7 @@ public abstract class Styles {
   public static final String                    ACTOR_FIELD_VALUE = "actor-field-value";
   public static final String                    ACTOR_FIELD_CAPTION = "actor-field-caption";
   public static final String                    ACTOR_FIELD_ICON = "actor-field-icon";
+  
+  // boolean field styles
+  public static final String                    BOOLEAN_FIELD = "k-boolean-field";
 }

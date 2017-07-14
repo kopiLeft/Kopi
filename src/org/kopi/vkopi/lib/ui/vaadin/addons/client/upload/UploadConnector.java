@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.upload;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.Upload;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -28,18 +29,20 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.ComponentConnector;
+import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.Paintable;
 import com.vaadin.client.TooltipInfo;
 import com.vaadin.client.UIDL;
 import com.vaadin.client.communication.StateChangeEvent;
-import com.vaadin.client.ui.AbstractComponentConnector;
+import com.vaadin.client.ui.AbstractSingleComponentContainerConnector;
 import com.vaadin.shared.EventId;
 import com.vaadin.shared.ui.Connect;
 import com.vaadin.shared.ui.Connect.LoadStyle;
 
 @SuppressWarnings({ "serial", "deprecation" })
 @Connect(value = Upload.class, loadStyle = LoadStyle.LAZY)
-public class UploadConnector extends AbstractComponentConnector implements Paintable {
+public class UploadConnector extends AbstractSingleComponentContainerConnector implements Paintable {
   
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -54,17 +57,6 @@ public class UploadConnector extends AbstractComponentConnector implements Paint
       @Override
       public void submitUpload() {
 	getWidget().submit();
-      }
-
-      @Override
-      public void onProgress(final long contentLength, final long receivedBytes) {
-        Scheduler.get().scheduleEntry(new ScheduledCommand() {
-
-          @Override
-          public void execute() {
-            getWidget().setProgress(receivedBytes, contentLength);
-          }
-        });
       }
     });
   }
@@ -108,6 +100,18 @@ public class UploadConnector extends AbstractComponentConnector implements Paint
   @Override
   public UploadState getState() {
     return (UploadState) super.getState();
+  }
+
+  @Override
+  public void updateCaption(ComponentConnector connector) {
+    // caption is not handled
+  }
+
+  @Override
+  public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
+    if (getContentWidget() instanceof VUploadProgress) {
+      getWidget().setProgressWidget((VUploadProgress) getContentWidget());
+    }
   }
   
   /**
@@ -162,7 +166,7 @@ public class UploadConnector extends AbstractComponentConnector implements Paint
 
   @Override
   public TooltipInfo getTooltipInfo(Element element) {
-    return new TooltipInfo(LocalizedProperties.getString(getState().locale, "UPHELP"), null);
+    return WidgetUtils.createTooltipInfo(LocalizedProperties.getString(getState().locale, "UPHELP"));
   }
 }
 

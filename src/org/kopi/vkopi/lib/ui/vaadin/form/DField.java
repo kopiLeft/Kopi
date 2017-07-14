@@ -78,8 +78,10 @@ public abstract class DField extends Field implements UField, FieldListener {
     this.isEditable = (options & VConstants.FDO_NOEDIT) == 0;
     setImmediate(true);
     addFieldListener(this);
-    this.label.setAutofill(model.hasAutofill());
-    if (getModel() instanceof VStringField) {
+    this.label.setHasAction(!model.hasIcon() && model.hasAction());
+    if (getModel().getIcon() != null) {
+      setVisibleHeight(3); // actor fields takes 3 lines by default
+    } else if (getModel() instanceof VStringField) {
       setVisibleHeight(((VStringField)getModel()).getVisibleHeight());
     } else if (getModel() instanceof VImageField) {
       /*
@@ -114,7 +116,7 @@ public abstract class DField extends Field implements UField, FieldListener {
     setIndex(model.getIndex());
     setHasPreFieldTrigger(getModel().hasTrigger(VConstants.TRG_PREFLD));
     addActors(getActors());
-    enableAutofill(getModel().getDefaultAccess());
+    enableActionTrigger(getModel().getDefaultAccess());
   }	
    
   //----------------------------------------------------------------------
@@ -247,7 +249,7 @@ public abstract class DField extends Field implements UField, FieldListener {
 	updateStyles(access);
 	setVisible(access != VConstants.ACS_HIDDEN);
 	update(label);
-	enableAutofill(access);
+	enableActionTrigger(access);
       }
     });
   }
@@ -296,14 +298,14 @@ public abstract class DField extends Field implements UField, FieldListener {
   }
   
   /**
-   * Enables the auto fill action according to a given access.
-   * The auto fill action is enabled if the model allows it and
-   * if the field is not hidden.
-   * @param access The field access.
+   * Enables the action trigger according if the field has an action trigger and
+   * does not contain an icon.
    */
-  private void enableAutofill(int access) {
-    if (model.hasAutofill() && access >= VConstants.ACS_SKIPPED) {
-      label.addLabelListener(listener);
+  private void enableActionTrigger(int access) {
+    if (access >= VConstants.ACS_VISIT) {
+      if (getModel().hasTrigger(VConstants.TRG_ACTION) && getModel().getIcon() == null) {
+        label.addLabelListener(listener);
+      }
     } else {
       label.removeLabelListener(listener);
     }
@@ -354,7 +356,7 @@ public abstract class DField extends Field implements UField, FieldListener {
       if (cmd != null) {
         // for field commands this is needed to have the actor model instance
         cmd.setEnabled(false);
-        if ( cmd.getActor() != null) {
+        if (cmd.getActor() != null) {
           actors.add((Actor)cmd.getActor().getDisplay());
         }
       }
@@ -521,7 +523,7 @@ public abstract class DField extends Field implements UField, FieldListener {
 	  || model.getBlock().isDetailMode() == isInDetail()
 	  || model.getBlock().noChart())
       {
-        KopiAction	action = new KopiAction("mouse1") {
+        KopiAction      action = new KopiAction("mouse1") {
 	  
           @Override
           public void execute() throws VException {
@@ -581,7 +583,7 @@ public abstract class DField extends Field implements UField, FieldListener {
               if (recno == getModel().getBlock().getActiveRecord()
                   && getModel() != getModel().getBlock().getActiveField()
                   && getAccess() >= VConstants.ACS_VISIT)
-              {  
+              {
                 getModel().getBlock().gotoField(getModel());
               }
             }
@@ -699,6 +701,22 @@ public abstract class DField extends Field implements UField, FieldListener {
         model.autofillButton();
       }
     });     
+  }
+  
+  /**
+   * Performs the field action trigger
+   */
+  public final void performFieldAction() {
+    if (model.hasAction()) {
+      getModel().getForm().performAsyncAction(new KopiAction("TRG_ACTION") {
+
+        @Override
+        public void execute() throws VException {
+          model.transferFocus(DField.this);
+          getModel().callTrigger(VConstants.TRG_ACTION);
+        }
+      }); 
+    }
   }
   
   // ----------------------------------------------------------------------

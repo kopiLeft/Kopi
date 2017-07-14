@@ -62,6 +62,7 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
                                                 constraints.x,
                                                 constraints.y,
                                                 constraints.width,
+                                                constraints.height,
                                                 constraints.alignRight,
                                                 constraints.useAll);
   }

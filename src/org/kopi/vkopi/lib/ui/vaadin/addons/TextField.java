@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,7 +47,7 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
    * @param col The column number.
    * @param rows The rows number.
    * @param visibleRows The visible rows number.
-   * @param fixedNewLine Are we using default line transformer ?
+   * @param dynamicNewLine Are we using default line transformer ?
    * @param noEcho Is it a password field ?
    * @param scanner Is it a scanner field ?
    * @param noEdit Is it no edit field ?
@@ -56,7 +56,7 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
   public TextField(int col,
       		   int rows,
       		   int visibleRows,
-      		   boolean fixedNewLine,
+      		   boolean dynamicNewLine,
       		   boolean noEcho,
       		   boolean scanner,
       		   boolean noEdit,
@@ -70,7 +70,7 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
     getState().col = col;
     getState().rows = rows;
     getState().visibleRows = visibleRows;
-    getState().fixedNewLine = fixedNewLine;
+    getState().dynamicNewLine = dynamicNewLine;
     getState().noEcho = noEcho;
     getState().scanner = scanner;
     getState().noEdit = noEdit;
@@ -111,6 +111,14 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
    */
   public void setHasAutocomplete(boolean hasAutocomplete) {
     getState().hasAutocomplete = hasAutocomplete;
+  }
+  
+  /**
+   * Sets this field to has an autofill command.
+   * @param hasAutofill Tells if the field has the autofill command.
+   */
+  public void setHasAutofill(boolean hasAutofill) {
+    getState().hasAutofill = hasAutofill;
   }
   
   /**
@@ -444,6 +452,14 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
       }
     }
   }
+  
+  protected void fireAutofill() {
+    for (TextFieldListener l : listeners) {
+      if (l != null) {
+        l.autofill();
+      }
+    }
+  }
 
   //---------------------------------------------------
   // FIELD TYPE
@@ -582,6 +598,11 @@ public class TextField extends AbstractField<String> implements com.vaadin.ui.Co
     @Override
     public void onSuggestion(AutocompleteSuggestion suggestion) {
       fireOnSuggestion(suggestion);
+    }
+    
+    @Override
+    public void autofill() {
+      fireAutofill();
     }
   }
   

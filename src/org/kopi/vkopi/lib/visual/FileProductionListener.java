@@ -29,5 +29,5 @@ public interface FileProductionListener extends EventListener {
    * the report file is produced and the download process should
    * start
    */
-  public void fileProduced(File file);
+  public void fileProduced(File file, String name);
 }

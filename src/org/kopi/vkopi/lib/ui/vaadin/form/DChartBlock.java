@@ -67,6 +67,7 @@ public class DChartBlock extends DBlock implements BlockListener {
                  constraints.x,
                  constraints.y,
                  constraints.width,
+                 constraints.height,
                  constraints.alignRight,
                  constraints.useAll);
   }

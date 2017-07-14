@@ -161,6 +161,10 @@ public class VFixnumField extends VField {
   public boolean isFraction() {
     return fraction;
   }
+  
+  public boolean isNumeric() {
+    return true;
+  }
 
   /*
    * ----------------------------------------------------------------------
@@ -232,6 +236,13 @@ public class VFixnumField extends VField {
       }
       setFixed(rec, v);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Fixed.class;
   }
 
   // ----------------------------------------------------------------------
@@ -470,6 +481,48 @@ public class VFixnumField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    if (o == null) {
+      return "";
+    }
+    
+    return toText(((Fixed)o).setScale(currentScale[0]));
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    int         scale = currentScale[0];
+
+    if (s.equals("")) {
+      return null;
+    } else {
+      Fixed   v;
+
+      try {
+        v = scanFixed(s);
+      } catch (NumberFormatException e) {
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00006"));
+      }
+
+      if (v!= null) {
+        if (v.getScale() > scale) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00011", new Object[]{ new Integer(scale) }));
+        }
+        if (minval != null && v.compareTo(minval) == -1) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00012", new Object[]{ minval }));
+        }
+        if (maxval != null && v.compareTo(maxval) == 1) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ maxval }));
+        }
+        if (toText(v.setScale(maxScale)).length() > getWidth()) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00010"));
+        }
+      }
+      return v;
+    }
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -515,7 +568,7 @@ public class VFixnumField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
   }
 

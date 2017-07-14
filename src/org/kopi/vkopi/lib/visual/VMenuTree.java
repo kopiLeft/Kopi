@@ -22,6 +22,8 @@ package org.kopi.vkopi.lib.visual;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -104,10 +106,9 @@ public class VMenuTree extends VWindow {
     createActor(CMD_INFORMATION, "Help", "Information", null, 0, 0);
     createActor(CMD_HELP, "Help", "Help", "help", KeyEvent.VK_F1, 0);
     setActors(actors);
-
     localizeActors(ApplicationContext.getDefaultLocale());
     createTree(isSuperUser ? true : loadFavorites);
-    localizeModules(ApplicationContext.getDefaultLocale());
+    localizeRootMenus(ApplicationContext.getDefaultLocale());
   }
 
   // ----------------------------------------------------------------------
@@ -238,13 +239,28 @@ public class VMenuTree extends VWindow {
       super.executeVoidTrigger(key);
     }
   }
+  
+  /**
+   * Localizes the root menus with a given locale
+   * @param locale The locale to be used for localization
+   */
+  protected void localizeRootMenus(Locale locale) {
+    LocalizationManager         manager;
+
+    manager = new LocalizationManager(locale, Locale.getDefault());
+    for (RootMenu rootMenu : ROOT_MENUS) {
+      rootMenu.localize(manager);
+    }
+    
+    manager = null;
+  }
 
   /**
    * Localize this menu tree
    *
    * @param     locale  the locale to use
    */
-  public void localizeModules(Locale locale) {
+  protected void localizeModules(Locale locale) {
     LocalizationManager         manager;
 
     manager = new LocalizationManager(locale, Locale.getDefault());
@@ -265,64 +281,45 @@ public class VMenuTree extends VWindow {
    */
   @SuppressWarnings("deprecation")
   private void createTree(boolean loadFavorites) {
-    Module[]                    localModules;
-    DefaultMutableTreeNode      localTree;
-
+    Module[]            localModules;
+    boolean             hasModules;
+    
     localModules = loadModules(loadFavorites);
     if (localModules.length == 0) {
-      localTree = null;
+      hasModules = false;
     } else {
-      Module                    root;
-
-      root = new Module(0,
-                        0,
-                        VlibProperties.getString("PROGRAM"),
-                        VlibProperties.getString("program"),
-                        null,
-                        Module.ACS_PARENT,
-                        null);
-      localTree = createTree(localModules, root, false);
+      hasModules = false;
+      for (RootMenu rootMenu : ROOT_MENUS) {
+        rootMenu.createTree(localModules, isSuperUser());
+        hasModules |= !rootMenu.isEmpty();
+      }
     }
 
-    if (localTree == null) {
+    if (!hasModules) {
       error(MessageCode.getMessage("VIS-00042"));
       throw new InconsistencyException();//never accessed
     }
-
-    root = localTree;
+    
+    createTopLevelTree();
   }
 
   /**
-   * Builds the module tree.
+   * Creates the root tree that contains all root menus.
+   * This is used to keep compatibility with swing implementation
    */
-  private DefaultMutableTreeNode createTree(Module[] modules,
-                                            Module root,
-                                            boolean force)
-  {
-    if (root.getAccessibility() == Module.ACS_TRUE || isSuperUser()) {
-      force = true;
-    }
-
-    if (root.getObject() != null) {
-      return force ? new DefaultMutableTreeNode(root) : null;
-    } else {
-      DefaultMutableTreeNode    self = null;
-
-      for (int i = 0; i < modules.length; i++) {
-        if (modules[i].getParent() == root.getId()) {
-          DefaultMutableTreeNode        node;
-
-          node = createTree(modules, modules[i], force);
-          if (node != null) {
-            if (self == null) {
-              self = new DefaultMutableTreeNode(root);
-            }
-
-            self.add(node);
-          }
-        }
+  private void createTopLevelTree() {    
+    root = new DefaultMutableTreeNode(new Module(0,
+                                                 0,
+                                                 VlibProperties.getString("PROGRAM"),
+                                                 VlibProperties.getString("program"),
+                                                 null,
+                                                 Module.ACS_PARENT,
+                                                 Integer.MAX_VALUE,
+                                                 null));
+    for (RootMenu menu : ROOT_MENUS) {
+      if (!menu.isEmpty()) {      
+        ((DefaultMutableTreeNode)root).add((DefaultMutableTreeNode) menu.getRoot());
       }
-      return self;
     }
   }
 
@@ -355,12 +352,13 @@ public class VMenuTree extends VWindow {
                                  getModules.getString(4, isUnicode),
                                  getModules.getString(5, isUnicode),
                                  Module.ACS_PARENT,
+                                 getModules.getInt(6),
                                  icon);
       localModules.add(module);
       items.add(module);
     }
     getModules.close();
-
+    
     return localModules;
   }
 
@@ -478,9 +476,32 @@ public class VMenuTree extends VWindow {
         }
       }
     }
-
-    array = (Module[])org.kopi.util.base.Utils.toArray(localModules, Module.class);
+    // add default modules
+    addLogoutModule(localModules);
+    // order the menus alphabetically
+    localizeModules(ApplicationContext.getDefaultLocale());
+    Collections.sort(localModules);
+    array = localModules.toArray(new Module[localModules.size()]);
+    
     return array;
+  }
+  
+  /**
+   * Adds the default logout module
+   */
+  protected void addLogoutModule(List<Module> localModules) {
+    Module              logout;
+    
+    logout = new Module(Integer.MAX_VALUE,
+                        USER_MENU,
+                        "logout",
+                        RootMenu.ROOT_MENU_LOCALIZATION_RESOURCE,
+                        LogoutModule.class.getName(),
+                        Module.ACS_TRUE,
+                        Integer.MIN_VALUE,
+                        null);
+    items.add(logout);
+    localModules.add(logout);
   }
 
   /**
@@ -541,8 +562,20 @@ public class VMenuTree extends VWindow {
   // ACCESSORS
   // --------------------------------------------------------------------
 
+  /**
+   * Returns the root node of this menu tree.
+   * @return The root node of this menu tree.
+   */
   public TreeNode getRoot() {
     return root;
+  }
+  
+  /**
+   * Returns the list of available root menus.
+   * @return The list of available root menus.
+   */
+  public List<RootMenu> getRoots() {
+    return Arrays.asList(ROOT_MENUS);
   }
 
   public List<Integer> getShortcutsID() {
@@ -580,12 +613,12 @@ public class VMenuTree extends VWindow {
   private List<Module>                  items;
   private String                	userName;
   private String                	groupName;
-  private List<Integer>                shortcutsID;
+  private List<Integer>                 shortcutsID;
 
   private static final String   	SELECT_MODULES =
     " SELECT    M.ID, M.Vater, M.Kurzname, M.Quelle, M.Objekt, M.Prioritaet, M.Symbol" +
     " FROM      MODULE M" +
-    " ORDER BY  6 DESC, 1";
+    " ORDER BY  6 DESC";
 
   private static final String   	SELECT_USER_RIGHTS =
     " SELECT    M.ID, B.Zugriff, M.Prioritaet" +
@@ -618,6 +651,17 @@ public class VMenuTree extends VWindow {
   public static final int      		CMD_UNFOLD      = 6;
   public static final int      		CMD_INFORMATION = 7;
   public static final int      		CMD_HELP        = 8;
+  
+  public static final int               MAIN_MENU       = -1;
+  public static final int               USER_MENU       = -2;
+  public static final int               ADMIN_MENU      = -3;
+  public static final int               BOOKMARK_MENU   = -4;
+  
+  private static final RootMenu[]       ROOT_MENUS      = new RootMenu[] {
+    new RootMenu(MAIN_MENU, "forms"),
+    new RootMenu(USER_MENU, "user"),
+    new RootMenu(ADMIN_MENU, "admin"),
+  };
 
   private static final String           MENU_LOCALIZATION_RESOURCE = "org/kopi/vkopi/lib/resource/Menu";
 }

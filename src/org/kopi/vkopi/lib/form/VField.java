@@ -341,6 +341,13 @@ public abstract class VField implements VConstants, VModel {
     }
     return false;
   }
+  
+  /**
+   * Returns true if it is a numeric field.
+   */
+  public boolean isNumeric() {
+    return false;
+  }
 
   // ----------------------------------------------------------------------
   // LOCALIZATION
@@ -431,6 +438,12 @@ public abstract class VField implements VConstants, VModel {
    * @exception VException      an exception is raised if text is bad
    */
   public abstract void checkType(int rec, Object s) throws VException;
+  
+  /**
+   * Returns the data type handled by this field.
+   * @return The data type handled by this field.
+   */
+  public abstract Class getDataType();
 
   /**
    * verify that value is valid (on exit)
@@ -1581,6 +1594,10 @@ public abstract class VField implements VConstants, VModel {
 
     return getTextImpl(r);
   }
+  
+  public abstract String toText(Object o);
+  
+  public abstract Object toObject(String s) throws VException;
 
   /**
    * Returns the display representation of field value of given record.

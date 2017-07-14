@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VImage;
 
 import com.google.gwt.dom.client.Style.BorderStyle;
@@ -96,6 +97,11 @@ public class VImageField extends VObjectField implements KeyDownHandler {
     }
   }
   
+  @Override
+  protected ImageFieldConnector getConnector() {
+    return ConnectorUtils.getConnector(client, this, ImageFieldConnector.class);
+  }
+  
   /**
    * Clears the image content
    */
@@ -128,6 +134,9 @@ public class VImageField extends VObjectField implements KeyDownHandler {
   protected void checkValue(int rec) {
     // nothing to perform
   }
+  
+  @Override
+  protected void setParentVisibility(boolean visible) {}
   
   @Override
   public void clear() {

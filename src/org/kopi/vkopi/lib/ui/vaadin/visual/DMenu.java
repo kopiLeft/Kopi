@@ -21,6 +21,7 @@ package org.kopi.vkopi.lib.ui.vaadin.visual;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -34,6 +35,7 @@ import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.Module;
+import org.kopi.vkopi.lib.visual.RootMenu;
 import org.kopi.vkopi.lib.visual.UMenuTree;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VMenuTree;
@@ -45,7 +47,7 @@ import org.kopi.vkopi.lib.visual.VlibProperties;
  * menu with vertical sub menus drops.
  */
 @SuppressWarnings("serial")
-public class DModuleMenu extends ModuleList implements ModuleListListener, UMenuTree {
+public abstract class DMenu extends ModuleList implements ModuleListListener, UMenuTree {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -55,23 +57,30 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
    * Creates the module menu from a menu tree model.
    * @param model The menu tree model.
    */
-  public DModuleMenu(VMenuTree model) {
+  protected DMenu(VMenuTree model) {
     this.model = model;
     model.setDisplay(this);
     modules = new HashMap<Integer, Module>();
     waitIndicator = new WaitWindow();
     setAutoOpen(false);
     setAnimationEnabled(true);
+    setType(getType());
     // directly build menu content.
-    buildModuleMenu(model.getRoot(), null);
-    fillModulesMap();
+    buildMenu(model.getRoots());
     addModuleListListener(this);
-    maybeAddShortcuts();
   }
 
   //---------------------------------------------------
   // UTILS
   //---------------------------------------------------
+  
+  protected void buildMenu(List<RootMenu> roots) {
+    for (RootMenu rootMenu : roots) {
+      if (rootMenu.getId() == getType() && !rootMenu.isEmpty()) {
+        buildModuleMenu(rootMenu.getRoot(), null);
+      }
+    }
+  }
   
   /**
    * Builds the menu bar from a root item and a parent menu item.
@@ -95,6 +104,7 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
     
     module = (Module) node.getUserObject();
     item = toModuleItem(module, parent);
+    modules.put(module.getId(), module);
     // build module children
     for (int i = 0; i < node.getChildCount(); i++) {
       toModuleItem((DefaultMutableTreeNode) node.getChildAt(i), item);
@@ -124,16 +134,6 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
     }
     
     return item;
-  }
-  
-  /**
-   * Fills the module map in order to facilitate module
-   * search for execution.
-   */
-  protected void fillModulesMap() {
-    for (Module module : model.getModules()) {
-      modules.put(module.getId(), module);
-    }
   }
   
   /**
@@ -170,34 +170,6 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
         }
       }
     });
-  }
-  
-  /**
-   * Adds shortcuts menu item if necessary
-   */
-  protected final void maybeAddShortcuts() {
-    if (!getModel().getShortcutsID().isEmpty()) {
-      ModuleItem          favoriteItem;
-
-      favoriteItem = addItem(FAVORITES_ITEM_ID, VlibProperties.getString("toolbar-title"), null, false);
-      for (int i = 0; i < ((VMenuTree) getModel()).getShortcutsID().size() ; i++) {
-        int       id = getModel().getShortcutsID().get(i).intValue();
-
-        for (int j = 0; j < getModel().getModuleArray().length; j++) {
-          if (getModel().getModuleArray()[j].getId() == id) {
-            addShortcut(getModel().getModuleArray()[j], favoriteItem);
-          }
-        }
-      }
-    }
-  }
-  
-  /**
-   * Adds the given module to favorites
-   * @param module The module to be added to book mark.
-   */
-  protected final void addShortcut(Module module, ModuleItem parent) {
-    toModuleItem(module, parent);
   }
   
   /**
@@ -315,7 +287,7 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
   public void unsetProgressDialog() {}
 
   @Override
-  public void fileProduced(File file) {}
+  public void fileProduced(File file, String name) {}
 
   @Override
   public UTree getTree() {
@@ -341,24 +313,29 @@ public class DModuleMenu extends ModuleList implements ModuleListListener, UMenu
 
   @Override
   public void gotoShortcuts() {
-    BackgroundThreadHandler.access(new Runnable() {
-      
-      @Override
-      public void run() {
-        doItemAction(FAVORITES_ITEM_ID);
-      }
-    });
+    // TODO
   }
 
   @Override
   public void showApplicationInformation(String message) {}
+  
+  // --------------------------------------------------
+  // ABSTRACT METHODS
+  // --------------------------------------------------
+  
+  /**
+   * Returns the type associated with this menu.
+   * This is the ID of a root menu provided by the
+   * menu tree model.
+   * @return The type of this menu.
+   */
+  public abstract int getType();
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VMenuTree			model;
-  private final HashMap<Integer, Module> 	modules;
-  private final WaitWindow			waitIndicator;
-  private static final String                   FAVORITES_ITEM_ID = "favorites";
+  protected final VMenuTree                     model;
+  protected final HashMap<Integer, Module>      modules;
+  private final WaitWindow                      waitIndicator;
 }

@@ -19,15 +19,12 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.notification;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.vaadin.client.ApplicationConnection;
 
 /**
  * Information type notification widget.
@@ -53,8 +50,8 @@ public class VInformationNotification extends VAbstractNotification {
   }
   
   @Override
-  public void setImage(ApplicationConnection connection) {
-    image.setSrc(ResourcesUtil.getImageURL(connection, Icons.INFO));
+  protected String getIconName() {
+    return "info-circle";
   }
   
   @Override

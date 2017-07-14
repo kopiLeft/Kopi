@@ -54,7 +54,7 @@ public class DFieldUI extends VFieldUI {
    * 
    */
   protected UField createDisplay(ULabel label, VField model, boolean detail) {
-    UField      	field;
+    DField      	field;
 
     switch (model.getType()) {
     case VField.MDL_FLD_COLOR:
@@ -90,7 +90,7 @@ public class DFieldUI extends VFieldUI {
   /**
    * 
    */
-  protected ULabel createLabel(String text, String help) {
+  protected ULabel createLabel(String text, String help, boolean detail) {
     return new DLabel(text, help);
   }
 

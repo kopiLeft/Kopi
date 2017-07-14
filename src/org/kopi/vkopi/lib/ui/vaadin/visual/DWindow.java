@@ -50,8 +50,8 @@ import org.kopi.vkopi.lib.visual.WaitInfoListener;
 
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.ErrorHandler;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.UI;
 
 /**
  * The <code>DWindow</code> is an abstract implementation of an {@link UWindow} component.
@@ -74,7 +74,6 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
     setImmediate(true);
     this.model = model;
     setCaption(model.getTitle());
-    setSizeFull();
     createEditMenu();
     model.addVActionListener(this);
     model.addModelCloseListener(this);
@@ -215,7 +214,13 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
 
   @Override
   public void performBasicAction(final KopiAction action) {
-    performActionImpl(action, false);
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        performActionImpl(action, false); 
+      }
+    });
   }
   
   /**
@@ -226,13 +231,19 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
    * @param action The {@link KopiAction} to be executed.
    * @param asynch Should the action run asynchronously ?
    */
-  private void performActionImpl(final KopiAction action, boolean asynch) {
+  private void performActionImpl(KopiAction action, boolean asynch) {
     if (inAction == true) {
       // put the action in the queue to be executed after the current action is finished
       actionsQueue.add(new QueuedAction(action, asynch));
+      // it can be that setInAction is called before queuing the action.
+      // we test again if the current action is released, we fire manually the execution
+      // queue.
+      if (currentAction == null) {
+        setInAction();
+      }
       return;
     }
-    
+
     inAction = true;
     currentAction = action;
     getModel().setCommandsEnabled(false);
@@ -246,10 +257,10 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
         getModel().executedAction(currentAction);
       }
     } else {
-      Thread 	currentThread = new Thread(actionRunner);
-      
+      Thread    currentThread = new Thread(actionRunner);
+
       currentThread.start();
-    } 
+    }
   }
 	  
   public final void setStatePanel(Panel statePanel) {
@@ -372,7 +383,13 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
   
   @Override
   public void performAsyncAction(final KopiAction action) {
-    performActionImpl(action, true);
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        performActionImpl(action, true); 
+      }
+    });
   }
 
   @Override
@@ -1027,7 +1044,13 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
      * with window mechanism and will block other actions.
      */
     public void execute() {
-      performActionImpl(action, asynch);
+      BackgroundThreadHandler.access(new Runnable() {
+        
+        @Override
+        public void run() {
+          performActionImpl(action, asynch); 
+        }
+      });
     }
     
     /**
@@ -1051,14 +1074,22 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
   //---------------------------------------------------
    
   @Override
-  public void fileProduced(File file) {
-    final ExportResource    resource =  new ExportResource (file, file.getName());
-    
+  public void fileProduced(final File file, final String name) {
     BackgroundThreadHandler.access(new Runnable() {
-      
+
       @Override
       public void run() {
-	UI.getCurrent().getPage().open(resource, "_blank", false);
+        //Firefox ignores the text coming after the first space in the file name
+        ExportResource          resource;
+        String                  resourceName;
+
+        if (Page.getCurrent().getWebBrowser().isFirefox()) {
+          resourceName = name.replaceAll("\\s", "_");
+        } else {
+          resourceName = name;
+        }
+        resource = new ExportResource(file, resourceName);
+        Page.getCurrent().open(resource, "_blank", false);
       }
     });
   }

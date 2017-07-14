@@ -165,6 +165,14 @@ public class VBooleanCodeField extends VCodeField {
       return codes[value[r]].booleanValue() ? "{fn TRUE}" : "{fn FALSE}";
     }
   }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Boolean.class;
+  }
+
 
   /*
    * ----------------------------------------------------------------------

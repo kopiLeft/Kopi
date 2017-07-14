@@ -155,6 +155,9 @@ public class VActorField extends VObjectField implements HasClickHandlers {
   protected void checkValue(int rec) {}
   
   @Override
+  protected void setParentVisibility(boolean visible) {}
+  
+  @Override
   public void clear() {
     super.clear();
     inner.clear();

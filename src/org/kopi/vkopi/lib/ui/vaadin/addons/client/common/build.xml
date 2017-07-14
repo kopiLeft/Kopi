@@ -48,7 +48,8 @@
 				    VHeader.java
 				    VLink.java
 				    VSpan.java
-				    VIcon.java" />
+				    VIcon.java
+  	                            VSmall.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

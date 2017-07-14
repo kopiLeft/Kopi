@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,15 +21,13 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.upload;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VImage;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -70,15 +68,13 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
     ok = new VInputButton();
     cancel = new VInputButton();
     browse = new VInputButton();
-    image = new VImage();
-    progress = new VUploadProgress();
+    image = new VIcon();
     buttons = new HorizontalPanel();
     setStyleName("k-upload");
     content.setStyleName("k-upload-content");
     buttons.setStyleName("k-upload-buttons");
     browse.setStyleName("k-upload-browse");
     textInput.setStyleName("k-upload-textinput");
-    image.setStyleName("k-upload-image");
     textInput.setReadOnly(true);
     textInput.setCharacterWidth(80);
     content.setWidget(0, 0, title);
@@ -86,7 +82,6 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
     content.setWidget(1, 0, image);
     content.setWidget(1, 1, textInput);
     content.setWidget(1, 2, browse);
-    content.setWidget(2, 0, progress);
     content.getFlexCellFormatter().setColSpan(2, 0, 3);
     buttons.add(cancel);
     buttons.add(ok);
@@ -103,7 +98,6 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
     content.getCellFormatter().setAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
     content.getCellFormatter().setAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
     setWidget(content);
-    progress.setVisible(false);
   }
   
   //---------------------------------------------------
@@ -115,7 +109,8 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
    * @param connection The application connection.
    */
   protected void setImage(ApplicationConnection connection) {
-    image.setSrc(ResourcesUtil.getImageURL(connection, "upload.png"));
+    image.setName("upload");
+    image.addStyleName("k-upload-image");
   }
   
   /**
@@ -143,7 +138,6 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
     popup.setGlassEnabled(true);
     popup.setGlassStyleName("k-upload-glass");
     ok.setEnabled(false);
-    progress.setWaitImage(connection);
     Scheduler.get().scheduleFinally(new ScheduledCommand() {
       
       @Override
@@ -154,16 +148,13 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
   }
   
   /**
-   * Sets the progress of the upload.
-   * @param receivedBytes The received bytes.
-   * @param contentLength The content length.
+   * Sets the progress bar widget for this upload.
+   * @param progress The progress bar widget.
    */
-  public void setProgress(long receivedBytes, long contentLength) {
-    progress.setTotalJobs(contentLength);
-    if (contentLength > 0) {
-      progress.setVisible(true);
-    }
-    progress.setProgress(receivedBytes);
+  public void setProgressWidget(VUploadProgress progress) {
+    this.progress = progress;
+    content.setWidget(2, 0, this.progress);
+    progress.setVisible(false);
   }
   
   /**
@@ -347,18 +338,6 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
     });
   }
   
-  @Override
-  protected void onLoad() {
-    super.onLoad();
-    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-      
-      @Override
-      public void execute() {
-        progress.getElement().getStyle().setWidth(content.getElement().getClientWidth(), Unit.PX);
-      }
-    });
-  }
-  
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
@@ -370,7 +349,7 @@ public class VUpload extends SimpleFocusablePanel implements CloseHandler<PopupP
   private final VInputButton                    ok;
   private final VInputButton                    cancel;
   private final VInputButton                    browse;
-  private final VImage                          image;
-  private final VUploadProgress                 progress;
+  private final VIcon                           image;
+  private VUploadProgress                       progress;
   private VPopup                                popup;
 }

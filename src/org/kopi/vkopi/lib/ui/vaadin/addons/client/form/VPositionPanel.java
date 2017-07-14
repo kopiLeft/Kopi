@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VAnchor;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VButton;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.PositionPanelListener;
@@ -139,7 +138,7 @@ public class VPositionPanel extends HorizontalPanel implements ClickHandler {
       return;
     }
     
-    button.setImage(ResourcesUtil.getImageURL(connection, icon));
+    button.setIcon(icon);
   }
   
   /**

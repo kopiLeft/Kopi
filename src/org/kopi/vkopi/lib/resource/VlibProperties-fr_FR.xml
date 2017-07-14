@@ -22,8 +22,8 @@
   <property key="info-noecho" value="MOT DE PASSE" />
   <property key="info-noedit" value="EDITION INTERDITE" />
   <property key="new-record" value="Nouveau [espace]" />
-  <property key="true" value="vrai" />
-  <property key="false" value="faux" />
+  <property key="true" value="oui" />
+  <property key="false" value="non" />
   <property key="operator_eq" value="= : égal" />
   <property key="operator_lt" value="&lt; : plus petit" />
   <property key="operator_gt" value="&gt; : plus grand" />

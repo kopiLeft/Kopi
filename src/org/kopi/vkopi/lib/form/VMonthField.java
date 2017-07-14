@@ -81,7 +81,11 @@ public class VMonthField extends VField {
   public String getTypeName() {
     return VlibProperties.getString("Month");
   }
-
+  
+  public boolean isNumeric() {
+    return true;
+  }
+  
   // ----------------------------------------------------------------------
   // Interface Display
   // ----------------------------------------------------------------------
@@ -255,6 +259,56 @@ public class VMonthField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    return o == null ? "" : ((Month)o).toString() ;
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    if (s.equals("")) {
+      return null;
+    } else {
+      if (s.indexOf(".") != -1 && s.indexOf(".") == s.lastIndexOf(".")) {
+        // one "." and only one
+        try {
+          int           month = Integer.parseInt(s.substring(0, s.indexOf(".")));
+          int           year  = Integer.parseInt(s.substring(s.indexOf(".") + 1));
+
+          if (year < 50) {
+            year += 2000;
+          } else if (year < 100) {
+            year += 1900;
+          }
+
+          if (isMonth(month, year)) {
+            return new NotNullMonth(year, month);
+          } else {
+            throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
+          }
+        } catch (Exception e) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
+        }
+      } else if (s.indexOf(".") == -1) {
+        // just the month, complete
+        try {
+          int           month = Integer.parseInt(s);
+          int           year = new GregorianCalendar().get(Calendar.YEAR);
+
+          if (isMonth(month, year)) {
+            return new NotNullMonth(year, month);
+          } else {
+            throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
+          }
+        } catch (Exception e) {
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
+        }
+      } else {
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00005"));
+      }
+    }
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -285,8 +339,15 @@ public class VMonthField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Month.class;
   }
 
   // ----------------------------------------------------------------------

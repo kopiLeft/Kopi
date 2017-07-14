@@ -27,8 +27,8 @@ import java.sql.SQLException;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.list.VColorColumn;
 import org.kopi.vkopi.lib.list.VListColumn;
-import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
+import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.xkopi.lib.base.Query;
 
 @SuppressWarnings("serial")
@@ -203,6 +203,16 @@ public class VColorField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    throw new InconsistencyException("UNEXPECTD GET TEXT");
+  }
+  
+  @Override
+  public Object toObject(String s) {
+    throw new InconsistencyException("UNEXPECTD GET TEXT");
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -233,7 +243,7 @@ public class VColorField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
   }
 
@@ -257,6 +267,13 @@ public class VColorField extends VField {
     } else {
       return new ByteArrayInputStream((byte[])getObjectImpl(r));
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Color.class;
   }
 
   /*

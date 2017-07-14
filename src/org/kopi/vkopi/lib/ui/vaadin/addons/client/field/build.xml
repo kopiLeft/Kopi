@@ -63,11 +63,16 @@
 				    TextFieldState.java
 				    StringValidationStrategy.java
 				    TimestampValidationStrategy.java
-				    CheckTypeException.java
-				    ActorFieldConnector.java
-				    ActorFieldServerRpc.java
-				    ActorFieldState.java
-				    VActorField.java" />
+				    CheckTypeException.java,
+  	                            ActorFieldConnector.java
+  	                            ActorFieldServerRpc.java
+  	                            ActorFieldState.java
+  	                            VActorField.java
+				    BooleanFieldClientRpc.java
+				    BooleanFieldConnector.java
+				    BooleanFieldServerRpc.java
+				    BooleanFieldState.java
+				    VBooleanField.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

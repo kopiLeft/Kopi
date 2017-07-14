@@ -31,7 +31,9 @@
   	                            DWindow.java VApplication.java
   	                            VApplicationContext.java VFileHandler.java
   	                            VImageHandler.java VPreviewRunner.java VUIFactory.java
-  	                            VWindowController.java WaitIndicator.java DModuleMenu.java" />
+  	                            VWindowController.java WaitIndicator.java
+				    DAdminMenu.java DBookmarkMenu.java DMainMenu.java
+				    DMenu.java DUserMenu.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

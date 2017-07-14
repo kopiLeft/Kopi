@@ -226,13 +226,15 @@ public class DBlockDropHandler implements DropHandler {
           
           rec = getFirstUnfilledRecord(block, target);
           block.setActiveRecord(rec);
-          ((VStringField)target).setString(rec, file.getAbsolutePath());
+          block.setCurrentRecord(rec);
+          target.setString(rec, file.getAbsolutePath());
           target.onAfterDrop();
           block.setActiveRecord(rec + 1);
+          block.setCurrentRecord(rec + 1);
           block.gotoRecord(block.getActiveRecord());
           return true;
         } else {
-	  ((VStringField)target).setString(file.getAbsolutePath());
+	  target.setString(file.getAbsolutePath());
 	  target.onAfterDrop();
 	  return true;
 	}
@@ -267,9 +269,11 @@ public class DBlockDropHandler implements DropHandler {
       
       rec = getFirstUnfilledRecord(block, target);
       block.setActiveRecord(rec);
+      block.setCurrentRecord(rec);
       target.setImage(rec, toByteArray(file));
       target.onAfterDrop();
       block.setActiveRecord(rec + 1);
+      block.setCurrentRecord(rec + 1);
       block.gotoRecord(block.getActiveRecord());
       return true;
     } else {

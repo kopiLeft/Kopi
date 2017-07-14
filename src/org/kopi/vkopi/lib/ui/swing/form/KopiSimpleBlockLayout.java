@@ -46,7 +46,6 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
   Vector<KopiAlignment>	followsAligns;
   int[]			minStart;
   int[]			sizes;
-//   int[]                 minY;
   int			height;
   int			width;
   boolean		computed = false;
@@ -65,7 +64,6 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
     aligns = new KopiAlignment[col][line];
     sizes = new int[col];
     minStart = new int[components.length + 2];
-//     minY = new int[line];
     follows = new Vector<Component>();
     followsAligns = new Vector<KopiAlignment>();
     this.align = align;
@@ -196,7 +194,6 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
           if (aligns[x][y].width == 1) {
             width_c = Math.max(width_c, dim.width+hgap);
           }
-
           height_c = Math.max(height_c, y * (columnHeight + vgap) + dim.height);
         } else if (components[x][y] != null) {
           // !!! lackner 2003.04.24 Multifields:
@@ -228,6 +225,10 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
     if (width > hgap) {
       // remove hgap at the and
       width -= hgap;
+    }
+    if (height > vgap) {
+      // remove vgap at the end
+      height -= vgap;
     }
     computed = true;
   }
@@ -364,7 +365,7 @@ public class KopiSimpleBlockLayout implements KopiLayoutManager {
   public void layoutContainer(Container target) {
     synchronized (target.getTreeLock()) {
       Insets insets = target.getInsets();
-      int top = align == null ? insets.top : 0;
+      int top = insets.top;
       int left = insets.left;
 
       if (components.length == 0) {

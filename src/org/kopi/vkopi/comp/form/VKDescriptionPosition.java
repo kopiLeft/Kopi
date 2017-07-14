@@ -61,11 +61,9 @@ public class VKDescriptionPosition extends VKPosition {
     this(where, field, -1);
   }
 
-
   public void setChartPosition(int chartPos) {
     this.chartPos = chartPos;
   }
-
 
   // ----------------------------------------------------------------------
   // SEMANTIC ANALYSIS
@@ -125,6 +123,13 @@ public class VKDescriptionPosition extends VKPosition {
   public int getColumnEnd() {
     return vkField.getDetailedPosition().getColumnEnd();
   }
+  
+  /**
+   * Return the line end pos
+   */
+  public int getLineEnd() {
+    return vkField.getDetailedPosition().getLineEnd();
+  }
 
   /**
    * Check expression and evaluate and alter context
@@ -135,12 +140,14 @@ public class VKDescriptionPosition extends VKPosition {
     int                 line = pos.getLine();
     int                 column = pos.getColumn();
     int                 columnEnd = pos.getColumnEnd();
+    int                 lineEnd = pos.getLineEnd();
     TokenReference	ref = getTokenReference();
 
     return new JUnqualifiedInstanceCreation(ref,
 				    VKStdType.VPosition,
 				    new JExpression[] {
 				      VKUtils.toExpression(ref, line),
+	                              VKUtils.toExpression(ref, lineEnd),
 				      VKUtils.toExpression(ref, column),
 				      VKUtils.toExpression(ref, columnEnd),
                                       VKUtils.toExpression(ref, chartPos)});

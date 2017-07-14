@@ -21,7 +21,6 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.common;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ButtonBase;
 
@@ -54,17 +53,16 @@ public class VButton extends ButtonBase {
   }
   
   /**
-   * Sets the button image
-   * @param uri The button image URI
+   * Sets the button icon
+   * @param name The button icon name
    */
-  public void setImage(String uri) {
-    if (image == null) {
-      image = Document.get().createImageElement();
-      image.setSrc(uri);
-      image.setPropertyString("align", "absmiddle");
-      DOM.appendChild(getElement(), image);
+  public void setIcon(String name) {
+    if (icon == null) {
+      icon = new VIcon();
+      icon.setName(name);
+      DOM.appendChild(getElement(), icon.getElement());
     } else {
-      image.setSrc(uri);
+      icon.setName(name);
     }
   }
   
@@ -87,5 +85,5 @@ public class VButton extends ButtonBase {
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private ImageElement				image;
+  private VIcon                         icon;
 }

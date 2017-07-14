@@ -106,7 +106,7 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
 
       // Focuses the current day if the calendar shows the days
       if (focusedDay != null) {
-	focusDay(focusedDate);
+        focusDay(focusedDate);
       }
     }
   }
@@ -125,21 +125,21 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     // elapsed, another timer is triggered to go off every 150ms. Both
     // timers are cancelled on mouseup or mouseout.
     if (event.getNativeButton() == NativeEvent.BUTTON_LEFT && event.getSource() instanceof VEventButton) {
-      final 	VEventButton sender = (VEventButton) event.getSource();
+      final     VEventButton sender = (VEventButton) event.getSource();
       
       processClickEvent(sender);
       mouseTimer = new Timer() {
-	
-	@Override
-	public void run() {
-	  mouseTimer = new Timer() {
-	    @Override
-	    public void run() {
-	      processClickEvent(sender);
-	    }
-	  };
-	  mouseTimer.scheduleRepeating(150);
-	}
+        
+        @Override
+        public void run() {
+          mouseTimer = new Timer() {
+            @Override
+            public void run() {
+              processClickEvent(sender);
+            }
+          };
+          mouseTimer.scheduleRepeating(150);
+        }
       };
       mouseTimer.schedule(500);
     }
@@ -222,9 +222,9 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       // This has the side effect of ensuring that the calendar always
       // contain 7 rows.
       for (int row = 1; row < 7; row++) {
-	for (int col = 0; col < 8; col++) {
-	  days.setHTML(row, col, "&nbsp;");
-	}
+        for (int col = 0; col < 8; col++) {
+          days.setHTML(row, col, "&nbsp;");
+        }
       }
     } else if (getRowCount() > 1) {
       removeRow(1);
@@ -241,13 +241,13 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     getRowFormatter().addStyleName(0, parent.getStylePrimaryName() + "-calendarpanel-header");
     if (prevMonth == null && needsMonth) {
       prevMonth = new VEventButton(this);
-      prevMonth.getInputElement().setValue("<");
       prevMonth.setStyleName("v-button-prevmonth");
       prevMonth.setTabIndex(-1);
+      prevMonth.setHtmlValue("&#xf104;");
       nextMonth = new VEventButton(this);
-      nextMonth.getInputElement().setValue(">");
       nextMonth.setStyleName("v-button-nextmonth");
       nextMonth.setTabIndex(-1);
+      nextMonth.setHtmlValue("&#xf105;");
       setWidget(0, 3, nextMonth);
       setWidget(0, 1, prevMonth);
     } else if (prevMonth != null && !needsMonth) {
@@ -260,21 +260,21 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
 
     if (prevYear == null) {
       prevYear = new VEventButton(this);
-      prevYear.getInputElement().setValue("<<");
       prevYear.setStyleName("v-button-prevyear");
       prevYear.setTabIndex(-1);
+      prevYear.setHtmlValue("&#xf100;");
       nextYear = new VEventButton(this);
-      nextYear.getInputElement().setValue(">>");
       nextYear.setStyleName("v-button-nextyear");
       nextYear.setTabIndex(-1);
+      nextYear.setHtmlValue("&#xf101;");
       setWidget(0, 0, prevYear);
       setWidget(0, 4, nextYear);
     }
 
     updateControlButtonRangeStyles(needsMonth);
 
-    final 	String monthName = needsMonth ? getDateTimeService().getMonth(displayedMonth.getMonth()) : "";
-    final 	int year = displayedMonth.getYear() + 1900;
+    final       String monthName = needsMonth ? getDateTimeService().getMonth(displayedMonth.getMonth()) : "";
+    final       int year = displayedMonth.getYear() + 1900;
 
     getFlexCellFormatter().setStyleName(0, 2, parent.getStylePrimaryName() + "-calendarpanel-month");
     getFlexCellFormatter().setStyleName(0, 0, parent.getStylePrimaryName() + "-calendarpanel-prevyear");
@@ -290,15 +290,15 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     }
 
     if (needsMonth) {
-      Date 	prevMonthDate = (Date) focusedDate.clone();
-      Date 	nextMonthDate = (Date) focusedDate.clone();
+      Date      prevMonthDate = (Date) focusedDate.clone();
+      Date      nextMonthDate = (Date) focusedDate.clone();
 
       removeOneMonth(prevMonthDate);
       addOneMonth(nextMonthDate);
     }
 
-    Date 	prevYearDate = (Date) focusedDate.clone();
-    Date 	nextYearDate = (Date) focusedDate.clone();
+    Date        prevYearDate = (Date) focusedDate.clone();
+    Date        nextYearDate = (Date) focusedDate.clone();
     
     prevYearDate.setYear(prevYearDate.getYear() - 1);
     nextYearDate.setYear(nextYearDate.getYear() + 1);
@@ -341,24 +341,24 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
 
     if (date != null && focusedDate != null) {
       focusedDate.setTime(date.getTime());
-      int 	rowCount = days.getRowCount();
+      int       rowCount = days.getRowCount();
       
       for (int i = 0; i < rowCount; i++) {
-	int	cellCount = days.getCellCount(i);
-	
-	for (int j = 0; j < cellCount; j++) {
-	  Widget	widget = days.getWidget(i, j);
-	  
-	  if (widget != null && widget instanceof Day) {
-	    Day		curday = (Day) widget;
-	    
-	    if (curday.getDate().equals(date)) {
-	      curday.addStyleDependentName(Styles.CN_FOCUSED);
-	      focusedDay = curday;
-	      return;
-	    }
-	  }
-	}
+        int     cellCount = days.getCellCount(i);
+        
+        for (int j = 0; j < cellCount; j++) {
+          Widget        widget = days.getWidget(i, j);
+          
+          if (widget != null && widget instanceof Day) {
+            Day         curday = (Day) widget;
+            
+            if (curday.getDate().equals(date)) {
+              curday.addStyleDependentName(Styles.CN_FOCUSED);
+              focusedDay = curday;
+              return;
+            }
+          }
+        }
       }
     }
   }
@@ -376,24 +376,24 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       Roles.getGridcellRole().removeAriaSelectedState(selectedDay.getElement());
     }
 
-    int 	rowCount = days.getRowCount();
+    int         rowCount = days.getRowCount();
     
     for (int i = 0; i < rowCount; i++) {
-      int 	cellCount = days.getCellCount(i);
+      int       cellCount = days.getCellCount(i);
       
       for (int j = 0; j < cellCount; j++) {
-	Widget		widget = days.getWidget(i, j);
-	
-	if (widget != null && widget instanceof Day) {
-	  Day	curday = (Day) widget;
-	  
-	  if (curday.getDate().equals(date)) {
-	    curday.addStyleDependentName(Styles.CN_SELECTED);
-	    selectedDay = curday;
-	    Roles.getGridcellRole().setAriaSelectedState(selectedDay.getElement(), SelectedValue.TRUE);
-	    return;
-	  }
-	}
+        Widget          widget = days.getWidget(i, j);
+        
+        if (widget != null && widget instanceof Day) {
+          Day   curday = (Day) widget;
+          
+          if (curday.getDate().equals(date)) {
+            curday.addStyleDependentName(Styles.CN_SELECTED);
+            selectedDay = curday;
+            Roles.getGridcellRole().setAriaSelectedState(selectedDay.getElement(), SelectedValue.TRUE);
+            return;
+          }
+        }
       }
     }
   }
@@ -404,9 +404,9 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
   /*package*/ void selectFocused() {
     if (focusedDate != null) {
       if (value == null) {
-	// No previously selected value (set to null on server side).
-	// Create a new date using current date and time
-	value = new Date();
+        // No previously selected value (set to null on server side).
+        // Create a new date using current date and time
+        value = new Date();
       }
       /*
        * #5594 set Date (day) to 1 in order to prevent any kind of
@@ -416,10 +416,10 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
        */
       value.setDate(1);
       if (value.getYear() != focusedDate.getYear()) {
-	value.setYear(focusedDate.getYear());
+        value.setYear(focusedDate.getYear());
       }
       if (value.getMonth() != focusedDate.getMonth()) {
-	value.setMonth(focusedDate.getMonth());
+        value.setMonth(focusedDate.getMonth());
       }
       if (value.getDate() != focusedDate.getDate()) {
       }
@@ -434,9 +434,9 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
    * Builds the day and time selectors of the calendar.
    */
   private void buildCalendarBody() {
-    final	int weekColumn = 0;
-    final 	int firstWeekdayColumn = 1;
-    final 	int headerRow = 0;
+    final       int weekColumn = 0;
+    final       int firstWeekdayColumn = 1;
+    final       int headerRow = 0;
 
     setWidget(1, 0, days);
     setCellPadding(0);
@@ -462,12 +462,12 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     days.getFlexCellFormatter().setStyleName(headerRow, firstWeekdayColumn + 6, "v-last");
 
     // Print weekday names
-    final	int firstDay = getDateTimeService().getFirstDayOfWeek();
+    final       int firstDay = getDateTimeService().getFirstDayOfWeek();
     
     for (int i = 0; i < 7; i++) {
       int day = i + firstDay;
       if (day > 6) {
-	day = 0;
+        day = 0;
       }
       days.setHTML(headerRow, firstWeekdayColumn + i, "<strong>" + getDateTimeService().getShortDay(day) + "</strong>");
       Roles.getColumnheaderRole().set(days.getCellFormatter().getElement(headerRow, firstWeekdayColumn + i));
@@ -475,9 +475,9 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
 
     // Zero out hours, minutes, seconds, and milliseconds to compare dates
     // without time part
-    final Date 	tmp = new Date();
-    final Date 	today = new Date(tmp.getYear(), tmp.getMonth(), tmp.getDate());
-    final Date 	selectedDate = value == null ? null : new Date(value.getYear(), value.getMonth(), value.getDate());
+    final Date  tmp = new Date();
+    final Date  today = new Date(tmp.getYear(), tmp.getMonth(), tmp.getDate());
+    final Date  selectedDate = value == null ? null : new Date(value.getYear(), value.getMonth(), value.getDate());
 
     final int startWeekDay = getDateTimeService().getStartWeekDay(displayedMonth);
     final Date curr = (Date) displayedMonth.clone();
@@ -489,44 +489,44 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     for (int weekOfMonth = 1; weekOfMonth < 7; weekOfMonth++) {
       for (int dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
 
-	// Actually write the day of month
-	Date 	dayDate = (Date) curr.clone();
-	Day 	day = new Day(dayDate);
+        // Actually write the day of month
+        Date    dayDate = (Date) curr.clone();
+        Day     day = new Day(dayDate);
 
-	day.setStyleName(parent.getStylePrimaryName() + "-calendarpanel-day");
-	day.addClickHandler(new DayClickHandler(this));
-	if (curr.equals(selectedDate)) {
-	  day.addStyleDependentName(Styles.CN_SELECTED);
-	  Roles.getGridcellRole().setAriaSelectedState(day.getElement(), SelectedValue.TRUE);
-	  selectedDay = day;
-	}
-	if (curr.equals(today)) {
-	  day.addStyleDependentName(Styles.CN_TODAY);
-	}
-	if (curr.equals(focusedDate)) {
-	  focusedDay = day;
-	  if (hasFocus) {
-	    day.addStyleDependentName(Styles.CN_FOCUSED);
-	  }
-	}
-	if (curr.getMonth() != displayedMonth.getMonth()) {
-	  day.addStyleDependentName(Styles.CN_OFFMONTH);
-	  day.setOffMonth(true);
-	}
+        day.setStyleName(parent.getStylePrimaryName() + "-calendarpanel-day");
+        day.addClickHandler(new DayClickHandler(this));
+        if (curr.equals(selectedDate)) {
+          day.addStyleDependentName(Styles.CN_SELECTED);
+          Roles.getGridcellRole().setAriaSelectedState(day.getElement(), SelectedValue.TRUE);
+          selectedDay = day;
+        }
+        if (curr.equals(today)) {
+          day.addStyleDependentName(Styles.CN_TODAY);
+        }
+        if (curr.equals(focusedDate)) {
+          focusedDay = day;
+          if (hasFocus) {
+            day.addStyleDependentName(Styles.CN_FOCUSED);
+          }
+        }
+        if (curr.getMonth() != displayedMonth.getMonth()) {
+          day.addStyleDependentName(Styles.CN_OFFMONTH);
+          day.setOffMonth(true);
+        }
 
-	days.setWidget(weekOfMonth, firstWeekdayColumn + dayOfWeek, day);
-	Roles.getGridcellRole().set(days.getCellFormatter().getElement(weekOfMonth, firstWeekdayColumn + dayOfWeek));
-	// ISO week numbers if requested
-	days.getCellFormatter().setVisible(weekOfMonth, weekColumn, isShowISOWeekNumbers());
+        days.setWidget(weekOfMonth, firstWeekdayColumn + dayOfWeek, day);
+        Roles.getGridcellRole().set(days.getCellFormatter().getElement(weekOfMonth, firstWeekdayColumn + dayOfWeek));
+        // ISO week numbers if requested
+        days.getCellFormatter().setVisible(weekOfMonth, weekColumn, isShowISOWeekNumbers());
 
-	if (isShowISOWeekNumbers()) {
-	  final String 	baseCssClass = parent.getStylePrimaryName() + "-calendarpanel-weeknumber";
-	  String	weekCssClass = baseCssClass;
-	  int 		weekNumber = DateTimeService.getISOWeekNumber(curr);
+        if (isShowISOWeekNumbers()) {
+          final String  baseCssClass = parent.getStylePrimaryName() + "-calendarpanel-weeknumber";
+          String        weekCssClass = baseCssClass;
+          int           weekNumber = DateTimeService.getISOWeekNumber(curr);
 
-	  days.setHTML(weekOfMonth, 0, "<span class=\"" + weekCssClass + "\"" + ">" + weekNumber + "</span>");
-	}
-	curr.setDate(curr.getDate() + 1);
+          days.setHTML(weekOfMonth, 0, "<span class=\"" + weekCssClass + "\"" + ">" + weekNumber + "</span>");
+        }
+        curr.setDate(curr.getDate() + 1);
       }
     }
   }
@@ -544,8 +544,8 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     boolean currentDateWasAdjusted = false;
     // Check that selected date is inside the allowed range
 
-    Date 	oldDisplayedMonth = displayedMonth;
-    value = 	currentDate;
+    Date        oldDisplayedMonth = displayedMonth;
+    value =     currentDate;
 
     // If current date was adjusted, we will not select any date,
     // since that will look like a date is selected. Instead we
@@ -562,8 +562,8 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     // Re-render calendar if the displayed month is changed,
     // or if a time selector is needed but does not exist.
     if (oldDisplayedMonth == null || value == null
-	|| oldDisplayedMonth.getYear() != value.getYear()
-	|| oldDisplayedMonth.getMonth() != value.getMonth())
+        || oldDisplayedMonth.getYear() != value.getYear()
+        || oldDisplayedMonth.getMonth() != value.getMonth())
     {
       renderCalendar();
     } else {
@@ -597,7 +597,7 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     super.setStylePrimaryName(parent.getStylePrimaryName() + "-calendarpanel");
 
     if (focusedDate == null) {
-      Date 	now = new Date();
+      Date      now = new Date();
       // focusedDate must have zero hours, mins, secs, millisecs
       focusedDate = new FocusedDate(now.getYear(), now.getMonth(), now.getDate());
       displayedMonth = new FocusedDate(now.getYear(), now.getMonth(), 1);
@@ -607,8 +607,8 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       focusChangeListener.focusChanged(new Date(focusedDate.getTime()));
     }
 
-    final boolean 	needsMonth = true;
-    boolean 		needsBody = true;
+    final boolean       needsMonth = true;
+    boolean             needsBody = true;
     
     buildCalendarHeader(needsMonth);
     clearCalendarBody(!needsBody);
@@ -627,9 +627,9 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       return;
     }
 
-    Date 	focusCopy = ((Date) focusedDate.clone());
-    int 	oldMonth = focusedDate.getMonth();
-    int 	oldYear = focusedDate.getYear();
+    Date        focusCopy = ((Date) focusedDate.clone());
+    int         oldMonth = focusedDate.getMonth();
+    int         oldYear = focusedDate.getYear();
     
     focusCopy.setDate(focusedDate.getDate() + days);
     focusedDate.setDate(focusedDate.getDate() + days);
@@ -670,8 +670,8 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
   }
 
   private static void addOneMonth(Date date) {
-    int 	currentMonth = date.getMonth();
-    int 	requestedMonth = (currentMonth + 1) % 12;
+    int         currentMonth = date.getMonth();
+    int         requestedMonth = (currentMonth + 1) % 12;
 
     date.setMonth(date.getMonth() + 1);
     /*
@@ -685,7 +685,7 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
   }
 
   private static void removeOneMonth(Date date) {
-    int 	currentMonth = date.getMonth();
+    int         currentMonth = date.getMonth();
     
     date.setMonth(date.getMonth() - 1);
     /*
@@ -706,7 +706,7 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       return;
     }
     
-    Date 	requestedPreviousMonthDate = (Date) focusedDate.clone();
+    Date        requestedPreviousMonthDate = (Date) focusedDate.clone();
     
     removeOneMonth(requestedPreviousMonthDate);
     focusedDate.setTime(requestedPreviousMonthDate.getTime());
@@ -751,7 +751,7 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
       return;
     }
     
-    Date 	nextYearDate = (Date) focusedDate.clone();
+    Date        nextYearDate = (Date) focusedDate.clone();
     
     nextYearDate.setYear(nextYearDate.getYear() + years);
     // If we add one year, but have to roll back a bit, fit it
@@ -802,13 +802,13 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
     int keycode = event.getNativeEvent().getKeyCode();
     if (keycode == KeyCodes.KEY_TAB && event.getNativeEvent().getShiftKey()) {
       if (onTabOut(event)) {
-	return;
+        return;
       }
     }
 
     // Handle the navigation
     if (handleNavigation(keycode, event.getNativeEvent().getCtrlKey()
-	|| event.getNativeEvent().getMetaKey(), event.getNativeEvent().getShiftKey()))
+        || event.getNativeEvent().getMetaKey(), event.getNativeEvent().getShiftKey()))
     {
       event.preventDefault();
     }
@@ -1180,23 +1180,23 @@ public class VCalendarPanel extends FocusableFlexTable implements KeyDownHandler
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private VEventButton 			prevYear;
-  private VEventButton 			nextYear;
-  private VEventButton 			prevMonth;
-  private VEventButton 			nextMonth;
-  private FlexTable 			days = new FlexTable();
-  private Date 				value;
-  private DateTimeService 		dateTimeService;
-  private boolean 			showISOWeekNumbers;
-  /*package*/ FocusedDate 		displayedMonth;
-  private FocusedDate 			focusedDate;
-  private Day 				selectedDay;
-  private Day 				focusedDay;
-  private FocusOutListener 		focusOutListener;
-  private SubmitListener 		submitListener;
-  private FocusChangeListener 		focusChangeListener;
-  private boolean 			hasFocus = false;
-  private boolean 			initialRenderDone = false;
-  private VDateChooser			parent;
-  private Timer			 	mouseTimer;
+  private VEventButton                  prevYear;
+  private VEventButton                  nextYear;
+  private VEventButton                  prevMonth;
+  private VEventButton                  nextMonth;
+  private FlexTable                     days = new FlexTable();
+  private Date                          value;
+  private DateTimeService               dateTimeService;
+  private boolean                       showISOWeekNumbers;
+  /*package*/ FocusedDate               displayedMonth;
+  private FocusedDate                   focusedDate;
+  private Day                           selectedDay;
+  private Day                           focusedDay;
+  private FocusOutListener              focusOutListener;
+  private SubmitListener                submitListener;
+  private FocusChangeListener           focusChangeListener;
+  private boolean                       hasFocus = false;
+  private boolean                       initialRenderDone = false;
+  private VDateChooser                  parent;
+  private Timer                         mouseTimer;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,10 +48,10 @@ public class LabelConnector extends AbstractComponentConnector implements ClickH
     getWidget().setInfoText(getState().infoText);
   }
   
-  @OnStateChange("hasAutofill")
-  /*package*/ void setAutofill() {
-    if (getState().hasAutofill) {
-      getWidget().setAutofill();
+  @OnStateChange("hasAction")
+  /*package*/ void setHasAction() {
+    if (getState().hasAction) {
+      getWidget().setHasAction();
       getWidget().addClickHandler(this);
     }
   }
@@ -92,11 +92,11 @@ public class LabelConnector extends AbstractComponentConnector implements ClickH
   }
   
   /**
-   * Returns {@code true} if the label has auto fill feature. 
-   * @return {@code true} if the label has auto fill feature. 
+   * Returns {@code true} if the label has the action trigger feature. 
+   * @return {@code true} if the label has the action trigger feature. 
    */
-  public boolean hasAutofill() {
-    return getState().hasAutofill;
+  public boolean hasAction() {
+    return getState().hasAction;
   }
   
   /**

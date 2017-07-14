@@ -20,10 +20,12 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.block;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.SimpleBlockLayout;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.ActorFieldConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.FieldConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.label.LabelConnector;
 
 import com.vaadin.client.ComponentConnector;
+import com.vaadin.client.connectors.GridConnector;
 import com.vaadin.shared.ui.Connect;
 import com.vaadin.shared.ui.Connect.LoadStyle;
 
@@ -49,6 +51,9 @@ public class SimpleBlockLayoutConnector extends AbstractBlockLayoutConnector {
     ColumnView           columnView;
     
     columnView = null;
+    if (getParent() instanceof GridConnector) {
+      getBlock().setLayoutBelongsToGridDetail(true);
+    }
     for (ComponentConnector componentConnector : getChildComponents()) {
       if (componentConnector != null) {
 	ComponentConstraint			constraints;
@@ -62,17 +67,29 @@ public class SimpleBlockLayoutConnector extends AbstractBlockLayoutConnector {
 	    }
 	    columnView = new ColumnView(getBlock());
 	    columnView.setLabel((LabelConnector) componentConnector);
+	    if (blockInDetailMode()) {
+	      columnView.setDetailLabel((LabelConnector) componentConnector);
+	    }
 	  } else if (componentConnector instanceof FieldConnector) {
 	    // a follow field has no label
-	    if (constraints.width < 0) {
+	    // an actor field has no label too.
+	    // we treat this cases separately
+	    if (constraints.width < 0 || ((FieldConnector)componentConnector).getContent() instanceof ActorFieldConnector) {
 	      if (columnView != null) {
 	        getBlock().addField(columnView);
 	      }
               columnView = new ColumnView(getBlock());
               columnView.setLabel(null);
               columnView.addField((FieldConnector) componentConnector);
+              if (blockInDetailMode()) {
+                columnView.setDetailLabel(null);
+                columnView.setDetailDisplay((FieldConnector) componentConnector);
+              }
             } else if (columnView != null) {
               columnView.addField((FieldConnector) componentConnector);
+              if (blockInDetailMode()) {
+                columnView.setDetailDisplay((FieldConnector) componentConnector);
+              }
             }
           }
 	}
@@ -88,5 +105,15 @@ public class SimpleBlockLayoutConnector extends AbstractBlockLayoutConnector {
   protected void initSize() {
     getWidget().initSize(getState().columns, getState().rows);
     getWidget().setAlignment(getState().align);
+  }
+  
+  /**
+   * Returns if the block is in detail mode from the block state directly cause hiearchy change
+   * event is sent before the state change event and thus it is too early to call
+   * {@link BlockConnector#inDetailMode()}
+   * @return True if the block is in detail mode.
+   */
+  protected boolean blockInDetailMode() {
+    return getBlock().getState().noChart;
   }
 }

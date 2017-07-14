@@ -69,6 +69,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
 
     if (pos != null) {
       this.line = pos.line;
+      this.lineEnd = pos.lineEnd;
       this.column = pos.column;
       this.columnEnd = pos.columnEnd;
       this.chartPos = pos.chartPos;
@@ -125,9 +126,10 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
    * Creates a {@link ULabel} for this row controller.
    * @param text The label text.
    * @param help The label help
+   * @param detail Creates the label for the detail mode ?
    * @return The created {@link ULabel}.
    */
-  protected abstract ULabel createLabel(String text, String help);
+  protected abstract ULabel createLabel(String text, String help, boolean detail);
 
   /**
    * Creates a {@link UChartLabel} for this row controller.
@@ -179,10 +181,14 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
         activeCommands.addElement(command);
         command.setEnabled(true);
       } else if (hasAutofill) {
-        VCommand      command = model.getForm().cmdAutofill;
+        // for boolean fields, the auto fill command is not included for boolean field
+        // when row controller does not allow it.
+        if (!(getModel() instanceof VBooleanField) || includeBooleanAutofillCommand()) {
+          VCommand      command = model.getForm().cmdAutofill;
 
-        activeCommands.addElement(command);
-        command.setEnabled(true);
+          activeCommands.addElement(command);
+          command.setEnabled(true);
+        }
       }
       if (hasNewItem) {
         VCommand      command = model.getForm().cmdNewItem;
@@ -245,7 +251,9 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
     if (hasEditItem_S()) {
       cmds.addElement(model.getForm().cmdEditItem_S);
     } else if (hasAutofill) {
-      cmds.addElement(model.getForm().cmdAutofill);
+      if (!(getModel() instanceof VBooleanField) || includeBooleanAutofillCommand()) {
+        cmds.addElement(model.getForm().cmdAutofill);
+      }
     }
     if (hasNewItem) {
       cmds.addElement(model.getForm().cmdNewItem);
@@ -284,6 +292,22 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
    */
   public boolean hasAutofill() {
     return hasAutofill || model.getList() != null || hasAutofillCommand();
+  }
+  
+  /**
+   * Returns true if the field has an action trigger.
+   * @return True if the field has an action trigger.
+   */
+  public boolean hasAction() {
+    return model.hasTrigger(VConstants.TRG_ACTION);
+  }
+  
+  /**
+   * Returns true if the field has an icon.
+   * @return True if the field has an icon.
+   */
+  public boolean hasIcon() {
+    return model.getIcon() != null;
   }
 
   /**
@@ -376,6 +400,16 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   public int getIndex() {
     return index;
   }
+  
+  /**
+   * Returns true if the UI controller should include the auto fill
+   * command for boolean fields. This is used to handle different UIs
+   * for boolean field between swing and WEB implementations.
+   * @return True if the auto fill command should be present for boolean fields.
+   */
+  protected boolean includeBooleanAutofillCommand() {
+    return true;
+  }
 
   // ----------------------------------------------------------------------
   // PROTECTED BUILDING METHODS
@@ -387,7 +421,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       // !!! override dl ist not good
       dl = createChartHeaderLabel(model.getLabel(), model.getToolTip(), getBlock().getFieldIndex(model),getBlock().getOrderModel());
     } else {
-      dl = createLabel(model.getLabel(), model.getToolTip());
+      dl = createLabel(model.getLabel(), model.getToolTip(), false);
     }
 
     if (!model.isInternal()) {
@@ -399,13 +433,13 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
           // is the first column filled with detailViewButton
           final int   leftOffset = (getBlock().noDetail()) ?  -1 : 0;
           
-          blockView.add(dl, new KopiAlignment(chartPos + leftOffset, 0, 1, (model.getAlign() == VConstants.ALG_RIGHT)));
+          blockView.add(dl, new KopiAlignment(chartPos + leftOffset, 0, 1, 1, (model.getAlign() == VConstants.ALG_RIGHT)));
          
           // the fields for the values
-          displays = new UField[getBlock().getDisplaySize()];
-          for (int i = 0; i < getBlock().getDisplaySize(); i++) {
+          displays = new UField[getDisplaySize()];
+          for (int i = 0; i < getDisplaySize(); i++) {
             displays[i] = createDisplay(dl, model, false);
-            blockView.add(displays[i], new KopiAlignment(chartPos + leftOffset, i + 1, 1, false));
+            blockView.add(displays[i], new KopiAlignment(chartPos + leftOffset, i + 1, 1, 1, false));
             displays[i].setPosition(i);
           }
           scrollTo(0);
@@ -414,22 +448,22 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
 
         if (!getBlock().noDetail() && !model.noDetail()) {
           // create the second label for the detail view
-          dlDetail = createLabel(model.getLabel(), model.getToolTip());
+          dlDetail = createLabel(model.getLabel(), model.getToolTip(), true);
           if (columnEnd >= 0) {
             ((UMultiBlock) getBlock().getDisplay()).addToDetail(dlDetail,
-                                                                new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
+                                                                new KopiAlignment(column * 2 - 2, line - 1, 1, 1, false, true));
           }
           // field for the value in the detail view
           detailDisplay = createDisplay(dlDetail, model, true);
           ((UMultiBlock) getBlock().getDisplay()).addToDetail(detailDisplay,
-                                                              new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, false));
+                                                              new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, (lineEnd - line) *2 +1, false));
           detailDisplay.setPosition(0);
           detailDisplay.setInDetail(true);
         }
 
         // update text
         if (!model.noChart()) {
-          for (int i = 0; i < getBlock().getDisplaySize(); i++) {
+          for (int i = 0; i < getDisplaySize(); i++) {
              displays[i].updateText();
           }
         }
@@ -439,21 +473,26 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       } else if (column < 0) {
         // multifields (special fields)
         // take care that in this row is only this multifield
-	blockView.add(dl, new MultiFieldAlignment(columnEnd * 2 - 1, line - 1, 1, true));
+	blockView.add(dl, new MultiFieldAlignment(columnEnd * 2 - 1, line - 1, 1, 1, true));
 	displays = new UField[] {createDisplay(dl, model, false)};
 	blockView.add(displays[0], new MultiFieldAlignment(columnEnd * 2 - 1,
 									 line,
-									 1, false));
+									 1, 1, false));
 	displays[0].setPosition(0);
         displays[0].updateText();
       } else {
-	if (columnEnd >= 0) {
-	  // not an info field => show label
-	  blockView.add(dl, new KopiAlignment(column * 2 - 2, line - 1, 1, false, true));
-	}
 	displays = new UField[] {createDisplay(dl, model, false)};
-	blockView.add(displays[0], new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, false));
-	displays[0].setPosition(0);
+  	if (columnEnd >= 0 && !(displays[0] instanceof UActorField)) {
+  	  // not an info field and not an actor field  => show label
+  	  blockView.add(dl, new KopiAlignment(column * 2 - 2, line - 1, 1, 1, false, true));
+  	}
+  	if (displays[0] instanceof UActorField) {
+  	  // an actor field takes the label and the field space
+  	  blockView.add(displays[0], new KopiAlignment(column * 2 - 2, line - 1, (columnEnd - column) * 2 + 2, (lineEnd - line + 1), false));
+  	} else {
+  	  blockView.add(displays[0], new KopiAlignment(column * 2 - 1, line - 1, (columnEnd - column) * 2 + 1, (lineEnd - line + 1), false));
+  	}
+  	displays[0].setPosition(0);
         displays[0].updateText();
       }
 
@@ -466,7 +505,15 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
     fireDisplayCreated();
     // building = false;
   }
-
+  
+  /**
+   * Returns the displayed size of this column.
+   * @return the displayed size of this column.
+   */
+  protected int getDisplaySize() {
+    return getBlock().getDisplaySize();
+  }
+ 
   /**
    *
    */
@@ -658,6 +705,14 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   protected void fireDisplayCreated() {
     // to be redefined if needed
   }
+  
+  /**
+   * Returns the field handler instance.
+   * @return The field handler instance.
+   */
+  public FieldHandler getFieldHandler() {
+    return fieldHandler;
+  }
 
   // ----------------------------------------------------------------------
   // SNAPSHOT PRINTING
@@ -721,6 +776,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   private	ULabel			dlDetail;	// label text (chart)
   private	UField          	detailDisplay;	// the object displayed on screen (detail)
   private	int			line;		// USE A VPosition !!!!
+  private       int                     lineEnd;           
   private	int			column;
   private	int			columnEnd;
   private	int			chartPos;

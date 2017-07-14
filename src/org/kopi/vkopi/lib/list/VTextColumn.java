@@ -34,11 +34,19 @@ public class VTextColumn extends VListColumn {
   public VTextColumn(String title, String column, int align, int width, boolean sortAscending) {
     super(title, column, align, Message.getMessage("text-type").length(), sortAscending);
   }
-
+  
+  // --------------------------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------------------------
+  
   /**
    * Returns a string representation of value
    */
   public Object formatObject(Object value) {
     return value == null ? VConstants.EMPTY_TEXT : Message.getMessage("text-type");
+  }
+  
+  public Class getDataType() {
+    return String.class;
   }
 }

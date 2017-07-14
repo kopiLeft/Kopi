@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,7 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.notification;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Icons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ResourcesUtil;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -96,15 +94,15 @@ public class VErrorNotification extends VAbstractNotification {
   }
   
   @Override
-  public void setImage(ApplicationConnection connection) {
-    image.setSrc(ResourcesUtil.getImageURL(connection, Icons.ERROR));
-  }
-
-  @Override
   public void focus() {
     if (close != null) {
       close.focus();
     }
+  }
+  
+  @Override
+  protected String getIconName() {
+    return "exclamation-circle";
   }
   
   /**

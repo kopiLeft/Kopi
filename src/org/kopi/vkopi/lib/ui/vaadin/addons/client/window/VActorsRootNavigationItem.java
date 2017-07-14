@@ -66,8 +66,10 @@ public class VActorsRootNavigationItem extends Widget {
       public void onClick(ClickEvent event) {
         if (menu.isOpened()) {
           menu.close();
+          getParent().getElement().removeClassName("open");
         } else {
           menu.open(VActorsRootNavigationItem.this);
+          getParent().getElement().addClassName("open");
         }
       }
     }, ClickEvent.getType());

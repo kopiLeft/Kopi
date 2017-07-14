@@ -24,23 +24,14 @@ import org.kopi.vkopi.lib.form.UListDialog;
 import org.kopi.vkopi.lib.form.VDictionary;
 import org.kopi.vkopi.lib.form.VForm;
 import org.kopi.vkopi.lib.form.VListDialog;
-import org.kopi.vkopi.lib.list.VBooleanCodeColumn;
-import org.kopi.vkopi.lib.list.VBooleanColumn;
-import org.kopi.vkopi.lib.list.VDateColumn;
-import org.kopi.vkopi.lib.list.VFixnumCodeColumn;
-import org.kopi.vkopi.lib.list.VFixnumColumn;
-import org.kopi.vkopi.lib.list.VIntegerCodeColumn;
-import org.kopi.vkopi.lib.list.VIntegerColumn;
-import org.kopi.vkopi.lib.list.VMonthColumn;
-import org.kopi.vkopi.lib.list.VTimeColumn;
-import org.kopi.vkopi.lib.list.VTimestampColumn;
-import org.kopi.vkopi.lib.list.VWeekColumn;
+import org.kopi.vkopi.lib.ui.vaadin.addons.GridListDialog;
+import org.kopi.vkopi.lib.ui.vaadin.addons.GridListDialog.CloseListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.GridListDialog.SearchListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.GridListDialog.SelectionListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.InformationNotification;
-import org.kopi.vkopi.lib.ui.vaadin.addons.ListDialog;
-import org.kopi.vkopi.lib.ui.vaadin.addons.ListDialogListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.NotificationListener;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.TableModel.ColumnType;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.kopi.vkopi.lib.ui.vaadin.list.ListTable;
 import org.kopi.vkopi.lib.ui.vaadin.visual.VApplication;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.MessageCode;
@@ -49,7 +40,10 @@ import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VRuntimeException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 
-import com.vaadin.ui.Component;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.ui.Grid.ColumnReorderEvent;
+import com.vaadin.ui.Grid.ColumnReorderListener;
 import com.vaadin.ui.UI;
 
 /**
@@ -57,7 +51,7 @@ import com.vaadin.ui.UI;
  * {@link UListDialog} specifications.
  */
 @SuppressWarnings("serial")
-public class DListDialog extends ListDialog implements UListDialog, ListDialogListener {
+public class DListDialog extends GridListDialog implements UListDialog, CloseListener, SelectionListener, SearchListener {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -70,7 +64,9 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
   public DListDialog(VListDialog model) {
     setImmediate(true);
     this.model = model;
-    addListDialogListener(this);
+    addCloseListener(this);
+    addSelectionListener(this);
+    addSearchListener(this);
   }
   
   //---------------------------------------------------
@@ -91,7 +87,11 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
     if (field != null) {
       // show the dialog beside the field.
       // otherwise show it centered.
-      showRelativeTo((Component)field);
+      if (field instanceof DField) {
+        showRelativeTo((DField)field);
+      } else if (field instanceof DGridEditorField<?>) {
+        showRelativeTo(((DGridEditorField<?>)field).getEditor());
+      }
     }
     showDialogAndWait();
     return handleClientResponse();
@@ -100,6 +100,126 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
   @Override
   public int selectFromDialog(UWindow window, boolean showSingleEntry) {
     return selectFromDialog(window, null, showSingleEntry);
+  }
+  
+  @Override
+  public void onClose(CloseEvent event) {
+    doSelectFromDialog(-1, event.isEscaped(), event.isNewForm());
+  }
+  
+  @Override
+  public void onSelection(SelectionEvent event) {
+    if (table.getContainerDataSource().size() == 0) {
+      return;
+    }
+    
+    ensureTableSelection();
+    switch (event.getTarget()) {
+    case CURRENT_ROW:
+      doSelectFromDialog((Integer)table.getSelectedRow(), false, false);
+      break;
+    case NEXT_ROW:
+      table.select(getNextItemId());
+      break;
+    case PREVIOUS_ROW:
+      table.select(getPrevItemId());
+      break;
+    case NEXT_PAGE:
+      table.select(getNextPageItemId());
+      break;
+    case PREVIOUS_PAGE:
+      table.select(getPrevPageItemId());
+      break;
+    case FIRST_ROW:
+      table.select(table.getContainerDataSource().firstItemId());
+      break;
+    case LAST_ROW:
+      table.select(table.getContainerDataSource().lastItemId());
+      break;
+    default:
+      // noting to do
+    }
+  }
+  
+  @Override
+  public void onSearch(SearchEvent event) {
+    if (!table.getContainerDataSource().hasFilters()) {
+      if (event.getPattern() == null || event.getPattern().length() == 0) {
+        ensureTableSelection();
+      } else {
+        Object            itemId;
+
+        itemId = table.search(event.getPattern());
+        if (itemId != null) {
+          table.select(itemId);
+        }
+      }
+    }
+  }
+  
+  /**
+   * Ensures that a row is selected in the list dialog table.
+   * The selected row will be set to the first visible row when
+   * the selected row is null
+   */
+  protected void ensureTableSelection() {
+    if (table.getSelectedRow() == null) {
+      table.select(table.getContainerDataSource().firstItemId());
+    }
+  }
+  
+  /**
+   * Returns the next item ID according to the currently selected one.
+   * @return The next item ID according to the currently selected one.
+   */
+  protected Integer getNextItemId() {
+    if ((Integer)table.getSelectedRow() == table.getContainerDataSource().lastItemId()) {
+      return table.getContainerDataSource().lastItemId();
+    } else {
+      return table.getContainerDataSource().nextItemId((Integer)table.getSelectedRow());
+    }
+  }
+  
+  /**
+   * Returns the previous item ID according to the currently selected one.
+   * @return The previous item ID according to the currently selected one.
+   */
+  protected Integer getPrevItemId() {
+    if ((Integer)table.getSelectedRow() == table.getContainerDataSource().firstItemId()) {
+      return table.getContainerDataSource().firstItemId();
+    } else {
+      return table.getContainerDataSource().prevItemId((Integer)table.getSelectedRow());
+    }
+  }
+  
+  /**
+   * Looks for the next page item ID starting from the selected row.
+   * @return The next page item ID.
+   */
+  protected Integer getNextPageItemId() {
+    Integer             nextPageItemId;
+    
+    nextPageItemId = (Integer)table.getSelectedRow();
+    for (int i = 0; i < 20 && nextPageItemId != table.getContainerDataSource().lastItemId(); i++) {
+      nextPageItemId = table.getContainerDataSource().nextItemId(nextPageItemId);
+    }
+    
+    return nextPageItemId;
+  }
+  
+  /**
+   * Looks for the previous page item ID starting from the selected row.
+   * @return The previous page item ID.
+   */
+  protected Integer getPrevPageItemId() {
+    Integer             prevPageItemId;
+    
+    prevPageItemId = (Integer)table.getSelectedRow();
+    for (int i = 0; i < 20 && prevPageItemId != table.getContainerDataSource().firstItemId(); i++) {
+      prevPageItemId = table.getContainerDataSource().prevItemId(prevPageItemId);
+    }
+    
+    return prevPageItemId;
   }
   
   //------------------------------------------------------
@@ -145,12 +265,32 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
    * Prepares the dialog content.
    */
   protected void prepareDialog() {
-    setModel(model.getTitles(),
-             buildColumnsTypes(),
-             buildColumnsAlignment(),
-             model.getTranslatedIdents(),
-             createModelObjects(),
-             model.getCount());
+    table = new ListTable(model); 
+    setTable(table);
+    table.select(table.getContainerDataSource().firstItemId());
+    table.addItemClickListener(new ItemClickListener() {
+      
+      @Override
+      public void itemClick(ItemClickEvent event) {
+        doSelectFromDialog((Integer) event.getItemId(), false, false);
+      }
+    });
+    table.addSelectionListener(new com.vaadin.event.SelectionEvent.SelectionListener() {
+      
+      @Override
+      public void select(com.vaadin.event.SelectionEvent event) {
+        if (!event.getSelected().isEmpty()) {
+          table.scrollTo(event.getSelected().toArray()[0]);
+        }
+      }
+    });
+    table.addColumnReorderListener(new ColumnReorderListener() {
+      
+      @Override
+      public void columnReorder(ColumnReorderEvent event) {
+        sort();
+      }
+    });
     // set the new button if needed.
     if (model.getNewForm() != null || model.isForceNew()) {
       setNewText(VlibProperties.getString("new-record"));
@@ -177,22 +317,6 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
    */
   protected VApplication getApplication() {
     return (VApplication) ApplicationContext.getApplicationContext().getApplication();
-  }
-  
-  /**
-   * Creates the data model objects.
-   * @return The data model objects.
-   */
-  protected String[][] createModelObjects() {
-    String[][]		objects = new String[model.getData().length][model.getData()[0].length];
-
-    for (int x = 0; x < model.getData().length; x++) {
-      for(int y = 0; y < model.getTranslatedIdents().length; y++) {
-	objects[x][y] = model.getColumns()[x].formatObject(model.getData()[x][model.getTranslatedIdents()[y]]).toString();
-      }
-    }
-    
-    return objects;
   }
   
   /**
@@ -225,77 +349,46 @@ public class DListDialog extends ListDialog implements UListDialog, ListDialogLi
   }
   
   /**
-   * Builds the columns alignment.
-   * @return The columns alignment.
+   * Confirms the user selection and closes the list.
+   * @param selectedPos The selected position.
+   * @param escaped Was the list escaped ?
+   * @param doNewForm Should we do a new dictionary form ?
    */
-  protected int[] buildColumnsAlignment() {
-    int[]		aligns;
-    
-    aligns = new int[model.getColumns().length];
-    for (int i = 0; i < model.getColumns().length; i++) {
-      aligns[i] = model.getColumns()[i].getAlign();
-    }
-    
-    return aligns;
-  }
-  
-  /**
-   * Builds the columns types.
-   * @return The columns types.
-   */
-  protected ColumnType[] buildColumnsTypes() {
-    ColumnType[]        types;
-    
-    types = new ColumnType[model.getColumns().length];
-    for (int i = 0; i < model.getColumns().length; i++) {
-      if (model.getColumns()[i] instanceof VBooleanCodeColumn
-          || model.getColumns()[i] instanceof VBooleanColumn)
-      {
-        types[i] = ColumnType.BOOLEAN;
-      } else if (model.getColumns()[i] instanceof VIntegerCodeColumn
-                 || model.getColumns()[i] instanceof VIntegerColumn
-                 || model.getColumns()[i] instanceof VFixnumCodeColumn
-                 || model.getColumns()[i] instanceof VFixnumColumn)
-      {
-        types[i] = ColumnType.NUMBER;
-      } else if (model.getColumns()[i] instanceof VDateColumn) {
-        types[i] = ColumnType.DATE;
-      } else if (model.getColumns()[i] instanceof VTimeColumn) {
-        types[i] = ColumnType.TIME;
-      } else if (model.getColumns()[i] instanceof VTimestampColumn) {
-        types[i] = ColumnType.TIMESTAMP;
-      } else if (model.getColumns()[i] instanceof VWeekColumn) {
-        types[i] = ColumnType.WEEK;
-      } else if (model.getColumns()[i] instanceof VMonthColumn) {
-        types[i] = ColumnType.MONTH;
-      } else {
-        // consider all other columns as string
-        types[i] = ColumnType.STRING;
-      }
-    }
-    
-    return types;
-  }
-  
-  //------------------------------------------------------
-  // LIST DIALOG LISTENER IMPLEMENTATION
-  //------------------------------------------------------
-  
-  @Override
-  public void onSelection(int selectedPos, boolean escaped, boolean doNewForm) {
+  protected void doSelectFromDialog(int selectedPos, boolean escaped, boolean doNewForm) {
     this.selectedPos = selectedPos;
     this.escaped = escaped;
     this.doNewForm = doNewForm;
     getApplication().detachComponent(this);
     BackgroundThreadHandler.releaseLock(this); // release the background thread lock.
   }
+
+  /**
+   * Bubble sort the columns from right to left
+   */
+  private void sort() {
+    int       left = 0;
+    int       sel = -1;
+
+    if (table != null) {
+      sel = (Integer)table.getSelectedRow();
+      left = (Integer)table.getColumns().get(0).getPropertyId();
+    }
+
+    model.sort(left);
+
+    if (table != null) {
+      table.tableChanged();
+      table.select(sel);
+    }
+  }
   
   //------------------------------------------------------
   // DATA MEMBERS
   //------------------------------------------------------
   
-  private VListDialog			    model;
-  private boolean                  	    escaped = true;
-  private boolean               	    doNewForm;
-  private int				    selectedPos = -1;
+  private VListDialog			model;
+  private ListTable                     table;
+  private boolean                  	escaped = true;
+  private boolean               	doNewForm;
+  private int				selectedPos = -1;
 }

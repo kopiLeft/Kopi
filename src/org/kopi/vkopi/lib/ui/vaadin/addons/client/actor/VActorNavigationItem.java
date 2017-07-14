@@ -35,12 +35,19 @@ public class VActorNavigationItem extends VClickableNavigationItem {
    * @param text the item's text
    * @param menu The parent menu name of this menu item.
    * @param acceleratorKey The accelerator key description.
+   * @param icon The menu item icon.
    * @param cmd the command to be fired when it is selected
    */
-  public VActorNavigationItem(String text, String menu, String acceleratorKey, ScheduledCommand cmd) {
+  public VActorNavigationItem(String text,
+                              String menu,
+                              String acceleratorKey,
+                              String icon,
+                              ScheduledCommand cmd)
+  {
     super(cmd);
     setCaption(text);
     setDescription(acceleratorKey);
+    setIcon(icon);
     this.menu = menu;
   }
   

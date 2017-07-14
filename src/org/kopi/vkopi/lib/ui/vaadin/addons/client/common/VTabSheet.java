@@ -146,6 +146,24 @@ public class VTabSheet extends AdvancedTabPanel {
   protected FlexTable getLayout() {
     return (FlexTable) getWidget();
   }
+  
+  @Override
+  public void clear() {
+    tabsWidget.clear();
+    getLayout().clear();
+    clearTabsheet(this);
+    tabsWidget = null;
+    super.clear();
+  }
+  
+  public static native void clearTabsheet(AdvancedTabPanel tabsheet) /*-{
+    tabsheet.@org.gwt.advanced.client.ui.widget.AdvancedTabPanel::tabs = null;
+    tabsheet.@org.gwt.advanced.client.ui.widget.AdvancedTabPanel::position = null;
+    tabsheet.@org.gwt.advanced.client.ui.widget.AdvancedTabPanel::tabBorderFactory = null;
+    tabsheet.@org.gwt.advanced.client.ui.widget.AdvancedTabPanel::contentBorderFactory = null;
+    tabsheet.@org.gwt.advanced.client.ui.widget.AdvancedTabPanel::layout = null;
+    tabsheet.@org.gwt.advanced.client.ui.widget.AdvancedTabPanel::tabStates = null;
+  }-*/;
 
   //-----------------------------------------------------
   // INNER CLASSES

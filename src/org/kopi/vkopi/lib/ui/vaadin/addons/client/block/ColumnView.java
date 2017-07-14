@@ -257,6 +257,9 @@ public class ColumnView {
    * Cleans the dirty values of this column view.
    */
   protected void cleanDirtyValues() {
+    if (displays == null) {
+      return;
+    }
     for (FieldConnector field : displays) {
       if (field != null && field.isDirty()) {
         field.cleanDirtyValues();
@@ -272,12 +275,16 @@ public class ColumnView {
    * @return {@code true} if the column view has at least one dirty field.
    */
   protected boolean isDirty() {
+    if (displays == null) {
+      return false;
+    }
+    
     for (FieldConnector field : displays) {
       if (field != null && field.isDirty()) {
         return true;
       }
     }
-    
+
     return detailDisplay != null && detailDisplay.isDirty();
   }
   
@@ -477,6 +484,10 @@ public class ColumnView {
    * @param toprec The record to be scrolled to
    */
   public void scrollTo(int toprec) {
+    if (displays == null) {
+      return;
+    }
+
     for (FieldConnector field : displays) {
       if (field != null) {
         field.updateValue();
@@ -689,10 +700,10 @@ public class ColumnView {
     
     hasAutofill = false;
     if (label != null) {
-      hasAutofill |= label.hasAutofill();
+      hasAutofill |= label.hasAction();
     }
     if (detailLabel != null) {
-      hasAutofill |= detailLabel.hasAutofill();
+      hasAutofill |= detailLabel.hasAction();
     }
     
     return hasAutofill;
@@ -703,6 +714,10 @@ public class ColumnView {
    * @param enabled The actors ability.
    */
   public void setActorsEnabled(boolean enabled) {
+    if (displays == null) {
+      return;
+    }
+    
     for (FieldConnector display : displays) {
       if (display != null) {
         display.setActorsEnabled(enabled);
@@ -739,6 +754,9 @@ public class ColumnView {
     values = null;
     fgColors = null;
     bgColors = null;
+    if (block != null) {
+      block.clearFields();
+    }
     block = null;
   }
   

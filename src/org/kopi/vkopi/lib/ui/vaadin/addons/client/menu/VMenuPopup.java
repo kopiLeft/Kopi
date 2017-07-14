@@ -23,8 +23,10 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.vaadin.client.ApplicationConnection;
 
 /**
@@ -51,6 +53,7 @@ public class VMenuPopup extends VPopup {
     setPreviewingAllNativeEvents(true);
     item.getSubMenu().addStyleName("submenu");
     item.getSubMenu().onShow();
+    addCloseHandler(this);
   }
 
   //---------------------------------------------------
@@ -82,6 +85,13 @@ public class VMenuPopup extends VPopup {
     }
     
     super.onPreviewNativeEvent(event);
+  }
+  
+  @Override
+  public void onClose(CloseEvent<PopupPanel> event) {
+    super.onClose(event);
+    event.getTarget().clear();
+    event.getTarget().removeFromParent();
   }
   
   /**

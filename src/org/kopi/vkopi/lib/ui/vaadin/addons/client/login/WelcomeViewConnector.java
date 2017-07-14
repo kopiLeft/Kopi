@@ -19,10 +19,14 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.login;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.WelcomeView;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.LoginWindowListener;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsRequest;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.login.WelcomeViewState.FontMetricsResponse;
 
 import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.communication.StateChangeEvent;
@@ -90,6 +94,19 @@ public class WelcomeViewConnector extends AbstractComponentConnector implements 
     }
   }
   
+  @OnStateChange("fontMetricsRequests")
+  /*package*/ void calculateFontMetrics() {
+    for (FontMetricsRequest fmr : getState().fontMetricsRequests) {
+      if (fmr != null) {
+        FontMetrics             fm;
+        
+        fm = new FontMetrics(fmr.fontFamily, fmr.fontSize, fmr.text);
+        fm.calculate();
+        fontsMetrics.add(fm);
+      }
+    }
+  }
+  
   @OnStateChange("locale")
   /*package*/ void setLocale() {
     getWidget().setDefaultLocale(getState().locale);
@@ -117,13 +134,32 @@ public class WelcomeViewConnector extends AbstractComponentConnector implements 
 
   @Override
   public void onLogin(String username, String password, String language) {
-    getRpcProxy(WelcomeViewServerRpc.class).onLogin(username, password, language);
+    getRpcProxy(WelcomeViewServerRpc.class).onLogin(username, password, language, createFontMetricsResponses());
+  }
+  
+  /**
+   * Creates a list of a font metrics responses
+   * @return The font metrics responses.
+   */
+  protected List<FontMetricsResponse> createFontMetricsResponses() {
+    List<FontMetricsResponse>   list = new ArrayList<FontMetricsResponse>();
+    
+    for (FontMetrics fm : fontsMetrics) {
+      list.add(new FontMetricsResponse(fm.getFontFamily(),
+                                       fm.getFontSize(),
+                                       fm.getText(),
+                                       fm.getWidth(),
+                                       fm.getHeight()));
+    }
+    
+    return list;
   }
   
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
+  private List<FontMetrics>                     fontsMetrics = new ArrayList<FontMetrics>();
   private WelcomeViewClientRpc			rpc = new WelcomeViewClientRpc() {
     
     @Override

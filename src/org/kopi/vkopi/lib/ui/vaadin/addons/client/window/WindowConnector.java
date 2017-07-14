@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.Window;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.ActorConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.VActorsNavigationPanel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.LocalizedProperties;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.BlockConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.form.FormConnector;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
@@ -64,6 +65,11 @@ public class WindowConnector extends AbstractHasComponentsConnector {
   }
   
   @Override
+  public WindowState getState() {
+    return (WindowState) super.getState();
+  }
+  
+  @Override
   public VWindow getWidget() {
     return (VWindow) super.getWidget();
   }
@@ -76,7 +82,7 @@ public class WindowConnector extends AbstractHasComponentsConnector {
   @Override
   public TooltipInfo getTooltipInfo(Element element) {
     if (element == getWidget().getActorsMenuElement()) {
-      return new TooltipInfo(LocalizedProperties.getString(VMainWindow.getLocale(), "actorsMenuHelp"));
+      return WidgetUtils.createTooltipInfo(LocalizedProperties.getString(VMainWindow.getLocale(), "actorsMenuHelp"));
     } else {
       return null;
     }

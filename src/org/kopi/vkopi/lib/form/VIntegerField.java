@@ -100,7 +100,11 @@ public class VIntegerField extends VField {
   public int getMaxValue() {
     return maxval;
   }
-
+  
+  public boolean isNumeric() {
+    return true;
+  }
+  
   // ----------------------------------------------------------------------
   // Interface Display
   // ----------------------------------------------------------------------
@@ -246,6 +250,35 @@ public class VIntegerField extends VField {
   public Object getObjectImpl(int r) {
     return  value[r];
   }
+  
+  @Override
+  public String toText(Object o) {
+    return o == null ? "" : Integer.toString((Integer)o);
+  }
+  
+  @Override
+  public Object toObject(String s) throws VException {
+    if (s.equals("")) {
+      return null;
+    } else {
+      int       v;
+
+      try {
+        v = Integer.parseInt(s);
+      } catch (NumberFormatException e) {
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00006"));
+      }
+
+      if (v < minval) {
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00012", new Object[]{ new Integer(minval) }));
+      }
+      if (v > maxval) {
+        throw new VFieldException(this, MessageCode.getMessage("VIS-00009", new Object[]{ new Integer(maxval) }));
+      }
+      
+      return v;
+    }
+  }
 
   /**
    * Returns the display representation of field value of given record.
@@ -276,8 +309,15 @@ public class VIntegerField extends VField {
             || (oldValue == null && value[t] != null)
             || (oldValue != null && !oldValue.equals(value[t]))))
     {
-      setChanged(t);
+      fireValueChanged(t);
     }
+  }
+  
+  /**
+   * Returns the data type handled by this field.
+   */
+  public Class getDataType() {
+    return Integer.class;
   }
 
   // ----------------------------------------------------------------------

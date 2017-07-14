@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,9 @@ package org.kopi.vkopi.lib.ui.vaadin.addons.client.field;
 
 import java.util.List;
 
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.ConnectorUtils;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.AutocompleteSuggestion;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.DefaultSuggestOracle;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.QueryListener;
@@ -29,22 +31,31 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.suggestion.SuggestionDisplay;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Style.Visibility;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasEnabled;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.WidgetUtil;
 
 /**
  * A field widget. It can be either Integer, String, Fixnum, ..
  * All depends on the model that will decide what is the validation
  * strategy.
  */
-public class VTextField extends SimplePanel implements HasEnabled {
+public class VTextField extends FlowPanel implements HasEnabled {
 
   //---------------------------------------------------
   // CONSTRUCTOR
@@ -55,7 +66,7 @@ public class VTextField extends SimplePanel implements HasEnabled {
    */
   public VTextField() {
     setStyleName(Styles.TEXT_FIELD);
-    sinkEvents(Event.ONCONTEXTMENU);
+    sinkEvents(Event.ONCONTEXTMENU | Event.MOUSEEVENTS);
     addDomHandler(new ContextMenuHandler() {
       
       @Override
@@ -70,14 +81,77 @@ public class VTextField extends SimplePanel implements HasEnabled {
   // IMPLEMENTATIONS
   //---------------------------------------------------
   
+  @Override
+  public void onBrowserEvent(Event event) {
+    super.onBrowserEvent(event);
+    if (event.getTypeInt() == Event.ONMOUSEOVER) {
+      if (autofill != null) {
+        autofill.getElement().getStyle().setVisibility(Visibility.VISIBLE);
+      }
+    } else if (event.getTypeInt() == Event.ONMOUSEOUT) {
+      if (autofill != null) {
+        if (textField == null || WidgetUtil.getFocusedElement() != textField.getElement()) {
+          autofill.getElement().getStyle().setVisibility(Visibility.HIDDEN);
+        }
+      }
+    }
+  }
+  
   /**
    * Sets the text field component.
    * @param textField The text field component.
    */
-  public void setTextField(VInputTextField textField) {
+  public void setTextField(final ApplicationConnection connection,
+                           VInputTextField textField,
+                           boolean hasAutofill)
+  {
     this.textField = textField;
     this.textField.setEnabled(enabled);
     add(this.textField);
+    if (hasAutofill) {
+      autofill = new VIcon();
+      autofill.setName("sort-desc");
+      autofill.addClickHandler(new ClickHandler() {
+        
+        @Override
+        public void onClick(ClickEvent event) {
+          ConnectorUtils.getConnector(connection, VTextField.this, TextFieldConnector.class).getServerRpc().autofill();
+        }
+      });
+      add(autofill);
+      autofill.getElement().getStyle().setVisibility(Visibility.HIDDEN);
+      addTextFieldHandlers();
+    }
+  }
+  
+  /**
+   * Adds necessary handlers on text field to handler autofill icon visibility
+   */
+  private void addTextFieldHandlers() {
+    this.textField.addFocusHandler(new FocusHandler() {
+      
+      @Override
+      public void onFocus(FocusEvent event) {
+        if (autofill != null) { 
+          autofill.getElement().getStyle().setVisibility(Visibility.VISIBLE);
+        }
+      }
+    });
+    this.textField.addBlurHandler(new BlurHandler() {
+      
+      @Override
+      public void onBlur(BlurEvent event) {
+        if (autofill != null) {
+          new Timer() {
+            
+            @Override
+            public void run() {
+              autofill.getElement().getStyle().setVisibility(Visibility.HIDDEN);  
+            }
+          }.schedule(100); // delay it to handle clicks on autofill icon
+        }
+      }
+    });
   }
   
   /**
@@ -190,6 +264,7 @@ public class VTextField extends SimplePanel implements HasEnabled {
     super.clear();
     textField.release();
     textField = null;
+    autofill = null;
   }
   
   /**
@@ -360,4 +435,5 @@ public class VTextField extends SimplePanel implements HasEnabled {
   
   /*package*/ VInputTextField			textField;
   private boolean				enabled = true;
+  private VIcon                                 autofill;
 }

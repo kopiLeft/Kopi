@@ -19,13 +19,14 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.main;
 
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VAnchor;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VStrong;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.menu.VModuleItem;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.menu.VModuleList;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.menu.VModuleListMenu;
 
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.vaadin.client.ApplicationConnection;
 
 /**
  * The welcome text widget.
@@ -41,76 +42,132 @@ public class VWelcome extends FlowPanel {
    * Creates the welcome text widget.
    */
   public VWelcome() {
-    VStrong		strong;
-    
-    strong = new VStrong();
     getElement().setId("welcome");
-    welcomeText = new VSpan();
-    welcomeLink = new VAnchor();
-    welcomeLink.setHref("#");
-    logoutLink = new VAnchor();
-    logoutLink.setHref("#");
-    welcomeLink.setId("welcome_link");
-    logoutLink.setId("logout_link");
-    strong.setWidget(welcomeLink);
-    add(welcomeText);
-    add(strong);
-    add(new VSpan(" [ "));
-    add(logoutLink);
-    add(new VSpan(" ]"));
   }
 
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
-
+  
   /**
-   * Sets the welcome text.
-   * @param text The welcome text. 
+   * Initializes the welcome widget.
+   * @param connection The application connection.
    */
-  protected void setWelcomeText(String welcomeText) {
-    this.welcomeText.setText(welcomeText);
+  protected void init(ApplicationConnection connection) {
+    userMenu = new VModuleListMenu(connection, true);
+    adminMenu = new VModuleListMenu(connection, true);
+    bookmarksMenu = new VModuleListMenu(connection, true);
+    workspaceContextMenu = new VModuleListMenu(connection, true);
+    userItem = new VModuleItem();
+    adminItem = new VModuleItem();
+    bookmarksItem = new VModuleItem();
+    workspaceContextItem = new VModuleItem();
+    userMenu.addItem(userItem, false, true);
+    adminMenu.addItem(adminItem, false, true);
+    bookmarksMenu.addItem(bookmarksItem, false, true);
+    workspaceContextMenu.addItem(workspaceContextItem, false, true);
+    add(workspaceContextMenu);
+    add(bookmarksMenu);
+    add(adminMenu);
+    add(userMenu);
+    userMenu.setAutoOpen(false);
+    adminMenu.setAutoOpen(false);
+    bookmarksMenu.setAutoOpen(false);
+    workspaceContextMenu.setAutoOpen(false);
+    userMenu.getElement().setId("user_menu");
+    adminMenu.getElement().setId("admin_menu");
+    bookmarksMenu.getElement().setId("bookmarks_menu");
+    workspaceContextMenu.getElement().setId("wrkcontext_menu");
   }
   
   /**
-   * Sets the welcome link text.
-   * @param text The welcome link text.
+   * Sets the user menu.
+   * @param menu The menu widget.
    */
-  protected void setWelcomeLink(String text) {
-    welcomeLink.setText(text);
+  public void setUserMenu(final VModuleList menu) {
+    userItem.setRoot(false);
+    userItem.buildContent();
+    userItem.setIcon("user");
+    new Timer() {
+      
+      @Override
+      public void run() {
+        if (menu.getMenu() != null) {
+          userItem.setSubMenu(menu.getMenu());
+        }
+      }
+    }.schedule(100);
   }
   
   /**
-   * Sets the logout link text.
-   * @param text The logout link text.
+   * Sets the connected user.
+   * @param username The user name.
    */
-  protected void setLogoutLink(String text) {
-    logoutLink.setText(text);
+  public void setConnectedUser(String username) {
+    userItem.setCaption(username);
   }
   
   /**
-   * Registers a click handler to the welcome text.
-   * @param handler The handler to be registered.
-   * @return The registration handler.
+   * Sets the admin menu.
+   * @param menu The menu widget.
    */
-  public HandlerRegistration addWelcomeClickHandler(ClickHandler handler) {
-    return welcomeLink.addClickHandler(handler);
+  public void setAdminMenu(final VModuleList menu) {
+    adminItem.setRoot(false);
+    adminItem.buildContent();
+    adminItem.setIcon("cog");
+    new Timer() {
+      
+      @Override
+      public void run() {
+        if (menu.getMenu() != null) {
+          adminItem.setSubMenu(menu.getMenu());
+        }
+      }
+    }.schedule(100);
   }
   
   /**
-   * Registers a click handler to the logout text.
-   * @param handler The handler to be registered.
-   * @return The registration handler.
+   * Sets the bookmarks menu.
+   * @param menu The menu widget.
    */
-  public HandlerRegistration addLogoutClickHandler(ClickHandler handler) {
-    return logoutLink.addClickHandler(handler);
+  public void setBookmarksMenu(final VModuleList menu) {
+    bookmarksItem.setRoot(false);
+    bookmarksItem.buildContent();
+    bookmarksItem.setIcon("star");
+    new Timer() {
+      
+      @Override
+      public void run() {
+        if (menu.getMenu() != null) {
+          bookmarksItem.setSubMenu(menu.getMenu());
+        }
+      }
+    }.schedule(100);
+  }
+  
+  /**
+   * Sets the workspace context menu.
+   * @param menu The menu widget.
+   */
+  public void setWorkspaceContextItemMenu(Widget menu) {
+    workspaceContextItem.setRoot(false);
+    workspaceContextItem.buildContent();
+    workspaceContextItem.setIcon("map-marker");
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private final VAnchor				welcomeLink;
-  private final VAnchor				logoutLink;
-  private final VSpan				welcomeText;
+  // menues
+  private VModuleListMenu               userMenu;
+  private VModuleListMenu               adminMenu;
+  private VModuleListMenu               bookmarksMenu;
+  private VModuleListMenu               workspaceContextMenu;
+  
+  // items
+  private VModuleItem                   userItem;
+  private VModuleItem                   adminItem;
+  private VModuleItem                   bookmarksItem;
+  private VModuleItem                   workspaceContextItem;
 }

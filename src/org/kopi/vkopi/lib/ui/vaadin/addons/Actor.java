@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 kopiLeft Development Services
+ * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ package org.kopi.vkopi.lib.ui.vaadin.addons;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.ActorServerRpc;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.actor.ActorState;
 
-import com.vaadin.server.Resource;
 import com.vaadin.shared.communication.SharedState;
 import com.vaadin.ui.AbstractComponent;
 
@@ -48,18 +47,18 @@ public class Actor extends AbstractComponent {
   public Actor(String caption,
                String description,
                String menu,
-               Resource icon,
+               String icon,
                int acceleratorKey,
                int... modifiersKey)
   {
     registerRpc(rpc);
     setImmediate(true);
+    getState().icon = icon;
     getState().acceleratorKey = acceleratorKey;
     getState().modifiersKey = modifiersKey;
     getState().menu = menu;
     setCaption(caption);
     setDescription(description);
-    setIcon(icon);
   }
 
   //---------------------------------------------------
