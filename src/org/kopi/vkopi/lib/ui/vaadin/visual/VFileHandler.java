@@ -143,7 +143,8 @@ public class VFileHandler extends FileHandler {
     if (directory != null && !directory.exists()) {
       directory = null;
     }
-    basename = ensurePrefixLength(getBaseFileName(defaultName));
+    // add a blank between the prefix and the random text
+    basename = ensurePrefixLength(getBaseFileName(defaultName)) + " ";
     extension = getExtension(defaultName);
     
     return File.createTempFile(basename, extension, directory);
