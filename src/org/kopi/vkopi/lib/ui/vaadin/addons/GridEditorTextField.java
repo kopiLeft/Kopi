@@ -109,7 +109,6 @@ public class GridEditorTextField extends GridEditorField<String> {
     } else {
       getState().text = getValue();
     }
-    displayedValue = getState().text;
   }
   
   @Override
