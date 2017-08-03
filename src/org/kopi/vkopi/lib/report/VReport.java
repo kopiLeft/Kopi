@@ -84,7 +84,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     init();
 
     // localize the report using the default locale
-    localize(Locale.getDefault());
+    localize(ApplicationContext.getDefaultLocale());
   }
 
   /**

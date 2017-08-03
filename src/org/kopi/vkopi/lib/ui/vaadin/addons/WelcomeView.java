@@ -59,7 +59,7 @@ public class WelcomeView extends AbstractComponent {
     setImmediate(true);
     getState().locale = locale.toString();
     for (Locale language : languages) {
-      getState().languages.put(language.getDisplayName(), language.toString());
+      getState().languages.put(language.getDisplayName(locale), language.toString());
     }
     getState().href = href;
     setResource("logo", logo);

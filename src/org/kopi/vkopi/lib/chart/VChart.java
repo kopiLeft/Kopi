@@ -111,7 +111,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
     }
     init();
     // localize the report using the default locale
-    localize(Locale.getDefault());
+    localize(ApplicationContext.getDefaultLocale());
   }
 
   // ----------------------------------------------------------------------
