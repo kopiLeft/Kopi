@@ -241,6 +241,11 @@ public class VBooleanField extends VObjectField implements KeyPressHandler, KeyD
       }
       event.preventDefault();
       event.stopPropagation();
+    } else if (event.getNativeKeyCode() == KeyCodes.KEY_BACKSPACE) {
+      setValue(null);
+      ValueChangeEvent.fire(this, (Boolean)getValue());
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
   
