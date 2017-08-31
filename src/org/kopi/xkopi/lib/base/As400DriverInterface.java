@@ -488,6 +488,15 @@ public class As400DriverInterface extends DriverInterface {
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
+   * ROUND/2: Returns the number given as first argument rounded to the number of digits given
+   * as second argument.
+   */
+  protected String translateRound(String arg1, String arg2) throws SQLException {
+    return "ROUND(" + arg1 + ", " + arg2 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
    * ROWID/0: Returns the address or the ID of the row.
    */
   protected String translateRowid() throws SQLException {

@@ -641,7 +641,7 @@ loop:
   private String translateFunctionCall(String functor, ArrayList arguments)
     throws SQLException
   {
-    Object      function = functions.get(functor.toUpperCase() + "/" + arguments.size());
+    Integer     function = (Integer)functions.get(functor.toUpperCase() + "/" + arguments.size());
 
     if (function == null) {
       if (arguments.size() == 0) {
@@ -662,7 +662,7 @@ loop:
         return buffer.toString();
       }
     } else {
-      switch (((Integer)function).intValue()) {
+      switch (function.intValue()) {
       case 1:   // TOMONTH/1
         return translateTomonth((String)arguments.get(0));
       case 2:   // ADD_DAYS/2
@@ -773,6 +773,8 @@ loop:
         return translateInt2string((String)arguments.get(0));
       case 58:  // GREATEST/2
         return translateGreatest((String)arguments.get(0), (String)arguments.get(1));
+      case 59:  // ROUND/2
+        return translateRound((String)arguments.get(0), (String)arguments.get(1));
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR "
                                          + functor.toUpperCase() + "/" + arguments.size());
@@ -1049,6 +1051,13 @@ loop:
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
+   * ROUND/2: Returns the number given as first argument rounded to the number of digits given
+   * as second argument.
+   */
+  protected abstract String translateRound(String arg1, String arg2) throws SQLException;
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
    * ROWID/0: Returns the address or the ID of the row.
    */
   protected abstract String translateRowid() throws SQLException;
@@ -1318,6 +1327,7 @@ loop:
     functions.put("TRUNC/2", new Integer(56));
     functions.put("INT2STRING/1", new Integer(57));
     functions.put("GREATEST/2", new Integer(58));
+    functions.put("ROUND/2", new Integer(59));
   }
 
   private String        input;          // the string to parse
