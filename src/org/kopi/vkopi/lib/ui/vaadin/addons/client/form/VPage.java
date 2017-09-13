@@ -150,6 +150,14 @@ public class VPage extends Composite {
       DOM.getParent(caption.getElement()).setClassName("caption-container");;
     }
   }
+  
+  /**
+   * Returns the page content.
+   * @return the page content.
+   */
+  public CellPanel getContent() {
+    return content;
+  }
 
   /**
    * Releases this page

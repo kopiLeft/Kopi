@@ -5,7 +5,6 @@
 @literal	CHART
 @literal	CHARTTYPE
 @literal	DIMENSION
-@literal	FORMAT
 @literal	INIT
 @literal	MEASURE
 @literal	NO

@@ -34,7 +34,8 @@
                    KopiScrollBarUI.java  
                    KopiButtonUI.java KopiTextAreaUI.java KopiUtils.java  
                    KopiPasswordFieldUI.java KopiProgressBarUI.java 
-                   KopiUserColors.java KopiToggleButtonUI.java" />
+                   KopiUserColors.java KopiToggleButtonUI.java
+		   KopiTextPaneUI.java" />
 
   <import file="${topdir}/defs.xml" />
 

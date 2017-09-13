@@ -22,6 +22,7 @@ package org.kopi.vkopi.comp.base;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CReferenceType;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JIntLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
@@ -49,10 +50,12 @@ public class VKTextType extends VKType {
                     int width,
                     int height,
                     int visibleHeight,
-                    int convert)
+                    int convert,
+                    boolean styled)
   {
     super(where, width, height, visibleHeight);
     this.convert = convert;
+    this.styled = styled;
   }
 
   // ----------------------------------------------------------------------
@@ -83,7 +86,8 @@ public class VKTextType extends VKType {
 	new JIntLiteral(ref, getWidth()),
 	new JIntLiteral(ref, getHeight()),
 	new JIntLiteral(ref, getVisibleHeight()),
-	new JIntLiteral(ref, convert)};
+	new JIntLiteral(ref, convert),
+	new JBooleanLiteral(ref, styled)};
 
     return new JUnqualifiedInstanceCreation(ref, getType(), exprs);
   }
@@ -146,4 +150,5 @@ public class VKTextType extends VKType {
   // ---------------------------------------------------------------------
 
   private int			convert;
+  private boolean               styled;
 }

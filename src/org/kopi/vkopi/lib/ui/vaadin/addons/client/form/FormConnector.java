@@ -78,7 +78,6 @@ public class FormConnector extends AbstractComponentContainerConnector implement
   public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent event) {
     if (event.getOldChildren() == null || event.getOldChildren().size() == 0) {
       getWidget().init(getConnection(),
-                       getState().locale,
                        getState().pageCount,
                        getState().titles,
                        ResourcesUtil.getImageURL(getConnection(), "single.gif"));

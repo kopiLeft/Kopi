@@ -5,7 +5,6 @@
 @literal	BEGIN
 @literal	COMPUTE
 @literal	FIELD
-@literal	FORMAT
 @literal	GROUP
 @literal	HIDDEN
 @literal	NO

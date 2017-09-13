@@ -121,7 +121,8 @@
 				    BooleanField.java
 				    BooleanRenderer.java
 				    GridEditorBooleanField.java
-				    UploadProgress.java" />
+				    UploadProgress.java
+				    RichTextField.java" />
 
   <!--==============================================================
       Default target:	builds messages, options and java sources 

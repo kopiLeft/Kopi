@@ -37,7 +37,8 @@
   	           DGridBlockDetailsGenerator.java DGridBlockFieldHandler.java
   	           DGridBlockFieldUI.java DGridEditorField.java DGridEditorLabel.java
   	           DGridTextEditorField.java DActorField.java DGridEditorActorField.java
-		   DBooleanField.java DGridEditorBooleanField.java DGridBlockItemSorter.java" />
+		   DBooleanField.java DGridEditorBooleanField.java DGridBlockItemSorter.java
+		   DRichTextEditor.java" />
 	
   <import file="${topdir}/defs.xml" />
 </project>

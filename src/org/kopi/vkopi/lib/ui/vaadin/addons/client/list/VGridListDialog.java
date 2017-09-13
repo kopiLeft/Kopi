@@ -24,7 +24,10 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VInputButton;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.VPopup;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VTabSheet;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.VInputTextField;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.form.VForm;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.form.VPage;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.VEditorTextField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.list.GridListDialogState.SelectionTarget;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.main.VMainWindow;
@@ -32,6 +35,7 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -41,11 +45,15 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ApplicationConnection;
@@ -71,6 +79,14 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
     sinkEvents(Event.ONKEYDOWN | Event.ONKEYPRESS);
     addKeyDownHandler(this);
     addKeyPressHandler(this);
+    handlerRegistration = Window.addResizeHandler(new ResizeHandler() {
+      
+      @Override
+      public void onResize(ResizeEvent event) {
+        windowResized = true;
+        calculateTableSize(event.getWidth(), event.getHeight(), true);
+      }
+    });
   }
   
   //---------------------------------------------------
@@ -195,13 +211,12 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
           
           @Override
           public void execute() {
-            calculateTableHeight();
+            calculateTableSize();
             if (reference != null) {
               popup.showRelativeTo(reference);
             } else {
               popup.setGlassEnabled(true);
               popup.setGlassStyleName(Styles.LIST_DIALOG + "-glass");
-              popup.center(VMainWindow.get().getCurrentWindow());
             }
             focus();
           }
@@ -218,49 +233,109 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
     });
   }
   
-  protected void calculateTableHeight() {
-    int         available;
-    int         top;
-    int         height;
+  protected void addScrollBar() {
     
-    height = Window.getClientHeight();
-    if (reference != null) {
-      top = reference.getAbsoluteTop() + reference.getOffsetHeight();
-    } else if (VMainWindow.get().getCurrentWindow() != null) {
-      top = (VMainWindow.get().getCurrentWindow().getOffsetHeight() - popup.getOffsetHeight()) >> 1;
-      top = Math.max(Window.getScrollTop() + top, (VMainWindow.get().getCurrentWindow().getAbsoluteTop()));
+    double      height = table.getHeightByRows() * 41;
+    
+    if (!windowResized){
+      if (hasVerticalScrollBar(height)) {
+        table.setWidth(table.getOffsetWidth() + 8 + "px"); //add horizontal scroll bar width
+        scrollBarAdded = true;
+      }
     } else {
-      top = Window.getScrollTop(); // the hole window
-    }
-    available = Math.max(0, height - top - 72); // for headers and filters
-    if (newForm != null) {
-      available = Math.max(0, available - 20); // new button height
-    }
-    if (available <= 40) {
-      available = recalculateAvailableHeight(available);
-    }
-    table.setHeightByRows(Math.min(table.getDataSource().size(), available / 40)); // row heigh is 40px
-    if (table.getOffsetHeight() > available) {
-      table.setWidth(table.getOffsetWidth() + 16 + "px"); //add horizontal scroll bar width
-    }
-    if (newForm != null && newForm.getElement().getOffsetWidth() > table.getOffsetWidth()) {
-      table.setWidth(newForm.getElement().getOffsetWidth() + "px");
+      if (scrollBarAdded && !hasVerticalScrollBar(height)) {
+        table.setWidth(table.getOffsetWidth() - 16 + "px"); //remove horizontal scroll bar width
+        scrollBarAdded = false;
+      } else if (!scrollBarAdded && hasVerticalScrollBar(height)) {
+        table.setWidth(table.getOffsetWidth() + 16 + "px"); //add horizontal scroll bar width
+        scrollBarAdded = true;
+      }
     }
   }
   
-  /**
-   * Recalculates the available height based on the top of the window
-   * This is only needed when putting the popup according to a reference component.
-   */
-  protected int recalculateAvailableHeight(int available) {
-    if (reference != null) {
-      available = reference.getAbsoluteTop();
+  protected boolean hasVerticalScrollBar(double height) {
+    return table.getScrollHeight() > height;
+  }
+  
+  protected boolean hasHorizontalScrollBar(double width) {
+    return table.getScrollWidth() > width;
+  }
+  
+  protected final void calculateTableSize() {
+    calculateTableSize(Window.getClientWidth(), Window.getClientHeight(), false);
+  }
+  
+  protected void calculateTableSize(int width, int height, boolean resizing) {
+    int                 available;
+    int                 rows;
+   
+    if (VMainWindow.get().getCurrentWindow() == null) {
+      popup.center();
+    } else if (reference != null) {
+      available = Math.max(0, height - reference.getAbsoluteTop() - reference.getOffsetHeight() - 80 );
+      if (hasVerticalScrollBar(available - 41)) {
+        available = Math.max(available , reference.getAbsoluteTop() - 80 );
+      }
+      rows = Math.max(1, (int) (available / 41) - 1); // row heigh is 41px
+      table.setHeightByRows(Math.min(table.getDataSource().size(), rows)); 
+      addScrollBar();
+      popup.showRelativeTo(reference);
+
+    } else {
+      Element   formPageContent = getFormContent().getElement();
+      
+      available = Math.max(0, height - formPageContent.getAbsoluteTop() - 70); 
       if (newForm != null) {
         available = Math.max(0, available - 20); // new button height
       }
+      rows = Math.max(1, (int) (available / 41) - 1); // row heigh is 41px
+      table.setHeightByRows(Math.min(table.getDataSource().size(), rows)); 
+      addScrollBar();
+      if (newForm != null && newForm.getElement().getOffsetWidth() > table.getOffsetWidth()) {
+        table.setWidth(newForm.getElement().getOffsetWidth() + "px");
+      }
+      if (resizing){
+        if (!hasHorizontalScrollBar(width)){
+          table.setWidth(table.getScrollWidth() + (scrollBarAdded ? 16 : 0 ) + "px");
+        } else {
+          table.setWidth(width + "px");
+        }
+      }
+      popup.center();
+      popup.setPopupPosition(setPopupLeftPosition(formPageContent), setPopupTopPosition(formPageContent));
     }
+  }
+  
+  protected Widget getFormContent() {
+    VWindow             window;
+    VForm               form;
     
-    return available;
+    window = (VWindow) VMainWindow.get().getCurrentWindow();
+    form = (VForm) ((ScrollPanel)window.getContent()).getWidget();
+    if (form.getWidget() instanceof VPage) {
+      return ((VPage)form.getWidget()).getContent();
+    } else {
+      return ((VTabSheet)form.getWidget()).getWidget();
+    }
+  }
+  
+  protected int setPopupLeftPosition (Element formPageContent) {
+    int      left = 0;
+  
+    if (Window.getClientWidth() > table.getOffsetWidth()) {
+      left = formPageContent.getAbsoluteLeft() + (Math.min(Window.getClientWidth(), formPageContent.getClientWidth()) - table.getOffsetWidth()) / 2;
+    }
+    left = Math.max(left, 0);
+    return left;
+  }
+  
+  protected int setPopupTopPosition (Element formPageContent) {
+    int      top =  formPageContent.getAbsoluteTop();
+    
+      if (formPageContent.getOffsetHeight() > table.getOffsetHeight() && table.getScrollHeight() == 0) {
+        top = formPageContent.getAbsoluteTop() +  (formPageContent.getOffsetHeight() - table.getOffsetHeight()) / 2;
+      }
+    return top;
   }
   
   /**
@@ -331,6 +406,10 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
     reference = null;
     newForm = null;
     lastActiveWindow = null;
+    if (handlerRegistration != null) {
+      handlerRegistration.removeHandler();
+    }
+    handlerRegistration = null;
   }
   
   /**
@@ -390,6 +469,8 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
   // DATA MEMBERS
   //---------------------------------------------------
   
+  boolean                                       scrollBarAdded = false;
+  private boolean                               windowResized = false;
   private ApplicationConnection                 connection;
   private Grid<JsonObject>                      table;
   private VPopup                                popup;
@@ -399,4 +480,5 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
   private VIcon                                 close;
   private VerticalPanel                         content;
   private String                                pattern;
+  private HandlerRegistration                   handlerRegistration;
 }

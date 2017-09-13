@@ -115,7 +115,7 @@ public class VActorPanel extends FlowPanel implements ResizeHandler {
       if (actor != null) {
 	width += actor.getElement().getClientWidth();
 	if (!actorsWidths.containsKey(actor)) {
-	  actorsWidths.put(actor, actor.getElement().getOffsetWidth());
+	  actorsWidths.put(actor, actor.getElement().getClientWidth());
 	}
       }
     }
@@ -189,7 +189,7 @@ public class VActorPanel extends FlowPanel implements ResizeHandler {
     
     extraActors = new LinkedList<Widget>();
     // add spacing between actors.
-    while (getActorsWidth() + getMoreActorsWidth() + (4 * actors.size()) > width - 26) {
+    while (getActorsWidth() + getMoreActorsWidth() > width) {
       Widget		actor;
 
       actor = actors.peekLast();
@@ -215,12 +215,12 @@ public class VActorPanel extends FlowPanel implements ResizeHandler {
    * @return The more item client width.
    */
   protected int getMoreActorsWidth() {
-    return actors.contains(moreActors) ? moreActors.getElement().getOffsetWidth() + 4 : 30;
+    return actors.contains(moreActors) ? moreActors.getElement().getOffsetWidth() :  0;
   }
   
   @Override
   public void onResize(ResizeEvent event) {
-    render(event.getWidth());
+    render(event.getWidth() - RESERVED_WIDTH);
   }
   
   @Override
@@ -230,7 +230,7 @@ public class VActorPanel extends FlowPanel implements ResizeHandler {
       
       @Override
       public void execute() {
-        render(Window.getClientWidth());
+        render(Window.getClientWidth() - RESERVED_WIDTH);
       }
     });
   }
@@ -244,9 +244,9 @@ public class VActorPanel extends FlowPanel implements ResizeHandler {
     }
     
     for (Widget actor : moreActors.getActors()) {
-      if (getMoreActorsWidth() + getActorsWidth() + (actorsWidths.get(actor) + 4) + (4 * actors.size()) < width - 26) {
+      if (getMoreActorsWidth() + getActorsWidth() + actorsWidths.get(actor) < width) {
 	// the actor should be restored
-	moreActors.removeActor(actor);
+        moreActors.removeActor(actor);
 	removeActor(moreActors);
 	addActor(actor);
 	if (moreActors.isEmpty()) {
@@ -295,4 +295,5 @@ public class VActorPanel extends FlowPanel implements ResizeHandler {
   private VMoreActors                           moreActors;
   private Map<Widget, Integer>                  actorsWidths;
   private VActorsRootNavigationItem             actorsNavigationItem;
+  private final static int                      RESERVED_WIDTH = 80;
 }

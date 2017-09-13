@@ -150,22 +150,70 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
    */
   @SuppressWarnings("deprecation")
   public void displayFieldError(String message) {
-    if (blockView.getDisplayLine(getBlock().getActiveRecord()) == -1) {
+    UField      display = getModeDisplay();
+    
+    if (display == null) {
       model.getForm().error(message);
-      return;
+    } else {
+      try {
+        // navigates to the active record if needed
+        // this is typically needed in grid based blocks
+        gotoActiveRecord();
+        // switch to detail view when needed
+        if (getBlock().isMulti() && display == detailDisplay && !getBlock().isDetailMode()) {
+          ((UMultiBlock)blockView).switchView(-1);
+        }
+        display.setBlink(true);
+        model.getForm().error(message);
+        display.setBlink(false);
+
+        transferFocus(display);
+      } catch (VException e) {
+        throw new InconsistencyException();
+      } finally {
+        // ensure that the field gain focus again
+        display.forceFocus();
+      }
     }
-    UField	display = displays[blockView.getDisplayLine(getBlock().getActiveRecord())];
-    display.setBlink(true);
-    model.getForm().error(message);
-    display.setBlink(false);
-    try {
-      transferFocus(display);
-    } catch (VException e) {
-      throw new InconsistencyException();
-    } finally {
-      // ensure that the field gain focus again
-      display.forceFocus();
+  }
+  
+  /**
+   * Returns the field display according to the model block.
+   * If the block is in detail mode and the field is visible
+   * in the detail mode, the detail display will be returned.
+   * Otherwise, the chart display will be returned in case of
+   * a valid display line
+   */
+  protected UField getModeDisplay() {
+    UField              display;
+    int                 displayLine;
+    
+    displayLine = blockView.getDisplayLine(getBlock().getActiveRecord());
+    if (getModel().noChart()) {
+      display = detailDisplay;
+    } else if (getModel().noDetail() && displayLine != -1) {
+      display = displays[displayLine];
+    } else if (!getModel().noChart() && !getModel().noDetail()) {
+      // field is visible on both views
+      if (getBlock().isMulti() && getBlock().isDetailMode()) {
+        display = detailDisplay;
+      } else if (displayLine != -1) {
+        display = displays[displayLine];
+      } else {
+        display = null;
+      }
+    } else {
+      display = null;
     }
+    
+    return display;
+  }
+  
+  /**
+   * 
+   */
+  protected void gotoActiveRecord() throws VException {
+    // to be redefined by subclasses
   }
 
   @SuppressWarnings("deprecation")

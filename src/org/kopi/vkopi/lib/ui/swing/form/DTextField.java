@@ -46,6 +46,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.undo.UndoManager;
 
 import org.kopi.vkopi.lib.form.ModelTransformer;
@@ -54,6 +55,7 @@ import org.kopi.vkopi.lib.form.VConstants;
 import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VStringField;
+import org.kopi.vkopi.lib.ui.swing.base.JHtmlTextArea;
 import org.kopi.vkopi.lib.ui.swing.base.TextSelecter;
 import org.kopi.vkopi.lib.ui.swing.spellchecker.SpellChecker;
 import org.kopi.vkopi.lib.ui.swing.spellchecker.SpellException;
@@ -90,8 +92,7 @@ public class DTextField extends DField implements UTextField, VConstants {
 
     if (getModel().getHeight() == 1
 	|| (!scanner && ((getModel().getTypeOptions() & FDO_DYNAMIC_NL) > 0))) {
-      transformer = new DefaultTransformer(getModel().getWidth(),
-	  getModel().getHeight());
+      transformer = new DefaultTransformer(getModel().getWidth(), getModel().getHeight());
     } else if (!scanner) {
       transformer = new NewlineTransformer(getModel().getWidth(),
 	  getModel().getHeight());
@@ -99,7 +100,9 @@ public class DTextField extends DField implements UTextField, VConstants {
       transformer = new ScannerTransformer(this);
     }
 
-    if (!scanner) {
+    if (hasStyledContent()) {
+      document = new KopiStyledDocument(getModel(), transformer);
+    } else if (!scanner) {
       document = new KopiFieldDocument(getModel(), transformer);
     } else {
       document = new KopiScanDocument(getModel(), transformer);
@@ -122,14 +125,13 @@ public class DTextField extends DField implements UTextField, VConstants {
     JComponent  comp;
 
     comp = createFieldGUI(getModel().getWidth(),
-	getModel().getHeight(),
-	(getModel().getHeight() == 1) ?
-	    1 :
-	      ((VStringField)getModel()).getVisibleHeight(),
-	      (options & VConstants.FDO_NOECHO) != 0,
-	      scanner,
-	      new DFieldMouseListener(),
-	      align);
+	                  getModel().getHeight(),
+	                  (getModel().getHeight() == 1) ? 1 :
+	                  ((VStringField)getModel()).getVisibleHeight(),
+	                  (options & VConstants.FDO_NOECHO) != 0,
+	                  scanner,
+	                  new DFieldMouseListener(),
+	                  align);
     if (model.hasAutofill() && getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
       document.setAutofill(true);
     }
@@ -283,9 +285,7 @@ public class DTextField extends DField implements UTextField, VConstants {
       document.removeDocumentListener(listener);
       document.removeUndoableEditListener(undoManager);
       document.removeUndoableEditListener(((DWindow)getModel().getForm().getDisplay()).getUndoableEditListener());
-
       document.setModelText(newModelTxt);
-
       if (inside) {
 	document.addDocumentListener(listener);
 	document.addUndoableEditListener(undoManager);
@@ -470,9 +470,13 @@ public class DTextField extends DField implements UTextField, VConstants {
 	  col = 40;
 	}
 
-	textfield = new JTextArea(visibleRows, col);
-	((JTextArea) textfield).setLineWrap(true);
-	((JTextArea) textfield).setWrapStyleWord(true);
+	if (hasStyledContent()) {
+	  textfield = new JHtmlTextArea(visibleRows, col);
+	} else {
+	  textfield = new JTextArea(visibleRows, col);
+	  ((JTextArea) textfield).setLineWrap(true);
+	  ((JTextArea) textfield).setWrapStyleWord(true);
+	}
       } else {
 	textfield = new JTextField(col) {
 	  /**
@@ -505,19 +509,17 @@ public class DTextField extends DField implements UTextField, VConstants {
 
     // Tab is used for the default traversal keys. But these do not
     // work with the concept of kopi so we remove that default behavior
-    textfield.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
-	Collections.EMPTY_SET);
-    textfield.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
-	Collections.EMPTY_SET);
-
+    textfield.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
+    textfield.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
     textfield.setDocument(document);
-
+    if (hasStyledContent()) {
+      ((KopiStyledDocument) document).setEditorKit((HTMLEditorKit) ((JHtmlTextArea) textfield).getEditorKit());
+    }
     textfield.addMouseListener(new RightMenu());
     textfield.addMouseListener(mouseListener);
     if (!noEdit) {
       textfield.addFocusListener(TextSelecter.TEXT_SELECTOR);
     }
-
 
     // scroller
     JScrollPane         scroller;
@@ -563,6 +565,16 @@ public class DTextField extends DField implements UTextField, VConstants {
     }
   }
 
+  /**
+   * Returns true of this text field should have the ability to handle formatted content.
+   */
+  protected boolean hasStyledContent() {
+    if (getModel() instanceof VStringField) {
+      return ((VStringField) getModel()).isStyled();
+    } else {
+      return false;
+    }
+  }
 
   /**
    * remove selection focus Listener
@@ -595,7 +607,7 @@ public class DTextField extends DField implements UTextField, VConstants {
   protected boolean                     	inside;
   protected boolean                     	noEdit;
   protected boolean				scanner;
-  protected KopiFieldDocument           	document;
+  protected KopiDocument                        document;
   protected ModelTransformer            	transformer;
   protected DocumentListener            	listener;
   private UndoManager                 		undoManager;

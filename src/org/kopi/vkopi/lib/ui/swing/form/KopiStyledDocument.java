@@ -21,11 +21,13 @@ package org.kopi.vkopi.lib.ui.swing.form;
 
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.text.DecimalFormatSymbols;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.form.ModelTransformer;
@@ -33,13 +35,13 @@ import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.VFixnumField;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
 
-/**
- * !!! NEED COMMENTS
- */
-/*package*/ class KopiFieldDocument extends PlainDocument implements KopiDocument {
-
+public class KopiStyledDocument extends HTMLDocument implements KopiDocument {
   
-public KopiFieldDocument(VField model, ModelTransformer transformer) {
+  // ----------------------------------------------------------------------
+  // CONSTRUCTOR
+  // ----------------------------------------------------------------------
+  
+  public KopiStyledDocument(VField model, ModelTransformer transformer) {
     this.model = model;
     this.transformer = transformer;
   }
@@ -47,6 +49,10 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
   // ----------------------------------------------------------------------
   // MODEL / VIEW INTERFACE
   // ----------------------------------------------------------------------
+
+  public void setEditorKit(HTMLEditorKit editorKit) {
+    this.editorKit = editorKit;
+  }
 
   /**
    * Returns the text currently showed by this document
@@ -69,16 +75,22 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
     try {
       super.remove(0, getLength());
       s =  transformer.toGui(s);
-      super.insertString(0, s, null);
+      try {
+        editorKit.insertHTML(this, getLength(), s, 0, 0, null);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     } catch (BadLocationException e) {
       throw new InconsistencyException("BadLocationException in KopiFieldDocument");
     }
+    
   }
 
   // ----------------------------------------------------------------------
   // DOCUMENT IMPLEMENTATION
   // ----------------------------------------------------------------------
-
+  
   public void remove(int offs, int len) throws BadLocationException {
     String      text;
     
@@ -131,63 +143,73 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
       java.awt.Toolkit.getDefaultToolkit().beep();
     }
   }
-
-  public Object getModel() {
-    return model;
-  }
-
-  public void setState(int state) {
-    this.state = state;
-  }
-
+  
+  // ----------------------------------------------------------------------
+  // STATEFUL IMPLEMENTATION
+  // ----------------------------------------------------------------------
+  
   public int getState() {
     return state;
   }
 
-  public void setHasCriticalValue(boolean hasCriticalValue) {
-    this.hasCriticalValue = hasCriticalValue;
+  @Override
+  public boolean getAutofill() {
+    return autofill;
   }
-  
+
+  @Override
+  public boolean isAlert() {
+    return alert;
+  }
+
+  @Override
   public boolean hasCriticalValue() {
     return hasCriticalValue;
+  }
+
+  @Override
+  public Color getBgColor() {
+    return bgColor;
+  }
+
+  @Override
+  public Object getModel() {
+    return model;
+  }
+  
+  public void setState(int state) {
+    this.state = state;
+  }
+
+  public void setHasCriticalValue(boolean hasCriticalValue) {
+    this.hasCriticalValue = hasCriticalValue;
   }
 
   public void setBgColor(Color bgColor) {
     this.bgColor = bgColor;
   }
 
-  public Color getBgColor() {
-    return bgColor;
-  }
-
   public void setAlert(boolean alert) {
     this.alert = alert;
   }
-  
-  public boolean isAlert() {
-    return alert;
-  }
-
-  public boolean getAutofill() {
-    return autofill;
-  }
 
   public void setAutofill(boolean autofill) {
-    this.autofill = autofill;
+    this.autofill = autofill; 
   }
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  private int                   state;
-  private boolean               alert;
-  private boolean               autofill = false;
-  private boolean               hasCriticalValue;
-  private Color                 bgColor;
-  private VField		model;
-  private ModelTransformer      transformer;
-  /**
-   * Comment for <code>serialVersionUID</code>
-   */
-  private static final long serialVersionUID = -7098798410173878552L;
+  
+  private final VField                  model;
+  private final ModelTransformer        transformer;
+  private HTMLEditorKit                 editorKit;
+  
+  private int                           state;
+  private boolean                       alert;
+  private boolean                       autofill = false;
+  private boolean                       hasCriticalValue;
+  private Color                         bgColor;
+  
+  private static final long             serialVersionUID = -6909577520453067610L;
 }

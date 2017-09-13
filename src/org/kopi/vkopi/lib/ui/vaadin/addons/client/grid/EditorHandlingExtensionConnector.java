@@ -49,15 +49,17 @@ public class EditorHandlingExtensionConnector extends AbstractExtensionConnector
   protected void extend(ServerConnector target) {
     if (getParentWidget() != null) {
       getParentWidget().getEditor().setEventHandler(new CustomEventHandler());
+      lastTopVisibleRow =-1;
       scrollHandler = getParentWidget().getEscalator().addScrollHandler(new ScrollHandler() {
         
         @Override
         public void onScroll(ScrollEvent event) {
           if (getParentWidget().getEditor().getRow() != -1) {
             int         topRow = (int)(getParentWidget().getEscalator().getScrollTop() / getParentWidget().getEscalator().getBody().getDefaultRowHeight());
-            
-            if (getParentWidget().getEditor().getRow() < topRow) {
+
+            if (topRow != lastTopVisibleRow && getParentWidget().getEditor().getRow() < topRow) {
               getRpcProxy(EditorHandlingExtensionServerRpc.class).cancelEditor();
+              lastTopVisibleRow = topRow;
             }
           }
         }
@@ -164,4 +166,5 @@ public class EditorHandlingExtensionConnector extends AbstractExtensionConnector
   }
   
   private HandlerRegistration           scrollHandler;
+  private int                           lastTopVisibleRow;
 }

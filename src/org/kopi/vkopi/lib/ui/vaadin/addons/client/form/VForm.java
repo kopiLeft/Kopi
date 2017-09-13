@@ -23,12 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.WidgetUtils;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.block.VBlock;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VCaption;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VTabSheet;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.FormListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.event.PositionPanelListener;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.window.VWindow;
 
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
@@ -75,13 +74,11 @@ public class VForm extends SimplePanel {
    * @param titles The pages titles.
    */
   public void init(ApplicationConnection connection,
-                   String locale,
                    int pageCount,
                    String[] titles,
                    String separator)
   { 
     // not used any more but we keep it may be we will used again
-    //createBlockInfoWidget(connection, locale);
     pages = new VPage[pageCount == 0 ? 1 : pageCount];
     for (int i = 0; i < pages.length; i++) {
       if (pageCount != 0) {
@@ -103,17 +100,11 @@ public class VForm extends SimplePanel {
    * @param connection The application connection.
    * @param locale The application locale.
    */
-  protected void createBlockInfoWidget(ApplicationConnection connection, String locale) {
-    VWindow		window;
+  public void showBlockInfo(ApplicationConnection connection, VBlock block) {
     
-    window = WidgetUtils.getParent(this, VWindow.class);
-    if (window != null) {
       blockInfo.setClient(connection);
-      blockInfo.setLocale(locale);
       blockInfo.setVisible(false); // hide it initially
-      window.setFooter(blockInfo);
-      window.setFooterAlignment(HasHorizontalAlignment.ALIGN_RIGHT, HasVerticalAlignment.ALIGN_MIDDLE);
-    }
+      blockInfo.show(block);
   }
   
   /**

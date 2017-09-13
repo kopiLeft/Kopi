@@ -48,8 +48,8 @@ public class VTextField extends VStringField {
   /**
    * Constructor
    */
-  public VTextField(int width, int height, int visibleHeight, int convert) {
-    super(width, height, visibleHeight, convert);
+  public VTextField(int width, int height, int visibleHeight, int convert, boolean styled) {
+    super(width, height, visibleHeight, convert, styled);
   }
 
   public int getType() {

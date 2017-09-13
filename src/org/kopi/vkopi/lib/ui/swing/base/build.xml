@@ -35,7 +35,7 @@
                    JFieldButton.java JBookmarkPanel.java JDisablePanel.java
                    TextSelecter.java Stateful.java JFieldButton.java Utils.java 
   		   MultiLineToolTip.java MultiLineToolTipUI.java KnownBugs.java
-  	           JActorFieldButton.java" />
+  	           JActorFieldButton.java JHtmlTextArea.java" />
 
   <import file="${topdir}/defs.xml" />
 

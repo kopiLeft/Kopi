@@ -86,6 +86,15 @@ public class DGridMultiBlock extends DGridBlock implements UMultiBlock, DetailsG
       }
     });
   }
+  
+  @Override
+  public int getRecordFromDisplayLine(int line) {
+    if (inDetailMode() && itemHasDetailVisible != null ) {
+      return itemHasDetailVisible;
+    } else {
+      return super.getRecordFromDisplayLine(line);
+    }
+  }
 
   @Override
   public void addToDetail(UComponent comp, KopiAlignment constraint) {
@@ -204,7 +213,15 @@ public class DGridMultiBlock extends DGridBlock implements UMultiBlock, DetailsG
   }
   
   @Override
-  protected void enterRecord(int recno) {
+  public void blockChanged() {
+    super.blockChanged();
+    if (itemHasDetailVisible != null && getModel().getActiveRecord() != itemHasDetailVisible) {
+      enterRecord(getModel().getActiveRecord());
+    }
+  }
+  
+  @Override
+  protected void enterRecord(final int recno) {
     BackgroundThreadHandler.access(new Runnable() {
       
       @Override
@@ -212,6 +229,11 @@ public class DGridMultiBlock extends DGridBlock implements UMultiBlock, DetailsG
         if (inDetailMode() && itemHasDetailVisible != null) {
           grid.setDetailsVisible(itemHasDetailVisible, false);
           getModel().setDetailMode(false);
+          if (recno != itemHasDetailVisible) {
+            itemHasDetailVisible = recno;
+            getModel().setDetailMode(true);
+            grid.setDetailsVisible(itemHasDetailVisible, true);
+          }
         }
       }
     });

@@ -25,11 +25,13 @@ import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VImageField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorImageField;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
+import org.kopi.vkopi.lib.ui.vaadin.visual.VApplication;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ResourceReference;
 import com.vaadin.shared.communication.URLReference;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ImageRenderer;
 import com.vaadin.ui.renderers.Renderer;
 
@@ -117,11 +119,16 @@ public class DGridEditorImageField extends DGridEditorField<Resource> {
       
       @Override
       public JsonValue encode(Resource resource) {
-        String                  key = "key" + keyCounter++;
-        ResourceReference       reference =  ResourceReference.create(resource, this, key);
+        if (resource == null) {
+          return null;
+        }
         
-        getEditor().getState().resources.put(key, reference);
-        return encode(ResourceReference.create(resource, getEditor(), key), URLReference.class);
+        String                  key = "key" + keyCounter++;
+        ResourceReference       reference =  ResourceReference.create(resource, UI.getCurrent(), key);
+        
+        ((VApplication)UI.getCurrent()).getState().resources.put(key, reference);
+
+        return encode(reference, URLReference.class);
       }
     };
   }

@@ -25,12 +25,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import org.kopi.vkopi.lib.ui.vaadin.visual.VApplication;
-import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.VColor;
 
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.UI;
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -196,6 +195,15 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
     } else {
       return o1.equals(o2);
     }
+  }
+  
+  /**
+   * Returns the complete theme resource URL of the given resource path.
+   * @param resourcePath The theme complete resource path.
+   * @return The URL of the given theme resource.
+   */
+  public static String getThemeResourceURL(String resourcePath) {
+    return "./VAADIN/themes/" + UI.getCurrent().getTheme() + "/" + resourcePath;
   }
 	  
   // --------------------------------------------------

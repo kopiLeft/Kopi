@@ -72,7 +72,11 @@
 				    BooleanFieldConnector.java
 				    BooleanFieldServerRpc.java
 				    BooleanFieldState.java
-				    VBooleanField.java" />
+				    VBooleanField.java
+				    RichTextFieldConnector.java
+				    RichTextFieldNavigationServerRpc.java
+				    RichTextFieldState.java
+				    VRichTextField.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

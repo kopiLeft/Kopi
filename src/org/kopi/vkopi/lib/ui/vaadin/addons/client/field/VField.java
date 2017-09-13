@@ -143,6 +143,17 @@ public class VField extends VSpanPanel implements HasEnabled {
   }
   
   /**
+   * Sets the text rich input widget.
+   * @param richTextField The input widget.
+   */
+  public void setRichTextField(VRichTextField richTextField) {
+    if (richTextField != null) {
+      this.richTextField = richTextField;
+      insert(this.richTextField, 0); // add it at first position.
+    }
+  }
+  
+  /**
    * Sets the object field widget.
    * @param objectField The object field widget.
    */
@@ -166,6 +177,7 @@ public class VField extends VSpanPanel implements HasEnabled {
     decr = null;
     textField = null;
     objectField = null;
+    richTextField = null;
     client = null;
     super.clear();
   }
@@ -231,6 +243,9 @@ public class VField extends VSpanPanel implements HasEnabled {
     }
     if (objectField != null) {
       objectField.setEnabled(enabled);
+    }
+    if (richTextField != null) {
+      richTextField.setEnabled(enabled);
     }
   }
   
@@ -310,6 +325,8 @@ public class VField extends VSpanPanel implements HasEnabled {
       textField.checkValue(rec);
     } else if (objectField != null) {
       objectField.checkValue(rec);
+    } else if (richTextField != null) {
+      richTextField.checkValue(rec);
     }
   }
   
@@ -322,6 +339,8 @@ public class VField extends VSpanPanel implements HasEnabled {
       textField.setValue(o);
     } else if (objectField != null) {
       objectField.setValue(o);
+    } else if (richTextField != null) {
+      richTextField.setValue(o);
     }
   }
   
@@ -347,6 +366,8 @@ public class VField extends VSpanPanel implements HasEnabled {
       return textField.getValue();
     } else if (objectField != null) {
       return objectField.getValue();
+    } else if (richTextField != null) {
+      return richTextField.getValue();
     } else {
       return null;
     }
@@ -374,6 +395,8 @@ public class VField extends VSpanPanel implements HasEnabled {
       textField.setFocus(true);
     } else if (objectField != null) {
       objectField.focus();
+    } else if (richTextField != null) {
+      richTextField.setFocus(true);
     }
   }
   
@@ -410,6 +433,8 @@ public class VField extends VSpanPanel implements HasEnabled {
       return textField.getElement().getOffsetWidth();
     } else if (objectField != null) {
       return objectField.getElement().getOffsetWidth();
+    } else if (richTextField != null) {
+      return richTextField.getElement().getOffsetWidth();
     } else {
       return 0;
     }
@@ -446,5 +471,6 @@ public class VField extends VSpanPanel implements HasEnabled {
   private VButton			decr;
   private VTextField			textField;
   private VObjectField			objectField;
+  private VRichTextField                richTextField;
   private ApplicationConnection		client;
 }

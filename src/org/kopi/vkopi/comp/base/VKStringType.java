@@ -23,6 +23,7 @@ import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CReferenceType;
 import org.kopi.kopi.comp.kjc.CType;
+import org.kopi.kopi.comp.kjc.JBooleanLiteral;
 import org.kopi.kopi.comp.kjc.JExpression;
 import org.kopi.kopi.comp.kjc.JIntLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
@@ -51,10 +52,12 @@ public class VKStringType extends VKType implements VConstants {
                       int width,
                       int height,
                       int visibleHeight,
-                      int convert)
+                      int convert,
+                      boolean styled)
   {
     super(where, width, height, visibleHeight);
     this.convert = convert;
+    this.styled = styled;
   }
 
   // ----------------------------------------------------------------------
@@ -107,12 +110,14 @@ public class VKStringType extends VKType implements VConstants {
 	new JIntLiteral(ref, getWidth()),
 	new JIntLiteral(ref, getHeight()),
 	new JIntLiteral(ref, getVisibleHeight()),
-	new JIntLiteral(ref, convert & (FDO_CONVERT_MASK | FDO_DYNAMIC_NL))};
+	new JIntLiteral(ref, convert & (FDO_CONVERT_MASK | FDO_DYNAMIC_NL)),
+	new JBooleanLiteral(ref, styled)};
     } else {
       exprs = new JExpression[] {
 	new JIntLiteral(ref, getWidth()),
 	new JIntLiteral(ref, getHeight()),
-	new JIntLiteral(ref, convert & FDO_CONVERT_MASK | FDO_DYNAMIC_NL)};
+	new JIntLiteral(ref, convert & FDO_CONVERT_MASK | FDO_DYNAMIC_NL),
+	new JBooleanLiteral(ref, styled)};
     }
 
     return new JUnqualifiedInstanceCreation(ref, getType(), exprs);
@@ -187,4 +192,5 @@ public class VKStringType extends VKType implements VConstants {
   // ---------------------------------------------------------------------
 
   private int			convert;
+  private boolean               styled;
 }

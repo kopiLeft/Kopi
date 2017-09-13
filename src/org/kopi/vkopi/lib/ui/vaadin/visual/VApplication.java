@@ -68,6 +68,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.shared.ui.ui.Transport;
+import com.vaadin.shared.ui.ui.UIState;
 import com.vaadin.ui.AbstractSingleComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
@@ -144,6 +145,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     showNotification(dialog, lock);
   }
 
+  @Override
+  public UIState getState() {
+    return super.getState();
+  }
+  
   @Override
   public void error(String message) {
     final ErrorNotification     dialog;

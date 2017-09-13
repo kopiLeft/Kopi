@@ -20,6 +20,7 @@
 @literal	FALSE
 @literal	FIXED
 @literal	FIXNUM
+@literal	FORMAT
 @literal	FRACTION
 @literal	HELP
 @literal	ICON

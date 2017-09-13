@@ -83,9 +83,11 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
           
           @Override
           protected void doEditItem() {
-            updateEditors();
-            super.doEditItem();
-            enterRecord((Integer)getEditedItemId());
+            if (!inDetailMode()) {
+              updateEditors();
+              super.doEditItem();
+              enterRecord((Integer)getEditedItemId());
+            }
           }
         };
         grid.addSortListener(DGridBlock.this);
@@ -630,7 +632,9 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
               itemToBeEdited = getContainerDatasource().firstItemId();
             }
             doNotCancelEditor = true;
-            grid.editItem(itemToBeEdited);
+            if (!inDetailMode()){
+              grid.editItem(itemToBeEdited);
+            }
           }
         }
       });

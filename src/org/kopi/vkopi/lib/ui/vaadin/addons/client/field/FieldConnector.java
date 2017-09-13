@@ -87,7 +87,7 @@ public class FieldConnector extends AbstractSingleComponentContainerConnector im
 
   @Override
   public void onConnectorHierarchyChange(ConnectorHierarchyChangeEvent connectorHierarchyChangeEvent) {
-    Widget	content = getContentWidget();
+    final Widget              content = getContentWidget();
     
     if (content instanceof VTextField) {
       getWidget().setTextField((VTextField)content);
@@ -95,6 +95,8 @@ public class FieldConnector extends AbstractSingleComponentContainerConnector im
       getWidget().setObjectField((VObjectField) content);
     } else if (content instanceof VDragAndDropWrapper) {
       getWidget().setDnDWrapper((VDragAndDropWrapper) content);
+    } else if (content instanceof VRichTextField) {
+      getWidget().setRichTextField((VRichTextField) content);
     }
   }
   
@@ -115,6 +117,11 @@ public class FieldConnector extends AbstractSingleComponentContainerConnector im
 
   @Override
   public void onClick() {
+    // no click event is for rich text field
+    if (getContent() instanceof RichTextFieldConnector) {
+      return;
+    }
+    
     getColumnView().setBlockActiveRecordFromDisplayLine(getPosition());
     getWindow().cleanDirtyValues(getBlock(), false); //!! do not make a focus transfer.
     getRpcProxy(FieldServerRpc.class).onClick();

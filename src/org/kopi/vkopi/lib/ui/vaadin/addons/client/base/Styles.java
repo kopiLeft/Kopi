@@ -156,4 +156,6 @@ public abstract class Styles {
   
   // boolean field styles
   public static final String                    BOOLEAN_FIELD = "k-boolean-field";
+  
+  public static final String                    POSITION_PANEL = "k-positionpanel";
 }

@@ -144,6 +144,7 @@ vkStringFieldType []
   int                   height = 1;
   int                   visibleHeight = 0;
   int                   fixed = 0;
+  boolean		styled = false;
   int                   convert = org.kopi.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
   TokenReference        sourceRef = buildTokenReference();
 }
@@ -158,6 +159,14 @@ vkStringFieldType []
       )  
    )?
    (
+      "FORMAT"
+      (
+        "ON"    { styled = true; }
+      |
+        "OFF"   { styled = false; }
+      )  
+   )?
+   (
       "CONVERT"
       (
         "UPPER" { convert = org.kopi.vkopi.lib.form.VConstants.FDO_CONVERT_UPPER; }
@@ -167,7 +176,7 @@ vkStringFieldType []
         "NAME"  { convert = org.kopi.vkopi.lib.form.VConstants.FDO_CONVERT_NAME; }
       )
    )?
-    { self = new VKStringType(sourceRef, width, height, visibleHeight, fixed | convert); }
+    { self = new VKStringType(sourceRef, width, height, visibleHeight, fixed | convert, styled); }
 ;
 
 vkTextFieldType []
@@ -177,6 +186,7 @@ vkTextFieldType []
   int                   height;
   int                   visibleHeight = 0;
   int                   fixed = org.kopi.vkopi.lib.form.VConstants.FDO_CONVERT_NONE;
+  boolean		styled = false;
   TokenReference        sourceRef = buildTokenReference();
 }
 :
@@ -189,7 +199,15 @@ vkTextFieldType []
       "OFF"   { fixed = org.kopi.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
     )  
   )?
-    { self = new VKTextType(sourceRef, width, height, visibleHeight, fixed); }
+  (
+    "FORMAT"
+    (
+      "ON"    { styled = true; }
+    |
+      "OFF"   { styled = false; }
+    )  
+  )?
+    { self = new VKTextType(sourceRef, width, height, visibleHeight, fixed, styled); }
 ;
 
 vkImageFieldType []

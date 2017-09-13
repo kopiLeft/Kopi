@@ -34,6 +34,8 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.client.notification.NotificationUtils
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -108,6 +110,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     if (initialized) {
       setActiveRecord(getState().activeRecord);
       fireActiveRecordChanged();
+      refresh(false);
     }
   }
   
@@ -141,6 +144,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     for (int i = 0; i < sortedRecords.length; i++) {
       sortedRecords[i] = i;
     }
+    addRecordPositionPanel();
     // build the cache buffers
     rebuildCachedInfos();
     initialized = true;
@@ -522,12 +526,12 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * This act is delegated to the server side when the target field contains triggers to be executed.
    */
   public void gotoNextRecord() {
-    if (isLayoutBelongsToGridDetail() || activeField == null) {
+    if (activeField == null) {
       return;
     }
 
     // first check if the navigation should be delegated to server side.
-    if (activeField.delegateNavigationToServer() && activeField.getServerRpc() != null) {
+    if (isLayoutBelongsToGridDetail() || activeField.delegateNavigationToServer() && activeField.getServerRpc() != null) {
       activeField.getServerRpc().gotoNextRecord();
     } else {
       if (isMulti() && !detailMode) {
@@ -564,11 +568,11 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    * This act is delegated to the server side when the target field contains triggers to be executed.
    */
   public void gotoPrevRecord() {
-    if (isLayoutBelongsToGridDetail() || activeField == null) {
+    if (activeField == null) {
       return;
     }
     // first check if the navigation should be delegated to server side.
-    if (activeField.delegateNavigationToServer() && activeField.getServerRpc() != null) {
+    if (isLayoutBelongsToGridDetail() || activeField.delegateNavigationToServer() && activeField.getServerRpc() != null) {
       activeField.getServerRpc().gotoPrevRecord();
     } else {
       if (isMulti() && !detailMode) {
@@ -770,7 +774,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     boolean             redisplay = false;
     int                 recno; // row in view
 
-    if (isLayoutBelongsToGridDetail() || !isMulti() || noChart()) {
+    if (isLayoutBelongsToGridDetail() || !isMulti()) {
       return;
     }
 
@@ -1445,6 +1449,28 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
    */
   public boolean isLayoutBelongsToGridDetail() {
     return layoutBelongsToGridDetail;
+  }
+  
+  public void addRecordPositionPanel() {
+    if (isMulti() && noChart()) {
+      
+      Scheduler.get().scheduleFinally(new ScheduledCommand() {
+        
+        @Override
+        public void execute() {
+          
+              getWidget().addDomHandler(new KeyPressHandler() {
+                
+                @Override
+                public void onKeyPress(KeyPressEvent event) {
+                  if (event.isAltKeyDown() && event.getCharCode() == 'i' && isMulti() && noChart()) {
+                    ((FormConnector)getParent()).getWidget().showBlockInfo(getConnection(), getWidget());
+                  }
+                }
+              }, KeyPressEvent.getType());
+            }
+      });
+    }
   }
   
   //---------------------------------------------------

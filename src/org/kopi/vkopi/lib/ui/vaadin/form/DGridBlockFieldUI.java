@@ -19,7 +19,6 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.form;
 
-import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.form.FieldHandler;
 import org.kopi.vkopi.lib.form.UBlock;
 import org.kopi.vkopi.lib.form.UChartLabel;
@@ -117,28 +116,9 @@ public class DGridBlockFieldUI extends DFieldUI {
     }
   }
   
-  @SuppressWarnings("deprecation")
   @Override
-  public void displayFieldError(String message) {
-    if (getBlockView().getDisplayLine(getBlock().getActiveRecord()) == -1) {
-      getModel().getForm().error(message);
-    } else {
-      UField            display;
-      
-      getBlockView().editRecord(getBlock().getActiveRecord());
-      display = getDisplays()[getBlockView().getDisplayLine(getBlock().getActiveRecord())];
-      display.setBlink(true);
-      getModel().getForm().error(message);
-      display.setBlink(false);
-      try {
-        transferFocus(display);
-      } catch (VException e) {
-        throw new InconsistencyException();
-      } finally {
-        // ensure that the field gain focus again
-        display.forceFocus();
-      }
-    }
+  protected void gotoActiveRecord() throws VException {
+    getBlockView().editRecord(getBlock().getActiveRecord());
   }
   
   /**

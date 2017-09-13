@@ -77,6 +77,7 @@ public KopiLookAndFeel() {
     putDefault(table, "PasswordFieldUI");
     putDefault(table, "TabbedPaneUI");
     putDefault(table, "TextAreaUI");
+    putDefault(table, "TextPaneUI");
     putDefault(table, "ScrollBarUI");
     putDefault(table, "ProgressBarUI");
     putDefault(table, "ToggleButtonUI");
@@ -160,6 +161,7 @@ public KopiLookAndFeel() {
 
     table.put("TextField.font", fixFont);
     table.put("TextArea.font", fixFont);
+    table.put("TextPane.font", fixFont);
     table.put("PasswordField.font", fixFont);
 
     table.put("DateChooser.weekend", Color.red.darker());

@@ -31,7 +31,7 @@ JAVAFILES +=	KopiLabelUI KopiFieldLabelUI KopiLookAndFeel KopiTheme	\
 		KopiTextFieldUI KopiTabbedPaneUI KopiScrollBarUI	\
 		KopiButtonUI KopiTextAreaUI KopiUtils			\
 		KopiPasswordFieldUI KopiProgressBarUI			\
-		KopiUserColors KopiToggleButtonUI
+		KopiUserColors KopiToggleButtonUI KopiTextPaneUI
 
 OPTIONS =
 

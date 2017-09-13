@@ -30,6 +30,7 @@ import org.kopi.vkopi.lib.form.VBooleanField;
 import org.kopi.vkopi.lib.form.VField;
 import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.form.VImageField;
+import org.kopi.vkopi.lib.form.VStringField;
 import org.kopi.vkopi.lib.form.VTextField;
 import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
 
@@ -63,13 +64,19 @@ public class DFieldUI extends VFieldUI {
 
     switch (model.getType()) {
     case VField.MDL_FLD_EDITOR:
-      field = new DTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
+      if (((VTextField) model).isStyled()) {
+        field = new DRichTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
+      } else {
+        field = new DTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
+      }
       break;
     case VField.MDL_FLD_TEXT:
       if (model.getIcon() != null) {
         field = new DActorField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
       } else if (model instanceof VBooleanField) {
         field = new DBooleanField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
+      } else if (model instanceof VStringField && ((VStringField) model).isStyled()) {
+        field = new DRichTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VStringField) model).getHeight(), detail);
       } else {
         field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
       }

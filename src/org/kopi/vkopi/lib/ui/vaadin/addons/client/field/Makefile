@@ -42,7 +42,9 @@ JAVAFILES += 	AllowAllValidationStrategy DateValidationStrategy	\
 		TimestampValidationStrategy CheckTypeException		\
 		ActorFieldConnector ActorFieldServerRpc ActorFieldState	\
 		VActorField BooleanFieldClientRpc BooleanFieldConnector	\
-		BooleanFieldServerRpc BooleanFieldState VBooleanField
+		BooleanFieldServerRpc BooleanFieldState VBooleanField	\
+		RichTextFieldConnector RichTextFieldNavigationServerRpc	\
+		RichTextFieldState VRichTextField
 
 ## ----------------------------------------------------------------------
 ## FILES

@@ -16,7 +16,6 @@
 @literal	FIELD
 @literal	FOLLOW
 @literal	FORM
-@literal	FORMAT
 @literal	HIDDEN
 @literal	INDEX
 @literal	INIT

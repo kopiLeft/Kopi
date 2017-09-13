@@ -214,7 +214,10 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
       
       @Override
       public void execute() {
-        if (WidgetUtil.getRequiredHeight(VModuleListMenu.this) + getAbsoluteTop() > Window.getClientHeight() - 24) {
+        if (requiredHeight == 0) {
+          requiredHeight = WidgetUtil.getRequiredHeight(VModuleListMenu.this);
+        }
+        if (requiredHeight + getAbsoluteTop() > Window.getClientHeight() - 24) {
           getElement().getStyle().setHeight(Window.getClientHeight() - (24 + getAbsoluteTop()), Unit.PX);
           getElement().getStyle().setOverflowX(Overflow.AUTO);
         }
@@ -1078,6 +1081,7 @@ public class VModuleListMenu extends ComplexPanel implements HasAnimation, Popup
   // DATA MEMBERS
   //---------------------------------------------------
   
+  private int                                   requiredHeight= 0;
   private boolean 				isAnimationEnabled = true; // always enable animation
   private boolean                               correctPopupPosition = true;
   private VModuleListMenu 			parentMenu;

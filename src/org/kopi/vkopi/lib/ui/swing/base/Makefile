@@ -31,7 +31,7 @@ JAVAFILES += 	JFieldLabel FieldStates JMenuButton			\
 		KopiTitledBorder JButtonPanel ListDialogCellRenderer	\
 		JFieldButton JDisablePanel TextSelecter Stateful 	\
 		Utils MultiLineToolTip MultiLineToolTipUI KnownBugs	\
-		JActorFieldButton
+		JActorFieldButton JHtmlTextArea
 
 OPTIONS =
 

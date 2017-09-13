@@ -36,17 +36,18 @@ public class VStringField extends VField {
   /**
    * Constructor
    */
-  public VStringField(int width, int height, int convert) {
-    this(width, height, 0, convert);
+  public VStringField(int width, int height, int convert, boolean styled) {
+    this(width, height, 0, convert, styled);
   }
 
   /**
    * Constructor
    */
-  public VStringField(int width, int height, int visibleHeight, int convert) {
+  public VStringField(int width, int height, int visibleHeight, int convert, boolean styled) {
     super(width, height);
     this.visibleHeight = visibleHeight;
     this.convert = convert;
+    this.styled = styled;
   }
 
   /**
@@ -87,6 +88,13 @@ public class VStringField extends VField {
    */
   public int getVisibleHeight() {
     return visibleHeight == 0 ? height : visibleHeight;
+  }
+  
+  /**
+   * Returns true if the text field supports styled content.
+   */
+  public boolean isStyled() {
+    return styled;
   }
 
   // ----------------------------------------------------------------------
@@ -362,6 +370,7 @@ public class VStringField extends VField {
 
   private final int			convert;
   private final int			visibleHeight;
+  private final boolean                 styled;
 
   protected String[]			value;
 }
