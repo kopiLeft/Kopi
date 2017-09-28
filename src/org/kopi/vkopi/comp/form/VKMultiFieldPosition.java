@@ -48,10 +48,11 @@ public class VKMultiFieldPosition extends VKPosition {
    * @param column		the column
    * @param end			the last column onto this field may be placed
    */
-  public VKMultiFieldPosition(TokenReference where, int line) {
+  public VKMultiFieldPosition(TokenReference where, int line, int endLine) {
     super(where);
 
     this.line = line;
+    this.endLine = endLine == 0 ? line : endLine;;
     this.column = 1;
   }
 
@@ -63,10 +64,11 @@ public class VKMultiFieldPosition extends VKPosition {
    * @param column		the column
    * @param end			the last column onto this field may be placed
    */
-  VKMultiFieldPosition(TokenReference where, int line, int column) {
+  VKMultiFieldPosition(TokenReference where, int line, int endLine, int column) {
     super(where);
 
     this.line = line;
+    this.endLine = endLine == 0 ? line : endLine;
     this.column = column;
   }
 
@@ -116,7 +118,7 @@ public class VKMultiFieldPosition extends VKPosition {
    * Return the line end pos
    */
   public int getLineEnd() {
-    return line;
+    return endLine;
   }
   
   /**
@@ -159,6 +161,7 @@ public class VKMultiFieldPosition extends VKPosition {
 				    VKStdType.VPosition,
 				    new JExpression[] {
 				      VKUtils.toExpression(ref, line),
+				      VKUtils.toExpression(ref, endLine),
 				      VKUtils.toExpression(ref, -1),
 				      VKUtils.toExpression(ref, column)
 				    });
@@ -183,5 +186,6 @@ public class VKMultiFieldPosition extends VKPosition {
   // ----------------------------------------------------------------------
 
   private int		line;
+  private int           endLine;
   private int		column;
 }

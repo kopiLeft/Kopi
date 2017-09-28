@@ -493,7 +493,7 @@ vkPosition []
         COMMA column = vkInteger[] ( MINUS endColumn = vkInteger[] )?
           { self = new VKCoordinatePosition(sourceRef, line, endLine, column, endColumn); }
       |
-        { self = new VKMultiFieldPosition(sourceRef, line); }
+        { self = new VKMultiFieldPosition(sourceRef, line, endLine); }
       )
     GT
   )

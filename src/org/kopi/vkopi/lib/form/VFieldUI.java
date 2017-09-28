@@ -524,8 +524,10 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
 	blockView.add(dl, new MultiFieldAlignment(columnEnd * 2 - 1, line - 1, 1, 1, true));
 	displays = new UField[] {createDisplay(dl, model, false)};
 	blockView.add(displays[0], new MultiFieldAlignment(columnEnd * 2 - 1,
-									 line,
-									 1, 1, false));
+	                                                   line,
+	                                                   1,
+	                                                   (lineEnd - line + 1),
+	                                                   false));
 	displays[0].setPosition(0);
         displays[0].updateText();
       } else {
