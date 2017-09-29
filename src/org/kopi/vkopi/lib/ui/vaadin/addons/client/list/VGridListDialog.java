@@ -233,8 +233,10 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
     });
   }
   
-  protected void addScrollBar() {
-    
+  /**
+   * Forces the table to have scroll bars.
+   */
+  protected void forceScrollBar() {
     double      height = table.getHeightByRows() * 41;
     
     if (!windowResized){
@@ -253,23 +255,44 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
     }
   }
   
+  /**
+   *  Returns true if the list table should have a vertical scroll bar according to a given height.
+   * @param height The reference height.
+   * @return true if the list table should have a vertical scroll bar.
+   */
   protected boolean hasVerticalScrollBar(double height) {
     return table.getScrollHeight() > height;
   }
   
+  /**
+   * Returns true if the list table should have an horizontal scroll bar according to a given width.
+   * @param width The reference width.
+   * @return true if the list table should have an horizontal scroll bar.
+   */
   protected boolean hasHorizontalScrollBar(double width) {
     return table.getScrollWidth() > width;
   }
   
+  /**
+   * Calculates and show the list widget according to the browser window size.
+   */
   protected final void calculateTableSize() {
     calculateTableSize(Window.getClientWidth(), Window.getClientHeight(), false);
   }
   
+  /**
+   * Calculates the size of the list table and then shows it in a container popup.
+   * @param width The available browser window width.
+   * @param height The available browser window height.
+   * @param resizing Is it a resizing context ?
+   */
   protected void calculateTableSize(int width, int height, boolean resizing) {
     int                 available;
     int                 rows;
    
     if (VMainWindow.get().getCurrentWindow() == null) {
+      rows = Math.max(1, (int) (VMainWindow.get().getOffsetHeight() / 41) - 1);
+      table.setHeightByRows(Math.min(table.getDataSource().size(), rows)); 
       popup.center();
     } else if (reference != null) {
       available = Math.max(0, height - reference.getAbsoluteTop() - reference.getOffsetHeight() - 80 );
@@ -278,19 +301,19 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
       }
       rows = Math.max(1, (int) (available / 41) - 1); // row heigh is 41px
       table.setHeightByRows(Math.min(table.getDataSource().size(), rows)); 
-      addScrollBar();
+      forceScrollBar();
       popup.showRelativeTo(reference);
 
     } else {
-      Element   formPageContent = getFormContent().getElement();
+      Element   positionContextElement = getPositionContextWidget().getElement();
       
-      available = Math.max(0, height - formPageContent.getAbsoluteTop() - 70); 
+      available = Math.max(0, height - positionContextElement.getAbsoluteTop() - 70); 
       if (newForm != null) {
         available = Math.max(0, available - 20); // new button height
       }
       rows = Math.max(1, (int) (available / 41) - 1); // row heigh is 41px
       table.setHeightByRows(Math.min(table.getDataSource().size(), rows)); 
-      addScrollBar();
+      forceScrollBar();
       if (newForm != null && newForm.getElement().getOffsetWidth() > table.getOffsetWidth()) {
         table.setWidth(newForm.getElement().getOffsetWidth() + "px");
       }
@@ -302,39 +325,63 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
         }
       }
       popup.center();
-      popup.setPopupPosition(setPopupLeftPosition(formPageContent), setPopupTopPosition(formPageContent));
+      popup.setPopupPosition(calculatePopupLeftPosition(positionContextElement), calculatePopupTopPosition(positionContextElement));
     }
   }
   
-  protected Widget getFormContent() {
+  /**
+   * Returns the widget to be used as a reference to the the list widget position.
+   * @return The widget to be used as a reference to the the list widget position.
+   */
+  protected Widget getPositionContextWidget() {
     VWindow             window;
-    VForm               form;
-    
+    Widget              content;
+
     window = (VWindow) VMainWindow.get().getCurrentWindow();
-    form = (VForm) ((ScrollPanel)window.getContent()).getWidget();
-    if (form.getWidget() instanceof VPage) {
-      return ((VPage)form.getWidget()).getContent();
+    content = ((ScrollPanel)window.getContent()).getWidget();
+    if (content instanceof VForm) {
+      content = ((VForm) content).getWidget();
+      if (content instanceof VPage) {
+        return ((VPage)content).getContent();
+      } else {
+        return ((VTabSheet)content).getWidget();
+      }
     } else {
-      return ((VTabSheet)form.getWidget()).getWidget();
+      return content;
     }
   }
   
-  protected int setPopupLeftPosition (Element formPageContent) {
-    int      left = 0;
+  /**
+   * Calculates the left position of the list popup.
+   * @param positionContextElement The position context element.
+   * @return The calculated position.
+   */
+  protected int calculatePopupLeftPosition(Element positionContextElement) {
+    int                 left = 0;
+    int                 padding = 20;
   
     if (Window.getClientWidth() > table.getOffsetWidth()) {
-      left = formPageContent.getAbsoluteLeft() + (Math.min(Window.getClientWidth(), formPageContent.getClientWidth()) - table.getOffsetWidth()) / 2;
+      left = positionContextElement.getAbsoluteLeft() + (Math.min(Window.getClientWidth(), positionContextElement.getClientWidth()) - table.getOffsetWidth()) / 2;
     }
-    left = Math.max(left, 0);
+    if (left < 0) {
+      left = padding;
+      table.setWidth(table.getScrollWidth() - padding + "px");
+    }
+    
     return left;
   }
-  
-  protected int setPopupTopPosition (Element formPageContent) {
-    int      top =  formPageContent.getAbsoluteTop();
+  /**
+   * Calculates the top position of the list popup.
+   * @param positionContextElement The position context element.
+   * @return The calculated position.
+   */
+  protected int calculatePopupTopPosition(Element positionContextElement) {
+    int      top =  positionContextElement.getAbsoluteTop();
+
+    if (positionContextElement.getOffsetHeight() > table.getOffsetHeight() && table.getScrollHeight() == 0) {
+      top = positionContextElement.getAbsoluteTop() +  (positionContextElement.getOffsetHeight() - table.getOffsetHeight()) / 2;
+    }
     
-      if (formPageContent.getOffsetHeight() > table.getOffsetHeight() && table.getScrollHeight() == 0) {
-        top = formPageContent.getAbsoluteTop() +  (formPageContent.getOffsetHeight() - table.getOffsetHeight()) / 2;
-      }
     return top;
   }
   
@@ -413,7 +460,7 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
   }
   
   /**
-   * Clears the grid escalator.
+   * Clears the grid escalator using JSNI cause grid attributes are not accessible.
    * @param escalator The escalator instance.
    */
   private static native void clearEscalator(Escalator escalator) /*-{
@@ -421,7 +468,7 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
   }-*/;
   
   /**
-   * Clear the grid widget.
+   * Clear the grid widget using JSNI cause grid attributes are not accessible.
    * @param table The grid instance.
    */
   private static native void clearGrid(Grid<JsonObject> table) /*-{
@@ -469,8 +516,8 @@ public class VGridListDialog extends FocusableFlowPanel implements KeyDownHandle
   // DATA MEMBERS
   //---------------------------------------------------
   
-  boolean                                       scrollBarAdded = false;
-  private boolean                               windowResized = false;
+  private boolean                               scrollBarAdded;
+  private boolean                               windowResized;
   private ApplicationConnection                 connection;
   private Grid<JsonObject>                      table;
   private VPopup                                popup;
