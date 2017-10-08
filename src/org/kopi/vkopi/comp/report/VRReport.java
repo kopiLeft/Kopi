@@ -151,7 +151,7 @@ class VRReport
     context.addCommand(new VKCommandName(where, "PrintOptions", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "ExportCSV", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "ExportPDF", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
-    context.addCommand(new VKCommandName(where, "ExportXLS", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
+    context.addCommand(new VKCommandName(where, "ExportXLSX", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Fold", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Unfold", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));
     context.addCommand(new VKCommandName(where, "Sort", org.kopi.vkopi.lib.form.VConstants.MOD_ANY));

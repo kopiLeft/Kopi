@@ -36,7 +36,8 @@ JAVAFILES +=	Constants MReport PConfig ReportListener		\
 		VNoRowException VSeparatorColumn VHelpGenerator	Point	\
 		PExport PExport2XLS PExport2PDF PExport2CSV UReport 	\
 		VDefaultReportActor VReportCommand ColumnStyle		\
-		Parameters CellStyleCacheManager
+		Parameters CellStyleCacheManager PExport2XLSX		\
+		PExport2Excel
 
 ## ----------------------------------------------------------------------
 ## GOALS

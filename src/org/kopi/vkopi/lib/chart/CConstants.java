@@ -67,6 +67,7 @@ public interface CConstants extends org.kopi.vkopi.lib.visual.Constants {
   int CMD_EXPORT_XLS                    = 4;
   int CMD_EXPORT_PDF                    = 5;
   int CMD_HELP                          = 6;
+  int CMD_EXPORT_XLSX                   = 7;
 
   // ---------------------------------------------------------------------
   // TRIGGER INFO

@@ -243,8 +243,8 @@
   <property key="PrintOptions-help" value="Druckereinstellungen festlegen" />
   <property key="ExportCSV" value="CSV" />
   <property key="ExportCSV-help" value="Bericht wird in einer CSV-Datei abgelegt" />
-  <property key="ExportXLS" value="XLS" />
-  <property key="ExportXLS-help" value="Bericht wird in einer XLS-Datei abgelegt" />
+  <property key="ExportXLSX" value="XLSX" />
+  <property key="ExportXLSX-help" value="Bericht wird in einer XLSX-Datei abgelegt" />
   <property key="ExportPDF" value="PDF" />
   <property key="ExportPDF-help" value="Bericht wird in einer PDF-Datei abgelegt" />
   <property key="Fold" value="Schliessen" />

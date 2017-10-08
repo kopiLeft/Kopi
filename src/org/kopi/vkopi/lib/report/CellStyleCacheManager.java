@@ -19,20 +19,26 @@
 
 package org.kopi.vkopi.lib.report;
 
+import java.awt.Color;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 
 /**
- * Manage the HSSFCellStyle cache.
+ * Manage the CellStyle cache.
  * In order to not have the 4000 style limit, cell styles are cached base on their
  * hash codes within a {@link Set} and reused when it two or more cells have the same
  * style.
- * Use {@link #setCellStyle(HSSFWorkbook, HSSFCell, HSSFCellStyle)} for caching functions.
+ * Use {@link #setCellStyle(Workbook, Cell, CellStyle)} for caching functions.
  */
 @SuppressWarnings("serial")
 public class CellStyleCacheManager implements Serializable {
@@ -45,163 +51,107 @@ public class CellStyleCacheManager implements Serializable {
    * Creates a new Cell style cache manager.
    */
   public CellStyleCacheManager() {
-    this.cellStyles = new HashSet<CellStyleWrapper>();
+    this.stylesCache = new HashMap<StyleKey, CellStyle>();
   }
 
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
-
+  
   /**
-   * Sets the cell style to the given {@code cell}. The given {@code style} is
-   * compared to the cached styles and if the same style exists in the cache, we
-   * use the cached one.
-   * 
-   * @param cell The cell which the style will be applied on.
-   * @param cellStyle The cell style to be applied.
+   * Returns the cell style corresponding to the given alignment, data format and color.
+   * If the style is not cached yet, it will be created and added to the cache.
+   * @param exporter The excel exporter instance.
+   * @param wb The workbook instance.
+   * @param alignment The style alignment.
+   * @param dataFormat The style data format.
+   * @param color The style background color.
+   * @return The style instance.
    */
-  public void setCellStyle(HSSFWorkbook workbook, HSSFCell cell, HSSFCellStyle cellStyle) {
-    CellStyleWrapper		cachedCellStyleWrapper = null;
+  public CellStyle getStyle(PExport2Excel exporter,
+                            Workbook wb,
+                            short alignment,
+                            short dataFormat,
+                            Color color)
+  {
+    StyleKey            key;
     
-    // look for the same style in the cache.
-    for (CellStyleWrapper cellStyleWrapper : cellStyles) {
-      // cell style wrapper found ==> don't search anymore
-      if (cellStyleWrapper.equals(new CellStyleWrapper(cellStyle))) {
-	cachedCellStyleWrapper = cellStyleWrapper;
-	break;
-      }
-    }
-
-    // None of the cached styles corresponds to the desired
-    // cell style. We will copy the original cell style cause the
-    // incoming style refers to the same object 'defaultCellStyle'
-    // attribute. So, we need to create a new style and copy all the
-    // incoming style properties to the new created style.
-    // Then, the copied style will be cached for further use.
-    if (cachedCellStyleWrapper == null) {
-      CellStyleWrapper 		newWrap;
-      HSSFCellStyle		newCellStyle;
+    key = new StyleKey(alignment, dataFormat, color);
+    if (!stylesCache.containsKey(key)) {
+      CellStyle         style;
       
-      newCellStyle = workbook.createCellStyle();
-      // copy the cell style
-      copyCellStyle(workbook, cellStyle, newCellStyle);
-      newWrap = new CellStyleWrapper(newCellStyle);
-      cellStyles.add(newWrap);
-      cachedCellStyleWrapper = newWrap;
+      style = wb.createCellStyle();
+      style.setVerticalAlignment(CellStyle.VERTICAL_TOP);
+      style.setBorderBottom(CellStyle.BORDER_THIN);
+      style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+      style.setBorderLeft(CellStyle.BORDER_THIN);
+      style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+      style.setBorderRight(CellStyle.BORDER_THIN);
+      style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+      style.setBorderTop(CellStyle.BORDER_THIN);
+      style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+      style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+      style.setWrapText(true);
+      style.setAlignment(alignment);
+      if (dataFormat != -1) {
+        style.setDataFormat(dataFormat);
+      }
+      if (style instanceof XSSFCellStyle) {
+        ((XSSFCellStyle)style).setFillForegroundColor((XSSFColor) exporter.createFillForegroundColor(color));
+      } else {
+        style.setFillForegroundColor(((HSSFColor)exporter.createFillForegroundColor(color)).getIndex());
+      }
+      
+      stylesCache.put(key, style);
     }
     
-    cell.setCellStyle(cachedCellStyleWrapper.getHSSFCellStyle());
-  }
-  
-  public HSSFCellStyle getDefaultStyle(HSSFWorkbook workbook) {
-    // initializes the default style once
-    if (defaultCellStyle == null) {
-      defaultCellStyle = workbook.createCellStyle();
-    }
-    
-    return defaultCellStyle;
-  }
-  
-  /**
-   * Copies the cell style from a source style to a target style.
-   * @param workbook The workbook.
-   * @param source The source style.
-   * @param target The target style.
-   */
-  protected void copyCellStyle(HSSFWorkbook workbook, HSSFCellStyle source, HSSFCellStyle target) {
-    //copy all all style properties
-    target.setAlignment(source.getAlignment());
-    target.setBorderBottom(source.getBorderBottom());
-    target.setBorderLeft(source.getBorderLeft());
-    target.setBorderRight(source.getBorderRight());
-    target.setBorderTop(source.getBorderTop());
-    target.setBottomBorderColor(source.getBottomBorderColor());
-    target.setDataFormat(source.getDataFormat());
-    target.setFillBackgroundColor(source.getFillBackgroundColor());
-    target.setFillForegroundColor(source.getFillForegroundColor());
-    target.setFillPattern(source.getFillPattern());
-    target.setFont(workbook.getFontAt(source.getFontIndex()));
-    target.setHidden(source.getHidden());
-    target.setIndention(source.getIndention());
-    target.setLeftBorderColor(source.getLeftBorderColor());
-    target.setLocked(source.getLocked());
-    target.setRightBorderColor(source.getRightBorderColor());
-    target.setRotation(source.getRotation());
-    target.setTopBorderColor(source.getTopBorderColor());
-    target.setVerticalAlignment(source.getVerticalAlignment());
-    target.setWrapText(source.getWrapText()); 
+    return stylesCache.get(key);
   }
 
   //---------------------------------------------------
-  // DATA MEMBERS
+  // INNER CLASSES
   //---------------------------------------------------
-
-  /**
-   * Helping class to compare wrapped cell style
-   * since the equals and hashcode methods cannot
-   * be redefined in the original class {@link HSSFCellStyle}.
-   * Original equals and hashcode methods are based on the cell
-   * format and the cell index which is not enough for our case.
-   */
-  /*package*/ static class CellStyleWrapper implements Serializable {
+  
+  /*package*/ static class StyleKey {
     
-    //---------------------------------------
-    // CONSTRUCTOR
-    //---------------------------------------
-    
-    public CellStyleWrapper(HSSFCellStyle style) {
-      this.style = style;
+    public StyleKey(short alignement, short dataFormat, Color color) {
+      this.alignement = alignement;
+      this.dataFormat = dataFormat;
+      this.color = color;
     }
     
     //---------------------------------------
     // IMPLEMENTATIONS
     //---------------------------------------
     
-    /**
-     * @Override
-     */
-    public boolean equals(Object obj) {      
-      if (obj instanceof CellStyleWrapper) {
-	CellStyleWrapper 	wrapper;
-	
-	wrapper = (CellStyleWrapper)obj;
-	// all other properties are constants. So the equals method
-	// depends only with the used properties.
-	return (style.getAlignment() == wrapper.getHSSFCellStyle().getAlignment())
-	  && (style.getDataFormat() == wrapper.getHSSFCellStyle().getDataFormat())
-	  && (style.getFillForegroundColor() == wrapper.getHSSFCellStyle().getFillForegroundColor());
+    @Override
+    public boolean equals(Object obj) {
+      if (obj instanceof StyleKey) {
+        return alignement == ((StyleKey)obj).alignement
+          && dataFormat == ((StyleKey)obj).dataFormat
+          && color.equals(((StyleKey)obj).color);
       }
       
-      return false;
+      return super.equals(obj);
     }
     
     @Override
     public int hashCode() {
-      return style.hashCode()
-        + style.getAlignment()
-        + style.getDataFormat()
-        + style.getFillForegroundColor();
-    }
-
-    /**
-     * Returns the cell style.
-     * @return The cell style.
-     */
-    public HSSFCellStyle getHSSFCellStyle() {
-      return style;
+      return alignement + dataFormat + color.hashCode();
     }
     
     //---------------------------------------
     // DATA MEMBERS
     //---------------------------------------
     
-    private final HSSFCellStyle 	style;
+    private final short         alignement; 
+    private final short         dataFormat;
+    private final Color         color;
   }
 
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   
-  private HSSFCellStyle 			defaultCellStyle;
-  private final Set<CellStyleWrapper> 		cellStyles;
+  private final Map<StyleKey, CellStyle>        stylesCache;
 }

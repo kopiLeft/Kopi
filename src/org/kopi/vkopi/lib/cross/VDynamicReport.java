@@ -430,7 +430,7 @@ public class VDynamicReport extends VReport {
     createActor("File", "Quit", QUIT_ICON, KeyEvent.VK_ESCAPE, 0, Constants.CMD_QUIT);
     createActor("File", "Print", PRINT_ICON, KeyEvent.VK_F6, 0, Constants.CMD_PRINT);
     createActor("File", "ExportCSV", EXPORT_ICON, KeyEvent.VK_F8, 0, Constants.CMD_EXPORT_CSV);
-    createActor("File", "ExportXLS", EXPORT_ICON, KeyEvent.VK_F8, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORT_XLS);
+    createActor("File", "ExportXLSX", EXPORT_ICON, KeyEvent.VK_F9, KeyEvent.SHIFT_MASK, Constants.CMD_EXPORT_XLSX);
     createActor("File", "ExportPDF", EXPORT_ICON,KeyEvent.VK_F9, 0, Constants.CMD_EXPORT_PDF);
     createActor("Action", "Fold", FOLD_ICON, KeyEvent.VK_F2, 0, Constants.CMD_FOLD);
     createActor("Action","Unfold", UNFOLD_ICON, KeyEvent.VK_F3, 0, Constants.CMD_UNFOLD);

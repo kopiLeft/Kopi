@@ -309,7 +309,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
    */
   public void export(int type) throws VException {
     String      ext;
-
+    
     switch (type) {
     case TYP_CSV:
       ext = ".csv";
@@ -320,6 +320,9 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     case TYP_XLS:
       ext = ".xls";
       break;
+    case TYP_XLSX:
+      ext = ".xlsx";
+      break;  
     default:
       throw new InconsistencyException("Export type unkown");
     }
@@ -362,11 +365,18 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
                                  firstPageHeader);
       break;
     case TYP_XLS:
-      extension = ".xls";
-      exporter = new PExport2XLS(((UReport)getDisplay()).getTable(),
-                                 model,
-                                 pconfig,
-                                 pageTitle);
+        extension = ".xls";
+        exporter = new PExport2XLS(((UReport)getDisplay()).getTable(),
+                                   model,
+                                   pconfig,
+                                   pageTitle);
+        break;
+    case TYP_XLSX:
+      extension = ".xlsx";
+      exporter = new PExport2XLSX(((UReport)getDisplay()).getTable(),
+                                  model,
+                                  pconfig,
+                                  pageTitle);
       break;
     default:
       throw new InconsistencyException("Export type unkown");
@@ -759,4 +769,5 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   public static final int       TYP_CSV = 1;
   public static final int       TYP_PDF = 2;
   public static final int       TYP_XLS = 3;
+  public static final int       TYP_XLSX = 4;
 }

@@ -242,7 +242,7 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
     pngToFontAwesomeMap.put("expanded_p", "folder-o");
     pngToFontAwesomeMap.put("exportCsv", "file-text-o");
     pngToFontAwesomeMap.put("exportPdf", "file-pdf-o");
-    pngToFontAwesomeMap.put("exportXls", "file-excel-o");
+    pngToFontAwesomeMap.put("exportXlsx", "file-excel-o");
     pngToFontAwesomeMap.put("foldColumn", "folder-o");
     pngToFontAwesomeMap.put("fold", "folder-o");
     pngToFontAwesomeMap.put("formula", "calculator");

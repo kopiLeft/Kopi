@@ -40,7 +40,7 @@
                    VNoRowException.java VSeparatorColumn.java VHelpGenerator.java
                    PExport.java PExport2XLS.java PExport2PDF.java PExport2CSV.java
   	           VFixnumColumn.java VStringCodeColumn.java VFixnumCodeColumn.java
-  	           CellStyleCacheManager.java" />
+  	           CellStyleCacheManager.java PExport2XLSX.java PExport2Excel" />
 
 
   <import file="${topdir}/defs.xml" />

@@ -245,8 +245,8 @@
   <property key="PrintOptions-help" value="Changer les options d'impression" />
   <property key="ExportCSV" value="CSV" />
   <property key="ExportCSV-help" value="Enregistrer les données dans un fichier CSV" />
-  <property key="ExportXLS" value="XLS" />
-  <property key="ExportXLS-help" value="Enregistrer les données dans un fichier XLS" />
+  <property key="ExportXLSX" value="XLSX" />
+  <property key="ExportXLSX-help" value="Enregistrer les données dans un fichier XLSX" />
   <property key="ExportPDF" value="PDF" />
   <property key="ExportPDF-help" value="Enregistrer les données dans un fichier PDF" />
   <property key="Fold" value="Plier" />
