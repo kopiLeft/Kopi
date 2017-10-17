@@ -252,8 +252,10 @@ public class TextFieldConnector extends AbstractFieldConnector implements QueryL
       ((VInputTextArea)text).setWordwrap(true);
       // if fixed new line mode is used, we remove scroll bar from text area
       ((VInputTextArea)text).setFixedNewLine(!getState().dynamicNewLine);
-    } else {
+    } else if (!((FieldConnector)getParent()).hasAction()) {
       text = new VInputTextField();
+    } else {
+      text = new VInputButtonField();
     }
     size = col;
     // numeric fields are considered as monospaced fields

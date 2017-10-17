@@ -56,12 +56,11 @@ public class VLabel extends VAnchorPanel implements HasEnabled {
     label.setStyleName("label");
     info = new VSpan();
     info.setStyleName("info-text");
-    mandatory = new VSpan();
-    mandatory.setStyleName("mandatory");
+    marker = new VSpan();
     setStyleName(Styles.LABEL);
     sinkEvents(VTooltip.TOOLTIP_EVENTS | Event.ONCLICK);
     add(label);
-    add(mandatory);
+    add(marker);
     add(info);
     // Hide focus outline in Mozilla/Webkit/Opera
     getElement().getStyle().setProperty("outline", "0px");
@@ -127,9 +126,11 @@ public class VLabel extends VAnchorPanel implements HasEnabled {
    */
   public void setMandatory(boolean mandatory) {
     if (mandatory) {
-      this.mandatory.setText("*");
+      this.marker.setStyleName("mandatory");
+      this.marker.setText("*");
     } else {
-      this.mandatory.setText("");
+      this.marker.removeStyleName("mandatory");
+      this.marker.setText("");
     }
   }
   
@@ -146,7 +147,8 @@ public class VLabel extends VAnchorPanel implements HasEnabled {
    */
   public void setHasAction() {
     addStyleDependentName("has-action");
-    setHref("#");
+    this.marker.setStyleName("action");
+    this.marker.setText("*");
   }
   
   /**
@@ -194,7 +196,7 @@ public class VLabel extends VAnchorPanel implements HasEnabled {
     super.clear();
     info = null;
     label = null;
-    mandatory = null;
+    marker = null;
     chartLayout = null;
   }
   
@@ -214,7 +216,7 @@ public class VLabel extends VAnchorPanel implements HasEnabled {
   
   private VSpan                                 info;
   private VSpan                                 label;
-  private VSpan                                 mandatory;
+  private VSpan                                 marker;
   private boolean				enabled;
   /**
    * Needed to update scroll bar and caption visibility

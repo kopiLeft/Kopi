@@ -106,7 +106,6 @@ public class DGridEditorLabel extends GridEditorLabel implements ULabel, UChartL
         } else {
           setDescription(Utils.createTooltip(buildDescription(model, tooltip)));
         }
-        setHasAction(model.hasIcon() && model.hasAction());
       }
     });
   }

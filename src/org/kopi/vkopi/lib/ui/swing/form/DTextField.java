@@ -20,6 +20,7 @@
 package org.kopi.vkopi.lib.ui.swing.form;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
@@ -134,6 +135,24 @@ public class DTextField extends DField implements UTextField, VConstants {
 	                  align);
     if (model.hasAutofill() && getModel().getDefaultAccess() >= VConstants.ACS_SKIPPED) {
       document.setAutofill(true);
+    }
+    // fields that has defined an action will be always disabled.
+    if (model.hasAction()) {
+      mouseListener = new MouseAdapter() {
+
+        public void mouseClicked(MouseEvent e) {
+          DTextField.this.model.executeAction();
+        }
+
+        public void mouseEntered(MouseEvent e) {
+          setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+
+        public void mouseExited(MouseEvent e) {
+          setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+      };
+      field.setEditable(false);
     }
     add(comp, BorderLayout.CENTER);
   }
@@ -268,6 +287,15 @@ public class DTextField extends DField implements UTextField, VConstants {
   // ----------------------------------------------------------------------
 
   public void updateAccess() {
+    if (model.hasAction() && mouseListener != null) {
+      if (getAccess() >= ACS_VISIT) {
+        field.addMouseListener(mouseListener);
+        document.setHasAction(true);
+      } else {
+        field.removeMouseListener(mouseListener);
+        document.setHasAction(false);
+      }
+    }
     label.update(getModel(), getPosition());
     document.setState(state);
     super.updateAccess();
@@ -611,6 +639,7 @@ public class DTextField extends DField implements UTextField, VConstants {
   protected ModelTransformer            	transformer;
   protected DocumentListener            	listener;
   private UndoManager                 		undoManager;
+  private MouseListener                         mouseListener;
 
   // ----------------------------------------------------------------------
   // INITIALIZERS

@@ -45,6 +45,18 @@ public class FieldState extends AbstractComponentState {
   public boolean			hasDecrement;
   
   /**
+   * Has an action trigger ?
+   */
+  @NoLayout
+  public boolean                        hasAction;
+  
+  /**
+   * Is the action trigger enabled ?
+   */
+  @NoLayout
+  public boolean                        isActionEnabled;
+  
+  /**
    * The field visibility
    */
   @NoLayout

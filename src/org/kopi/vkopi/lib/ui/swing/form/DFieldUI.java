@@ -66,12 +66,8 @@ public class DFieldUI extends VFieldUI {
     case VField.MDL_FLD_EDITOR:
       field = new DTextEditor(this, (DLabel)label, model.getAlign(), model.getOptions(), ((VTextField) model).getHeight(), detail);
       break;
-    case VField.MDL_FLD_TEXT:
-      if (model.getIcon() != null) {
-        field = new DActorField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
-      } else {
-        field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
-      }
+    case VField.MDL_FLD_TEXT:      
+      field = new DTextField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
       break;
     default:
       throw new InconsistencyException("Type of model " + model.getType() + " not supported.");

@@ -76,7 +76,8 @@
 				    RichTextFieldConnector.java
 				    RichTextFieldNavigationServerRpc.java
 				    RichTextFieldState.java
-				    VRichTextField.java" />
+				    VRichTextField.java
+				    VInputButtonField.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

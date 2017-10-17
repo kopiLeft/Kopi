@@ -44,7 +44,7 @@ JAVAFILES += 	AllowAllValidationStrategy DateValidationStrategy	\
 		VActorField BooleanFieldClientRpc BooleanFieldConnector	\
 		BooleanFieldServerRpc BooleanFieldState VBooleanField	\
 		RichTextFieldConnector RichTextFieldNavigationServerRpc	\
-		RichTextFieldState VRichTextField
+		RichTextFieldState VRichTextField VInputButtonField
 
 ## ----------------------------------------------------------------------
 ## FILES

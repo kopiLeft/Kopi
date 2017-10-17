@@ -347,22 +347,28 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
    * @return True if the field has an action trigger.
    */
   public boolean hasAction() {
-    return model.hasTrigger(VConstants.TRG_ACTION);
+    return model.hasAction();
   }
   
-  /**
-   * Returns true if the field has an icon.
-   * @return True if the field has an icon.
-   */
-  public boolean hasIcon() {
-    return model.getIcon() != null;
-  }
-
   /**
    *
    */
   public boolean hasAutofillCommand() {
     return autofillCommand != null;
+  }
+  
+  /**
+   * Executes, if defined, the action defined by the field.
+   */
+  public void executeAction() {
+    if (hasAction()) {
+      performAsyncAction(new KopiAction("FIELD_ACTION") {
+
+        public void execute() throws VException {
+          getModel().callTrigger(VConstants.TRG_ACTION);
+        }
+      });
+    }
   }
 
   /**

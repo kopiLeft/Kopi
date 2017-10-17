@@ -538,7 +538,6 @@ vkField [VKParseBlockContext block]
 {
   String                name = null;
   VKPosition            pos = null;
-  String                icon = null;
   ArrayList             label = null;
   String		help;
   VKFieldType		type;
@@ -557,7 +556,6 @@ vkField [VKParseBlockContext block]
   ( LPAREN multiField = vkInteger[] RPAREN )?
   ( name = vkSimpleIdent[] )?
   ( pos = vkPosition[] )?
-  ( "ICON" icon = vkString[] )?
   ( label = vkFieldLabel[name] )?
   help = vkHelp[]
   type = vfFieldType[]
@@ -585,7 +583,6 @@ vkField [VKParseBlockContext block]
                                     name,
                                     multiField,
                                     pos,
-                                    icon,
                                     label,
                                     help,
                                     type,
@@ -600,7 +597,6 @@ vkField [VKParseBlockContext block]
         VKField field = new VKField(sourceRef,
                                     name,
                                     pos,
-                                    icon,
                                     label == null ? null : (String)label.get(0),
                                     help,
                                     type,

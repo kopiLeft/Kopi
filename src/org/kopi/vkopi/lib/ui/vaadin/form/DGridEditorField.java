@@ -38,7 +38,6 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorField.ClickEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorField.ClickListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorField.NavigationEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorField.NavigationListener;
-import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorLabel;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.EditorFieldState.NavigationDelegationMode;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.grid.EditorTextFieldState.ConvertType;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
@@ -74,22 +73,11 @@ public abstract class DGridEditorField<T> implements UField, NavigationListener,
     this.options = options;
     this.align = align;
     this.isEditable = (options & VConstants.FDO_NOEDIT) == 0;
-    this.label.setHasAction(!columnView.hasIcon() && columnView.hasAction());
-    labelClickListener = new GridEditorLabel.ClickListener() {
-      
-      @Override
-      public void onClick(GridEditorLabel.ClickEvent event) {
-        if (!columnView.hasIcon()) {
-          performFieldAction();
-        }
-      }
-    };
     this.editor = createEditor();
     getEditor().setConverter(createConverter());
     getEditor().addNavigationListener(this);
     getEditor().addClickListener(this);
     getEditor().addAutofillListener(this);
-    enableLabelAction(getModel().getDefaultAccess());
     setLabelAlignment();
   }
 
@@ -237,7 +225,6 @@ public abstract class DGridEditorField<T> implements UField, NavigationListener,
         setEnabled(access > VConstants.ACS_SKIPPED);
         setVisible(access != VConstants.ACS_HIDDEN);
         updateLabel();
-        enableLabelAction(access);
       }
     });
   }
@@ -254,22 +241,6 @@ public abstract class DGridEditorField<T> implements UField, NavigationListener,
       if (was != will) {
         label.setEnabled(will);
       }
-    }
-  }
-  
-  /**
-   * Enables the field action trigger according to a given access.
-   * The auto fill action is enabled if the model allows it and
-   * if the field is accessible.
-   */
-  protected void enableLabelAction(int access) {
-    if (getModel().hasTrigger(VConstants.TRG_ACTION)
-        && getModel().getIcon() == null
-        && access >= VConstants.ACS_VISIT)
-    {
-      label.addClickListener(labelClickListener);
-    } else {
-      label.removeClickListener(labelClickListener);
     }
   }
   
@@ -640,5 +611,4 @@ public abstract class DGridEditorField<T> implements UField, NavigationListener,
   protected int                                 align;
   protected int                                 access;         // current access of field
   protected boolean                             isEditable;     // is this field editable
-  private final GridEditorLabel.ClickListener   labelClickListener;
 }

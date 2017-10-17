@@ -114,6 +114,22 @@ public class Field extends AbstractSingleComponentContainer {
   }
   
   /**
+   * Sets the field to has an action trigger.
+   * @param hasAction The field has an action trigger ?
+   */
+  public void setHasAction(boolean hasAction) {
+    getState().hasAction = hasAction;
+  }
+  
+  /**
+   * Sets the action trigger to be enabled/disabled on this field.
+   * @param isActionEnabled Is the action enabed ?
+   */
+  public void setActionEnabled(boolean isActionEnabled) {
+    getState().isActionEnabled = isActionEnabled;
+  }
+  
+  /**
    * Sets the navigation delegation to server mode for this field.
    * @param navigationDelegationMode The navigation delegation mode.
    */
@@ -266,6 +282,17 @@ public class Field extends AbstractSingleComponentContainer {
     }
   }
   
+  /**
+   * Fired when a navigation to the last record event is detected.
+   */
+  protected void fireActionPerformed() {
+    for (FieldListener l : listeners) {
+      if (l != null) {
+        l.fireAction();
+      }
+    }
+  }
+  
   @Override
   protected FieldState getState() {
     return (FieldState) super.getState();
@@ -361,6 +388,11 @@ public class Field extends AbstractSingleComponentContainer {
     @Override
     public void gotoLastRecord() {
       fireGotoLastRecord();
+    }
+
+    @Override
+    public void actionPerformed() {
+      fireActionPerformed();
     }
   };
 }

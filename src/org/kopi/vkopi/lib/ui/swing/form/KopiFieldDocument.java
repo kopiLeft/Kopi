@@ -151,6 +151,14 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
   public boolean hasCriticalValue() {
     return hasCriticalValue;
   }
+  
+  public void setHasAction(boolean hasAction) {
+    this.hasAction = hasAction;
+  }
+  
+  public boolean hasAction() {
+    return hasAction;
+  }
 
   public void setBgColor(Color bgColor) {
     this.bgColor = bgColor;
@@ -183,6 +191,7 @@ public KopiFieldDocument(VField model, ModelTransformer transformer) {
   private boolean               alert;
   private boolean               autofill = false;
   private boolean               hasCriticalValue;
+  private boolean               hasAction;
   private Color                 bgColor;
   private VField		model;
   private ModelTransformer      transformer;

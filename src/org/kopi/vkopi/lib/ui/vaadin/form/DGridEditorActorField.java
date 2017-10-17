@@ -73,15 +73,8 @@ public class DGridEditorActorField extends DGridEditorField<String> {
   }
 
   @Override
-  protected GridEditorActorField createEditor() {
-    GridEditorActorField        editor;
-    
-    editor = new GridEditorActorField(getModel().getLabel());
-    if (getModel().getIcon() != null) {
-      editor.setIcon(getModel().getIcon());
-    }
- 
-    return editor;
+  protected GridEditorActorField createEditor() {    
+    return new GridEditorActorField(getModel().getLabel()); 
   }
 
   @Override

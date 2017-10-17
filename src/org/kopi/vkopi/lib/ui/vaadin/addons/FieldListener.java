@@ -81,4 +81,9 @@ public interface FieldListener extends Serializable {
    * Navigates to the last record.
    */
   public void gotoLastRecord();
+  
+  /**
+   * Fires the action trigger associated with the field.
+   */
+  public void fireAction();
 }

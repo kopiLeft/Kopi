@@ -36,8 +36,6 @@ import org.kopi.vkopi.lib.form.VStringField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.Actor;
 import org.kopi.vkopi.lib.ui.vaadin.addons.Field;
 import org.kopi.vkopi.lib.ui.vaadin.addons.FieldListener;
-import org.kopi.vkopi.lib.ui.vaadin.addons.LabelEvent;
-import org.kopi.vkopi.lib.ui.vaadin.addons.LabelListener;
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.field.FieldState.NavigationDelegationMode;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.visual.KopiAction;
@@ -78,10 +76,7 @@ public abstract class DField extends Field implements UField, FieldListener {
     this.isEditable = (options & VConstants.FDO_NOEDIT) == 0;
     setImmediate(true);
     addFieldListener(this);
-    this.label.setHasAction(!model.hasIcon() && model.hasAction());
-    if (getModel().getIcon() != null) {
-      setVisibleHeight(3); // actor fields takes 3 lines by default
-    } else if (getModel() instanceof VStringField) {
+    if (getModel() instanceof VStringField) {
       setVisibleHeight(((VStringField)getModel()).getVisibleHeight());
     } else if (getModel() instanceof VImageField) {
       /*
@@ -93,22 +88,8 @@ public abstract class DField extends Field implements UField, FieldListener {
     } else {
       setVisibleHeight(getModel().getHeight());
     }
-    listener = new LabelListener() {
-      
-      @Override
-      public void onClick(LabelEvent event) {
-        int                     displayLine;
-        
-        // The label click listener will be registered for the displayed size of the block
-        // to be sure that the auto fill action is fired on the active record field, we will
-        // test of the active record field display is the same field as this one and only in
-        // this condition the auto fill action is fired.
-        displayLine = model.getBlockView().getDisplayLine(model.getBlock().getActiveRecord());
-        if (displayLine != -1 && model.getDisplays()[displayLine] == DField.this) {
-          performAutoFillAction();
-        }
-      }
-    };
+    setHasAction(model.hasAction());
+    label.setHasAction(model.hasAction());
     setNoChart(getModel().noChart());
     setNoDetail(getModel().noDetail());
     setNavigationDelegationMode(getNavigationDelegationMode());
@@ -116,7 +97,6 @@ public abstract class DField extends Field implements UField, FieldListener {
     setIndex(model.getIndex());
     setHasPreFieldTrigger(getModel().hasTrigger(VConstants.TRG_PREFLD));
     addActors(getActors());
-    enableActionTrigger(getModel().getDefaultAccess());
   }	
    
   //----------------------------------------------------------------------
@@ -248,8 +228,8 @@ public abstract class DField extends Field implements UField, FieldListener {
 	setDynAccess(access);
 	updateStyles(access);
 	setVisible(access != VConstants.ACS_HIDDEN);
+	setActionEnabled(access >= VConstants.ACS_VISIT);
 	update(label);
-	enableActionTrigger(access);
       }
     });
   }
@@ -294,20 +274,6 @@ public abstract class DField extends Field implements UField, FieldListener {
     default:
       addStyleName("visit");
       break;
-    }
-  }
-  
-  /**
-   * Enables the action trigger according if the field has an action trigger and
-   * does not contain an icon.
-   */
-  private void enableActionTrigger(int access) {
-    if (access >= VConstants.ACS_VISIT) {
-      if (getModel().hasTrigger(VConstants.TRG_ACTION) && getModel().getIcon() == null) {
-        label.addLabelListener(listener);
-      }
-    } else {
-      label.removeLabelListener(listener);
     }
   }
   
@@ -538,6 +504,11 @@ public abstract class DField extends Field implements UField, FieldListener {
     }
   }
   
+  @Override
+  public void fireAction() {
+    model.executeAction();
+  }
+  
   /**
    * !!! We never change transfer a focus to a field that belongs
    * to another block than this field model block. If we do it, it
@@ -733,5 +704,4 @@ public abstract class DField extends Field implements UField, FieldListener {
   protected	boolean			isEditable;	// is this field editable
   protected	boolean			mouseInside;	// private events
   private       boolean             	inDetail;
-  private       final LabelListener     listener;
 }

@@ -126,11 +126,9 @@ public class DFieldHandler extends AbstractFieldHandler {
       // when there is no communication needed to
       // navigate between fields.
       // we don't cache values for actor fields
-      if (getModel().getIcon() == null) {
-        ((DBlock) getRowController().getBlockView()).fireValueChanged(getRowController().getIndex(),
-                                                                      r,
-                                                                      getRowController().getModel().getText(r));
-      }
+      ((DBlock) getRowController().getBlockView()).fireValueChanged(getRowController().getIndex(),
+                                                                    r,
+                                                                    getRowController().getModel().getText(r));
     }
   }
 
@@ -149,11 +147,9 @@ public class DFieldHandler extends AbstractFieldHandler {
     // store the color properties into the client cache
     // so that it can be used for free navigation mode.
     // we don't cache color for actor fields.
-    if (getModel().getIcon() == null) {
-      ((DBlock) getRowController().getBlockView()).fireColorChanged(getRowController().getIndex(),
-                                                                    r,
-                                                                    Utils.toString(getModel().getForeground(r)),
-                                                                    Utils.toString(getModel().getBackground(r)));
-    }
+    ((DBlock) getRowController().getBlockView()).fireColorChanged(getRowController().getIndex(),
+                                                                  r,
+                                                                  Utils.toString(getModel().getForeground(r)),
+                                                                  Utils.toString(getModel().getBackground(r)));
   }
 }

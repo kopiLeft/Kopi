@@ -60,6 +60,8 @@ public class KopiUtils {
             } else {
               g.setColor(color_critical);
             }
+          } else if (((Stateful)c.getDocument()).hasAction()) {
+            g.setColor(color_action);
           } else {
             g.setColor(getBackColor(g, (JComponent) c));
           }
@@ -296,6 +298,7 @@ public class KopiUtils {
   private static Color          color_alert       = UIManager.getColor("KopiField.alert");
   private static Color          color_critical       = UIManager.getColor("KopiField.critical");
   private static Color          color_critical_skipped       = UIManager.getColor("KopiField.critical.skipped");
+  private static Color          color_action       = UIManager.getColor("KopiField.action");
   private static Color          color_noEdit      = UIManager.getColor("KopiField.noedit");
 
   protected static final Color  color_focused;

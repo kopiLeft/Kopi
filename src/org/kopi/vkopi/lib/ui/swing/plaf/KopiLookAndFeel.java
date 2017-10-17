@@ -192,7 +192,8 @@ public KopiLookAndFeel() {
 
     table.put("KopiField.alert",                Color.red);
     table.put("KopiField.critical",             Color.pink);
-    table.put("KopiField.critical.skipped", new Color(255, 192, 203)); // LIGHT PINK
+    table.put("KopiField.critical.skipped",     new Color(255, 192, 203)); // LIGHT PINK
+    table.put("KopiField.action",               new Color(255, 230, 230)); // WHITE PINK
     table.put("KopiField.noedit",               Color.white);
 
 

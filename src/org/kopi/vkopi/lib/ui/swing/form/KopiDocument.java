@@ -41,6 +41,8 @@ public interface KopiDocument extends Document, Stateful {
 
   public void setHasCriticalValue(boolean hasCriticalValue);
   
+  public void setHasAction(boolean hasAction);
+  
   public void setBgColor(Color bgColor);
 
   public void setAlert(boolean alert);

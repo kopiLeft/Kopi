@@ -278,7 +278,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         fields[i].updateModeAccess();
       }
 
-      if (act != null && act.getAccess(getActiveRecord()) >= ACS_VISIT) {
+      if (act != null && !act.hasAction() && act.getAccess(getActiveRecord()) >= ACS_VISIT) {
         act.enter();
       }
     }
@@ -673,7 +673,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       act.enter();
 
-      if (activeField.getAccess(getActiveRecord()) < ACS_VISIT) {
+      if (activeField.hasAction() || activeField.getAccess(getActiveRecord()) < ACS_VISIT) {
         gotoNextField();
       }
     }
@@ -722,7 +722,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       act.enter();
 
-      if (activeField.getAccess(getActiveRecord()) < ACS_VISIT) {
+      if (activeField.hasAction() || activeField.getAccess(getActiveRecord()) < ACS_VISIT) {
         gotoNextField();
       }
     }
@@ -778,7 +778,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           act = activeField;
           activeField.leave(false);
         }
-        if (act == null || act.getAccess(getActiveRecord()) < ACS_VISIT) {
+        if (act == null || act.hasAction() || act.getAccess(getActiveRecord()) < ACS_VISIT) {
           gotoNextField();
         } else {
           act.enter();
@@ -805,7 +805,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           act = activeField;
           activeField.leave(false);
         }
-        if (act == null || act.getAccess(getActiveRecord()) < ACS_VISIT) {
+        if (act == null || act.hasAction() || act.getAccess(getActiveRecord()) < ACS_VISIT) {
           gotoNextField();
         } else {
           act.enter();
@@ -920,8 +920,9 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void gotoField(VField fld) throws VException {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
-    assert fld.getAccess(getActiveRecord()) >= ACS_VISIT :
-      " access= " + fld.getAccess(getActiveRecord())
+    assert !fld.hasAction() && fld.getAccess(getActiveRecord()) >= ACS_VISIT :
+      "has action " + fld.hasAction()
+      + " access= " + fld.getAccess(getActiveRecord())
       + " field=" + fld.getName()
       + " activeREcord=" + getActiveRecord();
 
@@ -955,7 +956,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         index = 0;
       }
 
-      if (fields[index].getAccess(getActiveRecord()) >= ACS_VISIT
+      if (!fields[index].hasAction() && fields[index].getAccess(getActiveRecord()) >= ACS_VISIT
           && ((detailMode && !fields[index].noDetail())
               || (!detailMode && !fields[index].noChart()))) {
         target = fields[index];
@@ -989,7 +990,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
       index -= 1;
 
-      if (fields[index].getAccess(getActiveRecord()) >= ACS_VISIT
+      if (!fields[index].hasAction() && fields[index].getAccess(getActiveRecord()) >= ACS_VISIT
           && ((detailMode && !fields[index].noDetail())
               || (!detailMode && !fields[index].noChart()))) {
         target = fields[index];
@@ -1018,7 +1019,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     VField      target = null;
 
     for (int i = 0; target == null && i < fields.length; i += 1) {
-      if (fields[i].getAccess(getActiveRecord()) >= ACS_VISIT) {
+      if (!fields[i].hasAction() &&  fields[i].getAccess(getActiveRecord()) >= ACS_VISIT) {
         target = fields[i];
       }
     }
@@ -1044,7 +1045,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     VField      target = null;
 
     for (int i = 0; target == null && i < fields.length; i += 1) {
-      if ((fields[i].getAccess(getActiveRecord()) >= ACS_VISIT) && fields[i].isNull(getActiveRecord())) {
+      if (!fields[i].hasAction()
+          && (fields[i].getAccess(getActiveRecord()) >= ACS_VISIT)
+          && fields[i].isNull(getActiveRecord()))
+      {
         target = fields[i];
       }
     }
@@ -1084,14 +1088,19 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     // walk next to next
     for (; target == null && i < fields.length; i += 1) {
-      if (fields[i].getAccess(getActiveRecord()) == ACS_MUSTFILL && fields[i].isNull(getActiveRecord())) {
+      if (!fields[i].hasAction() && 
+          fields[i].getAccess(getActiveRecord()) == ACS_MUSTFILL
+          && fields[i].isNull(getActiveRecord()))
+      {
         target = fields[i];
       }
     }
 
     // redo from start
     for (i = 0; target == null && i < fields.length; i += 1) {
-      if (fields[i].getAccess(getActiveRecord()) == ACS_MUSTFILL && fields[i].isNull(getActiveRecord())) {
+      if (!fields[i].hasAction() && 
+          fields[i].getAccess(getActiveRecord()) == ACS_MUSTFILL
+          && fields[i].isNull(getActiveRecord())) {
         target = fields[i];
       }
     }
@@ -1118,7 +1127,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     VField      target = null;
 
     for (int i = fields.length - 1; i >= 0; i -= 1) {
-      if (fields[i].getAccess(getActiveRecord()) >= ACS_VISIT) {
+      if (!fields[i].hasAction() && fields[i].getAccess(getActiveRecord()) >= ACS_VISIT) {
         target = fields[i];
       }
     }

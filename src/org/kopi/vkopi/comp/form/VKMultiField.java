@@ -49,7 +49,6 @@ public class VKMultiField extends VKField implements org.kopi.kopi.comp.kjc.Cons
    * @param ident		the ident of this field
    * @param number		the number of clone
    * @param pos			the position within the block
-   * @param icon                the field icon (optional) 
    * @param label		the label (text on the left)
    * @param help		the help text
    * @param type		the type of this field
@@ -66,7 +65,6 @@ public class VKMultiField extends VKField implements org.kopi.kopi.comp.kjc.Cons
 		      int number,
 		      int count,
 		      VKPosition pos,
-		      String icon,
 		      String label,
 		      String help,
 		      VKFieldType type,
@@ -77,7 +75,7 @@ public class VKMultiField extends VKField implements org.kopi.kopi.comp.kjc.Cons
 		      VKCommand[] commands,
 		      VKTrigger[] triggers,
 		      String alias) {
-    super(where, ident, pos, icon, label, help, type, align, options, columns, access,
+    super(where, ident, pos, label, help, type, align, options, columns, access,
 	  commands, triggers, alias);
     this.number = number;
     this.count = count;
@@ -88,7 +86,6 @@ public class VKMultiField extends VKField implements org.kopi.kopi.comp.kjc.Cons
 				    String ident,
 				    int count,
 				    VKPosition pos,
-				    String icon,
 				    ArrayList label,
 				    String help,
 				    VKFieldType type,
@@ -112,7 +109,7 @@ public class VKMultiField extends VKField implements org.kopi.kopi.comp.kjc.Cons
       }
 
       VKFieldColumns col = (columns != null) ? columns.cloneToPos(i + 1) : null;
-      field = new VKMultiField(where, ident + (i + 1), i, count, position, icon, lab, help, type,
+      field = new VKMultiField(where, ident + (i + 1), i, count, position, lab, help, type,
 			       align, options, col, access, commands, triggers, alias);
 
       if (field.getDetailedPosition() instanceof VKCoordinatePosition) {

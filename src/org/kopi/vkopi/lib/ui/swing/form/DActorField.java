@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.kopi.vkopi.lib.form.UActorField;
@@ -126,7 +125,7 @@ public class DActorField extends DField implements UActorField {
   protected JActorFieldButton createButton() {
     DActorFieldAction           action;
     
-    action = new DActorFieldAction(getModel().getLabel(), getModel().getIcon() != null ? loadImage(getModel().getIcon()) : null);
+    action = new DActorFieldAction(getModel().getLabel());
     action.putValue(Action.SHORT_DESCRIPTION, getModel().getToolTip());
     action.setEnabled(getModel().getDefaultAccess() >= VConstants.ACS_VISIT);
     
@@ -160,8 +159,8 @@ public class DActorField extends DField implements UActorField {
     // CONSTRUCTOR
     // -----------------------------------------------
 
-    public DActorFieldAction(String name, Icon icon) {
-      super(name, icon);
+    public DActorFieldAction(String name) {
+      super(name);
     }
 
     // ------------------------------------------------

@@ -46,6 +46,12 @@ public interface FieldServerRpc extends ServerRpc {
   public void onClick();
   
   /**
+   * Fired when the action trigger should be performed.
+   */
+  @NoLoadingIndicator
+  public void actionPerformed();
+  
+  /**
    * Transfers the focus to this field in the model side.
    */
   @NoLoadingIndicator

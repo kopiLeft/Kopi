@@ -117,14 +117,23 @@ public class FieldConnector extends AbstractSingleComponentContainerConnector im
 
   @Override
   public void onClick() {
-    // no click event is for rich text field
-    if (getContent() instanceof RichTextFieldConnector) {
+    // no click event is for rich text field and action fields
+    if (hasAction() || getContent() instanceof RichTextFieldConnector) {
       return;
     }
     
     getColumnView().setBlockActiveRecordFromDisplayLine(getPosition());
     getWindow().cleanDirtyValues(getBlock(), false); //!! do not make a focus transfer.
     getRpcProxy(FieldServerRpc.class).onClick();
+  }
+  
+  /**
+   * Tells the server side the the action field should be performed
+   */
+  public void actionPerformed() {
+    if (hasAction() && isActionEnabled()) {
+      getRpcProxy(FieldServerRpc.class).actionPerformed();
+    }
   }
   
   @Override
@@ -211,6 +220,22 @@ public class FieldConnector extends AbstractSingleComponentContainerConnector im
     } else {
       return false;
     }
+  }
+  
+  /**
+   * Returns true if the field has an action trigger.
+   * @return true if the field has an action trigger.
+   */
+  public boolean hasAction() {
+    return getState().hasAction;
+  }
+  
+  /**
+   * Returns true when the action trigger is enabled.
+   * @return true when the action trigger is enabled.
+   */
+  public boolean isActionEnabled() {
+    return getState().isActionEnabled;
   }
   
   /**

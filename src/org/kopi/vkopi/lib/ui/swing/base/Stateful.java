@@ -26,6 +26,7 @@ public interface Stateful {
   boolean getAutofill();
   boolean isAlert();
   boolean hasCriticalValue();
+  boolean hasAction();
   Color getBgColor();
   Object getModel();
 }

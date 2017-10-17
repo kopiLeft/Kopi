@@ -130,7 +130,6 @@ public class DLabel extends SortableLabel implements ULabel {
 	} else {
 	  setDescription(Utils.createTooltip(buildDescription(model, tooltip)));
 	}
-	setHasAction(!model.hasIcon() && model.hasAction());
 	if (model.getModel().getAccess(row) == VConstants.ACS_HIDDEN) {
 	  if (getState().visible) {
 	    setVisible(false);

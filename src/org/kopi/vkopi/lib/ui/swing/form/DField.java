@@ -418,7 +418,7 @@ public abstract class DField extends JPanel implements UField {
     }
 
     private void performAction() {
-      if (!modelHasFocus()) {
+      if (!model.hasAction() && !modelHasFocus()) {
         // an empty row in a chart has not calculated
         // the access for each field (ACCESS Trigger)
         if (model.getBlock().isMulti()) {

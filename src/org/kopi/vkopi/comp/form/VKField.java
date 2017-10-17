@@ -58,7 +58,6 @@ public class VKField
    * @param where		the token reference of this node
    * @param ident		the ident of this field
    * @param pos			the position within the block
-   * @param icon                the field icon (optional) 
    * @param label		the label (text on the left)
    * @param help		the help text
    * @param type		the type of this field
@@ -68,12 +67,11 @@ public class VKField
    * @param access		the access mode
    * @param commands		the commands accessible in this field
    * @param triggers		the triggers executed by this field
-   * @param alias		th e alias of this field
+   * @param alias		the e alias of this field
    */
   public VKField(TokenReference where,
 		 String ident,
 		 VKPosition pos,
-		 String icon,
 		 String label,
 		 String help,
 		 VKFieldType type,
@@ -86,7 +84,6 @@ public class VKField
 		 String alias) {
     super(where);
     this.ident = ident;
-    this.icon = icon;
     this.label = label;
     this.help = help;
     this.detailedPos = pos;
@@ -109,13 +106,6 @@ public class VKField
    */
   public String getIdent() {
     return ident == null ? "ANONYMOUS!@#$%^&*()" : ident;
-  }
-  
-  /**
-   * Returns the icon of the field.
-   */
-  public String getIcon() {
-    return icon;
   }
 
   /**
@@ -359,12 +349,11 @@ public class VKField
    */
   public JStatement genInfo() {
     TokenReference		ref = getTokenReference();
-    JExpression[]		infos = new JExpression[14];
+    JExpression[]		infos = new JExpression[13];
     int				count = 0;
 
     // PRIMARY INFO
     infos[count++] = VKUtils.toExpression(ref, getIdent());
-    infos[count++] = VKUtils.toExpression(ref, getIcon());
     infos[count++] = VKUtils.toExpression(ref, getIndex());
     infos[count++] = VKUtils.toExpression(ref, getPosInArray());
     infos[count++] = VKUtils.toExpression(ref, options);
@@ -505,7 +494,6 @@ public class VKField
   private VKBlock		block;
   private VKPosition		detailedPos;
   private String		ident;
-  private String                icon;
   private String		label;
   private String		help;
   private VKFieldType		type;

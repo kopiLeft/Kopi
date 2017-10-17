@@ -152,27 +152,26 @@ public class KopiStyledDocument extends HTMLDocument implements KopiDocument {
     return state;
   }
 
-  @Override
   public boolean getAutofill() {
     return autofill;
   }
 
-  @Override
   public boolean isAlert() {
     return alert;
   }
 
-  @Override
   public boolean hasCriticalValue() {
     return hasCriticalValue;
   }
+  
+  public boolean hasAction() {
+    return hasAction;
+  }
 
-  @Override
   public Color getBgColor() {
     return bgColor;
   }
 
-  @Override
   public Object getModel() {
     return model;
   }
@@ -183,6 +182,10 @@ public class KopiStyledDocument extends HTMLDocument implements KopiDocument {
 
   public void setHasCriticalValue(boolean hasCriticalValue) {
     this.hasCriticalValue = hasCriticalValue;
+  }
+  
+  public void setHasAction(boolean hasAction) {
+    this.hasAction = hasAction;
   }
 
   public void setBgColor(Color bgColor) {
@@ -209,6 +212,7 @@ public class KopiStyledDocument extends HTMLDocument implements KopiDocument {
   private boolean                       alert;
   private boolean                       autofill = false;
   private boolean                       hasCriticalValue;
+  private boolean                       hasAction;
   private Color                         bgColor;
   
   private static final long             serialVersionUID = -6909577520453067610L;
