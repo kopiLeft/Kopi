@@ -215,7 +215,10 @@ public class DGridMultiBlock extends DGridBlock implements UMultiBlock, DetailsG
   @Override
   public void blockChanged() {
     super.blockChanged();
-    if (itemHasDetailVisible != null && getModel().getActiveRecord() != itemHasDetailVisible) {
+    if (getModel().getActiveRecord() != -1
+        && itemHasDetailVisible != null
+        && getModel().getActiveRecord() != itemHasDetailVisible)
+    {
       enterRecord(getModel().getActiveRecord());
     }
   }
