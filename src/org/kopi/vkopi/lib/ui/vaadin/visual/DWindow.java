@@ -1083,10 +1083,10 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
         ExportResource          resource;
         String                  resourceName;
 
+        resourceName = name.trim();
+        resourceName = resourceName.replaceAll("[^a-zA-Z0-9\\._]+", " ");
         if (Page.getCurrent().getWebBrowser().isFirefox()) {
-          resourceName = name.replaceAll("\\s", "_");
-        } else {
-          resourceName = name;
+          resourceName = resourceName.replaceAll("\\s", "_");
         }
         resource = new ExportResource(file, resourceName);
         Page.getCurrent().open(resource, "_blank", false);
