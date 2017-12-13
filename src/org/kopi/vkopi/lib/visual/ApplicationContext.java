@@ -260,6 +260,9 @@ public abstract class ApplicationContext {
         writer.println("Default Locale:      "+Locale.getDefault());
         writer.println("Default Encoding:    "+(new InputStreamReader(System.in)).getEncoding());
         writer.println();
+        if (applicationContext.isWebApplicationContext()){
+          writer.println("User-IP:             "+applicationContext.getApplication().getUserIP());
+        }
         try {
           writer.println("Kopi-User:           "+applicationContext.getApplication().getUserName());
         } catch (Exception e) {

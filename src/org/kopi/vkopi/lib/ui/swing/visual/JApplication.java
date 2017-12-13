@@ -241,6 +241,10 @@ public abstract class JApplication implements Application {
     System.exit(code);
   }
 
+  public String getUserIP() {
+    return null;
+  }
+
   // ---------------------------------------------------------------------
   // INITIALISATION
   // ---------------------------------------------------------------------

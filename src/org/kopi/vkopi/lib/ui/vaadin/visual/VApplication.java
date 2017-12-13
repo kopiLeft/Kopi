@@ -746,7 +746,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public void onUser() {
     // TODO
   }
-  
+
+  public String getUserIP() {
+    return getPage().getWebBrowser().getAddress();
+  }
+
   //---------------------------------------------------
   // UTILS
   // --------------------------------------------------

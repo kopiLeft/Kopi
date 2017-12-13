@@ -100,6 +100,12 @@ public interface Application extends MessageListener {
    * @return The connected user name.
    */
   public String getUserName();
+  
+  /**
+   * Returns the connected user IP address.
+   * @return The connected user IP address.
+   */
+  public String getUserIP();
 
   /**
    * Returns the application {@link Registry}.
