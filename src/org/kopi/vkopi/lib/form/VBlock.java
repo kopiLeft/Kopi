@@ -1265,8 +1265,16 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception VException      an exception may be raised by triggers
    */
   public void validate() throws VException {
-    assert this == form.getActiveBlock() : this.getName() + " != " + ((form.getActiveBlock() == null) ? "null" : form.getActiveBlock().getName());
-
+    //!!! hacheni 20171213 : force the form active block to this block to avoid a known fatal error raised due
+    //    to free navigation implementation in WEB context. It can be that the gotoBlock was not fired when
+    //    the block was entered when one of the block fields was focused. This stays a workaround and does not
+    //    solve the source of the problem but get rid of the fatal error. The problem will be analyzed later.
+    //    see #1078473 & #1079026 for more details.
+    //    assert this == form.getActiveBlock() : this.getName() + " != " + ((form.getActiveBlock() == null) ? "null" : form.getActiveBlock().getName());
+    if (form.getActiveBlock() != this) {
+      form.gotoBlock(this);
+    }
+    
     int         lastRecord = getActiveRecord();
 
     try {
