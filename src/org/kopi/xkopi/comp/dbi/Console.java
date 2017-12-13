@@ -79,6 +79,7 @@ public class Console extends Compiler implements Constants {
     options.noprompt = false;
     options.abortonerror = true;
     options.trace = true;
+    options.commit = true;
     console.options = options;
     console.executeKopiDbSchema(file);
   }
@@ -327,7 +328,14 @@ public class Console extends Compiler implements Constants {
       printPrompt(true);
       do {
         line = input.readLine();
-      } while (line == null || line.equals(""));
+        if (line == null) {
+          if (options.commit) {
+            return new CommitAndQuitStatement();
+          } else {
+            return new AbortAndQuitStatement();
+          }
+        }
+      } while (line.equals(""));
 
       if (line.equals("COMMIT;")) {
         return new CommitStatement();
@@ -822,10 +830,26 @@ public class Console extends Compiler implements Constants {
     }
   }
 
+  private class AbortAndQuitStatement extends AbstractStatement {
+    public boolean execute() {
+      abortTransaction();
+      quit();
+      return true;
+    }
+  }
+  
   private class CommitStatement extends AbstractStatement {
     public boolean execute() {
       commitTransaction();
       return false;
+    }
+  }
+  
+  private class CommitAndQuitStatement extends AbstractStatement {
+    public boolean execute() {
+      commitTransaction();
+      quit();
+      return true;
     }
   }
 

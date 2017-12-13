@@ -72,4 +72,8 @@
 	 type="boolean"
 	 default="false"
 	 help="print sql trace." />
+  <param longname="commit" 
+	 shortname="C" 
+	 type="boolean" default="false"
+	 help="COMMIT." />
 </option>
