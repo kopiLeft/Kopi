@@ -186,6 +186,15 @@ public class BlockState extends AbstractComponentState {
       this.value = value == null ? "" : value;
     }
     
+    /**
+     * 
+     * @param other : cached value
+     * @return true if there is an existing cached value having the same key
+     */
+    public boolean hasSameKey(CachedValue other) {
+      return col == other.col && rec == other.rec;
+    }
+    
     @Override
     public int hashCode() {      
       return col + rec + value.hashCode();

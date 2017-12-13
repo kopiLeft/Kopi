@@ -296,8 +296,32 @@ public abstract class Block extends AbstractSingleComponentContainer {
    * @param value The new record value.
    */
   protected void fireValueChanged(int col, int rec, String value) {
-    getState().cachedValues.add(new CachedValue(col, rec, value));
+    CachedValue         cachedValue;
+    CachedValue         existingValue;
+    
+    cachedValue = new CachedValue(col, rec, value);
+    existingValue = isAlreadyCached(cachedValue);
+    if (existingValue != null) {
+      getState(false).cachedValues.remove(existingValue);
+    }
+    getState().cachedValues.add(cachedValue);
   }
+  
+  /**
+   * 
+   * @param cachedValue : cached value
+   * @return the existing cached value if it exists
+   */
+  protected CachedValue isAlreadyCached(CachedValue cachedValue) {
+    for (CachedValue value : getState(false).cachedValues) {
+      if (value.hasSameKey(cachedValue)) {
+        return value;
+      }
+    }
+    
+    return null;
+  }
+  
   
   /**
    * Notify the client side that the color of the record has changed.
