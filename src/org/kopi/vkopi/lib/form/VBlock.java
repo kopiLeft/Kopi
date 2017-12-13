@@ -920,12 +920,19 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void gotoField(VField fld) throws VException {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
-    assert !fld.hasAction() && fld.getAccess(getActiveRecord()) >= ACS_VISIT :
-      "has action " + fld.hasAction()
-      + " access= " + fld.getAccess(getActiveRecord())
-      + " field=" + fld.getName()
-      + " activeREcord=" + getActiveRecord();
-
+//!!! hacheni 20171213 : the assertion is replaced by a simple test to avoid fatal error when inaccessible
+//    field is to be focused. This case can happen web version due to free navigation. See ticket #1077754
+//    for more details. Note that this is only a workaround to not raise a fatal error. Simply, the field
+//    won't be entered when it is inaccessible. The case will be analyzed later.
+//    assert !fld.hasAction() && fld.getAccess(getActiveRecord()) >= ACS_VISIT :
+//      "has action " + fld.hasAction()
+//      + " access= " + fld.getAccess(getActiveRecord())
+//      + " field=" + fld.getName()
+//      + " activeREcord=" + getActiveRecord();
+    if (fld.hasAction() || fld.getAccess(getActiveRecord()) < ACS_VISIT) {
+      return;
+    }
+    
     if (activeField != null) {
       activeField.leave(true);
     }
