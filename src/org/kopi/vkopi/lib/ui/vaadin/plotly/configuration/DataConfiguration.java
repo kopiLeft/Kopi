@@ -103,7 +103,7 @@ public class DataConfiguration implements ChartProperty {
       if (!data.isPieOrDonut() && !isPieOrDonut) {
         if ((!data.isPieOrDonut()) && data.getColor().equals(Colors.LIGHTSKYBLUE)) {
           try {
-            data.setColor(colors.get(dataConfiguraion.size()));
+            data.setColor(colors.get(dataConfiguraion.size() - 1));
           } catch (TypeMismatchException e) {
             throw new InconsistencyException(e);
           }
