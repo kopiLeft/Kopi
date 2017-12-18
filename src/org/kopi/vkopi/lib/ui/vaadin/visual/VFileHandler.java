@@ -44,11 +44,11 @@ public class VFileHandler extends FileHandler {
 
   @Override
   public File chooseFile(UWindow window, String defaultName) {
-    return chooseFile(window, null, defaultName);  
+    return chooseFile(window, null, defaultName);
   }
 
   @Override
-  public File chooseFile(UWindow window, File dir, String defaultName) { 
+  public File chooseFile(UWindow window, File dir, String defaultName) {
     try {
       return createTempFile(dir, defaultName);
     } catch (IOException e) {
@@ -57,7 +57,7 @@ public class VFileHandler extends FileHandler {
       return null;
     }
   }
-  
+
   @Override
   public File openFile(UWindow window, String defaultName) {
     return openFile(window, null, defaultName);
@@ -72,7 +72,7 @@ public class VFileHandler extends FileHandler {
   public File openFile(UWindow window, File dir, String defaultName) {
     return openFile(window, dir, defaultName, null);
   }
-  
+
   /**
    * Uploads a file from client side with the given mime type.
    * @param window The window display.
@@ -84,16 +84,16 @@ public class VFileHandler extends FileHandler {
   protected File openFile(UWindow window, File dir, String defaultName, String mimeType) {
     byte[]              file;
     FileUploader        uploader;
-    
+
     uploader = new FileUploader();
     file = uploader.upload(mimeType);
     if (file != null) {
       return toFile(window, file, dir, uploader.getFilename() == null ? defaultName : uploader.getFilename());
     }
-    
+
     return null;
   }
-  
+
   /**
    * Returns the current application instance.
    * @return The current application instance.
@@ -101,7 +101,7 @@ public class VFileHandler extends FileHandler {
   protected VApplication getApplication() {
     return (VApplication) ApplicationContext.getApplicationContext().getApplication();
   }
-  
+
   /**
    * Converts the given bytes to a file. The file is created under OS temp directory.
    * @param file The file bytes.
@@ -118,14 +118,14 @@ public class VFileHandler extends FileHandler {
       out = new FileOutputStream(destination);
       out.write(file);
       out.close();
-      
+
       return destination;
     } catch (IOException e) {
       getApplication().displayError(window, e.getMessage());
       return null;
     }
   }
-  
+
   /**
    * Creates a temporary file.
    * @param directory The parent directory.
@@ -139,17 +139,17 @@ public class VFileHandler extends FileHandler {
     String		basename;
     String		extension;
 
-    // if parent directory does not exist, create file in java.io.tempdir directly. 
+    // if parent directory does not exist, create file in java.io.tempdir directly.
     if (directory != null && !directory.exists()) {
       directory = null;
     }
     // add a blank between the prefix and the random text
     basename = ensurePrefixLength(getBaseFileName(defaultName)) + " ";
     extension = getExtension(defaultName);
-    
+
     return File.createTempFile(basename, extension, directory);
   }
-  
+
   /**
    * Returns the file extension of a given file name.
    * @param defaultName The default file name.
@@ -158,37 +158,37 @@ public class VFileHandler extends FileHandler {
   protected String getExtension(String defaultName) {
     if (defaultName != null) {
       int	index = defaultName.lastIndexOf('.');
-      
+
       if (index != -1) {
 	return "." + defaultName.substring(Math.min(defaultName.length(), index + 1));
       }
     }
-    
+
     return null; // ".tmp" will be added when calling File#createTempFile(String, String, File).
   }
-  
+
   /**
    * Returns the base file name (without file extension).
    * @param defaultName The default file name.
-   * @return The base file name 
+   * @return The base file name
    */
   protected String getBaseFileName(String defaultName) {
     if (defaultName != null) {
       int	index = defaultName.lastIndexOf('.');
-      
+
       if (index != -1) {
 	return defaultName.substring(0, Math.min(defaultName.length(), index));
       }
     }
-    
+
     return defaultName; // returns the entire default name.
   }
-  
+
   /**
    * When calling {@link File#createTempFile(String, String, File)} the name
    * prefix should at least have 3 characters. This method aims to satisfy this
    * condition and complete missing length with X character to avoid {@link IllegalArgumentException}
-   * when creating temporary files. 
+   * when creating temporary files.
    * @param prefix The file name prefix.
    * @return A prefix having at least three characters. If {@code prefix == null}, "XXX" is returned.
    */
@@ -197,29 +197,29 @@ public class VFileHandler extends FileHandler {
       return prefix;
     } else {
       StringBuffer      buffer;
-      
+
       buffer = new StringBuffer();
       buffer.append(prefix);
       while (buffer.length() < 3) {
         buffer.insert(prefix.length(), "X");
       }
-      
+
       return buffer.toString();
     }
   }
-  
+
   /**
    * Returns the mime type provided by the given file filter.
    * The technique is to loop all over known mime types and to
    * test the if the file is accepted by the filter. The corresponding
    * mime type is returned.
-   * If filter provide unknown file, {@code null} is returned.  
+   * If filter provide unknown file, {@code null} is returned.
    * @param filter The file filter.
    * @return The corresponding mime type.
    */
   private static String getMimeType(FileFilter filter) {
     List<String>                mimeTypes;
-    
+
     mimeTypes = new ArrayList<String>();
     for (Map.Entry<String, String> entry : knownFileTypeToMimeType.entrySet()) {
       /**
@@ -231,10 +231,10 @@ public class VFileHandler extends FileHandler {
         mimeTypes.add(entry.getValue());
       }
     }
-    
+
     return toString(mimeTypes);
   }
-  
+
   /**
    * Converts the given list to a string where elements are separated by a comma.
    * @param list The list of strings.
@@ -253,15 +253,15 @@ public class VFileHandler extends FileHandler {
           buffer.append(", ");
         }
       }
-      
+
       return buffer.toString();
     }
   }
-  
+
   // --------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------
-  
+
   /**
    * File type to mime type map
    * This will be used to inject mime type according to a given
@@ -270,10 +270,10 @@ public class VFileHandler extends FileHandler {
    * comes with unknown type, {@code null} will be returned as mime type.
    */
   private static Map<String, String>            knownFileTypeToMimeType;
-  
+
   static {
     /**
-     * The injected of list of mime types are picked form 
+     * The injected of list of mime types are picked form
      * http://www.sitepoint.com/web-foundations/mime-types-summary-list/
      */
     knownFileTypeToMimeType = new HashMap<String, String>();
@@ -324,6 +324,7 @@ public class VFileHandler extends FileHandler {
     knownFileTypeToMimeType.put("txt", "text/plain");
     knownFileTypeToMimeType.put("wav", "audio/wav, audio/x-wav");
     knownFileTypeToMimeType.put("xlam", "application/vnd.ms-excel.addin.macroEnabled.12");
+    knownFileTypeToMimeType.put("csv", "text/csv, application/csv, text/comma-separated-values, text/x-comma-separated-values, text/tab-separated-values, .csv");
     knownFileTypeToMimeType.put("xls", "application/vnd.ms-excel, .xls");
     knownFileTypeToMimeType.put("xlsb", "application/vnd.ms-excel.sheet.binary.macroEnabled.12");
     knownFileTypeToMimeType.put("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xlsx");

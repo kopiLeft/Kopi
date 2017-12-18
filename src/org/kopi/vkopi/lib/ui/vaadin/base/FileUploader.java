@@ -51,7 +51,7 @@ import com.vaadin.ui.UI;
  */
 @SuppressWarnings("serial")
 public class FileUploader implements UploadReceiver, UploadStartedListener, UploadFinishedListener, UploadFailedListener, UploadProgressListener {
-  
+
   //---------------------------------------------------
   // CONSTRUCTOR
   //---------------------------------------------------
@@ -69,11 +69,11 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     uploader.addFailedListener(this);
     uploader.setLocale(getApplication().getDefaultLocale().toString());
   }
-  
+
   //---------------------------------------------------
   // IMPLEMENTATION
   //---------------------------------------------------
-  
+
   /**
    * Invokes the upload process for a given mime type.
    * @param mimeType The mime type to be uploaded.
@@ -82,7 +82,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public byte[] upload(final String mimeType) {
     this.mimeType = mimeType;
     BackgroundThreadHandler.startAndWait(new Runnable() {
-      
+
       @Override
       public void run() {
         uploader.setMimeType(mimeType);
@@ -90,16 +90,16 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
 	getApplication().push();
       }
     }, uploader);
-    
+
     close();
-    
+
     if (output != null) {
       return output.toByteArray();
     } else {
       return null;
     }
   }
-  
+
   /**
    * Returns the uploader component.
    * @return The uploader component.
@@ -107,7 +107,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public Upload getUploader() {
     return uploader;
   }
-  
+
   /**
    * Returns the uploaded file name.
    * @return The uploaded file name.
@@ -115,7 +115,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public String getFilename() {
     return filename;
   }
-  
+
   /**
    * Closes the uploader component.
    * The uploader should not be detached
@@ -140,7 +140,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
       }
     }, 200);
   }
-  
+
   /**
    * Registers a new {@link FileUploadListener} object.
    * @param l The listener object.
@@ -148,7 +148,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public void addFileUploadListener(FileUploadListener l) {
     listeners.add(l);
   }
-  
+
   /**
    * Removes a new {@link FileUploadListener} object.
    * @param l The listener object.
@@ -156,11 +156,10 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public void removeFileUploadListener(FileUploadListener l) {
     listeners.remove(l);
   }
-  
-  
+
+
   @Override
   public void uploadFailed(UploadFailedEvent event) {
-    System.out.println("UPDLOAD FAILED ----- " + event.getReason());
     if (event.getReason() != null) {
       event.getReason().printStackTrace(System.err);
       uploadFinished(null);
@@ -176,7 +175,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public void uploadStarted(UploadStartedEvent event) {
     String[]            mimeTypes;
     boolean             accepted;
-    
+
     accepted = false;
     if (mimeType == null) {
       mimeTypes = null;
@@ -197,18 +196,18 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     }
     this.filename = event.getFilename();
   }
-  
+
   @Override
   public OutputStream receiveUpload(String filename, String mimeType) {
     return output = new ByteArrayOutputStream();
   }
-  
+
   @Override
   public void updateProgress(long readBytes, long contentLength) {
     uploader.fireOnProgress(contentLength, readBytes);
     UI.getCurrent().push();
   }
-  
+
   /**
    * Marks the end of the upload process.
    * @param filename The uploaded file name.
@@ -225,7 +224,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
       }
     }
   }
-  
+
   /**
    * Returns the current application instance.
    * @return The current application instance.
@@ -233,7 +232,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   protected VApplication getApplication() {
     return (VApplication) ApplicationContext.getApplicationContext().getApplication();
   }
-  
+
   /**
    * Returns the parent mime type of the holded mime type.
    * @return The parent mime type of the holded mime type.
@@ -245,24 +244,24 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
       return mimeType.trim();
     }
   }
-  
+
   //---------------------------------------------------
   // UPLOAD LISTENER
   //---------------------------------------------------
-  
+
   /**
    * The <code>FileUploadListener</code> is a listener to
    * notify registered object of an upload process finish
    */
   public interface FileUploadListener extends Serializable {
-    
+
     /**
      * Fired when the upload operation has been successfully executed;
      * @param event The upload event
      */
     public void uploadFinished(UploadEvent event);
   }
-  
+
   //---------------------------------------------------
   // UPLOAD EVENT
   //---------------------------------------------------
@@ -276,7 +275,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     //---------------------------------------
     // CONSTRUCTORS
     //---------------------------------------
-    
+
     /**
      * Creates a new <code>UploadEvent</code> instance.
      * @param source The event source.
@@ -298,7 +297,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     //---------------------------------------
     // ACCESSORS
     //---------------------------------------
-    
+
     /**
      * Returns the uploaded bytes.
      * @return The uploaded bytes.
@@ -306,7 +305,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     public byte[] getUploaded() {
       return uploaded;
     }
-    
+
     /**
      * Returns the event source.
      * @return The event source.
@@ -330,20 +329,20 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     public String getMimeType() {
       return mimeType;
     }
-    
+
     //---------------------------------------
     // DATA MEMBERS
     //---------------------------------------
-    
+
     private final byte[]		uploaded;
     private final String		filename;
     private final String		mimeType;
   }
-  
+
   //---------------------------------------------------
   // ACCESSORS
   //---------------------------------------------------
-  
+
   /**
    * Returns the file uploader.
    * @return The file uploader.
@@ -351,7 +350,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
   public Upload geUploader() {
     return uploader;
   }
-  
+
   /**
    * Returns the output stream.
    * @return The output stream.
