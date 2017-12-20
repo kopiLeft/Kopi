@@ -80,7 +80,7 @@ import com.vaadin.ui.UI;
 @PreserveOnRefresh
 @Push(value = PushMode.MANUAL, transport = Transport.WEBSOCKET)
 public abstract class VApplication extends UI implements Application, WelcomeViewListener, MainWindowListener {
- 
+
   // --------------------------------------------------
   // CONSTRUCTOR
   // --------------------------------------------------
@@ -92,11 +92,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public VApplication(Registry registry) {
     this.registry = registry;
   }
-  
+
   // --------------------------------------------------
   // IMPLEMENTATIONS
   // --------------------------------------------------
-  
+
   @Override
   protected void init(VaadinRequest request) {
     checkAlternateLocale(); // needs to do this to ensure that we start with a valid locale;
@@ -105,7 +105,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     gotoWelcomeView();
     // android and IOS specifics
     if (getPage().getWebBrowser().isAndroid() || getPage().getWebBrowser().isIOS()) {
-      getPage().getJavaScript().execute("document.head.innerHTML += '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">'"); 
+      getPage().getJavaScript().execute("document.head.innerHTML += '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">'");
       getPage().getJavaScript().execute("function downloadJSAtOnload() {"
 		  			+"var element = document.createElement(\"script\");"
 		  			+"element.src = \"/js/someScript.js\";"
@@ -122,20 +122,20 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     stylesInjector = new StylesInjector();
     this.askAnswer = MessageListener.AWR_UNDEF;
   }
-  
+
   // ---------------------------------------------------------------------
   // MESSAGE LISTENER IMPLEMENTATION
   // ---------------------------------------------------------------------
-  
+
   @Override
   public void notice(String message) {
     final InformationNotification       dialog;
     final Object                        lock;
-    
+
     lock = new Object();
     dialog = new InformationNotification(VlibProperties.getString("Notice"), message);
     dialog.addNotificationListener(new NotificationListener() {
-      
+
       @Override
       public void onClose(boolean yes) {
         detachComponent(dialog);
@@ -149,17 +149,17 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public UIState getState() {
     return super.getState();
   }
-  
+
   @Override
   public void error(String message) {
     final ErrorNotification     dialog;
     final Object                lock;
-    
+
     lock = new Object();
     dialog = new ErrorNotification(VlibProperties.getString("Error"), message);
     dialog.setOwner(this);
     dialog.addNotificationListener(new NotificationListener() {
-      
+
       @Override
       public void onClose(boolean yes) {
         setComponentError(null); // remove any further error.
@@ -174,11 +174,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public void warn(String message) {
     final WarningNotification   dialog;
     final Object                lock;
-    
+
     lock = new Object();
     dialog = new WarningNotification(VlibProperties.getString("Warning"), message);
     dialog.addNotificationListener(new NotificationListener() {
-      
+
       @Override
       public void onClose(boolean yes) {
         detachComponent(dialog);
@@ -197,7 +197,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     dialog = new ConfirmNotification(VlibProperties.getString("Question"), message);
     dialog.setYesIsDefault(yesIsDefault);
     dialog.addNotificationListener(new NotificationListener() {
-      
+
       @Override
       public void onClose(boolean yes) {
         if (yes) {
@@ -211,10 +211,10 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     });
     // attach the notification to the application.
     showNotification(dialog, lock);
-    
+
     return askAnswer;
   }
-  
+
   /**
    * Shows a notification.
    * @param notification The notification to be shown
@@ -223,10 +223,10 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     if (notification == null) {
       return;
     }
-    
+
     notification.setLocale(getDefaultLocale().toString());
     BackgroundThreadHandler.startAndWait(new Runnable() {
-      
+
       @Override
       public void run() {
         attachComponent(notification);
@@ -238,15 +238,15 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   //---------------------------------------------------------------------
   // APPLICATION IMPLEMENTATION
   // ---------------------------------------------------------------------
-  
+
   @Override
   public void logout() {
     final ConfirmNotification           dialog;
-    
+
     dialog = new ConfirmNotification(VlibProperties.getString("Question"), Message.getMessage("confirm_quit"));
     dialog.setYesIsDefault(false);
     dialog.addNotificationListener(new NotificationListener() {
-      
+
       @Override
       public void onClose(boolean yes) {
         detachComponent(dialog);
@@ -260,7 +260,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       }
     });
     BackgroundThreadHandler.access(new Runnable() {
-      
+
       @Override
       public void run() {
         attachComponent(dialog);
@@ -268,11 +268,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       }
     });
   }
-  
+
   @Override
   public void startApplication() {
     String		url = getURL();
-    
+
     menuTree = new VMenuTree(context);
     menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
     mainWindow = new MainWindow(getDefaultLocale(), getLogoImage(), getLogoHref());
@@ -283,46 +283,46 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     mainWindow.addMenu(new DAdminMenu(menuTree));
     mainWindow.addMenu(new DBookmarkMenu(menuTree));
   }
-  
+
   @Override
   public boolean allowQuit() {
     return getInitParameter("allowQuit") == null ? true : Boolean.parseBoolean(getInitParameter("allowQuit"));
   }
-  
+
   @Override
   public PrintManager getPrintManager() {
     return printManager;
   }
-  
+
   @Override
   public void setPrintManager(PrintManager printManager) {
     this.printManager = printManager;
   }
-  
+
   @Override
   public PrinterManager getPrinterManager() {
     return printerManager;
   }
-  
+
   @Override
   public void setPrinterManager(PrinterManager printerManager) {
     this.printerManager = printerManager;
   }
-  
+
   @Override
   public ApplicationConfiguration getApplicationConfiguration() {
     return configuration;
   }
-  
+
   @Override
   public void setApplicationConfiguration(ApplicationConfiguration configuration) {
     this.configuration = configuration;
   }
-  
+
   // --------------------------------------------------
   // WELCOME VIEW LISTENER IMPLEMENTATION
   // --------------------------------------------------
-  
+
   @Override
   public void onLogin(WelcomeViewEvent event) {
     // set font metrics width and height from client side
@@ -346,7 +346,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       push();
     }
   }
-  
+
   /**
    * handles the response for the font metrics request.
    * @param event The event holding the response.
@@ -354,7 +354,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   protected void handleFontMetricsResponse(WelcomeViewEvent event) {
     for (FontMetricsResponse fmr : event.getFontMetrics()) {
       FontMetrics       fm;
-      
+
       fm = getFontMetrics(fmr);
       if (fm != null) {
         fm.setWidth(fmr.width);
@@ -362,7 +362,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       }
     }
   }
-  
+
   /**
    * Returns the font metrics for a given response.
    * @param fmr The font metrics client side response.
@@ -377,14 +377,14 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
         return fm;
       }
     }
-    
+
     return null;
   }
-  
+
   // --------------------------------------------------
   // PRIVATE MEMBERS
   // --------------------------------------------------
-  
+
   /**
    * Tries to connect to the database using user name and password
    * provided by the login window.
@@ -409,11 +409,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       setTraceLevel();
     }
   }
-  
+
   // --------------------------------------------------
   // ACCESSORS
   // --------------------------------------------------
-  
+
   @Override
   public boolean isNobugReport() {
     return Boolean.parseBoolean(getInitParameter("nobugreport"));
@@ -468,11 +468,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public void displayError(UComponent parent, final String message) {
     error(message);
   }
-  
+
   //---------------------------------------------------
   // UTILS
   // --------------------------------------------------
-  
+
   /**
    * Attaches the given component to the application.
    * @param component The component to be attached.
@@ -482,7 +482,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       mainWindow.addWindow(component);
     }
   }
-  
+
   /**
    * Detaches the given component from the application.
    * @param component The component to be detached.
@@ -517,22 +517,22 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       }
     }
   }
-  
+
   /**
    * Verifies the configuration settings.
    */
   public void verifyConfiguration() {
     VerifyConfiguration       verifyConfiguration = VerifyConfiguration.getVerifyConfiguration();
-    
+
     try {
       verifyConfiguration.verifyConfiguration(ApplicationConfiguration.getConfiguration().getSMTPServer(),
 	  			              ApplicationConfiguration.getConfiguration().getDebugMailRecipient(),
 	  			              ApplicationConfiguration.getConfiguration().getApplicationName());
     } catch (PropertyException e) {
       e.printStackTrace();
-    }	
+    }
   }
-  
+
   /**
    * Attaches a window to this application.
    * @param window The window to be added.
@@ -540,7 +540,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public void addWindow(final Component window) {
     if (mainWindow != null && window != null) {
       BackgroundThreadHandler.access(new Runnable() {
-        
+
         @Override
         public void run() {
           window.setSizeFull();
@@ -549,7 +549,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       });
     }
   }
-  
+
   /**
    * Removes an attached window to this main window.
    * @param window The window to be removed.
@@ -557,7 +557,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public void removeWindow(final Component window) {
     if (mainWindow != null && window != null) {
       BackgroundThreadHandler.access(new Runnable() {
-        
+
         @Override
         public void run() {
           mainWindow.removeWindow(window);
@@ -566,7 +566,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       });
     }
   }
-  
+
   /**
    * Checks the existence of the application locale.
    * @exception VRuntimeException When no alternate locale is defined.
@@ -576,7 +576,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       throw new VRuntimeException("An alternate locale should be provided with the application");
     }
   }
-  
+
   /**
    * Sets the localization context.
    * <p>
@@ -598,14 +598,14 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     // Now create the localization manager using the application default locale.
     localizationManager = new LocalizationManager(defaultLocale, Locale.getDefault());
   }
-  
+
   /**
    * Returns the initialization locale found in the application descriptor file.
    * @return the initialization locale found in the application descriptor file.
    */
   protected Locale getInitializationLocale() {
     String			locale;
-    
+
     locale = getInitParameter("locale"); // obtain application locale from descriptor file
     if (locale == null) {
       return getAlternateLocale();
@@ -618,7 +618,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       return new Locale(locale.substring(0, 2), locale.substring(3, 5));
     }
   }
-  
+
   /**
    * Sets the query trace level.
    */
@@ -636,7 +636,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       }
     }
   }
-  
+
   /**
    * Closes the database connection
    */
@@ -651,7 +651,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       context = null;
     }
   }
-  
+
   /**
    * Returns the client side calculated font metrics for a given font.
    * @param fontFamily The font family.
@@ -668,10 +668,10 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
         return fm.getWidth();
       }
     }
-    
+
     return 0;
   }
-  
+
   /**
    * Shows the welcome view.
    */
@@ -694,7 +694,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     welcomeView.addWelcomeViewListener(this);
     setContent(welcomeView);
   }
-  
+
   /**
    * Checks the given locale format.
    * @param locale The locale to be checked.
@@ -702,7 +702,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    */
   private boolean checkLocale(String locale) {
     char[]    		chars;
-    
+
     chars = locale.toCharArray();
     if (chars.length != 5
         || chars[0] < 'a' || chars[0] > 'z'
@@ -713,7 +713,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     {
       return false;
     }
-    
+
     return true;
   }
 
@@ -747,14 +747,20 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     // TODO
   }
 
+  @Override
   public String getUserIP() {
-    return getPage().getWebBrowser().getAddress();
+    try {
+      getSession().lock();
+      return getPage().getWebBrowser().getAddress();
+    } finally {
+      getSession().unlock();
+    }
   }
 
   //---------------------------------------------------
   // UTILS
   // --------------------------------------------------
-  
+
   /**
    * Returns the initialization parameter of the given key.
    * The initialization parameter is contained in the application
@@ -765,7 +771,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   protected String getInitParameter(String key) {
     return VaadinServlet.getCurrent().getInitParameter(key);
   }
-  
+
   /**
    * Returns the styles injector attached with this application instance.
    * @return The styles injector attached with this application instance.
@@ -773,11 +779,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   public StylesInjector getStylesInjector() {
     return stylesInjector;
   }
-  
+
   //---------------------------------------------------
   // ABSTRACT METHODS
   // --------------------------------------------------
-  
+
   /**
    * Returns the supported locales that can be used with this application.
    * <pre>
@@ -787,26 +793,26 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    * @return The supported locales that can be used with this application.
    */
   protected abstract Locale[] getSupportedLocales();
-  
+
   /**
    * Returns the SLOGAN image to be used in welcome screen.
    * @return The SLOGAN image to be used in welcome screen.
    */
   protected abstract Resource getSologanImage();
-  
+
   /**
    * Returns the LOGO image to be used with application.
    * @return The LOGO image to be used with application.
    */
   protected abstract Resource getLogoImage();
-  
+
   /**
    * Returns the LOGO link to be associated with the application LOGO image.
    * @return The LOGO link to be associated with the application LOGO image.
    * @see {{@link #getLogoImage()}
    */
   protected abstract String getLogoHref();
-  
+
   /**
    * Returns the alternate locale to be used as default locale
    * when no default locale is specified. This will force the application
@@ -815,11 +821,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    * @return The alternate locale to be used when no default locale is specified.
    */
   protected abstract Locale getAlternateLocale();
-  
+
   //---------------------------------------------------
   // DATA MEMBEERS
   //---------------------------------------------------
-  	
+
   private VMenuTree                   	        menuTree;
   private DBContext                   	        context;
   private Registry 		       	        registry;
@@ -837,14 +843,14 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     FontMetrics.DIGIT,
     FontMetrics.LETTER
   };
-  
+
   // ---------------------------------------------------------------------
   // Failure cause informations
   // ---------------------------------------------------------------------
-  
+
   private final Date             		 startupTime = new Date(); // remembers the startup time
 
-  static {  
+  static {
     ApplicationContext.setApplicationContext(new VApplicationContext());
     FileHandler.setFileHandler(new VFileHandler());
     ImageHandler.setImageHandler(new VImageHandler());
