@@ -199,6 +199,14 @@ public class As400DriverInterface extends DriverInterface {
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
+   * ABS/1: Computes the absolute value of a number.
+   */
+  protected String translateAbs(String arg1) {
+    return "ABS(" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
    * ADD_DAYS/2: Adds a specified number of days to a given valid character
    * string representation of a date.
    */
@@ -571,6 +579,15 @@ public class As400DriverInterface extends DriverInterface {
    */
   protected String translateRtrim(String arg1) throws SQLException {
     return "RTRIM(" + arg1 + ")";
+  }
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
+   * 0 for zero and +1 for positive numbers. 
+   */
+  protected String translateSign(String arg1) {
+    return "SIGN(" + arg1 + ")";
   }
 
   /**

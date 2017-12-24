@@ -775,6 +775,10 @@ loop:
         return translateGreatest((String)arguments.get(0), (String)arguments.get(1));
       case 59:  // ROUND/2
         return translateRound((String)arguments.get(0), (String)arguments.get(1));
+      case 60:  // ABS/1
+        return translateAbs((String)arguments.get(0));
+      case 61:  // SIGN/1
+        return translateSign((String)arguments.get(0));
       default:
         throw new InconsistencyException("INTERNAL ERROR: UNDEFINED CONVERSION FOR "
                                          + functor.toUpperCase() + "/" + arguments.size());
@@ -850,6 +854,12 @@ loop:
   // ----------------------------------------------------------------------
   // METHODS WHICH MUST BE IMPLEMENTED BY SUB-CLASSES
   // ----------------------------------------------------------------------
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
+   * ABS/1: Computes the absolute value of a number.
+   */
+  protected abstract String translateAbs(String arg1) throws SQLException;
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
@@ -1114,6 +1124,13 @@ loop:
 
   /**
    * Translates the following SQL function to the dialect of this DBMS:
+   * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
+   * 0 for zero and +1 for positive numbers. 
+   */
+  protected abstract String translateSign(String arg1) throws SQLException;
+
+  /**
+   * Translates the following SQL function to the dialect of this DBMS:
    * SPACE/1: Returns a given number of spaces.
    */
   protected abstract String translateSpace(String arg1) throws SQLException;
@@ -1328,6 +1345,8 @@ loop:
     functions.put("INT2STRING/1", new Integer(57));
     functions.put("GREATEST/2", new Integer(58));
     functions.put("ROUND/2", new Integer(59));
+    functions.put("ABS/1", new Integer(60));
+    functions.put("SIGN/1", new Integer(61));
   }
 
   private String        input;          // the string to parse
