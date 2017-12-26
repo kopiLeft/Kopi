@@ -51,23 +51,26 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    *
    */
+  @Override
   public String getStatementText() {
     String stmt = getStatementText(getDriverInterface());
     //System.out.println(stmt);
     return stmt.length() != 0 ? stmt + ";": "";
   }
-  
+
   /**
    *
    */
+  @Override
   /*package*/ DriverInterface getDriverInterface() {
     return new PostgresDriverInterface();
   }
-  
+
   /*
    * Visits JdbcDateLiteral
    * !!! coco 310202 : verify the syntax
    */
+  @Override
   public void visitJdbcDateLiteral(JdbcDateLiteral self, Date value)
     throws PositionedError
   {
@@ -83,6 +86,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits AddTableConstraintStatement
    */
+  @Override
   public void visitAddTableConstraintStatement(AddTableConstraintStatement self,
                                                Expression tableName,
                                                TableConstraint tableConstraint)
@@ -99,6 +103,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits DropSequenceStatement
    */
+  @Override
   public void visitDropSequenceStatement(DropSequenceStatement self,
                                          Expression sequenceName)
     throws PositionedError
@@ -107,7 +112,8 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     sequenceName.accept(this);
   }
 
-  
+
+  @Override
   public void visitSequenceDefinition(SequenceDefinition self,
                                       Expression sequenceName,
                                       Integer startValue)
@@ -116,13 +122,14 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     current.append("CREATE SEQUENCE ");
     sequenceName.accept(this);
     current.append(" START WITH " + startValue );
-    
+
   }
-  
-  
+
+
   /**
    * Visits BlobType
    */
+  @Override
   public void visitBlobType(BlobType self)
     throws PositionedError
   {
@@ -132,6 +139,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits ClobType
    */
+  @Override
   public void visitClobType(ClobType self)
     throws PositionedError
   {
@@ -141,6 +149,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits BooleanType
    */
+  @Override
   public void visitBooleanType(BooleanType self)
     throws PositionedError
   {
@@ -150,6 +159,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits ByteType
    */
+  @Override
   public void visitByteType(ByteType self, Integer min, Integer max)
     throws PositionedError
   {
@@ -159,6 +169,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits CodeBoolType
    */
+  @Override
   public void visitCodeBoolType(CodeBoolType self, ArrayList list)
     throws PositionedError
   {
@@ -168,6 +179,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits CodeFixedType
    */
+  @Override
   public void visitCodeFixedType(CodeFixedType self,
                                  int precision,
                                  int scale,
@@ -183,6 +195,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits CodeLongType
    */
+  @Override
   public void visitCodeLongType(CodeLongType self, ArrayList list)
     throws PositionedError
   {
@@ -192,6 +205,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits ColorType
    */
+  @Override
   public void visitColorType(ColorType self)
     throws PositionedError
   {
@@ -225,6 +239,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits DateType
    */
+  @Override
   public void visitDateType(DateType self)
     throws PositionedError
   {
@@ -234,6 +249,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits EnumType
    */
+  @Override
   public void visitEnumType(EnumType self, ArrayList list)
     throws PositionedError
   {
@@ -243,6 +259,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits FixedType
    */
+  @Override
   public void visitFixedType(FixedType self,
                              int precision,
                              int scale,
@@ -259,6 +276,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits ImageType
    */
+  @Override
   public void visitImageType(ImageType self, int width, int height)
     throws PositionedError
   {
@@ -268,6 +286,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits GrantUserClassStatement
    */
+  @Override
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
                                            int userClass,
                                            String userName)
@@ -293,6 +312,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits IndexDefinition
    */
+  @Override
   public void visitIndexDefinition(IndexDefinition self,
                                    boolean hasUnique,
                                    String indexName,
@@ -328,6 +348,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits IntType
    */
+  @Override
   public void visitIntType(IntType self, Integer min, Integer max)
     throws PositionedError
   {
@@ -337,6 +358,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits Key
    */
+  @Override
   public void visitKey(Key self, List keyList)
     throws PositionedError
   {
@@ -364,6 +386,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits MonthType
    */
+  @Override
   public void visitMonthType(MonthType self)
     throws PositionedError
   {
@@ -374,6 +397,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
    * Visits ReferentialConstraintDefinition
    */
   // coco 010329 : look at the documentation to see what produce
+  @Override
   public void visitReferentialConstraintDefinition(ReferentialConstraintDefinition self,
                                                    String name,
                                                    FieldNameList field,
@@ -403,11 +427,14 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
     default:
       throw new InconsistencyException("Unexpected type");
     }
+    // set constraint deferrable but set it to immediate as a default behavior
+    current.append(" DEFERRABLE INITIALLY IMMEDIATE");
   }
 
   /**
    * Visits StringType
    */
+  @Override
   public void visitStringType(StringType self,
                               boolean fixed,
                               int width,
@@ -431,6 +458,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits TableDefinition
    */
+  @Override
   public void visitTableDefinition(TableDefinition self,
                                    Expression tableName,
                                    ArrayList columns,
@@ -457,6 +485,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits TextType
    */
+  @Override
   public void visitTextType(TextType self, int width, int height)
     throws PositionedError
   {
@@ -466,6 +495,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits TimeType
    */
+  @Override
   public void visitTimeType(TimeType self)
     throws PositionedError
   {
@@ -475,6 +505,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits TimestampType
    */
+  @Override
   public void visitTimestampType(TimestampType self)
     throws PositionedError
   {
@@ -484,6 +515,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits UniqueConstraintDefinition
    */
+  @Override
   public void visitUniqueConstraintDefinition(UniqueConstraintDefinition self,
                                               int type,
                                               FieldNameList field)
@@ -503,6 +535,7 @@ public class PostgresDbiChecker extends DbiChecker implements DbiVisitor {
   /**
    * Visits WeekType
    */
+  @Override
   public void visitWeekType(WeekType self)
     throws PositionedError
   {
