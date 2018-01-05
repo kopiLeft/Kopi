@@ -156,7 +156,7 @@ vkStringFieldType []
         "ON"    { fixed = org.kopi.vkopi.lib.form.VConstants.FDO_FIX_NL; }
       |
         "OFF"   { fixed = org.kopi.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
-      )  
+      )
    )?
    (
       "FORMAT"
@@ -164,7 +164,7 @@ vkStringFieldType []
         "ON"    { styled = true; }
       |
         "OFF"   { styled = false; }
-      )  
+      )
    )?
    (
       "CONVERT"
@@ -197,7 +197,7 @@ vkTextFieldType []
       "ON"    { fixed = org.kopi.vkopi.lib.form.VConstants.FDO_FIX_NL; }
     |
       "OFF"   { fixed = org.kopi.vkopi.lib.form.VConstants.FDO_DYNAMIC_NL; }
-    )  
+    )
   )?
   (
     "FORMAT"
@@ -205,7 +205,7 @@ vkTextFieldType []
       "ON"    { styled = true; }
     |
       "OFF"   { styled = false; }
-    )  
+    )
   )?
     { self = new VKTextType(sourceRef, width, height, visibleHeight, fixed, styled); }
 ;
@@ -244,7 +244,7 @@ vkFixnumFieldType []
   )
   ( "MINVAL" min = vkFixedOrInteger[] )?
   ( "MAXVAL" max = vkFixedOrInteger[] )?
-    { 
+    {
       self = new VKFixnumType(sourceRef, width, scale, isFraction, min, max);
     }
 ;
@@ -464,7 +464,7 @@ vkFixedOrInteger []
   int   i;
 }
 :
-  MINUS 
+  MINUS
   (
     self = vkFixed[]
      {self = self.negate();}
@@ -624,6 +624,9 @@ vkDefinitions [VKDefinitionCollector coll, String pack]
     def = vkCommandDef[]
       { coll.addCommandDef((VKCommandDefinition)def); }
   |
+    def = vkMessageDef[pack]
+    { coll.addMessageDef((VKMessageDefinition)def); }
+  |
     vkInsertDefinitions[coll]
   )*
 ;
@@ -698,12 +701,27 @@ vkTypeDef [String pack]
     // RPAREN
   )?
   "IS"
-  type = vkFieldType[pack, name] 
+  type = vkFieldType[pack, name]
   ( list = vkFieldList[pack, name] { type.addList(list); } )?
   "END" "TYPE"
     { self = new VKTypeDefinition(sourceRef, name, type, params); }
 ;
 
+vkMessageDef [String pack]
+  returns [VKMessageDefinition self]
+{
+  String                ident;
+  String                text = null;
+  TokenReference        sourceRef = buildTokenReference();
+}
+:
+  "MESSAGE" ident = vkSimpleIdent[]
+  (text = vkString[])?
+    {
+      checkLocaleIsSpecifiedIff(text != null, "MESSAGE TEXT");
+      self = new VKMessageDefinition(sourceRef, pack, ident, text);
+    }
+;
 
 vkFieldType[String pack, String name]
   returns [VKType self]
@@ -729,10 +747,10 @@ vkFieldList [String pack, String type]
   "LIST"
   table = vkListTable[]
   ( "COMPLETE"
-    ( 
+    (
       "LEFT" { autocompleteType = VList.AUTOCOMPLETE_STARTSWITH; }
-      | 
-      "CENTER" { autocompleteType = VList.AUTOCOMPLETE_CONTAINS; } 
+      |
+      "CENTER" { autocompleteType = VList.AUTOCOMPLETE_CONTAINS; }
     )
     autocompleteLength = vkInteger[]
   )?
@@ -814,9 +832,9 @@ vkQualifiedIdent []
 ;
 
 vkSQLIdent[] returns [String self]:
-    t:IDENT 
+    t:IDENT
       { self = t.getText(); }
-  | 
+  |
     v:STRING_LITERAL
       { self = v.getText(); }
 ;
@@ -882,7 +900,7 @@ vkAction [String name]
     LPAREN
       {
         ArrayList         params = new ArrayList(1);
-      
+
         stmts = buildGKjcParser().gActionWithParameter(name, params);
         if (params.size() == 1) {
           self = new VKMethodAction(sourceRef,

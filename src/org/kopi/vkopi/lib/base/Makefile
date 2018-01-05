@@ -27,7 +27,8 @@ PACKAGE =	org/kopi/vkopi/lib/base
 ## ----------------------------------------------------------------------
 ## FILES
 
-JAVAFILES += 	UComponent Image Utils
+JAVAFILES += 	ExtendedChoiceFormat ExtendedMessageFormat UComponent	\
+		Image Utils
 
 OPTIONS =
 

@@ -54,7 +54,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
 
   static {
     WindowController.getWindowController().registerWindowBuilder(org.kopi.vkopi.lib.visual.Constants.MDL_REPORT, new WindowBuilder() {
-      
+
       public UWindow createWindow(VWindow model) {
 	return (UReport)UIFactory.getUIFactory().createView(model);
       }
@@ -98,7 +98,8 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     * Redisplay the report after change in formating
     * @deprecated call method in display; model must not be refreshed
     */
-   public void redisplay() {
+   @Deprecated
+  public void redisplay() {
      ((UReport)getDisplay()).redisplay();
    }
 
@@ -106,6 +107,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     * Close window
     * @deprecated call method in display; model must not be closed
     */
+  @Deprecated
   public void  close () {
     getDisplay().closeWindow();
   }
@@ -230,6 +232,10 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
     this.source = source;
   }
 
+  protected String getSource() {
+    return source;
+  }
+
   // ----------------------------------------------------------------------
   // DISPLAY INTERFACE
   // ----------------------------------------------------------------------
@@ -253,7 +259,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
       // ex : org.kopi.vkopi.lib.cross.VDynamicReport
       if (VKT_Triggers != null && hasTrigger(org.kopi.vkopi.lib.report.Constants.TRG_CMDACCESS, index)) {
 	boolean			active;
-	
+
 	try {
 	  active = ((Boolean)callTrigger(org.kopi.vkopi.lib.report.Constants.TRG_CMDACCESS, index)).booleanValue();
 	} catch (VException e) {
@@ -309,7 +315,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
    */
   public void export(int type) throws VException {
     String      ext;
-    
+
     switch (type) {
     case TYP_CSV:
       ext = ".csv";
@@ -322,7 +328,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
       break;
     case TYP_XLSX:
       ext = ".xlsx";
-      break;  
+      break;
     default:
       throw new InconsistencyException("Export type unkown");
     }
@@ -738,7 +744,7 @@ public abstract class VReport extends VWindow implements Constants, VConstants, 
   public void showHelp() {
     new VHelpViewer().showHelp(genHelp());
   }
- 
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

@@ -72,10 +72,10 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   // --------------------------------------------------------------------
   // STATIC INITIALIZATION
   // --------------------------------------------------------------------
-  
+
   static {
     WindowController.getWindowController().registerWindowBuilder(MDL_CHART, new WindowBuilder() {
-      
+
       /**
        * @Override
        */
@@ -84,11 +84,11 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       }
     });
   }
-  
+
   // --------------------------------------------------------------------
   // CONSTRUCTORS
   // --------------------------------------------------------------------
-  
+
   /**
    * Creates a new chart model.
    * @throws VException Visual errors.
@@ -157,7 +157,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   // --------------------------------------------------------------------
   // IMPLEMENTATIONS
   // --------------------------------------------------------------------
-  
+
   /**
    * @Override
    */
@@ -179,13 +179,13 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       printJob.setTitle(getTitle());
       printJob.setNumberOfPages(1);
       printJob.setDocumentType(getDocumentType());
-      
+
       return printJob;
     } catch (IOException e) {
       throw new VExecFailedException(e);
     }
   }
-  
+
   /**
    * Returns the document type.
    * @return The document type.
@@ -193,14 +193,14 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public int getDocumentType() {
     return DOC_UNKNOWN;
   }
-  
+
   /**
    * @Override
    */
   public int getType() {
     return MDL_CHART;
   }
-  
+
   /**
    * Sets the chart menu. This will enable and disable
    * commands according to the chart generation context.
@@ -210,7 +210,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       // only when commands are displayed
       return;
     }
-    
+
     if (cmdBarView != null) {
       setCommandEnabled(cmdBarView, type != VChartType.BAR);
     }
@@ -227,7 +227,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       setCommandEnabled(cmdPieView, type != VChartType.PIE);
     }
   }
-  
+
   /**
    * Initialization of the chart model.
    * @throws VException Visual errors.
@@ -236,7 +236,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
     build();
     callTrigger(TRG_PRECHART);
   }
- 
+
 
   /**
    * build everything after loading
@@ -274,7 +274,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       }
     }
   }
-  
+
   /**
    * Returns {@code true} is the chart has a fixed type.
    * @return {@code true} is the chart has a fixed type.
@@ -282,7 +282,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public boolean hasFixedType() {
     return hasTrigger(TRG_CHARTTYPE);
   }
-  
+
   /**
    * Returns the chart fixed type.
    * @return The chart fixed type.
@@ -290,14 +290,14 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public VChartType getFixedType() throws VException {
     return (VChartType) callTrigger(TRG_CHARTTYPE);
   }
-  
+
   /**
    * Refreshes the chart display.
    */
   public void refresh() {
     ((UChart)getDisplay()).refresh();
   }
-  
+
   /**
    * Closes the chart window.
    */
@@ -311,7 +311,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public void showHelp() {
     new VHelpViewer().showHelp(genHelp());
   }
-  
+
   /**
    * @Override
    */
@@ -324,7 +324,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
     }
     super.destroyModel();
   }
-  
+
   /**
    * Sets the new type of this chart model.
    * @param type The new chart type.
@@ -371,7 +371,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       }
     }
   }
-  
+
   /**
    * Exports the chart to the given format.
    * @param file The destination file.
@@ -381,7 +381,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public void export(File file, int type) throws IOException {
     OutputStream		destination;
     boolean			exported;
-    
+
     destination = new FileOutputStream(file);
     exported = false;
     setWaitInfo(VlibProperties.getString("export-message"));
@@ -410,7 +410,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       }
     }
   }
-  
+
   /**
    * Sets the new type of this chart model.
    * @param type The new chart type.
@@ -420,7 +420,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
     if (hasFixedType() && type != getFixedType()) {
       return;
     }
-    
+
     this.type = type;
     type.createDataSeries(this);
     ((UChart)getDisplay()).setType(ChartTypeFactory.getChartTypeFactory().createTypeView(getTitle(), type));
@@ -429,14 +429,14 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       ((UChart)getDisplay()).typeChanged();
     }
   }
-  
+
   /**
    * Returns the chart type.
    */
   public VChartType getChartType() {
     return type;
   }
-  
+
  /**
   * Appends a row to the chart rows.
   * @param dimension The dimension value.
@@ -445,7 +445,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   protected void addRow(Object[] dimensions, Object[] measures) {
     rows.addElement(new VRow(dimensions, measures));
   }
-  
+
   /**
    * Returns the column count.
    * @return The column count.
@@ -467,7 +467,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       // ex : org.kopi.vkopi.lib.cross.VDynamicReport
       if (VKT_Triggers != null && hasTrigger(TRG_CMDACCESS, index)) {
 	boolean			active;
-	
+
 	try {
 	  active = ((Boolean)callTrigger(TRG_CMDACCESS, index)).booleanValue();
 	} catch (VException e) {
@@ -505,15 +505,15 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
    * @Override
    */
   public void executeVoidTrigger(final int VKT_Type) throws VException {}
-  
+
   public Object executeObjectTrigger(final int VKT_Type) throws VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
-  
+
   public boolean executeBooleanTrigger(final int VKT_Type) throws VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
-  
+
   public int executeIntegerTrigger(final int VKT_Type) throws VException {
     throw new InconsistencyException("SHOULD BE REDEFINED");
   }
@@ -567,6 +567,10 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   // ACCESSORS
   // --------------------------------------------------------------------
 
+  protected String getSource() {
+    return source;
+  }
+
   /**
    * sets the print options
    */
@@ -588,7 +592,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public void setSource(String source) {
     this.source = source;
   }
-  
+
   /**
    * Returns the dimension column.
    * @return The dimension column.
@@ -596,7 +600,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public VMeasure getMeasure(int column) {
     return measures[column];
   }
-  
+
   /**
    * Returns the dimension column.
    * @return The dimension column.
@@ -612,7 +616,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
     this.pageTitle = title;
     setTitle(title);
   }
-  
+
   /**
    * Sets the page title parameter.
    * @param param The page title parameter.
@@ -620,7 +624,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public void setPageTitleParams(Object param) {
     setPageTitleParams(new Object[] {param});
   }
-  
+
   /**
    * Sets the page title parameters.
    * @param param1 The first parameter.
@@ -637,7 +641,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   public void setPageTitleParams(Object[] params) {
     setPageTitle(MessageFormat.format(pageTitle, params));
   }
-  
+
   /**
    * Returns the chart rows.
    * @return The chart rows.
@@ -645,23 +649,23 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   protected VRow[] getRows() {
     return rows.toArray(new VRow[rows.size()]);
   }
-  
+
   /**
    * Returns the chart columns.
    * @return the chart columns.
    */
   protected VColumn[] getColumns() {
     VColumn[]		columns;
-    
+
     columns = new VColumn[getColumnCount()];
     for (int i = 0; i < dimensions.length; i++) {
       columns[i] = dimensions[i];
     }
-    
+
     for (int i = 0; i < measures.length; i++) {
       columns[i + dimensions.length] = measures[i];
     }
-    
+
     return columns;
   }
 
@@ -706,32 +710,32 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
       return surl.toString();
     }
   }
-  
+
   // --------------------------------------------------------------------
   // ABSTRACT METHODS
   // --------------------------------------------------------------------
-  
+
   /**
    * The chart columns initialization. Will be implemented by subclasses
    * @throws VException Visual errors.
    */
   protected abstract void init() throws VException;
-  
+
   /**
-   * Adds a data row to this chart. 
+   * Adds a data row to this chart.
    */
   public abstract void add();
 
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
-  
+
   private VCommand             			cmdBarView;
   private VCommand             			cmdColumnView;
   private VCommand             			cmdLineView;
   private VCommand             			cmdAreaView;
   private VCommand             			cmdPieView;
-  
+
   private String               			source;
   private boolean              			built;
   private String               			pageTitle = "";
@@ -742,7 +746,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
   protected VCommand[]         			commands;	// commands
   private Vector<VCommand>     			activeCommands;
   private VPrintOptions				poptions;
-  
+
   /**
    * The chart dimensions. The actual version supports only one dimension
    */
@@ -752,7 +756,7 @@ public abstract class VChart extends VWindow implements CConstants, Printable {
    */
   protected VMeasure[]				measures;
   private Vector<VRow>				rows;
-  
+
 
   public static final int       		TYP_PDF = 1;
   public static final int       		TYP_PNG = 2;

@@ -32,7 +32,7 @@ public class VHelpViewer extends VWindow {
 
   static {
     WindowController.getWindowController().registerWindowBuilder(Constants.MDL_HELP, new WindowBuilder() {
-      
+
       public UWindow createWindow(VWindow model) {
 	return (UWindow)UIFactory.getUIFactory().createView(model);
       }

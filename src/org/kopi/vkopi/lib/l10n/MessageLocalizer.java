@@ -27,11 +27,11 @@ import org.kopi.util.base.InconsistencyException;
  * Implements an actor localizer.
  */
 public class MessageLocalizer {
-  
+
   // ----------------------------------------------------------------------
   // CONSTRUCTOR
   // ----------------------------------------------------------------------
-  
+
   /**
    * Constructor
    *
@@ -40,28 +40,32 @@ public class MessageLocalizer {
    */
   public MessageLocalizer(Document document, String ident) {
     Element root;
-    
+
     root = document.getRootElement();
-    if (! root.getName().equals("messages")) {
+    if (! root.getName().equals("messages")
+        && ! root.getName().equals("form")
+        && ! root.getName().equals("report")
+        && ! root.getName().equals("chart"))
+    {
       throw new InconsistencyException("bad root element " + root.toString());
     }
-    
+
     self = Utils.lookupChild(root, "message", "ident", ident);
   }
-  
-  
+
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------
-  
+
   /**
    * Returns the value of the text attribute.
    */
   public String getText() {
     return self.getAttributeValue("text");
   }
-  
-  
+
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

@@ -125,6 +125,7 @@ public abstract class VForm extends VWindow implements VConstants {
   /**
    * @deprecated
    */
+  @Deprecated
   public VForm getCaller() {
     return null;
   }
@@ -136,6 +137,9 @@ public abstract class VForm extends VWindow implements VConstants {
     return help;
   }
 
+  protected String getSource() {
+    return source;
+  }
 
   /**
    * Returns true if it is allowed to quit this model
@@ -191,6 +195,7 @@ public abstract class VForm extends VWindow implements VConstants {
    * implemented for compatiblity with old gui
    * @deprecated
    */
+  @Deprecated
   public void executeAfterStart() {
     //do nothing
     // overrriden in Buchen.vf in fibu
@@ -201,6 +206,7 @@ public abstract class VForm extends VWindow implements VConstants {
    * used in tib/Artikel.vf
    * @deprecated
    */
+  @Deprecated
   public void checkUI() {
     // checkUI does now nothing
     // not useful to call
@@ -549,7 +555,7 @@ public abstract class VForm extends VWindow implements VConstants {
     default:
       returnValue = executeObjectTrigger(VKT_Triggers[index][event]);
     }
-    
+
     return returnValue;
   }
 
@@ -559,7 +565,7 @@ public abstract class VForm extends VWindow implements VConstants {
   protected Object callTrigger(int event) throws VException {
     return callTrigger(event, 0);
   }
-  
+
   /**
    * @return If there is trigger associated with event
    */
@@ -767,14 +773,14 @@ public abstract class VForm extends VWindow implements VConstants {
     // inform listener
     fireCurrentBlockChanged(old, activeBlock);
   }
-  
+
   /**
    * Launch file preview
-   */ 
+   */
   public void documentPreview(String file) throws VException {
     ((UForm) getDisplay()).launchDocumentPreview(file);
   }
-  
+
   // ----------------------------------------------------------------------
   // LISTENER
   // ----------------------------------------------------------------------
@@ -929,7 +935,7 @@ public abstract class VForm extends VWindow implements VConstants {
     for (int i = 0; i < commands.length; i++) {
       if (enable && hasTrigger(TRG_CMDACCESS, i + 1)) {
 	boolean		active;
-	
+
 	try {
 	  active = ((Boolean)callTrigger(TRG_CMDACCESS, i + 1)).booleanValue();
         } catch (VException e) {

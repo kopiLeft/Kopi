@@ -19,11 +19,11 @@
 
 package org.kopi.vkopi.lib.visual;
 
-import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.vkopi.lib.base.ExtendedMessageFormat;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
 
 /**
@@ -102,7 +102,7 @@ public class MessageCode {
     String                      domain;
     String                      ident;
     String                      src;
-    MessageFormat               messageFormat;
+    ExtendedMessageFormat       messageFormat;
 
     if (!keyPattern.matcher(key).matches()) {
       throw new InconsistencyException("Malformed message key '" + key + "'");
@@ -125,8 +125,8 @@ public class MessageCode {
 
       // Within a String, "''" represents a single quote in java.text.MessageFormat.
       format = manager.getMessageLocalizer(src, ident).getText().replaceAll("'", "''");
-      messageFormat = new MessageFormat(format, ApplicationContext.getDefaultLocale());
-      return (withKey? (key + ": ") : "") + messageFormat.format(params);
+      messageFormat = new ExtendedMessageFormat(format, ApplicationContext.getDefaultLocale());
+      return (withKey? (key + ": ") : "") + messageFormat.formatMessage(params);
     } catch (InconsistencyException e) {
       ApplicationContext.reportTrouble("localize MessageCode",
                                        "org.kopi.vkopi.lib.visual.MessageCode.getMessage(String key, Object[] params, boolean withKey)",

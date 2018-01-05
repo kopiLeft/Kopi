@@ -53,7 +53,8 @@
                    VKWeekType.java VKWindow.java 
                    BaseMessages.java Parser.java
   	           VKFixnumType.java VKFixnumCodeType.java VKMenuDefinition.java
-  	           VKLocalizationWriter.java VKMenuDefinition.java VKLocalizationWriter.java" />
+  	           VKLocalizationWriter.java VKMenuDefinition.java VKLocalizationWriter.java
+		   VKMessageDefinition.java" />
 
   <property name="messages"    value="BaseMessages" />
   <property name="options"     value="VKOptions" />

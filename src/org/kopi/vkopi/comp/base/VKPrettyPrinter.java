@@ -311,6 +311,19 @@ public class VKPrettyPrinter {
     print("END TYPE");
   }
 
+  /**
+   * Prints a message definition
+   */
+  public void printMessageDefinition(String ident, String text) {
+    newLine();
+    print("MESSAGE ");
+    print(ident);
+    if (text != null) {
+      print(" ");
+      print('"' + text + '"');
+    }
+  }
+
   // ----------------------------------------------------------------------
   // TYPES
   // ----------------------------------------------------------------------
@@ -541,7 +554,8 @@ public class VKPrettyPrinter {
 				       Vector types,
 				       Vector menus,
 				       Vector actors,
-				       Vector commands)
+				       Vector commands,
+				       Vector messages)
   {
     if (inserts != null && inserts.size() != 0) {
       newLine();
@@ -579,6 +593,13 @@ public class VKPrettyPrinter {
       newLine();
       for (int  i = 0; i < commands.size(); i++) {
 	((VKDefinition)commands.elementAt(i)).genVKCode(this);
+      }
+    }
+    if (messages != null && messages.size() != 0) {
+      newLine();
+      newLine();
+      for (int  i = 0; i < messages.size(); i++) {
+        ((VKDefinition)messages.elementAt(i)).genVKCode(this);
       }
     }
     newLine();

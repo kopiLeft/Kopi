@@ -19,10 +19,10 @@
 
 package org.kopi.vkopi.lib.visual;
 
-import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.kopi.util.base.InconsistencyException;
+import org.kopi.vkopi.lib.base.ExtendedMessageFormat;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
 
 /**
@@ -41,9 +41,8 @@ public class Message {
    * @return    the requested message
    */
   public static String getMessage(String ident) {
-    return getMessage(ident, null);
+    return getMessage(ident, (Object)null);
   }
-
 
   /**
    * Returns a message (convenience routine).
@@ -69,6 +68,52 @@ public class Message {
   }
 
   public static String getMessage(String ident, Object[] params) {
+    return getMessage(VISUAL_KOPI_MESSAGES_LOCALIZATION_RESOURCE, ident, params);
+  }
+
+  /**
+   * Returns a message (convenience routine).
+   *
+   * @param     ident             the message ident
+   * @return    the requested message
+   */
+  public static String getMessage(String source, String ident) {
+    return getMessage(source, ident, null);
+  }
+
+  /**
+   * Returns a message (convenience routine).
+   *
+   * @param     ident             the message ident
+   * @param     param           a message parameter
+   * @return    the requested message
+   */
+  public static String getMessage(String source, String ident, Object param) {
+    return getMessage(source, ident, new Object[] {param});
+  }
+
+  /**
+   * Returns a message (convenience routine).
+   *
+   * @param     ident             the message ident
+   * @param     param1          the first message parameter
+   * @param     param1          the second message parameter
+   * @return    the requested message
+   */
+  public static String getMessage(String source, String ident, Object param1, Object param2) {
+    return getMessage(source, ident, new Object[] {param1, param2});
+  }
+
+  /**
+   * Returns the formatted message identified by its unique key and formatted
+   * using the given parameters objects.
+   *
+   * @param source The localization XML source.
+   * @param ident The message identifiers.
+   * @param params The message parameters.
+   * @return The formatted message.
+   */
+  public static String getMessage(String source, String ident, Object[] params) {
     LocalizationManager         manager;
     String                      format;
 
@@ -80,8 +125,8 @@ public class Message {
     }
     try {
       //   Within a String, "''" represents a single quote in java.text.MessageFormat.
-      format = manager.getMessageLocalizer(VISUAL_KOPI_MESSAGES_LOCALIZATION_RESOURCE, ident).getText().replaceAll("'", "''");
-      return MessageFormat.format(format, params);
+      format = manager.getMessageLocalizer(source, ident).getText().replaceAll("'", "''");
+      return ExtendedMessageFormat.formatMessage(format, params);
     } catch (InconsistencyException e) {
       System.err.println("ERROR: " + e.getMessage());
       return "!" + ident + "!";

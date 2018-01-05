@@ -38,6 +38,7 @@
 @literal	LOWER
 @literal	MAXVAL
 @literal	MENU
+@literal	MESSAGE
 @literal	MINVAL
 @literal	MONTH
 @literal	NAME

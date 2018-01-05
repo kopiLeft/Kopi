@@ -31,7 +31,7 @@ import org.jdom.output.XMLOutputter;
 import org.kopi.util.base.InconsistencyException;
 
 /**
- * This class 
+ * This class
  */
 public class VKLocalizationWriter {
 
@@ -59,7 +59,7 @@ public class VKLocalizationWriter {
     XMLOutputter        writer;
     Format              format;
     String              fileName;
-    
+
     doc = new Document(peekNode(null));
     format = Format.getPrettyFormat();
     format.setEncoding("UTF-8");
@@ -121,6 +121,20 @@ public class VKLocalizationWriter {
     pushNode(self);
     type.genLocalization(this);
     popNode(self);
+    peekNode(null).addContent(self);
+  }
+
+  /**
+   * Creates the localization for a message.
+   */
+  public void genMessageDefinition(String ident, String text) {
+    Element     self;
+
+    self = new Element("message");
+    self.setAttribute("ident", ident);
+    if (text != null) {
+      self.setAttribute("text", text);
+    }
     peekNode(null).addContent(self);
   }
 

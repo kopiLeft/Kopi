@@ -233,6 +233,62 @@ Or:
 "END" "COMMAND" 
 ----
 
+=== Report Message Definition
+
+A message can be used to display user notifications, warnings, errors and even report title. It can contain parameters that are substituted by their values at the message format call. To format a message, the formatMessage(String, Object[]) can be called.
+
+*Syntax*
+[source,java]
+----
+msgDef  : "MESSAGE" SimpleName String messageText
+----
+
+*Example*
+
+[source,java]
+----
+MESSAGE Title "This is the report title"
+----
+
+The message can be used using the fromatMessage method :
+
+[source,java]
+----
+setPageTitle(formatMessage("Title"));
+----
+
+Or in this way if we have to provide parameters to the message :
+
+[source,java]
+----
+setPageTitle(formatMessage("Title", new Object[] {o1, o2}));
+----
+
+In order to display a conditional message, the standard choice pattern was extended to perform tests on null and boolean objects. The following example show how a test on null objects can be used to format a message.
+
+[source,java]
+----
+
+MESSAGE Title "This is the report title with {0 ?, choice,0#param 0 is null
+|1#param 0 is not null {0}} and {1,choice,0#param 1 is false|1#param 1 is true}"
+
+setPageTitle(formatMessage("Title", new Object[] {null, new Boolean(true)}));
+----
+
+The resulting formatted message of the example above is : This is the form title with param 0 is null and param 1 is true. If the parameters are changed to "test" and new Boolean(false), the resulting formatted message will be : This is the form title with param 0 is not null test and param 1 is false.
+
+However, the choice implementation is limited to parent patterns and does not propagate to nested patterns. Thus, for nested choice patterns, the standard use should be respected and only numbers must be provided as parameters. The following example will raise an error when formatting the message :
+
+[source,java]
+----
+
+MESSAGE Title "This is the report title with {0 ?, choice,0#{2 ?,choice,
+#0param 3 is null|1#param 3 is not null}|1#param 0 is not null {0}} 
+and {1,choice,0#param 1 is false|1#param 1 is true}"
+
+setPageTitle(formatMessage("Title", new Object[] {"test", new Boolean(true), null}));
+----
+
 ===== Report Field Triggers
 
 Report field triggers are special events that you can catch to execute other actions.

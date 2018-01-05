@@ -159,6 +159,13 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
     // nothing to do here
   }
 
+  /**
+   * Returns the localization source of this window.
+   * @return The localization source of this window.
+   */
+  protected String getSource() {
+    return null;
+  }
 
   /**
    * Try to handle an exception
@@ -186,6 +193,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * @deprecated        use method performAsynAction
    */
+  @Deprecated
   public final void performAction(final KopiAction action, boolean block) {
     performAsyncAction(action);
   }
@@ -207,6 +215,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * @deprecated use the method <code>notice(String message)</code> instead
    */
+  @Deprecated
   public void displayNotice(String message) {
     notice(message);
   }
@@ -232,6 +241,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * @deprecated use the method <code>error(String message)</code> instead
    */
+  @Deprecated
   public void displayError(String message) {
     error(message);
   }
@@ -257,6 +267,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * @deprecated use the method <code>warn(String message)</code> instead
    */
+  @Deprecated
   public void displayWarning(String message) {
     warn(message);
   }
@@ -286,6 +297,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * @deprecated use the method <code>ask(String message)</code> instead
    */
+  @Deprecated
   public boolean askUser(String message) {
     return ask(message);
   }
@@ -300,6 +312,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   /**
    * @deprecated use the method <code>ask(String message, boolean yesIsDefault)</code> instead
    */
+  @Deprecated
   public boolean askUser(String message, boolean yesIsDefault) {
     return ask(message, yesIsDefault);
   }
@@ -444,12 +457,12 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   // VMODEL IMPLEMENTATION
   //----------------------------------------------------------------------
 
-  
+
   public UWindow getDisplay() {
     return display;
   }
 
-  
+
   public void setDisplay(UComponent display) {
     assert display instanceof UWindow : "VWindow display should be instance of UWindow";
 
@@ -731,6 +744,58 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   // ----------------------------------------------------------------------
+  // MESSAGES HANDLING
+  // ----------------------------------------------------------------------
+
+  /**
+   * Formats the message having the given identifier from the given source.
+   *
+   * @param     ident the message identifier
+   * @return    the requested message
+   */
+  protected String formatMessage(String ident) {
+    return formatMessage(ident, (Object)null);
+  }
+
+  /**
+   * Formats the message having the given identifier from the given source.
+   *
+   * @param     ident the message identifier
+   * @param     param message parameter
+   * @return    the requested message
+   */
+  protected String formatMessage(String ident, Object param) {
+    return formatMessage(ident, param, null);
+  }
+
+  /**
+   * Formats the message having the given identifier from the given source.
+   *
+   * @param     ident  the message identifier
+   * @param     param1 the first message parameter
+   * @param     param1 the second message parameter
+   * @return    the requested message
+   */
+  protected String formatMessage(String ident, Object param1, Object param2) {
+    return formatMessage(ident, new Object[] {param1, param2});
+  }
+
+  /**
+   * Formats the message having the given identifier from the given source.
+   *
+   * @param     ident  the message identifier
+   * @param     params the message parameters
+   * @return    the requested message
+   */
+  protected String formatMessage(String ident, Object[] params) {
+    if (getSource() != null) {
+      return Message.getMessage(getSource(), ident, params);
+    } else {
+      return null;
+    }
+  }
+
+  // ----------------------------------------------------------------------
   // Listener
   // ----------------------------------------------------------------------
 
@@ -785,13 +850,13 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   protected static final String threadInfo() {
     return "Thread: " + Thread.currentThread() + "\n";
   }
-  
+
   //--------------------------------------------------------------------
   // FILE PRODUCTION LISTENERS HANDLING
   // --------------------------------------------------------------------
 
   /**
-  * Adds a listener to the list that's notified each time a production 
+  * Adds a listener to the list that's notified each time a production
   * of the report file occurs.
   *
   * @param l The FileProductionListener
@@ -816,7 +881,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   public void fireFileProduced(File file) {
     fireFileProduced(file, file.getName());
   }
-  
+
   /**
    * Notifies all listeners that the report file is produced.
    */
@@ -829,7 +894,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       }
     }
   }
- 
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
