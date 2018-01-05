@@ -147,12 +147,8 @@ public abstract class Styles {
   public static final String                    FONT_AWESOME = "fa";
   
   // actor field styles
-  public static final String                    ACTOR_FIELD = "actor-field";
-  public static final String                    ACTOR_FIELD_INNER = "actor-field-inner";
-  public static final String                    ACTOR_FIELD_INFO = "actor-field-info";
-  public static final String                    ACTOR_FIELD_VALUE = "actor-field-value";
-  public static final String                    ACTOR_FIELD_CAPTION = "actor-field-caption";
-  public static final String                    ACTOR_FIELD_ICON = "actor-field-icon";
+  public static final String                    ACTOR_FIELD = "k-actor-field";
+  public static final String                    ACTOR_FIELD_BUTTON = "k-actor-field-button";
   
   // boolean field styles
   public static final String                    BOOLEAN_FIELD = "k-boolean-field";

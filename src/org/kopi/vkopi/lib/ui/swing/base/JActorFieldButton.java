@@ -73,22 +73,6 @@ public class JActorFieldButton extends JButton {
     
     super.setEnabled(enabled);
   }
-  
-  /**
-   * Returns the field value.
-   * @return The field value.
-   */
-  public String getValue() {
-    return value;
-  }
-  
-  /**
-   * Sets the field value.
-   * @param value The field value.
-   */
-  public void setValue(String value) {
-    this.value = value;
-  }
 
   /**
    * Returns the static size of the button.
@@ -103,9 +87,8 @@ public class JActorFieldButton extends JButton {
   // DATA MEMBERS
   // ----------------------------------------------------------------------
   
-  private static Dimension      dimension = new Dimension(100, 42);
-  private static Dimension      dimensionSmall = new Dimension(80, 22);
+  private static Dimension      dimension = new Dimension(140, 20);
+  private static Dimension      dimensionSmall = new Dimension(60, 20);
   private static Insets         inset = new Insets(1, 1, 1, 1);
-  private String                value;
   private static final long     serialVersionUID = -2120770411233444725L;
 }

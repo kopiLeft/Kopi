@@ -139,6 +139,24 @@ public class ColumnView {
   }
   
   /**
+   * Returns {@code true} if the column view has an ACTION trigger defined.
+   * @return {@code true} if the column view has an ACTION trigger defined.
+   */
+  protected boolean hasAction() {
+    if (block.inDetailMode()) {
+      if (detailDisplay != null) {
+        return detailDisplay.hasAction();
+      }
+    } else {
+      if (block.getDisplayLine() != -1) {
+        return displays[block.getDisplayLine()].hasAction();
+      }
+    }
+
+    return false;
+  }
+  
+  /**
    * Checks if the column view is no chart for the block display line.
    * @return {@code true} if the field in the display line has no chart option.
    */

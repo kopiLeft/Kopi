@@ -19,14 +19,16 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.grid;
 
-import com.vaadin.shared.annotations.DelegateToWidget;
+import com.vaadin.shared.communication.SharedState;
 
+/**
+ * Shared state implementation for actor renderer.
+ */
 @SuppressWarnings("serial")
-public class EditorActorFieldState extends EditorFieldState {
-  
+public class ActorRendererSate extends SharedState {
+
   /**
-   * The actor field icon name.
+   * The actor renderer caption.
    */
-  @DelegateToWidget
-  public String                         icon;
+  public String                 caption = "";
 }

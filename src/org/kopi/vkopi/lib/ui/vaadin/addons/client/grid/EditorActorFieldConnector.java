@@ -69,6 +69,7 @@ public class EditorActorFieldConnector extends EditorFieldConnector implements C
     super.onUnregister();
     if (handlerRegistration != null) {
       handlerRegistration.removeHandler();
+      handlerRegistration = null;
     }
   }
   

@@ -72,22 +72,6 @@ public class ActorField extends AbstractComponent {
   }
   
   /**
-   * Sets the field value.
-   * @param value The field value.
-   */
-  public void setValue(String value) {
-    getState().value = value;
-  }
-  
-  /**
-   * Sets the actor field maximum width.
-   * @param width The field maximum width.
-   */
-  public void setMaxWidth(int width) {
-    getState().maxWidth = width;
-  }
-  
-  /**
    * Sets the field foreground and background colors
    * @param foreground The foreground color
    * @param background The background color
@@ -95,14 +79,6 @@ public class ActorField extends AbstractComponent {
   public void setColor(String foreground, String background) {
     getState().foreground = foreground;
     getState().background = background;
-  }
-  
-  /**
-   * Returns the field value.
-   * @return The field value.
-   */
-  public String getValue() {
-    return getState(false).value;
   }
   
   /**

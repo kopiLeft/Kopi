@@ -58,8 +58,6 @@ public class GridEditorActorField extends GridEditorField<String> {
   public void setValue(String value)
     throws ReadOnlyException, ConversionException
   {
-    getState().value = value;
-    super.setValue(value);
   }
   
   @Override

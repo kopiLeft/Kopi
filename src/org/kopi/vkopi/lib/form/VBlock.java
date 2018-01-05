@@ -316,6 +316,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * implemented for compatiblity with old gui
    * @deprecated
    */
+  @Deprecated
   public void refresh(boolean x) {
     fireBlockChanged();
   }
@@ -389,7 +390,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  
+
   /**
    * Resets the color properties of the given record.
    * @param r The record number.
@@ -400,14 +401,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       // for simple blocks
       return;
     }
-    
+
     for (VField field : fields) {
       if (!field.isInternal()) {
         field.resetColor(r);
       }
     }
   }
-  
+
   /**
    * Update the color properties of the given record.
    * @param r The record number.
@@ -418,14 +419,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       // for simple blocks
       return;
     }
-    
+
     for (VField field : fields) {
       if (!field.isInternal()) {
 	if (isRecordFilled(r)) {
 	  field.updateColor(r);
 	} else {
 	  field.resetColor(r);
-	}      
+	}
       }
     }
   }
@@ -495,7 +496,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   @SuppressWarnings({ "unchecked", "rawtypes" })
   private int compareIt(Object obj1, Object obj2) {
     if (obj1 instanceof Comparable) {
-      return ((Comparable) (obj1)).compareTo((Comparable) obj2);
+      return ((Comparable) (obj1)).compareTo(obj2);
     } else if (obj1 instanceof Boolean) {
       assert obj2 instanceof Boolean : "Can't compare object (Boolean) with " +obj2.getClass();
       if (obj1.equals(obj2)) {
@@ -521,7 +522,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
     return -1;
   }
-  
+
   public int getDataPosition(int rec) {
     if (!isMulti() || rec == -1) {
       return rec;
@@ -838,7 +839,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           break;
         }
       }
-      
+
       if (i == getBufferSize() || !isRecordAccessible(getDataPosition(i))) {
         throw new VExecFailedException(MessageCode.getMessage("VIS-00015"));
       }
@@ -932,7 +933,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (fld.hasAction() || fld.getAccess(getActiveRecord()) < ACS_VISIT) {
       return;
     }
-    
     if (activeField != null) {
       activeField.leave(true);
     }
@@ -946,7 +946,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   public void gotoNextField() throws VException {
     assert this == form.getActiveBlock() : this.getName() + " != "+ form.getActiveBlock().getName();
-    
+
     if (activeField == null) {
       return;
     }
@@ -1095,7 +1095,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     // walk next to next
     for (; target == null && i < fields.length; i += 1) {
-      if (!fields[i].hasAction() && 
+      if (!fields[i].hasAction() &&
           fields[i].getAccess(getActiveRecord()) == ACS_MUSTFILL
           && fields[i].isNull(getActiveRecord()))
       {
@@ -1105,7 +1105,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     // redo from start
     for (i = 0; target == null && i < fields.length; i += 1) {
-      if (!fields[i].hasAction() && 
+      if (!fields[i].hasAction() &&
           fields[i].getAccess(getActiveRecord()) == ACS_MUSTFILL
           && fields[i].isNull(getActiveRecord())) {
         target = fields[i];
@@ -1274,7 +1274,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (form.getActiveBlock() != this) {
       form.gotoBlock(this);
     }
-    
+
     int         lastRecord = getActiveRecord();
 
     try {
@@ -2104,7 +2104,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // take all visible fields with database access
     for (int i = 0; i < fields.length; i++) {
       VField    fld = fields[i];
-      
+
       // image fields cannot be handled in a report.
       if (!(fld instanceof VImageField)
           && !fld.isInternal()
@@ -2393,7 +2393,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
     String      headbuff = null;        // columns to select
     String      condbuff = null;        // search condition
-    
+
     for (int i = 0; i < fields.length; i++) {
       String    column = fields[i].lookupColumn(table);
 
@@ -2425,7 +2425,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
       }
     }
-    
+
     try {
       form.getDBContext().startWork();        // !!! BEGIN_SYNC(null);
 
@@ -2446,13 +2446,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
         for (int i = 0; i < fields.length; i++) {
           VField      f = fields[i];
-          
+
           if (f.lookupColumn(table) != null) {
             f.setQuery(query, 1+j);
             j += 1;
           }
         }
-        
+
         if (query.next()) {
           query.close();
           form.getDBContext().abortWork();    // !!! END_SYNC();
@@ -2461,7 +2461,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         }
         query.close();
       }
-      
+
       form.getDBContext().commitWork();       // !!! END_SYNC();
     } catch (SQLException e) {
       throw new VExecFailedException("XXXX !!!!" + e.getMessage());
@@ -2711,7 +2711,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public int getActiveRecord() {
     return activeRecord >= 0 && activeRecord < bufferSize ? activeRecord : -1;
   }
-  
+
   /**
    * Returns the record info value for the given record.
    * @param rec The record number.
@@ -3100,6 +3100,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Returns true iff this block can display more than one record.
    * @deprecated        This method is replaced by noChart()
    */
+  @Deprecated
   public boolean isChart() {
     return  !noChart();
   }
@@ -3313,7 +3314,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
           // is active for the block mode.
           if (commands[i].isActive(mode)) {
             boolean		active;
-            
+
             if (hasTrigger(TRG_CMDACCESS, fields.length + i + 1)) {
               try {
         	active = ((Boolean)callTrigger(TRG_CMDACCESS, fields.length + i + 1)).booleanValue();
@@ -3333,7 +3334,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     } else {
       for (int i = 0; i < activeCommands.size(); i++) {
-        VCommand cmd = (VCommand)activeCommands.elementAt(i);
+        VCommand cmd = activeCommands.elementAt(i);
         cmd.setEnabled(false);
       }
       activeCommands.setSize(0);
@@ -3348,6 +3349,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @param     block           This action should block the UI thread ?
    * @deprecated                Use method performAsyncAction without bool parameter
    */
+  @Deprecated
   public void performAction(final KopiAction action, boolean block) {
     getForm().performAsyncAction(action);
   }
@@ -4031,7 +4033,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       // use the original exception in this case
       return new VExecFailedException(exception);
     }
-    // create a visual exception 
+    // create a visual exception
     return new VExecFailedException(MessageCode.getMessage("VIS-00021", new Object[] {referencing, referenced}));
   }
 

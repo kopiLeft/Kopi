@@ -28,8 +28,6 @@ import org.kopi.vkopi.lib.ui.vaadin.addons.ActorField.ClickEvent;
 import org.kopi.vkopi.lib.ui.vaadin.addons.ActorField.ClickListener;
 import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
 import org.kopi.vkopi.lib.ui.vaadin.base.Utils;
-import org.kopi.vkopi.lib.visual.KopiAction;
-import org.kopi.vkopi.lib.visual.VException;
 
 /**
  * UI Implementation of an actor field.
@@ -50,8 +48,10 @@ public class DActorField extends DField implements UActorField, ClickListener {
   {
     super(model, label, align, options, detail);
     field = new ActorField();
-    field.setMaxWidth(model.getModel().getWidth());
     field.setCaption(getModel().getLabel());
+    if (getModel().getToolTip() != null) {
+      field.setDescription(Utils.createTooltip(getModel().getToolTip()));
+    }
     field.setEnabled(getModel().getDefaultAccess() >= VConstants.ACS_VISIT);
     field.addClickListener(this);
     setContent(field);
@@ -65,15 +65,7 @@ public class DActorField extends DField implements UActorField, ClickListener {
   public void onClick(ClickEvent event) {
     // field action is performed in the window action queue
     // it is not like the other fields trigger
-    if (getModel().hasTrigger(VConstants.TRG_ACTION)) {
-      model.performAsyncAction(new KopiAction("FIELD_ACTION") {
-
-        @Override
-        public void execute() throws VException {
-          getModel().callTrigger(VConstants.TRG_ACTION);
-        }
-      });
-    }
+    model.executeAction();
   }
 
   @Override
@@ -85,17 +77,7 @@ public class DActorField extends DField implements UActorField, ClickListener {
   }
 
   @Override
-  public void updateText() {
-    final String        newModelTxt = getModel().getText(getBlockView().getRecordFromDisplayLine(getPosition()));
-    
-    BackgroundThreadHandler.access(new Runnable() {
-    
-      @Override
-      public void run() {
-        field.setValue(newModelTxt.trim());
-      }
-    });
-  }
+  public void updateText() {}
 
   @Override
   public void updateAccess() {
@@ -129,12 +111,12 @@ public class DActorField extends DField implements UActorField, ClickListener {
 
   @Override
   public Object getObject() {
-    return field.getValue();
+    return null;
   }
 
   @Override
   public String getText() {
-    return field.getValue();
+    return null;
   }
 
   @Override

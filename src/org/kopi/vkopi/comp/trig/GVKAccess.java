@@ -152,6 +152,11 @@ public class GVKAccess extends XExpression {
 					field);
       expr = expr.analyse(context);
     }
+    // @ operator are not allowed for actor fields cause it handles no value.
+    check(context,
+          !expr.getType(factory).getCClass().descendsFrom(GStdType.ActorField.getCClass()),
+          GKjcMessages.ACCESS_ACTOR_FIELD);
+    
     return expr;
   }
 
@@ -293,6 +298,8 @@ public class GVKAccess extends XExpression {
       return TYP_TEXT;
     } else if (type.equals(GStdType.StringCodeField)) {
       return TYP_ENUM;
+    } else if (type.equals(GStdType.ActorField)) {
+      return TYP_VOID;
     } else {
       throw new InconsistencyException(">>>>>>>>>> " + type);
     }

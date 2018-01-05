@@ -84,7 +84,10 @@
 				    EditorSuggestionsQueryClientRpc.java
 				    EditorSuggestionsQueryServerRpc.java
 				    EditorBooleanFieldClientRpc.java
-				    BooleanRendererValueChangeServerRpc.java" />
+				    BooleanRendererValueChangeServerRpc.java
+				    ActorRendererConnector.java
+				    ActorRendererSate.java
+				    VActorRenderer.java" />
   
   <import file="${topdir}/defs.xml" />
 </project>

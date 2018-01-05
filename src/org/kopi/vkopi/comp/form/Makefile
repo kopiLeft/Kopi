@@ -44,7 +44,8 @@ JAVAFILES +=	VKBlock VKBlockAlign VKBlockIndex VKBlockTable		\
 		VKPage VKPosition					\
 		VKDefinitionType VKAliasType VKBlockInsert		\
 		VKImportedBlock VKFormElement VKFormPrettyPrinter	\
-		VKMultiField VKMultiFieldPosition
+		VKMultiField VKMultiFieldPosition VKActorField		\
+		VKActorType
 
 MESSAGES =	FormMessages
 

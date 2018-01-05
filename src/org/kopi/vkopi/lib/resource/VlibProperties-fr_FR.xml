@@ -120,6 +120,7 @@
   <property key="code-type-field" value="Ce champ doit être rempli avec une des valeurs proposées (F2)." />
   <property key="image-type-field" value="" />
   <property key="color-type-field" value="" />
+  <property key="actor-type-field" value="" />
 <!-- DOC GENERATOR-->
   <property key="Type" value="Type" />
   <property key="Image" value="Image" />

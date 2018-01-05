@@ -64,4 +64,6 @@
 <msg identifier="MULTIFIELD_DROP_LIST" format="The field: {0} cannot be defined as a drop target because it is a multifield." reference="FORM" level="0" />
 <msg identifier="DUPLICATE_DROP_FLAVOR" format="The extension {0} is already defined as a drop target for field: {1}." reference="FORM" level="0" />
 <msg identifier="UNSUPPORTED_DROP_FIELD_TYPE" format="The field {0} is droppable but its type is not supported as a drop target." reference="FORM" level="0" />
+<msg identifier="ACTOR_FIELD_TRIGGERS" format="Only ACCESS and ACTION triggers are allowed for actor fields." reference="FORM" level="0" />
+<msg identifier="ACTOR_FIELD_COMMANDS" format="Commands are not allowed in actor fields." reference="FORM" level="0" />
 </messages>

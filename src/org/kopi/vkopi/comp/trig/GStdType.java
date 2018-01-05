@@ -55,6 +55,7 @@ public class GStdType extends org.kopi.util.base.Utils implements Constants {
   public static CReferenceType IntegerCodeField;
   public static CReferenceType FixnumCodeField;
   public static CReferenceType StringCodeField;
+  public static CReferenceType ActorField;
   public static CReferenceType TextField;
 
   public static CReferenceType ReportStringColumn;
@@ -125,7 +126,8 @@ public class GStdType extends org.kopi.util.base.Utils implements Constants {
     FixnumCodeField = tf.createType(org.kopi.vkopi.lib.form.VFixnumCodeField.class.getName().replace('.','/'), false);
     IntegerCodeField = tf.createType(org.kopi.vkopi.lib.form.VIntegerCodeField.class.getName().replace('.','/'), false);
     StringCodeField = tf.createType(org.kopi.vkopi.lib.form.VStringCodeField.class.getName().replace('.','/'), false);
-
+    ActorField = tf.createType(org.kopi.vkopi.lib.form.VActorField.class.getName().replace('.','/'), false);
+        
     ReportStringColumn = tf.createType(org.kopi.vkopi.lib.report.VStringColumn.class.getName().replace('.','/'), false);
     ReportIntegerColumn = tf.createType(org.kopi.vkopi.lib.report.VIntegerColumn.class.getName().replace('.','/'), false);
     ReportFixnumColumn = tf.createType(org.kopi.vkopi.lib.report.VFixnumColumn.class.getName().replace('.','/'), false);
@@ -179,6 +181,7 @@ public class GStdType extends org.kopi.util.base.Utils implements Constants {
       FixnumCodeField = (CReferenceType) FixnumCodeField.checkType(context);
       IntegerCodeField = (CReferenceType) IntegerCodeField.checkType(context);
       StringCodeField = (CReferenceType) StringCodeField.checkType(context);
+      ActorField = (CReferenceType) ActorField.checkType(context);
 
       ReportStringColumn = (CReferenceType) ReportStringColumn.checkType(context);
       ReportIntegerColumn = (CReferenceType) ReportIntegerColumn.checkType(context);

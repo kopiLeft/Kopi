@@ -19,14 +19,31 @@
 
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.grid;
 
-import com.vaadin.shared.annotations.DelegateToWidget;
+import com.vaadin.client.renderers.ClickableRenderer;
+import com.vaadin.client.widget.grid.RendererCellReference;
 
-@SuppressWarnings("serial")
-public class EditorActorFieldState extends EditorFieldState {
+/**
+ * The actor renderer widget based on the actor field widger.
+ */
+public class VActorRenderer extends ClickableRenderer<String, VEditorActorField> {
+
+  // --------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------
+
+  @Override
+  public VEditorActorField createWidget() {
+    return new VEditorActorField();
+  }
+
+  @Override
+  public void render(RendererCellReference cell, String data, VEditorActorField widget) {
+    widget.setCaption(caption);
+  }
   
-  /**
-   * The actor field icon name.
-   */
-  @DelegateToWidget
-  public String                         icon;
+  // --------------------------------------------------
+  // DATA MEMBERS
+  // --------------------------------------------------
+  
+  /*package*/ String            caption;
 }

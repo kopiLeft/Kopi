@@ -82,6 +82,9 @@ public class DFieldUI extends VFieldUI {
     case VField.MDL_FLD_IMAGE:
       field = new DImageField(this, (DLabel)label, model.getAlign(), 0, ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight(), detail);
       break;
+    case VField.MDL_FLD_ACTOR:
+      field = new DActorField(this, (DLabel)label, model.getAlign(), model.getOptions(), detail);
+      break;
     default:
       throw new InconsistencyException("Type of model " + model.getType() + " not supported.");
     }

@@ -120,6 +120,7 @@
   <property key="code-type-field" value="Dieses Feld kann nur mit einem der vorgeschlagenen Werte gefüllt werden." />
   <property key="image-type-field" value="Das ist ein Feld vom Typ Image mit einer Dimension von {0}x{1} Pixeln" />
   <property key="color-type-field" value="Das ist ein Feld vom Typ Farbe" />
+  <property key="actor-type-field" value="" />
 <!-- DOC GENERATOR-->
   <property key="Type" value="Type" />
   <property key="Image" value="Image" />

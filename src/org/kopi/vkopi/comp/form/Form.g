@@ -158,7 +158,7 @@ vkBlock [String pkg]
   indices = vkBlockIndices[]
   ( vkModeAndCommands[access, context] )?
   ( vkBlockTriggers[context] )?
-  ( vkField[context] )+
+  ( vkField[context] | vkActorField[context])+
   ( vkContextFooter[context.getClassContext()] )?
   "END" "BLOCK"
     {
@@ -533,6 +533,39 @@ vkLabel [VKParseBlockContext block]
     { block.addElement(new VKLabel(sourceRef, name, pos, border)); }
 ;
 */
+
+vkActorField [VKParseBlockContext block]
+{
+  String                name = null;
+  VKPosition            pos = null;
+  ArrayList             label = null;
+  String		help;
+  int			a = org.kopi.vkopi.lib.form.VConstants.ACS_VISIT;
+  int[]			access = new int[] {a, a, a};
+  TokenReference	sourceRef = buildTokenReference();
+  VKParseFieldContext	context = VKParseFieldContext.getInstance();
+}
+:
+  "ACTOR"
+  ( name = vkSimpleIdent[] )?
+   ( pos = vkPosition[] )?
+  ( label = vkFieldLabel[name] )?
+  help = vkHelp[]
+  ( vkModeAndCommands[access, context] )?
+  ( vkFieldTriggers[context] )?
+  "END" "ACTOR"
+  {
+    block.addField(new VKActorField(sourceRef,
+                                    name,
+                                    pos,
+                                    label == null ? null : (String)label.get(0),
+                                    help,
+                                    access,
+                                    context.getCommands(),
+                                    context.getTriggers()));
+    context.release();
+  }
+;
 
 vkField [VKParseBlockContext block]
 {

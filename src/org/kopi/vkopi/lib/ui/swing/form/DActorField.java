@@ -20,20 +20,15 @@
 package org.kopi.vkopi.lib.ui.swing.form;
 
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 
 import org.kopi.vkopi.lib.form.UActorField;
 import org.kopi.vkopi.lib.form.VConstants;
 import org.kopi.vkopi.lib.form.VFieldUI;
 import org.kopi.vkopi.lib.ui.swing.base.JActorFieldButton;
-import org.kopi.vkopi.lib.ui.swing.visual.Utils;
-import org.kopi.vkopi.lib.visual.KopiAction;
-import org.kopi.vkopi.lib.visual.VException;
 
 /**
  * UI Implementation of actor field in swing environment.
@@ -70,16 +65,7 @@ public class DActorField extends DField implements UActorField {
   }
   
   @Override
-  public void updateText() {
-    if (button != null) {
-      String      newModelTxt = getModel().getText(getRowController().getBlockView().getRecordFromDisplayLine(getPosition()));
-      String      currentModelTxt = button.getValue();
-      
-      if ((newModelTxt == null && currentModelTxt != null) || !newModelTxt.equals(currentModelTxt)) {
-        button.setValue(newModelTxt);
-      }
-    }
-  }
+  public void updateText() {}
   
   @Override
   public void updateFocus() {
@@ -98,7 +84,7 @@ public class DActorField extends DField implements UActorField {
   }
 
   public Object getObject() {
-    return getText();
+    return null;
   }
 
   protected void setDisplayProperties() {
@@ -106,7 +92,6 @@ public class DActorField extends DField implements UActorField {
   }
 
   public String getText() {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -132,23 +117,6 @@ public class DActorField extends DField implements UActorField {
     return new JActorFieldButton(action);
   }
 
-  /**
-   * Loads an image icon from resource directory.
-   * @param iconName The icon name.
-   * @return The loaded image icon.
-   */
-  protected ImageIcon loadImage(String iconName) {
-    ImageIcon   image;
-
-    image = Utils.getImage(iconName + ".png");
-
-    if (image == null || image == Utils.UKN_IMAGE) {
-      image = Utils.getImage(iconName + ".gif");
-    }
-
-    return new ImageIcon(image.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH));
-  }
-
   // --------------------------------------------------------------------
   // FILD ACTION
   // --------------------------------------------------------------------
@@ -168,14 +136,7 @@ public class DActorField extends DField implements UActorField {
     // ------------------------------------------------
 
     public void actionPerformed(ActionEvent e) {
-      if (getModel().hasTrigger(VConstants.TRG_ACTION)) {
-        getRowController().performAsyncAction(new KopiAction("FIELD_ACTION") {
-          
-          public void execute() throws VException {
-            getModel().callTrigger(VConstants.TRG_ACTION);
-          }
-        });
-      }
+      model.executeAction();
     }
 
     // -------------------------------------------------

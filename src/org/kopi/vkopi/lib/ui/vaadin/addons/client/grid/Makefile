@@ -55,7 +55,8 @@ JAVAFILES += 	EditorDateFieldConnector EditorEnumFieldConnector	\
 		VFocusableEditorField EditorSuggestionsQueryClientRpc	\
 		EditorSuggestionsQueryServerRpc				\
 		EditorBooleanFieldClientRpc				\
-		BooleanRendererValueChangeServerRpc
+		BooleanRendererValueChangeServerRpc			\
+		ActorRendererConnector ActorRendererSate VActorRenderer
 
 ## ----------------------------------------------------------------------
 ## FILES

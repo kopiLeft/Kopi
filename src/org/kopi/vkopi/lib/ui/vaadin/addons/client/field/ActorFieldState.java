@@ -26,24 +26,12 @@ import com.vaadin.shared.annotations.DelegateToWidget;
  */
 @SuppressWarnings("serial")
 public class ActorFieldState extends FieldState {
-
-  /**
-   * The maximum width reached by the field width
-   */
-  @DelegateToWidget
-  public int                            maxWidth;
   
   /**
    * The actor field icon name.
    */
   @DelegateToWidget
   public String                         icon;
-  
-  /**
-   * The string representation of the actor field value.
-   */
-  @DelegateToWidget
-  public String                         value;
   
   /**
    * The foreground color

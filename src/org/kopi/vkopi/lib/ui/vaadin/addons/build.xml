@@ -122,7 +122,8 @@
 				    BooleanRenderer.java
 				    GridEditorBooleanField.java
 				    UploadProgress.java
-				    RichTextField.java" />
+				    RichTextField.java
+				    ActorRenderer.java" />
 
   <!--==============================================================
       Default target:	builds messages, options and java sources 

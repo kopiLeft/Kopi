@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.kopi.vkopi.lib.base.UComponent;
 import org.kopi.vkopi.lib.form.KopiAlignment;
+import org.kopi.vkopi.lib.form.VActorField;
 import org.kopi.vkopi.lib.form.VBlock;
 import org.kopi.vkopi.lib.form.VBooleanField;
 import org.kopi.vkopi.lib.form.VConstants;
@@ -120,7 +121,7 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
 
                 @Override
                 public void execute() throws VException {
-                  if (columnView.hasDisplays()) {
+                  if (columnView.hasDisplays() && !columnView.hasAction()) {
                     columnView.transferFocus(columnView.getEditorField());
                   }
                 }
@@ -489,6 +490,8 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
         } else {
           if (field instanceof VBooleanField) {
             column.setWidth(46); // boolean field length
+          } else if (field instanceof VActorField) {
+            column.setWidth(148); // actor field field length
           } else {
             column.setWidth(FontMetrics.LETTER.getWidth() * field.getWidth() + 12);// add padding
           }

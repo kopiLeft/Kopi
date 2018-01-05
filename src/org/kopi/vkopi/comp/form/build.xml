@@ -39,7 +39,7 @@
                    VKImportedBlock.java VKFormElement.java VKFormPrettyPrinter.java 
                    VKMultiField.java VKMultiFieldPosition.java 
                    FormMessages.java VKBlockIndex.java VKPage.java
-  	           VKFormLocalizationWriter.java" />
+  	           VKFormLocalizationWriter.java VKActorField.java VKActorType.java" />
 
   <property name="messages"    value="FormMessages" />
 

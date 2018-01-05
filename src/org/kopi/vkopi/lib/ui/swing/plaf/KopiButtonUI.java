@@ -71,8 +71,6 @@ public class KopiButtonUI extends MetalButtonUI {
     super.paint(g, c);
     if (c instanceof JMenuButton) {
       paintAcceleratorTip(g, c);
-    } else if (c instanceof JActorFieldButton) {
-      paintActorFieldValue(g, c);
     }
   }
 
@@ -174,11 +172,7 @@ public class KopiButtonUI extends MetalButtonUI {
     int                 mnemonicIndex = b.getDisplayedMnemonicIndex();
     int                 x = textRect.x + (model.isEnabled() ? getTextShiftOffset() : 0);
     int                 y = textRect.y + fm.getAscent() + (model.isEnabled() ? getTextShiftOffset() : 0);
-    
-    if (c instanceof JActorFieldButton) {
-      x = 24 + (c.getWidth() - (int)fm.getStringBounds(text, g).getWidth() - 24) / 2;       
-      y -= 8;
-    }
+
     /* Draw the Text */
     if (model.isEnabled()) {
       g.setColor(b.getForeground());
@@ -260,25 +254,6 @@ public class KopiButtonUI extends MetalButtonUI {
     g.drawString(acceleratorText, c.getWidth()-width-2, 10);
     g.setFont(font);
   }
-  
-  /**
-   * Paints the actor field value.
-   */
-  private void paintActorFieldValue(Graphics g, JComponent c) {
-    String              value = ((JActorFieldButton) c).getValue();
-    FontMetrics         fm = g.getFontMetrics();
-    int                 width = (int) fm.getStringBounds(value, g).getWidth();
-    Font                font = g.getFont();
-    
-    g.setFont(actorFieldValueFont);
-    if (((AbstractButton) c).getModel().isEnabled()) {
-      g.setColor(actorFieldValueColor);
-    } else {
-      g.setColor(((AbstractButton) c).getBackground().darker());
-    }
-    g.drawString(value, 14 + ((c.getWidth() - width - 24) / 2), 20);
-    g.setFont(font);
-  }
 
   protected void paintFocus(Graphics g, AbstractButton b,
                             Rectangle viewRect, Rectangle textRect, Rectangle iconRect){
@@ -299,8 +274,6 @@ public class KopiButtonUI extends MetalButtonUI {
   private static final Color    borderColor = UIManager.getColor("MenuButton.border");
   private static final Color    keyTipColor = UIManager.getColor("MenuButton.keytip.color");
   private static final Font     keyTipFont = UIManager.getFont("MenuButton.keytip.font");
-  private static final Color    actorFieldValueColor = UIManager.getColor("ActorField.value.color");
-  private static final Font     actorFieldValueFont = UIManager.getFont("ActorField.value.font");
   private static final Color    rollColor = UIManager.getColor("MenuButton.rollover");
   private static final Color    backColorMenu = UIManager.getColor("ButtonPanel.back");
   private static final int      border_arcMenu = UIManager.getInt("MenuButton.border.arc");

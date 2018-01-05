@@ -53,7 +53,7 @@ JAVAFILES +=	AbstractFieldHandler BlockAlignment Commands		\
 		Accessor ModelTransformer UBlock UChartLabel UField 	\
 		UForm ULabel UMultiBlock UTextField UListDialog		\
 		VBlockDefaultOuterJoin VBlockOracleOuterJoin		\
-		UActorField
+		UActorField VActorField
 
 ## ----------------------------------------------------------------------
 ## GOALS

@@ -387,7 +387,9 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
         if (index == fields.size()) {
           index = 0;
         }
-        if (fields.get(index) != null && fields.get(index).getAccess() >= VConstants.ACS_VISIT
+        if (fields.get(index) != null
+            && !fields.get(index).hasAction()
+            && fields.get(index).getAccess() >= VConstants.ACS_VISIT
             && ((detailMode && !fields.get(index).noDetail())
                 || (!detailMode && !fields.get(index).noChart())))
         {
@@ -436,9 +438,12 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
           index = fields.size();
         }
         index -= 1;
-        if (fields.get(index) != null && fields.get(index).getAccess() >= VConstants.ACS_VISIT
+        if (fields.get(index) != null
+            && !fields.get(index).hasAction()
+            && fields.get(index).getAccess() >= VConstants.ACS_VISIT
             && ((detailMode && !fields.get(index).noDetail())
-                || (!detailMode && !fields.get(index).noChart()))) {
+                || (!detailMode && !fields.get(index).noChart())))
+        {
           target = fields.get(index);
         }
       }
@@ -501,7 +506,11 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
       i += 1;
       // walk next to next
       for (; target == null && i < fields.size(); i += 1) {
-        if (fields.get(i) != null && fields.get(i).getAccess() == VConstants.ACS_MUSTFILL && fields.get(i).isNull()) {
+        if (fields.get(i) != null
+            && !fields.get(i).hasAction()
+            && fields.get(i).getAccess() == VConstants.ACS_MUSTFILL
+            && fields.get(i).isNull())
+        {
           target = fields.get(i);
         }
       }
@@ -649,7 +658,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
         enterRecord(i);
         act.enter();
 
-        if (activeField.getAccess() < VConstants.ACS_VISIT) {
+        if (activeField.getAccess() < VConstants.ACS_VISIT || activeField.hasAction()) {
           gotoNextField();
         }
       }
@@ -700,7 +709,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
         }
         enterRecord(i);
         act.enter();
-        if (activeField.getAccess() < VConstants.ACS_VISIT) {
+        if (activeField.getAccess() < VConstants.ACS_VISIT || activeField.hasAction()) {
           gotoNextField();
         }
       }
@@ -730,7 +739,7 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
           act = activeField;
           activeField.leave(getActiveRecord());
         }
-        if (act == null || act.getAccess() < VConstants.ACS_VISIT) {
+        if (act == null || act.hasAction() || act.getAccess() < VConstants.ACS_VISIT) {
           gotoNextField();
         } else {
           act.enter();
@@ -939,7 +948,11 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     ColumnView          target = null;
 
     for (int i = 0; target == null && i < fields.size(); i += 1) {
-      if ((fields.get(i) != null && fields.get(i).getAccess() >= VConstants.ACS_VISIT) && fields.get(i).isNull()) {
+      if ((fields.get(i) != null
+          && !fields.get(i).hasAction()
+          && fields.get(i).getAccess() >= VConstants.ACS_VISIT)
+          && fields.get(i).isNull())
+      {
         target = fields.get(i);
       }
     }
@@ -967,7 +980,10 @@ public class BlockConnector extends AbstractSingleComponentContainerConnector im
     ColumnView          target = null;
     
     for (int i = 0; target == null && i < fields.size(); i += 1) {
-      if (fields.get(i) != null && fields.get(i).getAccess() >= VConstants.ACS_VISIT) {
+      if (fields.get(i) != null
+          && !fields.get(i).hasAction()
+          && fields.get(i).getAccess() >= VConstants.ACS_VISIT)
+      {
         target = fields.get(i);
       }
     }

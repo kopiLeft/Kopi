@@ -21,17 +21,13 @@ package org.kopi.vkopi.lib.ui.vaadin.form;
 
 import java.util.Locale;
 
-import org.kopi.vkopi.lib.form.VConstants;
 import org.kopi.vkopi.lib.form.VFieldUI;
+import org.kopi.vkopi.lib.ui.vaadin.addons.ActorRenderer;
 import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorActorField;
 import org.kopi.vkopi.lib.ui.vaadin.addons.GridEditorField.ClickEvent;
-import org.kopi.vkopi.lib.ui.vaadin.base.BackgroundThreadHandler;
-import org.kopi.vkopi.lib.visual.KopiAction;
-import org.kopi.vkopi.lib.visual.VException;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.renderers.Renderer;
-import com.vaadin.ui.renderers.TextRenderer;
 
 /**
  * The grid editor actor field.
@@ -45,9 +41,13 @@ public class DGridEditorActorField extends DGridEditorField<String> {
   
   public DGridEditorActorField(VFieldUI columnView,
                                DGridEditorLabel label,
-                               int align, int options)
+                               int align,
+                               int options)
   {
     super(columnView, label, align, options);
+    if (getModel().getToolTip() != null) {
+      getEditor().setDescription(getModel().getToolTip());
+    }
   }
 
   // ----------------------------------------------------------------------
@@ -55,21 +55,11 @@ public class DGridEditorActorField extends DGridEditorField<String> {
   // ----------------------------------------------------------------------
   
   @Override
-  public void updateText() {
-    final String        newModelTxt = getModel().getText(getBlockView().getRecordFromDisplayLine(getPosition()));
-    
-    BackgroundThreadHandler.access(new Runnable() {
-      
-      @Override
-      public void run() {
-        getEditor().setValue(newModelTxt);
-      }
-    });
-  }
+  public void updateText() {}
 
   @Override
   public Object getObject() {
-    return getEditor().getValue();
+    return null;
   }
 
   @Override
@@ -80,54 +70,48 @@ public class DGridEditorActorField extends DGridEditorField<String> {
   @Override
   protected Converter<String, Object> createConverter() {
     return new Converter<String, Object>() {
-      
-      @Override
-      public Class<String> getPresentationType() {
-        return String.class;
-      }
-      
-      @Override
-      public Class<Object> getModelType() {
-        return Object.class;
-      }
-      
-      @Override
-      public String convertToPresentation(Object value, Class<? extends String> targetType, Locale locale)
-        throws ConversionException
-      {
-        return getModel().toText(value);
-      }
-      
+
       @Override
       public Object convertToModel(String value, Class<? extends Object> targetType, Locale locale)
         throws ConversionException
       {
-        try {
-          return getModel().toObject(value);
-        } catch (VException e) {
-          throw new ConversionException(e);
-        }
+        return null;
+      }
+
+      @Override
+      public String convertToPresentation(Object value, Class<? extends String> targetType, Locale locale)
+        throws ConversionException
+      {
+        return null;
+      }
+
+      @Override
+      public Class<Object> getModelType() {
+        return Object.class;
+      }
+
+      @Override
+      public Class<String> getPresentationType() {
+        return String.class;
       }
     };
   }
 
   @Override
   protected Renderer<String> createRenderer() {
-    return new TextRenderer();
+    return new ActorRenderer(getModel().getLabel()) {
+      
+      @Override
+      public void click(RendererClickEvent event) {
+        columnView.executeAction();
+      }
+    };
   }
   
   @Override
   public void onClick(ClickEvent event) {
     // field action is performed in the window action queue
     // it is not like the other fields trigger
-    if (getModel().hasTrigger(VConstants.TRG_ACTION)) {
-      columnView.performAsyncAction(new KopiAction("FIELD_ACTION") {
-
-        @Override
-        public void execute() throws VException {
-          getModel().callTrigger(VConstants.TRG_ACTION);
-        }
-      });
-    }
+    columnView.executeAction();
   }
 }

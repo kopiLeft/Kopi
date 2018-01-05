@@ -68,6 +68,9 @@ public class DGridBlockFieldUI extends DFieldUI {
       case VField.MDL_FLD_IMAGE:
         field = new DGridEditorImageField(this, (DGridEditorLabel)label, model.getAlign(), ((VImageField) model).getIconWidth(), ((VImageField) model).getIconHeight(), model.getOptions());
         break;
+      case VField.MDL_FLD_ACTOR:
+        field = new DGridEditorActorField(this, (DGridEditorLabel)label, model.getAlign(), model.getOptions());
+        break;
       default:
         return super.createDisplay(label, model, detail);
       }

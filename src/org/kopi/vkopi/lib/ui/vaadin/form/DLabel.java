@@ -84,7 +84,9 @@ public class DLabel extends SortableLabel implements ULabel {
       @Override
       public void run() {
 	setCaption(text);
-	setDescription(Utils.createTooltip(toolTip));
+	if (toolTip != null) {
+	  setDescription(Utils.createTooltip(toolTip));
+	}
       }
     });
   }
@@ -126,9 +128,16 @@ public class DLabel extends SortableLabel implements ULabel {
 	if (model.getModel().getAccess(row) == VConstants.ACS_SKIPPED) {
 	  // Only show base help on a skipped field
 	  // Actors are not shown since they are not active.
-	  setDescription(Utils.createTooltip(tooltip));
+	  if (tooltip != null) {
+	    setDescription(Utils.createTooltip(tooltip));
+	  }
 	} else {
-	  setDescription(Utils.createTooltip(buildDescription(model, tooltip)));
+	  String       description;
+	  
+	  description = buildDescription(model, tooltip);
+	  if (description != null) {
+	    setDescription(Utils.createTooltip(description));
+	  }
 	}
 	if (model.getModel().getAccess(row) == VConstants.ACS_HIDDEN) {
 	  if (getState().visible) {
@@ -197,16 +206,19 @@ public class DLabel extends SortableLabel implements ULabel {
     VCommand[]		commands;
     
     commands = model.getAllCommands();
-    if (tooltip == null) {
-      tooltip = ""; // avoid writing null in help tooltip.
-    }
-    description = tooltip;
-    if (commands.length > 0) {
+    if (tooltip != null) {
       description = "<html>" + tooltip;
+    } else {
+      description = null;
+    }
+    if (commands.length > 0) {
+      if (description == null) {
+        description = "<html>"; 
+      }
       
       for (int i = 0; i < commands.length; i++) {
         if (commands[i].getActor() != null) {
-          if (description.trim().length() > 0) {
+          if (!description.endsWith("<html>")) {
             description += "<br>";
           }
           description += getDescription(commands[i].getActor());

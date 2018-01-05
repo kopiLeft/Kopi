@@ -64,7 +64,8 @@ JAVAFILES +=	AbstractBlockLayout AbstractNotification ActionEvent	\
 		SingleComponentBlockLayout ActorField 			\
 		GridEditorActorField GridListDialog			\
 		GridEditorImageField BooleanField BooleanRenderer	\
-		GridEditorBooleanField UploadProgress RichTextField
+		GridEditorBooleanField UploadProgress RichTextField	\
+		ActorRenderer
 
 WIDGETSETS +=	KopiAddonsWidgetset.gwt
 

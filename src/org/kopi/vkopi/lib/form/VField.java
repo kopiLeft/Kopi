@@ -2885,4 +2885,5 @@ public abstract class VField implements VConstants, VModel {
   public static final int              MDL_FLD_IMAGE = 2;
   public static final int              MDL_FLD_EDITOR = 3;
   public static final int              MDL_FLD_TEXT = 4;
+  public static final int              MDL_FLD_ACTOR = 5;
 }

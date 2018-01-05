@@ -120,6 +120,7 @@
   <property key="code-type-field" value="هذا  الموقع يجب أن يحتوي على قيم مقترحة (F2)"/>
   <property key="image-type-field" value="" />
   <property key="color-type-field" value="" />
+  <property key="actor-type-field" value="" />
 <!-- DOC GENERATOR-->
   <property key="Type" value="صنف"/>
   <property key="Image" value="صورة"/>

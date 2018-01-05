@@ -20,17 +20,11 @@
 package org.kopi.vkopi.lib.ui.vaadin.addons.client.grid;
 
 import org.kopi.vkopi.lib.ui.vaadin.addons.client.base.Styles;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VIcon;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSmall;
-import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VSpan;
+import org.kopi.vkopi.lib.ui.vaadin.addons.client.common.VButton;
 
-import com.google.gwt.dom.client.Style.Visibility;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.vaadin.client.ApplicationConnection;
 
@@ -47,23 +41,10 @@ public class VEditorActorField extends SimplePanel implements EditorField<String
    * Creates a new actor field widget.
    */
   public VEditorActorField() {
-    inner = new FlowPanel();
-    info = new FlowPanel();
-    value = new VSpan();
-    caption = new VSmall();
-    icon = new VIcon();
-    inner.setStyleName(Styles.ACTOR_FIELD_INNER);
-    info.setStyleName(Styles.ACTOR_FIELD_INFO);
-    value.setStyleName(Styles.ACTOR_FIELD_VALUE);
-    caption.setStyleName(Styles.ACTOR_FIELD_CAPTION);
-    icon.addStyleName(Styles.ACTOR_FIELD_ICON);
+    button = new VButton();
+    button.setStyleName(Styles.ACTOR_FIELD_BUTTON);
     setStyleName(Styles.ACTOR_FIELD);
-    info.add(value);
-    info.add(caption);
-    inner.add(icon);
-    inner.add(info);
-    setWidget(inner);
-    sinkEvents(Event.ONCLICK);
+    setWidget(button);
   }
   
   //---------------------------------------------------
@@ -75,7 +56,7 @@ public class VEditorActorField extends SimplePanel implements EditorField<String
    * @param caption The field caption.
    */
   public void setCaption(String caption) {
-    this.caption.setText(caption);
+    button.setText(caption);
   }
   
   /**
@@ -83,36 +64,20 @@ public class VEditorActorField extends SimplePanel implements EditorField<String
    * @param icon The actor field icon name.
    */
   public void setIcon(String icon) {
-    this.icon.setName(icon);
-  }
-  
-  /**
-   * Sets the actor field value.
-   * @param value The field value.
-   */
-  public void setValue(String value) {
-    if (value == null || value.length() == 0) {
-      this.value.setText("X");
-      this.value.getElement().getStyle().setVisibility(Visibility.HIDDEN);
-    } else {
-      this.value.setText(value);
-      this.value.getElement().getStyle().setVisibility(Visibility.VISIBLE);
-    }
+    button.setIcon(icon);
   }
   
   @Override
   public void setColor(String foreground, String background) {
     if (foreground != null && foreground.length() > 0) {
-      icon.getElement().getStyle().setColor(foreground);
-      value.getElement().getStyle().setColor(foreground);
+      button.getElement().getStyle().setColor(foreground);
     } else {
-      icon.getElement().getStyle().setColor("inherit");
-      value.getElement().getStyle().setColor(foreground);
+      button.getElement().getStyle().setColor("inherit");
     }
     if (background != null && background.length() > 0) {
-      inner.getElement().getStyle().setBackgroundColor(background);
+      button.getElement().getStyle().setBackgroundColor(foreground);
     } else {
-      inner.getElement().getStyle().setBackgroundColor("inherit");
+      button.getElement().getStyle().setBackgroundColor("inherit");
     }
   }
   
@@ -128,7 +93,7 @@ public class VEditorActorField extends SimplePanel implements EditorField<String
 
   @Override
   public String getValue() {
-    return value.getText();
+    return null;
   }
 
   @Override
@@ -139,7 +104,7 @@ public class VEditorActorField extends SimplePanel implements EditorField<String
   
   @Override
   public HandlerRegistration addClickHandler(ClickHandler handler) {
-    return addHandler(handler, ClickEvent.getType());
+    return button.addClickHandler(handler);
   }
   
   @Override
@@ -162,11 +127,7 @@ public class VEditorActorField extends SimplePanel implements EditorField<String
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
-  
-  private final FlowPanel                       inner;
-  private final FlowPanel                       info;
-  private final VSpan                           value;
-  private final VSmall                          caption;
-  private final VIcon                           icon;
+
+  private VButton                               button;
   private boolean                               enabled;
 }

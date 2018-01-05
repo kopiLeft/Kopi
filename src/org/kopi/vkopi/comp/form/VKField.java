@@ -501,8 +501,8 @@ public class VKField
   private int			options;
   private VKFieldColumns	columns;
   private int[]			access;
-  private VKCommand[]		commands;
-  private VKTrigger[]		triggers;
+  protected VKCommand[]		commands;
+  protected VKTrigger[]		triggers;
   private String		alias;
 
   private int			index;
