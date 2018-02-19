@@ -56,7 +56,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
   //---------------------------------------------------
   // CONSTRUCTOR
   //---------------------------------------------------
-  
+
   /**
    * Creates a new <code>DListDialog</code> instance.
    * @param model The list dialog model.
@@ -68,17 +68,17 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
     addSelectionListener(this);
     addSearchListener(this);
   }
-  
+
   //---------------------------------------------------
   // LISTDIALOG IMPLEMENTATION
   //---------------------------------------------------
-  
+
   @Override
   public int selectFromDialog(UWindow window, UField field, boolean showSingleEntry) {
     if (!showSingleEntry && model.getCount() == 1) {
       return model.convert(0);
     }
-    
+
     // too many rows case
     if (model.isTooManyRows()) {
       handleTooManyRows();
@@ -101,18 +101,18 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
   public int selectFromDialog(UWindow window, boolean showSingleEntry) {
     return selectFromDialog(window, null, showSingleEntry);
   }
-  
+
   @Override
   public void onClose(CloseEvent event) {
     doSelectFromDialog(-1, event.isEscaped(), event.isNewForm());
   }
-  
+
   @Override
   public void onSelection(SelectionEvent event) {
     if (table.getContainerDataSource().size() == 0) {
       return;
     }
-    
+
     ensureTableSelection();
     switch (event.getTarget()) {
     case CURRENT_ROW:
@@ -140,7 +140,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       // noting to do
     }
   }
-  
+
   @Override
   public void onSearch(SearchEvent event) {
     if (!table.getContainerDataSource().hasFilters()) {
@@ -156,7 +156,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       }
     }
   }
-  
+
   /**
    * Ensures that a row is selected in the list dialog table.
    * The selected row will be set to the first visible row when
@@ -167,7 +167,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       table.select(table.getContainerDataSource().firstItemId());
     }
   }
-  
+
   /**
    * Returns the next item ID according to the currently selected one.
    * @return The next item ID according to the currently selected one.
@@ -176,10 +176,10 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
     if ((Integer)table.getSelectedRow() == table.getContainerDataSource().lastItemId()) {
       return table.getContainerDataSource().lastItemId();
     } else {
-      return table.getContainerDataSource().nextItemId((Integer)table.getSelectedRow());
+      return table.getContainerDataSource().nextItemId(table.getSelectedRow());
     }
   }
-  
+
   /**
    * Returns the previous item ID according to the currently selected one.
    * @return The previous item ID according to the currently selected one.
@@ -188,44 +188,44 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
     if ((Integer)table.getSelectedRow() == table.getContainerDataSource().firstItemId()) {
       return table.getContainerDataSource().firstItemId();
     } else {
-      return table.getContainerDataSource().prevItemId((Integer)table.getSelectedRow());
+      return table.getContainerDataSource().prevItemId(table.getSelectedRow());
     }
   }
-  
+
   /**
    * Looks for the next page item ID starting from the selected row.
    * @return The next page item ID.
    */
   protected Integer getNextPageItemId() {
     Integer             nextPageItemId;
-    
+
     nextPageItemId = (Integer)table.getSelectedRow();
     for (int i = 0; i < 20 && nextPageItemId != table.getContainerDataSource().lastItemId(); i++) {
       nextPageItemId = table.getContainerDataSource().nextItemId(nextPageItemId);
     }
-    
+
     return nextPageItemId;
   }
-  
+
   /**
    * Looks for the previous page item ID starting from the selected row.
    * @return The previous page item ID.
    */
   protected Integer getPrevPageItemId() {
     Integer             prevPageItemId;
-    
+
     prevPageItemId = (Integer)table.getSelectedRow();
     for (int i = 0; i < 20 && prevPageItemId != table.getContainerDataSource().firstItemId(); i++) {
       prevPageItemId = table.getContainerDataSource().prevItemId(prevPageItemId);
     }
-    
+
     return prevPageItemId;
   }
-  
+
   //------------------------------------------------------
   // UTILS
   //------------------------------------------------------
-  
+
   /**
    * Handles the client response after thread release.
    * @return The selected position.
@@ -235,17 +235,17 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       return -1;
     } else if (doNewForm) {
       try {
-	return doNewForm((VForm)model.getForm(), model.getNewForm());
+	return doNewForm(model.getForm(), model.getNewForm());
       } catch (VException e) {
 	throw new VRuntimeException(e);
       }
     } else if (selectedPos != -1) {
       return model.convert(selectedPos);
     }
-    
+
     return -1; // in all other cases return -1 indicating no choice.
   }
-  
+
   /**
    * Displays a window to insert a new record
    * @param form The {@link VForm} instance.
@@ -260,23 +260,23 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       return VListDialog.NEW_CLICKED;
     }
   }
-  
+
   /**
    * Prepares the dialog content.
    */
   protected void prepareDialog() {
-    table = new ListTable(model); 
+    table = new ListTable(model);
     setTable(table);
     table.select(table.getContainerDataSource().firstItemId());
     table.addItemClickListener(new ItemClickListener() {
-      
+
       @Override
       public void itemClick(ItemClickEvent event) {
         doSelectFromDialog((Integer) event.getItemId(), false, false);
       }
     });
     table.addSelectionListener(new com.vaadin.event.SelectionEvent.SelectionListener() {
-      
+
       @Override
       public void select(com.vaadin.event.SelectionEvent event) {
         if (!event.getSelected().isEmpty()) {
@@ -285,7 +285,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       }
     });
     table.addColumnReorderListener(new ColumnReorderListener() {
-      
+
       @Override
       public void columnReorder(ColumnReorderEvent event) {
         sort();
@@ -296,7 +296,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       setNewText(VlibProperties.getString("new-record"));
     }
   }
-  
+
   /**
    * Shows the dialog and wait until it is closed from client side.
    */
@@ -310,7 +310,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       }
     }, this);
   }
-  
+
   /**
    * Returns the current application instance.
    * @return Tshe current application instance.
@@ -318,19 +318,19 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
   protected VApplication getApplication() {
     return (VApplication) ApplicationContext.getApplicationContext().getApplication();
   }
-  
+
   /**
    * Handles the too many rows case.
-   * This will show a user notification. 
+   * This will show a user notification.
    */
   protected void handleTooManyRows() {
     final InformationNotification		notice;
     final Object				lock;
-    
+
     lock = new Object();
     notice = new InformationNotification(VlibProperties.getString("Notice"), MessageCode.getMessage("VIS-00028"));
     notice.addNotificationListener(new NotificationListener() {
-      
+
       @Override
       public void onClose(boolean yes) {
         getApplication().detachComponent(notice);
@@ -339,7 +339,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
     });
     notice.setLocale(getApplication().getDefaultLocale().toString());
     BackgroundThreadHandler.startAndWait(new Runnable() {
-      
+
       @Override
       public void run() {
         getApplication().attachComponent(notice);
@@ -347,7 +347,7 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       }
     }, lock);
   }
-  
+
   /**
    * Confirms the user selection and closes the list.
    * @param selectedPos The selected position.
@@ -370,7 +370,11 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
     int       sel = -1;
 
     if (table != null) {
-      sel = (Integer)table.getSelectedRow();
+      if (table.getSelectedRow() != null) {
+        sel = (Integer)table.getSelectedRow();
+      } else {
+        sel = 0;
+      }
       left = (Integer)table.getColumns().get(0).getPropertyId();
     }
 
@@ -381,14 +385,14 @@ public class DListDialog extends GridListDialog implements UListDialog, CloseLis
       table.select(sel);
     }
   }
-  
+
   //------------------------------------------------------
   // DATA MEMBERS
   //------------------------------------------------------
-  
-  private VListDialog			model;
+
+  private VListDialog                   model;
   private ListTable                     table;
-  private boolean                  	escaped = true;
-  private boolean               	doNewForm;
-  private int				selectedPos = -1;
+  private boolean                       escaped = true;
+  private boolean                       doNewForm;
+  private int                           selectedPos = -1;
 }
