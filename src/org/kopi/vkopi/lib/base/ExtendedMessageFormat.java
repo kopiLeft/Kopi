@@ -183,7 +183,7 @@ public final class ExtendedMessageFormat extends MessageFormat {
         next(position);
       }
     }
-    super.applyPattern(customPattern.toString().replaceAll("''", "'"));
+    super.applyPattern(customPattern.toString());
     // use extended choice format to handle specific use
     useExtendedChoiceFormat(descriptions);
   }
@@ -356,7 +356,6 @@ public final class ExtendedMessageFormat extends MessageFormat {
       appendTo.append(QUOTE);
     }
     next(pos);
-
     start = pos.getIndex();
     c = pattern.toCharArray();
     lastHold = start;
