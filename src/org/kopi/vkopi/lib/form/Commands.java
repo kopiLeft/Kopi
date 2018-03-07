@@ -77,6 +77,11 @@ public class Commands implements VConstants {
    * ----------------------------------------------------------------------
    */
 
+  public static void showHideFilter(final VBlock b) throws VException {
+    assert !b.noChart() : "The commande showHideFilter cannot be used for no chart blocks";
+    b.showHideFilter();
+  }
+  
   /**
    * Switches view between list and detail mode.
    */

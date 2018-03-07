@@ -34,6 +34,8 @@ public interface BlockListener extends EventListener, Serializable {
   void validRecordNumberChanged();
   void recordInfoChanged(int rec, int info);
   void orderChanged();
+  void filterHidden();
+  void filterShown();
 
   UBlock getCurrentDisplay(); // please do not use!
 }

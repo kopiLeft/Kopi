@@ -493,6 +493,10 @@ public class DBlock extends JPanel implements UBlock {
     return this;
   }
 
+  public void filterHidden() {}
+
+  public void filterShown() {}
+
   public boolean inDetailMode() {
     return false;
   }
@@ -519,5 +523,4 @@ public class DBlock extends JPanel implements UBlock {
    * Comment for <code>serialVersionUID</code>
    */
   private static final long 	serialVersionUID = -8665529498396399382L;
-
 }

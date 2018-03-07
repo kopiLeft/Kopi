@@ -450,6 +450,15 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     fireOrderChanged();
   }
 
+  public void showHideFilter() throws VException {
+    if (isFilterVisible) {
+      filterHidden();
+      isFilterVisible = false;
+    } else {
+      filterShown();
+      isFilterVisible = true;
+    }
+  }
 
   private void sortArray(int[] array, int column, int order) {
     mergeSort(array, column, order, 0, array.length - 1, new int[array.length]);
@@ -4190,6 +4199,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
+  
   protected void fireOrderChanged() {
     Object[]            listeners = blockListener.getListenerList();
 
@@ -4199,6 +4209,27 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
+  
+  protected void filterShown() {
+    Object[]            listeners = blockListener.getListenerList();
+
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]== BlockListener.class) {
+        ((BlockListener)listeners[i+1]).filterShown();
+      }
+    }
+  }
+  
+  protected void filterHidden() {
+    Object[]            listeners = blockListener.getListenerList();
+
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]== BlockListener.class) {
+        ((BlockListener)listeners[i+1]).filterHidden();
+      }
+    }
+  }
+  
   // ----------------------------------------------------------------------
   // SORTING AND LABELS
   // ----------------------------------------------------------------------
@@ -4475,6 +4506,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected int                 	maxRowPos;
   protected int                 	maxColumnPos;
   protected int                 	displayedFields;
+  
+  private boolean                       isFilterVisible;
 
   protected HashMap		        dropListMap;
 }

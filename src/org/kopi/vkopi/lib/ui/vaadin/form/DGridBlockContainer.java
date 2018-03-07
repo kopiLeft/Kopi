@@ -34,7 +34,6 @@ import com.vaadin.data.Container.Sortable;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractInMemoryContainer;
-import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Grid;
@@ -53,6 +52,7 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
   
   public DGridBlockContainer(final VBlock model) {
     this.model = model;
+    this.deletedRecordFilter = new DeletedRecordFilter(model);
     this.propertyIds = new ArrayList<Integer>();
     for (int i = 0; i < model.getFieldCount(); i++) {
       if (!model.getFields()[i].isInternal() && !model.getFields()[i].noChart()) {
@@ -63,20 +63,7 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
     // redefine sort strategy for empty records
     setItemSorter(new DGridBlockItemSorter(model));
     // filters deleted records
-    addFilter(new Filter() {
-      
-      @Override
-      public boolean passesFilter(Object itemId, Item item)
-        throws UnsupportedOperationException
-      {
-        return !model.isRecordDeleted((Integer)itemId);
-      }
-      
-      @Override
-      public boolean appliesToProperty(Object propertyId) {
-        return true;
-      }
-    });
+    addFilter(deletedRecordFilter);
   }
   
   // --------------------------------------------------
@@ -116,6 +103,14 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
     fireItemSetChange();
   }
   
+  /**
+   * Returns true is the data source contains installed filters.
+   * @return True is the data source contains installed filters.
+   */
+  public boolean hasFilters() {
+    return !getFilters().isEmpty();
+  }
+  
   @Override
   protected void fireContainerPropertySetChange() {
     super.fireContainerPropertySetChange();
@@ -149,6 +144,7 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
   @Override
   public void removeAllContainerFilters() {
     removeAllFilters();
+    addFilter(deletedRecordFilter);
   }
   
   @Override
@@ -163,7 +159,7 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
                                  boolean onlyMatchPrefix)
   {
     try {
-      addFilter(new SimpleStringFilter(propertyId, filterString, ignoreCase, onlyMatchPrefix));
+      addFilter(new DGridBlockFilter(propertyId, filterString, ignoreCase, onlyMatchPrefix));
     } catch (UnsupportedFilterException e) {
       // the filter instance created here is always valid for in-memory containers
     }
@@ -172,14 +168,17 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
   @Override
   public void removeContainerFilters(Object propertyId) {
     removeFilters(propertyId);
+    addFilter(deletedRecordFilter);
   }
   
   @Override
   public int size() {
     if (isReallyFilled()) {
       return super.size();
-    } else {
+    } else if (!isFiltered()) {
       return model.getNumberOfValidRecord();
+    } else {
+      return super.size();
     }
   }
   
@@ -316,12 +315,63 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
     @Override
     public void setReadOnly(boolean newStatus) {}
     
+    /**
+     * Formats an object according to the property nature.
+     * @param o The object to be formatted.
+     * @return The formatted property object.
+     */
+    public String formatObject(Object o) {
+      return field.toText(o);
+    }
+    
+    @Override
+    public String toString() {
+      return formatObject(field.getObject(record));
+    }
+    
     // --------------------------------------------------
     // DATA MEMBERS
     // --------------------------------------------------
     
     private final int                   record;
     private final VField                field;
+  }
+  
+  /**
+   * Deleted Record Filter.
+   */
+  public static class DeletedRecordFilter implements Filter {
+    
+    //---------------------------------------------------
+    // CONSTRUCTOR
+    //---------------------------------------------------
+    
+    public DeletedRecordFilter(VBlock model) {
+      this.model = model;
+    }
+
+    // --------------------------------------------------
+    // IMPLEMENTATION
+    // --------------------------------------------------
+
+    @Override
+    public boolean passesFilter(Object itemId, Item item)
+      throws UnsupportedOperationException
+    {
+      return !model.isRecordDeleted((Integer)itemId);
+    }
+
+    @Override
+    public boolean appliesToProperty(Object propertyId) {
+      return true;
+    }
+   
+    
+    // --------------------------------------------------
+    // DATA MEMBERS
+    // --------------------------------------------------
+    
+    private  VBlock                  model;
   }
   
   // --------------------------------------------------
@@ -331,4 +381,5 @@ public class DGridBlockContainer extends AbstractInMemoryContainer<Integer, Stri
   private final VBlock                  model;
   private final List<Integer>           propertyIds;
   private final List<Integer>           allItemIds;
+  private final DeletedRecordFilter     deletedRecordFilter;
 }

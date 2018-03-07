@@ -532,6 +532,12 @@ public class DBlock extends Block implements UBlock {
     });
     refresh(true);
   }
+  
+  @Override
+  public void filterHidden() {}
+
+  @Override
+  public void filterShown() {}
 
   @Override
   public UBlock getCurrentDisplay() {

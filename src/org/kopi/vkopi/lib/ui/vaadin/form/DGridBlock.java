@@ -40,6 +40,8 @@ import org.kopi.vkopi.lib.ui.vaadin.base.FontMetrics;
 import org.kopi.vkopi.lib.visual.KopiAction;
 import org.kopi.vkopi.lib.visual.VException;
 
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.SortEvent;
 import com.vaadin.event.SortEvent.SortListener;
 import com.vaadin.shared.ui.grid.ColumnResizeMode;
@@ -50,7 +52,10 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.Grid.ColumnResizeEvent;
 import com.vaadin.ui.Grid.ColumnResizeListener;
 import com.vaadin.ui.Grid.DetailsGenerator;
+import com.vaadin.ui.Grid.HeaderCell;
+import com.vaadin.ui.Grid.HeaderRow;
 import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.TextField;
 
 /**
  * Grid based chart block implementation.
@@ -291,6 +296,61 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
   }
   
   @Override
+  public void filterShown() {
+    if (filterRow != null) {
+      return;
+    }
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        filterRow = grid.appendHeaderRow();  
+        filterRow.setStyleName("block-filter");
+        for (final Object propertyId : (getContainerDatasource().getContainerPropertyIds())) {
+          HeaderCell        cell;
+          TextField         filter;
+          
+          cell = filterRow.getCell(propertyId);
+          filter = new TextField();
+          filter.setStyleName("filter-text");
+          filter.setImmediate(true);
+          filter.addTextChangeListener(new TextChangeListener() {
+            @Override
+            public void textChange(TextChangeEvent event) {
+              if (grid.isEditorActive()) {
+                grid.cancelEditor();
+              }
+              getContainerDatasource().removeContainerFilters(propertyId);
+              if (event.getText().length() > 0) {
+                getContainerDatasource().addContainerFilter(propertyId,
+                                                            event.getText(),
+                                                            true,
+                                                            false);
+              }
+            }
+          });
+          cell.setComponent(filter);
+        } 
+      }
+    });
+  }
+  
+  @Override
+  public void filterHidden() {
+    BackgroundThreadHandler.access(new Runnable() {
+      
+      @Override
+      public void run() {
+        if (filterRow != null) {
+          getContainerDatasource().removeAllContainerFilters();
+          grid.removeHeaderRow(filterRow);
+          filterRow = null;
+        } 
+      }
+    });
+  }
+  
+  @Override
   public void blockChanged() {
     refresh(true);
   }
@@ -503,7 +563,7 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
     }
     grid.setWidth(width + 16, Unit.PIXELS);
   }
-  
+
   /**
    * Updates the grid editors access and content
    */
@@ -679,4 +739,5 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
    * the port view after a scroll fired by the user.
    */
   private boolean                       doNotCancelEditor;
+  private HeaderRow                     filterRow ;
 }

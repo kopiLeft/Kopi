@@ -435,7 +435,13 @@ public class DForm extends DWindow implements UForm, FormListener {
 
     @Override
     public void orderChanged() {}
+    
+    @Override
+    public void filterHidden() {}
 
+    @Override
+    public void filterShown() {}
+    
     @Override
     public UBlock getCurrentDisplay() {
       // Please don't use

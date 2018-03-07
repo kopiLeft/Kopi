@@ -562,6 +562,8 @@ public class DForm extends DWindow implements UForm, DPositionPanelListener {
     public void validRecordNumberChanged() {}
     public void recordInfoChanged(int rec, int info) {}
     public void orderChanged() {}
+    public void filterHidden() {}
+    public void filterShown() {}
     public UBlock getCurrentDisplay() {
       // use another listener:
       return null;

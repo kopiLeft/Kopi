@@ -37,7 +37,7 @@ JAVAFILES +=	DateChooser DBlock DBlockDropHandler DChartBlock	\
 		DGridEditorField DGridEditorLabel DGridTextEditorField	\
 		DActorField DGridEditorActorField DGridEditorImageField	\
 		DBooleanField DGridEditorBooleanField 			\
-		DGridBlockItemSorter DRichTextEditor
+		DGridBlockItemSorter DRichTextEditor DGridBlockFilter
 
 ## ----------------------------------------------------------------------
 ## GOALS
