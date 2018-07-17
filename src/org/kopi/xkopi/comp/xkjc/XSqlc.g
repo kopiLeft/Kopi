@@ -364,20 +364,21 @@ sSearchCondition []
       "OR" { isAnd = false; oper = "OR"; }
     )
     (
+        { hasNot = false; }
+      ( "NOT" {oper += " NOT "; hasNot = true; } )?
       (
-        "NOT" {oper += " NOT "; hasNot = true; } )?
-        (
-          p = sPredicate[]
-	    {
-	      right = new SimpleSearchCondition(sourceRef, p);
-	      if (hasNot) {
-		right = new NotCondition(sourceRef, right);
+        p = sPredicate[]
+	      {
+	        right = new SimpleSearchCondition(sourceRef, p);
+            if (hasNot) {
+		      right = new NotCondition(sourceRef, right);
+            }
+	        self = isAnd
+              ? (BinarySearchCondition)new AndCondition(sourceRef, self, right)
+		      : (BinarySearchCondition)new OrCondition(sourceRef, self, right);
 	      }
-	      self = isAnd ? (BinarySearchCondition)new AndCondition(sourceRef, self, right)
-		: (BinarySearchCondition)new OrCondition(sourceRef, self, right);
-	    }
-        |
-          self = xIfCondition[oper, self]
+      |
+        self = xIfCondition[oper, self]
       )
     )
   )*
