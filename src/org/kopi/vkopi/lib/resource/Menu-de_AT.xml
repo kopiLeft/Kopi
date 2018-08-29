@@ -17,4 +17,10 @@
   <actor ident="NewItem" label="Neuer Eintrag" help="Anlegen eines neuen Eintrages für dieses Feld" />
   <actor ident="EditItem" label="Eintrag bearbeiten" help="Bearbeiten des vollständigen Feldinhaltes" />
   <actor ident="EditItem_S" label="Standard" help="Bearbeiten des vollständigen Feldinhaltes" />
+  <actor ident="Default" label="Standard" help="Als standard einstellen" />
+  <actor ident="Select" label="Wählen Sie" help="Element auswählen" />
+  <actor ident="AddItem" label="Hinzufügen" help="Ein neues Element hinzufügen" />
+  <actor ident="RemoveItem" label="Löschen" help="Element löschen" />
+  <actor ident="Localise" label="Übersetzen" help="Element übersetzen" />
+  <actor ident="Save" label="Speichern" help="Speichere den Baum" />
 </insert>

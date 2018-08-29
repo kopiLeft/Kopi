@@ -30,7 +30,7 @@ PACKAGE =	org/kopi/vkopi/lib/ui/vaadin/visual
 JAVAFILES += 	DActor DMenuTree DWindow VFileHandler DHelpViewer 	\
 		VApplicationContext VApplication VUIFactory 		\
 		VImageHandler VWindowController DAdminMenu 		\
-		DBookmarkMenu DMainMenu DMenu DUserMenu
+		DBookmarkMenu DMainMenu DMenu DUserMenu DItemTree Tree
 
 OPTIONS =	
 

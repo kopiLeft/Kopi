@@ -87,4 +87,6 @@
   <message ident="00065" text="Ce texte est trop long pour ce champ : max {0} * {1} caractères"/>
   <message ident="00066" text="Impossible de calculer cette formule."/>
   <message ident="00067" text="Attendez s'il vous plaît ..." />
+  <message ident="00068" text="Maximum {0} caractères" />
+  <message ident="00069" text="Profondeur maximale de l'arbre : {0} niveaux" />
 </messages>

@@ -78,7 +78,9 @@ PNGFILES =	add all apply  article					\
 		serialquery serviceoff serviceon sort			\
 		split standard  stop store suggest			\
 		todo top unfold unfoldColumn update			\
-		users utils validate wait warning forms checkbox
+		users utils validate wait warning forms checkbox \
+		checked unchecked default checked_s unchecked_s   \
+		default_s radio_checked radio_checked_s
 
 PNGNEW =	align_center align_justify align_left align_right bold	\
 		cut ident italic paste redo unident underline undo      \

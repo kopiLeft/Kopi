@@ -28,12 +28,12 @@
   <property name="package.name" value="org.kopi.vkopi.lib.ui.vaadin.visual" />
   <property name="src" value="." />
   <property name="javafiles" value="DActor.java DHelpViewer.java DMenuTree.java
-  	                            DWindow.java VApplication.java
+                                    DItemTree.java DWindow.java VApplication.java
   	                            VApplicationContext.java VFileHandler.java
   	                            VImageHandler.java VPreviewRunner.java VUIFactory.java
   	                            VWindowController.java WaitIndicator.java
 				    DAdminMenu.java DBookmarkMenu.java DMainMenu.java
-				    DMenu.java DUserMenu.java" />
+				    DMenu.java DUserMenu.java Tree.java" />
 
   <import file="${topdir}/defs.xml" />
 </project>

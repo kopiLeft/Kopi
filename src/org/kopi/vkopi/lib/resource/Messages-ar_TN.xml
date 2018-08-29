@@ -87,4 +87,6 @@
   <message ident="00065" text="هذا النص أوسع من هذا الموقع ({0},{1})"/>
   <message ident="00066" text="can not compute this formula."/>
   <message ident="00067" text="Please wait ..." />
+  <message ident="00068" text="الحد الأقصى {0} أحرف" />
+  <message ident="00069" text="أقصى عمق للشجرة: {0} مستويات" />
 </messages>

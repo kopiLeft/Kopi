@@ -45,6 +45,7 @@
   <property key="search_operator" value="معامل"/>
   <property key="color_chooser" value="اختيار لون"/>
   <property key="toolbar-title" value="مفضل"/>
+  <property key="New_item" value="عنصر جديد" />
 <!-- MENUTREE-->
   <property key="program_menu" value="قائمة الاستمارات"/>
   <property key="PROGRAM" value="برنامج"/>
@@ -144,7 +145,7 @@
   <property key="Text-long" value="هذا الموقع يجب أن  يملأ بنص  بأي حجم"/>
   <property key="Fixed-long" value="هذا الموقع يجب أن  يملأ بعدد بين(0) و(1)"/>
   <property key="Long-long" value="هذا الموقع يجب  أن يملأ بعدد صحيح بين (0) و ()1"/>
-  <property key="Date-long" value="هذا الموقع يجب أن يحتوي تاريخ (يوم.شهر .سنة )"/>  
+  <property key="Date-long" value="هذا الموقع يجب أن يحتوي تاريخ (يوم.شهر .سنة )"/>
   <property key="Month-long" value="هذا الموقع يجب أن يحتوي على شهر(شهر. سنة)"/>
   <property key="Time-long" value="هذا الموقع يجب أن يحتوي على ساعة(ساعة.دقائق))"/>
   <property key="Week-long" value="هذا  الموقع يجب أن يحتوي على أسبوع  ايزو  (اسبوع.سنة)"/>
@@ -247,13 +248,13 @@
   <property key="ExportCSV" value="CSV" />
   <property key="ExportCSV-help" value="تسجيل البيانات في ملف CSV"/>
   <property key="ExportXLSX" value="XLSX" />
-  <property key="ExportXLSX-help" value="تسجيل البيانات في  ملف XSLX"/>  
+  <property key="ExportXLSX-help" value="تسجيل البيانات في  ملف XSLX"/>
   <property key="ExportPDF" value="PDF" />
   <property key="ExportPDF-help" value="تسجيل البيانات  في ملف PDF"/>
   <property key="Fold" value="الطي"/>
   <property key="Fold-help" value="طي الخانة لتركيب البيانات"/>
   <property key="Unfold" value="توضيح"/>
-  <property key="Unfold-help" value="توضيح الخانة لتعميق الرؤية"/>  
+  <property key="Unfold-help" value="توضيح الخانة لتعميق الرؤية"/>
   <property key="FoldColumn" value="اخفاء"/>
   <property key="FoldColumn-help" value="اخفاء الخانة"/>
   <property key="UnfoldColumn" value="اظهار الخانة"/>
@@ -297,7 +298,7 @@
   <property key="language" value="  اللّغة"/>
   <property key="themes" value="التصاميم" />
   <property key="theme-confirmation" value="يؤدي تغيير التصميم إلى الخروج من جلسة العمل الخاصة بك." />
-  <property key="available-themes" value=": التصاميم المتاحة" /> 
+  <property key="available-themes" value=": التصاميم المتاحة" />
   <property key="home" value="إستقبال" />
   <property key="session-expired-caption" value="انتهت الدورة" />
   <property key="session-expired-message" value="تثبّت من أيّة بيانات لم يتم حفظها، ثم انقر هنا للمتابعة." />

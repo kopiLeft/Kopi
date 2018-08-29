@@ -45,6 +45,7 @@
   <property key="search_operator" value="Suchoperator" />
   <property key="color_chooser" value="Color chooser" />
   <property key="toolbar-title" value="Favoriten" />
+  <property key="New_item" value="Neuer Artikel" />
 <!-- MENUTREE-->
   <property key="program_menu" value="Programm-Auswahl" />
   <property key="PROGRAM" value="PROGRAMME" />

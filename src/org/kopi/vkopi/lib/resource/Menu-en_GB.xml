@@ -12,4 +12,10 @@
   <actor ident="Unfold" label="Open" help="Open the menu" />
   <actor ident="Information" label="Information" help="Information" />
   <actor ident="Help" label="Help" help="Open the help window" />
+  <actor ident="Default" label="Default" help="Set as default" />
+  <actor ident="Select" label="Select" help="Select element" />
+  <actor ident="AddItem" label="Add" help="Add a new item" />
+  <actor ident="RemoveItem" label="Delete" help="Delete item" />
+  <actor ident="Localise" label="Localise" help="Localise item" />
+  <actor ident="Save" label="Save" help="Save the item tree" />
 </insert>

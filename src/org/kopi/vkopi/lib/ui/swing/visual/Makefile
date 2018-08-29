@@ -28,13 +28,13 @@ PACKAGE =	org/kopi/vkopi/lib/ui/swing/visual
 ## FILES
 
 JAVAFILES +=	DActor DFootPanel DInfoPanel DMenuBar DMenuItem 	\
-		DMenuTree DObject DPreferences				\
+		DMenuTree DItemTree DObject DPreferences				\
 		DStatePanel DWaitPanel DWindow ProgressWindow		\
 		JFileHandler DHelpViewer JBookmarkPanel Utils 		\
 		DPositionPanel SplashScreen				\
 		SwingThreadHandler JApplicationContext	JApplication 	\
 		JImageHandler JUIFactory JWindowController		\
-		MenuItemRenderer WaitWindow 	 	
+		MenuItemRenderer MenuItemRenderer WaitWindow 	 	
 
 OPTIONS =	ApplicationOptions
 

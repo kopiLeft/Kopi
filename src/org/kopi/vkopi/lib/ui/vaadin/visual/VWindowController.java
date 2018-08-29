@@ -41,7 +41,7 @@ public class VWindowController extends WindowController {
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
-  
+
   @Override
   public boolean doModal(VWindow model) {
     try {
@@ -60,7 +60,7 @@ public class VWindowController extends WindowController {
   @Override
   public void doNotModal(VWindow model) {
     WindowBuilder		builder;
-    
+
     builder = getWindowBuilder(model);
     if (builder != null) {
       try {
@@ -85,7 +85,7 @@ public class VWindowController extends WindowController {
       }
     }
   }
-  
+
   /**
    * Shows a modal window in a popup view. This will handle
    * a window view not in a tabsheet but in a non modal
@@ -101,15 +101,15 @@ public class VWindowController extends WindowController {
     if (application == null) {
       return;
     }
-    
+
     final PopupWindow			popup;
-	  
+
     popup = new PopupWindow();
     popup.setModal(false);
     popup.setContent(view);
     popup.setCaption(title); // put popup title
     BackgroundThreadHandler.access(new Runnable() {
-      
+
       @Override
       public void run() {
 	application.attachComponent(popup);
@@ -130,7 +130,7 @@ public class VWindowController extends WindowController {
     //---------------------------------------
     // CONSTRUCTOR
     //---------------------------------------
-    
+
     /**
      * Creates a new <code>ModalViewRunner</code> runner.
      * @param model The window model.
@@ -142,23 +142,23 @@ public class VWindowController extends WindowController {
     //---------------------------------------
     // IMPLEMENTATION
     //---------------------------------------
-    
+
     @Override
     public void run() {
       WindowBuilder		builder;
-      
+
       builder = getWindowBuilder(model);
       if (builder != null) {
-	
+
 	try {
 	  VApplication		application;
-	      
+
 	  view = (DWindow) builder.createWindow(model);
 	  view.run();
 	  application = (VApplication) ApplicationContext.getApplicationContext().getApplication();
 	  if (application != null) {
 	    PopupWindow		popup;
-		  
+
 	    popup = new PopupWindow();
 	    popup.setModal(true);
 	    popup.setContent(view);
@@ -185,6 +185,6 @@ public class VWindowController extends WindowController {
     //---------------------------------------
 
     private DWindow       		view;
-    private final VWindow       	model; 
+    private final VWindow       	model;
   }
 }

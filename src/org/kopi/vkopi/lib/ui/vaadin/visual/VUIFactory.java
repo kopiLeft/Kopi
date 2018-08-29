@@ -32,6 +32,7 @@ import org.kopi.vkopi.lib.ui.vaadin.preview.DPreviewWindow;
 import org.kopi.vkopi.lib.ui.vaadin.report.DReport;
 import org.kopi.vkopi.lib.visual.UIFactory;
 import org.kopi.vkopi.lib.visual.VHelpViewer;
+import org.kopi.vkopi.lib.visual.VItemTree;
 import org.kopi.vkopi.lib.visual.VMenuTree;
 import org.kopi.vkopi.lib.visual.VModel;
 
@@ -50,6 +51,8 @@ public class VUIFactory extends UIFactory {
 
     if (model instanceof VMenuTree) {
       view = createMenuTree((VMenuTree)model);
+    } else if (model instanceof VItemTree) {
+      view = createItemTree((VItemTree)model);
     } else if (model instanceof VForm) {
       view = createForm((VForm)model);
     } else if (model instanceof VPreviewWindow) {
@@ -65,7 +68,7 @@ public class VUIFactory extends UIFactory {
     } else {
       throw new IllegalArgumentException("NO UI IMPLEMENTATION FOR " + model.getClass());
     }
-    
+
     model.setDisplay(view);
     return view;
   }
@@ -81,6 +84,15 @@ public class VUIFactory extends UIFactory {
    */
   protected DMenuTree createMenuTree(VMenuTree model) {
     return new DMenuTree(model);
+  }
+
+  /**
+   * Creates the {@link DItemTree} from a given model.
+   * @param model The item tree model
+   * @return The  {@link DItemTree} view.
+   */
+  protected DItemTree createItemTree(VItemTree model) {
+    return new DItemTree(model);
   }
 
   /**

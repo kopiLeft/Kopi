@@ -279,21 +279,25 @@ public abstract class DWindow extends JPanel implements UWindow {
         System.err.println("ERROR: Call of DWindow.close(int x) ouside of Event-Dispatching Thread");
         Thread.dumpStack();
       }
-      release();
+      if (model != null) {
+        release();
+      }
       disposeAfterLostFocus(frame);
-      // !! lackner 30.07.2003 why must the model be destroy
-      model.destroyModel();
+      if (model != null) {
+        // !! lackner 30.07.2003 why must the model be destroy
+        model.destroyModel();
+      }
     } finally {
-      synchronized (model) {
-        // set the return code
-        returnCode = code;
-        // Inform all threads who wait for this panel
-        model.notifyAll();
+      if (model != null) {
+        synchronized (model) {
+          // set the return code
+          returnCode = code;
+          // Inform all threads who wait for this panel
+          model.notifyAll();
+        }
       }
     }
   }
-
-
 
   public int getReturnCode() {
     return returnCode;
@@ -894,7 +898,7 @@ public abstract class DWindow extends JPanel implements UWindow {
   public final void unsetWaitInfo() {
     waitInfoHandler.unsetWaitInfo();
   }
-  
+
   public void fileProduced(File file, String name) {
     // not used in swing version.
   }
@@ -970,8 +974,10 @@ public abstract class DWindow extends JPanel implements UWindow {
       // Therefore enqueue it at the end.
 
       public void run() {
-	window.setVisible(false);
-	window.dispose();
+        if (window != null) {
+          window.setVisible(false);
+          window.dispose();
+        }
       }
     });
   }
@@ -1250,7 +1256,7 @@ public abstract class DWindow extends JPanel implements UWindow {
     public void notice(final String message) {
 
       Runnable          runner = new Runnable() {
-	
+
 	public void run () {
 	  DWindow.this.displayNotice(message);
 	}
@@ -1265,7 +1271,7 @@ public abstract class DWindow extends JPanel implements UWindow {
      */
     public void error(final String message) {
       Runnable          runner = new Runnable() {
-	
+
 	public void run () {
 	  DWindow.this.displayError(message);
 	}
@@ -1280,7 +1286,7 @@ public abstract class DWindow extends JPanel implements UWindow {
      */
     public void warn(final String message) {
       Runnable          runner = new Runnable() {
-	
+
 	public void run () {
 	  DWindow.this.displayError(message);
 	}
@@ -1321,7 +1327,7 @@ public abstract class DWindow extends JPanel implements UWindow {
 
     public void setWaitInfo(final String message) {
       SwingThreadHandler.startAndWait(new Runnable() {
-	
+
 	public void run() {
 	  if (footPanel != null) {
 	    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -1333,7 +1339,7 @@ public abstract class DWindow extends JPanel implements UWindow {
 
     public void unsetWaitInfo() {
       SwingThreadHandler.startAndWait(new Runnable() {
-	
+
 	public void run() {
 	  if (footPanel != null) {
 	    setCursor(Cursor.getDefaultCursor());

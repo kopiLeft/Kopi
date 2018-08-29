@@ -47,7 +47,7 @@ PNGFILES =	all bg_header block border bottomRibbon			\
 		ribbon save search searchop separator serialquery	\
 		serviceoff serviceon slogan splash_image store suggest	\
 		timeStamp topRibbon tri unfold unfoldColumn up 		\
-		exportXlsx
+		exportXlsx item node checked unchecked default
 
 PNGNEW =
 

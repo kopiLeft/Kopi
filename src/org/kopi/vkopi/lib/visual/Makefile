@@ -28,20 +28,21 @@ PACKAGE =	org/kopi/vkopi/lib/visual
 ## FILES
 
 JAVAFILES +=	ActionHandler Application ApplicationContext		\
-		Constants FileHandler KopiAction KopiExecutable 	\
-		MessageCode Module  DPositionPanelListener		\
-		Registry WaitDialogListener ProgressDialogListener	\
-		VActor VDefaultActor VActionListener			\
-		VCommand VException PreviewRunner VColor		\
-		VExecFailedException VHelpGenerator			\
-		VInterruptException VMenuTree VRuntimeException		\
-		VTrigger VWindow VDatabaseUtils WindowController 	\
-		WindowBuilder WaitInfoListener MessageListener		\
-		VerifyConfiguration ApplicationConfiguration		\
-		PrinterManager PropertyException ModelCloseListener	\
-		UserConfiguration Message VlibProperties UWindow	\
-		UMenuTree ImageHandler VModel UIFactory UActor		\
-		FileProductionListener LogoutModule RootMenu
+		Constants FileHandler KopiAction KopiExecutable 	        \
+		MessageCode Module Item DPositionPanelListener				\
+		Registry WaitDialogListener ProgressDialogListener			\
+		VActor VDefaultActor VActionListener						\
+		VCommand VException PreviewRunner VColor					\
+		VExecFailedException VHelpGenerator							\
+		VInterruptException VMenuTree VItemTree VRuntimeException	\
+		VTrigger VWindow VDatabaseUtils WindowController 			\
+		WindowBuilder WaitInfoListener MessageListener				\
+		VerifyConfiguration ApplicationConfiguration				\
+		PrinterManager PropertyException ModelCloseListener			\
+		UserConfiguration Message VlibProperties UWindow			\
+		UMenuTree ImageHandler VModel UIFactory UActor				\
+		FileProductionListener LogoutModule RootMenu RootItem 		\
+		UItemTree ItemTreeManager
 
 ## ----------------------------------------------------------------------
 ## GOALS

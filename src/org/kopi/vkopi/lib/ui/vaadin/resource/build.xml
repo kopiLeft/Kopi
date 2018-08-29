@@ -30,7 +30,7 @@
   <property name="destcopy" value="${classroot}/org/kopi/vkopi/lib/ui/vaadin/resource" />
   <property name="src" value="." />
   <property name="freegifs" value="calendar.gif" />
-  <property name="oldgifs" value="topRibbon.gif" />  
+  <property name="oldgifs" value="topRibbon.gif" />
   <property name="pngfiles" value="all.png bg_header.png block.png border.png bottomRibbon.png
   	                           bread_crumb_separator.png break.png calendar.png collapsed_a.png
   				   collapsed_p.png collapsed.png copy.png delete.png desk.png
@@ -45,7 +45,7 @@
   	                           save.png search.png searchop.png separator.png serialquery.png
   	                           serviceoff.png serviceon.png slogan.png splash_image.png store.png
   	                           suggest.png timeStamp.png topRibbon.png tri.png unfold.png unfoldColumn.png
-  	                           up.png" />
+  	                           up.png item.png node.png checked.png unchecked.png default.png" />
 
   <property name="giffiles" value="${freegifs} ${oldgifs}" />
   <property name="files" value="${pngfiles} ${giffiles} ${psfiles}" />
