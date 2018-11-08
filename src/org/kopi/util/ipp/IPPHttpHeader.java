@@ -59,13 +59,11 @@ public class IPPHttpHeader {
   // --------------------------------------------------------------------
 
   public void write(IPPOutputStream os) throws IOException {
-    String      tmp = "POST " + name + " HTTP/1.0\r\n";
-
-    os.writeString(tmp);
-    tmp = "Content-type: application/ipp\r\n";
-    os.writeString(tmp);
-    tmp = "Content-length: " + size + "\r\n\r\n";
-    os.writeString(tmp);
+    os.writeString("POST " + name + " HTTP/1.0\r\n");
+    os.writeString("Content-type: application/ipp\r\n");
+    os.writeString("Host: " + "localhost" + "\r\n");
+    os.writeString("Content-length: " + size + "\r\n");
+    os.writeString("\r\n");
   }
 
   // --------------------------------------------------------------------
