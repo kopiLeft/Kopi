@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.comp.form;
 
+import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CParseClassContext;
@@ -147,13 +148,18 @@ public class VKField
   }
 
   /**
-   * Returns true iff the field is never displayed
+   * Returns true iff it is certain that the field will never be entered
    */
-  public boolean isSkipped() {
-    return
-      access[0] == ACS_SKIPPED &&
-      access[1] == ACS_SKIPPED &&
-      access[2] == ACS_SKIPPED;
+  public boolean isNeverAccessible() {
+    for (int i = 0; i < 3; i++) {
+      if (access[i] == ACS_VISIT) {
+        return false;
+      }
+      if (access[i] == ACS_MUSTFILL) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -233,18 +239,19 @@ public class VKField
     check(label == null || !isInternal(), FormMessages.HIDDEN_FIELD_HELP);
 
     // TRANSIENT MODE
-    if (columns == null && (isSkipped() || isInternal())) {
+    if (columns == null && isNeverAccessible()) {
       options |= FDO_TRANSIENT;
     }
 
-/* REALLY
-    check(((options & FDO_TRANSIENT) == 0) ||
-	  (isSkipped() || isInternal()),
-	  "vk-field-transient-cant", getIdent());
-*/
     check(((options & FDO_TRANSIENT) == 0) || columns == null,
           FormMessages.TRANSIENT_DATABASE_FIELD);
 
+    if (isNeverAccessible() && (hasOption(FDO_SEARCH_UPPER) || hasOption(FDO_SEARCH_LOWER))) {
+      context.reportTrouble(new CWarning(getTokenReference(),
+                                         FormMessages.SEARCH_OPTION_ON_INACCESSIBLE_FIELD,
+                                         getIdent()));
+    }
+        
     // POSITION
     if (isInternal()) {
       check(detailedPos == null, FormMessages.HIDDEN_FIELD_POSITIONED, getIdent());
@@ -307,8 +314,7 @@ public class VKField
 
     // ALIAS
     if (type instanceof VKAliasType) {
-      check(isInternal() || isSkipped(), FormMessages.ALIAS_FIELD_VISIBLE, getIdent());
-      System.out.println("found alias field ....");
+      check(isNeverAccessible(), FormMessages.ALIAS_FIELD_VISIBLE, getIdent());
     }
 
     // COLUMN
@@ -325,6 +331,20 @@ public class VKField
         throw new PositionedError(triggers[i].getTokenReference(), FormMessages.TRIGGER_USED_TWICE);
       }
       usedTriggers |= triggers[i].getEvents();
+
+      if (isNeverAccessible()
+          && (triggers[i].getEvents()
+              & ((1L << TRG_PREFLD)
+                 | (1L << TRG_POSTFLD)
+                 | (1L << TRG_POSTCHG)
+                 | (1L << TRG_PREVAL)
+                 | (1L << TRG_VALFLD)
+                 | (1L << TRG_AUTOLEAVE)
+                 )) > 0) {
+        context.reportTrouble(new CWarning(getTokenReference(),
+                                           FormMessages.TRIGGER_ON_INACCESSIBLE_FIELD,
+                                           getIdent()));
+      }
     }
   }
 

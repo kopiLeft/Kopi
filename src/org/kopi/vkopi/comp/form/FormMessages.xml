@@ -66,4 +66,6 @@
 <msg identifier="UNSUPPORTED_DROP_FIELD_TYPE" format="The field {0} is droppable but its type is not supported as a drop target." reference="FORM" level="0" />
 <msg identifier="ACTOR_FIELD_TRIGGERS" format="Only ACCESS and ACTION triggers are allowed for actor fields." reference="FORM" level="0" />
 <msg identifier="ACTOR_FIELD_COMMANDS" format="Commands are not allowed in actor fields." reference="FORM" level="0" />
+<msg identifier="TRIGGER_ON_INACCESSIBLE_FIELD" format="trigger defined for inaccessible field {0}" reference="FORM" level="2" />
+<msg identifier="SEARCH_OPTION_ON_INACCESSIBLE_FIELD" format="search option defined for inaccessible field {0}" reference="FORM" level="2" />
 </messages>
