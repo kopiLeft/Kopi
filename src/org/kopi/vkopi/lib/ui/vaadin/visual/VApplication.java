@@ -282,6 +282,11 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     mainWindow.addMenu(new DUserMenu(menuTree));
     mainWindow.addMenu(new DAdminMenu(menuTree));
     mainWindow.addMenu(new DBookmarkMenu(menuTree));
+    mainWindow.addDetachListener(new DetachListener() {
+      public void detach(DetachEvent event) {
+        closeConnection();
+      }
+    });
   }
 
   @Override
