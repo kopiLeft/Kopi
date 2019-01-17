@@ -269,8 +269,18 @@ public class Utils extends org.kopi.util.base.Utils {
    * Ab jdk 1.4.2 gibt es auch die option -XX:MinHeapFreeRatio=0
    */
   public static void freeMemory() {
-    System.gc();
+    if (allowExplicitGcCall == null) {
+      if (System.getProperty("visualKopi.allowExplicitGcCall") != null) {
+        allowExplicitGcCall = Boolean.TRUE;
+      } else {
+        allowExplicitGcCall = Boolean.FALSE;
+      }
+    }
+    if (allowExplicitGcCall.booleanValue()) {
+      System.gc();
+    }
   }
+
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------
@@ -279,6 +289,8 @@ public class Utils extends org.kopi.util.base.Utils {
   public static final String	RESOURCE_DIR	= "org/kopi/vkopi/lib/resource";
   private static final String[] DEFAULT_VERSION = new String[] {
     "No version information available.",
-    "Copyright 1990-2016 kopiRight Managed Solutions GmbH. All rights reserved."
+    "Copyright 1990-2019 kopiRight Managed Solutions GmbH. All rights reserved."
   };
+
+  private static Boolean        allowExplicitGcCall;
 }
