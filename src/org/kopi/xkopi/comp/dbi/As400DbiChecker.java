@@ -267,6 +267,26 @@ public class As400DbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   /**
+   * Visits FloatType
+   */
+  @Override
+  public void visitFloatType(FloatType self)
+    throws PositionedError
+  {
+    current.append("FLOAT");
+  }
+
+  /**
+   * Visits DoubleType
+   */
+  @Override
+  public void visitDoubleType(DoubleType self)
+    throws PositionedError
+  {
+    current.append("DOUBLE");
+  }
+
+  /**
    * Visits GrantUserClassStatement
    */
   public void visitGrantUserClassStatement(GrantUserClassStatement self,

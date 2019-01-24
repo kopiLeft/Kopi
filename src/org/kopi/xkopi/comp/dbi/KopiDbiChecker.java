@@ -233,6 +233,26 @@ public class KopiDbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   /**
+   * Visits FloatType
+   */
+  @Override
+  public void visitFloatType(FloatType self)
+    throws PositionedError
+  {
+    current.append("FLOAT");
+  }
+
+  /**
+   * Visits DoubleType
+   */
+  @Override
+  public void visitDoubleType(DoubleType self)
+    throws PositionedError
+  {
+    current.append("DOUBLE");
+  }
+
+  /**
    * Visits ImageType
    */
   public void visitImageType(ImageType self, int width, int height)

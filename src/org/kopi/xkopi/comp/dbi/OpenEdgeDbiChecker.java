@@ -267,6 +267,26 @@ public class OpenEdgeDbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   /**
+   * Visits FloatType
+   */
+  @Override
+  public void visitFloatType(FloatType self)
+    throws PositionedError
+  {
+    current.append("float");
+  }
+
+  /**
+   * Visits DoubleType
+   */
+  @Override
+  public void visitDoubleType(DoubleType self)
+    throws PositionedError
+  {
+    current.append("double");
+  }
+
+  /**
    * Visits ImageType
    */
   public void visitImageType(ImageType self, int width, int height)

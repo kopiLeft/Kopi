@@ -486,6 +486,24 @@ public class OraSpoolerDbiChecker extends DbiChecker implements DbiVisitor {
   }
 
   /**
+   * Visits FloatType
+   */
+  @Override
+  public void visitFloatType(FloatType self)
+    throws PositionedError
+  {
+  }
+
+  /**
+   * Visits DoubleType
+   */
+  @Override
+  public void visitDoubleType(DoubleType self)
+    throws PositionedError
+  {
+  }
+
+  /**
    * Visits GrantUserClassStatement
    */
   public void visitGrantUserClassStatement(GrantUserClassStatement self,
