@@ -261,6 +261,16 @@ public abstract class DbiChecker extends SqlChecker implements DbiVisitor {
     throws PositionedError;
 
   /**
+   * Visits FloatType
+   */
+  public abstract void visitFloatType(FloatType self) throws PositionedError;
+
+  /**
+   * Visits DoubleType
+   */
+  public abstract void visitDoubleType(DoubleType self) throws PositionedError;
+
+  /**
    * Visits CodeLongType
    */
   public abstract void visitCodeLongType(CodeLongType self,

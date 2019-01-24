@@ -773,6 +773,10 @@ sDataType []
   self = dEnumType[]
 |
   self = dCodeType[]
+|        
+  "FLOAT" { self = new FloatType(sourceRef); }
+|        
+  "DOUBLE" { self = new DoubleType(sourceRef); }
 |
   "DATE" { self = new DateType(sourceRef); }
 |

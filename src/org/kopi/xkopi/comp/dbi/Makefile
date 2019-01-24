@@ -45,9 +45,10 @@ JAVAFILES +=	AddTableConstraintStatement AddTableColumnsStatement	\
 		CodeFixedType CodeLongDesc CodeLongType			\
 		ColorType Column Console Constraint DateType		\
 		DbCheck DbiStatement DbiType DelimSpec			\
+		DoubleType						\
 		DropIndexStatement DropTableConstraintStatement		\
 		DropTableStatement DropViewStatement EnumType		\
-		FixedType GrantPrivilegeStatement			\
+		FixedType FloatType GrantPrivilegeStatement		\
 		GrantUserClassStatement ImageType			\
 		IndexDefinition IndexElem IntType Key			\
 		KopiDbiChecker MonthType NullDelimiterSpec		\
