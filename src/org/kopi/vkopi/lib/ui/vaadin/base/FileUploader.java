@@ -176,14 +176,11 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
     String[]            mimeTypes;
     boolean             accepted;
 
-    accepted = false;
     if (mimeType == null) {
-      mimeTypes = null;
+      accepted = true;
     } else {
+      accepted = false;
       mimeTypes = mimeType.split(",");
-    }
-
-    if (mimeTypes != null) {
       for (String mimeType : mimeTypes) {
         if (event.getMIMEType().startsWith(getParentMIMEType(mimeType))) {
           accepted = true;
@@ -191,6 +188,7 @@ public class FileUploader implements UploadReceiver, UploadStartedListener, Uplo
         }
       }
     }
+
     if (!accepted) {
       uploader.interruptUpload();
     }
