@@ -247,7 +247,7 @@ public class KopiUtils {
         try {
           for (int i = 0; i < blobs.length; i++) {
             byte[]        data;
-            
+
             if (blobs[i] instanceof KopiSerializable) {
               data = ((KopiSerializable)blobs[i]).toKopiData();
             } else if (blobs[i] instanceof byte[]) {
@@ -255,13 +255,13 @@ public class KopiUtils {
             } else {
               ByteArrayOutputStream       outer;
               ObjectOutputStream          inner;
-              
+
               outer = new ByteArrayOutputStream();
               inner = new ObjectOutputStream(outer);
               inner.writeObject(blobs[i]);
               inner.flush();
               outer.close();
-              
+
               data = outer.toByteArray();
             }
             stmt.setBinaryStream(i + 1, new ByteArrayInputStream(data), data.length);
@@ -367,7 +367,7 @@ public class KopiUtils {
                   createKopiInsertStatement(conn, table, id, columns, values));
     return id;
   }
-  
+
   /*
    * Returns first free ID of table.
    */
@@ -381,7 +381,7 @@ public class KopiUtils {
       ResultSet		  rset;
       Statement           stmt;
       int		  id;
-      
+
       stmt = conn.createStatement();
       rset = stmt.executeQuery(conn.convertSql(getSeqNextVal));
       if (!rset.next()) {
@@ -439,7 +439,7 @@ public class KopiUtils {
                          createInsertStatement(conn, table, columns, values),
                          blobs);
   }
-  
+
   /**
    * Inserts a new record into the database.
    */
@@ -510,6 +510,13 @@ public class KopiUtils {
     } else {
       return input.substring(0, last + 1);
     }
+  }
+
+  /**
+   * Check if the specified string is empty.
+   */
+  public static boolean isEmpty(String s) {
+    return s == null || s.trim().length() == 0;
   }
 
   /*

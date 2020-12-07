@@ -95,6 +95,17 @@ public class As400DriverInterface extends DriverInterface {
   }
 
   /**
+   * Set the schema of the database
+   *
+   *
+   * @param     conn            the connection
+   * @param     schema          the schema name.
+   */
+  public void setSchema(Connection conn, String schema) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
    * Change the password of the current user
    */
   public void changePassword(Connection conn,
@@ -229,7 +240,7 @@ public class As400DriverInterface extends DriverInterface {
    */
   protected String translateCast(String arg1, String arg2) throws SQLException {
     String      type = arg2.replaceAll("\'", "");
-    
+
     if (type.equalsIgnoreCase("INT") || type.startsWith("NUMERIC") || type.startsWith("FIXED")) {
       return "INTEGER(" + arg1 + ")";
     } else if (type.startsWith("STRING") || type.startsWith("CHAR")) {
@@ -315,7 +326,7 @@ public class As400DriverInterface extends DriverInterface {
         return p[1] + "(" + arg1 + ")";
       }
     }
-    
+
     throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
   }
 
@@ -584,7 +595,7 @@ public class As400DriverInterface extends DriverInterface {
   /**
    * Translates the following SQL function to the dialect of this DBMS:
    * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
-   * 0 for zero and +1 for positive numbers. 
+   * 0 for zero and +1 for positive numbers.
    */
   protected String translateSign(String arg1) {
     return "SIGN(" + arg1 + ")";

@@ -76,6 +76,7 @@ public class OpenEdgeDriverInterface extends DriverInterface {
    * @param     password        the initial password
    */
   public void grantAccess(Connection conn, String user, String password) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     executeSQL(conn, "CREATE USER '" + user + "', '" + password + "'");
   }
 
@@ -87,7 +88,19 @@ public class OpenEdgeDriverInterface extends DriverInterface {
    * @param     user            the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     executeSQL(conn, "DROP USER '" + user + "'");
+  }
+
+  /**
+   * Set the schema of the database
+   *
+   *
+   * @param     conn            the connection
+   * @param     schema          the schema name.
+   */
+  public void setSchema(Connection conn, String schema) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
   }
 
   /**
@@ -102,7 +115,8 @@ public class OpenEdgeDriverInterface extends DriverInterface {
     // if user is not provided => get the connected user
     if (user == null) {
       user = conn.getMetaData().getUserName();
-    } 
+    }
+    //!!! graf FIXME 20201121 - avoid SQL injection
     executeSQL(conn, "ALTER USER '" + user + "', '" + oldPassword + "', '" + newPassword + "'");
   }
 
@@ -156,7 +170,7 @@ public class OpenEdgeDriverInterface extends DriverInterface {
     case 20053: // Database not opened.
     case 20054: // Database not specified or improperly specified.
     case 20055: // Database not specified or database not started.
-    case 20064: // Invalid attach type. 
+    case 20064: // Invalid attach type.
     case 20067: // More than one database cannot be attached locally.
     case 20096: // Connect String not specified/incorrect.
     case 20108: // Remote Network Server not started.
@@ -181,8 +195,8 @@ public class OpenEdgeDriverInterface extends DriverInterface {
     case 210004: // Error opening convmap.cp file <filename> <path>.
     case 210013: // Unable to complete server connection. <function_name>; reason <summary_of_reason>.
       return new DBDeadLockException(query, from);
-      // Integrity Constraint 
-    case 10102: // Duplicate primary/index key value.      
+      // Integrity Constraint
+    case 10102: // Duplicate primary/index key value.
     case 20101: // No references for the table.
     case 20102: // Primary/Candidate key column defined null.
     case 20103: // No matching key defined for the referenced table.
@@ -246,7 +260,7 @@ public class OpenEdgeDriverInterface extends DriverInterface {
     }
     return result;
   }
-  
+
   /**
    * Parses FOR UPDATE
    */
@@ -390,7 +404,7 @@ public class OpenEdgeDriverInterface extends DriverInterface {
     if (arg2.length() != 4 || arg2.charAt(0) != '\'' || arg2.charAt(3) != '\'') {
       throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
     }
-    
+
     return "(" + extract(arg2.substring(1, 3), arg1) + ")";
   }
 
@@ -647,7 +661,7 @@ public class OpenEdgeDriverInterface extends DriverInterface {
   /**
    * Translates the following SQL function to the dialect of this DBMS:
    * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
-   * 0 for zero and +1 for positive numbers. 
+   * 0 for zero and +1 for positive numbers.
    */
   protected String translateSign(String arg1) {
     return "SIGN(" + arg1 + ")";

@@ -124,6 +124,7 @@ public class DBUtils {
 	  val += tmp + white(newSize - tmp.length()); // $$$
 	}
 
+        //!!! graf FIXME 20201121 - avoid SQL injection
 	val = "'" + val + "'";
 
 	stmt = conn.createStatement();

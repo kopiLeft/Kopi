@@ -108,7 +108,19 @@ public class OracleDriverInterface extends DriverInterface {
    * @param	user		the login of the user
    */
   public void revokeAccess(Connection conn, String user) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     executeSQL(conn, "DROP USER '" + user + "'");
+  }
+
+  /**
+   * Set the schema of the database
+   *
+   *
+   * @param     conn            the connection
+   * @param     schema          the schema name.
+   */
+  public void setSchema(Connection conn, String schema) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
   }
 
   /**
@@ -603,7 +615,7 @@ class OracleParser extends JdbcParser {
   /**
    * Translates the following SQL function to the dialect of this DBMS:
    * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
-   * 0 for zero and +1 for positive numbers. 
+   * 0 for zero and +1 for positive numbers.
    */
   protected String translateSign(String arg1) {
     return "SIGN(" + arg1 + ")";

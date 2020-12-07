@@ -74,6 +74,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * @param     password        the initial password
    */
   public void grantAccess(Connection conn, String user, String password) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     executeSQL(conn, "CREATE USER " + user + " WITH PASSWORD '" + password + "'");
   }
 
@@ -89,6 +90,17 @@ public class PostgresDriverInterface extends DriverInterface {
   }
 
   /**
+   * Set the schema of the database
+   *
+   *
+   * @param     conn            the connection
+   * @param     schema          the schema name.
+   */
+  public void setSchema(Connection conn, String schema) throws SQLException {
+    executeSQL(conn, "SET SCHEMA " + KopiUtils.toSql(schema));
+  }
+
+  /**
    * Change the password of the current user
    */
   public void changePassword(Connection conn,
@@ -100,7 +112,8 @@ public class PostgresDriverInterface extends DriverInterface {
     // if user is not provided => get the connected user
     if (user == null) {
       user = conn.getMetaData().getUserName();
-    } 
+    }
+    //!!! graf FIXME 20201121 - avoid SQL injection
     executeSQL(conn, "ALTER USER " + user + " WITH PASSWORD '" + newPassword + "'");
   }
 
@@ -175,7 +188,7 @@ public class PostgresDriverInterface extends DriverInterface {
 
     case 23503:	// foreign_key_violation
       return parseIntegrityViolation(query, from);
-      
+
     case 23000:	// integrity_constraint_violation
       return new DBConstraintException(query, from);
 
@@ -238,8 +251,8 @@ public class PostgresDriverInterface extends DriverInterface {
   private static DBForeignKeyException parseIntegrityViolation(String query, SQLException from) {
     // separate each word in the exception message in order to get tables in relation.
     String[]    exception = from.getMessage().split("\\s");
-    
-    // As described above: 
+
+    // As described above:
     // The referencing table will be the word number 6
     // The FK name will be the word number 11
     // The referenced table will be the word number 14
@@ -318,7 +331,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * @return            a string representing the native syntax for cast
    */
   private String cast(Object object, String type) {
-    if (type.toUpperCase().startsWith("INT")) { 
+    if (type.toUpperCase().startsWith("INT")) {
       return "CAST(" + object + " AS integer)";
     } else if (type.toUpperCase().startsWith("NUMERIC") || type.toUpperCase().startsWith("FIXED")) {
       return "CAST(" + object + " AS numeric)";
@@ -356,6 +369,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * string representation of a date.
    */
   protected String translateAddYears(String arg1, String arg2) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     return "(DATE(" + arg1 + ") + INTERVAL '" + arg2 + " year')::date";
   }
 
@@ -428,7 +442,7 @@ public class PostgresDriverInterface extends DriverInterface {
     if (arg2.length() != 4 || arg2.charAt(0) != '\'' || arg2.charAt(3) != '\'') {
       throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
     }
-    
+
     return "(" + extract(arg2.substring(1, 3), arg1) + ")";
   }
 
@@ -562,6 +576,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * value.
    */
   protected String translateNextval(String arg1) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     return "NEXTVAL('" + arg1 + "')";
   }
 
@@ -580,6 +595,7 @@ public class PostgresDriverInterface extends DriverInterface {
    * expression.
    */
   protected String translateRepeat(String arg1, String arg2) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     return "LFILL('','" + arg1 + "'," + arg2 + ")";
   }
 
@@ -685,7 +701,7 @@ public class PostgresDriverInterface extends DriverInterface {
   /**
    * Translates the following SQL function to the dialect of this DBMS:
    * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
-   * 0 for zero and +1 for positive numbers. 
+   * 0 for zero and +1 for positive numbers.
    */
   protected String translateSign(String arg1) {
     return "SIGN(" + arg1 + ")";

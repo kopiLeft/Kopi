@@ -93,6 +93,17 @@ public class SapdbDriverInterface extends DriverInterface {
   }
 
   /**
+   * Set the schema of the database
+   *
+   *
+   * @param     conn            the connection
+   * @param     schema          the schema of the database
+   */
+  public void setSchema(Connection conn, String schema) throws SQLException {
+    throw new SQLException("NOT YET IMPLEMENTED");
+  }
+
+  /**
    * Change the password of the specified user. If user = NULL change the password
    * of the current user.
    */
@@ -370,7 +381,7 @@ public class SapdbDriverInterface extends DriverInterface {
 
     return buffer.toString();
   }
-  
+
   private String cast(String object, String type) {
     if (type.startsWith("INT") || type.startsWith("NUMERIC") || type.startsWith("FIXED")) {
       return "NUM(" + object + ")";
@@ -384,7 +395,7 @@ public class SapdbDriverInterface extends DriverInterface {
       return object;
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // FUNCTIONS WHICH MUST BE IMPLEMENTED BY SUB-CLASSES
   // ----------------------------------------------------------------------
@@ -475,14 +486,14 @@ public class SapdbDriverInterface extends DriverInterface {
     String        left = arg1;
     String        right = arg2;
     StringBuffer  buffer = new StringBuffer();
-    
+
     buffer.append("SIGN(");
     buffer.append("YEAR(" + left + ") * 1000 + ");
     buffer.append("DAYOFYEAR(" + left + ") - ");
     buffer.append("YEAR(" + right + ") * 1000 - ");
     buffer.append("DAYOFYEAR(" + right + ")) * ");
     buffer.append("DATEDIFF(" + left + "," + right + ")");
-          
+
     return buffer.toString();
   }
 
@@ -495,7 +506,7 @@ public class SapdbDriverInterface extends DriverInterface {
     if (arg2.length() != 4 || arg2.charAt(0) != '\'' || arg2.charAt(3) != '\'') {
       throw new SQLException("invalid argument to EXTRACT/2: " + arg2);
     }
-    
+
     return "(" + extract(arg2.substring(1, 3), arg1) + ")";
   }
 
@@ -647,6 +658,7 @@ public class SapdbDriverInterface extends DriverInterface {
    * expression.
    */
   protected String translateRepeat(String arg1, String arg2) throws SQLException {
+    //!!! graf FIXME 20201121 - avoid SQL injection
     return "LFILL('','" + arg1 + "'," + arg2 + ")";
   }
 
@@ -691,7 +703,7 @@ public class SapdbDriverInterface extends DriverInterface {
    */
   protected String translateRowid(String arg1) throws SQLException {
     String        tablename;
-          
+
     tablename = arg1.replaceAll("'", "");
     return "(" + tablename + ".SYSKEY)";
   }
@@ -711,7 +723,7 @@ public class SapdbDriverInterface extends DriverInterface {
    */
   protected String translateRowidext(String arg1) throws SQLException {
     String        tablename;
-          
+
     tablename = arg1.replaceAll("'", "");
     return "HEX(" + tablename + ".SYSKEY)";
   }
@@ -758,7 +770,7 @@ public class SapdbDriverInterface extends DriverInterface {
   /**
    * Translates the following SQL function to the dialect of this DBMS:
    * SIGN/1: Returns the sign of the number. The sign is -1 for negative numbers,
-   * 0 for zero and +1 for positive numbers. 
+   * 0 for zero and +1 for positive numbers.
    */
   protected String translateSign(String arg1) {
     return "SIGN(" + arg1 + ")";

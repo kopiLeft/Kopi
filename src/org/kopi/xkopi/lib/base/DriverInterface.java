@@ -37,7 +37,7 @@ public abstract class DriverInterface {
   public void setTrace(boolean trace) {
     this.trace = trace;
   }
-  
+
   /**
    * Checks whether an SQL function with specified name and arity is known
    * by the translator.
@@ -91,6 +91,17 @@ public abstract class DriverInterface {
    */
   public abstract void revokeAccess(Connection conn, String user)
     throws SQLException;
+
+  /**
+   * Set the schema of the database
+   *
+   *
+   * @param     conn            the connection
+   * @param     schema          the schema name.
+   */
+  public abstract void setSchema(Connection conn, String schema)
+    throws SQLException;
+
 
   /**
    * Change the password of the current user

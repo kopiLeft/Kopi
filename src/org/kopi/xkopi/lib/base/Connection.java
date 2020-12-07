@@ -59,7 +59,7 @@ public class Connection {
     this.conn = conn;
     this.conn.setAutoCommit(false);
 
-    if (schema != null) {
+    if (!KopiUtils.isEmpty(schema)) {
       setSchema(schema);
     }
 
@@ -105,7 +105,7 @@ public class Connection {
     setDriverInterface();
 
     open();
-    if (options.schema != null) {
+    if (!KopiUtils.isEmpty(options.schema)) {
       setSchema(options.schema);
     }
     setUserID();
@@ -139,7 +139,7 @@ public class Connection {
     setDriverInterface();
 
     open();
-    if (schema != null) {
+    if (!KopiUtils.isEmpty(schema)) {
       setSchema(schema);
     }
     setUserID();
@@ -331,11 +331,7 @@ public class Connection {
    */
   private void setSchema(String name) throws DBException {
     try {
-      java.sql.Statement	stmt;
-
-      stmt = conn.createStatement();
-      stmt.executeUpdate("SET SCHEMA " + name);
-      stmt.close();
+      driver.setSchema(conn, name);
     } catch (SQLException e) {
       throw convertException(e);
     }
@@ -500,6 +496,7 @@ public class Connection {
 	  ctxt.startWork();	// !!! BEGIN_SYNC
 
           query = new Query(this);
+          //!!! graf FIXME 20201121 - avoid SQL injection
           query.open("SELECT ID FROM KOPI_USERS WHERE Kurzname = '" + getUserName() + "'");
           if (!query.next()) {
             throw new SQLException("user unknown");
