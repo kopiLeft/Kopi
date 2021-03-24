@@ -102,7 +102,7 @@ public class As400DriverInterface extends DriverInterface {
    * @param     schema          the schema name.
    */
   public void setSchema(Connection conn, String schema) throws SQLException {
-    executeSQL(conn, "SET SCHEMA " + KopiUtils.toSql(schema));
+    throw new SQLException("NOT YET IMPLEMENTED");
   }
 
   /**
