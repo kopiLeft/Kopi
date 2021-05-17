@@ -147,9 +147,16 @@ public class StyleGenerator {
     
     /**
      * Updates the CSS style of a given {@link ColumnStyle}.
+     */
+    public void updateStyle() {
+      updateStyle(columnStyle);
+    }
+
+    /**
+     * Updates the CSS style of a given {@link ColumnStyle}.
      * @param columnStyle The {@link ColumnStyle}.
      */
-    public void updateStyle(ColumnStyle columnStyle) {   
+    public void updateStyle(ColumnStyle columnStyle) {
       if (columnStyle.getBackground() != this.columnStyle.getBackground()) {
 	background = columnStyle.getBackground();
       } else {

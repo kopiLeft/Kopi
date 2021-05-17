@@ -71,6 +71,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
       }
 
       stylesMap[col].setLevel(level);
+      stylesMap[col].updateStyle();
       return stylesMap[col] == null ? null : stylesMap[col].getName();
     }
   }
@@ -97,11 +98,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
 
       ColumnStyle style = styles[0];
 
-      if (stylesMap[j] == null) {
-        stylesMap[j] = StyleGenerator.getStyle(UI.getCurrent(), parameters, style, j, align, separator);
-      } else {
-        stylesMap[j].updateStyle(style);
-      }
+      stylesMap[j] = StyleGenerator.getStyle(UI.getCurrent(), parameters, style, j, align, separator);
     }
   }
 	  
