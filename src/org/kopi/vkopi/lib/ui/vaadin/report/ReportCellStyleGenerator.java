@@ -50,7 +50,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
   public ReportCellStyleGenerator(MReport model, Parameters parameters) {
     this.model = model;
     this.parameters = parameters;
-    stylesMap = new CSSStyle[model.getAccessibleColumnCount() + 30][11];
+    stylesMap = new CSSStyle[model.getAccessibleColumnCount() + 30];
     updateStyles();
   }
   
@@ -59,18 +59,19 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
   //---------------------------------------------------
   
   @Override
-  public String getStyle(Table source, Object itemId, Object propertyId) { 
+  public String getStyle(Table source, Object itemId, Object propertyId) {
     int		level = model.getRow((Integer)itemId).getLevel();
-	    
+
     if (propertyId == null) {
       return null;
-    } else { 
+    } else {
       int col = ((Integer)propertyId).intValue();
       if (col > stylesMap.length-1) {
-	col = 0;
-      }    
-      
-      return stylesMap[col][level] == null ? null : stylesMap[col][level].getName();
+        col = 0;
+      }
+
+      stylesMap[col].setLevel(level);
+      return stylesMap[col] == null ? null : stylesMap[col].getName();
     }
   }
 
@@ -78,31 +79,29 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
    * Updates the columns styles.
    */
   public void updateStyles() {
-    for (int i = 0; i < 11; i ++) {
-      for (int j = 0; j < model.getAccessibleColumnCount(); j ++) {
-        String align;
-        boolean separator = false;
-        VReportColumn column = model.getAccessibleColumn(j);
-        ColumnStyle[]	styles = (ColumnStyle[]) column.getStyles();
-      
-        if(column instanceof VSeparatorColumn){
-	  separator = true;
-        }
-      
-        if (column.getAlign()== Constants.ALG_RIGHT) {
-	  align = "right";
-        } else {
-	  align = "left"; 
-        }
-      
-        ColumnStyle style = styles[0];
-    
-	if (stylesMap[j][i] == null) {
-          stylesMap[j][i] = StyleGenerator.getStyle(UI.getCurrent(), parameters, style, i, j, align, separator);         
-	} else {
-	  stylesMap[j][i].updateStyle(style);
-	}
-      } 
+    for (int j = 0; j < model.getAccessibleColumnCount(); j ++) {
+      String align;
+      boolean separator = false;
+      VReportColumn column = model.getAccessibleColumn(j);
+      ColumnStyle[]	styles = (ColumnStyle[]) column.getStyles();
+
+      if(column instanceof VSeparatorColumn){
+        separator = true;
+      }
+
+      if (column.getAlign()== Constants.ALG_RIGHT) {
+        align = "right";
+      } else {
+        align = "left";
+      }
+
+      ColumnStyle style = styles[0];
+
+      if (stylesMap[j] == null) {
+        stylesMap[j] = StyleGenerator.getStyle(UI.getCurrent(), parameters, style, j, align, separator);
+      } else {
+        stylesMap[j].updateStyle(style);
+      }
     }
   }
 	  
@@ -112,5 +111,5 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
 	  
   private MReport				model;
   private Parameters 				parameters;
-  private CSSStyle[][]				stylesMap;
+  private CSSStyle[]				stylesMap;
 }

@@ -42,7 +42,6 @@ public class StyleGenerator {
    * @param target The target {@link UI}.
    * @param parameters The styles parameters.
    * @param columnStyle The {@link ColumnStyle}.
-   * @param level The column level.
    * @param column The column index.
    * @param align The column alignment.
    * @param separator Is it a separator column ? 
@@ -51,12 +50,11 @@ public class StyleGenerator {
   public static CSSStyle getStyle(UI target,
                                   Parameters parameters,
                                   ColumnStyle columnStyle,
-                                  int level,
                                   int column,
                                   String align,
                                   boolean separator)
   {
-    return new CSSStyle(target, parameters, columnStyle, level, column, align, separator);
+    return new CSSStyle(target, parameters, columnStyle, column, align, separator);
   }
 
   /**
@@ -86,7 +84,6 @@ public class StyleGenerator {
      * @param target The target {@link UI}.
      * @param parameters The styles parameters.
      * @param columnStyle The {@link ColumnStyle}.
-     * @param level The column level.
      * @param column The column index.
      * @param align The column alignment.
      * @param separator Is it a separator.
@@ -94,19 +91,15 @@ public class StyleGenerator {
     public CSSStyle(final UI target,
                     final Parameters parameters,
                     final ColumnStyle columnStyle,
-                    final int level,
                     final int column,
                     final String align,
                     final boolean separator)
     {
-      this.level = level;
       this.column = column;
       this.separator = separator; 
       this.parameters = parameters;
       this.align = align;
       this.columnStyle = columnStyle;
-      this.background = parameters.getBackground(level);
-      this.foreground = parameters.getForeground(level);
       this.fontSize = parameters.getFont().getSize();
       this.fontFamily = parameters.getFont().getName();
       setItalic(parameters.getFont().isItalic());
@@ -242,12 +235,22 @@ public class StyleGenerator {
 	this.fontWeight = "normal";
       }
     }
+
+    /**
+     * Sets the column level.
+     * @param level The column level.
+     */
+    public void setLevel(int level) {
+      this.level = level;
+      this.background = parameters.getBackground(level);
+      this.foreground = parameters.getForeground(level);
+    }
     
     //---------------------------------------
     // DATA MEMBERS
     //---------------------------------------
     
-    private final int			level;
+    private int			level;
     private final int			column;
     private CSSInject			style;
     private final boolean               separator;
