@@ -100,6 +100,8 @@ public class StyleGenerator {
       this.parameters = parameters;
       this.align = align;
       this.columnStyle = columnStyle;
+      this.background = columnStyle.getBackground();
+      this.foreground = columnStyle.getForeground();
       this.fontSize = parameters.getFont().getSize();
       this.fontFamily = parameters.getFont().getName();
       setItalic(parameters.getFont().isItalic());
