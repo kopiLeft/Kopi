@@ -238,7 +238,7 @@ public class Module implements Comparable<Module> {
     if (priority == module.priority) {
       return description.compareTo(module.description);
     } else {
-      return priority - module.priority;
+      return Integer.compare(priority, module.priority);
     }
   }
 
