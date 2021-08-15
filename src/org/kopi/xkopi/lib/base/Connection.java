@@ -22,6 +22,7 @@ package org.kopi.xkopi.lib.base;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -296,6 +297,15 @@ public class Connection {
     throws SQLException
   {
     return conn.prepareStatement(text);
+  }
+
+  /**
+   * Creates a prepared statement.
+   */
+  public PreparedStatement prepareStatement(String text, int concurrency)
+          throws SQLException
+  {
+    return conn.prepareStatement(text, ResultSet.TYPE_FORWARD_ONLY, concurrency);
   }
 
   // ----------------------------------------------------------------------

@@ -183,16 +183,16 @@ public class Query {
       convertedSql = conn.convertSql(text);
       selectForUpdate = DBUtils.isSelectForUpdate(convertedSql);
       if (selectForUpdate) {
-        stmt = conn.createStatement(ResultSet.CONCUR_UPDATABLE);
+        stmt = conn.prepareStatement(convertedSql, ResultSet.CONCUR_UPDATABLE);
         if (conn.supportsCursorNames()) {
           name = "C" + nextCursorId++;
           stmt.setCursorName(name);
         }
       } else {
-        stmt = conn.createStatement();
+        stmt = conn.prepareStatement(convertedSql);
       }
       traceQuery(TRL_QUERY, "OPEN " + name);
-      rset = stmt.executeQuery(convertedSql);
+      rset = stmt.executeQuery();
       traceTimer(TRL_QUERY, "OPEN " + name);
       //!!! wael 20090306 WORKAROUND FOR SAP DB BUG, this workaround is used also on Cursor.java
       if (conn.getDriverInterface() instanceof SapdbDriverInterface) {
@@ -352,13 +352,11 @@ public class Query {
 
       if (!lobs.isEmpty()) {
         stmt = createFilledPreparedStatement(conn.convertSql(text));
-	count = ((PreparedStatement)stmt).executeUpdate();
-        stmt.close();
       } else {
-	stmt = conn.createStatement();
-	count = stmt.executeUpdate(conn.convertSql(text));
-        stmt.close();
+        stmt = conn.prepareStatement(conn.convertSql(text));
       }
+      count = stmt.executeUpdate();
+      stmt.close();
 
       traceTimer(TRL_QUERY, "RUN");
 
@@ -979,7 +977,7 @@ public class Query {
   private LinkedList		lobs;
 
   private Connection		conn;
-  private Statement		stmt;
+  private PreparedStatement		stmt;
   private ResultSet		rset;
   private String                name;
   private long                  queryStartTime;
