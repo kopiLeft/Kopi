@@ -28,7 +28,6 @@ import java.io.OptionalDataException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 
 import org.kopi.util.base.InconsistencyException;
@@ -84,17 +83,17 @@ public class Cursor {
         convertedSql = conn.convertSql(sql);
         selectForUpdate = DBUtils.isSelectForUpdate(convertedSql);
         if (selectForUpdate) {
-          stmt = conn.createStatement(ResultSet.CONCUR_UPDATABLE);
+          stmt = conn.prepareStatement(convertedSql, ResultSet.CONCUR_UPDATABLE);
           if (conn.supportsCursorNames()) {
             this.name = "K" + nextCursorId++;
             stmt.setCursorName(name);
           }
         } else {
-          stmt = conn.createStatement();
+          stmt = conn.prepareStatement(convertedSql);
         }
         this.conn = conn;
         traceQuery(Query.TRL_QUERY, "OPEN", sql);
-        rset = stmt.executeQuery(convertedSql);
+        rset = stmt.executeQuery();
         traceTimer(Query.TRL_TIMER, "OPEN");
         if (conn.getDriverInterface() instanceof SapdbDriverInterface) {
           //!!! GRAF 020811 : WORKAROUND FOR SAP DB BUG !!! CHANGE THIS
@@ -149,7 +148,7 @@ public class Cursor {
     try {
       traceQuery(Query.TRL_QUERY, "UPDATE", sql);
       if (stmt != null) {
-	stmt.executeUpdate(conn.convertSql(sql));
+        stmt.executeUpdate(conn.convertSql(sql));
       }
       traceTimer(Query.TRL_TIMER, "UPDATE");
     } catch (SQLException exc) {
@@ -599,10 +598,10 @@ public class Cursor {
   private InputStream		cached;
   private static int		nextCursorId = 0;
   private Connection		conn;
-  private Statement		stmt;
+  private PreparedStatement		stmt;
   private String                name;
   private long                  queryStartTime;
-  
+
   protected ResultSet		rset;
   protected boolean             isFetched;
 }
