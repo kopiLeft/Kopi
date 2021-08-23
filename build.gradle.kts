@@ -15,7 +15,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 import org.kopi.gradle.common.clean
 import org.kopi.gradle.common.withExtension
 import org.kopi.gradle.dsl.modules
@@ -147,16 +146,14 @@ if(jdk7Home != null) {
   tasks.withType<JavaExec>().configureEach {
     executable = javaExecutable("java")
   }
-
-  // Compatibility with java 7
   tasks.withType<Javadoc>().configureEach {
     executable = javaExecutable("javadoc")
   }
 }
 
-// Compatibility with java 7
 tasks.withType<JavaCompile>().configureEach {
   options.apply {
+    // Compatibility with java 7
     if(jdk7Home != null) {
       sourceCompatibility = "1.7"
       targetCompatibility = "1.7"
