@@ -485,6 +485,99 @@ public class VMenuTree extends VWindow {
     
     return array;
   }
+
+  /**
+   * Add a favorite into database.
+   */
+  public void addShortcutsInDatabase(int id) {
+    try {
+      Query                     query;
+
+      getDBContext().startWork();    // !!! BEGIN_SYNC
+      query = new Query(this);
+      if (getMenuTreeUser() != null) {
+        query.run("INSERT INTO FAVORITEN VALUES ("
+                + "{fn NEXTVAL(FAVORITENId)}" + ", "
+                + (int)(System.currentTimeMillis()/1000) + ", "
+                + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + getMenuTreeUser() + "\')" + ", "
+                + id
+                + ")");
+      } else {
+        query.run("INSERT INTO FAVORITEN VALUES ("
+                + "{fn NEXTVAL(FAVORITENId)}" + ", "
+                + (int)(System.currentTimeMillis()/1000) + ", "
+                + getUserID() + ", "
+                + id
+                + ")");
+      }
+      getDBContext().commitWork();
+    } catch (SQLException e) {
+      try {
+        getDBContext().abortWork();
+      } catch (SQLException ef) {
+        ef.printStackTrace();
+      }
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Remove favorite from database.
+   */
+  public void removeShortcutsFromDatabase(int id) {
+    try {
+      Query                     query;
+
+      getDBContext().startWork();    // !!! BEGIN_SYNC
+      query = new Query(this);
+      if (getMenuTreeUser() != null) {
+        query.run("DELETE FROM FAVORITEN WHERE Benutzer = "
+                + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + getMenuTreeUser() + "\')"
+                + " AND Modul = " + id);
+      } else {
+        query.run("DELETE FROM FAVORITEN WHERE Benutzer = " + getUserID() + " AND Modul = " + id);
+      }
+      getDBContext().commitWork();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      try {
+        getDBContext().abortWork();
+      } catch (SQLException e1) {
+        e1.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * Resets all favorites
+   */
+  public void resetShortcutsInDatabase(List<Module> modules) {
+    try {
+      getDBContext().startWork();    // !!! BEGIN_SYNC
+
+      new Query(this).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getUserID());
+
+      for (int i = 0; i < modules.size(); i++) {
+        Module module = (Module)modules.get(i);
+
+        new Query(this).run("INSERT INTO FAVORITEN VALUES ("
+                + "{fn NEXTVAL(FAVORITENId)}" + ", "
+                + (int)(System.currentTimeMillis()/1000) + ", "
+                + getUserID() + ", "
+                + module.getId()
+                + ")");
+      }
+
+      getDBContext().commitWork();
+    } catch (SQLException e) {
+      try {
+        getDBContext().abortWork();
+      } catch (SQLException ef) {
+        ef.printStackTrace();
+      }
+      e.printStackTrace();
+    }
+  }
   
   /**
    * Adds the default logout module

@@ -223,31 +223,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
    * Resets all favorites
    */
   public void resetShortcutsInDatabase() {
-    try {
-      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-
-      new Query(getModel()).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID());
-
-      for (int i = 0; i < modules.size(); i++) {
-        Module  module = (Module)modules.get(i);
-
-        new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-                                  + "{fn NEXTVAL(FAVORITENId)}" + ", "
-                                  + (int)(System.currentTimeMillis()/1000) + ", "
-                                  + getModel().getUserID() + ", "
-                                  + module.getId()
-                                  + ")");
-      }
-
-      getModel().getDBContext().commitWork();
-    } catch (SQLException e) {
-      try {
-        getModel().getDBContext().abortWork();
-      } catch (SQLException ef) {
-        ef.printStackTrace();
-      }
-      e.printStackTrace();
-    }
+    getModel().resetShortcutsInDatabase(modules);
   }
 
   /**
