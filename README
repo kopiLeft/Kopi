@@ -155,11 +155,13 @@ OTHER PACKAGES YOU WILL NEED
 --------------------------------------------------------------------------------
 BUILDING FROM SOURCE
 
-    You will need GNU make.
+    You will need GNU make or Gradle.
 
     Define an environment variable CLASSROOT to an existing directory in your
     file hierarchy  this is where the generated class files will be stored.
-    Don't forget to include this directory in your CLASSPATH.
+    Define an environment variable EXTDIRS to an existing directory in your
+    file hierarchy this is where dependencies jars are stored.
+    Don't forget to include this directories in your CLASSPATH.
 
     You will need a working Java compiler to build Kopi from source. You may need
     to edit the Makefile in this directory if the Java compiler available on your

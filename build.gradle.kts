@@ -15,6 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+import org.kopi.gradle.common._project
 import org.kopi.gradle.common.clean
 import org.kopi.gradle.common.withExtension
 import org.kopi.gradle.dsl.modules
@@ -31,6 +32,10 @@ import org.kopi.gradle.tasks.scriptExecutor
 import org.kopi.gradle.tasks.tokenGen
 import org.kopi.gradle.tasks.xkjc
 
+// Passing project variable to buildSrc
+
+_project = project
+
 /** ------------ Importing Variables declarations ------------ */
 
 apply(from = "declarations.gradle.kts")
@@ -38,8 +43,11 @@ apply(from = "declarations.gradle.kts")
 /** ------------------ Global Definitions and gradle tasks ------------------ */
 
 plugins {
-  id("org.jetbrains.kotlin.jvm") version "1.3.72"
+  kotlin("jvm") version "1.4.30"
+  id("io.spring.dependency-management") version "1.0.10.RELEASE"
 }
+
+val vaadinVersion = "21.0.2"
 
 // KOPI VERSION
 val kopiVersion = "2.3B"
@@ -72,11 +80,23 @@ repositories {
 }
 
 dependencies {
+  implementation(kotlin("stdlib"))
+  implementation(kotlin("reflect"))
+
+  // Jars present in extdirs folder
   extdirs?.split(":")
           ?.forEach { extdir ->
             "implementation"(fileTree(mapOf("dir" to extdir, "include" to listOf("*.jar"))))
           }
   "implementation"(files(classRoot))
+
+  // Vaadin dependencies
+  implementation("com.vaadin", "vaadin-core") {
+    listOf("com.vaadin.webjar", "org.webjars.bowergithub.insites",
+           "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
+           "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents")
+      .forEach { group -> exclude(group = group) }
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -94,6 +114,13 @@ modules.init()
 /** ------------------ Registering main gradle tasks ------------------ */
 
 tasks {
+  compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+  }
+  compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+  }
+
   register("grammar.jcc")
   register("grm1voc.tokenGen")
   register("grm1voc.lexinc")
@@ -568,5 +595,11 @@ tasks {
 project.gradle.buildFinished {
   if (this.failure != null) {
     println("An error has occured. See the error output logs or try with > gradle --rerun-tasks")
+  }
+}
+
+dependencyManagement {
+  imports {
+    mavenBom("com.vaadin:vaadin-bom:${vaadinVersion}")
   }
 }

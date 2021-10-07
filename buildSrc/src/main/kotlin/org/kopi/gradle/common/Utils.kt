@@ -21,6 +21,10 @@ package org.kopi.gradle.common
 
 import java.io.File
 
+import org.gradle.api.Project
+
+lateinit var _project: Project
+
 /**
  * Adds the extension to the files names. if a file already contains the extension, this method returns the file's name as it is.
  *
@@ -81,7 +85,7 @@ fun findPattern(input: String, pattern: String): List<String> {
 /**
  * resolves [folder] with this.
  */
-fun String?.prefixWithFolder(folder: String) : String? = if (this == null) null else File(folder).resolve(this).absolutePath
+fun String?.prefixWithFolder(folder: String) : String? = if (this == null) null else _project.file(folder).resolve(this).absolutePath
 
 /**
  * resolves [folder] with this.
