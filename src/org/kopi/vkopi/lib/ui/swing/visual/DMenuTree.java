@@ -25,7 +25,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -55,7 +54,6 @@ import org.kopi.vkopi.lib.visual.UMenuTree;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VMenuTree;
 import org.kopi.vkopi.lib.visual.VlibProperties;
-import org.kopi.xkopi.lib.base.Query;
 
 public class DMenuTree extends DWindow implements UMenuTree {
 
