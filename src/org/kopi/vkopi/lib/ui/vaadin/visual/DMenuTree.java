@@ -17,9 +17,8 @@
  * $Id$
  */
 
-package org.kopi.vkopi.lib.ui.vaadin.visual; 
+package org.kopi.vkopi.lib.ui.vaadin.visual;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,6 @@ import org.kopi.vkopi.lib.visual.UMenuTree;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VMenuTree;
 import org.kopi.vkopi.lib.visual.VlibProperties;
-import org.kopi.xkopi.lib.base.Query;
 
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
@@ -52,8 +50,6 @@ import com.vaadin.ui.Tree.ExpandListener;
  * {@link UMenuTree}.
  * 
  * <p>The implementation is based on {@link DWindow}</p>
- * 
- * TODO Externalize favorites handling.
  */
 public class DMenuTree extends DWindow implements UMenuTree, Handler {
 
@@ -133,7 +129,7 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   public void addShortcut(final Module module) {
     if (!getModel().getShortcutsID().contains(module.getId())) {
       getModel().getShortcutsID().add(module.getId());
-      addShortcutsInDatabase(module.getId());
+      getModel().addShortcutsInDatabase(module.getId());
     }
   }
   
@@ -144,69 +140,7 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   public void removeShortcut(final Module module) {
     if (getModel().getShortcutsID().contains(module.getId())) {
       getModel().getShortcutsID().remove(new Integer(module.getId()));
-      removeShortcutsFromDatabase(module.getId());
-    }
-  }
-
-  /**
-   * Add a favorite into database.
-   */
-  protected void addShortcutsInDatabase(int id) {
-    try {
-      Query                     query;
-      
-      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-      query = new Query(getModel());
-      if (getModel().getMenuTreeUser() != null) {
-        query.run("INSERT INTO FAVORITEN VALUES ("
-          + "{fn NEXTVAL(FAVORITENId)}" + ", "
-          + (int)(System.currentTimeMillis()/1000) + ", "
-          + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + getModel().getMenuTreeUser() + "\')" + ", "
-          + id
-          + ")");
-      } else {
-        query.run("INSERT INTO FAVORITEN VALUES ("
-          + "{fn NEXTVAL(FAVORITENId)}" + ", "
-          + (int)(System.currentTimeMillis()/1000) + ", "
-          + getModel().getUserID() + ", "
-          + id
-          + ")");
-      }
-      getModel().getDBContext().commitWork();
-    } catch (SQLException e) {
-      try {
-        getModel().getDBContext().abortWork();
-      } catch (SQLException ef) {
-        ef.printStackTrace();
-      }
-      e.printStackTrace();
-    }
-  }
-  
-  /**
-   * Remove favorite from database.
-   */
-  protected void removeShortcutsFromDatabase(int id) {
-    try {
-      Query                     query;
-      
-      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-      query = new Query(getModel());
-      if (getModel().getMenuTreeUser() != null) {
-        query.run("DELETE FROM FAVORITEN WHERE Benutzer = "
-          + "(SELECT ID FROM KOPI_USERS WHERE Kurzname = \'" + getModel().getMenuTreeUser() + "\')"
-          + " AND Modul = " + id);
-      } else {
-        query.run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID() + " AND Modul = " + id);
-      }
-      getModel().getDBContext().commitWork();
-    } catch (SQLException e) {
-      e.printStackTrace();
-      try {
-        getModel().getDBContext().abortWork();
-      } catch (SQLException e1) {
-        e1.printStackTrace();
-      }
+      getModel().removeShortcutsFromDatabase(module.getId());
     }
   }
 
@@ -366,10 +300,10 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   public void handleAction(Action action, Object sender, Object target) {
     if (target != null) {
       if (action == ADD_BOOKMARK) {
-        addShortcutsInDatabase(((Integer)target).intValue());
+        getModel().addShortcutsInDatabase(((Integer)target).intValue());
         getModel().getShortcutsID().add((Integer) target);
       } else if (action == REMOVE_BOOKMARK) {
-        removeShortcutsFromDatabase(((Integer)target).intValue());
+        getModel().removeShortcutsFromDatabase(((Integer)target).intValue());
         getModel().getShortcutsID().remove(target);
       }
       markAsDirtyRecursive();

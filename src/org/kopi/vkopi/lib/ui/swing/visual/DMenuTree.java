@@ -25,7 +25,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -55,7 +54,6 @@ import org.kopi.vkopi.lib.visual.UMenuTree;
 import org.kopi.vkopi.lib.visual.VException;
 import org.kopi.vkopi.lib.visual.VMenuTree;
 import org.kopi.vkopi.lib.visual.VlibProperties;
-import org.kopi.xkopi.lib.base.Query;
 
 public class DMenuTree extends DWindow implements UMenuTree {
 
@@ -223,31 +221,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
    * Resets all favorites
    */
   public void resetShortcutsInDatabase() {
-    try {
-      getModel().getDBContext().startWork();    // !!! BEGIN_SYNC
-
-      new Query(getModel()).run("DELETE FROM FAVORITEN WHERE Benutzer = " + getModel().getUserID());
-
-      for (int i = 0; i < modules.size(); i++) {
-        Module  module = (Module)modules.get(i);
-
-        new Query(getModel()).run("INSERT INTO FAVORITEN VALUES ("
-                                  + "{fn NEXTVAL(FAVORITENId)}" + ", "
-                                  + (int)(System.currentTimeMillis()/1000) + ", "
-                                  + getModel().getUserID() + ", "
-                                  + module.getId()
-                                  + ")");
-      }
-
-      getModel().getDBContext().commitWork();
-    } catch (SQLException e) {
-      try {
-        getModel().getDBContext().abortWork();
-      } catch (SQLException ef) {
-        ef.printStackTrace();
-      }
-      e.printStackTrace();
-    }
+    getModel().resetShortcutsInDatabase(modules);
   }
 
   /**
