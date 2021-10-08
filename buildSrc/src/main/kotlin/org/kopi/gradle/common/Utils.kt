@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2020 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,8 +13,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
- * $Id: Utils.kt 35411 2020-05-21 14:22:39Z hfazai $
  */
 
 package org.kopi.gradle.common
@@ -42,7 +40,6 @@ fun List<String>?.withExtension(extension: String): List<String> = this?.map { i
 fun String?.withExtension(extension: String): String? = this?.also {
   if (it.isNotEmpty() && !it.endsWith(".$extension")) return "$this.$extension"
 }
-
 
 /**
  * returns a flat list of arguments.

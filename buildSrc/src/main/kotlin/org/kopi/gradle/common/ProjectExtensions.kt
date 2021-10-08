@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2020 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,15 +13,14 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
- * $Id: ProjectExtensions.kt 35445 2020-06-06 01:47:41Z hfazai $
  */
 
 package org.kopi.gradle.common
 
-import org.gradle.api.Project
 import java.io.File
 import java.nio.file.Files
+
+import org.gradle.api.Project
 
 /**
  * removes the file with name [fileName] existing in [folder]

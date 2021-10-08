@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2020 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2020 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,8 @@
  */
 package org.kopi.gradle.tasks
 
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.Locale
 
 import org.gradle.api.Action
@@ -32,8 +34,6 @@ import org.gradle.kotlin.dsl.register
 
 import org.kopi.gradle.common.listOfArgs
 import org.kopi.gradle.common.makeTaskDependencies
-import java.io.ByteArrayOutputStream
-import java.io.File
 
 /**
  * scriptExecutor task class
@@ -60,7 +60,6 @@ open class ScriptExecutor : Exec() {
     val commandOutput = ByteArrayOutputStream()
     standardOutput = commandOutput
     workingDir = project.file(currentDir)
-
 
     if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows")) {
       commandLine = listOfArgs("cmd", "/c", script, arguments, project.files(inputFiles).map { it.name })

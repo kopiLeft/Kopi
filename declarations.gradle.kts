@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2020 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2020 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -542,12 +542,10 @@ inPackage("org.kopi.vkopi.lib.ui.vaadin.plotly.data.features") {
   javaFiles = listOf("DataMode", "HoverInfo", "Orientation")
 }
 
-
 inPackage("org.kopi.vkopi.lib.ui.vaadin.plotly.data.line") {
   javaFiles = listOf("Line", "LineShape", "LineStyle")
 
 }
-
 
 inPackage("org.kopi.vkopi.lib.ui.vaadin.plotly.data.marker") {
   javaFiles = listOf("AbstractMarker", "BarMarker", "BoxPlotMarker", "BubbleMarker", "Marker", "PieMarker", "ScatterMarker")
