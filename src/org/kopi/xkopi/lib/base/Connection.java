@@ -327,11 +327,16 @@ public class Connection {
   /**
    * Sets the current database schema.
    *
+   * Note: call from initializer only.
+   *
    * @param     name            the schema name.
    */
   private void setSchema(String name) throws DBException {
     try {
       driver.setSchema(conn, name);
+
+      // manually commit the transaction since we are not yet in the context's connection list
+      conn.commit();
     } catch (SQLException e) {
       throw convertException(e);
     }
