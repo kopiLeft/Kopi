@@ -51,8 +51,6 @@ sourceSets.main {
   java.srcDirs("src")
 }
 
-val vaadinVersion = "21.0.2"
-
 // KOPI VERSION
 val kopiVersion = "2.3B"
 
@@ -61,6 +59,13 @@ val extdirs: String? = System.getenv("EXTDIRS")
 val classRoot: String? = System.getenv("CLASSROOT")
 val jdk7Home: String? = System.getenv("JDK_7")
 val javadocRoot: String? = System.getenv("JAVADOCROOT")
+
+// Dependencies versions
+val vaadinVersion = "21.0.2"
+val enhancedDialogVersion = "21.0.0"
+val apexChartVersion = "2.0.0.beta10"
+val ironIconsVersion = "2.0.1"
+val WYSIWYG_EJAVA = "2.0.1"
 
 // ----------------------------------------------------------------------
 // CHECK IF PATH TO JAVA 7 INSTALLATION IS SET AND VALID
@@ -86,30 +91,6 @@ repositories {
   }
 }
 
-val EXPOSED = "0.35.1"
-val H2 = "1.4.199"
-val  POSTGRES_NG = "0.8.6"
-
-val ITEXT = "2.1.5"
-val  GRAPH_BUILDER = "1.02"
-val HYLAFAX = "1.0.0"
-val GETOPT = "1.0.13"
-val JDOM = "2.0.5"
-val APACHE_POI = "4.1.2"
-
-val VAADIN = "21.0.2"
-
-val SLF4J = "1.7.30"
-
-val KARIBU_TESTING = "1.3.3"
-val ENHANCED_DIALOG = "21.0.0"
-val APEX_CHARTS = "2.0.0.beta10"
-val IRON_ICONS = "2.0.1"
-val JAVAX_SERVLET_API = "4.0.1"
-
-val JFREE_CHART = "1.0.19"
-val WYSIWYG_EJAVA = "2.0.1"
-
 dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
@@ -132,11 +113,11 @@ dependencies {
   // Wysiwyg-e Rich Text Editor component for Java
   implementation("org.vaadin.pekka", "wysiwyg_e-java", WYSIWYG_EJAVA)
   // EnhancedDialog
-  implementation("com.vaadin.componentfactory", "enhanced-dialog", ENHANCED_DIALOG)
+  implementation("com.vaadin.componentfactory", "enhanced-dialog", enhancedDialogVersion)
   // Apex charts
-  implementation("com.github.appreciated", "apexcharts", APEX_CHARTS)
+  implementation("com.github.appreciated", "apexcharts", apexChartVersion)
   // Iron Icons
-  implementation("com.flowingcode.addons", "iron-icons", IRON_ICONS)
+  implementation("com.flowingcode.addons", "iron-icons", ironIconsVersion)
 }
 
 // ----------------------------------------------------------------------
