@@ -15,21 +15,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.form.UField
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.actor.Actor
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.base.Utils
-import org.kopi.galite.visual.ui.vaadin.field.Field.NavigationDelegationMode
-import org.kopi.galite.visual.ui.vaadin.field.TextField.ConvertType
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorField
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.VColor
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.form.UField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.actor.Actor
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
+import org.kopi.vkopi.lib.ui.vaadinflow.field.Field.NavigationDelegationMode
+import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField.ConvertType
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorField
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.VColor
 
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.data.converter.Converter

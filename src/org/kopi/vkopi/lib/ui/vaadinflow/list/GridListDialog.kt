@@ -15,15 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.list
+package org.kopi.vkopi.lib.ui.vaadinflow.list
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.base.Utils
-import org.kopi.galite.visual.ui.vaadin.base.VInputButton
-import org.kopi.galite.visual.ui.vaadin.window.Window
-import org.kopi.galite.visual.visual.ApplicationContext
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
+import org.kopi.vkopi.lib.ui.vaadinflow.base.VInputButton
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
+import org.kopi.vkopi.lib.visual.ApplicationContext
 
 import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.HasEnabled
@@ -248,5 +248,5 @@ open class GridListDialog : EnhancedDialog(), HasEnabled, KeyNotifier, HasStyle 
     }*/
   }
 
-  private val locale get() = ApplicationContext.applicationContext.getApplication().defaultLocale.toString()
+  private val locale get() = ApplicationContext.getApplicationContext().getApplication().defaultLocale.toString()
 }

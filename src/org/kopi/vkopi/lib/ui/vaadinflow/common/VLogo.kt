@@ -15,10 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.common
+package org.kopi.vkopi.lib.ui.vaadinflow.common
 
-import org.kopi.galite.visual.ui.vaadin.base.ResourcesUtil
-import org.kopi.galite.visual.ui.vaadin.base.VAnchorPanel
+import org.kopi.vkopi.lib.ui.vaadinflow.base.ResourcesUtil
+import org.kopi.vkopi.lib.ui.vaadinflow.base.VAnchorPanel
 
 import com.vaadin.flow.component.html.Image
 

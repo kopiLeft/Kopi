@@ -15,12 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import java.io.IOException
 
-import org.kopi.galite.visual.util.base.InconsistencyException
-import org.kopi.galite.visual.visual.VHelpViewer
+import org.kopi.vkopi.lib.visual.VHelpViewer
 
 import com.vaadin.flow.component.Html
 import com.vaadin.flow.component.html.Div
@@ -53,7 +52,7 @@ class DHelpViewer(model: VHelpViewer) : DWindow(model) {
       layout.isMargin = true
       setContent(pane)
     } catch (e: IOException) {
-      throw InconsistencyException(e)
+      throw org.kopi.util.base.InconsistencyException(e)
     }
   }
   override fun run() {

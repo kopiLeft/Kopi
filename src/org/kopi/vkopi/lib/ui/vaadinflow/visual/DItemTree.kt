@@ -15,24 +15,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreeNode
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.base.Utils.findMainWindow
-import org.kopi.galite.visual.ui.vaadin.window.PopupWindow
-import org.kopi.galite.visual.visual.Item
-import org.kopi.galite.visual.visual.MessageCode
-import org.kopi.galite.visual.visual.UItemTree
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VExecFailedException
-import org.kopi.galite.visual.visual.VItemTree
-import org.kopi.galite.visual.visual.VRuntimeException
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
+import org.kopi.vkopi.lib.visual.Item
+import org.kopi.vkopi.lib.visual.MessageCode
+import org.kopi.vkopi.lib.visual.UItemTree
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VExecFailedException
+import org.kopi.vkopi.lib.visual.VItemTree
+import org.kopi.vkopi.lib.visual.VRuntimeException
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.button.Button
@@ -156,9 +156,9 @@ class DItemTree(model: VItemTree) : DWindow(model), UItemTree {
     if (item != null) {
       if (!item.isDefaultItem) {
         setDefault(-1)
-        item.isDefaultItem = true
+        item.setDefault(true)
       } else {
-        item.isDefaultItem = false
+        item.setDefault(false)
       }
       item.isSelected = true
       // tree.setIcon(item) TODO
@@ -174,7 +174,7 @@ class DItemTree(model: VItemTree) : DWindow(model), UItemTree {
     children?.forEach {
       val item = tree.getITEM(it) as Item
       if (item.isDefaultItem) {
-        item.isDefaultItem = false
+        item.setDefault(false)
         // tree.setIcon(item) TODO
       }
       val Grandsons = tree.getChildrenOf(item.id)
@@ -199,7 +199,7 @@ class DItemTree(model: VItemTree) : DWindow(model), UItemTree {
     val item = getSelectedItem()
     if (item != null) {
       access(currentUI) {
-        if (getModel()!!.isRemoveDescendantsAllowed) {
+        if (getModel()!!.isRemoveDescendantsAlowed) {
           removeChildren(item)
         } else {
           attacheToParent(item)

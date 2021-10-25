@@ -37,12 +37,6 @@ import org.kopi.gradle.common.makeTaskDependencies
  * Javac compiler class
  */
 open class Javac : JavaCompile() {
-  // up-to-date checks are based only on changes in java source files and not on generated class files.
-  // Workaround to not break up-to-date checks since javac tasks for some modules having overlapping outputs.
-  @Internal
-  override fun getDestinationDirectory(): DirectoryProperty {
-    return super.getDestinationDirectory()
-  }
 
   init {
     classpath = project.files()

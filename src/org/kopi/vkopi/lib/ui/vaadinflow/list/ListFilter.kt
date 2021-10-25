@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.list
+package org.kopi.vkopi.lib.ui.vaadinflow.list
 
 import java.util.Locale
 
@@ -26,14 +26,14 @@ class ListFilter(val propertyId: Int,
                  val ignoreCase: Boolean,
                  val onlyMatchPrefix: Boolean) : SerializablePredicate<List<Any?>> {
 
-  val filterString = if(ignoreCase) filterString.lowercase(Locale.getDefault()) else filterString
+val filterString = if(ignoreCase) filterString.toLowerCase() else filterString
 
   override fun test(t: List<Any?>): Boolean {
     if (t[propertyId] == null) {
       return false
     }
 
-   val value = if (ignoreCase) t[propertyId].toString().lowercase(Locale.getDefault()) else t[propertyId].toString()
+   val value = if (ignoreCase) t[propertyId].toString().toLowerCase() else t[propertyId].toString()
 
     if (onlyMatchPrefix) {
       if (!value.startsWith(filterString)) {

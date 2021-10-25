@@ -15,15 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.chart
+package org.kopi.vkopi.lib.ui.vaadinflow.chart
 
-import org.kopi.galite.visual.chart.ChartTypeFactory
-import org.kopi.galite.visual.chart.UChart
-import org.kopi.galite.visual.chart.UChartType
-import org.kopi.galite.visual.chart.VChart
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.visual.DWindow
-import org.kopi.galite.visual.visual.VWindow
+import org.kopi.vkopi.lib.chart.ChartTypeFactory
+import org.kopi.vkopi.lib.chart.UChart
+import org.kopi.vkopi.lib.chart.UChartType
+import org.kopi.vkopi.lib.chart.VChart
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.DWindow
+import org.kopi.vkopi.lib.visual.VWindow
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
@@ -70,26 +70,26 @@ class DChart(model: VWindow) : DWindow(model), UChart {
 //    TODO()
   }
 
-  //---------------------------------------------------
-  // DATA MEMBERS
-  //---------------------------------------------------
-  override var type: UChartType? = null
-    set(newType) {
-      access {
-        if (field != null && newType != null) {
-          content.remove(field as Component)
-        }
-        if (newType != null) {
-          field = newType
-          newType.build()
-          content.add(newType as Component)
-        }
+  override fun getType(): UChartType? {
+    return type
+  }
+
+  override fun setType(newType: UChartType?) {
+    access {
+      if (type != null && newType != null) {
+        content.remove(type as Component)
+      }
+      if (newType != null) {
+        type = newType
+        newType.build()
+        content.add(newType as Component)
       }
     }
+  }
 
   companion object {
     init {
-      ChartTypeFactory.chartTypeFactory = VChartTypeFactory()
+      ChartTypeFactory.setChartTypeFactory(VChartTypeFactory())
     }
   }
   //---------------------------------------------------

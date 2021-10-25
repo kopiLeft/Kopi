@@ -15,10 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.notif
+package org.kopi.vkopi.lib.ui.vaadinflow.notif
 
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedMessages
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedMessages
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
 
 import com.vaadin.flow.component.Component
 

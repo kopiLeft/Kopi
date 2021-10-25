@@ -15,22 +15,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.time.LocalDate
 import java.util.Calendar
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.type.Date
-import org.kopi.galite.visual.type.Month
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndAwait
-import org.kopi.galite.visual.ui.vaadin.visual.VApplication
-import org.kopi.galite.visual.visual.ApplicationContext
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.xkopi.lib.type.Date
+import org.kopi.xkopi.lib.type.NotNullDate
+import org.kopi.xkopi.lib.type.NotNullMonth
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
+import org.kopi.vkopi.lib.visual.ApplicationContext
 
 import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.HasValue
 import com.vaadin.flow.component.datepicker.DatePicker
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
 
 /**
  * The `DateChooser` is date selection component.
@@ -94,7 +95,7 @@ class DateChooser(private var selectedDate: Date?,
    * @return The application instance.
    */
   protected val application: VApplication
-    get() = ApplicationContext.applicationContext.getApplication() as VApplication
+    get() = ApplicationContext.getApplicationContext().getApplication() as VApplication
 
   /**
    * Returns The current selected date (can be `null`)
@@ -121,7 +122,7 @@ class DateChooser(private var selectedDate: Date?,
     if (selected != null) {
       val cal: Calendar = Calendar.getInstance(ApplicationContext.getDefaultLocale())
       //cal.time = selected TODO
-      setSelectedDate(Date(cal))
+      setSelectedDate(NotNullDate(cal))
     }
     dispose()
     //BackgroundThreadHandler.releaseLock(this) TODO
@@ -150,8 +151,8 @@ class DateChooser(private var selectedDate: Date?,
      * Returns the number of days in the specified month
      * @return The number of days in the specified month
      */
-    fun getDaysInMonth(d: Date): Int {
-      return Month(d).getLastDay().day
+    fun getDaysInMonth(d: NotNullDate): Int {
+      return NotNullMonth(d).getLastDay().day
     }
   }
 }

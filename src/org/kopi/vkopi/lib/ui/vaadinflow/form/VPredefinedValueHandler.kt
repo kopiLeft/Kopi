@@ -15,16 +15,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.awt.Color
 
-import org.kopi.galite.visual.form.AbstractPredefinedValueHandler
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.form.VForm
-import org.kopi.galite.visual.type.Date
-import org.kopi.galite.visual.ui.vaadin.upload.FileUploader
+import org.kopi.vkopi.lib.form.AbstractPredefinedValueHandler
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.form.VForm
+import org.kopi.xkopi.lib.type.Date
+import org.kopi.vkopi.lib.ui.vaadinflow.upload.FileUploader
 
 import com.vaadin.flow.component.Component
 

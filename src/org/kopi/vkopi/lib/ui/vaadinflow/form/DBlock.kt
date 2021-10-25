@@ -15,22 +15,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.form.Alignment
-import org.kopi.galite.visual.form.UBlock
-import org.kopi.galite.visual.form.UForm
-import org.kopi.galite.visual.form.VBlock
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.block.Block
-import org.kopi.galite.visual.ui.vaadin.block.BlockLayout
-import org.kopi.galite.visual.ui.vaadin.block.SimpleBlockLayout
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VExecFailedException
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.form.Alignment
+import org.kopi.vkopi.lib.form.UBlock
+import org.kopi.vkopi.lib.form.UForm
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.block.Block
+import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
+import org.kopi.vkopi.lib.ui.vaadinflow.block.SimpleBlockLayout
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VExecFailedException
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Component
@@ -46,11 +46,12 @@ import com.vaadin.flow.component.dependency.CssImport
  */
 
 @CssImport("./styles/galite/block.css")
-open class DBlock(val parent: DForm, final override val model: VBlock) : Block(model.isDroppable), UBlock {
+open class DBlock(val parent: DForm, private val model: VBlock) : Block(model.isDroppable), UBlock {
 
   protected var formView: DForm = parent
   protected lateinit var columnViews: Array<VFieldUI?>
 
+  // protected Layout  		layout;
   protected var maxRowPos: Int = model.maxRowPos
   protected var maxColumnPos: Int = model.maxColumnPos
   protected var displayedFields: Int = model.displayedFields
@@ -408,7 +409,7 @@ open class DBlock(val parent: DForm, final override val model: VBlock) : Block(m
     val layout = SimpleBlockLayout(2 * maxColumnPos, maxRowPos)
     if (model.alignment != null) {
       layout.setBlockAlignment(formView.getBlockView(model.alignment!!.block) as Component,
-                               model.alignment!!.targets,
+                               model.alignment!!.tartgets,
                                model.alignment!!.isChart())
     }
 
@@ -448,4 +449,7 @@ open class DBlock(val parent: DForm, final override val model: VBlock) : Block(m
   override fun filterShown() {}
 
   override fun getCurrentDisplay(): UBlock? = this
+  override fun getModel(): VBlock {
+    return model
+  }
 }

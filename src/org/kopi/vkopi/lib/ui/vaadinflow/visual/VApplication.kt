@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import java.sql.SQLException
 import java.util.Date
@@ -23,41 +23,40 @@ import java.util.Locale
 import java.util.MissingResourceException
 import java.util.ResourceBundle
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.db.DBContext
-import org.kopi.galite.visual.l10n.LocalizationManager
-import org.kopi.galite.visual.print.PrintManager
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndAwait
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.base.FontMetrics
-import org.kopi.galite.visual.ui.vaadin.base.StylesInjector
-import org.kopi.galite.visual.ui.vaadin.main.MainWindow
-import org.kopi.galite.visual.ui.vaadin.main.MainWindowListener
-import org.kopi.galite.visual.ui.vaadin.notif.AbstractNotification
-import org.kopi.galite.visual.ui.vaadin.notif.ConfirmNotification
-import org.kopi.galite.visual.ui.vaadin.notif.ErrorNotification
-import org.kopi.galite.visual.ui.vaadin.notif.InformationNotification
-import org.kopi.galite.visual.ui.vaadin.notif.NotificationListener
-import org.kopi.galite.visual.ui.vaadin.notif.WarningNotification
-import org.kopi.galite.visual.ui.vaadin.welcome.WelcomeView
-import org.kopi.galite.visual.ui.vaadin.welcome.WelcomeViewEvent
-import org.kopi.galite.visual.ui.vaadin.window.Window
-import org.kopi.galite.visual.visual.Application
-import org.kopi.galite.visual.visual.ApplicationConfiguration
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.FileHandler
-import org.kopi.galite.visual.visual.ImageHandler
-import org.kopi.galite.visual.visual.Message
-import org.kopi.galite.visual.visual.MessageCode
-import org.kopi.galite.visual.visual.MessageListener
-import org.kopi.galite.visual.visual.PrinterManager
-import org.kopi.galite.visual.visual.Registry
-import org.kopi.galite.visual.visual.UIFactory
-import org.kopi.galite.visual.visual.VMenuTree
-import org.kopi.galite.visual.visual.VlibProperties
-import org.kopi.galite.visual.visual.WindowController
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.l10n.LocalizationManager
+import org.kopi.vkopi.lib.print.PrintManager
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.FontMetrics
+import org.kopi.vkopi.lib.ui.vaadinflow.base.StylesInjector
+import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindowListener
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.AbstractNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.ConfirmNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.ErrorNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.InformationNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.NotificationListener
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.WarningNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeView
+import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeViewEvent
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
+import org.kopi.vkopi.lib.visual.Application
+import org.kopi.vkopi.lib.visual.ApplicationConfiguration
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.FileHandler
+import org.kopi.vkopi.lib.visual.ImageHandler
+import org.kopi.vkopi.lib.visual.Message
+import org.kopi.vkopi.lib.visual.MessageCode
+import org.kopi.vkopi.lib.visual.MessageListener
+import org.kopi.vkopi.lib.visual.PrinterManager
+import org.kopi.vkopi.lib.visual.Registry
+import org.kopi.vkopi.lib.visual.UIFactory
+import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VlibProperties
+import org.kopi.vkopi.lib.visual.WindowController
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Component
@@ -76,6 +75,7 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
+import org.kopi.xkopi.lib.base.DBContext
 
 /**
  * The entry point for all Galite WEB applications.
@@ -88,9 +88,10 @@ import com.vaadin.flow.shared.communication.PushMode
   CssImport("./styles/galite/common.css")
 ])
 @Suppress("LeakingThis")
-abstract class VApplication(override val registry: Registry) : VerticalLayout(), Application, MainWindowListener,
+abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener,
   HasDynamicTitle {
 
+  override fun getRegistry(): Registry = registry
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
@@ -111,7 +112,9 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
   // Failure cause informations
   // ---------------------------------------------------------------------
 
-  override val startupTime: Date = Date() // remembers the startup time
+  override fun getStartupTime(): Date = Date() // remembers the startup time
+
+  constructor(): this(object: Registry("", null){})
 
   init {
     className = "galite"
@@ -240,7 +243,7 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
   }
 
   override fun startApplication() {
-    menu = VMenuTree(dBContext)
+    menu = VMenuTree(dbContext)
     menu!!.setTitle(userName + "@" + url.substring(url.indexOf("//") + 2))
     mainWindow = MainWindow(defaultLocale, logoImage, logoHref, this)
     mainWindow!!.addMainWindowListener(this)
@@ -273,14 +276,34 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
   }
 
   override fun allowQuit(): Boolean =
-          getInitParameter("allowQuit") == null ||
-                  java.lang.Boolean.parseBoolean(getInitParameter("allowQuit"))
+    getInitParameter("allowQuit") == null ||
+            java.lang.Boolean.parseBoolean(getInitParameter("allowQuit"))
 
-  override lateinit var applicationConfiguration: ApplicationConfiguration
+  override fun getApplicationConfiguration(): ApplicationConfiguration = applicationConfiguration
 
-  override lateinit var printManager: PrintManager
+  override fun setApplicationConfiguration(configuration: ApplicationConfiguration) {
+    applicationConfiguration = configuration
+  }
 
-  override lateinit var printerManager: PrinterManager
+  override fun getPrintManager(): PrintManager = printManager
+
+  override fun setPrintManager(printManager: PrintManager) {
+    this.printManager = printManager
+  }
+
+  override fun getPrinterManager(): PrinterManager {
+    return printerManager
+  }
+
+  override fun setPrinterManager(printerManager: PrinterManager) {
+    this.printerManager = printerManager
+  }
+
+  private lateinit var applicationConfiguration: ApplicationConfiguration
+
+  private lateinit var printManager: PrintManager
+
+  private lateinit var printerManager: PrinterManager
 
   // --------------------------------------------------
   // WELCOME VIEW LISTENER IMPLEMENTATION
@@ -322,13 +345,13 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
     requireNotNull(database) { "The database url shouldn't be null" }
     requireNotNull(driver) { "The jdbc driver shouldn't be null" }
 
-    dBContext = login(database,
+    dbContext = login(database,
                       driver,
                       username,
                       password,
                       schema)
     // check if context is created
-    if (dBContext == null) {
+    if (dbContext == null) {
       throw SQLException(MessageCode.getMessage("VIS-00054"))
     } else {
       // set query trace level
@@ -336,21 +359,29 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
     }
   }
 
-  override val isNoBugReport: Boolean
-    get() = java.lang.Boolean.parseBoolean(getInitParameter("nobugreport"))
+  override fun isNobugReport(): Boolean = true
 
-  override var menu: VMenuTree? = null
+  override fun getMenu(): VMenuTree? {
+    return menu
+  }
+  private var menu: VMenuTree? = null
 
-  override var isGeneratingHelp: Boolean = false
+  override fun isGeneratingHelp(): Boolean = false
 
-  override var dBContext: DBContext? = null
+  override fun getDBContext(): DBContext? = dbContext
 
-  override val userName: String
-    get() = dBContext!!.defaultConnection.userName
+  private var dbContext: DBContext? = null
 
-  override lateinit var defaultLocale: Locale
+  override fun getUserName(): String = dbContext!!.defaultConnection.userName
 
-  override var localizationManager: LocalizationManager? = null
+  override fun getDefaultLocale(): Locale = defaultLocale
+
+  private lateinit var defaultLocale: Locale
+
+  override fun getLocalizationManager(): LocalizationManager? {
+    return localizationManager
+  }
+  private var localizationManager: LocalizationManager? = null
 
   override fun displayError(parent: UComponent?, message: String?) {
     error(message)
@@ -379,7 +410,7 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
    * The database URL.
    */
   val url: String
-    get() = dBContext!!.defaultConnection.url
+    get() = dbContext!!.defaultConnection.url
 
   /**
    * This methods is called at the beginning
@@ -469,13 +500,13 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
    */
   protected fun closeConnection() {
     try {
-      if (dBContext != null) {
-        dBContext!!.close()
-        dBContext = null
+      if (dbContext != null) {
+        dbContext!!.close()
+        dbContext = null
       }
     } catch (e: SQLException) {
       // we don't care, we reinitialize the connection
-      dBContext = null
+      dbContext = null
     }
   }
 
@@ -502,7 +533,7 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
       mainWindow = null
       menu = null
       localizationManager = null
-      isGeneratingHelp = false
+      //isGeneratingHelp = false
     }
     if (welcomeView == null) {
       welcomeView = WelcomeView(defaultLocale, supportedLocales, sologanImage, logoImage, logoHref)
@@ -568,8 +599,7 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
     // TODO
   }
 
-  override val userIP: String
-    get() {
+  override fun getUserIP(): String? {
       var userIP = ""
       val currentSession = VaadinSession.getCurrent()
 
@@ -665,14 +695,14 @@ abstract class VApplication(override val registry: Registry) : VerticalLayout(),
             FontMetrics.LETTER
     )
 
-    init {
-      ApplicationContext.applicationContext = VApplicationContext()
-      FileHandler.fileHandler = VFileHandler()
-      ImageHandler.imageHandler = VImageHandler()
-      WindowController.windowController = VWindowController()
-      UIFactory.uiFactory = VUIFactory()
-    }
+  init {
+    ApplicationContext.setApplicationContext(VApplicationContext())
+    FileHandler.setFileHandler(VFileHandler())
+    ImageHandler.setImageHandler(VImageHandler())
+    WindowController.setWindowController(VWindowController())
+    UIFactory.setUIFactory(VUIFactory())
   }
+}
 }
 
 @Push(PushMode.MANUAL)

@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.login
+package org.kopi.vkopi.lib.ui.vaadinflow.login
 
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.event.LoginWindowListener
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.event.LoginWindowListener
 
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.progressbar.ProgressBar

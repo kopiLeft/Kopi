@@ -15,18 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.welcome
+package org.kopi.vkopi.lib.ui.vaadinflow.welcome
 
 import java.util.Locale
 
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.common.VContent
-import org.kopi.galite.visual.ui.vaadin.common.VHeader
-import org.kopi.galite.visual.ui.vaadin.common.VMain
-import org.kopi.galite.visual.ui.vaadin.event.LoginWindowListener
-import org.kopi.galite.visual.ui.vaadin.login.VEmptyModuleList
-import org.kopi.galite.visual.ui.vaadin.login.VLoginView
-import org.kopi.galite.visual.ui.vaadin.login.VLoginWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VContent
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VHeader
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VMain
+import org.kopi.vkopi.lib.ui.vaadinflow.event.LoginWindowListener
+import org.kopi.vkopi.lib.ui.vaadinflow.login.VEmptyModuleList
+import org.kopi.vkopi.lib.ui.vaadinflow.login.VLoginView
+import org.kopi.vkopi.lib.ui.vaadinflow.login.VLoginWindow
 
 import com.vaadin.flow.component.HasSize
 import com.vaadin.flow.component.HasStyle

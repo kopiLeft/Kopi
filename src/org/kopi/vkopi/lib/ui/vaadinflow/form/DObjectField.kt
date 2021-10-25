@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.field.ObjectFieldListener
-import org.kopi.galite.visual.visual.Action
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.field.ObjectFieldListener
+import org.kopi.vkopi.lib.visual.Action
 
 /**
  * The `DObjectField` is the vaadin implementation

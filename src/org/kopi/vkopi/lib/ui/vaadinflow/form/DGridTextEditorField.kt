@@ -15,35 +15,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.ModelTransformer
-import org.kopi.galite.visual.form.UTextField
-import org.kopi.galite.visual.form.VCodeField
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VDateField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.form.VDecimalField
-import org.kopi.galite.visual.form.VIntegerField
-import org.kopi.galite.visual.form.VMonthField
-import org.kopi.galite.visual.form.VStringField
-import org.kopi.galite.visual.form.VTimeField
-import org.kopi.galite.visual.form.VTimestampField
-import org.kopi.galite.visual.form.VWeekField
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorDateField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorEnumField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorDecimalField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorIntegerField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorMonthField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorTextAreaField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorTextField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorTimeField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorTimestampField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorWeekField
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.form.ModelTransformer
+import org.kopi.vkopi.lib.form.UTextField
+import org.kopi.vkopi.lib.form.VCodeField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VDateField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.form.VDecimalField
+import org.kopi.vkopi.lib.form.VIntegerField
+import org.kopi.vkopi.lib.form.VMonthField
+import org.kopi.vkopi.lib.form.VStringField
+import org.kopi.vkopi.lib.form.VTimeField
+import org.kopi.vkopi.lib.form.VTimestampField
+import org.kopi.vkopi.lib.form.VWeekField
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorDateField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorEnumField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorDecimalField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorIntegerField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorMonthField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTextAreaField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTextField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTimeField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTimestampField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorWeekField
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.data.binder.Result

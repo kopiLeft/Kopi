@@ -15,13 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.base
+package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 import java.util.Date
 import java.util.Locale
 
-import org.kopi.galite.visual.l10n.LocalizationManager
-import org.kopi.galite.visual.util.base.InconsistencyException
+import org.kopi.vkopi.lib.l10n.LocalizationManager
+import org.kopi.util.base.InconsistencyException
 
 import com.vaadin.flow.function.DeploymentConfiguration
 import com.vaadin.flow.server.CustomizedSystemMessages
@@ -148,6 +148,6 @@ open class GaliteServlet : VaadinServlet(), SessionInitListener {
     get() = java.lang.Boolean.parseBoolean(getInitParameter("debugMode"))
 
   companion object {
-    private const val VLIB_PROPERTIES_RESOURCE_FILE = "org/kopi/galite/visual/VlibProperties"
+    private const val VLIB_PROPERTIES_RESOURCE_FILE = "org/kopi/vkopi/lib/resource/VlibProperties"
   }
 }

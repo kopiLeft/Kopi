@@ -15,13 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.AbstractFieldHandler
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.base.Utils
+import org.kopi.vkopi.lib.form.AbstractFieldHandler
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 
 /**
  * The `DFieldHandler` is the vaadin implementation of the

@@ -15,42 +15,42 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import java.io.File
 import java.io.Serializable
 import java.util.concurrent.ConcurrentLinkedQueue
 
-import org.kopi.galite.visual.base.Utils
-import org.kopi.galite.visual.ui.vaadin.actor.VActorsNavigationPanel
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.releaseLock
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.startAndWaitAndPush
-import org.kopi.galite.visual.ui.vaadin.base.Utils.findMainWindow
-import org.kopi.galite.visual.ui.vaadin.notif.AbstractNotification
-import org.kopi.galite.visual.ui.vaadin.notif.ConfirmNotification
-import org.kopi.galite.visual.ui.vaadin.notif.ErrorNotification
-import org.kopi.galite.visual.ui.vaadin.notif.InformationNotification
-import org.kopi.galite.visual.ui.vaadin.notif.NotificationListener
-import org.kopi.galite.visual.ui.vaadin.notif.WarningNotification
-import org.kopi.galite.visual.ui.vaadin.progress.ProgressDialog
-import org.kopi.galite.visual.ui.vaadin.wait.WaitDialog
-import org.kopi.galite.visual.ui.vaadin.wait.WaitWindow
-import org.kopi.galite.visual.ui.vaadin.window.PopupWindow
-import org.kopi.galite.visual.ui.vaadin.window.Window
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.MessageCode
-import org.kopi.galite.visual.visual.MessageListener
-import org.kopi.galite.visual.visual.PropertyException
-import org.kopi.galite.visual.visual.UWindow
-import org.kopi.galite.visual.visual.VActor
-import org.kopi.galite.visual.visual.VRuntimeException
-import org.kopi.galite.visual.visual.VWindow
-import org.kopi.galite.visual.visual.VlibProperties
-import org.kopi.galite.visual.visual.WaitInfoListener
+import org.kopi.vkopi.lib.base.Utils
+import org.kopi.vkopi.lib.ui.vaadinflow.actor.VActorsNavigationPanel
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.AbstractNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.ConfirmNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.ErrorNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.InformationNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.NotificationListener
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.WarningNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.progress.ProgressDialog
+import org.kopi.vkopi.lib.ui.vaadinflow.wait.WaitDialog
+import org.kopi.vkopi.lib.ui.vaadinflow.wait.WaitWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.MessageCode
+import org.kopi.vkopi.lib.visual.MessageListener
+import org.kopi.vkopi.lib.visual.PropertyException
+import org.kopi.vkopi.lib.visual.UWindow
+import org.kopi.vkopi.lib.visual.VActor
+import org.kopi.vkopi.lib.visual.VRuntimeException
+import org.kopi.vkopi.lib.visual.VWindow
+import org.kopi.vkopi.lib.visual.VlibProperties
+import org.kopi.vkopi.lib.visual.WaitInfoListener
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Component
@@ -520,7 +520,7 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
    * @return the current application instance.
    */
   protected val application: VApplication
-    get() = ApplicationContext.applicationContext.getApplication() as VApplication
+    get() = ApplicationContext.getApplicationContext().getApplication() as VApplication
 
   //--------------------------------------------------------------
   // MESSAGELISTENER IMPLEMENTATION

@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -27,11 +27,11 @@ import java.io.OutputStream
 
 import javax.activation.MimetypesFileTypeMap
 
-import org.kopi.galite.visual.form.VBlock
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VImageField
-import org.kopi.galite.visual.form.VStringField
-import org.kopi.galite.visual.visual.VException
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VImageField
+import org.kopi.vkopi.lib.form.VStringField
+import org.kopi.vkopi.lib.visual.VException
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.dnd.DragSource
@@ -183,11 +183,11 @@ class DBlockDropHandler(private val block: VBlock,
         if (isChartBlockContext) {
           val rec = getFirstUnfilledRecord(block, target)
           block.activeRecord = rec
-          block.currentRecord = rec
+          block.setCurrentRecord(rec)
           target.setString(rec, file.absolutePath)
           target.onAfterDrop()
           block.activeRecord = rec + 1
-          block.currentRecord = rec + 1
+          block.setCurrentRecord(rec + 1)
           block.gotoRecord(block.activeRecord)
           true
         } else {
@@ -222,11 +222,11 @@ class DBlockDropHandler(private val block: VBlock,
     return if (isChartBlockContext) {
       val rec = getFirstUnfilledRecord(block, target)
       block.activeRecord = rec
-      block.currentRecord = rec
+      block.setCurrentRecord(rec)
       target.setImage(rec, toByteArray(file))
       target.onAfterDrop()
       block.activeRecord = rec + 1
-      block.currentRecord = rec + 1
+      block.setCurrentRecord(rec + 1)
       block.gotoRecord(block.activeRecord)
       true
     } else {

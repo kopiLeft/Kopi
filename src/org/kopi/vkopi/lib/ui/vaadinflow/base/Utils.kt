@@ -15,14 +15,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.base
+package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 import java.util.Hashtable
 import java.util.concurrent.CompletableFuture
 
-import org.kopi.galite.visual.base.Utils
-import org.kopi.galite.visual.ui.vaadin.main.MainWindow
-import org.kopi.galite.visual.visual.VColor
+import org.kopi.vkopi.lib.base.Utils
+import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
+import org.kopi.vkopi.lib.visual.VColor
 
 import com.flowingcode.vaadin.addons.ironicons.AvIcons
 import com.flowingcode.vaadin.addons.ironicons.DeviceIcons

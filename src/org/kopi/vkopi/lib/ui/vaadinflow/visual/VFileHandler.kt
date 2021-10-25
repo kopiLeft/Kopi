@@ -16,16 +16,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-import org.kopi.galite.visual.ui.vaadin.upload.FileUploader
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.FileHandler
-import org.kopi.galite.visual.visual.UWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.upload.FileUploader
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.FileHandler
+import org.kopi.vkopi.lib.visual.UWindow
 
 class VFileHandler : FileHandler() {
 
@@ -75,7 +75,7 @@ class VFileHandler : FileHandler() {
    * Returns the current application instance.
    * @return The current application instance.
    */
-  internal fun getApplication(): VApplication = ApplicationContext.applicationContext.getApplication() as VApplication
+  internal fun getApplication(): VApplication = ApplicationContext.getApplicationContext().getApplication() as VApplication
 
   /**
    * Converts the given bytes to a file. The file is created under OS temp directory.
