@@ -139,7 +139,13 @@ tasks {
     kotlinOptions.jvmTarget = "1.8"
   }
   compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    destinationDir = file(classRoot!!)
+    source = files("src").asFileTree
+
+    if(jdk7Home != null) {
+      sourceCompatibility = "1.7"
+      targetCompatibility = "1.7"
+    }
   }
 
   register("grammar.jcc")
@@ -177,6 +183,11 @@ tasks {
     dependsOn("xkjc")
     dependsOn("resources")
     dependsOn("script")
+  }
+
+  named("jar") {
+    dependsOn("run")
+    mustRunAfter("run")
   }
 
   named("build") { dependsOn("run") }
@@ -315,16 +326,6 @@ tasks {
     include(allJavaFiles.map { file(it).relativeTo(file(topDir)).toString() })
     doFirst {
       require(javadocRoot != null) { "No JAVADOCROOT defined" }
-    }
-  }
-
-  compileKotlin {
-    destinationDir = file(classRoot!!)
-    source = files("src").asFileTree
-
-    if(jdk7Home != null) {
-      sourceCompatibility = "1.7"
-      targetCompatibility = "1.7"
     }
   }
 
