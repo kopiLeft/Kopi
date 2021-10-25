@@ -15,35 +15,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.event
-
-import java.io.Serializable
-
-import com.vaadin.flow.component.Component
+package org.kopi.galite.visual.ui.vaadin.grid
 
 /**
- * Registered objects are notified about actions happening
- * in the main application window.
+ * Server side implementation of decimal grid editor field
  */
-interface MainWindowListener : Serializable {
-  /**
-   * Fired when the logout link is clicked.
-   */
-  fun onLogout()
+class GridEditorDecimalField(
+        width: Int,
+        minValue: Double,
+        maxValue: Double,
+        maxScale: Int,
+        fraction: Boolean
+) : GridEditorTextField(width) {
 
-  /**
-   * Fired when the connected user link is clicked.
-   */
-  fun onUser()
-
-  /**
-   * Fired when windows link is clicked.
-   */
-  fun onWindows()
-
-  /**
-   * Fired when the given window is shown on the main window.
-   * @param window The window the became visible.
-   */
-  fun onWindowVisible(window: Component?)
+  override fun check(text: String): Boolean {
+    for (c in text) {
+      if (!(c >= '0' && c <= '9' || c == '.' || c == '-' || c == ' ' || c == ',' || c == '/')) {
+        return false
+      }
+    }
+    return true
+  }
 }
