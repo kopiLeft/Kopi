@@ -140,7 +140,6 @@ tasks {
   }
   compileKotlin {
     destinationDir = file(classRoot!!)
-    source = files("src").asFileTree
 
     if(jdk7Home != null) {
       sourceCompatibility = "1.7"
