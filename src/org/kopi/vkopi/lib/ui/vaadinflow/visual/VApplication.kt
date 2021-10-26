@@ -23,6 +23,7 @@ import java.util.Locale
 import java.util.MissingResourceException
 import java.util.ResourceBundle
 
+import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -75,7 +76,6 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
-import org.kopi.xkopi.lib.base.DBContext
 
 /**
  * The entry point for all Galite WEB applications.
