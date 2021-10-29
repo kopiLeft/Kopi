@@ -15,9 +15,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.notif
+package org.kopi.vkopi.lib.ui.vaadinflow.notif
 
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.button.Button
@@ -36,6 +36,11 @@ class InformationNotification(title: String?,
                               parent: Component?)
   : AbstractNotification(title, message, locale, parent) {
 
+  //--------------------------------------------------
+  // DATA MEMBERS
+  //--------------------------------------------------
+  private lateinit var close: Button
+
   //-------------------------------------------------
   // IMPLEMENTATION
   //-------------------------------------------------
@@ -49,9 +54,4 @@ class InformationNotification(title: String?,
 
   override val iconName: VaadinIcon
     get() = VaadinIcon.INFO_CIRCLE
-
-  //--------------------------------------------------
-  // DATA MEMBERS
-  //--------------------------------------------------
-  private lateinit var close: Button
 }

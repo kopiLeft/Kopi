@@ -15,17 +15,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import javax.swing.tree.TreeNode
 
-import org.kopi.galite.visual.ui.vaadin.base.Tree
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.Message
-import org.kopi.galite.visual.visual.Module
-import org.kopi.galite.visual.visual.UMenuTree
-import org.kopi.galite.visual.visual.VMenuTree
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Tree
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.Message
+import org.kopi.vkopi.lib.visual.Module
+import org.kopi.vkopi.lib.visual.UMenuTree
+import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.Unit
@@ -137,11 +137,11 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
       if (getModel().isSuperUser) {
         if (tree.dataCommunicator.getParentItem(tree.selectedItem) != null) {
           module.accessibility = (module.accessibility + 1) % 3
-          tree.getNodeComponent(module.id)?.setIcon(module.accessibility, module.objectName != null)
+          tree.getNodeComponent(module.id)?.setIcon(module.accessibility, module.`object` != null)
         }
-      } else if (module.objectName != null) {
+      } else if (module.getObject() != null) {
         setWaitInfo(VlibProperties.getString("menu_form_started"))
-        module.run(getModel().dBContext!!)
+        module.run(getModel().dbContext!!)
         unsetWaitInfo()
       }
     }
@@ -155,7 +155,7 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
     if (module != null) {
       getModel().setToolTip(module.help)
       getModel().setActorEnabled(VMenuTree.CMD_SHOW, getModel().getShortcutsID().size > 0)
-      if (module.objectName != null) {
+      if (module.`object` != null) {
         getModel().setActorEnabled(VMenuTree.CMD_OPEN, true)
         getModel().setActorEnabled(VMenuTree.CMD_ADD, !getModel().getShortcutsID().contains(module.id))
         getModel().setActorEnabled(VMenuTree.CMD_REMOVE, getModel().getShortcutsID().contains(module.id))

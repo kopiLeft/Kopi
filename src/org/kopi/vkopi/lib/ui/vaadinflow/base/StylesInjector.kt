@@ -15,10 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.base
+package org.kopi.vkopi.lib.ui.vaadinflow.base
 
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.visual.VColor
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.visual.VColor
 
 /**
  * A centralized way to inject styles in the browser page.

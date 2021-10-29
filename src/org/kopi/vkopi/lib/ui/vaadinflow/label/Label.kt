@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.label
+package org.kopi.vkopi.lib.ui.vaadinflow.label
 
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.base.VAnchorPanel
-import org.kopi.galite.visual.ui.vaadin.common.VSpan
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.base.VAnchorPanel
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VSpan
 
 import com.vaadin.flow.component.HasEnabled
 import com.vaadin.flow.component.dependency.CssImport
@@ -113,6 +113,13 @@ open class Label : VAnchorPanel(), HasEnabled {
    */
   override fun setText(text: String?) {
     label.text = text
+  }
+
+  /**
+   * Gets the label text.
+   */
+  override fun getText(): String? {
+    return label.text
   }
 
   /**

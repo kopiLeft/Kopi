@@ -15,26 +15,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import java.io.File
 
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreeNode
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.menu.ModuleItem
-import org.kopi.galite.visual.ui.vaadin.menu.ModuleList
-import org.kopi.galite.visual.ui.vaadin.wait.WaitWindow
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.Module
-import org.kopi.galite.visual.visual.RootMenu
-import org.kopi.galite.visual.visual.UMenuTree
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VMenuTree
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.menu.ModuleItem
+import org.kopi.vkopi.lib.ui.vaadinflow.menu.ModuleList
+import org.kopi.vkopi.lib.ui.vaadinflow.wait.WaitWindow
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.Module
+import org.kopi.vkopi.lib.visual.RootMenu
+import org.kopi.vkopi.lib.visual.UMenuTree
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.UI
@@ -120,7 +120,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
       addItem(module.description, module.help)
     }
 
-    if(module.objectName != null) {
+    if(module.`object` != null) {
       menu.addClickListener {
         launchModule(module)
       }
@@ -151,7 +151,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
       override fun execute() {
         try {
           setWaitInfo(VlibProperties.getString("menu_form_started"))
-          module.run(model.dBContext!!)
+          module.run(model.dbContext!!)
         } finally {
           unsetWaitInfo()
         }
@@ -164,7 +164,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
    * @return the current application instance.
    */
   protected val application: VApplication
-    get() = ApplicationContext.applicationContext.getApplication() as VApplication
+    get() = ApplicationContext.getApplicationContext().getApplication() as VApplication
 
   //---------------------------------------------------
   // MENU TREE IMPLEMENTATION

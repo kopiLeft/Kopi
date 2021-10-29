@@ -15,15 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.field
+package org.kopi.vkopi.lib.ui.vaadinflow.field
 
-import org.kopi.galite.visual.ui.vaadin.actor.Actor
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.block.Block
-import org.kopi.galite.visual.ui.vaadin.block.ColumnView
-import org.kopi.galite.visual.ui.vaadin.form.DBlock
-import org.kopi.galite.visual.ui.vaadin.form.DField
-import org.kopi.galite.visual.ui.vaadin.window.Window
+import org.kopi.vkopi.lib.ui.vaadinflow.actor.Actor
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.block.Block
+import org.kopi.vkopi.lib.ui.vaadinflow.block.ColumnView
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DBlock
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DField
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.HasStyle

@@ -15,20 +15,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.form.Alignment
-import org.kopi.galite.visual.form.VBlock
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.block.BlockLayout
-import org.kopi.galite.visual.ui.vaadin.block.BlockListener
-import org.kopi.galite.visual.ui.vaadin.block.ChartBlockLayout
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.MessageCode
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VExecFailedException
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.form.Alignment
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
+import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockListener
+import org.kopi.vkopi.lib.ui.vaadinflow.block.ChartBlockLayout
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.MessageCode
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VExecFailedException
 
 import com.vaadin.flow.component.Component
 
@@ -138,7 +138,7 @@ open class DChartBlock(parent: DForm, model: VBlock) : DBlock(parent, model), Bl
             model.gotoRecord(record)
           } else {
             model.activeRecord = record
-            model.currentRecord = record
+            model.setCurrentRecord(record)
             sortedToprec = sortedTopRec
             refresh(false)
           }

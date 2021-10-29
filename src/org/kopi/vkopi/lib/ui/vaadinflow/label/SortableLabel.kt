@@ -15,12 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.label
+package org.kopi.vkopi.lib.ui.vaadinflow.label
 
 /**
- * The server side of the sortable label component.
- * TODO: Implement this class with appropriate component
+ * The sortable label component.
  */
 open class SortableLabel(text: String?) : Label() {
-
+ // TODO
 }

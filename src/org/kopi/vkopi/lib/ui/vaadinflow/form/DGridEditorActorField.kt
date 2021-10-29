@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.grid.ActorRenderer
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorActorField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.ActorRenderer
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorActorField
 
 import com.vaadin.flow.data.binder.Result
 import com.vaadin.flow.data.binder.ValueContext

@@ -15,22 +15,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.field
+package org.kopi.vkopi.lib.ui.vaadinflow.field
 
-import org.kopi.galite.visual.form.VCodeField
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VDateField
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFixnumField
-import org.kopi.galite.visual.form.VMonthField
-import org.kopi.galite.visual.form.VStringField
-import org.kopi.galite.visual.form.VTimeField
-import org.kopi.galite.visual.form.VTimestampField
-import org.kopi.galite.visual.form.VWeekField
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.event.TextFieldListener
-import org.kopi.galite.visual.ui.vaadin.form.DTextField
-import org.kopi.galite.visual.ui.vaadin.form.KeyNavigator
+import org.kopi.vkopi.lib.form.VCodeField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VDateField
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VDecimalField
+import org.kopi.vkopi.lib.form.VMonthField
+import org.kopi.vkopi.lib.form.VStringField
+import org.kopi.vkopi.lib.form.VTimeField
+import org.kopi.vkopi.lib.form.VTimestampField
+import org.kopi.vkopi.lib.form.VWeekField
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.event.TextFieldListener
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DTextField
+import org.kopi.vkopi.lib.ui.vaadinflow.form.KeyNavigator
 
 import com.flowingcode.vaadin.addons.ironicons.IronIcons
 import com.vaadin.flow.component.Component
@@ -200,7 +200,7 @@ class TextField(val model: VField,
         type = Type.STRING
         convertType = _getConvertType()
       }
-      is org.kopi.galite.visual.form.VIntegerField -> {
+      is org.kopi.vkopi.lib.form.VIntegerField -> {
         // integer field
         type = Type.INTEGER
         if (model.minValue != null) {
@@ -231,7 +231,7 @@ class TextField(val model: VField,
         type = Type.CODE
         enumerations = model.labels
       }
-      is VFixnumField -> {
+      is VDecimalField -> {
         // fixnum field
         type = Type.DECIMAL
         if (model.minValue != null) {
@@ -349,9 +349,9 @@ class TextField(val model: VField,
         Type.INTEGER -> VIntegerField(col, minval!!, maxval!!)
         Type.DECIMAL -> VFixnumField(col, maxScale, minval, maxval, fraction)
         Type.CODE -> VCodeField(enumerations)
-        Type.TIME -> VTimeField()
+        Type.TIME -> org.kopi.vkopi.lib.ui.vaadinflow.field.VTimeField()
         Type.TIMESTAMP -> VTimeStampField()
-        Type.DATE -> VDateField()
+        Type.DATE -> org.kopi.vkopi.lib.ui.vaadinflow.field.VDateField()
         else -> InputTextField(TextField())
       }
     } else {

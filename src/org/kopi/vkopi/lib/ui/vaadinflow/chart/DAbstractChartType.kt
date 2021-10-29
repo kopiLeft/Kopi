@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.chart
+package org.kopi.vkopi.lib.ui.vaadinflow.chart
 
 import java.awt.Color
 import java.io.OutputStream
@@ -26,10 +26,10 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-import org.kopi.galite.visual.chart.UChartType
-import org.kopi.galite.visual.chart.VDataSeries
-import org.kopi.galite.visual.chart.VDimensionData
-import org.kopi.galite.visual.chart.VPrintOptions
+import org.kopi.vkopi.lib.chart.UChartType
+import org.kopi.vkopi.lib.chart.VDataSeries
+import org.kopi.vkopi.lib.chart.VDimensionData
+import org.kopi.vkopi.lib.chart.VPrintOptions
 
 import com.github.appreciated.apexcharts.ApexCharts
 import com.github.appreciated.apexcharts.config.builder.ChartBuilder

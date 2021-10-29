@@ -15,13 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.chart
+package org.kopi.vkopi.lib.ui.vaadinflow.chart
 
-import org.kopi.galite.visual.chart.CConstants
-import org.kopi.galite.visual.chart.ChartTypeFactory
-import org.kopi.galite.visual.chart.UChartType
-import org.kopi.galite.visual.chart.VChartType
-import org.kopi.galite.visual.util.base.InconsistencyException
+import org.kopi.vkopi.lib.chart.CConstants
+import org.kopi.vkopi.lib.chart.ChartTypeFactory
+import org.kopi.vkopi.lib.chart.UChartType
+import org.kopi.vkopi.lib.chart.VChartType
 
 class VChartTypeFactory : ChartTypeFactory() {
   override fun createTypeView(title: String, model: VChartType): UChartType {
@@ -31,7 +30,7 @@ class VChartTypeFactory : ChartTypeFactory() {
       CConstants.TYPE_BAR -> DBarChart(title, model.getDataSeries())
       CConstants.TYPE_LINE -> DLineChart(title, model.getDataSeries())
       CConstants.TYPE_AREA -> DAreaChart(title, model.getDataSeries())
-      else -> throw InconsistencyException("NO UI IMPLEMENTATION FOR CHART TYPE " + model.name)
+      else -> throw org.kopi.util.base.InconsistencyException("NO UI IMPLEMENTATION FOR CHART TYPE " + model.name)
     }
     model.setDisplay(view)
 

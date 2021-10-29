@@ -15,12 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.notif
+package org.kopi.vkopi.lib.ui.vaadinflow.notif
 
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.base.Utils.findMainWindow
-import org.kopi.galite.visual.ui.vaadin.common.VSpan
-import org.kopi.galite.visual.ui.vaadin.window.Window
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VSpan
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 
 import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.Component
@@ -162,11 +162,10 @@ abstract class AbstractNotification(title: String?,
   }
 
   //-------------------------------------------------
-  // ABSTRACT METHODS
+  // ABSTRACT METHODS / PROPERTIES
   //-------------------------------------------------
   /**
    * Sets the notification buttons.
-   * @param locale The notification locale.
    */
   abstract fun setButtons()
 

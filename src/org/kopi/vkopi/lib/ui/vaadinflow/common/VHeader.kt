@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.common
+package org.kopi.vkopi.lib.ui.vaadinflow.common
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.dependency.CssImport
@@ -26,12 +26,21 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
  */
 @CssImport("./styles/galite/header.css")
 class VHeader : HorizontalLayout() {
-  init {
-    this.setWidthFull()
-  }
+
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
+  private val logo = VCompanyLogo()
+
+  /**
+   * Creates the window header component.
+   */
+  init {
+    setId("header")
+    setWidthFull()
+    add(logo)
+  }
+
   /**
    * Sets the main menu component.
    *
@@ -85,21 +94,5 @@ class VHeader : HorizontalLayout() {
    */
   fun setImage(url: String, alt: String?) {
     logo.setImage(url, alt)
-  }
-
-  //---------------------------------------------------
-  // DATA MEMBERS
-  //---------------------------------------------------
-  private val logo = VCompanyLogo()
-  //---------------------------------------------------
-  // CONSTRUCTOR
-  //---------------------------------------------------
-  /**
-   * Creates the window header component.
-   */
-  init {
-    setId("header")
-    setWidthFull()
-    add(logo)
   }
 }

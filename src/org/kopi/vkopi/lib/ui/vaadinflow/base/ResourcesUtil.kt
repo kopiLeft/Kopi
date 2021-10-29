@@ -15,15 +15,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.base
+package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 /**
  * Resources utilities.
  */
 object ResourcesUtil {
   //---------------------------------------------------
-// IMPLEMENTATIONS
-//---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+  private const val THEME_RESOURCE_PREFIX = "theme://resource/"
+
+  //---------------------------------------------------
+  // IMPLEMENTATIONS
+  //---------------------------------------------------
   /**
    * Returns the resource simple name from its application URI.
    * A theme resource URI have this general form : ${APPLICATION_PATH}/VAADIN/themes/${theme}/name.extension.
@@ -49,9 +54,4 @@ object ResourcesUtil {
         uri.substring(lastSlashIndex)
     }
   }
-
-  //---------------------------------------------------
-  // DATA MEMBERS
-  //---------------------------------------------------
-  private const val THEME_RESOURCE_PREFIX = "theme://resource/"
 }

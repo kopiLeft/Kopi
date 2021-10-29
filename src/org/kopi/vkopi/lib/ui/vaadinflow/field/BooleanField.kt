@@ -15,9 +15,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.field
+package org.kopi.vkopi.lib.ui.vaadinflow.field
 
-import org.kopi.galite.visual.ui.vaadin.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
 
 import com.vaadin.flow.component.BlurNotifier
 import com.vaadin.flow.component.Component

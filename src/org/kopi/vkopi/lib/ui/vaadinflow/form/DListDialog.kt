@@ -15,26 +15,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.UField
-import org.kopi.galite.visual.form.UListDialog
-import org.kopi.galite.visual.form.VDictionary
-import org.kopi.galite.visual.form.VForm
-import org.kopi.galite.visual.form.VListDialog
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.releaseLock
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.startAndWaitAndPush
-import org.kopi.galite.visual.ui.vaadin.list.GridListDialog
-import org.kopi.galite.visual.ui.vaadin.list.ListTable
-import org.kopi.galite.visual.ui.vaadin.notif.InformationNotification
-import org.kopi.galite.visual.ui.vaadin.notif.NotificationListener
-import org.kopi.galite.visual.ui.vaadin.visual.VApplication
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.MessageCode
-import org.kopi.galite.visual.visual.UWindow
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VRuntimeException
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.form.UField
+import org.kopi.vkopi.lib.form.UListDialog
+import org.kopi.vkopi.lib.form.VDictionary
+import org.kopi.vkopi.lib.form.VForm
+import org.kopi.vkopi.lib.form.VListDialog
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.list.GridListDialog
+import org.kopi.vkopi.lib.ui.vaadinflow.list.ListTable
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.InformationNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.NotificationListener
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.MessageCode
+import org.kopi.vkopi.lib.visual.UWindow
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VRuntimeException
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Key
@@ -365,7 +365,7 @@ class DListDialog(
    * @return Tshe current application instance.
    */
   protected val application: VApplication
-    get() = ApplicationContext.applicationContext.getApplication() as VApplication
+    get() = ApplicationContext.getApplicationContext().getApplication() as VApplication
 
   /**
    * Handles the too many rows case.

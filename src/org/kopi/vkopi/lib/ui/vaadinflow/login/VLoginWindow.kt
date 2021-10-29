@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.login
+package org.kopi.vkopi.lib.ui.vaadinflow.login
 
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.event.LoginWindowListener
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.event.LoginWindowListener
 
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.progressbar.ProgressBar
@@ -30,9 +30,36 @@ import com.vaadin.flow.dom.DomEvent
  * the user and its password are send to the server for verification.
  */
 class VLoginWindow : Div() {
+
   //---------------------------------------------------
-// IMPLEMENTATIONS
-//---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+  private val loginBox: VLoginBox
+  private val listeners: MutableList<LoginWindowListener>
+  private val progress = ProgressBar()
+  //---------------------------------------------------
+  // CONSTRUCTOR
+  //---------------------------------------------------
+  /**
+   * Creates the login window box.
+   */
+  init {
+    className = Styles.LOGIN_WINDOW
+    listeners = ArrayList()
+    loginBox = VLoginBox()
+    progress.className = "login-progress-bar"
+    progress.isIndeterminate = true
+    progress.isVisible = false
+    add(loginBox)
+    add(progress)
+    loginBox.addClickHandler { onClick() }
+    loginBox.addChangeHandler(::handleSelectionChange)
+    width = "400px"
+  }
+
+  //---------------------------------------------------
+  // IMPLEMENTATIONS
+  //---------------------------------------------------
   /**
    * Initializes the content of the login box.
    * @param welcomeText The welcome text.
@@ -156,31 +183,5 @@ class VLoginWindow : Div() {
   fun unsetWaitInfo() {
     loginBox.enableLoginButton()
     progress.isVisible = false
-  }
-
-  //---------------------------------------------------
-  // DATA MEMBERS
-  //---------------------------------------------------
-  private val loginBox: VLoginBox
-  private val listeners: MutableList<LoginWindowListener>
-  private val progress = ProgressBar()
-  //---------------------------------------------------
-  // CONSTRUCTOR
-  //---------------------------------------------------
-  /**
-   * Creates the login window box.
-   */
-  init {
-    className = Styles.LOGIN_WINDOW
-    listeners = ArrayList()
-    loginBox = VLoginBox()
-    progress.className = "login-progress-bar"
-    progress.isIndeterminate = true
-    progress.isVisible = false
-    add(loginBox)
-    add(progress)
-    loginBox.addClickHandler { onClick() }
-    loginBox.addChangeHandler(::handleSelectionChange)
-    width = "400px"
   }
 }

@@ -15,9 +15,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.notif
+package org.kopi.vkopi.lib.ui.vaadinflow.notif
 
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
 
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
@@ -40,6 +40,18 @@ class ConfirmNotification(title: String?,
                           locale: String,
                           parent: Component?)
   : AbstractNotification(title, message, locale, parent) {
+
+  //------------------------------------------------
+  // DATA MEMBERS
+  //------------------------------------------------
+  private lateinit var ok: Button
+  private lateinit var cancel: Button
+  private val listener: ComponentEventListener<ClickEvent<Button>>? = null
+
+  init {
+    Shortcuts.addShortcutListener(this, this::onArrowRightEvent, Key.ARROW_RIGHT)
+    Shortcuts.addShortcutListener(this, this::onArrowLeftEvent, Key.ARROW_LEFT)
+  }
 
   //-------------------------------------------------
   // IMPLEMENTATION
@@ -69,17 +81,5 @@ class ConfirmNotification(title: String?,
 
   fun onArrowLeftEvent(keyDownEvent: ShortcutEvent?) {
     ok.focus()
-  }
-
-  //------------------------------------------------
-  // DATA MEMBERS
-  //------------------------------------------------
-  private lateinit var ok: Button
-  private lateinit var cancel: Button
-  private val listener: ComponentEventListener<ClickEvent<Button>>? = null
-
-  init {
-    Shortcuts.addShortcutListener(this, this::onArrowRightEvent, Key.ARROW_RIGHT)
-    Shortcuts.addShortcutListener(this, this::onArrowLeftEvent, Key.ARROW_LEFT)
   }
 }

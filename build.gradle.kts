@@ -43,11 +43,13 @@ apply(from = "declarations.gradle.kts")
 /** ------------------ Global Definitions and gradle tasks ------------------ */
 
 plugins {
-  kotlin("jvm") version "1.4.30"
+  kotlin("jvm") version "1.5.30"
   id("io.spring.dependency-management") version "1.0.10.RELEASE"
 }
 
-val vaadinVersion = "21.0.2"
+sourceSets.main {
+  java.srcDirs("src")
+}
 
 // KOPI VERSION
 val kopiVersion = "2.3B"
@@ -57,6 +59,13 @@ val extdirs: String? = System.getenv("EXTDIRS")
 val classRoot: String? = System.getenv("CLASSROOT")
 val jdk7Home: String? = System.getenv("JDK_7")
 val javadocRoot: String? = System.getenv("JAVADOCROOT")
+
+// Dependencies versions
+val vaadinVersion = "21.0.2"
+val enhancedDialogVersion = "21.0.0"
+val apexChartVersion = "2.0.0.beta10"
+val ironIconsVersion = "2.0.1"
+val WYSIWYG_EJAVA = "2.0.1"
 
 // ----------------------------------------------------------------------
 // CHECK IF PATH TO JAVA 7 INSTALLATION IS SET AND VALID
@@ -76,7 +85,10 @@ fun javaExecutable(executableName: String): String {
 // DEPENDENCIES
 
 repositories {
-  jcenter()
+  mavenCentral()
+  maven {
+    url = uri("https://maven.vaadin.com/vaadin-addons")
+  }
 }
 
 dependencies {
@@ -97,6 +109,15 @@ dependencies {
            "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents")
       .forEach { group -> exclude(group = group) }
   }
+  // Vaadin addons
+  // Wysiwyg-e Rich Text Editor component for Java
+  implementation("org.vaadin.pekka", "wysiwyg_e-java", WYSIWYG_EJAVA)
+  // EnhancedDialog
+  implementation("com.vaadin.componentfactory", "enhanced-dialog", enhancedDialogVersion)
+  // Apex charts
+  implementation("com.github.appreciated", "apexcharts", apexChartVersion)
+  // Iron Icons
+  implementation("com.flowingcode.addons", "iron-icons", ironIconsVersion)
 }
 
 // ----------------------------------------------------------------------
@@ -118,7 +139,12 @@ tasks {
     kotlinOptions.jvmTarget = "1.8"
   }
   compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    destinationDir = file(classRoot!!)
+
+    if(jdk7Home != null) {
+      sourceCompatibility = "1.7"
+      targetCompatibility = "1.7"
+    }
   }
 
   register("grammar.jcc")
@@ -142,6 +168,7 @@ tasks {
     dependsOn("optionGen")
     dependsOn("messageGen")
     dependsOn("javac")
+    dependsOn("compileKotlin")
     dependsOn("grm1voc.tokenGen")
     dependsOn("grm2voc.tokenGen")
     dependsOn("grm1voc.jflex")
@@ -155,6 +182,11 @@ tasks {
     dependsOn("xkjc")
     dependsOn("resources")
     dependsOn("script")
+  }
+
+  named("jar") {
+    dependsOn("run")
+    mustRunAfter("run")
   }
 
   named("build") { dependsOn("run") }
@@ -462,9 +494,6 @@ tasks {
                   into("$classRoot/$packagePath")
                 }
               }
-            }
-            outputs.upToDateWhen {
-              file(classRoot + "/" + packageName.replace(".", "/")).exists()
             }
           }
         }

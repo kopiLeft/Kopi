@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,25 +14,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.grid
+import {LitElement, html} from 'lit-element';
+import '@vaadin-component-factory/vcf-progress-spinner';
 
-/**
- * Server side implementation of decimal grid editor field
- */
-class GridEditorFixnumField(
-        width: Int,
-        minValue: Double,
-        maxValue: Double,
-        maxScale: Int,
-        fraction: Boolean
-) : GridEditorTextField(width) {
+class ProgressSpinner extends LitElement {
 
-  override fun check(text: String): Boolean {
-    for (c in text) {
-      if (!(c >= '0' && c <= '9' || c == '.' || c == '-' || c == ' ' || c == ',' || c == '/')) {
-        return false
-      }
+    render() {
+        return html`
+        <vcf-progress-spinner></vcf-progress-spinner>`;
     }
-    return true
-  }
 }
+
+customElements.define('progress-spinner', ProgressSpinner);

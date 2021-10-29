@@ -15,10 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.ui.vaadin.event.PositionPanelListener
-import org.kopi.galite.visual.ui.vaadin.label.Label
+import org.kopi.vkopi.lib.ui.vaadinflow.event.PositionPanelListener
+import org.kopi.vkopi.lib.ui.vaadinflow.label.Label
 
 import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.button.Button
@@ -32,7 +32,6 @@ import com.vaadin.flow.component.textfield.TextField
  * A position panel widget used to fetch a form records.
  */
 class PositionPanel : HorizontalLayout() {
-
 
   //---------------------------------------------------
   // DATA MEMBERS

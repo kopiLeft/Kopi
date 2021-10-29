@@ -15,12 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.upload
+package org.kopi.vkopi.lib.ui.vaadinflow.upload
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.releaseLock
-import org.kopi.galite.visual.ui.vaadin.base.LocalizedProperties
-import org.kopi.galite.visual.ui.vaadin.base.VInputButton
-import org.kopi.galite.visual.ui.vaadin.common.VSpan
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.VInputButton
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VSpan
 
 import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.HasStyle

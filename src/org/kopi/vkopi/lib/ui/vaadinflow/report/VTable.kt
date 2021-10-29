@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.report
+package org.kopi.vkopi.lib.ui.vaadinflow.report
 
-import org.kopi.galite.visual.report.MReport
-import org.kopi.galite.visual.report.VReportColumn
-import org.kopi.galite.visual.ui.vaadin.report.DReport.ReportModelItem
+import org.kopi.vkopi.lib.report.MReport
+import org.kopi.vkopi.lib.report.VReportColumn
+import org.kopi.vkopi.lib.ui.vaadinflow.report.DReport.ReportModelItem
 
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.data.provider.ListDataProvider

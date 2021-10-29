@@ -15,23 +15,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.form.UBlock
-import org.kopi.galite.visual.form.UField
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.form.VForm
-import org.kopi.galite.visual.form.VImageField
-import org.kopi.galite.visual.form.VStringField
-import org.kopi.galite.visual.ui.vaadin.actor.Actor
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.field.Field
-import org.kopi.galite.visual.ui.vaadin.field.FieldListener
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.VColor
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.form.UBlock
+import org.kopi.vkopi.lib.form.UField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.form.VForm
+import org.kopi.vkopi.lib.form.VImageField
+import org.kopi.vkopi.lib.form.VStringField
+import org.kopi.vkopi.lib.ui.vaadinflow.actor.Actor
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.field.Field
+import org.kopi.vkopi.lib.ui.vaadinflow.field.FieldListener
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.VColor
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.UI

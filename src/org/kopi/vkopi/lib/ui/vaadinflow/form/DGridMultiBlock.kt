@@ -15,17 +15,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.form.Alignment
-import org.kopi.galite.visual.form.UMultiBlock
-import org.kopi.galite.visual.form.VBlock
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.block.SimpleBlockLayout
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VRuntimeException
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.form.Alignment
+import org.kopi.vkopi.lib.form.UMultiBlock
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.block.SimpleBlockLayout
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VRuntimeException
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.data.provider.ListDataProvider

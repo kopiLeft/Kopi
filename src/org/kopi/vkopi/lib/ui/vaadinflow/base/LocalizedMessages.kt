@@ -15,12 +15,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.base
+package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 /**
  * Localized messages. Each message has it own unique key.
  */
 object LocalizedMessages {
+
+  //---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+  private var messages = mutableMapOf<String, Map<String, String>>()
+
+  init {
+    initProperties()
+  }
+
   //---------------------------------------------------
   // LOCALIZED MESSAGES
   //---------------------------------------------------
@@ -201,14 +211,5 @@ object LocalizedMessages {
       }
     }
     return sb.toString()
-  }
-
-  //---------------------------------------------------
-  // DATA MEMBERS
-  //---------------------------------------------------
-  private var messages = mutableMapOf<String, Map<String, String>>()
-
-  init {
-    initProperties()
   }
 }

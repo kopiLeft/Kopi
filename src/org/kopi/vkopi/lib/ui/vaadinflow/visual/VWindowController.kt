@@ -15,23 +15,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import org.kopi.galite.visual.dsl.common.Window
-import org.kopi.galite.visual.preview.VPreviewWindow
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndAwait
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.startAndWait
-import org.kopi.galite.visual.ui.vaadin.field.TextField
-import org.kopi.galite.visual.ui.vaadin.grid.GridEditorTextField
-import org.kopi.galite.visual.ui.vaadin.window.PopupWindow
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VHelpViewer
-import org.kopi.galite.visual.visual.VMenuTree
-import org.kopi.galite.visual.visual.VRuntimeException
-import org.kopi.galite.visual.visual.VWindow
-import org.kopi.galite.visual.visual.WindowController
+import org.kopi.vkopi.lib.preview.VPreviewWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWait
+import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTextField
+import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VHelpViewer
+import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VRuntimeException
+import org.kopi.vkopi.lib.visual.VWindow
+import org.kopi.vkopi.lib.visual.WindowController
 
 /**
  * The `VWindowController` is the vaadin implementation
@@ -52,10 +51,6 @@ class VWindowController : WindowController() {
       // This is a turn around to kill delayed wait dialog displayed in modal windows
       model.unsetWaitInfo()
     }
-  }
-
-  override fun doModal(model: Window): Boolean {
-    return doModal(model.model)
   }
 
   override fun doNotModal(model: VWindow) {
@@ -84,10 +79,6 @@ class VWindowController : WindowController() {
         throw VRuntimeException(e.message, e)
       }
     }
-  }
-
-  override fun doNotModal(model: Window) {
-    doNotModal(model.model)
   }
 
   /**
@@ -134,7 +125,6 @@ class VWindowController : WindowController() {
   /**
    * A modal view runner background task.
    */
-  /*package*/
   internal inner class ModalViewRunner(val model: VWindow) : Runnable {
 
     private var view: DWindow? = null

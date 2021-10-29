@@ -18,4 +18,4 @@
 /**
  * Projects name
  */
-rootProject.name = "Kopi"
+rootProject.name = "kopi"

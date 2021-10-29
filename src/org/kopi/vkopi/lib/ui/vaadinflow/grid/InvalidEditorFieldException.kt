@@ -15,13 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.grid
+package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
 import java.lang.Exception
 
-import org.kopi.galite.visual.ui.vaadin.main.MainWindow
-import org.kopi.galite.visual.ui.vaadin.notif.NotificationListener
-import org.kopi.galite.visual.ui.vaadin.notif.NotificationUtils
+import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.NotificationListener
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.NotificationUtils
 
 /**
  * Thrown when the field content is checked against its validation
@@ -34,8 +34,7 @@ import org.kopi.galite.visual.ui.vaadin.notif.NotificationUtils
 class InvalidEditorFieldException(val field: GridEditorField<*>,
                                   val messageKey: String,
                                   vararg val params: Any)
-  : Exception(),
-      NotificationListener {
+  : Exception(), NotificationListener {
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------

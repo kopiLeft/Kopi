@@ -15,12 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.actor
+package org.kopi.vkopi.lib.ui.vaadinflow.actor
 
-import org.kopi.galite.visual.ui.vaadin.menu.VNavigationColumn
-import org.kopi.galite.visual.ui.vaadin.menu.VNavigationMenu
-import org.kopi.galite.visual.ui.vaadin.menu.VNavigationPanel
-import org.kopi.galite.visual.ui.vaadin.visual.DActor
+import org.kopi.vkopi.lib.ui.vaadinflow.menu.VNavigationColumn
+import org.kopi.vkopi.lib.ui.vaadinflow.menu.VNavigationMenu
+import org.kopi.vkopi.lib.ui.vaadinflow.menu.VNavigationPanel
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.DActor
 
 class VActorsNavigationPanel : VNavigationPanel() {
   init {

@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.base
+package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 import java.util.Objects
 
@@ -29,6 +29,26 @@ import com.vaadin.flow.dom.Element
  */
 @Tag("table")
 class VSingleRowTable : Component(), HasComponents {
+
+  //---------------------------------------------------
+  // DATA MEMBERS
+  //---------------------------------------------------
+  private val td: Element
+
+  //---------------------------------------------------
+  // CONSTRUCTOR
+  //---------------------------------------------------
+  /**
+   * Creates the table instance.
+   */
+  init {
+    val body = Element("tbody")
+    element.appendChild(body)
+    val tr = Element("tr")
+    body.appendChild(tr)
+    td = Element("td")
+    tr.appendChild(td)
+  }
 
   //---------------------------------------------------
   // IMPLEMENTATIONS
@@ -57,25 +77,5 @@ class VSingleRowTable : Component(), HasComponents {
                              "Component to add cannot be null")
       td.appendChild(component.element)
     }
-  }
-
-  //---------------------------------------------------
-  // DATA MEMBERS
-  //---------------------------------------------------
-  private val td: Element
-
-  //---------------------------------------------------
-  // CONSTRUCTOR
-  //---------------------------------------------------
-  /**
-   * Creates the table instance.
-   */
-  init {
-    val body = Element("tbody")
-    element.appendChild(body)
-    val tr = Element("tr")
-    body.appendChild(tr)
-    td = Element("td")
-    tr.appendChild(td)
   }
 }

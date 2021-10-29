@@ -15,23 +15,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.report
+package org.kopi.vkopi.lib.ui.vaadinflow.report
 
 import java.awt.Color
 
-import org.kopi.galite.visual.report.MReport
-import org.kopi.galite.visual.report.Parameters
-import org.kopi.galite.visual.report.Point
-import org.kopi.galite.visual.report.UReport
-import org.kopi.galite.visual.report.VReport
-import org.kopi.galite.visual.report.VReportRow
-import org.kopi.galite.visual.report.VSeparatorColumn
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.visual.DWindow
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.VException
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.report.MReport
+import org.kopi.vkopi.lib.report.Parameters
+import org.kopi.vkopi.lib.report.Point
+import org.kopi.vkopi.lib.report.UReport
+import org.kopi.vkopi.lib.report.VReport
+import org.kopi.vkopi.lib.report.VReportRow
+import org.kopi.vkopi.lib.report.VSeparatorColumn
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.DWindow
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.VException
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.ClientCallable
 import com.vaadin.flow.component.UI

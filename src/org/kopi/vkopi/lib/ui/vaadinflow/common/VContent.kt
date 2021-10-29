@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.common
+package org.kopi.vkopi.lib.ui.vaadinflow.common
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.html.Div
@@ -24,6 +24,18 @@ import com.vaadin.flow.component.html.Div
  * The main window content component.
  */
 class VContent : Div() {
+
+  /**
+   * Checks for view content.
+   * @return `true` is content exists.
+   */
+  var isEmpty = true
+    private set
+
+  init {
+    setId("content")
+  }
+
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
@@ -43,16 +55,5 @@ class VContent : Div() {
   fun clearContent() {
     removeAll()
     isEmpty = true
-  }
-
-  /**
-   * Checks for view content.
-   * @return `true` is content exists.
-   */
-  var isEmpty = true
-    private set
-
-  init {
-    setId("content")
   }
 }

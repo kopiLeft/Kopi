@@ -15,24 +15,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import org.kopi.galite.visual.base.UComponent
-import org.kopi.galite.visual.chart.VChart
-import org.kopi.galite.visual.form.VForm
-import org.kopi.galite.visual.form.VListDialog
-import org.kopi.galite.visual.preview.VPreviewWindow
-import org.kopi.galite.visual.report.VReport
-import org.kopi.galite.visual.ui.vaadin.chart.DChart
-import org.kopi.galite.visual.ui.vaadin.form.DForm
-import org.kopi.galite.visual.ui.vaadin.form.DListDialog
-import org.kopi.galite.visual.ui.vaadin.preview.DPreviewWindow
-import org.kopi.galite.visual.ui.vaadin.report.DReport
-import org.kopi.galite.visual.visual.UIFactory
-import org.kopi.galite.visual.visual.VHelpViewer
-import org.kopi.galite.visual.visual.VItemTree
-import org.kopi.galite.visual.visual.VMenuTree
-import org.kopi.galite.visual.visual.VModel
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.chart.VChart
+import org.kopi.vkopi.lib.form.VForm
+import org.kopi.vkopi.lib.form.VListDialog
+import org.kopi.vkopi.lib.preview.VPreviewWindow
+import org.kopi.vkopi.lib.report.VReport
+import org.kopi.vkopi.lib.ui.vaadinflow.chart.DChart
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DForm
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DListDialog
+import org.kopi.vkopi.lib.ui.vaadinflow.preview.DPreviewWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.report.DReport
+import org.kopi.vkopi.lib.visual.UIFactory
+import org.kopi.vkopi.lib.visual.VHelpViewer
+import org.kopi.vkopi.lib.visual.VItemTree
+import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VModel
 
 /**
  * The `VUIFactory` is a vaadin implementation of the [UIFactory].

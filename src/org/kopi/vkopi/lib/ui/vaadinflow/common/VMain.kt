@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.common
+package org.kopi.vkopi.lib.ui.vaadinflow.common
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.html.Div
@@ -24,6 +24,11 @@ import com.vaadin.flow.component.html.Div
  * The main window container.
  */
 class VMain : Div() {
+
+  init {
+    setId("main")
+  }
+
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
@@ -34,14 +39,5 @@ class VMain : Div() {
   fun setContent(content: Component?) {
     removeAll()
     add(content)
-  }
-  //---------------------------------------------------
-  // CONSTRUCTOR
-  //---------------------------------------------------
-  /**
-   * Creates the main component instance.
-   */
-  init {
-    setId("main")
   }
 }

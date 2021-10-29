@@ -16,14 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package org.kopi.galite.visual.ui.vaadin.visual
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler
-import org.kopi.galite.visual.visual.Application
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.PreviewRunner
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
+import org.kopi.vkopi.lib.visual.Application
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.PreviewRunner
 
 class VApplicationContext : ApplicationContext() {
+
+  //---------------------------------------------------
+  // DATA MEMBEERS
+  //---------------------------------------------------
+  private var previewRunner: VPreviewRunner? = null
+
   override fun getApplication(): Application {
     val ui = BackgroundThreadHandler.locateUI()
 
@@ -52,10 +58,4 @@ class VApplicationContext : ApplicationContext() {
   override fun isWebApplicationContext(): Boolean {
     return true
   }
-
-  //---------------------------------------------------
-  // DATA MEMBEERS
-  //---------------------------------------------------
-  private var previewRunner: VPreviewRunner? = null
-
 }

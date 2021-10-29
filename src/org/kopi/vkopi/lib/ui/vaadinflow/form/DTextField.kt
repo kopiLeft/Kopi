@@ -15,18 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.ModelTransformer
-import org.kopi.galite.visual.form.UTextField
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.field.TextField
-import org.kopi.galite.visual.ui.vaadin.visual.VApplication
-import org.kopi.galite.visual.visual.Action
-import org.kopi.galite.visual.visual.ApplicationContext
-import org.kopi.galite.visual.visual.VlibProperties
+import org.kopi.vkopi.lib.form.ModelTransformer
+import org.kopi.vkopi.lib.form.UTextField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.contextmenu.ContextMenu
 
@@ -156,7 +156,7 @@ open class DTextField(
 
   override fun updateColor() {
     access(currentUI) {
-      val injector = (ApplicationContext.applicationContext.getApplication() as VApplication).stylesInjector
+      val injector = (ApplicationContext.getApplicationContext().getApplication() as VApplication).stylesInjector
 
       field.classNames.add(injector.createAndInjectStyle(getModel().align, foreground, background))
     }

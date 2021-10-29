@@ -15,15 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.grid
+package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
 import kotlin.collections.Collection
 
-import org.kopi.galite.visual.ui.vaadin.actor.Actor
-import org.kopi.galite.visual.ui.vaadin.field.Field
-import org.kopi.galite.visual.ui.vaadin.form.DBlock
-import org.kopi.galite.visual.ui.vaadin.form.DGridEditorField
-import org.kopi.galite.visual.ui.vaadin.window.Window
+import org.kopi.vkopi.lib.ui.vaadinflow.actor.Actor
+import org.kopi.vkopi.lib.ui.vaadinflow.field.Field
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DBlock
+import org.kopi.vkopi.lib.ui.vaadinflow.form.DGridEditorField
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 
 import com.vaadin.flow.component.AbstractCompositeField
 import com.vaadin.flow.component.AttachEvent

@@ -15,10 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.field
+package org.kopi.vkopi.lib.ui.vaadinflow.field
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.base.Utils
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 
 import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.KeyModifier
@@ -29,7 +29,7 @@ import com.vaadin.flow.component.UI
  *
  * @param isMulti is it a multiple line text field ?
  */
-class TextFieldNavigationHandler protected constructor(private val isMulti: Boolean) {
+open class TextFieldNavigationHandler protected constructor(private val isMulti: Boolean) {
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------
@@ -94,7 +94,7 @@ class TextFieldNavigationHandler protected constructor(private val isMulti: Bool
     addKeyNavigator(field, Key.PRINT_SCREEN, KeyModifier.of("Shift")) {
       field.connector.firePrintForm()
     }
-    // the magnet card reader sends a CNTR-J as last character
+    // the magnet card reader sends a CTRL-J as last character
     addKeyNavigator(field, Key.KEY_J, KeyModifier.of("Control")) {
       field.fieldConnector.columnView!!.gotoNextField()
     }

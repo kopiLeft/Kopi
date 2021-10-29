@@ -15,13 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.UTextField
-import org.kopi.galite.visual.form.VConstants
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.access
-import org.kopi.galite.visual.ui.vaadin.field.BooleanField
+import org.kopi.vkopi.lib.form.UTextField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.field.BooleanField
 
 import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.component.HasValue
@@ -43,7 +43,7 @@ class DBooleanField(
         detail: Boolean
 ) : DObjectField(model, label, align, options, detail),
         UTextField,
-        HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<org.kopi.galite.visual.ui.vaadin.field.AbstractField<Boolean?>, Boolean?>> {
+        HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField<Boolean?>, Boolean?>> {
 
   // --------------------------------------------------
   // DATA MEMBERS
@@ -92,7 +92,7 @@ class DBooleanField(
   }
 
 
-  override fun valueChanged(event: AbstractField.ComponentValueChangeEvent<org.kopi.galite.visual.ui.vaadin.field.AbstractField<Boolean?>, Boolean?>) {
+  override fun valueChanged(event: AbstractField.ComponentValueChangeEvent<org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField<Boolean?>, Boolean?>) {
     // ensures to get model focus to validate the field
     if (!getModel().hasFocus()) {
       getModel().block!!.activeField = getModel()

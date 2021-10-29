@@ -15,22 +15,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.form.FieldHandler
-import org.kopi.galite.visual.form.UBlock
-import org.kopi.galite.visual.form.UChartLabel
-import org.kopi.galite.visual.form.UField
-import org.kopi.galite.visual.form.ULabel
-import org.kopi.galite.visual.form.VBlock
-import org.kopi.galite.visual.form.VBooleanField
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.form.VFieldUI
-import org.kopi.galite.visual.form.VImageField
-import org.kopi.galite.visual.form.VStringField
-import org.kopi.galite.visual.form.VTextField
-import org.kopi.galite.visual.ui.vaadin.base.Utils
-import org.kopi.galite.visual.util.base.InconsistencyException
+import org.kopi.vkopi.lib.form.FieldHandler
+import org.kopi.vkopi.lib.form.UBlock
+import org.kopi.vkopi.lib.form.UChartLabel
+import org.kopi.vkopi.lib.form.UField
+import org.kopi.vkopi.lib.form.ULabel
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VBooleanField
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.form.VImageField
+import org.kopi.vkopi.lib.form.VStringField
+import org.kopi.vkopi.lib.form.VTextField
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 
 /**
  * The `DFieldUI` is the vaadin UI components implementation of
@@ -69,7 +68,9 @@ open class DFieldUI(blockView: UBlock, model: VField, index: Int) : VFieldUI(blo
                                           model.iconHeight, detail)
       VField.MDL_FLD_ACTOR -> DActorField(this, label as? DLabel, model.align,
                                           model.options, detail)
-      else -> throw InconsistencyException("Type of model " + model.getType().toString() + " not supported.")
+      else -> throw org.kopi.util.base.InconsistencyException(
+        "Type of model " + model.getType().toString() + " not supported."
+      )
     }
   }
 
@@ -94,7 +95,7 @@ open class DFieldUI(blockView: UBlock, model: VField, index: Int) : VFieldUI(blo
 
   /**
    * If the fields values are set in the model before display creation,
-   * The [org.kopi.galite.ui.vaadin.form.DFieldHandler.valueChanged] is not called since the
+   * The [org.kopi.vkopi.lib.ui.vaadinflow.form.DFieldHandler.valueChanged] is not called since the
    * listener is not registered yet. We will call the value change event for
    * every block record here to fill out the client side cached values.
    */

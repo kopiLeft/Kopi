@@ -15,13 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import org.kopi.galite.visual.ui.vaadin.base.Styles
-import org.kopi.galite.visual.ui.vaadin.block.Block
-import org.kopi.galite.visual.ui.vaadin.common.VCaption
-import org.kopi.galite.visual.ui.vaadin.common.VTable
-import org.kopi.galite.visual.ui.vaadin.event.PositionPanelListener
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.block.Block
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VCaption
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VTable
+import org.kopi.vkopi.lib.ui.vaadinflow.event.PositionPanelListener
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.dependency.CssImport

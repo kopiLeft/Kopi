@@ -15,15 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.upload
+package org.kopi.vkopi.lib.ui.vaadinflow.upload
 
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.galite.visual.ui.vaadin.base.BackgroundThreadHandler.startAndWaitAndPush
-import org.kopi.galite.visual.ui.vaadin.visual.VApplication
-import org.kopi.galite.visual.visual.ApplicationContext
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
+import org.kopi.vkopi.lib.visual.ApplicationContext
 
 import com.vaadin.flow.component.upload.FailedEvent
 import com.vaadin.flow.component.upload.Receiver
@@ -141,7 +141,7 @@ class FileUploader : Receiver {
    * @return The current application instance.
    */
   internal val application: VApplication
-    get() = ApplicationContext.applicationContext.getApplication() as VApplication
+    get() = ApplicationContext.getApplicationContext().getApplication() as VApplication
 
   /**
    * Returns the parent mime type of the holded mime type.

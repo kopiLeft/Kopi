@@ -15,15 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.galite.visual.ui.vaadin.form
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.util.ArrayList
 
 import kotlin.reflect.KClass
 
-import org.kopi.galite.visual.form.VBlock
-import org.kopi.galite.visual.form.VField
-import org.kopi.galite.visual.ui.vaadin.base.Utils
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 
 import com.vaadin.flow.data.provider.InMemoryDataProvider
 
@@ -129,7 +129,7 @@ SimpleFilterable TODO */ {
         // not used, parse displayed value to set the model value
       }
 
-    val type: KClass<out Any>
+    val type: Class<*>?
       get() = this.field.getDataType()
 
     var isReadOnly: Boolean
