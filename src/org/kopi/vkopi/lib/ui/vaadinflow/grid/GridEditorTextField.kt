@@ -18,9 +18,10 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.JSKeyDownHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.ShortcutAction
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
-import org.kopi.vkopi.lib.ui.vaadinflow.base.runAfterGetValue
+import org.kopi.vkopi.lib.ui.vaadinflow.base.addJSKeyDownListener
 
 import com.flowingcode.vaadin.addons.ironicons.IronIcons
 import com.vaadin.flow.component.AttachEvent
@@ -33,11 +34,12 @@ import com.vaadin.flow.component.textfield.TextField
 /**
  * A text field used as editor
  */
-open class GridEditorTextField(val width: Int) : GridEditorField<String>() {
+open class GridEditorTextField(val width: Int) : GridEditorField<String>(), JSKeyDownHandler {
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
   internal val wrappedField = TextField()
+  override val keyNavigators = mutableMapOf<String, ShortcutAction<*>>()
 
   override fun onAttach(attachEvent: AttachEvent?) {
     super.onAttach(attachEvent)
@@ -51,6 +53,8 @@ open class GridEditorTextField(val width: Int) : GridEditorField<String>() {
       setModelValue(value, it.isFromClient)
     }
     createNavigationActions()
+    wrappedField.addJSKeyDownListener(keyNavigators)
+    wrappedField.isAutoselect = true
   }
 
   override fun setPresentationValue(newPresentationValue: String?) {
@@ -164,8 +168,10 @@ open class GridEditorTextField(val width: Int) : GridEditorField<String>() {
    * @param navigationAction lambda representing the action to perform
    */
   protected open fun addNavigationAction(key: Key, vararg modifiers: KeyModifier, navigationAction: () -> Unit) {
-    NavigationAction(this, key, modifiers, navigationAction)
-      .registerShortcut()
+    val navigator = NavigationAction(this, key, modifiers, navigationAction)
+    val keyNavigator = navigator.getKey()
+
+    keyNavigators[keyNavigator] = navigator
   }
 
   //---------------------------------------------------
@@ -183,19 +189,21 @@ open class GridEditorTextField(val width: Int) : GridEditorField<String>() {
     //---------------------------------------------------
     // IMPLEMENTATIONS
     //---------------------------------------------------
-    override fun performAction() {
+    override fun performAction(eagerValue: String?) {
       val oldValue = value
 
-      wrappedField.runAfterGetValue {
-        // block any navigation request if suggestions is showing
-        /*if (suggestionDisplay != null && suggestionDisplay.isSuggestionListShowingImpl()) { TODO
-          return
-        }*/
+      // block any navigation request if suggestions is showing
+      /*if (suggestionDisplay != null && suggestionDisplay.isSuggestionListShowingImpl()) { TODO
+        return
+      }*/
 
-        // first sends the text value to model if changed
+      // first sends the text value to model if changed
+      if(oldValue != eagerValue) {
+        // Synchronize with server side
+        wrappedField.value = eagerValue
         dGridEditorField.valueChanged(oldValue)
-        navigationAction()
       }
+      navigationAction()
     }
   }
 }

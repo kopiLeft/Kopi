@@ -19,6 +19,7 @@ package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import org.kopi.vkopi.lib.form.UChartLabel
 import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.ui.vaadinflow.label.SortableLabelListener
 
 /**
  * The `DChartHeaderLabel` is the vaadin implementation
@@ -27,19 +28,22 @@ import org.kopi.vkopi.lib.form.VBlock
  * @param text The label text.
  * @param help The label help.
  * @param index The field index.
- * @param model The sort model.
+ * @param sortModel The sort model.
  * @param commands The fields command.
  */
 class DChartHeaderLabel internal constructor(text: String?,
                                              help: String?,
                                              var fieldIndex: Int,
-                                             model: VBlock.OrderModel) : DLabel(text, help), UChartLabel {
-
-
-  var sortModel = model
+                                             val sortModel: VBlock.OrderModel) : DLabel(text, help), UChartLabel {
 
   init {
     sortModel.addSortingListener(this)
+    sortable = true
+    addSortableLabelListener(object : SortableLabelListener {
+      override fun onSort() {
+        sortModel.sortColumn(fieldIndex)
+      }
+    })
   }
   //---------------------------------------------------
   // IMPLEMENTATIONS

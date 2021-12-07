@@ -26,9 +26,12 @@ import org.kopi.vkopi.lib.ui.vaadinflow.actor.VActorsNavigationPanel
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.locateUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.download.Downloader
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.AbstractNotification
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.ConfirmNotification
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.ErrorNotification
@@ -38,8 +41,8 @@ import org.kopi.vkopi.lib.ui.vaadinflow.notif.WarningNotification
 import org.kopi.vkopi.lib.ui.vaadinflow.progress.ProgressDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.wait.WaitDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.wait.WaitWindow
-import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
+import org.kopi.vkopi.lib.util.base.Utils.Companion.doAfter
 import org.kopi.vkopi.lib.visual.Action
 import org.kopi.vkopi.lib.visual.ApplicationContext
 import org.kopi.vkopi.lib.visual.MessageCode
@@ -60,6 +63,7 @@ import com.vaadin.flow.component.Shortcuts
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.server.ErrorEvent
 import com.vaadin.flow.server.ErrorHandler
+import com.vaadin.flow.server.VaadinSession
 
 /**
  * The `DWindow` is an abstract implementation of an [UWindow] component.
@@ -73,6 +77,7 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
   //--------------------------------------------------------------
   private val waitInfoHandler: WaitInfoHandler = WaitInfoHandler()
   private val messageHandler: MessageHandler = MessageHandler()
+  protected var currentUI: UI? = null
 
   /**
    * `true` if an action is being performed.
@@ -244,7 +249,7 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
       val currentThread = Thread(actionRunner)
       // Force the current UI in case the thread is started before attaching the window to the UI.
       if (currentUI == null) {
-        currentUI = BackgroundThreadHandler.locateUI()
+        currentUI = locateUI()
       }
       currentThread.start()
     }
@@ -259,33 +264,20 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
     val mainWindow = findMainWindow()
 
     access(currentUI) {
-      if(!closeIfIsPopup(this)) {
+      if(!closeIfIsPopup()) {
         mainWindow?.removeWindow(this)
       }
     }
   }
 
   /**
-   * Close [window] if it is a popup window
+   * Close this window if it is a popup window
    *
-   * @param window window to close
-   * @return true is [window] is a popup and it was closed
+   * @return true if this window is in a popup and it was closed
    */
-  private fun closeIfIsPopup(window: Component): Boolean {
+  private fun closeIfIsPopup(): Boolean {
     var closed  = false
-    var popupWindow: PopupWindow? = null
-
-    if(window is PopupWindow) {
-      popupWindow = window
-    } else {
-      window.parent.ifPresent {
-        it.parent.ifPresent { windowContainer ->
-          if (windowContainer is PopupWindow) {
-            popupWindow = windowContainer
-          }
-        }
-      }
-    }
+    val popupWindow = findDialog()
 
     popupWindow?.let {
       it.close() // fire close event
@@ -510,7 +502,7 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
    */
   private fun debugMessageInTransaction(): Boolean =
           try {
-            ApplicationContext.getDefaults().debugMessageInTransaction()
+            ApplicationContext.getDefaults()!!.debugMessageInTransaction()
           } catch (e: PropertyException) {
             false
           }
@@ -625,12 +617,19 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
     // DATA MEMBERS
     //-----------------------------------------------------------
     private val waitIndicator = WaitWindow()
+    private var finished = false
+    var delay: Long = 10
 
     //-----------------------------------------------------------
     // IMPLEMENTATIONS
     //-----------------------------------------------------------
+    /**
+     * Shows the wait indicator only if task takes more than some [delay].
+     *
+     * @param message message to show
+     */
     override fun setWaitInfo(message: String?) {
-      access(currentUI) {
+      schedule {
         synchronized(waitIndicator) {
           waitIndicator.setText(message)
           if (!waitIndicator.isOpened) {
@@ -641,7 +640,29 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
       }
     }
 
+    /**
+     * Executes the [task] only if it takes more than a specified [delay] in milliseconds.
+     *
+     * @param task the task to be executed.
+     */
+    private fun schedule(task: () -> Unit) {
+      val ui = currentUI ?: locateUI()
+
+      finished = false
+      doAfter(delay) {
+        access(ui) {
+          if (!finished) {
+            task()
+          }
+        }
+      }
+    }
+
     override fun unsetWaitInfo() {
+      synchronized(finished) {
+        finished = true
+      }
+
       access(currentUI) {
         synchronized(waitIndicator) {
           if (waitIndicator.isOpened) {
@@ -653,7 +674,6 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
       }
     }
   }
-  var currentUI: UI? = null
 
   override fun onAttach(attachEvent: AttachEvent) {
     currentUI = attachEvent.ui
@@ -859,9 +879,17 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
 
   override fun fileProduced(file: File, name: String) {
     access(currentUI) {
-      val downloaderDialog = DownloaderDialog(file, name, application.defaultLocale.toString())
+      var resourceName = name.trim { it <= ' ' }
 
-      downloaderDialog.open()
+      resourceName = resourceName.replace("[^a-zA-Z0-9\\._]+".toRegex(), " ")
+
+      if (VaadinSession.getCurrent().browser.isFirefox) {
+        resourceName = resourceName.replace("\\s".toRegex(), "_")
+      }
+
+      val downloader = Downloader(file, resourceName, this)
+
+      downloader.download()
     }
   }
 }

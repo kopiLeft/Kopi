@@ -38,7 +38,7 @@ import com.vaadin.flow.server.VaadinSession
  * A customized servlet that handles the localization
  * of the "session expired" message.
  */
-open class GaliteServlet : VaadinServlet(), SessionInitListener {
+open class KopiServlet : VaadinServlet(), SessionInitListener {
 
   // --------------------------------------------------
   // DATA MEMBERS

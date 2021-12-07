@@ -20,15 +20,11 @@ package org.kopi.vkopi.lib.ui.vaadinflow.form
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.form.Alignment
 import org.kopi.vkopi.lib.form.VBlock
-import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
 import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockListener
 import org.kopi.vkopi.lib.ui.vaadinflow.block.ChartBlockLayout
-import org.kopi.vkopi.lib.visual.Action
-import org.kopi.vkopi.lib.visual.MessageCode
 import org.kopi.vkopi.lib.visual.VException
-import org.kopi.vkopi.lib.visual.VExecFailedException
 
 import com.vaadin.flow.component.Component
 
@@ -55,12 +51,6 @@ open class DChartBlock(parent: DForm, model: VBlock) : DBlock(parent, model), Bl
    * @see {@link #refresh(boolean)
    */
   private var scrolling = false
-
-  init {
-    if (model.displaySize < model.bufferSize) {
-      addBlockListener(this)
-    }
-  }
 
   //---------------------------------------------------
   // IMPLEMENTATIONS
@@ -122,81 +112,10 @@ open class DChartBlock(parent: DForm, model: VBlock) : DBlock(parent, model), Bl
     }
   }
 
-  override fun onActiveRecordChange(record: Int, sortedTopRec: Int) {
-    if (record != model.activeRecord) {
-      model.form.performAsyncAction(object : Action() {
-        override fun execute() {
-          // go to the correct block if necessary
-          if (model !== model.form.getActiveBlock()) {
-            if (!model.isAccessible) {
-              throw VExecFailedException(MessageCode.getMessage("VIS-00025"))
-            }
-            model.form.gotoBlock(model)
-          }
-          if (fireTriggers()) {
-            sortedToprec = sortedTopRec
-            model.gotoRecord(record)
-          } else {
-            model.activeRecord = record
-            model.setCurrentRecord(record)
-            sortedToprec = sortedTopRec
-            refresh(false)
-          }
-        }
-
-        /**
-         * Returns `true` if there some triggers that should be fired
-         * when changing the active record of the block model.
-         * @return `true` if there some triggers that should be fired.
-         * @throws VException Visual errors.
-         */
-        private fun fireTriggers(): Boolean {
-          return isActiveBlock && (fireTriggerOnBlock() || fireTriggersOnActiveField())
-        }
-
-        /**
-         * Returns `true` if this block is the active block in the form.
-         * @return `true` if this block is the active block in the form.
-         * @throws VException Visual errors.
-         */
-        private val isActiveBlock: Boolean
-          get() = (model.form.getActiveBlock() != null
-                  && model.form.getActiveBlock() == model)
-
-        /**
-         * Returns `true` is there are trigger that should be fired on this block.
-         * @return `true` is there are trigger that should be fired on this block.
-         * @throws VException Visual errors.
-         */
-        private fun fireTriggerOnBlock(): Boolean {
-          return (model.hasTrigger(VConstants.TRG_PREREC)
-                  || model.hasTrigger(VConstants.TRG_VALREC))
-        }
-
-        /**
-         * Returns `true` is there are trigger that should be fired on the active field.
-         * @return `true` is there are trigger that should be fired on the active field.
-         * @throws VException Visual errors.
-         */
-        private fun fireTriggersOnActiveField(): Boolean {
-          return if (model.activeField != null) {
-            (model.activeField!!.hasTrigger(VConstants.TRG_POSTCHG)
-                    || model.activeField!!.hasTrigger(VConstants.TRG_VALFLD)
-                    || model.activeField!!.hasTrigger(VConstants.TRG_FORMAT)
-                    || model.activeField!!.hasTrigger(VConstants.TRG_PREVAL)
-                    || model.activeField!!.hasTrigger(VConstants.TRG_POSTFLD))
-          } else {
-            false
-          }
-        }
-      })
-    }
-  }
-
   /**
    * Updates the scroll bar position.
    */
-  override fun updateScrollbar() {
+  private fun updateScrollbar() {
     access(currentUI) {
       val validRecords = model.numberOfValidRecord
       val dispSize = model.displaySize

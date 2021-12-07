@@ -21,6 +21,7 @@ import org.kopi.vkopi.lib.chart.CConstants
 import org.kopi.vkopi.lib.chart.ChartTypeFactory
 import org.kopi.vkopi.lib.chart.UChartType
 import org.kopi.vkopi.lib.chart.VChartType
+import org.kopi.vkopi.lib.util.base.InconsistencyException
 
 class VChartTypeFactory : ChartTypeFactory() {
   override fun createTypeView(title: String, model: VChartType): UChartType {
@@ -30,7 +31,7 @@ class VChartTypeFactory : ChartTypeFactory() {
       CConstants.TYPE_BAR -> DBarChart(title, model.getDataSeries())
       CConstants.TYPE_LINE -> DLineChart(title, model.getDataSeries())
       CConstants.TYPE_AREA -> DAreaChart(title, model.getDataSeries())
-      else -> throw org.kopi.util.base.InconsistencyException("NO UI IMPLEMENTATION FOR CHART TYPE " + model.name)
+      else -> throw InconsistencyException("NO UI IMPLEMENTATION FOR CHART TYPE " + model.name)
     }
     model.setDisplay(view)
 

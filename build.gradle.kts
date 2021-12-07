@@ -94,6 +94,7 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
   // Jars present in extdirs folder
   extdirs?.split(":")

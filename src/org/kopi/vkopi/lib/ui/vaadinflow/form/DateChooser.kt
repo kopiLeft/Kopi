@@ -24,7 +24,6 @@ import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.xkopi.lib.type.Date
 import org.kopi.xkopi.lib.type.NotNullDate
 import org.kopi.xkopi.lib.type.NotNullMonth
-import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
 import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
 import org.kopi.vkopi.lib.visual.ApplicationContext
 
@@ -32,6 +31,7 @@ import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.HasValue
 import com.vaadin.flow.component.datepicker.DatePicker
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
 
 /**
  * The `DateChooser` is date selection component.

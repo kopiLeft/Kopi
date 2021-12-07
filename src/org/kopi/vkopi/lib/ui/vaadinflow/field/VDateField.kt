@@ -33,11 +33,18 @@ class VDateField : InputTextField<DatePicker>(DatePicker()), KeyNotifier {
   init {
     internalField.isClearButtonVisible = true
     internalField.isAutoOpen = false
+
+    // Workaround for autoselection on focus
+    addFocusListener {
+      element.executeJs("this.$.input.inputElement.select()")
+    }
   }
 
   override fun setPresentationValue(newPresentationValue: String?) {
-    content.value = if(newPresentationValue != null && newPresentationValue.isNotEmpty()) {
-      LocalDate.parse(newPresentationValue, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+    val date = TimestampValidator.parseDate(newPresentationValue.orEmpty())
+
+    content.value = if(date != null) {
+      LocalDate.of(date.year, date.month, date.day)
     } else {
       null
     }

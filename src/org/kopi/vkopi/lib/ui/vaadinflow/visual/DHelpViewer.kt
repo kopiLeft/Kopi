@@ -19,6 +19,7 @@ package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import java.io.IOException
 
+import org.kopi.vkopi.lib.util.base.InconsistencyException
 import org.kopi.vkopi.lib.visual.VHelpViewer
 
 import com.vaadin.flow.component.Html
@@ -52,7 +53,7 @@ class DHelpViewer(model: VHelpViewer) : DWindow(model) {
       layout.isMargin = true
       setContent(pane)
     } catch (e: IOException) {
-      throw org.kopi.util.base.InconsistencyException(e)
+      throw InconsistencyException(e)
     }
   }
   override fun run() {

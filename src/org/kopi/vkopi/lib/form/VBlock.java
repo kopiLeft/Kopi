@@ -22,6 +22,7 @@ package org.kopi.vkopi.lib.form;
 import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
@@ -212,6 +213,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
   public boolean isAccepted(String flavor) {
     return dropListMap.containsKey(flavor.toLowerCase());
+  }
+
+  public Set<String> getAcceptedFlavors() {
+    return dropListMap.keySet();
   }
 
   public VField getDropTarget(String flavor) {

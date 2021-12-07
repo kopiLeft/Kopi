@@ -17,14 +17,33 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.field
 
+import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.base.DecimalFormatSymbols
+
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.component.dependency.JsModule
 
 /**
- * An fixnum field.
+ * A decimal field.
  */
-class VFixnumField(col: Int,
-                   maxScale: Int,
-                   minval: Double?,
-                   maxval: Double?,
-                   fraction: Boolean)
-  : InputTextField<TextField>(TextField())
+@JsModule("./src/decimal-field.js")
+class VDecimalField(col: Int,
+                    maxScale: Int,
+                    minval: Double?,
+                    maxval: Double?,
+                    fraction: Boolean)
+  : InputTextField<TextField>(TextField()) {
+  init {
+    internalField.pattern = "[0-9-.,]*"
+    internalField.isPreventInvalidInput = true
+    val dfs = DecimalFormatSymbols.get(MainWindow.locale)
+
+    if (dfs!!.decimalSeparator != '.') {
+      internalField.element.executeJs(
+        "addCheckDecimalListeners($0, $1);",
+        internalField.element,
+        dfs.decimalSeparator.toString()
+      )
+    }
+  }
+}

@@ -22,7 +22,7 @@ import java.io.InputStream
 
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.form.VImageField
-import org.kopi.xkopi.lib.type.Date
+import org.kopi.vkopi.lib.type.Date
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.field.ImageField

@@ -21,7 +21,7 @@ import org.kopi.vkopi.lib.preview.VPreviewWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
-import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWait
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
 import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
 import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTextField
 import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
@@ -43,7 +43,7 @@ class VWindowController : WindowController() {
   override fun doModal(model: VWindow): Boolean {
     return try {
       val viewStarter = ModalViewRunner(model)
-      startAndWait(model as Object) {
+      startAndWaitAndPush(model as Object) {
         viewStarter.run()
       }
       if (viewStarter.getView() == null) false else viewStarter.getView()!!.returnCode == VWindow.CDE_VALIDATE
@@ -94,10 +94,10 @@ class VWindowController : WindowController() {
           title: String,
   ) {
     val popup = PopupWindow(getApplication()?.mainWindow)
-    popup.isModal = false
-    popup.setContent(view)
-    popup.setCaption(title) // put popup title
     accessAndPush {
+      popup.isModal = false
+      popup.setContent(view)
+      popup.setCaption(title) // put popup title
       popup.open()
 
       // Focus on a field inside a popup is not working.

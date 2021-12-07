@@ -17,14 +17,14 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.block
 
-import org.kopi.vkopi.lib.ui.vaadinflow.form.DGridBlock
-
 import com.vaadin.flow.component.Component
 
 /**
  * A block layout that contains a single component inside.
+ *
+ * @param block the black inside this layout.
  */
-class SingleComponentBlockLayout(val block: DGridBlock) : SimpleBlockLayout(1, 1) {
+class SingleComponentBlockLayout(override val block: Block) : SimpleBlockLayout(1, 1, block) {
 
   init {
     className = "multiple"
@@ -58,7 +58,7 @@ class SingleComponentBlockLayout(val block: DGridBlock) : SimpleBlockLayout(1, 1
     super.addComponent(component, x, y, width, height, alignRight, useAll)
   }
 
-  override fun setBlockAlignment(original: Component, targets: IntArray, isChart: Boolean) {
+  override fun setBlockAlignment(original: Component, targetBlockName: String, targets: IntArray, isChart: Boolean) {
     // not supported feature
   }
 }

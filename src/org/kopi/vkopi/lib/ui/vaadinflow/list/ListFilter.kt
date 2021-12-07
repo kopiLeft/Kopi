@@ -19,31 +19,43 @@ package org.kopi.vkopi.lib.ui.vaadinflow.list
 
 import java.util.Locale
 
+import org.kopi.vkopi.lib.form.VListDialog
+
+import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.function.SerializablePredicate
 
-class ListFilter(val propertyId: Int,
-                 filterString: String,
-                 val ignoreCase: Boolean,
-                 val onlyMatchPrefix: Boolean) : SerializablePredicate<List<Any?>> {
-
-val filterString = if(ignoreCase) filterString.toLowerCase() else filterString
+class ListFilter(private val filterFields: List<TextField>,
+                 private val model: VListDialog,
+                 private val ignoreCase: Boolean,
+                 private val onlyMatchPrefix: Boolean) : SerializablePredicate<List<Any?>> {
 
   override fun test(t: List<Any?>): Boolean {
-    if (t[propertyId] == null) {
-      return false
+    for (i in t.indices) {
+      val filterString = if(ignoreCase) filterFields[i].value.lowercase(Locale.getDefault()) else filterFields[i].value
+      val value = if (ignoreCase) formatObject(t[i], i).lowercase(Locale.getDefault()) else formatObject(t[i], i)
+
+      if (onlyMatchPrefix) {
+        if (!value.startsWith(filterString)) {
+          return false
+        }
+      } else {
+        if (!value.contains(filterString)) {
+          return false
+        }
+      }
     }
 
-   val value = if (ignoreCase) t[propertyId].toString().toLowerCase() else t[propertyId].toString()
-
-    if (onlyMatchPrefix) {
-      if (!value.startsWith(filterString)) {
-        return false
-      }
-    } else {
-      if (!value.contains(filterString)) {
-        return false
-      }
-    }
     return true
+  }
+
+  /**
+   * Formats an object.
+   *
+   * @param o The object to be formatted.
+   * @param col the column index
+   * @return The formatted object.
+   */
+  private fun formatObject(o: Any?, col: Int): String {
+    return model.columns[col]?.formatObject(o).toString()
   }
 }

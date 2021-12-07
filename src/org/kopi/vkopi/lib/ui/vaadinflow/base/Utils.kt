@@ -22,6 +22,9 @@ import java.util.concurrent.CompletableFuture
 
 import org.kopi.vkopi.lib.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.DWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 import org.kopi.vkopi.lib.visual.VColor
 
 import com.flowingcode.vaadin.addons.ironicons.AvIcons
@@ -268,6 +271,20 @@ object Utils : Utils() {
 
     while (parent != null && mainWindow == null) {
       if(parent is MainWindow) {
+        mainWindow = parent
+      }
+      parent = parent.parent.orElse(null)
+    }
+
+    return mainWindow
+  }
+
+  fun Window.findDialog(): PopupWindow? {
+    var mainWindow: PopupWindow? = null
+    var parent: Component? = parent.orElse(null)
+
+    while (parent != null && mainWindow == null) {
+      if(parent is PopupWindow) {
         mainWindow = parent
       }
       parent = parent.parent.orElse(null)

@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent
 
 import org.kopi.vkopi.lib.form.UChartLabel
 import org.kopi.vkopi.lib.form.ULabel
+import org.kopi.vkopi.lib.form.VBlock
 import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
@@ -34,7 +35,11 @@ import com.vaadin.flow.component.UI
 /**
  * The editor label used as grid component header.
  */
-class DGridEditorLabel(text: String?, help: String?) : GridEditorLabel(), ULabel, UChartLabel {
+class DGridEditorLabel(text: String?,
+                       help: String?,
+                       val fieldIndex: Int? = null,
+                       val model: VBlock.OrderModel? = null)
+  : GridEditorLabel(), ULabel, UChartLabel {
 
   //---------------------------------------------------
   // DATA MEMBERS

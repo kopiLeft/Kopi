@@ -103,6 +103,7 @@ build
 /src/org/kopi/kopi/comp/kjc/KjcOptions.java
 /src/org/kopi/kopi/comp/kjc/KjcParser.java
 /src/org/kopi/kopi/comp/kjc/KjcScanner.java
+/src/org/kopi/kopi/comp/kjc/KjcScanner.java~
 /src/org/kopi/kopi/comp/kjc/KjcTokenTypes.java
 /src/org/kopi/kopi/comp/kjc/KjcTokenTypes.txt
 /src/org/kopi/bytecode/ksm/KsmLexer.java
@@ -150,6 +151,7 @@ build
 /src/org/kopi/xkopi/comp/sqlc/SqlcOptions.java
 /src/org/kopi/xkopi/comp/sqlc/SqlcParser.java
 /src/org/kopi/xkopi/comp/sqlc/SqlcScanner.java
+/src/org/kopi/xkopi/comp/sqlc/SqlcScanner.java~
 /src/org/kopi/xkopi/comp/sqlc/SqlcTokenTypes.java
 /src/org/kopi/xkopi/comp/sqlc/SqlcTokenTypes.txt
 /src/org/kopi/bytecode/ssa/SSAMessages.java
@@ -160,11 +162,13 @@ build
 /src/org/kopi/xkopi/comp/xkjc/XKjcOptions.java
 /src/org/kopi/xkopi/comp/xkjc/XKjcParser.java
 /src/org/kopi/xkopi/comp/xkjc/XKjcScanner.java
+/src/org/kopi/xkopi/comp/xkjc/XKjcScanner.java~
 /src/org/kopi/xkopi/comp/xkjc/XKjcTokenTypes.java
 /src/org/kopi/xkopi/comp/xkjc/XKjcTokenTypes.txt
 /src/org/kopi/xkopi/comp/xkjc/XSqlcFlexRules.txt
 /src/org/kopi/xkopi/comp/xkjc/XSqlcMessages.java
 /src/org/kopi/xkopi/comp/xkjc/XSqlcParser.java
 /src/org/kopi/xkopi/comp/xkjc/XSqlcScanner.java
+/src/org/kopi/xkopi/comp/xkjc/XSqlcScanner.java~
 /src/org/kopi/xkopi/comp/xkjc/XSqlcTokenTypes.java
 /src/org/kopi/xkopi/comp/xkjc/XSqlcTokenTypes.txt

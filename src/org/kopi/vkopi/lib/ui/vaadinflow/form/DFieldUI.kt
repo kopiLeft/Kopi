@@ -30,6 +30,7 @@ import org.kopi.vkopi.lib.form.VImageField
 import org.kopi.vkopi.lib.form.VStringField
 import org.kopi.vkopi.lib.form.VTextField
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
+import org.kopi.vkopi.lib.util.base.InconsistencyException
 
 /**
  * The `DFieldUI` is the vaadin UI components implementation of
@@ -68,9 +69,7 @@ open class DFieldUI(blockView: UBlock, model: VField, index: Int) : VFieldUI(blo
                                           model.iconHeight, detail)
       VField.MDL_FLD_ACTOR -> DActorField(this, label as? DLabel, model.align,
                                           model.options, detail)
-      else -> throw org.kopi.util.base.InconsistencyException(
-        "Type of model " + model.getType().toString() + " not supported."
-      )
+      else -> throw InconsistencyException("Type of model " + model.getType().toString() + " not supported.")
     }
   }
 
@@ -95,7 +94,7 @@ open class DFieldUI(blockView: UBlock, model: VField, index: Int) : VFieldUI(blo
 
   /**
    * If the fields values are set in the model before display creation,
-   * The [org.kopi.vkopi.lib.ui.vaadinflow.form.DFieldHandler.valueChanged] is not called since the
+   * The [org.kopi.galite.ui.vaadin.form.DFieldHandler.valueChanged] is not called since the
    * listener is not registered yet. We will call the value change event for
    * every block record here to fill out the client side cached values.
    */

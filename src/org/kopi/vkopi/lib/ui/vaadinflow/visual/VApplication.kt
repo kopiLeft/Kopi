@@ -23,7 +23,6 @@ import java.util.Locale
 import java.util.MissingResourceException
 import java.util.ResourceBundle
 
-import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -53,9 +52,11 @@ import org.kopi.vkopi.lib.visual.Message
 import org.kopi.vkopi.lib.visual.MessageCode
 import org.kopi.vkopi.lib.visual.MessageListener
 import org.kopi.vkopi.lib.visual.PrinterManager
+import org.kopi.vkopi.lib.visual.PropertyException
 import org.kopi.vkopi.lib.visual.Registry
 import org.kopi.vkopi.lib.visual.UIFactory
 import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VerifyConfiguration
 import org.kopi.vkopi.lib.visual.VlibProperties
 import org.kopi.vkopi.lib.visual.WindowController
 
@@ -76,6 +77,8 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
+import org.kopi.xkopi.lib.base.DBContext
+import com.vaadin.flow.shared.ui.Transport
 
 /**
  * The entry point for all Galite WEB applications.
@@ -101,6 +104,8 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   private var askAnswer = 0
   var stylesInjector: StylesInjector = StylesInjector() // the styles injector attached with this application instance.
   var currentUI: UI? = null
+    get() = field ?: UI.getCurrent()
+
   private val configProperties: ResourceBundle? =
     try {
       ResourceBundle.getBundle(resourceFile)
@@ -204,7 +209,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    * @param notification The notification to be shown
    */
   protected open fun showNotification(notification: AbstractNotification) {
-    access(currentUI) {
+    accessAndPush(currentUI) {
       notification.show()
     }
   }
@@ -214,7 +219,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    * @param notification The notification to be shown
    */
   protected open fun showNotification(notification: AbstractNotification, lock: Object) {
-    BackgroundThreadHandler.startAndWait(lock, currentUI) {
+    BackgroundThreadHandler.startAndWaitAndPush(lock, currentUI) {
       notification.show()
     }
   }
@@ -237,6 +242,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
           // show welcome screen
           gotoWelcomeView()
         }
+        currentUI?.push()
       }
     })
     showNotification(dialog)
@@ -279,7 +285,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     getInitParameter("allowQuit") == null ||
             java.lang.Boolean.parseBoolean(getInitParameter("allowQuit"))
 
-  override fun getApplicationConfiguration(): ApplicationConfiguration = applicationConfiguration
+  override fun getApplicationConfiguration(): ApplicationConfiguration? = applicationConfiguration
 
   override fun setApplicationConfiguration(configuration: ApplicationConfiguration) {
     applicationConfiguration = configuration
@@ -299,7 +305,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     this.printerManager = printerManager
   }
 
-  private lateinit var applicationConfiguration: ApplicationConfiguration
+  private var applicationConfiguration: ApplicationConfiguration? = null
 
   private lateinit var printManager: PrintManager
 
@@ -322,7 +328,8 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
       add(mainWindow)
     } catch (e: SQLException) { // sets the error if any problem occur.
       welcomeView!!.setError(e.message)
-    } finally { //push();
+    } finally {
+      currentUI?.push()
     }
   }
 
@@ -427,8 +434,17 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   /**
    * Verifies the configuration settings.
    */
-  fun verifyConfiguration() {
-
+  open fun verifyConfiguration() {
+    val verifyConfiguration: VerifyConfiguration = VerifyConfiguration.getVerifyConfiguration()
+    try {
+      verifyConfiguration.verifyConfiguration(
+        ApplicationConfiguration.getConfiguration()!!.getSMTPServer(),
+        ApplicationConfiguration.getConfiguration()!!.debugMailRecipient,
+        ApplicationConfiguration.getConfiguration()!!.applicationName
+      )
+    } catch (e: PropertyException) {
+      e.printStackTrace()
+    }
   }
 
   /**
@@ -600,19 +616,19 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   }
 
   override fun getUserIP(): String? {
-      var userIP = ""
-      val currentSession = VaadinSession.getCurrent()
+    var userIP = ""
+    val currentSession = VaadinSession.getCurrent()
 
-      if (currentSession != null) {
-        return currentSession.browser.address
-      } else {
-        accessAndAwait(currentUI) {
-          userIP = VaadinSession.getCurrent().browser.address
-        }
+    if (currentSession != null) {
+      return currentSession.browser.address
+    } else {
+      accessAndAwait(currentUI) {
+        userIP = VaadinSession.getCurrent().browser.address
       }
-
-      return userIP
     }
+
+    return userIP
+  }
 
   //---------------------------------------------------
   // UTILS
@@ -691,18 +707,18 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     /** Application instance */
     lateinit var instance: Application
     private val FONT_METRICS = arrayOf(
-            FontMetrics.DIGIT,
-            FontMetrics.LETTER
+      FontMetrics.DIGIT,
+      FontMetrics.LETTER
     )
 
-  init {
-    ApplicationContext.setApplicationContext(VApplicationContext())
-    FileHandler.setFileHandler(VFileHandler())
-    ImageHandler.setImageHandler(VImageHandler())
-    WindowController.setWindowController(VWindowController())
-    UIFactory.setUIFactory(VUIFactory())
+    init {
+      ApplicationContext.setApplicationContext(VApplicationContext())
+      FileHandler.setFileHandler(VFileHandler())
+      ImageHandler.setImageHandler(VImageHandler())
+      WindowController.setWindowController(VWindowController())
+      UIFactory.setUIFactory(VUIFactory())
+    }
   }
-}
 }
 
 @Push(PushMode.MANUAL)

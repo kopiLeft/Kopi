@@ -23,7 +23,7 @@ import org.kopi.vkopi.lib.form.AbstractPredefinedValueHandler
 import org.kopi.vkopi.lib.form.VField
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.form.VForm
-import org.kopi.xkopi.lib.type.Date
+import org.kopi.vkopi.lib.type.Date
 import org.kopi.vkopi.lib.ui.vaadinflow.upload.FileUploader
 
 import com.vaadin.flow.component.Component
@@ -61,7 +61,7 @@ class VPredefinedValueHandler(model: VFieldUI,
    * This method will open the file chooser to select an image.
    * @return the selected image from the user file system
    * @throws VException
-   * @see org.kopi.vkopi.lib.form.PredefinedValueHandler.selectImage
+   * @see org.kopi.galite.form.PredefinedValueHandler.selectImage
    */
   override fun selectImage(): ByteArray? = FileUploader().upload("image/*")
 }
