@@ -549,6 +549,22 @@ tasks {
         }
 
         // ----------------------------------------------------------------------
+        // COPYING MAIN RESOURCES
+
+        if (packageName == "main") {
+          if (resources != null) {
+            resources(taskNamePrefix) {
+              this.resources = files(resources)
+              if(targetDir == null) {
+                this.resourceDestDir = classRoot + File.separator + packagePath
+              } else {
+                this.resourceDestDir = classRoot + File.separator + targetDir
+              }
+            }
+          }
+        }
+
+        // ----------------------------------------------------------------------
         // NON STANDARD BUILD FOR PACKAGE org.kopi.compiler.resource
 
         if (packageName == "org.kopi.compiler.resource") {
