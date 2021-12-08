@@ -140,7 +140,12 @@ tasks {
     kotlinOptions.jvmTarget = "1.8"
   }
   compileKotlin {
-    destinationDir = file(classRoot!!)
+    doLast {
+      copy {
+        from(file("build/classes/kotlin/main/"))
+        into(file(System.getenv("CLASSROOT")))
+      }
+    }
 
     if(jdk7Home != null) {
       sourceCompatibility = "1.7"
