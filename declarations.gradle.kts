@@ -25,10 +25,10 @@ import org.kopi.gradle.dsl.topDir
 topDir = "src"
 
 // Main resources to copied to classroot.
-inPackage("main.resources") {
+inPackage("resources") {
   nonStandardBuild = true
-  resources = listOf("META-INF/services")
-  targetDir = "META-INF/services"
+  resources = listOf(".")
+  targetDir = "."
 }
 
 inPackage("org.kopi.util.base") {
