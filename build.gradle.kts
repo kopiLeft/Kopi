@@ -61,7 +61,7 @@ val jdk7Home: String? = System.getenv("JDK_7")
 val javadocRoot: String? = System.getenv("JAVADOCROOT")
 
 // Dependencies versions
-val vaadinVersion = "21.0.2"
+val vaadinVersion = "21.0.9"
 val enhancedDialogVersion = "21.0.0"
 val apexChartVersion = "2.0.0.beta10"
 val ironIconsVersion = "2.0.1"
