@@ -16,44 +16,43 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-[part~='input-field'] {
-    background-color: white;
+.columns-selector {
+    display: inline-block;
+    position: absolute;
+    right: 0 !important;
+    z-index: 1;
+    margin-top: 3.8em;
 }
 
-:host([theme~="galite-combobox"]) [part="text-field"] {
-    font-family: Arial, sans-serif !important;
-    font-weight: 400 !important;
-    font-style: normal !important;
-    font-size: 12px !important;
+.columns-selector-button {
+    float: right;
+    background: none;
+    position: relative;
+    cursor: pointer;
+    font: normal normal normal 14px/1 FontAwesome !important;
+    font-size: 14px !important;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #009bd4;
+}
+
+.columns-selector-button:hover {
+    color: #547988;
+}
+
+.column-item-selector {
     padding: 0;
-}
-
-:host([theme~="galite-combobox"]) [part="input-field"] {
-    border-radius: 0;
-    border-bottom: #dadada 1px solid;
-    max-height: 30px;
     box-shadow: none;
 }
 
-:host([theme~="galite-combobox"]) [part="input-field"]:focus-within {
-	border-bottom: #009bd4 1px solid;
+.column-item-selector:before {
+    display: none;
 }
 
-[part~='input-field']::after {
-    background: none;
-}
-
-[part~='value']:focus {
-	background: none;
-}
-
-[part~='input-field']:hover {
-	background: #d9f0f8;
-}
-
-:host {
-    font-family: Arial, sans-serif !important;
-	font-weight: 400 !important;
-	font-style: normal !important;
-	font-size: 12px;
+.checkbox-selector {
+    width: 100%;
+    height: 100%;
+    padding-right: var(--lumo-space-m);
+    padding-left: var(--lumo-space-m);
 }
