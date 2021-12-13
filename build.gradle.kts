@@ -551,7 +551,7 @@ tasks {
         // ----------------------------------------------------------------------
         // COPYING MAIN RESOURCES
 
-        if (packageName == "main") {
+        if (packageName == "main.resources") {
           if (resources != null) {
             resources(taskNamePrefix) {
               this.resources = files(resources)
