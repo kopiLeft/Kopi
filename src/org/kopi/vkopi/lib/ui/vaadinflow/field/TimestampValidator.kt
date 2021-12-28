@@ -18,7 +18,11 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.field
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.GregorianCalendar
+
+import org.kopi.xkopi.lib.type.Date
+import org.kopi.xkopi.lib.type.NotNullDate
 import org.kopi.xkopi.lib.type.NotNullTime
 import org.kopi.xkopi.lib.type.NotNullTimestamp
 import org.kopi.xkopi.lib.type.Time
@@ -147,7 +151,7 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
         return retryParseDate(tokens)
       }
 
-      return Date(year, month, day)
+      return NotNullDate(year, month, day)
     }
 
     private fun retryParseDate(tokens: List<String>): Date? {
@@ -189,7 +193,7 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
         return null
       }
 
-      return Date(year, month, day)
+      return NotNullDate(year, month, day)
     }
 
     private fun parseTime(time: String): Time? {

@@ -24,6 +24,13 @@ import org.kopi.gradle.dsl.topDir
 // TOPDIR DIRECTORY
 topDir = "src"
 
+// Main resources to copied to classroot.
+inPackage("resources") {
+  nonStandardBuild = true
+  resources = listOf(".")
+  targetDir = "."
+}
+
 inPackage("org.kopi.util.base") {
   javaFiles = listOf("ArrayLocator", "Utils", "CharArrayCache", "FormattedException", "InconsistencyException",
           "Message", "MessageDescription", "NotImplementedException", "Options", "SimpleStringBuffer", "UnicodeReader")

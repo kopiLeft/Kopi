@@ -61,7 +61,7 @@ val jdk7Home: String? = System.getenv("JDK_7")
 val javadocRoot: String? = System.getenv("JAVADOCROOT")
 
 // Dependencies versions
-val vaadinVersion = "21.0.2"
+val vaadinVersion = "21.0.9"
 val enhancedDialogVersion = "21.0.0"
 val apexChartVersion = "2.0.0.beta10"
 val ironIconsVersion = "2.0.1"
@@ -541,6 +541,22 @@ tasks {
         // NON STANDARD BUILD FOR PACKAGE org.kopi.vkopi.lib.ui.vaadin.resource
 
         if (packageName == "org.kopi.vkopi.lib.ui.vaadin.resource") {
+          if (resources != null) {
+            resources(taskNamePrefix) {
+              this.resources = files(resources)
+              if(targetDir == null) {
+                this.resourceDestDir = classRoot + File.separator + packagePath
+              } else {
+                this.resourceDestDir = classRoot + File.separator + targetDir
+              }
+            }
+          }
+        }
+
+        // ----------------------------------------------------------------------
+        // COPYING MAIN RESOURCES
+
+        if (packageName == "resources") {
           if (resources != null) {
             resources(taskNamePrefix) {
               this.resources = files(resources)
