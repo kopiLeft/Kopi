@@ -18,7 +18,6 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.field
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 import com.vaadin.flow.component.KeyNotifier
 import com.vaadin.flow.component.datepicker.DatePicker
@@ -35,6 +34,13 @@ class VDateField : InputTextField<DatePicker>(DatePicker()), KeyNotifier {
     internalField.isAutoOpen = false
 
     // Workaround for autoselection on focus
+    element.executeJs(
+      """
+              this.addEventListener("focus", event => {
+                    this.$.input.inputElement.select()
+              })
+              """
+    )
     addFocusListener {
       element.executeJs("this.$.input.inputElement.select()")
     }

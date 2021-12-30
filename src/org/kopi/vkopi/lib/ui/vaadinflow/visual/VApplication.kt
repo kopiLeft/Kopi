@@ -51,11 +51,13 @@ import org.kopi.vkopi.lib.visual.ImageHandler
 import org.kopi.vkopi.lib.visual.Message
 import org.kopi.vkopi.lib.visual.MessageCode
 import org.kopi.vkopi.lib.visual.MessageListener
+import org.kopi.vkopi.lib.visual.Module
 import org.kopi.vkopi.lib.visual.PrinterManager
 import org.kopi.vkopi.lib.visual.PropertyException
 import org.kopi.vkopi.lib.visual.Registry
 import org.kopi.vkopi.lib.visual.UIFactory
 import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VWindow
 import org.kopi.vkopi.lib.visual.VerifyConfiguration
 import org.kopi.vkopi.lib.visual.VlibProperties
 import org.kopi.vkopi.lib.visual.WindowController
@@ -78,7 +80,6 @@ import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
 import org.kopi.xkopi.lib.base.DBContext
-import com.vaadin.flow.shared.ui.Transport
 
 /**
  * The entry point for all Galite WEB applications.
