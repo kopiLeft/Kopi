@@ -143,7 +143,7 @@ tasks {
     doLast {
       copy {
         from(file("build/classes/kotlin/main/"))
-        into(file(System.getenv("CLASSROOT")))
+        into(file(classRoot!!))
       }
     }
 
