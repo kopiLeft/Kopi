@@ -32,7 +32,7 @@ import org.gradle.work.InputChanges
 import org.kopi.gradle.common.makeTaskDependencies
 
 /**
- * copying resources task class
+ * Class of the task copying resource files to a destination directory.
  */
 open class Resources : DefaultTask() {
   @OutputDirectory

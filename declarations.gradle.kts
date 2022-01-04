@@ -24,13 +24,6 @@ import org.kopi.gradle.dsl.topDir
 // TOPDIR DIRECTORY
 topDir = "src"
 
-// Main resources to copied to classroot.
-inPackage("resources") {
-  nonStandardBuild = true
-  resources = listOf(".")
-  targetDir = "."
-}
-
 inPackage("org.kopi.util.base") {
   javaFiles = listOf("ArrayLocator", "Utils", "CharArrayCache", "FormattedException", "InconsistencyException",
           "Message", "MessageDescription", "NotImplementedException", "Options", "SimpleStringBuffer", "UnicodeReader")
@@ -981,4 +974,11 @@ inPackage("org.kopi.drivers.kopi") {
 inPackage("org.kopi") {
   kjcFiles = listOf("README", "Makefile", "Make.Defs", "util", "compiler", "classfile", "optimize", "backend", "dis",
           "ksm", "kjc", "ikjc", "jperf", "lexgen", "kopi", "optgen", "msggen")
+}
+
+// Main resources to copied to classroot.
+inPackage("resources") {
+  nonStandardBuild = true
+  resources = listOf(".")
+  targetDir = "."
 }

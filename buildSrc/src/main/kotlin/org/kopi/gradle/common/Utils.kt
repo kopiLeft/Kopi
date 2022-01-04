@@ -26,8 +26,8 @@ lateinit var _project: Project
 /**
  * Adds the extension to the files names. if a file already contains the extension, this method returns the file's name as it is.
  *
- * @param receiver list of names of the files
- * @param extension extension of the files
+ * @receiver list of names of the files.
+ * @param extension extension to add to this files.
  */
 fun List<String>?.withExtension(extension: String): List<String> = this?.map { it.withExtension(extension)!! }.orEmpty()
 
