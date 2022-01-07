@@ -23,7 +23,6 @@ import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VField
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
-import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField.ConvertType
 import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorField
 import org.kopi.vkopi.lib.visual.Action
@@ -114,9 +113,7 @@ abstract class DGridEditorField<T>(
   }
 
   override fun updateColor() {
-    access(currentUI) {
-      editor.setColor(Utils.toString(foreground), Utils.toString(background))
-    }
+    editor.setColor(getModel().align, foreground, background)
   }
 
   var currentUI: UI? = null

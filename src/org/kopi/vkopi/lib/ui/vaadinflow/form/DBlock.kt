@@ -476,7 +476,7 @@ open class DBlock(val parent: DForm,
     if (model.alignment != null) {
       layout.setBlockAlignment(formView.getBlockView(model.alignment!!.block) as Component,
                                model.name,
-                               model.alignment!!.tartgets,
+                               model.alignment!!.targets,
                                model.alignment!!.isChart())
     }
 

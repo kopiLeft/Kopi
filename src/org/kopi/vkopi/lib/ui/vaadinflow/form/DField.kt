@@ -27,11 +27,14 @@ import org.kopi.vkopi.lib.form.VForm
 import org.kopi.vkopi.lib.form.VImageField
 import org.kopi.vkopi.lib.form.VStringField
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.base.StyleManager
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
 import org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField
 import org.kopi.vkopi.lib.ui.vaadinflow.field.Field
 import org.kopi.vkopi.lib.ui.vaadinflow.field.FieldListener
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
 import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.ApplicationContext
 import org.kopi.vkopi.lib.visual.VColor
 
 import com.vaadin.flow.component.AttachEvent
@@ -65,6 +68,10 @@ abstract class DField(internal var model: VFieldUI,
   internal var access = 0 // current access of field
   protected var isEditable = options and VConstants.FDO_NOEDIT == 0 // is this field editable
   protected var mouseInside = false // private events
+  protected val styleManager: StyleManager by lazy {
+    (ApplicationContext.getApplicationContext().getApplication() as VApplication).styleManager
+  }
+
   /**
    * The visible field height needed to create layout.
    */

@@ -18,6 +18,7 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
 import org.kopi.vkopi.lib.ui.vaadinflow.common.VImage
+import org.kopi.vkopi.lib.visual.VColor
 
 import com.vaadin.flow.component.Component
 
@@ -55,6 +56,8 @@ class GridEditorImageField : GridEditorField<Any?>() {
   }
 
   override fun setBlink(blink: Boolean) {}
+
+  override fun setColor(align: Int, foreground: VColor?, background: VColor?) {}
 
   fun setImageWidth(width: Int) {
     image.width = "${width}px"

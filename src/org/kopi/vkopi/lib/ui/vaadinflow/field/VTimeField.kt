@@ -31,6 +31,7 @@ class VTimeField : InputTextField<TimePicker>(TimePicker()), KeyNotifier {
 
   init {
     internalField.isAutoOpen = false
+    element.themeList.add("galite-time")
 
     // Workaround for autoselection on focus
     element.executeJs(
@@ -43,8 +44,10 @@ class VTimeField : InputTextField<TimePicker>(TimePicker()), KeyNotifier {
   }
 
   override fun setPresentationValue(newPresentationValue: String?) {
-    content.value = if(newPresentationValue != null && newPresentationValue.isNotEmpty()) {
-      LocalTime.parse(newPresentationValue)
+    val time = TimestampValidator.parseTime(newPresentationValue.orEmpty())
+
+    content.value = if(time != null) {
+      LocalTime.of(time.hours, time.minutes, time.seconds)
     } else {
       null
     }

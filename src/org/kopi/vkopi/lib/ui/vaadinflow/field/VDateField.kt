@@ -32,6 +32,7 @@ class VDateField : InputTextField<DatePicker>(DatePicker()), KeyNotifier {
   init {
     internalField.isClearButtonVisible = true
     internalField.isAutoOpen = false
+    element.themeList.add("galite-date")
 
     // Workaround for autoselection on focus
     element.executeJs(

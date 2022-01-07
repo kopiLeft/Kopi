@@ -24,8 +24,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAw
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
 import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
-import org.kopi.vkopi.lib.ui.vaadinflow.form.DField
-import org.kopi.vkopi.lib.ui.vaadinflow.form.DGridEditorField
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTextField
 import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
 import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VHelpViewer
@@ -33,8 +32,6 @@ import org.kopi.vkopi.lib.visual.VMenuTree
 import org.kopi.vkopi.lib.visual.VRuntimeException
 import org.kopi.vkopi.lib.visual.VWindow
 import org.kopi.vkopi.lib.visual.WindowController
-
-import com.vaadin.flow.component.Component
 
 /**
  * The `VWindowController` is the vaadin implementation
@@ -175,13 +172,13 @@ class VWindowController : WindowController() {
    */
   fun DWindow.focusOnActiveField() {
     element.executeJs("").then {
-      val lasFocusedField = (getModel() as VForm).getActiveBlock()?.activeField?.getDisplay()
+      val lasFocusedField = lasFocusedField
 
       if (lasFocusedField != null) {
-        val internalField: Component = when (lasFocusedField) {
-          is DField -> (lasFocusedField.wrappedField as TextField).inputField
-          is DGridEditorField<*> -> lasFocusedField.editor
-          else -> return@then
+        val internalField = when (lasFocusedField) {
+          is TextField -> lasFocusedField.inputField
+          is GridEditorTextField -> lasFocusedField.wrappedField
+          else -> lasFocusedField
         }
         internalField.element.executeJs("setTimeout(function(){$0.focus()},60)", internalField.element)
       }

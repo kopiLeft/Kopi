@@ -17,6 +17,8 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
+import org.kopi.vkopi.lib.visual.VColor
+
 /**
  * The grid editor actor field server side implementation
  */
@@ -54,6 +56,10 @@ class GridEditorActorField(caption: String?) : GridEditorField<String?>() {
   }
 
   override fun setBlink(blink: Boolean) {}
+
+  override fun setColor(align: Int, foreground: VColor?, background: VColor?) {
+    styleManager.createAndApplyStyle(this, align, foreground, background)
+  }
 
   /*override fun addNavigationListener(listener: NavigationListener?) {
     // NOT SUPPORTED

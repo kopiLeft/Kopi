@@ -17,13 +17,14 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
-import kotlin.collections.Collection
-
 import org.kopi.vkopi.lib.ui.vaadinflow.actor.Actor
-import org.kopi.vkopi.lib.ui.vaadinflow.field.Field
+import org.kopi.vkopi.lib.ui.vaadinflow.base.StyleManager
 import org.kopi.vkopi.lib.ui.vaadinflow.form.DBlock
 import org.kopi.vkopi.lib.ui.vaadinflow.form.DGridEditorField
+import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.VColor
 
 import com.vaadin.flow.component.AbstractCompositeField
 import com.vaadin.flow.component.AttachEvent
@@ -63,15 +64,9 @@ abstract class GridEditorField<T> protected constructor() : AbstractCompositeFie
    */
   var actors: MutableList<Actor> = mutableListOf()
 
-  /**
-   * The foreground color of the field.
-   */
-  var foreground: String? = null
-
-  /**
-   * The background color of the field.
-   */
-  var background: String? = null
+  protected val styleManager: StyleManager by lazy {
+    (ApplicationContext.getApplicationContext().getApplication() as VApplication).styleManager
+  }
 
   /**
    * The navigation delegation to server mode.
@@ -113,10 +108,7 @@ abstract class GridEditorField<T> protected constructor() : AbstractCompositeFie
    * @param foreground The foreground color.
    * @param background The background color.
    */
-  fun setColor(foreground: String, background: String) {
-    this.foreground = foreground
-    this.background = background
-  }
+  abstract fun setColor(align: Int, foreground: VColor?, background: VColor?)
 
   override fun focus() {
     parentWindow?.lasFocusedField = this

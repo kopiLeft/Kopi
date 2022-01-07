@@ -38,8 +38,8 @@ summary, time, mark, audio, video {
 	vertical-align: baseline;
 }
 
-.k-block .simple ::part(value) {
-    color: #000000;
+.k-block .simple .k-textinput {
+  color: #000000;
 	font-weight: 500 !important;
 	font-style: normal !important;
 	line-height: 1.2em;
@@ -56,8 +56,8 @@ summary, time, mark, audio, video {
 	padding: 0;
 }
 
-.k-textinput::part(input-field):hover, .textarea::part(input-field):hover {
-	background: #d9f0f8;
+::part(input-field):hover {
+	background: #d9f0f8 !important;
 }
 
 /**
@@ -70,14 +70,6 @@ summary, time, mark, audio, video {
 .k-block .simple ::part(input-field):focus-within, .kopi .k-textareainput:focus {
 	background: none;
 	border-bottom: #009bd4 1px solid;
-}
-
-/**
- * remove background of TextField
- */
-::part(input-field) {
-    box-shadow: none;
-    background-color: white;
 }
 
 .galite *, .k-popup-window > *, .k-window-container > *, .k-form * {

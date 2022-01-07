@@ -22,6 +22,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.JSKeyDownHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.ShortcutAction
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.base.addJSKeyDownListener
+import org.kopi.vkopi.lib.visual.VColor
 
 import com.flowingcode.vaadin.addons.ironicons.IronIcons
 import com.vaadin.flow.component.AttachEvent
@@ -120,6 +121,10 @@ open class GridEditorTextField(val width: Int) : GridEditorField<String>(), JSKe
         element.classList.remove("$className-blink")
       }
     }
+  }
+
+  override fun setColor(align: Int, foreground: VColor?, background: VColor?) {
+    styleManager.createAndApplyStyle(this, null, foreground, background)
   }
 
   //---------------------------------------------------

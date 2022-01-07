@@ -31,7 +31,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAwait
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
 import org.kopi.vkopi.lib.ui.vaadinflow.base.FontMetrics
-import org.kopi.vkopi.lib.ui.vaadinflow.base.StylesInjector
+import org.kopi.vkopi.lib.ui.vaadinflow.base.StyleManager
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindowListener
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.AbstractNotification
@@ -51,13 +51,11 @@ import org.kopi.vkopi.lib.visual.ImageHandler
 import org.kopi.vkopi.lib.visual.Message
 import org.kopi.vkopi.lib.visual.MessageCode
 import org.kopi.vkopi.lib.visual.MessageListener
-import org.kopi.vkopi.lib.visual.Module
 import org.kopi.vkopi.lib.visual.PrinterManager
 import org.kopi.vkopi.lib.visual.PropertyException
 import org.kopi.vkopi.lib.visual.Registry
 import org.kopi.vkopi.lib.visual.UIFactory
 import org.kopi.vkopi.lib.visual.VMenuTree
-import org.kopi.vkopi.lib.visual.VWindow
 import org.kopi.vkopi.lib.visual.VerifyConfiguration
 import org.kopi.vkopi.lib.visual.VlibProperties
 import org.kopi.vkopi.lib.visual.WindowController
@@ -103,10 +101,9 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   private var welcomeView: WelcomeView? = null
   internal var windowError: Throwable? = null // Sets the window error.
   private var askAnswer = 0
-  var stylesInjector: StylesInjector = StylesInjector() // the styles injector attached with this application instance.
+  lateinit var styleManager: StyleManager // the styles injector attached with this application instance.
   var currentUI: UI? = null
     get() = field ?: UI.getCurrent()
-
   private val configProperties: ResourceBundle? =
     try {
       ResourceBundle.getBundle(resourceFile)
@@ -133,6 +130,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 
   override fun onAttach(attachEvent: AttachEvent) {
     currentUI = attachEvent.ui
+    styleManager = StyleManager(currentUI!!)
   }
 
   // ---------------------------------------------------------------------
