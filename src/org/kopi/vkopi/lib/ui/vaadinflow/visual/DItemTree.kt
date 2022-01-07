@@ -199,7 +199,7 @@ class DItemTree(model: VItemTree) : DWindow(model), UItemTree {
     val item = getSelectedItem()
     if (item != null) {
       access(currentUI) {
-        if (getModel()!!.isRemoveDescendantsAllowed) {
+        if (getModel()!!.isRemoveDescendantsAlowed) {
           removeChildren(item)
         } else {
           attacheToParent(item)
