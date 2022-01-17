@@ -695,7 +695,7 @@ public class DGridBlock extends DBlock implements ColumnResizeListener, SortList
               itemToBeEdited = getContainerDatasource().firstItemId();
             }
             doNotCancelEditor = true;
-            if (!inDetailMode()){
+            if (!inDetailMode() && itemToBeEdited != null){
               grid.editItem(itemToBeEdited);
             }
           }
