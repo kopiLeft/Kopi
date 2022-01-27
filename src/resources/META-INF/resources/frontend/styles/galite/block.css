@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -126,6 +126,8 @@
 
 .block-filter-text::part(input-field) {
     height: 100%;
+    background: white;
+    border-radius: 0;
 }
 
 .block-filter-text > iron-icon {
@@ -137,9 +139,12 @@
     padding: 0;
     height: 100%;
     --lumo-text-field-size: var(--lumo-size-xxs);
+    background: white;
 }
 
 .editor-field::part(input-field) {
     height: 100%;
     padding: 0;
+    border-radius: 0;
+    background: none;
 }
