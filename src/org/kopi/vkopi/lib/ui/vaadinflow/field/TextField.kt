@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -350,7 +350,7 @@ class TextField(val model: VField,
 
     text.size = size
     text.setMaxLength(maxLength)
-    text.width = "" + size + "ch" // TODO: temporary styling
+    text.content.width = "" + size + "ch" // TODO: temporary styling
     text.element.style["box-sizing"] = "unset"
     text.setHasAutocomplete(model.hasAutocomplete())
     // add navigation handler.

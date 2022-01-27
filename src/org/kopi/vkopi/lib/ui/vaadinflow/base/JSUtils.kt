@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,7 +61,6 @@ private fun Component.keysConditions(shortCuts: MutableMap<String, ShortcutActio
 
 fun Component.inputValueExpression(): String {
   return when (this) {
-    is VTimeField -> "this.focusElement.inputElement.value"
     is VDateField -> "this._inputValue"
     is VTimeStampField -> "this.__datePicker.$.input.inputElement.value + ' ' + this.__timePicker.focusElement.inputElement.value"
     else -> "this.value"

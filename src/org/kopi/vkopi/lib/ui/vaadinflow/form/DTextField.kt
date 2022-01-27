@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +23,8 @@ import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
-import org.kopi.vkopi.lib.ui.vaadinflow.visual.VApplication
+import org.kopi.vkopi.lib.ui.vaadinflow.field.VDateField
 import org.kopi.vkopi.lib.visual.Action
-import org.kopi.vkopi.lib.visual.ApplicationContext
 import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.contextmenu.ContextMenu
@@ -71,9 +70,19 @@ open class DTextField(
     }
     field = createFieldGUI(options and VConstants.FDO_NOECHO != 0, scanner, align)
 
-    field.inputField.addTextValueChangeListener {
-      if(it.isFromClient) {
-        valueChanged()
+    // Issue: https://github.com/vaadin/flow-components/issues/1158
+    // TODO: Remove this workaround when the ticket is resolved.
+    if(field.inputField is VDateField) {
+      field.inputField.addDateValueChangeListener { fromClient ->
+        if(fromClient) {
+          valueChanged()
+        }
+      }
+    } else {
+      field.inputField.addTextValueChangeListener {
+        if(it.isFromClient) {
+          valueChanged()
+        }
       }
     }
 
@@ -145,8 +154,7 @@ open class DTextField(
   override fun updateText() {
     val newModelTxt = getModel().getText(rowController.blockView.getRecordFromDisplayLine(position))
     access(currentUI) {
-      // field.value = transformer!!.toGui(newModelTxt)!!.trim() FIXME
-      field.value = transformer!!.toGui(newModelTxt)
+      field.value = transformer!!.toGui(newModelTxt)?.trim() // FIXME
     }
     super.updateText()
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {
@@ -233,9 +241,9 @@ open class DTextField(
     if (!transformer!!.checkFormat(text)) {
       return
     }
-    if (getModel().checkText(text!!)) {
-      getModel().onTextChange(text)
+    getModel().onTextChange(text!!)
 
+    if (getModel().checkText(text)) {
       // affect value directly to the model.
       getModel().getForm().performAsyncAction(object : Action("check_type") {
         override fun execute() {

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.field
-
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 import com.vaadin.flow.component.KeyNotifier
 import com.vaadin.flow.component.datepicker.DatePicker

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,13 +26,13 @@ class DGridBlockFilter(
         private val filterFields: List<FilterField>,
         private val ignoreCase: Boolean,
         private val onlyMatchPrefix: Boolean
-) : SerializablePredicate<DGridBlockContainer.GridBlockItem> {
+) : SerializablePredicate<GridBlockItem> {
 
   // --------------------------------------------------
   // IMPLEMENTATION
   // --------------------------------------------------
 
-  override fun test(item: DGridBlockContainer.GridBlockItem): Boolean {
+  override fun test(item: GridBlockItem): Boolean {
     for (field in filterFields) {
       val value = if (ignoreCase) formatObject(item, field.model).toString().toLowerCase() else formatObject(item, field.model).toString()
       val filterString = if (ignoreCase) field.value.toLowerCase() else field.value
@@ -58,7 +58,7 @@ class DGridBlockFilter(
    * @param field the field model
    * @return The formatted object.
    */
-  private fun formatObject(item: DGridBlockContainer.GridBlockItem, field: VField): String? =
+  private fun formatObject(item: GridBlockItem, field: VField): String? =
     formatObject(item.getValue(field), field)
 
   /**

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -706,8 +706,8 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     /** Application instance */
     lateinit var instance: Application
     private val FONT_METRICS = arrayOf(
-      FontMetrics.DIGIT,
-      FontMetrics.LETTER
+            FontMetrics.DIGIT,
+            FontMetrics.LETTER
     )
 
     init {

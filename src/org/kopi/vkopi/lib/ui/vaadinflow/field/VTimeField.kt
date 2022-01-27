@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,8 @@ class VTimeField : InputTextField<TimePicker>(TimePicker()), KeyNotifier {
 
   init {
     internalField.isAutoOpen = false
+    internalField.element.setProperty("pattern", "[0-9:]*")
+    internalField.element.setProperty("preventInvalidInput", true)
     element.themeList.add("galite-time")
 
     // Workaround for autoselection on focus

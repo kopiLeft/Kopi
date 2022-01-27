@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,18 +15,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.vkopi.lib.ui.vaadinflow.date
+package org.kopi.vkopi.lib.ui.vaadinflow.form
 
-import java.io.Serializable
-import java.util.Date
+import org.kopi.vkopi.lib.form.VField
 
 /**
- * Registered objects are notified with actions performed on a date chooser.
+ * Grid block data source item
  */
-interface DateChooserListener : Serializable {
-  /**
-   * Fired when a date has been chosen.
-   * @param selected The selected date.
-   */
-  fun onClose(selected: Date?)
+class GridBlockItem(val record: Int) {
+
+  // --------------------------------------------------
+  // IMPLEMENTATION
+  // --------------------------------------------------
+  fun getValue(field: VField): Any? {
+    return field.getObject(record)
+  }
 }

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,7 @@ import java.util.Date
 import java.util.Locale
 
 import org.kopi.vkopi.lib.l10n.LocalizationManager
-import org.kopi.util.base.InconsistencyException
+import org.kopi.vkopi.lib.util.base.InconsistencyException
 
 import com.vaadin.flow.function.DeploymentConfiguration
 import com.vaadin.flow.server.CustomizedSystemMessages
@@ -38,7 +38,7 @@ import com.vaadin.flow.server.VaadinSession
  * A customized servlet that handles the localization
  * of the "session expired" message.
  */
-open class KopiServlet : VaadinServlet(), SessionInitListener {
+open class GaliteServlet : VaadinServlet(), SessionInitListener {
 
   // --------------------------------------------------
   // DATA MEMBERS
@@ -148,6 +148,6 @@ open class KopiServlet : VaadinServlet(), SessionInitListener {
     get() = java.lang.Boolean.parseBoolean(getInitParameter("debugMode"))
 
   companion object {
-    private const val VLIB_PROPERTIES_RESOURCE_FILE = "org/kopi/vkopi/lib/resource/VlibProperties"
+    private const val VLIB_PROPERTIES_RESOURCE_FILE = "org/kopi/galite/visual/VlibProperties"
   }
 }

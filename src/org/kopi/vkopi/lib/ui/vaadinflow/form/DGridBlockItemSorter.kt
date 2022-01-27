@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2021 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2021 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,17 +36,17 @@ class DGridBlockItemSorter(
    * compares can be cast to Comparable.
    *
    */
-  class DefaultComparator(val model: VBlock, val field: VField) : Comparator<DGridBlockContainer.GridBlockItem?>, Serializable {
+  class DefaultComparator(val model: VBlock, val field: VField) : Comparator<GridBlockItem?>, Serializable {
 
-    override fun compare(o1: DGridBlockContainer.GridBlockItem?, o2: DGridBlockContainer.GridBlockItem?): Int {
+    override fun compare(o1: GridBlockItem?, o2: GridBlockItem?): Int {
       val ascendantSortDirection = o1!!.record > o2!!.record
       val (rec1, rec2) = if (ascendantSortDirection) {
         model.getSortedPosition(o1.record) to model.getSortedPosition(o2.record)
       } else {
         model.getSortedPosition(o2.record) to model.getSortedPosition(o1.record)
       }
-      val item1 = DGridBlockContainer.GridBlockItem(o1.record).getValue(field)
-      val item2 = DGridBlockContainer.GridBlockItem(o2.record).getValue(field)
+      val item1 = GridBlockItem(o1.record).getValue(field)
+      val item2 = GridBlockItem(o2.record).getValue(field)
 
       return if (isSortedRecordFilled(rec1) && isSortedRecordFilled(rec2)) {
         // Normal non-null comparison
