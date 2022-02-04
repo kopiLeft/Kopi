@@ -50,7 +50,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
   public ReportCellStyleGenerator(MReport model, Parameters parameters) {
     this.model = model;
     this.parameters = parameters;
-    stylesMap = new CSSStyle[model.getAccessibleColumnCount() + 30];
+    stylesList = new CSSStyle[model.getAccessibleColumnCount() + 30];
     updateStyles();
   }
   
@@ -66,13 +66,17 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
       return null;
     } else {
       int col = ((Integer)propertyId).intValue();
-      if (col > stylesMap.length-1) {
+      if (col > stylesList.length-1) {
         col = 0;
       }
 
-      stylesMap[col].setLevel(level);
-      stylesMap[col].updateStyle();
-      return stylesMap[col] == null ? null : stylesMap[col].getName();
+      if(stylesList[col] == null) {
+        stylesList[col].setLevel(level);
+        stylesList[col].updateStyle();
+        return stylesList[col].getName();
+      } else {
+        return null;
+      }
     }
   }
 
@@ -98,7 +102,7 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
 
       ColumnStyle style = styles[0];
 
-      stylesMap[j] = StyleGenerator.getStyle(UI.getCurrent(), parameters, style, j, align, separator);
+      stylesList[j] = StyleGenerator.getStyle(UI.getCurrent(), parameters, style, j, align, separator);
     }
   }
 	  
@@ -108,5 +112,5 @@ public class ReportCellStyleGenerator implements CellStyleGenerator {
 	  
   private MReport				model;
   private Parameters 				parameters;
-  private CSSStyle[]				stylesMap;
+  private CSSStyle[] stylesList;
 }
