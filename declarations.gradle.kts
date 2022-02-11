@@ -975,10 +975,3 @@ inPackage("org.kopi") {
   kjcFiles = listOf("README", "Makefile", "Make.Defs", "util", "compiler", "classfile", "optimize", "backend", "dis",
           "ksm", "kjc", "ikjc", "jperf", "lexgen", "kopi", "optgen", "msggen")
 }
-
-// Main resources to copied to classroot.
-inPackage("resources") {
-  nonStandardBuild = true
-  resources = listOf(".")
-  targetDir = "."
-}
