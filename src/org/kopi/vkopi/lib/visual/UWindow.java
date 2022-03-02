@@ -85,4 +85,10 @@ public interface UWindow extends UComponent, VActionListener, ModelCloseListener
    * @see VActionListener#performAsyncAction(KopiAction)
    */
   public void performBasicAction(KopiAction action);
+
+  /**
+   * Open an URL in the navigator.
+   * @param url The URL to navigate to.
+   */
+  public void openURL(String url) throws Exception;
 }

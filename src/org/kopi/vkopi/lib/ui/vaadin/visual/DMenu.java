@@ -246,6 +246,9 @@ public abstract class DMenu extends ModuleList implements ModuleListListener, UM
   }
 
   @Override
+  public void openURL(String url) throws Exception {}
+
+  @Override
   public void modelClosed(int type) {}
 
   @Override
