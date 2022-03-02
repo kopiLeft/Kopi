@@ -265,7 +265,13 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
 
   @Override
   public void openURL(String url) {
-    getUI().getPage().open(url, "_blank");
+    BackgroundThreadHandler.access(new Runnable() {
+
+      @Override
+      public void run() {
+        Page.getCurrent().open(url, "_blank");
+      }
+    });
   }
 	  
   public final void setStatePanel(Panel statePanel) {
