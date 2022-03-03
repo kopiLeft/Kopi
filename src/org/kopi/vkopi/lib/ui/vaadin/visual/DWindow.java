@@ -264,7 +264,7 @@ public abstract class DWindow extends org.kopi.vkopi.lib.ui.vaadin.addons.Window
   }
 
   @Override
-  public void openURL(String url) {
+  public void openURL(final String url) {
     BackgroundThreadHandler.access(new Runnable() {
 
       @Override
