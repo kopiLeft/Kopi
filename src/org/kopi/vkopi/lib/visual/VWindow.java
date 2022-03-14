@@ -484,6 +484,16 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
   }
 
   /**
+   * Open an URL in the navigator.
+   * @param url The URL to navigate to.
+   */
+  public void openURL(String url) throws Exception {
+    if (display != null) {
+      display.openURL(url);
+    }
+  }
+
+  /**
    * setProgressDialog
    */
   public void setProgressDialog(String message, int currentJob) {
