@@ -19,9 +19,7 @@ package org.kopi.vkopi.lib.ui.vaadinflow.notif
 
 import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
 
-import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.ShortcutEvent
 import com.vaadin.flow.component.Shortcuts

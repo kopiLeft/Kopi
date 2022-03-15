@@ -17,8 +17,6 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.report
 
-import com.vaadin.flow.component.AbstractField
-import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.checkbox.Checkbox
 import com.vaadin.flow.component.contextmenu.ContextMenu
 import com.vaadin.flow.component.dependency.CssImport

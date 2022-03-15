@@ -139,7 +139,7 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
           module.accessibility = (module.accessibility + 1) % 3
           tree.getNodeComponent(module.id)?.setIcon(module.accessibility, module.`object` != null)
         }
-      } else if (module.getObject() != null) {
+      } else if (module.`object` != null) {
         setWaitInfo(VlibProperties.getString("menu_form_started"))
         module.run(getModel().dbContext!!)
         unsetWaitInfo()
@@ -312,7 +312,7 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
   // --------------------------------------------------
   // UMenuTree IMPLEMENTATION
   // --------------------------------------------------
-  override fun getTree(): UMenuTree.UTree? = tree
+  override fun getTree(): UMenuTree.UTree = tree
   // --------------------------------------------------
   // LISTENERS
   // --------------------------------------------------

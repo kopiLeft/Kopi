@@ -482,7 +482,7 @@ public class DBlock extends Block implements UBlock {
     layout = new SimpleBlockLayout(2 * maxColumnPos, maxRowPos);
     if (model.getAlignment() != null) {
       layout.setBlockAlignment((Component)formView.getBlockView(model.getAlignment().getBlock()),
-	                       model.getAlignment().getTartgets(),
+	                       model.getAlignment().getTargets(),
 	                       model.getAlignment().isChart());
     }
     

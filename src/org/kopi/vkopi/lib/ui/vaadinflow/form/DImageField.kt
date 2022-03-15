@@ -19,10 +19,11 @@ package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.form.VImageField
-import org.kopi.vkopi.lib.type.Date
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.field.ImageField
@@ -140,8 +141,8 @@ class DImageField(
    * @param baseName The base name.
    * @return The dynamic image name.
    */
-  protected fun createFileName(baseName: String): String =
-          baseName + Date.now().format("yyyyMMddHHmmssSSS") + ".png"
+  private fun createFileName(baseName: String): String =
+          baseName + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")) + ".png"
   //---------------------------------------------------
   // STREAM RESOURCE
   //---------------------------------------------------

@@ -15,16 +15,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.vkopi.lib.ui.vaadinflow.window
+package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import java.io.Serializable
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
+import org.kopi.vkopi.lib.visual.VColor
 
 /**
- * A generic close listener for notifying with a close event.
+ * The theme is the colors used in the user interface
  */
-interface CloseListener : Serializable {
-  /**
-   * Fired when a dialog or a popup is closed.
-   */
-  fun onClose()
+class Theme(val backgroundColor: String,
+            val backgroundHoverColor: String,
+            val actorHoverColor: String,
+            val disabledActorColor: String) {
+
+  constructor(backgroundColor: VColor,
+              backgroundHoverColor: VColor,
+              actorHoverColor: VColor,
+              disabledActorColor: VColor)
+       : this(Utils.toString(backgroundColor),
+              Utils.toString(backgroundHoverColor),
+              Utils.toString(actorHoverColor),
+              Utils.toString(disabledActorColor))
 }

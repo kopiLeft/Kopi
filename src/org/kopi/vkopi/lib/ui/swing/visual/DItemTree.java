@@ -364,7 +364,7 @@ public class DItemTree extends DWindow implements UItemTree {
       treeModel = ((DefaultTreeModel)tree.getModel());
       DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)treeModel.getRoot();
 
-      if (!getModel().isRemoveDescendantsAlowed()) {
+      if (!getModel().isRemoveDescendantsAllowed()) {
         attacheToParent(treeModel, selectedNode, (DefaultMutableTreeNode)selectedNode.getParent());
       }
       removeItem(treeModel, rootNode, (Item)selectedNode.getUserObject());

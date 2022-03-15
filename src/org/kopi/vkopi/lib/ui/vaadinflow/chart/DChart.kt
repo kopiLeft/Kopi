@@ -38,6 +38,7 @@ class DChart(model: VWindow) : DWindow(model), UChart {
   // DATA MEMBERS
   //---------------------------------------------------
   private val content = HorizontalLayout()
+  private var type: UChartType? = null
 
   //---------------------------------------------------
   // IMPLEMENTATIONS
@@ -49,24 +50,12 @@ class DChart(model: VWindow) : DWindow(model), UChart {
   }
 
   override fun refresh() {
-   // TODO()
+    // TODO()
   }
 
   override fun build() {}
 
   override fun typeChanged() {
-//    TODO()
-  }
-
-  override fun setEnabled(enabled: Boolean) {
-    TODO("Not yet implemented")
-  }
-
-  override fun isEnabled(): Boolean {
-    TODO("Not yet implemented")
-  }
-
-  override fun focus() {
 //    TODO()
   }
 

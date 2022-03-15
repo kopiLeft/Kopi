@@ -17,6 +17,8 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
+import java.time.LocalDate
+
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.form.Alignment
 import org.kopi.vkopi.lib.form.UBlock
@@ -25,7 +27,6 @@ import org.kopi.vkopi.lib.form.VBlock
 import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VField
 import org.kopi.vkopi.lib.form.VFieldUI
-import org.kopi.vkopi.lib.type.Date
 import org.kopi.vkopi.lib.ui.vaadinflow.block.Block
 import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
 import org.kopi.vkopi.lib.ui.vaadinflow.block.SimpleBlockLayout
@@ -94,7 +95,7 @@ open class DBlock(val parent: DForm,
     // info changes done when the block listener is not yet
     // installed.
     for (i in 0 until model.bufferSize) {
-      if (model.getRecordInfoAt(i) !== 0) {
+      if (model.getRecordInfoAt(i) != 0) {
         fireRecordInfoChanged(i, model.getRecordInfoAt(i))
       }
     }
@@ -476,7 +477,7 @@ open class DBlock(val parent: DForm,
     if (model.alignment != null) {
       layout.setBlockAlignment(formView.getBlockView(model.alignment!!.block) as Component,
                                model.name,
-                               model.alignment!!.tartgets,
+                               model.alignment!!.targets,
                                model.alignment!!.isChart())
     }
 

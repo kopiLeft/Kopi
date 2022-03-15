@@ -19,12 +19,10 @@ package org.kopi.vkopi.lib.ui.vaadinflow.field
 
 import org.kopi.vkopi.lib.form.VCodeField
 import org.kopi.vkopi.lib.form.VConstants
-import org.kopi.vkopi.lib.form.VDateField
 import org.kopi.vkopi.lib.form.VField
 import org.kopi.vkopi.lib.form.VDecimalField
 import org.kopi.vkopi.lib.form.VMonthField
 import org.kopi.vkopi.lib.form.VStringField
-import org.kopi.vkopi.lib.form.VTimeField
 import org.kopi.vkopi.lib.form.VTimestampField
 import org.kopi.vkopi.lib.form.VWeekField
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
@@ -165,7 +163,7 @@ class TextField(val model: VField,
     inputField = createTextField()
     inputField.isEnabled = enabled
     add(inputField)
-    if (hasAutofill) {
+    if (hasAutofill && type != Type.DATE) {
       autofill = IronIcons.ARROW_DROP_DOWN.create()
       autofill!!.style["cursor"] = "pointer" // TODO: move to css
       autofill!!.addClickListener {
@@ -194,18 +192,14 @@ class TextField(val model: VField,
       is org.kopi.vkopi.lib.form.VIntegerField -> {
         // integer field
         type = Type.INTEGER
-        if (model.minValue != null) {
-          minval = model.minValue.toDouble()
-        }
-        if (model.maxValue != null) {
-          maxval = model.maxValue.toDouble()
-        }
+        minval = model.minValue.toDouble()
+        maxval = model.maxValue.toDouble()
       }
       is VMonthField -> {
         // month field
         type = Type.MONTH
       }
-      is VDateField -> {
+      is org.kopi.vkopi.lib.form.VDateField -> {
         // date field
         type = Type.DATE
       }
@@ -213,7 +207,7 @@ class TextField(val model: VField,
         // week field
         type = Type.WEEK
       }
-      is VTimeField -> {
+      is org.kopi.vkopi.lib.form.VTimeField -> {
         // time field
         type = Type.TIME
       }
@@ -225,12 +219,8 @@ class TextField(val model: VField,
       is VDecimalField -> {
         // fixnum field
         type = Type.DECIMAL
-        if (model.minValue != null) {
-          minval = model.minValue.toDouble()
-        }
-        if (model.maxValue != null) {
-          maxval = model.maxValue.toDouble()
-        }
+        minval = model.minValue.toDouble()
+        maxval = model.maxValue.toDouble()
         maxScale = model.maxScale
         fraction = model.isFraction
 
@@ -307,6 +297,7 @@ class TextField(val model: VField,
 
     setValidator(text)
     setTextTransform(text)
+    text.setAlign(align)
     if (noEdit) {
       text.setTextValidator(NoeditValidator(maxLength))
       text.isReadOnly = true
@@ -340,9 +331,9 @@ class TextField(val model: VField,
         Type.INTEGER -> VIntegerField(col, minval!!, maxval!!)
         Type.DECIMAL -> VDecimalField(col, maxScale, minval, maxval, fraction)
         Type.CODE -> VCodeField(enumerations)
-        Type.TIME -> org.kopi.vkopi.lib.ui.vaadinflow.field.VTimeField()
+        Type.TIME -> VTimeField()
         Type.TIMESTAMP -> VTimeStampField()
-        Type.DATE -> org.kopi.vkopi.lib.ui.vaadinflow.field.VDateField()
+        Type.DATE -> VDateField()
         else -> InputTextField(TextField())
       }
     } else {

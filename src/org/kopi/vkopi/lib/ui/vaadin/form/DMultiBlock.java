@@ -82,7 +82,7 @@ public class DMultiBlock extends DChartBlock implements UMultiBlock {
 	                          getModel().getDisplaySize() + 1);
     if (model.getAlignment() != null) {
      layout.setBlockAlignment((Component)formView.getBlockView(model.getAlignment().getBlock()),
-                              model.getAlignment().getTartgets(),
+                              model.getAlignment().getTargets(),
                               model.getAlignment().isChart());
     }
     

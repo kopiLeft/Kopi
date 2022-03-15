@@ -129,8 +129,14 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   }
 
   override fun onAttach(attachEvent: AttachEvent) {
-    currentUI = attachEvent.ui
+    val ui = attachEvent.ui
+
+    currentUI = ui
     styleManager = StyleManager(currentUI!!)
+    ui.element.style["--background-color"] = theme.backgroundColor
+    ui.element.style["--background-hover-color"] = theme.backgroundHoverColor
+    ui.element.style["--actor-hover-color"] = theme.actorHoverColor
+    ui.element.style["--disabled-actor-color"] = theme.disabledActorColor
   }
 
   // ---------------------------------------------------------------------
@@ -236,8 +242,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     dialog.addNotificationListener(object : NotificationListener {
       override fun onClose(yes: Boolean?) {
         if (yes == true) {
-          // close DB connection
-          closeConnection()
           // show welcome screen
           gotoWelcomeView()
         }
@@ -275,14 +279,11 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
           }
         }
     }
-
-    // Close database connection
-    closeConnection()
   }
 
   override fun allowQuit(): Boolean =
-    getInitParameter("allowQuit") == null ||
-            java.lang.Boolean.parseBoolean(getInitParameter("allowQuit"))
+          getInitParameter("allowQuit") == null ||
+                  java.lang.Boolean.parseBoolean(getInitParameter("allowQuit"))
 
   override fun getApplicationConfiguration(): ApplicationConfiguration? = applicationConfiguration
 
@@ -396,21 +397,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   //---------------------------------------------------
   // UTILS
   // --------------------------------------------------
-  /**
-   * Attaches the given component to the application.
-   * @param component The component to be attached.
-   */
-  fun attachComponent(component: Component?) {
-
-  }
-
-  /**
-   * Detaches the given component from the application.
-   * @param component The component to be detached.
-   */
-  fun detachComponent(component: Component?) {
-    remove(component)
-  }
 
   /**
    * The database URL.
@@ -423,9 +409,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    * you should use it to define [Locale], debugMode...
    */
   fun initialize() {
-    if (registry != null) {
-      registry.buildDependencies()
-    }
+    registry.buildDependencies()
     // set locale from initialization.
     setLocalizationContext(getInitializationLocale()) // TODO
   }
@@ -470,13 +454,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     // default application locale is initialized
     // from application descriptor file (web.xml)
     defaultLocale = locale
-    if (defaultLocale == null) {
-      // if no valid local is defined in the application descriptor
-      // pick the locale from the extra locale given with application
-      // specifics.
-      // This is only to be share that we start with a language.
-      defaultLocale = alternateLocale
-    }
     // Now create the localization manager using the application default locale.
     localizationManager = LocalizationManager(defaultLocale, Locale.getDefault())
 
@@ -508,21 +485,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    */
   protected fun setTraceLevel() {
 
-  }
-
-  /**
-   * Closes the database connection
-   */
-  protected fun closeConnection() {
-    try {
-      if (dbContext != null) {
-        dbContext!!.close()
-        dbContext = null
-      }
-    } catch (e: SQLException) {
-      // we don't care, we reinitialize the connection
-      dbContext = null
-    }
   }
 
   /**
@@ -689,6 +651,12 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    * The page title.
    */
   open val title: String? = null
+
+  /**
+   * The theme is the colors used in the user interface.
+   * The default theme is blue.
+   */
+  open val theme: Theme = Theme("#009bd4", "#d9f0f8", "#547988", "#82cfe9")
 
   override fun getPageTitle(): String? {
     return pageTitle

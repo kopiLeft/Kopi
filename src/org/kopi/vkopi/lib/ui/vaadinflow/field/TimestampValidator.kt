@@ -18,16 +18,9 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.field
 
 import java.text.SimpleDateFormat
-
-import java.util.Calendar
-import java.util.GregorianCalendar
-
-import org.kopi.xkopi.lib.type.Date
-import org.kopi.xkopi.lib.type.NotNullDate
-import org.kopi.xkopi.lib.type.NotNullTime
-import org.kopi.xkopi.lib.type.NotNullTimestamp
-import org.kopi.xkopi.lib.type.Time
-import org.kopi.xkopi.lib.type.Timestamp
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 /**
  * Time stamp validator
@@ -78,34 +71,15 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
      * Parses the given timestamp input.
      * @param text The timestamp text.
      */
-    fun parseTimestamp(text: String): Timestamp? {
+    fun parseTimestamp(text: String): LocalDateTime? {
       val timestamp = text.split("[ T]".toRegex(), 2)
       val date = parseDate(timestamp[0]) ?: return null
       val time = parseTime(timestamp[1]) ?: return null
 
-      return from(date, time)
+      return LocalDateTime.of(date, time)
     }
 
-    fun from(date: Date, time: Time): Timestamp =
-      NotNullTimestamp(toCalendar(date.year, date.month, date.day, time.hours, time.minutes, time.seconds))
-
-    /**
-     * create an instance of calendar to represent datetime.
-     */
-    fun toCalendar(year: Int, month: Int, day: Int, hours: Int, minutes: Int, seconds: Int): GregorianCalendar {
-      val calendar = GregorianCalendar()
-
-      calendar.clear()
-      calendar[Calendar.YEAR] = year
-      calendar[Calendar.MONTH] = month - 1
-      calendar[Calendar.DAY_OF_MONTH] = day
-      calendar[Calendar.HOUR_OF_DAY] = hours
-      calendar[Calendar.MINUTE] = minutes
-      calendar[Calendar.SECOND] = seconds
-      return calendar
-    }
-
-    fun parseDate(date: String): Date? {
+    fun parseDate(date: String): LocalDate? {
       // Date check
       var month = 0
       var year = -2
@@ -152,10 +126,10 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
         return retryParseDate(tokens)
       }
 
-      return NotNullDate(year, month, day)
+      return LocalDate.of(year, month, day)
     }
 
-    private fun retryParseDate(tokens: List<String>): Date? {
+    private fun retryParseDate(tokens: List<String>): LocalDate? {
       var day = 0
       var month = 0
       var year = DateValidator.stringToInt(tokens[0])
@@ -194,10 +168,10 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
         return null
       }
 
-      return NotNullDate(year, month, day)
+      return LocalDate.of(year, month, day)
     }
 
-    fun parseTime(time: String): Time? {
+    fun parseTime(time: String): LocalTime? {
       var hours = -1
       var minutes = 0
       var seconds = 0
@@ -323,7 +297,7 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
       return if (hours == -1) {
         null
       } else {
-        NotNullTime(hours, minutes, seconds)
+        LocalTime.of(hours, minutes, seconds)
       }
     }
   }

@@ -296,8 +296,16 @@ public class VItemTree extends VWindow {
 
   /**
    * Returns true if removing descendants is alowed
+   * @deprecated use the method <code>isRemoveDescendantsAllowed()<code> instead.
    */
   public boolean isRemoveDescendantsAlowed() {
+    return isRemoveDescendantsAllowed();
+  }
+
+  /**
+   * Returns true if removing descendants is alowed
+   */
+  public boolean isRemoveDescendantsAllowed() {
     return removeDescendants;
   }
 

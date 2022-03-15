@@ -241,7 +241,7 @@ public class DItemTree extends DWindow implements UItemTree {
 
         @Override
         public void run() {
-          if (getModel().isRemoveDescendantsAlowed()) {
+          if (getModel().isRemoveDescendantsAllowed()) {
             removeChildren(item);
           } else {
             attacheToParent(item);

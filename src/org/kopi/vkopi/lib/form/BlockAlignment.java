@@ -77,8 +77,17 @@ public class BlockAlignment implements Serializable {
   /**
    * Returns the alignment targets.
    * @return The alignment targets.
+   * @deprecated use the method <code>getTargets()<code> instead.
    */
   public int[] getTartgets() {
+    return getTargets();
+  }
+
+  /**
+   * Returns the alignment targets.
+   * @return The alignment targets.
+   */
+  public int[] getTargets() {
     return targets;
   }
 

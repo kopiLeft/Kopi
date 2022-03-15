@@ -201,9 +201,10 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
     }.start()
   }
 
-  override fun openURL(url: String?) {}
+  override fun openURL(url: String) {}
 
   override fun modelClosed(type: Int) {}
+  private fun dispose() {}
   override fun setWaitDialog(message: String, maxtime: Int) {}
   override fun unsetWaitDialog() {}
   override fun setWaitInfo(message: String?) {

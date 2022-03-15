@@ -18,6 +18,7 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.io.File
+import java.time.LocalDate
 
 import org.kopi.vkopi.lib.form.BlockListener
 import org.kopi.vkopi.lib.form.BlockRecordListener
@@ -27,7 +28,6 @@ import org.kopi.vkopi.lib.form.VBlock
 import org.kopi.vkopi.lib.form.VField
 import org.kopi.vkopi.lib.form.VFieldException
 import org.kopi.vkopi.lib.form.VForm
-import org.kopi.vkopi.lib.type.Date
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.visual.DWindow
 import org.kopi.vkopi.lib.util.PrintJob
@@ -79,7 +79,7 @@ class DForm(model: VForm) : DWindow(model), UForm, FormListener {
    * Creates the block view for a given block model
    * @param blockModel The block model.
    */
-  protected fun createViewForBlock(blockModel: VBlock): DBlock {
+  internal fun createViewForBlock(blockModel: VBlock): DBlock {
     val blockView: DBlock
     if (!blockModel.isMulti()) {
       blockView = DBlock(this, blockModel)
@@ -269,7 +269,7 @@ class DForm(model: VForm) : DWindow(model), UForm, FormListener {
   }
 
   override fun getBlockView(block: VBlock?): UBlock? {
-    val blocks: Array<VBlock> = vForm!!.blocks
+    val blocks = vForm!!.blocks
     for (i in blocks.indices) {
       if (block == blocks[i]) {
         return blockViews[i]
