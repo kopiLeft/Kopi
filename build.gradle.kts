@@ -15,6 +15,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+import java.io.ByteArrayOutputStream
+
 import org.kopi.gradle.common._project
 import org.kopi.gradle.common.clean
 import org.kopi.gradle.common.withExtension
@@ -193,6 +195,58 @@ tasks {
   named("build") { dependsOn("run") }
   register("clean-all") { dependsOn("clean") }
   register("clean-classes") { dependsOn("clean") }
+
+  register("galiteflow") {
+    doLast {
+      val out = ByteArrayOutputStream()
+
+      val existValue = exec {
+        executable = "git"
+        args = listOf("status")
+        standardOutput = out
+      }
+
+      val clean = out.toString().let { it.contains("la copie de travail est propre") || it.contains("nothing to commit working tree clean") }
+
+      if(!clean) {
+        error("Check your local changes before updating. Execute 'git status'")
+      } else {
+        val galiteBuildDir = "${buildDir}/galite"
+        val vaadinDir = file("./src/org/kopi/vkopi/lib/ui/vaadinflow")
+        val galiteBuildDirVaadin = "$galiteBuildDir/galite-core/src/main/kotlin/org/kopi/galite/visual/ui/vaadin"
+
+        file(galiteBuildDir).deleteRecursively()
+        vaadinDir.deleteRecursively()
+
+        exec {
+          executable = "git"
+          args = listOf("clone", "https://github.com/kopiLeft/Galite.git", "-b", "master", "--single-branch", galiteBuildDir)
+        }
+
+        copy {
+          from(galiteBuildDirVaadin) {
+            include("**/*.kt")
+            exclude("**/DAbstractFullCalendar.kt", "**/DFullCalendarBlock.kt", "**/DTimeGridCalendar.kt")
+          }
+          // Have to use a new path for modified files
+          into(vaadinDir)
+          filter { line ->
+            line
+              .replace("org.kopi.galite.visual.ui.vaadin", "org.kopi.vkopi.lib.ui.vaadinflow")
+              .replace("org.kopi.galite.visual", "org.kopi.vkopi.lib")
+              .replace("ApplicationContext.applicationContext.getApplication()", "ApplicationContext.getApplicationContext().getApplication()")
+              .replace("block.currentRecord = rec + 1", "block.setCurrentRecord(rec + 1)")
+              .replace("block.currentRecord = rec", "block.setCurrentRecord(rec)")
+              .replace("fun hasDisplays(): Boolean = isDisplayInitialized", "fun hasDisplays(): Boolean = displays != null")
+              .replace("dBConnection", "dbContext")
+              .replace("objectName", "`object`")
+              .replace("override fun dispose()", "private fun dispose()")
+              .replace("isDisplayInitialized", "displays != null")
+          }
+        }
+      }
+    }
+  }
 }
 
 defaultTasks("run")
