@@ -212,8 +212,9 @@ tasks {
         error("Check your local changes before updating. Execute 'git status'")
       } else {
         val galiteBuildDir = "${buildDir}/galite"
-        val vaadinDir = file("./src/org/kopi/vkopi/lib/ui/vaadinflow")
         val galiteBuildDirVaadin = "$galiteBuildDir/galite-core/src/main/kotlin/org/kopi/galite/visual/ui/vaadin"
+        val vaadinDir = file("./src/org/kopi/vkopi/lib/ui/vaadinflow")
+        val frontendDir = "./src/resources/META-INF/resources/frontend"
 
         file(galiteBuildDir).deleteRecursively()
         vaadinDir.deleteRecursively()
@@ -223,12 +224,12 @@ tasks {
           args = listOf("clone", "https://github.com/kopiLeft/Galite.git", "-b", "master", "--single-branch", galiteBuildDir)
         }
 
+        // Copy sources
         copy {
           from(galiteBuildDirVaadin) {
             include("**/*.kt")
             exclude("**/DAbstractFullCalendar.kt", "**/DFullCalendarBlock.kt", "**/DTimeGridCalendar.kt")
           }
-          // Have to use a new path for modified files
           into(vaadinDir)
           filter { line ->
             line
@@ -242,7 +243,16 @@ tasks {
               .replace("objectName", "`object`")
               .replace("override fun dispose()", "private fun dispose()")
               .replace("isDisplayInitialized", "displays != null")
+              .replace("item.isDefaultItem = true", "item.setDefault(true)")
+              .replace("item.isDefaultItem = false", "item.setDefault(false)")
           }
+        }
+
+        file(frontendDir).deleteRecursively()
+        // Copy resources
+        copy {
+          from("$galiteBuildDir/galite-core/src/main/resources/META-INF/resources/frontend")
+          into(frontendDir)
         }
       }
     }
