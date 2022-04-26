@@ -451,7 +451,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
 
   @Override
   public String getUserName() {
-    return context.getDefaultConnection().getUserName();
+    return context.getConnection().getUserName();
   }
 
   @Override
@@ -503,7 +503,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    * @return The database URL.
    */
   public String getURL() {
-    return context.getDefaultConnection().getURL();
+    return context.getConnection().getURL();
   }
 
   /**

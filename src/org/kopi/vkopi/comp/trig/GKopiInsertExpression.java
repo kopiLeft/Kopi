@@ -206,7 +206,7 @@ public class GKopiInsertExpression extends XExpression {
                                                                  new JThisExpression(ref),
                                                                  "getDBContext",
                                                                  JExpression.EMPTY),
-                                       "getDefaultConnection",
+                                       "getConnection",
                                        JExpression.EMPTY);
     }
 

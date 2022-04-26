@@ -106,7 +106,7 @@ public class SCompilationUnit extends Phylum {
 	}
 
 	try {
-	  new Query(context.getDefaultConnection()).run(buff.toString());
+	  new Query(context.getConnection()).run(buff.toString());
 	} catch (Exception e) {
 	  out.print("At line " + (((SqlPhylum)elems.get(i)).getTokenReference()).getLine() + ":");
 	  out.println(e.getMessage());
@@ -158,7 +158,7 @@ public class SCompilationUnit extends Phylum {
 			 version,
 			 buff.toString(),
 			 comment,
-			 context.getDefaultConnection().getUserName());
+			 context.getConnection().getUserName());
 	context.commitWork();
       }
     } catch (SQLException e) {

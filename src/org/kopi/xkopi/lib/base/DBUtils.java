@@ -40,7 +40,7 @@ public class DBUtils {
     try {
       DBContext.registerDriver(driver);
       DBContext	context = new DBContext();
-      context.setDefaultConnection(context.createConnection(db, user, pwd));
+      context.createConnection(db, user, pwd);
 
       if (command.equals("update-text")) {
 	update_text(context, params);
@@ -97,7 +97,7 @@ public class DBUtils {
     }
 
     context.startWork();
-    org.kopi.xkopi.lib.base.Connection	conn = context.getDefaultConnection();
+    org.kopi.xkopi.lib.base.Connection	conn = context.getConnection();
     Statement stmt = conn.createStatement();
     stmt.executeQuery("SELECT ID, " + column + " FROM " + table);
     ResultSet   rs = stmt.getResultSet();

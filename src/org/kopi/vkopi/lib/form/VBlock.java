@@ -1682,7 +1682,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @exception VException      an exception may be raised by triggers
    */
   public void load() throws VException, SQLException {
-    Query       query = new Query(form.getDBContext().getDefaultConnection());
+    Query       query = new Query(form.getDBContext().getConnection());
     String      whatbuf, frombuf, condbuf, orderbuf;
     int         idfld;
     int         idqry;
@@ -1816,7 +1816,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       tailbuf = VBlockDefaultOuterJoin.getFetchRecordCondition(fields);
     }
 
-    query = new Query(form.getDBContext().getDefaultConnection());
+    query = new Query(form.getDBContext().getConnection());
     query.addString(headbuf);
     query.addString(frombuf);
     query.addString(getIdColumn());
@@ -1953,7 +1953,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         for (int i = 0; i < getBufferSize(); i++) {
           if (isRecordFetched(i)) {
             if (isRecordChanged(i)) {
-              Query     query = new Query(form.getDBContext().getDefaultConnection());
+              Query     query = new Query(form.getDBContext().getConnection());
 
               query.addString(tables[0]);
               query.addString(getIdColumn());
@@ -2179,7 +2179,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * @return    true iff Oracle outer join syntax should be used.
    */
   private boolean useOracleOuterJoinSyntax() {
-    return form.getDBContext().getDefaultConnection().useOracleOuterJoinSyntax();
+    return form.getDBContext().getConnection().useOracleOuterJoinSyntax();
   }
 
   /**
@@ -2334,8 +2334,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     // build the text
     String              result = null;
     int                 size = 0;
-    int                 maxCharacters = form.getDBContext().getDefaultConnection().getMaximumCharactersCountInOrderBy();
-    int                 maxColumns = form.getDBContext().getDefaultConnection().getMaximumColumnsInOrderBy();
+    int                 maxCharacters = form.getDBContext().getConnection().getMaximumCharactersCountInOrderBy();
+    int                 maxColumns = form.getDBContext().getConnection().getMaximumColumnsInOrderBy();
 
     for (int i = 0; i < elems; i++) {
 
@@ -2443,7 +2443,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     try {
       form.getDBContext().startWork();        // !!! BEGIN_SYNC(null);
 
-      Query             query = new Query(form.getDBContext().getDefaultConnection());
+      Query             query = new Query(form.getDBContext().getConnection());
 
       query.addString(headbuff);
       query.addString(tables[table]);
@@ -2623,8 +2623,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     String      orderbuf = "";
     boolean     first = true;
     int         orderSize = 0;
-    int         maxCharacters = form.getDBContext().getDefaultConnection().getMaximumCharactersCountInOrderBy();
-    int         maxColumns = form.getDBContext().getDefaultConnection().getMaximumColumnsInOrderBy();
+    int         maxCharacters = form.getDBContext().getConnection().getMaximumCharactersCountInOrderBy();
+    int         maxColumns = form.getDBContext().getConnection().getMaximumColumnsInOrderBy();
 
     for (int i = 0; i < query_cnt; i++) {
       int       size;
@@ -2656,7 +2656,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     int[]       ids = new int[fetchSize];
     int         rows = 0;
 
-    Query       query = new Query(form.getDBContext().getDefaultConnection());
+    Query       query = new Query(form.getDBContext().getConnection());
     query.addString(whatbuf);
     query.addString(getIdColumn());
     query.addString(frombuf);
@@ -3587,7 +3587,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
         throw new InconsistencyException("no conditions for table " + tables[table]);
       }
 
-      query = new Query(form.getDBContext().getDefaultConnection());
+      query = new Query(form.getDBContext().getConnection());
       query.addString(headbuff);
       query.addString(tables[table]);
       query.addString(tailbuff);
@@ -3665,7 +3665,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     }
 
     if (! buffer.equals("")) {
-      Query             query = new Query(form.getDBContext().getDefaultConnection());
+      Query             query = new Query(form.getDBContext().getConnection());
 
       query.addString(getIdColumn());
       query.addString(tables[0]);
@@ -3750,7 +3750,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       colbuf = "";
       valbuf = "";
 
-      query = new Query(form.getDBContext().getDefaultConnection());
+      query = new Query(form.getDBContext().getConnection());
 
       for (int i = 0; i < fields.length; i++) {
         VField          fld = fields[i];
@@ -3805,7 +3805,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
   protected void fillIdField(int recno, int id) throws VException, SQLException {
     if (id == -1) {
-      id = KopiUtils.getNextTableId(form.getDBContext().getDefaultConnection(), tables[0]);
+      id = KopiUtils.getNextTableId(form.getDBContext().getConnection(), tables[0]);
     }
 
     getIdField().setInt(recno, new Integer(id));
@@ -3849,7 +3849,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       ucFld = getUcField();
       tsFld = getTsField();
 
-      Query   query = new Query(form.getDBContext().getDefaultConnection());
+      Query   query = new Query(form.getDBContext().getConnection());
 
       if (tsFld != null) {
 	tsFld.setInt(recno, new Integer((int)(System.currentTimeMillis()/1000)));
@@ -3946,7 +3946,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       /* verify that the record has not been changed in the database */
       checkRecordUnchanged(recno);
 
-      Query       query = new Query(form.getDBContext().getDefaultConnection());
+      Query       query = new Query(form.getDBContext().getConnection());
 
       try {
         query.addString(tables[0]);
@@ -3981,7 +3981,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       VField    idFld = getIdField();
       VField    ucFld = getUcField();
       VField    tsFld = getTsField();
-      Query     query = new Query(form.getDBContext().getDefaultConnection());
+      Query     query = new Query(form.getDBContext().getConnection());
 
       assert ucFld != null || tsFld != null
         : "UC or TS field must exist (Block = " + getName() + ").";
@@ -4065,7 +4065,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
 
       form.getDBContext().startWork();
 
-      query = new Query(form.getDBContext().getDefaultConnection());
+      query = new Query(form.getDBContext().getConnection());
       query.addString(name);
       query.open("SELECT         tabelle, spalte, referenz " +
                  "FROM          SYSTEMREFERENZEN " +

@@ -227,12 +227,12 @@ public class Main extends Compiler implements Constants {
     try {
       org.kopi.xkopi.lib.base.DBContext.registerDriver(options.driver);
       if (options.url != null) {
-	context = new org.kopi.xkopi.lib.base.DBContext();
-	context.setDefaultConnection(context.createConnection(options.url, options.login, options.passwd));
+        context = new org.kopi.xkopi.lib.base.DBContext();
+        context.createConnection(options.url, options.login, options.passwd);
       }
       if (options.commit != null) {
-	dictContext = new org.kopi.xkopi.lib.base.DBContext();
-	dictContext.setDefaultConnection(dictContext.createConnection(options.commit, options.login, options.passwd));
+        dictContext = new org.kopi.xkopi.lib.base.DBContext();
+        dictContext.createConnection(options.commit, options.login, options.passwd);
       }
     } catch (Exception e) {
       e.printStackTrace();

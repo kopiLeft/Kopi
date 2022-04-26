@@ -158,14 +158,14 @@ public class XUnprotectedStatement extends XStatement {
                                                                             exprs, 
                                                                             "getDBContext", 
                                                                             JExpression.EMPTY), 
-                                                  "getDefaultConnection", 
+                                                  "getConnection", 
                                                   JExpression.EMPTY);
     defaultConnection2 = new JMethodCallExpression(ref, 
                                                   new JMethodCallExpression(ref, 
                                                                             exprs, 
                                                                             "getDBContext", 
                                                                             JExpression.EMPTY), 
-                                                  "getDefaultConnection", 
+                                                  "getConnection", 
                                                   JExpression.EMPTY);
 
     transReadUncommitted = new JIntLiteral(ref, java.sql.Connection.TRANSACTION_READ_UNCOMMITTED);
@@ -255,7 +255,7 @@ public class XUnprotectedStatement extends XStatement {
 							       handler,
 							       "getDBContext",
 							       JExpression.EMPTY),
-				     "getDefaultConnection",
+				     "getConnection",
 				     JExpression.EMPTY);
   }
 

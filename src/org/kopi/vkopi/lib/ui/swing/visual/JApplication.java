@@ -187,7 +187,7 @@ public abstract class JApplication implements Application {
    * @return The database URL.
    */
   public String getURL() {
-    return context.getDefaultConnection().getURL();
+    return context.getConnection().getURL();
   }
 
   /**
@@ -344,11 +344,11 @@ public abstract class JApplication implements Application {
       try {
         DBContext.registerDriver(options.driver);
         context = new DBContext();
-        context.setDefaultConnection(context.createConnection(options.database,
-                                                              options.username,
-                                                              options.password,
-                                                              options.lookupUserId,
-                                                              options.schema));
+        context.createConnection(options.database,
+                                 options.username,
+                                 options.password,
+                                 options.lookupUserId,
+                                 options.schema);
       } catch (Exception e) {
         System.err.println(e.getMessage());
         options.usage();
@@ -411,7 +411,7 @@ public abstract class JApplication implements Application {
 
   
   public String getUserName() {
-    return context.getDefaultConnection().getUserName();
+    return context.getConnection().getUserName();
   }
 
   

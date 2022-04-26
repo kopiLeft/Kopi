@@ -120,7 +120,7 @@ public class GExecSqlStatement extends XExecSqlStatement {
                                                                   new JThisExpression(ref), 
                                                                   "getDBContext", 
                                                                   JExpression.EMPTY), 
-                                        "getDefaultConnection", 
+                                        "getConnection",
                                         JExpression.EMPTY);
     }
 

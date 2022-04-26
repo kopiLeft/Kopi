@@ -238,6 +238,6 @@ public class VTextField extends VStringField {
    * @return {@code true} if the we are running in a postgreSQL context.
    */
   protected boolean isPostgresDriverInterface() {
-    return getBlock().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface;
+    return getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface;
   }
 }

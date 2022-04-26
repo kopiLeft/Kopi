@@ -681,7 +681,7 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
       if (inTransaction()) {
         try {
           if (interrupt) {
-            getDBContext().getDefaultConnection().interrupt();
+            getDBContext().getConnection().interrupt();
           }
         } finally {
           context.abortWork();
@@ -735,14 +735,14 @@ public abstract class VWindow implements DBContextHandler, KopiExecutable, Actio
    *
    */
   public String getUserName() {
-    return context.getDefaultConnection().getUserName();
+    return context.getConnection().getUserName();
   }
 
   /**
    *
    */
   public int getUserID() {
-    return context.getDefaultConnection().getUserID();
+    return context.getConnection().getUserID();
   }
 
   public void setSmallIcon(Image smallIcon) {

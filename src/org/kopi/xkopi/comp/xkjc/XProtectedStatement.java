@@ -189,7 +189,7 @@ public class XProtectedStatement extends XStatement {
 							       handler,
 							       "getDBContext",
 							       JExpression.EMPTY),
-				     "getDefaultConnection",
+				     "getConnection",
 				     JExpression.EMPTY);
   }
 

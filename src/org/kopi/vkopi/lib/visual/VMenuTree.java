@@ -155,7 +155,7 @@ public class VMenuTree extends VWindow {
    * Returns the ID of the current user
    */
   public int getUserID() {
-    return getDBContext().getDefaultConnection().getUserID();
+    return getDBContext().getConnection().getUserID();
   }
 
   /**
@@ -327,12 +327,12 @@ public class VMenuTree extends VWindow {
    * Fetches the modules from the database.
    */
   private List<Module> fetchModules(boolean isUnicode) throws SQLException {
-    Query       	getModules = new Query(getDBContext().getDefaultConnection());
+    Query       	getModules = new Query(getDBContext().getConnection());
     List<Module>        localModules = new ArrayList<Module>();
 
     getModules.open(SELECT_MODULES);
     while (getModules.next()) {
-      Query     getIcons = new Query(getDBContext().getDefaultConnection());
+      Query     getIcons = new Query(getDBContext().getConnection());
       String    icon = null;
 
       try {
@@ -375,7 +375,7 @@ public class VMenuTree extends VWindow {
   }
 
   private void fetchRights(List<Module> modules, String queryText) throws SQLException {
-    Query       getRights = new Query(getDBContext().getDefaultConnection());
+    Query       getRights = new Query(getDBContext().getConnection());
 
     if (groupName != null) {
       getRights.addString("(SELECT ID FROM GRUPPEN WHERE Kurzname = \'" + groupName + "\')");
@@ -412,7 +412,7 @@ public class VMenuTree extends VWindow {
    * Fetches the favorites from the database.
    */
   private void fetchFavorites() throws SQLException {
-    Query       getFavorites = new Query(getDBContext().getDefaultConnection());
+    Query       getFavorites = new Query(getDBContext().getConnection());
 
     if (isSuperUser && userName != null) {
       getFavorites.open("SELECT F.Modul, F.ID FROM FAVORITEN F WHERE F.Benutzer = "

@@ -196,7 +196,7 @@ public class XExecInsertExpression extends XExpression {
                                                                  new JThisExpression(ref),
                                                                  "getDBContext",
                                                                  JExpression.EMPTY),
-                                       "getDefaultConnection",
+                                       "getConnection",
                                        JExpression.EMPTY);
     }
 

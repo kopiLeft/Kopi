@@ -53,11 +53,12 @@ public class DBContext {
                                      String pass,
                                      boolean lookupUserId,
                                      String schema)
-          throws DBException
+          throws SQLException
   {
     Connection  conn;
 
     conn = new Connection(this, url, user, pass, lookupUserId, schema);
+    setConnection(conn);
 
     return conn;
   }
@@ -70,6 +71,7 @@ public class DBContext {
     Connection  conn;
 
     conn = new Connection(this, connexion, lookupUserId, schema);
+    setConnection(conn);
 
     return conn;
   }
@@ -83,16 +85,29 @@ public class DBContext {
    * @return    a new kopi connection
    */
   public Connection createConnection(String url, String user, String pass)
-          throws DBException
+          throws SQLException
   {
     return createConnection(url, user, pass, true, null);
+  }
+
+  /**
+   * Sets the underlying JDBC connection.
+   *
+   * @throws SQLException when creating more than one connection.
+   */
+  private void setConnection(Connection con) throws SQLException {
+    if (connection == null) {
+      connection = con;
+    } else if (connection != con) {
+      throw new SQLException("Too many database connections");
+    }
   }
 
   /**
    * Closes the underlying JDBC connections.
    */
   public void close() throws DBException {
-    defaultConnection.close();
+    connection.close();
   }
 
   /**
@@ -104,17 +119,26 @@ public class DBContext {
 
   /**
    * Returns the underlying default JDBC connection.
+   *
+   * @deprecated use the method <code>getConnection()</code> instead
    */
   public Connection getDefaultConnection() {
-    return defaultConnection;
+    return connection;
+  }
+
+  /**
+   * Returns the underlying default JDBC connection.
+   */
+  public Connection getConnection() {
+    return connection;
   }
 
   /**
    * sets the underlying default JDBC connection.
+   *
+   * @deprecated do not use this method as <code>createConnection()</code> sets the connection.
    */
-  public void setDefaultConnection(Connection con) {
-    defaultConnection = con;
-  }
+  public void setDefaultConnection(Connection con) {}
 
   /**
    * Starts a new transaction.
@@ -145,9 +169,9 @@ public class DBContext {
       inTransaction = true; /* In case we are doing a commit wo start work */
 
       try {
-        defaultConnection.commit();
+        connection.commit();
       } catch (SQLException exc) {
-        throw defaultConnection.convertException(exc);
+        throw connection.convertException(exc);
       }
       inTransaction = false;
       notify();
@@ -162,7 +186,7 @@ public class DBContext {
       inTransaction = true; /* In case we are doing an abort wo start work */
 
       try {
-        defaultConnection.rollback();
+        connection.rollback();
       } catch (SQLException exc) {
         //throw conn.convertException(exc); (if the error has already closed the transaction)
       }
@@ -181,7 +205,7 @@ public class DBContext {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-  private Connection    defaultConnection;
+  private Connection    connection;
   private boolean       inTransaction;
 
   // ----------------------------------------------------------------------

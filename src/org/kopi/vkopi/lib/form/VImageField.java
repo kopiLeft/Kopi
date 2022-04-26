@@ -182,7 +182,7 @@ public class VImageField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    if (getBlock().getDBContext().getDefaultConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+    if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
       return query.getByteArray(column);
     } else {
       Blob        blob = query.getBlob(column);

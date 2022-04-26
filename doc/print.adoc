@@ -475,7 +475,7 @@ The STYLE section only accepts block styles.
   {
     protected void print() throws Exception
       {
-        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.setDefaultConnection(getDBContext().getConnection());
         invpos.open(id);
         while (invpos.next())
         {
@@ -541,7 +541,7 @@ VERTICAL BLOCK Loop
   {
     protected void print() throws Exception
       {
-        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.setDefaultConnection(getDBContext().getConnection());
         invpos.open(id);
         while (invpos.next())
         {
@@ -688,7 +688,7 @@ public InvoicePage(DBContextHandler handler, int id)
 }
 public void initPage() throws SQLException
 {
-  inv.setDefaultConnection(getDBContext().getDefaultConnection());
+  inv.setDefaultConnection(getDBContext().getConnection());
   inv.open(id);
   inv.next();
 

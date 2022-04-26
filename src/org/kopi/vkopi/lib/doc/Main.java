@@ -76,7 +76,7 @@ public class Main {
 
     DBContext.registerDriver(argv[3]);
     context = new DBContext();
-    context.setDefaultConnection(context.createConnection(url, name, argv[4]));
+    context.createConnection(url, name, argv[4]);
 
     new Thread(new Runnable() {
 	public void run() {
@@ -414,7 +414,7 @@ public class Main {
    * Loads the accessible modules.
    */
   private Module[] loadModules(boolean isUnicode) {
-    Query		query = new Query(context.getDefaultConnection());
+    Query		query = new Query(context.getConnection());
     Vector<Module>	vector = new Vector<Module>();
 
     try {

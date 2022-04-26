@@ -108,7 +108,7 @@ public class XExecSqlExpression extends XExpression {
                                                                    new JThisExpression(ref),
                                                                    "getDBContext", 
                                                                    JExpression.EMPTY), 
-                                         "getDefaultConnection", 
+                                         "getConnection", 
                                          JExpression.EMPTY);
       }
       CReferenceType    utilType = (CReferenceType) context.getTypeFactory().createType(org.kopi.xkopi.lib.base.KopiUtils.class.getName().replace('.','/'), true);

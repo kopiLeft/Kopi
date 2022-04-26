@@ -65,7 +65,7 @@ public class Query {
    * Creates a query.
    */
   public Query(DBContextHandler env) {
-    this(env.getDBContext().getDefaultConnection());
+    this(env.getDBContext().getConnection());
   }
 
   /**

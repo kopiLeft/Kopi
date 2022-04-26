@@ -1888,7 +1888,7 @@ public abstract class VField implements VConstants, VModel {
               getForm().startProtected(null);
             }
 
-            Query       query = new Query(getForm().getDBContext().getDefaultConnection());
+            Query       query = new Query(getForm().getDBContext().getConnection());
 
             query.addString(list.getColumn(0).getColumn());
             query.addString(evalListTable());
@@ -1948,7 +1948,7 @@ public abstract class VField implements VConstants, VModel {
               getForm().startProtected(null);
             }
 
-            query = new Query(getForm().getDBContext().getDefaultConnection());
+            query = new Query(getForm().getDBContext().getConnection());
             query.addString(list.getColumn(0).getColumn());
             query.addString(evalListTable());
             query.addString(getString(block.getActiveRecord()));
@@ -2057,7 +2057,7 @@ public abstract class VField implements VConstants, VModel {
         try {
           getForm().startProtected(null);
 
-          Query query = new Query(getForm().getDBContext().getDefaultConnection());
+          Query query = new Query(getForm().getDBContext().getConnection());
 
           query.addString(list.getColumn(0).getColumn());
           query.addString(evalListTable());
@@ -2118,7 +2118,7 @@ public abstract class VField implements VConstants, VModel {
         try {
           getForm().startProtected(Message.getMessage("searching_database"));
 
-          Query         query = new Query(getForm().getDBContext().getDefaultConnection());
+          Query         query = new Query(getForm().getDBContext().getConnection());
 
           query.open(queryText);
           lineCount = 0;
@@ -2185,7 +2185,7 @@ public abstract class VField implements VConstants, VModel {
                 " FROM     $2                   " +
                 " WHERE    $3 = " + selected;
 
-              Query     query = new Query(getForm().getDBContext().getDefaultConnection());
+              Query     query = new Query(getForm().getDBContext().getConnection());
 
               query.addString(list.getColumn(0).getColumn());
               query.addString(evalListTable());
@@ -2287,7 +2287,7 @@ public abstract class VField implements VConstants, VModel {
       try {
         getForm().startProtected(null);
 
-        Query           query = new Query(getForm().getDBContext().getDefaultConnection());
+        Query           query = new Query(getForm().getDBContext().getConnection());
         query.open(qrybuf);
         while (value == null && query.next()) {
           value = query.getObject(1);
@@ -2374,7 +2374,7 @@ public abstract class VField implements VConstants, VModel {
 	try {
 	  getForm().startProtected(null);
 
-	  Query           sqlQuery = new Query(getForm().getDBContext().getDefaultConnection());
+	  Query           sqlQuery = new Query(getForm().getDBContext().getConnection());
 	  
 	  sqlQuery.open(qrybuf.toString());
 	  while (sqlQuery.next()) {
@@ -2482,7 +2482,7 @@ public abstract class VField implements VConstants, VModel {
       for (;;) {
         try {
           getForm().startProtected(null);
-          Query query = new Query(getForm().getDBContext().getDefaultConnection());
+          Query query = new Query(getForm().getDBContext().getConnection());
           query.addString(list.getColumn(0).getColumn());
           query.addString(evalListTable());
           query.addString("ID");

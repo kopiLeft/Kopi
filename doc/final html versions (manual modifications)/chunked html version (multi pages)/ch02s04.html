@@ -290,7 +290,7 @@ END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><l
   {
     protected void print() throws Exception
       {
-        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.setDefaultConnection(getDBContext().getConnection());
         invpos.open(id);
         while (invpos.next())
         {
@@ -340,7 +340,7 @@ END BLOCK</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><l
   {
     protected void print() throws Exception
       {
-        invpos.setDefaultConnection(getDBContext().getDefaultConnection());
+        invpos.setDefaultConnection(getDBContext().getConnection());
         invpos.open(id);
         while (invpos.next())
         {
@@ -425,7 +425,7 @@ public InvoicePage(DBContextHandler handler, int id)
 }
 public void initPage() throws SQLException
 {
-  inv.setDefaultConnection(getDBContext().getDefaultConnection());
+  inv.setDefaultConnection(getDBContext().getConnection());
   inv.open(id);
   inv.next();
 

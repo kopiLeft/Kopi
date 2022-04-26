@@ -136,7 +136,7 @@ public class XExecSqlStatement extends XStatement {
                                                                   new JThisExpression(ref), 
                                                                   "getDBContext", 
                                                                   JExpression.EMPTY), 
-                                        "getDefaultConnection", 
+                                        "getConnection", 
                                         JExpression.EMPTY);
     }
 

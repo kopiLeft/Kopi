@@ -36,7 +36,7 @@ public class VDatabaseUtils {
   {
     Query		query1, query2;
 
-    query1 = new Query(ctxt.getDBContext().getDefaultConnection());
+    query1 = new Query(ctxt.getDBContext().getConnection());
     query1.addString(table);
     query1.open("SELECT         tabelle, spalte, aktion " +
 		"FROM		REFERENZEN " +
@@ -45,7 +45,7 @@ public class VDatabaseUtils {
     while (query1.next()) {
       switch (query1.getString(3).charAt(0)) {
       case 'R':		// restrict: abort when referenced
-	query2 = new Query(ctxt.getDBContext().getDefaultConnection());
+	query2 = new Query(ctxt.getDBContext().getConnection());
 	query2.addString(query1.getString(1));
 	query2.addString(query1.getString(2));
 	query2.addInt(id);
@@ -63,7 +63,7 @@ public class VDatabaseUtils {
 	break;
 
       case 'C':		// cascade: delete tuple (with references)
-	query2 = new Query(ctxt.getDBContext().getDefaultConnection());
+	query2 = new Query(ctxt.getDBContext().getConnection());
 	query2.addString(query1.getString(1));
 	query2.addString(query1.getString(2));
 	query2.addInt(id);
@@ -81,7 +81,7 @@ public class VDatabaseUtils {
 	break;
 
       case 'N':
-	query2 = new Query(ctxt.getDBContext().getDefaultConnection());
+	query2 = new Query(ctxt.getDBContext().getConnection());
 	query2.addString(query1.getString(1));
 	query2.addString(query1.getString(2));
 	query2.addInt(id);
@@ -107,7 +107,7 @@ public class VDatabaseUtils {
   {
     Query       query;
 
-    query = new Query(ctxt.getDBContext().getDefaultConnection());
+    query = new Query(ctxt.getDBContext().getConnection());
     query.addString(table);
     if (condition != null && condition.length() > 0) {
       query.addString(condition);

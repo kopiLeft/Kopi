@@ -343,7 +343,7 @@ public class VDynamicReport extends VReport {
               block.setActiveRecord(0);
             }
 
-            Query         query = new Query(block.getForm().getDBContext().getDefaultConnection());
+            Query         query = new Query(block.getForm().getDBContext().getConnection());
             String        searchCondition = block.getSearchConditions() == null ? "" : block.getSearchConditions();
             String        searchColumns = block.getReportSearchColumns();
             String        searchTables = block.getSearchTables();
