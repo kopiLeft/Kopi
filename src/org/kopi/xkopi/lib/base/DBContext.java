@@ -20,8 +20,6 @@
 package org.kopi.xkopi.lib.base;
 
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.Vector;
 
 import org.kopi.util.base.InconsistencyException;
 
@@ -55,25 +53,23 @@ public class DBContext {
                                      String pass,
                                      boolean lookupUserId,
                                      String schema)
-    throws DBException
+          throws DBException
   {
     Connection  conn;
 
     conn = new Connection(this, url, user, pass, lookupUserId, schema);
-    connections.addElement(conn);
 
     return conn;
   }
 
   public Connection createConnection(java.sql.Connection connexion,
-                                      boolean lookupUserId,
-                                      String schema)
-    throws SQLException
+                                     boolean lookupUserId,
+                                     String schema)
+          throws SQLException
   {
     Connection  conn;
 
     conn = new Connection(this, connexion, lookupUserId, schema);
-    connections.addElement(conn);
 
     return conn;
   }
@@ -84,12 +80,10 @@ public class DBContext {
    * @param     url             the URL of the database to connect to
    * @param     user            the name of the database user
    * @param     pass            the password of the database user
-   * @param     lookupUserId    lookup user id in table KOPI_USERS ?
-   * @param     schema          the current database schema
    * @return    a new kopi connection
    */
   public Connection createConnection(String url, String user, String pass)
-    throws DBException
+          throws DBException
   {
     return createConnection(url, user, pass, true, null);
   }
@@ -98,17 +92,13 @@ public class DBContext {
    * Closes the underlying JDBC connections.
    */
   public void close() throws DBException {
-    for (Enumeration elems = getConnections().elements(); elems.hasMoreElements(); ) {
-      ((Connection)elems.nextElement()).close();
-    }
-    connections = new Vector();
+    defaultConnection.close();
   }
 
   /**
    * Closes the underlying JDBC connections.
    */
   public void close(Connection conn) throws DBException {
-    connections.removeElement(conn);
     conn.close();
   }
 
@@ -124,13 +114,6 @@ public class DBContext {
    */
   public void setDefaultConnection(Connection con) {
     defaultConnection = con;
-  }
-
-  /**
-   * Returns all connections currenty opened
-   */
-  public Vector getConnections() {
-    return connections;
   }
 
   /**
@@ -161,13 +144,10 @@ public class DBContext {
     synchronized(this) {
       inTransaction = true; /* In case we are doing a commit wo start work */
 
-      for (Enumeration elems = getConnections().elements(); elems.hasMoreElements(); ) {
-        Connection      conn = (Connection)elems.nextElement();
-        try {
-          conn.commit();
-        } catch (SQLException exc) {
-          throw conn.convertException(exc);
-        }
+      try {
+        defaultConnection.commit();
+      } catch (SQLException exc) {
+        throw defaultConnection.convertException(exc);
       }
       inTransaction = false;
       notify();
@@ -181,13 +161,10 @@ public class DBContext {
     synchronized(this) {
       inTransaction = true; /* In case we are doing an abort wo start work */
 
-      for (Enumeration elems = getConnections().elements(); elems.hasMoreElements(); ) {
-        Connection      conn = (Connection)elems.nextElement();
-        try {
-          conn.rollback();
-        } catch (SQLException exc) {
-          //throw conn.convertException(exc); (if the error has already closed the transaction)
-        }
+      try {
+        defaultConnection.rollback();
+      } catch (SQLException exc) {
+        //throw conn.convertException(exc); (if the error has already closed the transaction)
       }
       inTransaction = false;
       notify();
@@ -204,8 +181,6 @@ public class DBContext {
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
-
-  private Vector        connections;
   private Connection    defaultConnection;
   private boolean       inTransaction;
 
@@ -214,7 +189,6 @@ public class DBContext {
   // ----------------------------------------------------------------------
 
   {
-    connections = new Vector();
     inTransaction = false;
   }
 
