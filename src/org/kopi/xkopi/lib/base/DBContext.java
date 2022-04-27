@@ -108,6 +108,7 @@ public class DBContext {
    */
   public void close() throws DBException {
     connection.close();
+    connection = null;
   }
 
   /**
@@ -115,6 +116,7 @@ public class DBContext {
    */
   public void close(Connection conn) throws DBException {
     conn.close();
+    connection = null;
   }
 
   /**
