@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,6 +47,9 @@ public interface Constants {
   byte		CST_METHOD = 10;
   byte		CST_INTERFACEMETHOD = 11;
   byte		CST_NAMEANDTYPE = 12;
+  byte		CST_METHODHANDLE = 15;
+  byte		CST_METHODTYPE = 16;
+  byte		CST_INVOKEDYNAMIC = 18;
 
   // ----------------------------------------------------------------------
   // TYPE

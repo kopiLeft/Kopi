@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -112,6 +112,18 @@ public class ConstantPool implements Constants {
       case CST_NAMEANDTYPE:
 	table[i] = new UnresolvedConstant(tag, in.readUnsignedShort(), in.readUnsignedShort());
 	pass[i] = 1;
+	break;
+
+      case CST_METHODHANDLE:
+	table[i] = new UnresolvedConstant(tag, in.readUnsignedByte(), in.readUnsignedShort());
+	break;
+
+      case CST_METHODTYPE:
+	table[i] = new UnresolvedConstant(tag, in.readUnsignedShort(), 0);
+	break;
+
+      case CST_INVOKEDYNAMIC:
+	table[i] = new UnresolvedConstant(tag, in.readUnsignedShort(), in.readUnsignedShort());
 	break;
 
       default:
