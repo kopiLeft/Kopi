@@ -61,10 +61,10 @@ public class ClassConstant extends PooledConstant {
   }
 
   /**
-   * Returns the associated literal: this constant type has none
+   * Returns the associated literal.
    */
   /*package*/ Object getLiteral() {
-    throw new InconsistencyException("attempt to read literal in a class constant");
+    return name.getValue();
   }
 
   // --------------------------------------------------------------------
