@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--
-  Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+  Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License version 2
   as published by the Free Software Foundation.
@@ -42,7 +42,8 @@
                    HandlerInfo.java IincInstruction.java InnerClassInfo.java 
                    InnerClassTable.java Instruction.java InstructionAccessor.java 
                    InstructionHandle.java InstructionIO.java IntegerConstant.java 
-                   InterfaceConstant.java InvokeinterfaceInstruction.java 
+                   InterfaceConstant.java InvokeDynamicInstruction.java
+		   InvokeinterfaceInstruction.java 
                    JumpInstruction.java LineNumberInfo.java LineNumberTable.java 
                    LocalVarInstruction.java LocalVariableInfo.java 
                    LocalVariableTable.java LongConstant.java Main.java 
