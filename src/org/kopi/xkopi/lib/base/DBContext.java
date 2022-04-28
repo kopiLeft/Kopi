@@ -107,8 +107,10 @@ public class DBContext {
    * Closes the underlying JDBC connections.
    */
   public void close() throws DBException {
-    connection.close();
-    connection = null;
+    if (connection != null) {
+      connection.close();
+      connection = null;
+    }
   }
 
   /**
@@ -170,10 +172,12 @@ public class DBContext {
     synchronized(this) {
       inTransaction = true; /* In case we are doing a commit wo start work */
 
-      try {
-        connection.commit();
-      } catch (SQLException exc) {
-        throw connection.convertException(exc);
+      if (connection != null) {
+        try {
+          connection.commit();
+        } catch (SQLException exc) {
+          throw connection.convertException(exc);
+        }
       }
       inTransaction = false;
       notify();
@@ -187,10 +191,12 @@ public class DBContext {
     synchronized(this) {
       inTransaction = true; /* In case we are doing an abort wo start work */
 
-      try {
-        connection.rollback();
-      } catch (SQLException exc) {
-        //throw conn.convertException(exc); (if the error has already closed the transaction)
+      if (connection != null) {
+        try {
+          connection.rollback();
+        } catch (SQLException exc) {
+          //throw conn.convertException(exc); (if the error has already closed the transaction)
+        }
       }
       inTransaction = false;
       notify();
