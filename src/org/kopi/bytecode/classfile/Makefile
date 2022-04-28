@@ -1,5 +1,5 @@
 ##
-## Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+## Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License version 2
@@ -40,7 +40,7 @@ JAVAFILES +=	AbstractInstructionAccessor AccessorContainer		\
 		HandlerInfo IincInstruction InnerClassInfo		\
 		InnerClassTable Instruction InstructionAccessor		\
 		InstructionHandle InstructionIO IntegerConstant		\
-		InterfaceConstant					\
+		InterfaceConstant InvokeDynamicInstruction		\
 		InvokeinterfaceInstruction JumpInstruction		\
 		LineNumberInfo LineNumberTable LocalVarInstruction	\
 		LocalVariableInfo LocalVariableTable LongConstant	\

@@ -297,7 +297,7 @@ public interface Constants {
   int		opc_invokespecial = 183;
   int		opc_invokestatic = 184;
   int		opc_invokeinterface = 185;
-  int		opc_xxxunusedxxx = 186;
+  int		opc_invokedynamic = 186;
   int		opc_new = 187;
   int		opc_newarray = 188;
   int		opc_anewarray = 189;
