@@ -25,8 +25,7 @@ import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.form.VForm
 import org.kopi.vkopi.lib.type.Date
 import org.kopi.vkopi.lib.ui.vaadinflow.upload.FileUploader
-
-import com.vaadin.flow.component.Component
+import org.kopi.vkopi.lib.visual.VException
 
 /**
  * The `VPredefinedValueHandler` is the VAADIN implementation of

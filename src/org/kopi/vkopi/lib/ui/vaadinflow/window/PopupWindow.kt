@@ -18,10 +18,10 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.window
 
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.common.Dialog
 import org.kopi.vkopi.lib.ui.vaadinflow.common.VSpan
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 
-import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.HasStyle
 import com.vaadin.flow.component.dependency.CssImport
 
@@ -30,7 +30,7 @@ import com.vaadin.flow.component.dependency.CssImport
  */
 
 @CssImport("./styles/galite/dialog.css")
-class PopupWindow(val mainWindow: MainWindow?) : EnhancedDialog(), HasStyle {
+class PopupWindow(val mainWindow: MainWindow?) : Dialog(), HasStyle {
 
   private var caption = VSpan()
 

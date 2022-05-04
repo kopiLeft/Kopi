@@ -20,9 +20,9 @@ package org.kopi.vkopi.lib.ui.vaadinflow.upload
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
 import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
 import org.kopi.vkopi.lib.ui.vaadinflow.base.VInputButton
+import org.kopi.vkopi.lib.ui.vaadinflow.common.Dialog
 import org.kopi.vkopi.lib.ui.vaadinflow.common.VSpan
 
-import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.HasStyle
 import com.vaadin.flow.component.html.NativeButton
 import com.vaadin.flow.component.orderedlayout.FlexComponent
@@ -33,7 +33,7 @@ import com.vaadin.flow.component.upload.Upload
 /**
  * A dialog showing an upload component.
  */
-class UploadDialog(val receiver: Receiver) : EnhancedDialog(), HasStyle {
+class UploadDialog(val receiver: Receiver) : Dialog(), HasStyle {
 
   private val title = VSpan()
   private val ok = VInputButton()

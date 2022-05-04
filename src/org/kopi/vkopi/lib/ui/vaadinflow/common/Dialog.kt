@@ -15,20 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.vkopi.lib.ui.vaadinflow.grid
+package org.kopi.vkopi.lib.ui.vaadinflow.common
 
-/**
- * The server side implementation of a week editor field.
- * Week fields are fixed width fields.
- */
-class GridEditorWeekField : GridEditorTextField(7) {
+import com.vaadin.componentfactory.EnhancedDialog
+import com.vaadin.flow.component.dependency.NpmPackage
 
-  override fun check(text: String): Boolean {
-    for (c in text) {
-      if (!(c >= '0' && c <= '9' || c == '.' || c == '/')) {
-        return false
-      }
-    }
-    return true
-  }
-}
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-dialog", version = "22.0.6")
+open class Dialog : EnhancedDialog()

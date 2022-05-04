@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import org.kopi.vkopi.lib.type.format
 
 /**
  * Time stamp validator
@@ -34,7 +35,7 @@ class TimestampValidator(maxLength: Int) : AllowAllValidator(maxLength) {
     if ("" == text) {
       field.value = null
     } else {
-      field.value = parseTimestamp(text).toString()
+      field.value = parseTimestamp(text)?.format()
     }
   }
 

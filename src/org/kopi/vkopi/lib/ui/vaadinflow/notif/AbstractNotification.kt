@@ -19,10 +19,10 @@ package org.kopi.vkopi.lib.ui.vaadinflow.notif
 
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
+import org.kopi.vkopi.lib.ui.vaadinflow.common.Dialog
 import org.kopi.vkopi.lib.ui.vaadinflow.common.VSpan
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 
-import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.Focusable
 import com.vaadin.flow.component.dependency.CssImport
@@ -50,7 +50,7 @@ abstract class AbstractNotification(title: String?,
                                     message: String?,
                                     protected val locale: String,
                                     val parent: Component?)
-  : EnhancedDialog(), Focusable<AbstractNotification> {
+  : Dialog(), Focusable<AbstractNotification> {
 
   //-------------------------------------------------
   // DATA MEMBERS

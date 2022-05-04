@@ -45,7 +45,7 @@ open class Resources : DefaultTask() {
   @TaskAction
   fun run(inputChanges: InputChanges) {
 
-    val changedFiles = if (inputChanges.isIncremental) inputChanges.getFileChanges(resources).map { it.file.path } else resources.map { it.path }
+    val changedFiles = resources.map { it.path }
 
     if (changedFiles.isNotEmpty()) {
       println("Files to be copied from $changedFiles into : $resourceDestDir")
