@@ -37,11 +37,10 @@ public class InvokeDynamicInstruction extends Instruction {
   /**
    * Constructs a new invoke dynamic instruction from a class file
    *
-   * @param	opcode		the opcode of the instruction
    * @param	method		the method reference (as index to run-time pool)
    */
-  public InvokeDynamicInstruction(int opcode, int method) {
-    super(opcode);
+  public InvokeDynamicInstruction(int method) {
+    super(opc_invokedynamic);
 
     this.method = method;
   }

@@ -471,7 +471,7 @@ public class InstructionIO implements Constants {
 	}
 	break;
       case opc_invokedynamic:
-	instructions[start] = new InvokeDynamicInstruction(opcode, in.readUnsignedShort());
+	instructions[start] = new InvokeDynamicInstruction(in.readUnsignedShort());
         in.readUnsignedByte();
         in.readUnsignedByte();
 	extra = 2 + 1 + 1;
