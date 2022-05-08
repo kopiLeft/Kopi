@@ -22,8 +22,6 @@ package org.kopi.bytecode.classfile;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import org.kopi.util.base.InconsistencyException;
-
 /**
  * This is used to create a Class constant pool item
  *
