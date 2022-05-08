@@ -66,7 +66,7 @@ public class InvokeDynamicInstruction extends Instruction {
   }
 
   /**
-   * Returns the number of bytes used by the the instruction in the code array.
+   * Returns the number of bytes used by the instruction in the code array.
    */
   /*package*/ int getSize() {
     return 1 + 2 + 1 + 1;
