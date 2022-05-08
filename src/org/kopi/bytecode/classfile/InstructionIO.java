@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -470,6 +470,12 @@ public class InstructionIO implements Constants {
 	  extra = 2 + 1 + 1;
 	}
 	break;
+      case opc_invokedynamic:
+	instructions[start] = new InvokeDynamicInstruction(in.readUnsignedShort());
+        in.readUnsignedByte();
+        in.readUnsignedByte();
+	extra = 2 + 1 + 1;
+	break;
       case opc_new:
       case opc_anewarray:
       case opc_checkcast:
@@ -489,7 +495,6 @@ public class InstructionIO implements Constants {
       case opc_wide:
 	wide = true;
 	continue;	// no instruction to create
-      case opc_xxxunusedxxx:
       default:
 	throw new ClassFileFormatException("read invalid opcode: "  + opcode);
       }

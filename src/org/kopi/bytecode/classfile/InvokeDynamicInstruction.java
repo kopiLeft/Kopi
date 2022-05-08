@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,90 +22,39 @@ package org.kopi.bytecode.classfile;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.kopi.util.base.InconsistencyException;
+
 /**
- * This is used to create a Class constant pool item
- *
+ * Instruction that invokes a dynamic method
+ * opc_invokedynamic
  */
-public class ClassConstant extends PooledConstant {
+public class InvokeDynamicInstruction extends Instruction {
 
   // --------------------------------------------------------------------
   // CONSTRUCTORS
   // --------------------------------------------------------------------
 
   /**
-   * Constructs a new class constant.
+   * Constructs a new invoke dynamic instruction from a class file
    *
-   * @param	name		the qualified name of the class
+   * @param	method		the method reference (as index to run-time pool)
    */
-  public ClassConstant(String name) {
-    this(new AsciiConstant(name));
-  }
+  public InvokeDynamicInstruction(int method) {
+    super(opc_invokedynamic);
 
-  /**
-   * Constructs a new class constant.
-   *
-   * @param	name		the qualified name of the class
-   */
-  public ClassConstant(AsciiConstant name) {
-    this.name = name;
+    this.method = method;
   }
 
   // --------------------------------------------------------------------
   // ACCESSORS
   // --------------------------------------------------------------------
 
-  public String getName() {
-    return name.getValue();
-  }
-
   /**
-   * Returns the associated literal.
+   * Returns true iff control flow can reach the next instruction
+   * in textual order.
    */
-  /*package*/ Object getLiteral() {
-    return name.getValue();
-  }
-
-  // --------------------------------------------------------------------
-  // POOLING
-  // --------------------------------------------------------------------
-
-  /**
-   * hashCode (a fast comparison)
-   * CONVENTION: return XXXXXXXXXXXX << 4 + Y
-   * with Y = ident of the type of the pooled constant
-   */
-  public final int hashCode() {
-    // we know already that name is an ascii: &
-    return (name.hashCode() & 0xFFFFFFF0) + POO_CLASS_CONSTANT;
-  }
-
-  /**
-   * equals (an exact comparison)
-   */
-  public final boolean equals(Object o) {
-    return (o instanceof ClassConstant) &&
-      ((ClassConstant)o).name.equals(name);
-  }
-
-  /**
-   * Returns a string representation of this object.
-   */
-  public String toString() {
-    return "ClassConstant[" + name + "]";
-  }
-
-  // --------------------------------------------------------------------
-  // WRITE
-  // --------------------------------------------------------------------
-
-  /**
-   * Check location of constant value on constant pool
-   *
-   * @param	pc		the already in pooled constant
-   */
-  /*package*/ final void resolveConstants(PooledConstant pc) {
-    setIndex(pc.getIndex());
-    name.setIndex(((ClassConstant)pc).name.getIndex());
+  public boolean canComplete() {
+    return true;
   }
 
   /**
@@ -113,13 +62,50 @@ public class ClassConstant extends PooledConstant {
    *
    * @param	cp		the constant pool for this class
    */
-  /*package*/ void resolveConstants(ConstantPool cp) throws ClassFileFormatException {
-    cp.addItem(name);
+  /*package*/ void resolveConstants(ConstantPool cp) throws ClassFileFormatException  {
   }
 
   /**
-   * Write this class into the the file (out) getting data position from
-   * the constant pool
+   * Returns the number of bytes used by the instruction in the code array.
+   */
+  /*package*/ int getSize() {
+    return 1 + 2 + 1 + 1;
+  }
+
+  // --------------------------------------------------------------------
+  // CHECK CONTROL FLOW
+  // --------------------------------------------------------------------
+
+  /**
+   * Returns the type pushed on the stack
+   */
+  public byte getReturnType() {
+    //!!! COMPLETEME graf 20220428
+    return TYP_VOID;
+  }
+
+  /**
+   * Returns the size of data pushed on the stack by this instruction
+   */
+  public int getPushedOnStack() {
+    //!!! COMPLETEME graf 20220428
+    return 0;
+  }
+
+  /**
+   * Return the amount of stack (positive or negative) used by this instruction
+   */
+  public int getStack() {
+    //!!! COMPLETEME graf 20220428
+    return 0;
+  }
+
+  // --------------------------------------------------------------------
+  // WRITE
+  // --------------------------------------------------------------------
+
+  /**
+   * Write this instruction into a file
    *
    * @param	cp		the constant pool that contain all data
    * @param	out		the file where to write this object info
@@ -127,13 +113,15 @@ public class ClassConstant extends PooledConstant {
    * @exception	java.io.IOException	an io problem has occured
    */
   /*package*/ void write(ConstantPool cp, DataOutput out) throws IOException {
-    out.writeByte(CST_CLASS);
-    out.writeShort(name.getIndex());
+    out.writeByte((byte)getOpcode());
+    out.writeShort(method);
+    out.writeByte(0);
+    out.writeByte(0);
   }
 
   // --------------------------------------------------------------------
   // DATA MEMBERS
   // --------------------------------------------------------------------
 
-  private AsciiConstant		name;
+  private int           method;
 }
