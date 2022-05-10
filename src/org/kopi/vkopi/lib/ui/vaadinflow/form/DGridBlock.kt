@@ -95,7 +95,7 @@ open class DGridBlock(parent: DForm, model: VBlock) : DBlock(parent, model) {
    * Whereas, the editor should be cancelled when the edited item is not already in
    * the port view after a scroll fired by the user.
    */
-  private var doNotCancelEditor = false // TODO
+  private var doNotCancelEditor = true // TODO
 
   private var filterRow: HeaderRow? = null
   private lateinit var sortableHeaders: MutableMap<Grid.Column<*>, DGridEditorLabel>
