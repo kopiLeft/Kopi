@@ -79,7 +79,7 @@ class AlignPanel(var align: BlockAlignment?, private val targetBlockName: String
         // block contains a VAADIN grid inside
         // -> we align according to grid column position
         val gridBlock = ori.block.grid
-        val  grid = Grid<Array<Component?>>()
+        val grid = Grid<Array<Component?>>()
         val rowsSize = aligns!!.maxOf { it.y } + 1
         val columnsSize = gridBlock.columns.size
         val alignedGridComponents = Array(rowsSize) {
@@ -93,7 +93,11 @@ class AlignPanel(var align: BlockAlignment?, private val targetBlockName: String
         grid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS)
         grid.setSelectionMode(Grid.SelectionMode.NONE)
         gridBlock.columns.forEachIndexed { index, column ->
-          grid.addComponentColumn { it[index] ?: Div() }
+          grid.addComponentColumn {
+            (it[index] ?: Div()).also { component ->
+              component.element.style["width"] ="100%"
+            }
+          }
             .setWidth(column.width)
         }
         (grid.dataProvider as ListDataProvider).addFilter { it != null }
