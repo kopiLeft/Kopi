@@ -18,6 +18,7 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.block
 
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
+import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
 import org.kopi.vkopi.lib.ui.vaadinflow.form.DField
 import org.kopi.vkopi.lib.ui.vaadinflow.form.DGridBlock
 import org.kopi.vkopi.lib.ui.vaadinflow.label.Label
@@ -95,10 +96,11 @@ class AlignPanel(var align: BlockAlignment?, private val targetBlockName: String
         gridBlock.columns.forEachIndexed { index, column ->
           grid.addComponentColumn {
             (it[index] ?: Div()).also { component ->
-              component.element.style["width"] ="100%"
+              if (component is DField && component.wrappedField is TextField) {
+                (component.wrappedField as TextField).inputField.content.getElement().style["width"] ="100%"
+              }
             }
-          }
-            .setWidth(column.width)
+          }.setWidth(column.width)
         }
         (grid.dataProvider as ListDataProvider).addFilter { it != null }
 
