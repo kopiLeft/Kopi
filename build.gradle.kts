@@ -228,7 +228,10 @@ tasks {
         copy {
           from(galiteBuildDirVaadin) {
             include("**/*.kt")
-            exclude("**/DAbstractFullCalendar.kt", "**/DFullCalendarBlock.kt", "**/DTimeGridCalendar.kt")
+            exclude("**/DAbstractFullCalendar.kt",
+                    "**/DFullCalendarBlock.kt",
+                    "**/DTimeGridCalendar.kt",
+                    "**/pivottable/*.kt")
           }
           into(vaadinDir)
           filter { line ->

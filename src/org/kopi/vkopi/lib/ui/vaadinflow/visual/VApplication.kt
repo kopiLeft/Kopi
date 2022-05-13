@@ -366,7 +366,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     }
   }
 
-  override fun isNobugReport(): Boolean = true
+  override fun isNobugReport(): Boolean = java.lang.Boolean.parseBoolean(getInitParameter("nobugreport"))
 
   override fun getMenu(): VMenuTree? {
     return menu
