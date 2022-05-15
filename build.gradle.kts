@@ -167,15 +167,6 @@ tasks {
   register("resources")
   register("script")
 
-  register("copyWidgetSet") {
-    doLast {
-      copy {
-        from("./src/org/kopi/vkopi/lib/ui/vaadin/addons/KopiAddonsWidgetset.gwt.xml")
-        into("$classRoot/org/kopi/vkopi/lib/ui/vaadin/addons")
-      }
-    }
-  }
-
   register("run") {
     dependsOn("optionGen")
     dependsOn("messageGen")
@@ -194,17 +185,18 @@ tasks {
     dependsOn("xkjc")
     dependsOn("resources")
     dependsOn("script")
-    dependsOn("copyWidgetSet")
+
+    doLast {
+      copy {
+        from("./src/org/kopi/vkopi/lib/ui/vaadin/addons/KopiAddonsWidgetset.gwt.xml")
+        into("$classRoot/org/kopi/vkopi/lib/ui/vaadin/addons")
+      }
+    }
   }
 
   named("jar") {
     dependsOn("run")
     mustRunAfter("run")
-  }
-
-  named("copyWidgetSet") {
-    dependsOn("javac")
-    mustRunAfter("javac")
   }
 
   named("build") { dependsOn("run") }
