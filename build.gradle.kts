@@ -203,7 +203,8 @@ tasks {
   }
 
   named("copyWidgetSet") {
-    mustRunAfter("run")
+    dependsOn("javac")
+    mustRunAfter("javac")
   }
 
   named("build") { dependsOn("run") }
