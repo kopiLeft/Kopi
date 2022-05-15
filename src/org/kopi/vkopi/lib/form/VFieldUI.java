@@ -158,7 +158,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
       try {
         // navigates to the active record if needed
         // this is typically needed in grid based blocks
-        gotoActiveRecord();
+        gotoActiveRecord(true);
         // switch to detail view when needed
         if (getBlock().isMulti() && display == detailDisplay && !getBlock().isDetailMode()) {
           ((UMultiBlock)blockView).switchView(-1);
@@ -212,7 +212,7 @@ public abstract class VFieldUI implements VConstants, ActionHandler, Serializabl
   /**
    * 
    */
-  protected void gotoActiveRecord() throws VException {
+  protected void gotoActiveRecord(boolean force) throws VException {
     // to be redefined by subclasses
   }
 

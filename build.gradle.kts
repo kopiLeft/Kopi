@@ -318,6 +318,9 @@ tasks {
           from("$galiteBuildDir/galite-core/src/main/resources/META-INF/resources/frontend")
           into(frontendDir)
         }
+
+        // cleanup build dir
+        file(galiteBuildDir).deleteRecursively()
       }
     }
   }
