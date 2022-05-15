@@ -120,7 +120,7 @@ public class DGridBlockFieldUI extends DFieldUI {
   }
   
   @Override
-  protected void gotoActiveRecord() throws VException {
+  protected void gotoActiveRecord(boolean force) throws VException {
     getBlockView().editRecord(getBlock().getActiveRecord());
   }
   
