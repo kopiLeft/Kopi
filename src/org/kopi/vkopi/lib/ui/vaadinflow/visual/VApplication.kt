@@ -77,6 +77,7 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
+import org.kopi.vkopi.lib.visual.VRuntimeException
 import org.kopi.xkopi.lib.base.DBContext
 
 /**
@@ -327,6 +328,8 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
       }
       add(mainWindow)
     } catch (e: SQLException) { // sets the error if any problem occur.
+      welcomeView!!.setError(e.message)
+    } catch (e: VRuntimeException) { // sets the error if any problem occur.
       welcomeView!!.setError(e.message)
     } finally {
       currentUI?.push()
