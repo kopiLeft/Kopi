@@ -342,7 +342,7 @@ inPackage("org.kopi.xkopi.comp.dbi") {
   grm1dep =     listOf("../../../xkopi/comp/sqlc/Sqlc")
   scanner1 =    listOf("Dbi")
   compilerClasses = listOf("DefaultDbiVisitor", "Main", "DBAccess", "DbiScanner", "DbiVisitor",
-          "DbiPrettyPrinter", "Constants", "DbiChecker", "DbiPhylum")
+          "DbiPrettyPrinter", "Constants", "DbiChecker", "DbiPhylum", "DbiParser")
   syntaxTreeClasses = listOf("AddTableConstraintStatement", "AddTableColumnsStatement", "AlterColumnStatement",
           "AlterSetDefaultColumnStatement", "AlterDropDefaultColumnStatement", "AlterNotNullColumnStatement", "As400DbiChecker",
           "BlobType", "BooleanType", "ByteType", "ClobType", "CodeBoolDesc", "CodeBoolType", "CodeDesc", "CodeFixedDesc",
@@ -414,7 +414,7 @@ inPackage("org.kopi.vkopi.lib.visual") {
           "WindowBuilder", "WaitInfoListener", "MessageListener", "VerifyConfiguration", "ApplicationConfiguration",
           "PrinterManager", "PropertyException", "ModelCloseListener", "UserConfiguration", "Message", "VlibProperties",
           "UWindow", "UMenuTree", "ImageHandler", "VModel", "UIFactory", "UActor", "FileProductionListener",
-          "LogoutModule", "RootMenu", "RootItem", "UItemTree", "ItemTreeManager")
+          "LogoutModule", "RootMenu", "RootItem", "UItemTree", "ItemTreeManager", "VHelpViewer")
 }
 
 inPackage("org.kopi.vkopi.lib.list") {
@@ -457,7 +457,7 @@ inPackage("org.kopi.vkopi.lib.chart") {
           "VFixnumCodeMeasure", "VFixnumDimension", "VFixnumMeasure", "VHelpGenerator", "VIntegerCodeDimension",
           "VIntegerCodeMeasure", "VIntegerDimension", "VIntegerMeasure", "VMeasure", "VMonthDimension", "VNoChartRowException",
           "VPrintOptions", "VRow", "VStringCodeDimension", "VStringDimension", "VTimeDimension", "VTimestampDimension",
-          "VWeekDimension", "VCodeMeasure", "VDimensionData")
+          "VWeekDimension", "VCodeMeasure", "VDimensionData", "VMeasureData")
 }
 
 inPackage("org.kopi.vkopi.lib.report") {
@@ -490,7 +490,7 @@ inPackage("org.kopi.vkopi.lib.ui.swing.visual") {
   javaFiles =   listOf("DActor", "DFootPanel", "DInfoPanel", "DMenuBar", "DMenuItem", "DMenuTree", "DItemTree",
           "DObject", "DPreferences", "DStatePanel", "DWaitPanel", "DWindow", "ProgressWindow", "JFileHandler", "DHelpViewer",
           "JBookmarkPanel", "Utils", "DPositionPanel", "SplashScreen", "SwingThreadHandler", "JApplicationContext", "JApplication",
-          "JImageHandler", "JUIFactory", "JWindowController", "MenuItemRenderer", "MenuItemRenderer", "WaitWindow")
+          "JImageHandler", "JUIFactory", "JWindowController", "MenuItemRenderer", "MenuItemRenderer", "WaitWindow", "ItemRenderer", "JPreviewRunner")
   optionFiles = listOf("ApplicationOptions")
 }
 
@@ -795,7 +795,7 @@ inPackage("org.kopi.vkopi.lib.ui.vaadin.form") {
 inPackage("org.kopi.vkopi.lib.ui.vaadin.visual") {
   javaFiles = listOf("DActor", "DMenuTree", "DWindow", "VFileHandler", "DHelpViewer", "VApplicationContext",
           "VApplication", "VUIFactory", "VImageHandler", "VWindowController", "DAdminMenu", "DBookmarkMenu", "DMainMenu",
-          "DMenu", "DUserMenu", "DItemTree", "Tree")
+          "DMenu", "DUserMenu", "DItemTree", "Tree", "VPreviewRunner")
 }
 
 inPackage("org.kopi.vkopi.lib.ui.vaadin.chart") {
@@ -883,7 +883,7 @@ inPackage("org.kopi.vkopi.comp.trig") {
   scanner2 =  listOf("GSqlc")
   javaFiles = listOf("Main", "GVKAccess", "GStdType", "GTypeFactory", "GCompoundAssignmentExpression",
           "GKopiInsertExpression", "GAssignmentExpression", "GProtectionStatementWrapper", "GKjcPrettyPrinter",
-          "GExecSqlStatement", "GKjcScanner", "GKjcTypeFactory", "GSqlcScanner")
+          "GExecSqlStatement", "GKjcScanner", "GKjcTypeFactory", "GSqlcScanner", "GKjcParser", "GSqlcParser")
   messageFiles = listOf("GKjcMessages")
 }
 
@@ -892,7 +892,7 @@ inPackage("org.kopi.vkopi.comp.base") {
   grm1dep =         listOf()
   scanner1 =        listOf("Base")
   optionFiles =     listOf("VKOptions")
-  compilerClasses = listOf("BaseScanner", "Parser", "VKParseContext", "VKParseCommandContext", "VKParseVKWindowContext")
+  compilerClasses = listOf("BaseScanner", "Parser", "VKParseContext", "VKParseCommandContext", "VKParseVKWindowContext", "BaseParser")
   syntaxTreeClasses = listOf("Commandable", "VKAction", "VKActor", "VKBlockAction", "VKBooleanCodeType",
           "VKBooleanType", "VKCodeDesc", "VKCodeType", "VKColorType", "VKCommand", "VKCommandBody", "VKCommandDefinition",
           "VKCommandName", "VKCompilationUnit", "VKConstants", "VKContext", "VKFieldListAction", "VKDateType",
@@ -912,7 +912,7 @@ inPackage("org.kopi.vkopi.comp.form") {
   grm1dep =           listOf("../base/Base")
   scanner1 =          listOf("Form")
   compilerClasses =   listOf("FormScanner", "VKFormLocalizationWriter", "VKParseFormContext", "VKParseBlockContext",
-          "VKParseFieldContext")
+          "VKParseFieldContext", "FormParser")
   syntaxTreeClasses = listOf("VKBlock", "VKBlockAlign", "VKBlockIndex", "VKBlockTable", "VKField", "VKFieldColumn",
           "VKFieldColumns", "VKFieldTypeName", "VKForm", "VKFieldType", "VKDescriptionPosition",
           "VKCoordinatePosition", "VKPage", "VKPosition", "VKDefinitionType", "VKAliasType", "VKBlockInsert",
@@ -926,7 +926,7 @@ inPackage("org.kopi.vkopi.comp.chart") {
   grm1voc =         listOf("Chart")
   grm1dep =         listOf("../base/Base")
   scanner1 =        listOf("Chart")
-  compilerClasses = listOf("ChartScanner", "VCParseChartContext", "VCParseFieldContext")
+  compilerClasses = listOf("ChartScanner", "VCParseChartContext", "VCParseFieldContext", "ChartParser")
   syntaxTreeClasses = listOf("VCChart", "VCChartLocalizationWriter", "VCConstants", "VCDefinitionType",
           "VCField", "VCFieldType", "VCFieldTypeName", "VCDimension", "VCMeasure", "VCMultiMeasure",
           "VCMultiDimension")
@@ -938,7 +938,7 @@ inPackage("org.kopi.vkopi.comp.report") {
   grm1voc =           listOf("Report")
   grm1dep =           listOf("../base/Base")
   scanner1 =          listOf("Report")
-  compilerClasses =   listOf("ReportScanner", "VRParseReportContext", "VRParseFieldContext")
+  compilerClasses =   listOf("ReportScanner", "VRParseReportContext", "VRParseFieldContext", "ReportParser")
   syntaxTreeClasses = listOf("VRConstants", "VRReport", "VRField", "VRFieldType", "VRDefinitionType", "VRFieldTypeName",
           "VRSeparatorField", "VRSeparatorFieldType", "VRMultiField", "VRReportLocalizationWriter")
   javaFiles =         compilerClasses.orEmpty() + syntaxTreeClasses.orEmpty()
@@ -949,7 +949,7 @@ inPackage("org.kopi.vkopi.comp.print") {
   grm1voc =           listOf("Print")
   grm1dep =           listOf("../base/Base")
   scanner1 =          listOf("Print")
-  compilerClasses =   listOf("PrintScanner")
+  compilerClasses =   listOf("PrintScanner", "PrintParser")
   syntaxTreeClasses = listOf("PRParagraphStyle", "PRStyle", "PRPosition", "PRStyleRef", "PRTabStop", "PRBlock",
           "PRText", "PRBlockStyle", "PRTextBlock", "PRTextStyle", "PRJavaExpression", "PRProlog", "PRRectangleBlock",
           "PRPage", "PRSourceElement", "PRDefinitionCollector", "PRUtils", "PRInsert", "PRListBlock", "PRTrigger",

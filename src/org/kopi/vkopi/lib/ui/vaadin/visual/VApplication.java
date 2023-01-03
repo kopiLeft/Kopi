@@ -347,6 +347,9 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     } catch (SQLException e) {
       // sets the error if any problem occur.
       welcomeView.setError(e);
+    } catch (VRuntimeException e) {
+      // sets the error if any problem occur.
+      welcomeView.setError(e);
     } finally {
       push();
     }
