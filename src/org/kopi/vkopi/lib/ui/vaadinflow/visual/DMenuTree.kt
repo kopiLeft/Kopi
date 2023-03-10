@@ -17,16 +17,6 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import javax.swing.tree.TreeNode
-
-import org.kopi.vkopi.lib.ui.vaadinflow.base.Tree
-import org.kopi.vkopi.lib.visual.Action
-import org.kopi.vkopi.lib.visual.Message
-import org.kopi.vkopi.lib.visual.Module
-import org.kopi.vkopi.lib.visual.UMenuTree
-import org.kopi.vkopi.lib.visual.VMenuTree
-import org.kopi.vkopi.lib.visual.VlibProperties
-
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.Unit
 import com.vaadin.flow.component.grid.ItemClickEvent
@@ -34,6 +24,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.treegrid.CollapseEvent
 import com.vaadin.flow.component.treegrid.ExpandEvent
 import com.vaadin.flow.component.treegrid.TreeGrid
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Tree
+import org.kopi.vkopi.lib.visual.*
+import javax.swing.tree.TreeNode
 
 /**
  * The `DMenuTree` is the vaadin implementation of the
@@ -149,7 +142,8 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
 
   override fun setMenu() {
     val module = getSelectedModule()
-    getModel().setActorEnabled(VMenuTree.CMD_QUIT, !getModel().isSuperUser)
+
+    getModel().setActorEnabled(VMenuTree.CMD_QUIT, true)
     getModel().setActorEnabled(VMenuTree.CMD_INFORMATION, true)
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true)
     if (module != null) {
