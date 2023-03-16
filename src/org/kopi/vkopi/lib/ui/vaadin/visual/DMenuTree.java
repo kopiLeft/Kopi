@@ -192,6 +192,9 @@ public class DMenuTree extends DWindow implements UMenuTree, Handler {
   public void setMenu() {	
     Module    		module = getSelectedModule();
 
+    System.out.println("********************setMenu vaadin*******DMenuTree");
+
+
     getModel().setActorEnabled(VMenuTree.CMD_QUIT, true);
     getModel().setActorEnabled(VMenuTree.CMD_INFORMATION, true);
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true);
