@@ -142,7 +142,7 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
 
   override fun setMenu() {
     val module = getSelectedModule()
-System.out.println("******************vaadinFlow*************")
+
     getModel().setActorEnabled(VMenuTree.CMD_QUIT, true)
     getModel().setActorEnabled(VMenuTree.CMD_INFORMATION, true)
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true)

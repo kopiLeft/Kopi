@@ -67,9 +67,14 @@ object Utils : Utils() {
   private fun getImageImpl(img: String): Image {
     var icon: Image? = getDefaultImage(img)
     if (icon == null) {
+
+      println("getKopiResourceImage(img):   "+getKopiResourceImage(img)?.resource)
       icon = getKopiResourceImage(img)
     }
     if (icon == null) {
+
+      println("getApplicationImage(img):   "+getApplicationImage(img)?.resource)
+
       icon = getApplicationImage(img)
     }
     if (icon == null) {
@@ -273,7 +278,7 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
+  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "org/kopi/galite/visual"

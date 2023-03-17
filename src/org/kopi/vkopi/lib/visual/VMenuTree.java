@@ -189,8 +189,6 @@ public class VMenuTree extends VWindow {
 
     switch (key) {
     case CMD_QUIT:
-      System.out.println("********************executeVoidTrigger*******VMenuTree");
-
       close(0);
       break;
     case CMD_OPEN:
