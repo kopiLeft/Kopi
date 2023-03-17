@@ -100,6 +100,9 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getApplicationImage(img: String): Image? {
+    println("APPLICATION_DIR:  :"+APPLICATION_DIR)
+    println("img:  :"+img)
+    println("getImageFromResource(APPLICATION_DIR, img):   :"+getImageFromResource(APPLICATION_DIR, img))
     return getImageFromResource(APPLICATION_DIR, img)
   }
 
@@ -110,6 +113,9 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getKopiResourceImage(img: String): Image? {
+    println("RESOURCE_DIR:  :"+RESOURCE_DIR)
+    println("img:  :"+img)
+    println("getImageFromResource(RESOURCE_DIR, img):    :"+getImageFromResource(RESOURCE_DIR, img))
     return getImageFromResource(RESOURCE_DIR, img)
   }
 
@@ -120,8 +126,9 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-    if (Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name") != null) { // FIXME
-      return Image("$directory/$name")
+    println("Utils::class.java.classLoader.getResource(\"$directory/$name\") ==== "+Utils::class.java.classLoader.getResource("$directory/$name"))
+    if (Utils::class.java.classLoader.getResource("$directory/$name") != null) { // FIXME
+      return Image("/$directory/$name")
     }
 
     return null

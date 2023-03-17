@@ -214,7 +214,7 @@ class Tree(val root: TreeNode, private val isSuperUser: Boolean) : TreeGrid<Tree
      * @param isLeaf Is it a leaf node ?
      */
     fun setIcon(access: Int, isLeaf: Boolean) {
-      println("resource"+Utils.getImage("form_p.png").resource.toString())
+      println("resource : "+Utils.getImage("form_p.png").resource.toString())
 
       access(currentUI) {
         when (access) {
