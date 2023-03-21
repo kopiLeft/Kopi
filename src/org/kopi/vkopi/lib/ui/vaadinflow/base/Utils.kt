@@ -122,9 +122,9 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-    println("Utils::class.java.classLoader.getResource(\"$directory/$name\") ==== "+Utils::class.java.classLoader.getResource("$directory/$name"))
-    if (Utils::class.java.classLoader.getResource("$directory/$name") != null) { // FIXME
-      return Image("/$directory/$name")
+    println("Utils::class.java.classLoader.getResource(META-INF/resources/$directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name"))
+    if (Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name") != null) { // FIXME
+      return Image("$directory/$name")
     }
 
     return null
@@ -281,10 +281,10 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadinflow/resource"
+  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
-  private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
+  private const val RESOURCE_DIR = "org/kopi/galite/visual"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()
