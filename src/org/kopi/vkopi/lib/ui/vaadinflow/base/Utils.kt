@@ -17,25 +17,18 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
-import java.util.Hashtable
-import java.util.concurrent.CompletableFuture
-
+import com.flowingcode.vaadin.addons.ironicons.*
+import com.vaadin.flow.component.Component
+import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.dom.Element
 import org.kopi.vkopi.lib.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 import org.kopi.vkopi.lib.visual.VColor
-
-import com.flowingcode.vaadin.addons.ironicons.AvIcons
-import com.flowingcode.vaadin.addons.ironicons.DeviceIcons
-import com.flowingcode.vaadin.addons.ironicons.EditorIcons
-import com.flowingcode.vaadin.addons.ironicons.FileIcons
-import com.flowingcode.vaadin.addons.ironicons.IronIcons
-import com.flowingcode.vaadin.addons.ironicons.MapsIcons
-import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.dom.Element
+import java.util.*
+import java.util.concurrent.CompletableFuture
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -122,12 +115,13 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-    println("Utils::class.java.classLoader.getResource(META-INF/resources/$directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name"))
-    if (Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name") != null) { // FIXME
-      return Image("$directory/$name")
-    }
-
-    return null
+    val url = if (directory == null) null else Utils::class.java.classLoader.getResource("$directory/$name")
+     println("url ============ "+url.toString())
+//    println("Utils::class.java.classLoader.getResource(META-INF/resources/$directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name"))
+//    if (Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name") != null) { // FIXME
+//      return Image("$directory/$name")
+//    }
+    return if (url != null) Image("$url") else null
   }
 
   /**
@@ -160,6 +154,7 @@ object Utils : Utils() {
    * @return The equivalent vaadin or iron icon.
    */
   fun getVaadinIcon(iconName: String?): Any? {
+    println("iconName ===="+iconName)
     return pngToIconMap[iconName]
   }
 
@@ -284,7 +279,7 @@ object Utils : Utils() {
   private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
-  private const val RESOURCE_DIR = "org/kopi/galite/visual"
+  private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()
