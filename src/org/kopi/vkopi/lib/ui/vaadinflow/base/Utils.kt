@@ -66,6 +66,7 @@ object Utils : Utils() {
    */
   private fun getImageImpl(img: String): Image {
     var icon: Image? = getDefaultImage(img)
+
     if (icon == null) {
       icon = getKopiResourceImage(img)
     }
@@ -280,7 +281,7 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
+  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadinflow/resource"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"

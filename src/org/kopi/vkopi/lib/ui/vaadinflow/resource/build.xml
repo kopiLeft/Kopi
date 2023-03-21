@@ -27,7 +27,7 @@
   <property name="non.standard.build" value="yes" />
   <property name="topdir" value="../../../../.." />
   <import file="${topdir}/defs.xml" />
-  <property name="destcopy" value="${classroot}/org/kopi/vkopi/lib/ui/vaadin/resource" />
+  <property name="destcopy" value="${classroot}/org/kopi/vkopi/lib/ui/vaadinflow/resource" />
   <property name="src" value="." />
   <property name="freegifs" value="calendar.gif" />
   <property name="oldgifs" value="topRibbon.gif" />
@@ -51,7 +51,7 @@
   <property name="files" value="${pngfiles} ${giffiles} ${psfiles}" />
 
   <target name="non.standard.build"
-     description=" Copying files to org/kopi/vkopi/lib/ui/vaadin/resource package ">
+     description=" Copying files to org/kopi/vkopi/lib/ui/vaadinflow/resource package ">
     <copy todir="${destcopy}">
       <fileset dir="${src}" includes="${files}" />
     </copy>

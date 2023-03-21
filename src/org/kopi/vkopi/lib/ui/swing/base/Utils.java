@@ -39,7 +39,7 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
 
   /**
    * return image from classpath or jar file
-   * @param img must be an image from resource directory
+   * @param image must be an image from resource directory
    * path separator is "/"
    * @return an imageIcon
    */
@@ -99,6 +99,10 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
    */
   public static ImageIcon getImageFromResource(String name, String directory) {
     URL       url = getURLFromResource(name, directory);
+
+    System.out.println("directory::: "+directory.toString());
+    System.out.println("name::: "+name.toString());
+    System.out.println("url::: "+url.toString());
 
     return url == null ? null :new ImageIcon(url);
   }
