@@ -79,6 +79,9 @@ object Utils : Utils() {
    * @return An imageIcon or null if not found
    */
   fun getDefaultImage(img: String): Image? {
+    println("VAADIN_RESOURCE_DIR:  :"+VAADIN_RESOURCE_DIR)
+    println("img:  :"+img)
+    println("getImageFromResource(VAADIN_RESOURCE_DIR, img):   :"+getImageFromResource(VAADIN_RESOURCE_DIR, img))
     return getImageFromResource(VAADIN_RESOURCE_DIR, img)
   }
 
@@ -121,6 +124,9 @@ object Utils : Utils() {
 //    if (Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name") != null) { // FIXME
 //      return Image("$directory/$name")
 //    }
+
+
+    println("=parent  ================::"+Utils::class.java.classLoader.parent.toString())
     return if (url != null) Image("$url") else null
   }
 
@@ -278,8 +284,8 @@ object Utils : Utils() {
   // --------------------------------------------------
   private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
   private const val THEME_DIR = "resource"
-  private const val APPLICATION_DIR = "resources"
-  private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
+  private const val APPLICATION_DIR = "../resource"
+  private const val RESOURCE_DIR = "WEB-INF/classes/org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()
