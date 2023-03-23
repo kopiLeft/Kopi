@@ -126,9 +126,9 @@ object Utils : Utils() {
   fun getImageFromResource(directory: String, name: String): Image? {
 //    val url = if (directory == null) null else Utils::class.java.classLoader.getResource("$directory/$name")
 //     println("url ============ "+url.toString())
-    println("Utils::class.java.classLoader.getResource(../$directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("../$directory/$name"))
-    if (Utils::class.java.classLoader.getResource("../$directory/$name") != null) { // FIXME
-      return Image("../$directory/$name")
+    println("Utils::class.java.classLoader.getResource($directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("$directory/$name"))
+    if (Utils::class.java.classLoader.getResource("$directory/$name") != null) { // FIXME
+      return Image("$directory/$name")
     }
 //
 //
@@ -289,6 +289,7 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
+
   private const val VAADIN_RESOURCE_DIR = "./WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
