@@ -66,8 +66,11 @@ object Utils : Utils() {
     if (icon == null) {
       icon = getApplicationImage(img)
     }
+//    if (icon == null) {
+//      icon = Image("ui/vaadin/$img")
+//    }
     if (icon == null) {
-      icon = Image("ui/vaadin/$img")
+      icon = getVaadinIcon(img) as Image?
     }
     if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
@@ -286,10 +289,10 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadinflow/resource"
+  private const val VAADIN_RESOURCE_DIR = "./WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val THEME_DIR = "resource"
-  private const val APPLICATION_DIR = "resource"
-  private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
+  private const val APPLICATION_DIR = "resources"
+  private const val RESOURCE_DIR = "./WEB-INF/classes/org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()
