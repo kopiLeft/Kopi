@@ -100,10 +100,6 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
   public static ImageIcon getImageFromResource(String name, String directory) {
     URL       url = getURLFromResource(name, directory);
 
-    System.out.println("directory::: "+directory.toString());
-    System.out.println("name::: "+name.toString());
-    System.out.println("url::: "+url.toString());
-
     return url == null ? null :new ImageIcon(url);
   }
   // ----------------------------------------------------------------------

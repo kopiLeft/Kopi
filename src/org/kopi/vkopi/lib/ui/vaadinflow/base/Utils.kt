@@ -128,8 +128,8 @@ object Utils : Utils() {
 //      return Image("$directory/$name")
 //    }
 
-    println("Utils::class.java.classLoader.getResource($directory/$name"+") ==== "+(Utils::class.java.classLoader.getResource("$directory/$name")))
-    if (Utils::class.java.classLoader.getResource("$directory/$name") != null) { // FIXME
+    println("Utils::class.java.classLoader.getResourceAsStream($directory/$name"+") ==== "+(Utils::class.java.classLoader.getResourceAsStream("$directory/$name")))
+    if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
       return Image("$directory/$name")
     }
 

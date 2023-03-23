@@ -98,7 +98,7 @@ public abstract class JApplication implements Application {
 
   public void logout() {
     if (allowQuit()) {
-      menuTree.close(0);
+      menuTree.getDisplay().closeWindow();
     }
   }
   
