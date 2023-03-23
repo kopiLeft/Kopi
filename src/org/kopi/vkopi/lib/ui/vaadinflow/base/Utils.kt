@@ -36,6 +36,7 @@ import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.dom.Element
+import java.nio.file.Paths
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -123,6 +124,10 @@ object Utils : Utils() {
     println("this::class.classLoader.getResourceAsStream = ${this::class.java.classLoader.getResourceAsStream("$directory/$name")}")
     println("this.javaClass.classLoader.getResource = ${this.javaClass.classLoader.getResource("$directory/$name")}")
     println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("$directory/$name")}")
+    println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
+    println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.toFile().absolutePath}")
+    println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
+    println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
     println()
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
       return Image("$directory/$name")
