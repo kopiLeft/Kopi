@@ -121,8 +121,8 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-    val url = getURLFromResource(name, directory)
-     println("url ============ "+url.toString())
+//    val url = getURLFromResource(name, directory)
+//     println("url ============ "+url.toString())
 
 //    if (url != null) {
 //      return Image("$directory/$name")
