@@ -811,6 +811,30 @@ inPackage("org.kopi.vkopi.lib.ui.vaadin.preview") {
   javaFiles = listOf("DPreviewWindow")
 }
 
+inPackage("org.kopi.vkopi.lib.ui.vaadinflow.resource") {
+  nonStandardBuild =  true
+  val freeGifs =      listOf("list", "loading", "otherTab", "topRibbon", "calendar")
+  val oldGifs =       listOf<String>()
+  val pngFiles =      listOf("all", "bg_header", "block", "border", "bottomRibbon", "bread_crumb_separator", "break",
+    "calendar", "collapsed_a", "collapsed_p", "collapsed", "copy", "delete", "desk", "detail_view", "detail",
+    "down", "duke", "edit", "expanded_a", "expanded_p", "expanded", "exportCsv", "exportPdf", "exportXls",
+    "flag-de", "flag-fr", "flag-gb", "flag-tn", "fold", "foldColumn", "footer_icon", "form_a", "form_p",
+    "form_selected", "forms", "formula", "help", "home", "insert", "insertline", "list", "login_img", "logo_kopi",
+    "logo_srd_excellence_operationelle", "logo_srd", "mail", "menuquery", "note", "nothing", "open", "options",
+    "preview", "print", "quit", "ribbon", "save", "search", "searchop", "separator", "serialquery", "serviceoff",
+    "serviceon", "slogan", "splash_image", "store", "suggest", "timeStamp", "topRibbon", "tri", "unfold",
+    "unfoldColumn", "up", "exportXlsx", "item", "node", "checked", "unchecked", "default")
+  val pngNew =        listOf("")
+  val psFiles =       listOf("")
+  val localizations = listOf<String>()
+  val otherFiles =    listOf("")
+  gifFiles =          freeGifs + oldGifs
+  resources =         pngFiles.withExtension("png") + pngNew.withExtension("png") + gifFiles.withExtension("gif") +
+          psFiles.withExtension("ps") + localizations.map { it + "-de_AT.xml" } +
+          localizations.map { it + "-fr_FR.xml" } + localizations.map { it + "-en_GB.xml" } +
+          localizations.map { it + "-ar_TN.xml" } + otherFiles
+}
+
 inPackage("org.kopi.vkopi.lib.ui.vaadin.resource") {
   nonStandardBuild =  true
   val freeGifs =      listOf("list", "loading", "otherTab", "topRibbon", "calendar")

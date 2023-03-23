@@ -67,6 +67,9 @@ object Utils : Utils() {
       icon = getApplicationImage(img)
     }
     if (icon == null) {
+      icon = Image("ui/vaadin/$img")
+    }
+    if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
       return UKN_IMAGE
     }
@@ -120,9 +123,9 @@ object Utils : Utils() {
   fun getImageFromResource(directory: String, name: String): Image? {
 //    val url = if (directory == null) null else Utils::class.java.classLoader.getResource("$directory/$name")
 //     println("url ============ "+url.toString())
-    println("Utils::class.java.classLoader.getResource(META-INF/resources/$directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name"))
-    if (Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name") != null) { // FIXME
-      return Image("$directory/$name")
+    println("Utils::class.java.classLoader.getResource(../$directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("../$directory/$name"))
+    if (Utils::class.java.classLoader.getResource("../$directory/$name") != null) { // FIXME
+      return Image("../$directory/$name")
     }
 //
 //
@@ -285,7 +288,7 @@ object Utils : Utils() {
   // --------------------------------------------------
   private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadinflow/resource"
   private const val THEME_DIR = "resource"
-  private const val APPLICATION_DIR = "resources"
+  private const val APPLICATION_DIR = "resource"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
