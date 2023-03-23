@@ -66,11 +66,8 @@ object Utils : Utils() {
     if (icon == null) {
       icon = getApplicationImage(img)
     }
-//    if (icon == null) {
-//      icon = Image("ui/vaadin/$img")
-//    }
     if (icon == null) {
-      icon = getVaadinIcon(img) as Image?
+      icon = Image("ui/vaadin/$img")
     }
     if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
@@ -124,16 +121,18 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-//    val url = if (directory == null) null else Utils::class.java.classLoader.getResource("$directory/$name")
-//     println("url ============ "+url.toString())
+    val url = getURLFromResource(name, directory)
+     println("url ============ "+url.toString())
+
+    if (url != null) {
+      return Image("$directory/$name")
+    }
+
     println("Utils::class.java.classLoader.getResource($directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("$directory/$name"))
     if (Utils::class.java.classLoader.getResource("$directory/$name") != null) { // FIXME
       return Image("$directory/$name")
     }
-//
-//
-//    println("=parent  ================::"+Utils::class.java.classLoader.parent.toString())
-//    return if (url != null) Image("$directory/$name") else null
+
     return null
   }
 
@@ -290,7 +289,7 @@ object Utils : Utils() {
   // PRIVATE DATA
   // --------------------------------------------------
 
-  private const val VAADIN_RESOURCE_DIR = "./WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource"
+  private const val VAADIN_RESOURCE_DIR = "./ui/vaadin"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "./WEB-INF/classes/org/kopi/vkopi/lib/resource"
