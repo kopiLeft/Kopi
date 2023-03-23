@@ -119,8 +119,10 @@ object Utils : Utils() {
     println()
     println("directory/name = $directory/$name")
     println("Working Directory = ${System.getProperty("user.dir")}")
-    println("this.classLoader.getResource = ${this::class.java.classLoader.getResource("$directory/$name")}")
-    println("this.classLoader.getResourceAsStream = ${this::class.java.classLoader.getResourceAsStream("$directory/$name")}")
+    println("this::class.classLoader.getResource = ${this::class.java.classLoader.getResource("$directory/$name")}")
+    println("this::class.classLoader.getResourceAsStream = ${this::class.java.classLoader.getResourceAsStream("$directory/$name")}")
+    println("this.javaClass.classLoader.getResource = ${this.javaClass.classLoader.getResource("$directory/$name")}")
+    println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("$directory/$name")}")
     println()
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
       return Image("$directory/$name")
