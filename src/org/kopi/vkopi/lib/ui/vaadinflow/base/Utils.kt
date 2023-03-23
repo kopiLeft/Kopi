@@ -124,11 +124,11 @@ object Utils : Utils() {
     val url = getURLFromResource(name, directory)
      println("url ============ "+url.toString())
 
-    if (url != null) {
-      return Image("$directory/$name")
-    }
+//    if (url != null) {
+//      return Image("$directory/$name")
+//    }
 
-    println("Utils::class.java.classLoader.getResource($directory/$name"+") ==== "+Utils::class.java.classLoader.getResource("$directory/$name"))
+    println("Utils::class.java.classLoader.getResource($directory/$name"+") ==== "+(Utils::class.java.classLoader.getResource("$directory/$name")))
     if (Utils::class.java.classLoader.getResource("$directory/$name") != null) { // FIXME
       return Image("$directory/$name")
     }
