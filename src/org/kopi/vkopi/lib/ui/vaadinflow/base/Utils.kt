@@ -17,18 +17,25 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
-import com.flowingcode.vaadin.addons.ironicons.*
-import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.dom.Element
+import java.util.Hashtable
+import java.util.concurrent.CompletableFuture
+
 import org.kopi.vkopi.lib.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 import org.kopi.vkopi.lib.visual.VColor
-import java.util.*
-import java.util.concurrent.CompletableFuture
+
+import com.flowingcode.vaadin.addons.ironicons.AvIcons
+import com.flowingcode.vaadin.addons.ironicons.DeviceIcons
+import com.flowingcode.vaadin.addons.ironicons.EditorIcons
+import com.flowingcode.vaadin.addons.ironicons.FileIcons
+import com.flowingcode.vaadin.addons.ironicons.IronIcons
+import com.flowingcode.vaadin.addons.ironicons.MapsIcons
+import com.vaadin.flow.component.Component
+import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.dom.Element
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -67,9 +74,6 @@ object Utils : Utils() {
       icon = getApplicationImage(img)
     }
     if (icon == null) {
-      icon = Image("ui/vaadin/$img")
-    }
-    if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
       return UKN_IMAGE
     }
@@ -82,9 +86,6 @@ object Utils : Utils() {
    * @return An imageIcon or null if not found
    */
   fun getDefaultImage(img: String): Image? {
-    println("VAADIN_RESOURCE_DIR:  :"+VAADIN_RESOURCE_DIR)
-    println("img:  :"+img)
-    println("getImageFromResource(VAADIN_RESOURCE_DIR, img):   :"+getImageFromResource(VAADIN_RESOURCE_DIR, img))
     return getImageFromResource(VAADIN_RESOURCE_DIR, img)
   }
 
@@ -95,9 +96,6 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getApplicationImage(img: String): Image? {
-    println("APPLICATION_DIR:  :"+APPLICATION_DIR)
-    println("img:  :"+img)
-    println("getImageFromResource(APPLICATION_DIR, img):   :"+getImageFromResource(APPLICATION_DIR, img))
     return getImageFromResource(APPLICATION_DIR, img)
   }
 
@@ -108,9 +106,6 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getKopiResourceImage(img: String): Image? {
-    println("RESOURCE_DIR:  :"+RESOURCE_DIR)
-    println("img:  :"+img)
-    println("getImageFromResource(RESOURCE_DIR, img):    :"+getImageFromResource(RESOURCE_DIR, img))
     return getImageFromResource(RESOURCE_DIR, img)
   }
 
@@ -121,14 +116,12 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-//    val url = getURLFromResource(name, directory)
-//     println("url ============ "+url.toString())
-
-//    if (url != null) {
-//      return Image("$directory/$name")
-//    }
-
-    println("Utils::class.java.classLoader.getResourceAsStream($directory/$name"+") ==== "+(Utils::class.java.classLoader.getResourceAsStream("$directory/$name")))
+    println()
+    println("directory/name = $directory/$name")
+    println("Working Directory = ${System.getProperty("user.dir")}")
+    println("this.classLoader.getResource = ${this::class.java.classLoader.getResource("$directory/$name")}")
+    println("this.classLoader.getResourceAsStream = ${this::class.java.classLoader.getResourceAsStream("$directory/$name")}")
+    println()
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
       return Image("$directory/$name")
     }
@@ -166,7 +159,6 @@ object Utils : Utils() {
    * @return The equivalent vaadin or iron icon.
    */
   fun getVaadinIcon(iconName: String?): Any? {
-    println("iconName ===="+iconName)
     return pngToIconMap[iconName]
   }
 
@@ -288,11 +280,10 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-
-  private const val VAADIN_RESOURCE_DIR = "./ui/vaadin"
+  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
-  private const val RESOURCE_DIR = "./WEB-INF/classes/org/kopi/vkopi/lib/resource"
+  private const val RESOURCE_DIR = "WEB-INF/classes/org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()

@@ -278,7 +278,7 @@ public class DMenuTree extends DWindow implements UMenuTree {
   public void setMenu() {
     DefaultMutableTreeNode      node = getSelectedNode();
 
-    getModel().setActorEnabled(VMenuTree.CMD_QUIT, !((VMenuTree) getModel()).isSuperUser());
+    getModel().setActorEnabled(VMenuTree.CMD_QUIT, !getModel().isSuperUser());
     getModel().setActorEnabled(VMenuTree.CMD_INFORMATION, true);
     getModel().setActorEnabled(VMenuTree.CMD_HELP, true);
 
