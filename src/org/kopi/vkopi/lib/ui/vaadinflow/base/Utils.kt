@@ -120,18 +120,19 @@ object Utils : Utils() {
     println()
     println("directory/name = $directory/$name")
     println("Working Directory = ${System.getProperty("user.dir")}")
-    println("this::class.classLoader.getResource = ${this::class.java.classLoader.getResource("$directory/$name")}")
-    println("this::class.classLoader.getResourceAsStream = ${this::class.java.classLoader.getResourceAsStream("$directory/$name")}")
+    println("Utils::class.classLoader.getResource = ${Utils::class.java.classLoader.getResource("$directory/$name")}")
+    println("Utils::class.classLoader.getResourceAsStream = ${Utils::class.java.classLoader.getResourceAsStream("$directory/$name")}")
     println("this.javaClass.classLoader.getResource = ${this.javaClass.classLoader.getResource("$directory/$name")}")
     println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("$directory/$name")}")
     println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
+    println("path 111 = ${Paths.get(Utils::class.java.classLoader.getResource(".").path).toFile().absolutePath}")
     println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.toFile().absolutePath}")
     println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
     println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
-      println("image resource =====: /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/$directory/$name")
+      println("image resource =====: $directory/$name")
 
-      return Image("/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/$directory/$name")
+      return Image("ui/vaadin/$name")
     }
 
     return null
