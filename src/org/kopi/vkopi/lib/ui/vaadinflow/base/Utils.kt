@@ -128,9 +128,8 @@ object Utils : Utils() {
     println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.toFile().absolutePath}")
     println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
     println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
-    println()
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
-      return Image("$directory/$name")
+      return Image("WEB-INF/classes/$directory/$name")
     }
 
     return null
