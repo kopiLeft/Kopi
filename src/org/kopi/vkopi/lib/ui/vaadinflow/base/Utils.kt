@@ -132,7 +132,7 @@ object Utils : Utils() {
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
       println("image resource =====: $directory/$name")
 
-      return Image("ui/vaadin/$name")
+      return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
     }
 
     return null
