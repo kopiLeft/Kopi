@@ -121,6 +121,7 @@ object Utils : Utils() {
     println("directory/name = $directory/$name")
     println("Working Directory = ${System.getProperty("user.dir")}")
     println("Utils::class.classLoader.getResource = ${Utils::class.java.classLoader.getResource("$directory/$name")}")
+    println("Utils::class.classLoader.getResource.content = ${Utils::class.java.classLoader.getResource("$directory/$name").content}")
     println("Utils::class.classLoader.getResourceAsStream = ${Utils::class.java.classLoader.getResourceAsStream("$directory/$name")}")
     println("this.javaClass.classLoader.getResource = ${this.javaClass.classLoader.getResource("$directory/$name")}")
     println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("$directory/$name")}")
@@ -132,7 +133,10 @@ object Utils : Utils() {
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
       println("image resource =====: $directory/$name")
 
-      return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+    //  return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+      return Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
+      // return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadinflow/resource/$name")
+//      return Image("org/kopi/vkopi/lib/$name")
     }
 
     return null
