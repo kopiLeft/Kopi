@@ -66,13 +66,16 @@ object Utils : Utils() {
    * @return An Image or null if not found.
    */
   private fun getImageImpl(img: String): Image {
-    var icon: Image? = getDefaultImage(img)
-
+    var icon: Image? = null
+//    = getDefaultImage(img)
+//    if (icon == null) {
+//      icon = getKopiResourceImage(img)
+//    }
+//    if (icon == null) {
+//      icon = getApplicationImage(img)
+//    }
     if (icon == null) {
-      icon = getKopiResourceImage(img)
-    }
-    if (icon == null) {
-      icon = getApplicationImage(img)
+      icon = Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$img")
     }
     if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
@@ -145,7 +148,6 @@ object Utils : Utils() {
 //            return Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
 
 //      return Image("org/kopi/vkopi/lib/$name")
-//      return Image("org/kopi/galite/visual/$name")
 //      return Image("org/kopi/galite/visual/$name")
 //      return Image("org/kopi/galite/visual/$name")
 //      return Image("org/kopi/galite/visual/$name")
@@ -305,10 +307,10 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
+  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
-  private const val RESOURCE_DIR = "org/kopi/galite/visual"
+  private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()
