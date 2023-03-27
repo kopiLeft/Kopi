@@ -139,9 +139,16 @@ object Utils : Utils() {
 //      return Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
 //      return Image("./usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //       return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadinflow/resource/$name")
-      return Image("/org/kopi/vkopi/lib/resource/$name")
-//      return Image("org/kopi/galite/visual/$name")
+//      return Image("/org/kopi/vkopi/lib/resource/$name")
+//            return Image("$directory/$name")
+            return Image("/WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
+//            return Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
+
 //      return Image("org/kopi/vkopi/lib/$name")
+//      return Image("org/kopi/galite/visual/$name")
+//      return Image("org/kopi/galite/visual/$name")
+//      return Image("org/kopi/galite/visual/$name")
+//      return Image("org/kopi/galite/visual/$name")
     }
 
     return null
@@ -298,10 +305,10 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
+  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
-  private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
+  private const val RESOURCE_DIR = "org/kopi/galite/visual"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()
   private var pngToIconMap = mutableMapOf<String, Any>()
