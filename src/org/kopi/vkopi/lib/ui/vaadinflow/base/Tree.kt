@@ -180,8 +180,6 @@ class Tree(val root: TreeNode, private val isSuperUser: Boolean) : TreeGrid<Tree
      * @param access The tree item access.
      */
     fun setIcon(isLeaf: Boolean, isRoot: Boolean, access: Int) {
-
-      println ("Utils.getImage(\"forms.png\").resource ===== "+Utils.getImage("forms.png").resource)
       if (isRoot) {
         setItemIcon(Utils.getImage("home.png").resource)
       } else {
@@ -216,9 +214,6 @@ class Tree(val root: TreeNode, private val isSuperUser: Boolean) : TreeGrid<Tree
      * @param isLeaf Is it a leaf node ?
      */
     fun setIcon(access: Int, isLeaf: Boolean) {
-
-      println ("Utils.getImage(\"forms.png\").resource ===== "+Utils.getImage("forms.png").resource)
-
       access(currentUI) {
         when (access) {
           Module.ACS_FALSE -> if (isLeaf) {
