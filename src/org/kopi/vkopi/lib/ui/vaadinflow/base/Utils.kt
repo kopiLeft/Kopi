@@ -75,7 +75,7 @@ object Utils : Utils() {
 //      icon = getApplicationImage(img)
 //    }
     if (icon == null) {
-      icon = Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$img")
+      icon = Image("org/kopi/vkopi/lib/$img")
     }
     if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
