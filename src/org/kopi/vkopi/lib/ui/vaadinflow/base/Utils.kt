@@ -75,7 +75,11 @@ object Utils : Utils() {
 //      icon = getApplicationImage(img)
 //    }
     if (icon == null) {
-      icon = Image("org/kopi/vkopi/lib/$img")
+//      icon = Image("org/kopi/vkopi/lib/$img")
+//      icon = Image("org/kopi/galite/visual/$img")
+      icon = Image("../vaadin/resource$img")
+
+      // this.javaClass.classLoader.getResourceAsStream(VERSION)
     }
     if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
@@ -145,10 +149,10 @@ object Utils : Utils() {
 //      return Image("/org/kopi/vkopi/lib/resource/$name")
 //            return Image("$directory/$name")
 //            return Image("/WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
-            return Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
+//            return Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
 
 //      return Image("org/kopi/vkopi/lib/$name")
-//      return Image("org/kopi/galite/visual/$name")
+      return Image("org/kopi/galite/visual/$name")
     }
 
     return null
