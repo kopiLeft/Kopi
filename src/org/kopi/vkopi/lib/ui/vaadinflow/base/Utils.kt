@@ -71,7 +71,7 @@ object Utils : Utils() {
 //      icon = Image("org/kopi/vkopi/lib/$img")
 //      icon = Image("org/kopi/galite/visual/$img")
 //      icon = Image("../vaadin/resource$img")
-      icon = Image("../../vaadin/resource$img")
+      icon = Image("resource$img")
       // this.javaClass.classLoader.getResourceAsStream(VERSION)
     }
     if (icon == null) {
