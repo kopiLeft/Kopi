@@ -17,26 +17,19 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
-import java.util.Hashtable
-import java.util.concurrent.CompletableFuture
-
+import com.flowingcode.vaadin.addons.ironicons.*
+import com.vaadin.flow.component.Component
+import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.dom.Element
 import org.kopi.vkopi.lib.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 import org.kopi.vkopi.lib.visual.VColor
-
-import com.flowingcode.vaadin.addons.ironicons.AvIcons
-import com.flowingcode.vaadin.addons.ironicons.DeviceIcons
-import com.flowingcode.vaadin.addons.ironicons.EditorIcons
-import com.flowingcode.vaadin.addons.ironicons.FileIcons
-import com.flowingcode.vaadin.addons.ironicons.IronIcons
-import com.flowingcode.vaadin.addons.ironicons.MapsIcons
-import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.dom.Element
 import java.nio.file.Paths
+import java.util.*
+import java.util.concurrent.CompletableFuture
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -77,8 +70,8 @@ object Utils : Utils() {
     if (icon == null) {
 //      icon = Image("org/kopi/vkopi/lib/$img")
 //      icon = Image("org/kopi/galite/visual/$img")
-      icon = Image("../vaadin/resource$img")
-
+//      icon = Image("../vaadin/resource$img")
+      icon = Image("../../vaadin/resource$img")
       // this.javaClass.classLoader.getResourceAsStream(VERSION)
     }
     if (icon == null) {
