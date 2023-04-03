@@ -238,13 +238,19 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
                                      Message.getMessage("confirm_quit"),
                                      notificationLocale,
                                      mainWindow)
+    println("============= IN LOGOUT METHOD =================")
 
     dialog.yesIsDefault = false
     dialog.addNotificationListener(object : NotificationListener {
       override fun onClose(yes: Boolean?) {
         if (yes == true) {
+          println("============= BEFORE CLOSING DB CONNECTION =================")
+          // close DB connection
+          closeConnection()
+          println("============= AFTER CLOSING DB CONNECTION =================")
           // show welcome screen
           gotoWelcomeView()
+
         }
         currentUI?.push()
       }
@@ -354,12 +360,15 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 
     requireNotNull(database) { "The database url shouldn't be null" }
     requireNotNull(driver) { "The jdbc driver shouldn't be null" }
+    println("################## IN ConnectTODatabse METHOD ########################")
 
     dbContext = login(database,
                       driver,
                       username,
                       password,
                       schema)
+    println("################## AFTER LOGIN(NOT Overrided METHOD ########################")
+
     // check if context is created
     if (dbContext == null) {
       throw SQLException(MessageCode.getMessage("VIS-00054"))
@@ -488,6 +497,20 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    */
   protected fun setTraceLevel() {
 
+  }
+  /**
+   * Closes the database connection
+   */
+  fun closeConnection() {
+    try {
+      if (dbContext != null) {
+        dbContext!!.close()
+        dbContext = null
+      }
+    } catch (e: SQLException) {
+      // we don't care, we reinitialize the connection
+      dbContext = null
+    }
   }
 
   /**
