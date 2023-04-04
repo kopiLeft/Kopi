@@ -17,12 +17,18 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import java.sql.SQLException
-import java.util.Date
-import java.util.Locale
-import java.util.MissingResourceException
-import java.util.ResourceBundle
-
+import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.dependency.CssImport
+import com.vaadin.flow.component.dialog.Dialog
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.page.AppShellConfigurator
+import com.vaadin.flow.component.page.Push
+import com.vaadin.flow.router.HasDynamicTitle
+import com.vaadin.flow.router.PreserveOnRefresh
+import com.vaadin.flow.server.*
+import com.vaadin.flow.shared.communication.PushMode
+import com.vaadin.server.ClientConnector.DetachListener
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -34,51 +40,14 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.FontMetrics
 import org.kopi.vkopi.lib.ui.vaadinflow.base.StyleManager
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindowListener
-import org.kopi.vkopi.lib.ui.vaadinflow.notif.AbstractNotification
-import org.kopi.vkopi.lib.ui.vaadinflow.notif.ConfirmNotification
-import org.kopi.vkopi.lib.ui.vaadinflow.notif.ErrorNotification
-import org.kopi.vkopi.lib.ui.vaadinflow.notif.InformationNotification
-import org.kopi.vkopi.lib.ui.vaadinflow.notif.NotificationListener
-import org.kopi.vkopi.lib.ui.vaadinflow.notif.WarningNotification
+import org.kopi.vkopi.lib.ui.vaadinflow.notif.*
 import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeView
 import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeViewEvent
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
-import org.kopi.vkopi.lib.visual.Application
-import org.kopi.vkopi.lib.visual.ApplicationConfiguration
-import org.kopi.vkopi.lib.visual.ApplicationContext
-import org.kopi.vkopi.lib.visual.FileHandler
-import org.kopi.vkopi.lib.visual.ImageHandler
-import org.kopi.vkopi.lib.visual.Message
-import org.kopi.vkopi.lib.visual.MessageCode
-import org.kopi.vkopi.lib.visual.MessageListener
-import org.kopi.vkopi.lib.visual.PrinterManager
-import org.kopi.vkopi.lib.visual.PropertyException
-import org.kopi.vkopi.lib.visual.Registry
-import org.kopi.vkopi.lib.visual.UIFactory
-import org.kopi.vkopi.lib.visual.VMenuTree
-import org.kopi.vkopi.lib.visual.VerifyConfiguration
-import org.kopi.vkopi.lib.visual.VlibProperties
-import org.kopi.vkopi.lib.visual.WindowController
-
-import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.dependency.CssImport
-import com.vaadin.flow.component.dialog.Dialog
-import com.vaadin.flow.component.orderedlayout.VerticalLayout
-import com.vaadin.flow.component.page.AppShellConfigurator
-import com.vaadin.flow.component.page.Push
-import com.vaadin.flow.router.HasDynamicTitle
-import com.vaadin.flow.router.PreserveOnRefresh
-import com.vaadin.flow.server.AppShellRegistry
-import com.vaadin.flow.server.AppShellSettings
-import com.vaadin.flow.server.ServiceInitEvent
-import com.vaadin.flow.server.VaadinServiceInitListener
-import com.vaadin.flow.server.VaadinServlet
-import com.vaadin.flow.server.VaadinSession
-import com.vaadin.flow.shared.communication.PushMode
-import org.kopi.vkopi.lib.visual.VRuntimeException
+import org.kopi.vkopi.lib.visual.*
 import org.kopi.xkopi.lib.base.DBContext
+import java.sql.SQLException
+import java.util.*
 
 /**
  * The entry point for all Galite WEB applications.
@@ -269,6 +238,10 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     mainWindow!!.setBookmarksMenu(DBookmarkMenu(menu!!))
     mainWindow!!.setWorkspaceContextItemMenu(DBookmarkMenu(menu!!))
     mainWindow!!.connectedUser = userName
+    println("_________________ BEFORE DETACH LISTENING _____________ ")
+    mainWindow!!.addDetachListener { DetachListener { closeConnection() } }
+    println("_________________ AFTER DETACH LISTENING _____________")
+
   }
 
   fun remove(mainWindow: MainWindow?) {
