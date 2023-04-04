@@ -28,6 +28,7 @@ import com.vaadin.flow.router.HasDynamicTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.server.*
 import com.vaadin.flow.shared.communication.PushMode
+import com.vaadin.server.ClientConnector.DetachEvent
 import com.vaadin.server.ClientConnector.DetachListener
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
@@ -239,10 +240,14 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     mainWindow!!.setWorkspaceContextItemMenu(DBookmarkMenu(menu!!))
     mainWindow!!.connectedUser = userName
     println("_________________ BEFORE DETACH LISTENING _____________ ")
-    mainWindow!!.addDetachListener { DetachListener { closeConnection() } }
+    mainWindow!!.addDetachListener {event ->
+      println("#################### in Detach Before closing DB ###################")
+      closeConnection()
+      println("#################### in Detach AFTER closing DB ###################")
+     }
     println("_________________ AFTER DETACH LISTENING _____________")
-
   }
+
 
   fun remove(mainWindow: MainWindow?) {
     // Remove main window from parent
