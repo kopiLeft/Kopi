@@ -30,6 +30,8 @@ import com.vaadin.flow.server.*
 import com.vaadin.flow.shared.communication.PushMode
 import com.vaadin.server.ClientConnector.DetachEvent
 import com.vaadin.server.ClientConnector.DetachListener
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -246,13 +248,17 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //      println("#################### in Detach AFTER closing DB ###################")
 //     }
 //    println("_________________ AFTER DETACH LISTENING _____________")
-    println("______________ ADDING JS CODE AS EVENT TRIGGER __________________")
+    println("______________ ADDING COntextDB to JS Script __________________")
+    currentUI!!.page.addJavaScript("var contextdb = ${Json.encodeToString(dbContext)};")
     currentUI!!.page.executeJs(
       "window.addEventListener('beforeunload', function(event) {" +
           "event.preventDefault();" +
           "event.returnValue = '';" +
-          "closeConnection();" +
-          "Console.log('___________________ deconnecting ________________');" +
+          // Disconnect from the database" +
+          "  if (contextdb && contextdb.isConnected()) {" +
+          "    contextdb.disconnect();" +
+          "    console.log('____________________Disconnected from the database__________________');" +
+          "  }" +
           "});"
     )
     println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
