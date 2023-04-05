@@ -251,14 +251,10 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     println("______________ ADDING COntextDB to JS Script __________________")
     currentUI!!.page.executeJs(
       "var contextdb = $dbContext;" +
+          "console.log('____________________IN JS SCRIPT $dbContext __________________');" +
           "window.addEventListener('beforeunload', function(event) {" +
           "event.preventDefault();" +
           "event.returnValue = '';" +
-          // Disconnect from the database" +
-          "  if (contextdb && contextdb.isConnected()) {" +
-          "    contextdb.disconnect();" +
-          "    console.log('____________________Disconnected from the database__________________');" +
-          "  }" +
           "});".trimIndent()
     )
     println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
