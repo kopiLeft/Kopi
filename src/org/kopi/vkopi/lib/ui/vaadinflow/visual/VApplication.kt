@@ -249,9 +249,9 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //     }
 //    println("_________________ AFTER DETACH LISTENING _____________")
     println("______________ ADDING COntextDB to JS Script __________________")
-    currentUI!!.page.addJavaScript("var contextdb = ${Json.encodeToString(dbContext)};")
     currentUI!!.page.executeJs(
-      "window.addEventListener('beforeunload', function(event) {" +
+      "var contextdb = $dbContext;" +
+          "window.addEventListener('beforeunload', function(event) {" +
           "event.preventDefault();" +
           "event.returnValue = '';" +
           // Disconnect from the database" +
@@ -259,7 +259,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
           "    contextdb.disconnect();" +
           "    console.log('____________________Disconnected from the database__________________');" +
           "  }" +
-          "});"
+          "});".trimIndent()
     )
     println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
