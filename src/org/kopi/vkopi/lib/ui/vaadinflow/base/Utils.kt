@@ -59,14 +59,13 @@ object Utils : Utils() {
    * @return An Image or null if not found.
    */
   private fun getImageImpl(img: String): Image {
-    var icon: Image? = null
-//    = getDefaultImage(img)
-//    if (icon == null) {
-//      icon = getKopiResourceImage(img)
-//    }
-//    if (icon == null) {
-//      icon = getApplicationImage(img)
-//    }
+    var icon: Image? = getDefaultImage(img)
+    if (icon == null) {
+      icon = getKopiResourceImage(img)
+    }
+    if (icon == null) {
+      icon = getApplicationImage(img)
+    }
     if (icon == null) {
 //      icon = Image("org/kopi/vkopi/lib/$img")
 //      icon = Image("org/kopi/galite/visual/$img")
@@ -131,7 +130,7 @@ object Utils : Utils() {
     println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
     println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
-      println("image resource =====: $directory/$name")
+      println(Utils::class.java.classLoader.getResourceAsStream("$directory/$name"))
 
 //    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //      return Image("ui/vaadin/$name")
