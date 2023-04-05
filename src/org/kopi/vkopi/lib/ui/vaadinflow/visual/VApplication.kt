@@ -239,13 +239,25 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     mainWindow!!.setBookmarksMenu(DBookmarkMenu(menu!!))
     mainWindow!!.setWorkspaceContextItemMenu(DBookmarkMenu(menu!!))
     mainWindow!!.connectedUser = userName
-    println("_________________ BEFORE DETACH LISTENING _____________ ")
-    mainWindow!!.addDetachListener {event ->
-      println("#################### in Detach Before closing DB ###################")
-      closeConnection()
-      println("#################### in Detach AFTER closing DB ###################")
-     }
-    println("_________________ AFTER DETACH LISTENING _____________")
+//    println("_________________ BEFORE DETACH LISTENING _____________ ")
+//    mainWindow!!.addBlurListener {event ->
+//      println("#################### in Detach Before closing DB ###################")
+//      closeConnection()
+//      println("#################### in Detach AFTER closing DB ###################")
+//     }
+//    println("_________________ AFTER DETACH LISTENING _____________")
+    println("______________ ADDING JS CODE AS EVENT TRIGGER __________________")
+    currentUI!!.page.executeJs(
+      "window.addEventListener('beforeunload', function(event) {" +
+          "event.preventDefault();" +
+          "event.returnValue = '';" +
+          "closeConnection();" +
+          "Console.log('___________________ deconnecting ________________');" +
+          "});"
+    )
+    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
+
+
   }
 
 
@@ -306,6 +318,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     try {
       connectToDatabase(event.username, event.password)
       startApplication() // create main window and menu
+      println("____________________ AFTER startApplication() APP_________________")
       if (welcomeView != null) {
         welcomeView = null
         removeAll()
