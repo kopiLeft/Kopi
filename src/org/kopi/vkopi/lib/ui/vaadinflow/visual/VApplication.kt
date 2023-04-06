@@ -19,6 +19,10 @@ package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.Component
+import javax.websocket.OnMessage
+import javax.websocket.Session
+import com.google.gson.JsonParser
+
 import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.dependency.CssImport
@@ -258,12 +262,17 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //    println("_________________ AFTER DETACH LISTENING _____________")
     println("______________ ADDING JS CODE AS EVENT TRIGGER __________________")
     currentUI!!.page.executeJs(
-      "window.addEventListener('beforeunload', function(event) {" +
-          "event.preventDefault();" +
-          "event.returnValue = '';" +
-          "closeConnection();" +
-          "Console.log('___________________ deconnecting ________________');" +
+      "window.addEventListener('beforeunload', function (e) { " +
+          "   var confirmationMessage = 'Are you sure you want to leave?';" +
+          "   (e || window.event).returnValue = confirmationMessage;" +
+          "   if (typeof kotlin !== 'undefined' && kotlin != null) {" +
+          "       kotlin.send({ " +
+          "           'type': 'closeConnection'" +
+          "       });" +
+          "   }" +
+          "   return confirmationMessage;" +
           "});"
+
     )
     println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
@@ -296,7 +305,18 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 
 //    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
+    @OnMessage
+    fun onMessage(session: Session, message: String) {
+      val json = JsonParser().parse(message).asJsonObject
+      val type = json.get("type").asString
+      println("###############################################################################")
+      if (type == "closeConnection") closeConnection()
+      println("###############################################################################")
+
+    }
   }
+
+
 
 
   fun remove(mainWindow: MainWindow?) {
