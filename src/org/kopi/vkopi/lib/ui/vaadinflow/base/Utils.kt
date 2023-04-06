@@ -145,7 +145,7 @@ object Utils : Utils() {
 //            return Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
 
 //      return Image("org/kopi/vkopi/lib/$name")
-      return Image("org/kopi/galite/visual/$name")
+      return Image("./usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
     }
 
     return null
