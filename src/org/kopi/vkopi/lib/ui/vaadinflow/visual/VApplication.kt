@@ -266,23 +266,30 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //          "event.returnValue = '';" +
 //          "});".trimIndent()
 //    )
-    currentUI!!.addBeforeLeaveListener {event ->
-      val confirmation = Dialog()
-      val message = Text("Are you sure you want to leave this page?")
-      val okButton = Button("OK") {
-        confirmation.close()
-        println("#################### Before closing DB ###################")
-        closeConnection()
-        println("#################### AFTER closing DB ###################")
-      }
-      val cancelButton = Button("Cancel") {
-        confirmation.close()
-        event?.postpone()
-      }
 
-      confirmation.add(message, okButton, cancelButton)
-      confirmation.open()
+println("______________ BEFORE ADDING addBeforeLeaveListener __________________")
+    currentUI!!.addBeforeLeaveListener {event ->
+      val dialog = ConfirmNotification(VlibProperties.getString("Question"),
+        Message.getMessage("confirm_quit"),
+        notificationLocale,
+        mainWindow)
+
+      dialog.yesIsDefault = false
+      dialog.addNotificationListener(object : NotificationListener {
+        override fun onClose(yes: Boolean?) {
+          if (yes == true) {
+            println("#################### Before closing DB ###################")
+            closeConnection()
+            println("#################### AFTER closing DB ###################")
+          } else {
+            event?.postpone()
+          }
+        }
+      })
+      showNotification(dialog)
     }
+    println("______________ AFTER ADDING addBeforeLeaveListener __________________")
+
 
 //    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
