@@ -72,8 +72,7 @@ import java.util.*
   CssImport("./styles/galite/common.css")
 ])
 @Suppress("LeakingThis")
-abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener,
-  BeforeLeaveObserver, HasDynamicTitle {
+abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener, HasDynamicTitle {
 
   override fun getRegistry(): Registry = registry
   //---------------------------------------------------
