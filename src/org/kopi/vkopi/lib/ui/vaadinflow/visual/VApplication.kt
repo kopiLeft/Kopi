@@ -22,6 +22,7 @@ import com.vaadin.flow.component.Component
 import javax.websocket.OnMessage
 import javax.websocket.Session
 import com.google.gson.JsonParser
+import com.vaadin.annotations.VaadinServletConfiguration
 
 import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.UI
@@ -64,6 +65,8 @@ import org.kopi.xkopi.lib.base.DBContext
 import java.awt.TextField
 import java.sql.SQLException
 import java.util.*
+import javax.servlet.http.HttpSessionListener
+import kotlin.reflect.KClass
 
 /**
  * The entry point for all Galite WEB applications.
@@ -241,7 +244,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     })
     showNotification(dialog)
   }
-
   override fun startApplication() {
     menu = VMenuTree(dbContext)
     menu!!.setTitle(userName + "@" + url.substring(url.indexOf("//") + 2))
@@ -260,21 +262,28 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //      println("#################### in Detach AFTER closing DB ###################")
 //     }
 //    println("_________________ AFTER DETACH LISTENING _____________")
-    println("______________ ADDING JS CODE AS EVENT TRIGGER __________________")
-    currentUI!!.page.executeJs(
-      "window.addEventListener('beforeunload', function (e) { " +
-          "   var confirmationMessage = 'Are you sure you want to leave?';" +
-          "   (e || window.event).returnValue = confirmationMessage;" +
-          "   if (typeof kotlin !== 'undefined' && kotlin != null) {" +
-          "       kotlin.send({ " +
-          "           'type': 'closeConnection'" +
-          "       });" +
-          "   }" +
-          "   return confirmationMessage;" +
-          "});"
+    println("#################### BEFORE CREATING SESSION DESTROY LISTENER###################")
+    currentUI!!.session.service.addSessionDestroyListener {
+      println("______________ Before Closing DB  __________________")
+      closeConnection()
+      println("______________ After Closing DB  __________________")
+    }
+    println("#################### AFTER CREATING SESSION DESTROY LISTENER###################")
 
-    )
-    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
+//    currentUI!!.page.executeJs(
+//      "window.addEventListener('beforeunload', function (e) { " +
+//          "   var confirmationMessage = 'Are you sure you want to leave?';" +
+//          "   (e || window.event).returnValue = confirmationMessage;" +
+//          "   if (typeof kotlin !== 'undefined' && kotlin != null) {" +
+//          "       kotlin.send({ " +
+//          "           'type': 'closeConnection'" +
+//          "       });" +
+//          "   }" +
+//          "   return confirmationMessage;" +
+//          "});"
+//
+//    )
+//    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
 
 
@@ -305,15 +314,15 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 
 //    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
-    @OnMessage
-    fun onMessage(session: Session, message: String) {
-      val json = JsonParser().parse(message).asJsonObject
-      val type = json.get("type").asString
-      println("###############################################################################")
-      if (type == "closeConnection") closeConnection()
-      println("###############################################################################")
-
-    }
+//    @OnMessage
+//    fun onMessage(session: Session, message: String) {
+//      val json = JsonParser().parse(message).asJsonObject
+//      val type = json.get("type").asString
+//      println("###############################################################################")
+//      if (type == "closeConnection") closeConnection()
+//      println("###############################################################################")
+//
+//    }
   }
 
 
