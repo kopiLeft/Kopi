@@ -256,17 +256,18 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //      println("#################### in Detach AFTER closing DB ###################")
 //     }
 //    println("_________________ AFTER DETACH LISTENING _____________")
-    println("______________ ADDING COntextDB to JS Script __________________")
+    println("______________ ADDING JS CODE AS EVENT TRIGGER __________________")
     currentUI!!.page.executeJs(
-      "var contextdb = $dbContext;" +
-          "console.log('____________________IN JS SCRIPT $dbContext __________________');" +
-          "window.addEventListener('beforeunload', function(event) {" +
-          "" +
+      "window.addEventListener('beforeunload', function(event) {" +
           "event.preventDefault();" +
           "event.returnValue = '';" +
-          "});".trimIndent()
+          "closeConnection();" +
+          "Console.log('___________________ deconnecting ________________');" +
+          "});"
     )
-    println("______________ AFTER ADDING COntextDB to JS Script __________________")
+    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
+
+
 
 
 //println("______________ BEFORE ADDING addBeforeLeaveListener __________________")
