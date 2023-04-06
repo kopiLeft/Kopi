@@ -18,20 +18,27 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
 import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.Component
+import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.page.AppShellConfigurator
 import com.vaadin.flow.component.page.Push
+import com.vaadin.flow.router.BeforeLeaveEvent
+import com.vaadin.flow.router.BeforeLeaveObserver
 import com.vaadin.flow.router.HasDynamicTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.server.*
 import com.vaadin.flow.shared.communication.PushMode
+import com.vaadin.flow.component.html.Div
 import com.vaadin.server.ClientConnector.DetachEvent
 import com.vaadin.server.ClientConnector.DetachListener
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -49,6 +56,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeViewEvent
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 import org.kopi.vkopi.lib.visual.*
 import org.kopi.xkopi.lib.base.DBContext
+import java.awt.TextField
 import java.sql.SQLException
 import java.util.*
 
@@ -64,7 +72,7 @@ import java.util.*
 ])
 @Suppress("LeakingThis")
 abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener,
-  HasDynamicTitle {
+  BeforeLeaveObserver, HasDynamicTitle {
 
   override fun getRegistry(): Registry = registry
   //---------------------------------------------------
@@ -247,18 +255,37 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //      closeConnection()
 //      println("#################### in Detach AFTER closing DB ###################")
 //     }
-//    println("_________________ AFTER DETACH LISTENING _____________")
-    println("______________ ADDING COntextDB to JS Script __________________")
-    currentUI!!.page.executeJs(
-      "var contextdb = $dbContext;" +
-          "console.log('____________________IN JS SCRIPT $dbContext __________________');" +
-          "window.addEventListener('beforeunload', function(event) {" +
-          "event.preventDefault();" +
-          "event.returnValue = '';" +
-          "});".trimIndent()
-    )
-    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
+////    println("_________________ AFTER DETACH LISTENING _____________")
+//    println("______________ ADDING COntextDB to JS Script __________________")
+//    currentUI!!.page.executeJs(
+//      "var contextdb = $dbContext;" +
+//          "console.log('____________________IN JS SCRIPT $dbContext __________________');" +
+//          "window.addEventListener('beforeunload', function(event) {" +
+//          "" +
+//          "event.preventDefault();" +
+//          "event.returnValue = '';" +
+//          "});".trimIndent()
+//    )
+    currentUI!!.addBeforeLeaveListener {event ->
+      val confirmation = Dialog()
+      val message = Text("Are you sure you want to leave this page?")
+      val okButton = Button("OK") {
+        confirmation.close()
+        println("#################### Before closing DB ###################")
+        closeConnection()
+        println("#################### AFTER closing DB ###################")
+        event?.forwardTo(event.navigationTarget as Class<out Component>)
+      }
+      val cancelButton = Button("Cancel") {
+        confirmation.close()
+        event?.postpone()
+      }
 
+      confirmation.add(message, okButton, cancelButton)
+      confirmation.open()
+    }
+
+//    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
 
   }
 

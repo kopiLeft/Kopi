@@ -251,8 +251,10 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       public void onClose(boolean yes) {
         detachComponent(dialog);
         if (yes) {
+          System.out.println("############## IN LOGOUT METHOD - BEFORE CLOSE CONNECTION #################");
           // close DB connection
           closeConnection();
+          System.out.println("############## IN LOGOUT METHOD - AFTER CLOSE CONNECTION #################");
           // show welcome screen
           gotoWelcomeView();
         }
@@ -271,7 +273,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
 
   @Override
   public void startApplication() {
-    String		url = getURL();
+    String url = getURL();
 
     menuTree = new VMenuTree(context);
     menuTree.setTitle(getUserName() + "@" + url.substring(url.indexOf("//") + 2));
@@ -282,11 +284,17 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     mainWindow.addMenu(new DUserMenu(menuTree));
     mainWindow.addMenu(new DAdminMenu(menuTree));
     mainWindow.addMenu(new DBookmarkMenu(menuTree));
+    System.out.println("##################### IN START APPLICATION - BEFORE CREATION DETACH LISTENER #################");
     mainWindow.addDetachListener(new DetachListener() {
       public void detach(DetachEvent event) {
+        System.out.println("*********************** IN START APPLICATION - IN DETACH METHOD - BEFORE CLOSING CONNECTION *************************");
         closeConnection();
+        System.out.println("*********************** IN START APPLICATION - IN DETACH METHOD - AFTER CLOSING CONNECTION *************************");
+
       }
     });
+    System.out.println("##################### IN START APPLICATION - AFTER CREATION DETACH LISTENER #################");
+
   }
 
   @Override
@@ -339,9 +347,9 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       connectToDatabase(event.getUsername(), event.getPassword());
       startApplication(); // create main window and menu
       if (welcomeView != null) {
-	AbstractSingleComponentContainer.removeFromParent(welcomeView);
-	welcomeView = null;
-	setContent(null);
+        AbstractSingleComponentContainer.removeFromParent(welcomeView);
+        welcomeView = null;
+        setContent(null);
       }
       setContent(mainWindow);
     } catch (SQLException e) {
@@ -405,10 +413,10 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     throws SQLException
   {
     context = login(getInitParameter("database"),
-	            getInitParameter("driver"),
-	            username,
-	            password,
-	            getInitParameter("schema"));
+        getInitParameter("driver"),
+        username,
+        password,
+        getInitParameter("schema"));
     // check if context is created
     if (context == null) {
       throw new SQLException(MessageCode.getMessage("VIS-00054"));
@@ -521,7 +529,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     setLocalizationContext(getInitializationLocale());
     if (getSupportedLocales() != null) {
       for (Locale locale : getSupportedLocales()) {
-	setLocale(locale);
+        setLocale(locale);
       }
     }
   }
@@ -534,8 +542,8 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
 
     try {
       verifyConfiguration.verifyConfiguration(ApplicationConfiguration.getConfiguration().getSMTPServer(),
-	  			              ApplicationConfiguration.getConfiguration().getDebugMailRecipient(),
-	  			              ApplicationConfiguration.getConfiguration().getApplicationName());
+          ApplicationConfiguration.getConfiguration().getDebugMailRecipient(),
+          ApplicationConfiguration.getConfiguration().getApplicationName());
     } catch (PropertyException e) {
       e.printStackTrace();
     }
@@ -612,7 +620,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    * @return the initialization locale found in the application descriptor file.
    */
   protected Locale getInitializationLocale() {
-    String			locale;
+    String locale;
 
     locale = getInitParameter("locale"); // obtain application locale from descriptor file
     if (locale == null) {
@@ -651,8 +659,8 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   protected void closeConnection() {
     try {
       if (context != null) {
-	context.close();
-	context = null;
+        context.close();
+        context = null;
       }
     } catch (SQLException e) {
       // we don't care, we reinitialize the connection
@@ -709,7 +717,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
    * @return {@code true} if the locale has a valid format.
    */
   private boolean checkLocale(String locale) {
-    char[]    		chars;
+    char[] chars;
 
     chars = locale.toCharArray();
     if (chars.length != 5
@@ -834,14 +842,14 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   // DATA MEMBEERS
   //---------------------------------------------------
 
-  private VMenuTree                   	        menuTree;
-  private DBContext                   	        context;
-  private Registry 		       	        registry;
-  private boolean		       	        isGeneratingHelp;
+  private VMenuTree menuTree;
+  private DBContext context;
+  private Registry registry;
+  private boolean isGeneratingHelp;
   private Locale                                defaultLocale;
   private LocalizationManager                   localizationManager;
-  private WelcomeView				welcomeView;
-  private MainWindow				mainWindow;
+  private WelcomeView welcomeView;
+  private MainWindow mainWindow;
   private int                                   askAnswer;
   private PrintManager                          printManager;
   private PrinterManager                        printerManager;
@@ -856,7 +864,7 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   // Failure cause informations
   // ---------------------------------------------------------------------
 
-  private final Date             		 startupTime = new Date(); // remembers the startup time
+  private final Date startupTime = new Date(); // remembers the startup time
 
   static {
     ApplicationContext.setApplicationContext(new VApplicationContext());
