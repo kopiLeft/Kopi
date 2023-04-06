@@ -48,6 +48,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAw
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
 import org.kopi.vkopi.lib.ui.vaadinflow.base.FontMetrics
 import org.kopi.vkopi.lib.ui.vaadinflow.base.StyleManager
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindowListener
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.*
@@ -274,7 +275,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
         println("#################### Before closing DB ###################")
         closeConnection()
         println("#################### AFTER closing DB ###################")
-        event?.forwardTo(event.navigationTarget as Class<out Component>)
       }
       val cancelButton = Button("Cancel") {
         confirmation.close()
