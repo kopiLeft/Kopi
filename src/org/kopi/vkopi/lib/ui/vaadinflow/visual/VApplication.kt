@@ -255,40 +255,42 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 //      closeConnection()
 //      println("#################### in Detach AFTER closing DB ###################")
 //     }
-////    println("_________________ AFTER DETACH LISTENING _____________")
-//    println("______________ ADDING COntextDB to JS Script __________________")
-//    currentUI!!.page.executeJs(
-//      "var contextdb = $dbContext;" +
-//          "console.log('____________________IN JS SCRIPT $dbContext __________________');" +
-//          "window.addEventListener('beforeunload', function(event) {" +
-//          "" +
-//          "event.preventDefault();" +
-//          "event.returnValue = '';" +
-//          "});".trimIndent()
-//    )
+//    println("_________________ AFTER DETACH LISTENING _____________")
+    println("______________ ADDING COntextDB to JS Script __________________")
+    currentUI!!.page.executeJs(
+      "var contextdb = $dbContext;" +
+          "console.log('____________________IN JS SCRIPT $dbContext __________________');" +
+          "window.addEventListener('beforeunload', function(event) {" +
+          "" +
+          "event.preventDefault();" +
+          "event.returnValue = '';" +
+          "});".trimIndent()
+    )
+    println("______________ AFTER ADDING COntextDB to JS Script __________________")
 
-println("______________ BEFORE ADDING addBeforeLeaveListener __________________")
-    currentUI!!.addBeforeLeaveListener {event ->
-      val dialog = ConfirmNotification(VlibProperties.getString("Question"),
-        Message.getMessage("confirm_quit"),
-        notificationLocale,
-        mainWindow)
 
-      dialog.yesIsDefault = false
-      dialog.addNotificationListener(object : NotificationListener {
-        override fun onClose(yes: Boolean?) {
-          if (yes == true) {
-            println("#################### Before closing DB ###################")
-            closeConnection()
-            println("#################### AFTER closing DB ###################")
-          } else {
-            event?.postpone()
-          }
-        }
-      })
-      showNotification(dialog)
-    }
-    println("______________ AFTER ADDING addBeforeLeaveListener __________________")
+//println("______________ BEFORE ADDING addBeforeLeaveListener __________________")
+//    currentUI!!.addBeforeLeaveListener {event ->
+//      val dialog = ConfirmNotification(VlibProperties.getString("Question"),
+//        Message.getMessage("confirm_quit"),
+//        notificationLocale,
+//        mainWindow)
+//
+//      dialog.yesIsDefault = false
+//      dialog.addNotificationListener(object : NotificationListener {
+//        override fun onClose(yes: Boolean?) {
+//          if (yes == true) {
+//            println("#################### Before closing DB ###################")
+//            closeConnection()
+//            println("#################### AFTER closing DB ###################")
+//          } else {
+//            event?.postpone()
+//          }
+//        }
+//      })
+//      showNotification(dialog)
+//    }
+//    println("______________ AFTER ADDING addBeforeLeaveListener __________________")
 
 
 //    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
