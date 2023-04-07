@@ -207,16 +207,12 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
                                      Message.getMessage("confirm_quit"),
                                      notificationLocale,
                                      mainWindow)
-    println("============= IN LOGOUT METHOD =================")
-
     dialog.yesIsDefault = false
     dialog.addNotificationListener(object : NotificationListener {
       override fun onClose(yes: Boolean?) {
         if (yes == true) {
-          println("============= BEFORE CLOSING DB CONNECTION =================")
           // close DB connection
           closeConnection()
-          println("============= AFTER CLOSING DB CONNECTION =================")
           // show welcome screen
           gotoWelcomeView()
 
@@ -237,13 +233,10 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     mainWindow!!.setBookmarksMenu(DBookmarkMenu(menu!!))
     mainWindow!!.setWorkspaceContextItemMenu(DBookmarkMenu(menu!!))
     mainWindow!!.connectedUser = userName
-    println("_________________ BEFORE DETACH LISTENING _____________ ")
     mainWindow!!.addDetachListener {event ->
-      println("#################### in Detach Before closing DB ###################")
+      //closing DB connection
       closeConnection()
-      println("#################### in Detach AFTER closing DB ###################")
     }
-    println("_________________ AFTER DETACH LISTENING _____________")
   }
 
   fun remove(mainWindow: MainWindow?) {
@@ -303,7 +296,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     try {
       connectToDatabase(event.username, event.password)
       startApplication() // create main window and menu
-      println("____________________ AFTER startApplication() APP_________________")
       if (welcomeView != null) {
         welcomeView = null
         removeAll()
@@ -333,14 +325,11 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
 
     requireNotNull(database) { "The database url shouldn't be null" }
     requireNotNull(driver) { "The jdbc driver shouldn't be null" }
-    println("################## IN ConnectTODatabse METHOD ########################")
-
     dbContext = login(database,
       driver,
       username,
       password,
       schema)
-    println("################## AFTER LOGIN(NOT Overrided METHOD ########################")
     // check if context is created
     if (dbContext == null) {
       throw SQLException(MessageCode.getMessage("VIS-00054"))
