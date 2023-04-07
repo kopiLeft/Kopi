@@ -121,11 +121,11 @@ dependencies {
   implementation("com.github.appreciated", "apexcharts", apexChartVersion)
   // Iron Icons
   implementation("com.flowingcode.addons", "iron-icons", ironIconsVersion)
-  //kotlinx
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-
-  //websocket
-  implementation("javax.websocket:javax.websocket-api:1.1")
+//  //kotlinx
+//  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+//
+//  //websocket
+//  implementation("javax.websocket:javax.websocket-api:1.1")
 
 }
 

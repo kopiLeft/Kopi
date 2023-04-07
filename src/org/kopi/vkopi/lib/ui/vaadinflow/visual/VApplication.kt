@@ -17,33 +17,22 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Component
-import javax.websocket.OnMessage
-import javax.websocket.Session
-import com.google.gson.JsonParser
-import com.vaadin.annotations.VaadinServletConfiguration
+import java.sql.SQLException
+import java.util.*
 
-import com.vaadin.flow.component.Text
+import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.page.AppShellConfigurator
 import com.vaadin.flow.component.page.Push
-import com.vaadin.flow.router.BeforeLeaveEvent
-import com.vaadin.flow.router.BeforeLeaveObserver
 import com.vaadin.flow.router.HasDynamicTitle
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.server.*
 import com.vaadin.flow.shared.communication.PushMode
-import com.vaadin.flow.component.html.Div
-import com.vaadin.server.ClientConnector.DetachEvent
-import com.vaadin.server.ClientConnector.DetachListener
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import com.vaadin.flow.component.button.Button
-import com.vaadin.flow.component.button.ButtonVariant
+
+import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -53,7 +42,6 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndAw
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.accessAndPush
 import org.kopi.vkopi.lib.ui.vaadinflow.base.FontMetrics
 import org.kopi.vkopi.lib.ui.vaadinflow.base.StyleManager
-import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindowListener
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.*
@@ -61,12 +49,6 @@ import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeView
 import org.kopi.vkopi.lib.ui.vaadinflow.welcome.WelcomeViewEvent
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
 import org.kopi.vkopi.lib.visual.*
-import org.kopi.xkopi.lib.base.DBContext
-import java.awt.TextField
-import java.sql.SQLException
-import java.util.*
-import javax.servlet.http.HttpSessionListener
-import kotlin.reflect.KClass
 
 /**
  * The entry point for all Galite WEB applications.
@@ -255,78 +237,14 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     mainWindow!!.setBookmarksMenu(DBookmarkMenu(menu!!))
     mainWindow!!.setWorkspaceContextItemMenu(DBookmarkMenu(menu!!))
     mainWindow!!.connectedUser = userName
-//    println("_________________ BEFORE DETACH LISTENING _____________ ")
-//    mainWindow!!.addBlurListener {event ->
-//      println("#################### in Detach Before closing DB ###################")
-//      closeConnection()
-//      println("#################### in Detach AFTER closing DB ###################")
-//     }
-//    println("_________________ AFTER DETACH LISTENING _____________")
-    println("#################### BEFORE CREATING SESSION DESTROY LISTENER###################")
-    currentUI!!.session.service.addSessionDestroyListener {
-      println("______________ Before Closing DB  __________________")
+    println("_________________ BEFORE DETACH LISTENING _____________ ")
+    mainWindow!!.addDetachListener {event ->
+      println("#################### in Detach Before closing DB ###################")
       closeConnection()
-      println("______________ After Closing DB  __________________")
+      println("#################### in Detach AFTER closing DB ###################")
     }
-    println("#################### AFTER CREATING SESSION DESTROY LISTENER###################")
-
-//    currentUI!!.page.executeJs(
-//      "window.addEventListener('beforeunload', function (e) { " +
-//          "   var confirmationMessage = 'Are you sure you want to leave?';" +
-//          "   (e || window.event).returnValue = confirmationMessage;" +
-//          "   if (typeof kotlin !== 'undefined' && kotlin != null) {" +
-//          "       kotlin.send({ " +
-//          "           'type': 'closeConnection'" +
-//          "       });" +
-//          "   }" +
-//          "   return confirmationMessage;" +
-//          "});"
-//
-//    )
-//    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
-
-
-
-
-//println("______________ BEFORE ADDING addBeforeLeaveListener __________________")
-//    currentUI!!.addBeforeLeaveListener {event ->
-//      val dialog = ConfirmNotification(VlibProperties.getString("Question"),
-//        Message.getMessage("confirm_quit"),
-//        notificationLocale,
-//        mainWindow)
-//
-//      dialog.yesIsDefault = false
-//      dialog.addNotificationListener(object : NotificationListener {
-//        override fun onClose(yes: Boolean?) {
-//          if (yes == true) {
-//            println("#################### Before closing DB ###################")
-//            closeConnection()
-//            println("#################### AFTER closing DB ###################")
-//          } else {
-//            event?.postpone()
-//          }
-//        }
-//      })
-//      showNotification(dialog)
-//    }
-//    println("______________ AFTER ADDING addBeforeLeaveListener __________________")
-
-
-//    println("______________ AFTER ADDING JS CODE AS EVENT TRIGGER __________________")
-
-//    @OnMessage
-//    fun onMessage(session: Session, message: String) {
-//      val json = JsonParser().parse(message).asJsonObject
-//      val type = json.get("type").asString
-//      println("###############################################################################")
-//      if (type == "closeConnection") closeConnection()
-//      println("###############################################################################")
-//
-//    }
+    println("_________________ AFTER DETACH LISTENING _____________")
   }
-
-
-
 
   fun remove(mainWindow: MainWindow?) {
     // Remove main window from parent
@@ -400,9 +318,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     }
   }
 
-  // --------------------------------------------------
-  // PRIVATE MEMBERS
-  // --------------------------------------------------
   /**
    * Tries to connect to the database using user name and password
    * provided by the login window.
@@ -421,12 +336,11 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     println("################## IN ConnectTODatabse METHOD ########################")
 
     dbContext = login(database,
-                      driver,
-                      username,
-                      password,
-                      schema)
+      driver,
+      username,
+      password,
+      schema)
     println("################## AFTER LOGIN(NOT Overrided METHOD ########################")
-
     // check if context is created
     if (dbContext == null) {
       throw SQLException(MessageCode.getMessage("VIS-00054"))
@@ -435,6 +349,10 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
       setTraceLevel()
     }
   }
+
+  // --------------------------------------------------
+  // PRIVATE MEMBERS
+  // --------------------------------------------------
 
   override fun isNobugReport(): Boolean = java.lang.Boolean.parseBoolean(getInitParameter("nobugreport"))
 

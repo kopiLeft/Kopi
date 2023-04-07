@@ -251,10 +251,8 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
       public void onClose(boolean yes) {
         detachComponent(dialog);
         if (yes) {
-          System.out.println("############## IN LOGOUT METHOD - BEFORE CLOSE CONNECTION #################");
           // close DB connection
           closeConnection();
-          System.out.println("############## IN LOGOUT METHOD - AFTER CLOSE CONNECTION #################");
           // show welcome screen
           gotoWelcomeView();
         }
@@ -413,10 +411,10 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
     throws SQLException
   {
     context = login(getInitParameter("database"),
-        getInitParameter("driver"),
-        username,
-        password,
-        getInitParameter("schema"));
+                    getInitParameter("driver"),
+                    username,
+                    password,
+                    getInitParameter("schema"));
     // check if context is created
     if (context == null) {
       throw new SQLException(MessageCode.getMessage("VIS-00054"));
@@ -542,8 +540,8 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
 
     try {
       verifyConfiguration.verifyConfiguration(ApplicationConfiguration.getConfiguration().getSMTPServer(),
-          ApplicationConfiguration.getConfiguration().getDebugMailRecipient(),
-          ApplicationConfiguration.getConfiguration().getApplicationName());
+                                              ApplicationConfiguration.getConfiguration().getDebugMailRecipient(),
+                                              ApplicationConfiguration.getConfiguration().getApplicationName());
     } catch (PropertyException e) {
       e.printStackTrace();
     }
@@ -842,14 +840,14 @@ public abstract class VApplication extends UI implements Application, WelcomeVie
   // DATA MEMBEERS
   //---------------------------------------------------
 
-  private VMenuTree menuTree;
-  private DBContext context;
-  private Registry registry;
-  private boolean isGeneratingHelp;
+  private VMenuTree                             menuTree;
+  private DBContext                             context;
+  private Registry                              registry;
+  private boolean                               isGeneratingHelp;
   private Locale                                defaultLocale;
   private LocalizationManager                   localizationManager;
-  private WelcomeView welcomeView;
-  private MainWindow mainWindow;
+  private WelcomeView                           welcomeView;
+  private MainWindow                            mainWindow;
   private int                                   askAnswer;
   private PrintManager                          printManager;
   private PrinterManager                        printerManager;
