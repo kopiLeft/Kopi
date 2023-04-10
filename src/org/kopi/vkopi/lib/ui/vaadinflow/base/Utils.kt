@@ -118,19 +118,27 @@ object Utils : Utils() {
    */
   fun getImageFromResource(directory: String, name: String): Image? {
     println()
-    println("directory/name = $directory/$name")
-    println("Working Directory = ${System.getProperty("user.dir")}")
+    println("directory/name = $directory/$name") // org/kopi/vkopi/lib/ui/vaadin/resource/*.png
+    println("Working Directory = ${System.getProperty("user.dir")}") // /usr/share/gco-kopiright-test
     println("Utils::class.classLoader.getResource = ${Utils::class.java.classLoader.getResource("$directory/$name")}")
+// file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/*.png
     println("Utils::class.classLoader.getResourceAsStream = ${Utils::class.java.classLoader.getResourceAsStream("$directory/$name")}")
+  // java.io.ByteArrayInputStream@26d1769e
     println("this.javaClass.classLoader.getResource = ${this.javaClass.classLoader.getResource("$directory/$name")}")
+   // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/*.png
     println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("$directory/$name")}")
+  // java.io.ByteArrayInputStream@16d46111
     println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
-    println("path 111 = ${Paths.get(Utils::class.java.classLoader.getResource(".").path).toFile().absolutePath}")
+   //   /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes
     println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.toFile().absolutePath}")
+   // /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF
     println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
+    // /usr/share/gco-kopiright-test/webapps/gco-kopi-test
     println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
+    // /usr/share/gco-kopiright-test/webapps
+
     if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
-      println(Utils::class.java.classLoader.getResourceAsStream("$directory/$name"))
+      println(Utils::class.java.classLoader.getResourceAsStream("$directory/$name").toString())
 
 //    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //      return Image("ui/vaadin/$name")
@@ -145,7 +153,11 @@ object Utils : Utils() {
 //            return Image("./WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
 
 //      return Image("org/kopi/vkopi/lib/$name")
-      return Image("./usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+//      return Image("./usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+//      return Image("ui/vaadin/$name")
+      return Image("../../vaadin/resource/$name")
+//      return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+//      return Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
     }
 
     return null
