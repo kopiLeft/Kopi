@@ -74,7 +74,11 @@ object Utils : Utils() {
 
     println()
     println("============================ org/kopi/galite/visual ============================")
-    getImageFromResource( "org/kopi/vkopi/lib/resource", img)
+    getImageFromResource( "org/kopi/galite/visual", img)
+
+    println()
+    println("============================ vkopi/lib/resource ============================")
+    getImageFromResource( "vkopi/lib/resource", img)
 
     println()
     println("============================ META-INF/resources/ui/visual ============================")
@@ -87,6 +91,14 @@ object Utils : Utils() {
     println()
     println("============================ ./Kopi/src/resources/org/kopi/galite/visual ============================")
     getImageFromResource( "./Kopi/src/resources/org/kopi/galite/visual", img)
+
+    println()
+    println("============================ galite/visual ============================")
+    getImageFromResource( "galite/visual", img)
+
+    println()
+    println("============================ ../resources/org/kopi/galite/visual ============================")
+    getImageFromResource( "../resources/org/kopi/galite/visual", img)
 
 
 
