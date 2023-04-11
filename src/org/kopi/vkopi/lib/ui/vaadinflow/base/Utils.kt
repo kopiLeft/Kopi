@@ -59,6 +59,38 @@ object Utils : Utils() {
    * @return An Image or null if not found.
    */
   private fun getImageImpl(img: String): Image {
+    println()
+    println("============================ org/kopi/vkopi/lib/ui/vaadin/resource ============================")
+    getImageFromResource( "org/kopi/vkopi/lib/ui/vaadin/resource", img)
+
+    println()
+    println("============================ org/kopi/vkopi/lib/resource ============================")
+    getImageFromResource( "org/kopi/vkopi/lib/resource", img)
+
+
+    println()
+    println("============================= ui/vaadin ============================")
+    getImageFromResource( "ui/vaadin", img)
+
+    println()
+    println("============================ org/kopi/galite/visual ============================")
+    getImageFromResource( "org/kopi/vkopi/lib/resource", img)
+
+    println()
+    println("============================ META-INF/resources/ui/visual ============================")
+    getImageFromResource( "META-INF/resources/ui/visual", img)
+
+    println()
+    println("============================ ./Kopi/src/resources/META-INF/resources/ui/visual ============================")
+    getImageFromResource( "./Kopi/src/resources/META-INF/resources/ui/visual", img)
+
+    println()
+    println("============================ ./Kopi/src/resources/org/kopi/galite/visual ============================")
+    getImageFromResource( "./Kopi/src/resources/org/kopi/galite/visual", img)
+
+
+
+
     var icon: Image? = getDefaultImage(img)
     if (icon == null) {
       icon = getKopiResourceImage(img)
@@ -155,7 +187,7 @@ object Utils : Utils() {
 //      return Image("org/kopi/vkopi/lib/$name")
 //      return Image("./usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //      return Image("ui/vaadin/$name")
-      return Image("../../vaadin/resource/$name")
+      return Image("$directory/$name")
 //      return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //      return Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
     }
@@ -281,6 +313,9 @@ object Utils : Utils() {
     return future.get()
   }
 
+  fun main () {
+
+  }
   fun Component.findMainWindow(): MainWindow? {
     if (this is MainWindow) return this
 
@@ -314,7 +349,8 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
+  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
+//  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
