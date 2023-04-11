@@ -81,6 +81,10 @@ object Utils : Utils() {
     getImageFromResource( "vkopi/lib/resource", img)
 
     println()
+    println("============================ META-INF/resources/org/kopi/galite/visual ============================")
+    getImageFromResource( "META-INF/resources/org/kopi/galite/visual", img)
+
+    println()
     println("============================ META-INF/resources/ui/visual ============================")
     getImageFromResource( "META-INF/resources/ui/visual", img)
 
@@ -181,7 +185,7 @@ object Utils : Utils() {
     println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
     // /usr/share/gco-kopiright-test/webapps
 
-    if (Utils::class.java.classLoader.getResourceAsStream("$directory/$name") != null) { // FIXME
+    if (Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/$directory/$name") != null) { // FIXME
       println(Utils::class.java.classLoader.getResourceAsStream("$directory/$name").toString())
 
 //    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
