@@ -15,6 +15,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+@file:Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 import com.flowingcode.vaadin.addons.ironicons.*
@@ -59,6 +61,8 @@ object Utils : Utils() {
    * @return An Image or null if not found.
    */
   private fun getImageImpl(img: String): Image {
+    var icon: Image? = getDefaultImage(img)
+
     println()
 //    println("============================ org/kopi/vkopi/lib/ui/vaadin/resource ============================")
 //    getImageFromResource( "org/kopi/vkopi/lib/ui/vaadin/resource", img)
@@ -108,29 +112,32 @@ object Utils : Utils() {
     println()
     println("============================ ui/vaadin/resource ============================")
     getImageFromResource( "ui/vaadin/resource", img)
+//
+//    println()
+//    println("============================ resource ============================")
+//    getImageFromResource( "resource", img)
+//
+//    println()
+//    println("============================ WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource ============================")
+//    getImageFromResource( "WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource", img)
 
-    println()
-    println("============================ resource ============================")
-    getImageFromResource( "resource", img)
 
 
 
-
-    var icon: Image? = getDefaultImage(img)
-    if (icon == null) {
-      icon = getKopiResourceImage(img)
-    }
-    if (icon == null) {
-      icon = getApplicationImage(img)
-    }
-    if (icon == null) {
-//      icon = Image("org/kopi/vkopi/lib/$img")
-//      icon = Image("org/kopi/galite/visual/$img")
-//      icon = Image("../vaadin/resource$img")
-   //   icon = Image("resource$img")
-      icon = Image("${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}/org/kopi/vkopi/lib/ui/vaadin/resource$img")
-      // this.javaClass.classLoader.getResourceAsStream(VERSION)
-    }
+//    if (icon == null) {
+//      icon = getKopiResourceImage(img)
+//    }
+//    if (icon == null) {
+//      icon = getApplicationImage(img)
+//    }
+//    if (icon == null) {
+////      icon = Image("org/kopi/vkopi/lib/$img")
+////      icon = Image("org/kopi/galite/visual/$img")
+////      icon = Image("../vaadin/resource$img")
+//   //   icon = Image("resource$img")
+//      icon = Image("${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}/org/kopi/vkopi/lib/ui/vaadin/resource$img")
+//      // this.javaClass.classLoader.getResourceAsStream(VERSION)
+//    }
     if (icon == null) {
       System.err.println("Utils ==> cant load: $img")
       return UKN_IMAGE
@@ -226,14 +233,16 @@ object Utils : Utils() {
     // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/META-INF/resources/
     println("this.javaClass.getResource(META-INF/resources/) === "+ this.javaClass.getResource("META-INF/resources/"))
     // null
-    println("this.javaClass.getResource(/) === "+ this.javaClass.getResource("/org/kopi/vkopi/lib/ui/vaadin/resource"))
-    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/
-    println("this.javaClass.getResource(/).path === "+ this.javaClass.getResource("/org/kopi/vkopi/lib/ui/vaadin/resource").path)
+    println("this.javaClass.getResource(/org/kopi/vkopi/lib/ui/vaadin/resource).path === "+ this.javaClass.getResource("/org/kopi/vkopi/lib/ui/vaadin/resource").path)
     // /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/
     println("this::class.java.classLoader.getResource(.) === "+ this::class.java.classLoader.getResource("."))
     // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/
     println("Thread.currentThread().contextClassLoader.getResource(.) === "+ Thread.currentThread().contextClassLoader.getResource("."))
     // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(ui/vaadin) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("ui/vaadin"))
+
+
+
     println("Thread.currentThread().contextClassLoader.getResourceAsStream(./$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./$directory/$name")) // null
     println("Thread.currentThread().contextClassLoader.getResourceAsStream(/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/$directory/$name")) // null
     println("Thread.currentThread().contextClassLoader.getResourceAsStream($directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("$directory/$name")) // null
@@ -264,7 +273,11 @@ object Utils : Utils() {
 //      return Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
     }
 
-    return Image("./../../../$directory/$name")
+   println(Image(this.javaClass.getResource("$directory/$name").path).resource)
+   println(Image(this.javaClass.getResource("./../../../$directory/$name").path).resource)
+    return Image("/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+//    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+//    return Image("$directory/$name")
 
     //return null
   }
