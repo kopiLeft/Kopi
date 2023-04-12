@@ -60,49 +60,58 @@ object Utils : Utils() {
    */
   private fun getImageImpl(img: String): Image {
     println()
-    println("============================ org/kopi/vkopi/lib/ui/vaadin/resource ============================")
-    getImageFromResource( "org/kopi/vkopi/lib/ui/vaadin/resource", img)
+//    println("============================ org/kopi/vkopi/lib/ui/vaadin/resource ============================")
+//    getImageFromResource( "org/kopi/vkopi/lib/ui/vaadin/resource", img)
+//
+//    println()
+//    println("============================ org/kopi/vkopi/lib/resource ============================")
+//    getImageFromResource( "org/kopi/vkopi/lib/resource", img)
+//
+//
+//    println()
+//    println("============================= ui/vaadin ============================")
+//    getImageFromResource( "ui/vaadin", img)
+//
+//    println()
+//    println("============================ org/kopi/galite/visual ============================")
+//    getImageFromResource( "org/kopi/galite/visual", img)
+//
+//    println()
+//    println("============================ vkopi/lib/resource ============================")
+//    getImageFromResource( "vkopi/lib/resource", img)
+//
+//    println()
+//    println("============================ META-INF/resources/org/kopi/galite/visual ============================")
+//    getImageFromResource( "META-INF/resources/org/kopi/galite/visual", img)
+//
+//    println()
+//    println("============================ META-INF/resources/ui/visual ============================")
+//    getImageFromResource( "META-INF/resources/ui/visual", img)
+//
+//    println()
+//    println("============================ ./Kopi/src/resources/META-INF/resources/ui/visual ============================")
+//    getImageFromResource( "./Kopi/src/resources/META-INF/resources/ui/visual", img)
+//
+//    println()
+//    println("============================ ./Kopi/src/resources/org/kopi/galite/visual ============================")
+//    getImageFromResource( "./Kopi/src/resources/org/kopi/galite/visual", img)
+//
+//    println()
+//    println("============================ galite/visual ============================")
+//    getImageFromResource( "galite/visual", img)
+//
+//    println()
+//    println("============================ ../resources/org/kopi/galite/visual ============================")
+//    getImageFromResource( "../resources/org/kopi/galite/visual", img)
+
 
     println()
-    println("============================ org/kopi/vkopi/lib/resource ============================")
-    getImageFromResource( "org/kopi/vkopi/lib/resource", img)
-
-
-    println()
-    println("============================= ui/vaadin ============================")
-    getImageFromResource( "ui/vaadin", img)
+    println("============================ ui/vaadin/resource ============================")
+    getImageFromResource( "ui/vaadin/resource", img)
 
     println()
-    println("============================ org/kopi/galite/visual ============================")
-    getImageFromResource( "org/kopi/galite/visual", img)
-
-    println()
-    println("============================ vkopi/lib/resource ============================")
-    getImageFromResource( "vkopi/lib/resource", img)
-
-    println()
-    println("============================ META-INF/resources/org/kopi/galite/visual ============================")
-    getImageFromResource( "META-INF/resources/org/kopi/galite/visual", img)
-
-    println()
-    println("============================ META-INF/resources/ui/visual ============================")
-    getImageFromResource( "META-INF/resources/ui/visual", img)
-
-    println()
-    println("============================ ./Kopi/src/resources/META-INF/resources/ui/visual ============================")
-    getImageFromResource( "./Kopi/src/resources/META-INF/resources/ui/visual", img)
-
-    println()
-    println("============================ ./Kopi/src/resources/org/kopi/galite/visual ============================")
-    getImageFromResource( "./Kopi/src/resources/org/kopi/galite/visual", img)
-
-    println()
-    println("============================ galite/visual ============================")
-    getImageFromResource( "galite/visual", img)
-
-    println()
-    println("============================ ../resources/org/kopi/galite/visual ============================")
-    getImageFromResource( "../resources/org/kopi/galite/visual", img)
+    println("============================ resource ============================")
+    getImageFromResource( "resource", img)
 
 
 
@@ -187,36 +196,50 @@ object Utils : Utils() {
 //    // /usr/share/gco-kopiright-test/webapps
 
     println()
-    println("Utils::class.java.getResourceAsStream(./$directory/$name): "+{Utils::class.java.getResourceAsStream("./$directory/$name")})
-    println("Utils::class.java.getResourceAsStream($directory/$name): "+{Utils::class.java.getResourceAsStream("$directory/$name")})
-    println("Utils::class.java.getResourceAsStream(/$directory/$name): "+{Utils::class.java.getResourceAsStream("/$directory/$name")})
+    println("Utils::class.java.getResourceAsStream(./$directory/$name): "+{Utils::class.java.getResourceAsStream("./$directory/$name")}) // () -> java.io.InputStream!
+    println("Utils::class.java.getResourceAsStream($directory/$name): "+{Utils::class.java.getResourceAsStream("$directory/$name")})  // () -> java.io.InputStream!
+    println("Utils::class.java.getResourceAsStream(/$directory/$name): "+{Utils::class.java.getResourceAsStream("/$directory/$name")})  // () -> java.io.InputStream!
 
     println()
-    println("Utils::class.java.getResourceAsStream(/META-INF/resources/$directory/$name): "+{Utils::class.java.getResourceAsStream("/META-INF/resources/$directory/$name")})
-    println("Utils::class.java.getResourceAsStream(/$directory/$name): "+{Utils::class.java.getResourceAsStream("/$directory/$name")})
+    println("Utils::class.java.getResourceAsStream(/META-INF/resources/$directory/$name): "+{Utils::class.java.getResourceAsStream("/META-INF/resources/$directory/$name")})  // () -> java.io.InputStream!
+    println("Utils::class.java.getResourceAsStream(/$directory/$name): "+{Utils::class.java.getResourceAsStream("/$directory/$name")})  // () -> java.io.InputStream!
 
     println()
-    println("Utils::class.java.getResourceAsStream(META-INF/resources/$directory/$name): "+{Utils::class.java.getResourceAsStream("META-INF/resources/$directory/$name")})
-    println("Utils::class.java.getResourceAsStream($directory/$name): "+{Utils::class.java.getResourceAsStream("$directory/$name")})
+    println("Utils::class.java.getResourceAsStream(META-INF/resources/$directory/$name): "+{Utils::class.java.getResourceAsStream("META-INF/resources/$directory/$name")})  // () -> java.io.InputStream!
+    println("Utils::class.java.getResourceAsStream($directory/$name): "+{Utils::class.java.getResourceAsStream("$directory/$name")})  // () -> java.io.InputStream!
 
     println()
     println("================================================================")
+    println("this.javaClass.getResource(./../../../$directory/$name) === "+ this.javaClass.getResource("./../../../$directory/$name"))
+
+
+
     println("this.javaClass.getResource(.) === "+ this.javaClass.getResource("."))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadinflow/base/
     println("this.javaClass.getResource(./../../vaadin/resource) === "+ this.javaClass.getResource("./../../vaadin/resource"))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/
     println("this.javaClass.getResource(/) === "+ this.javaClass.getResource("/"))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/
     println("this.javaClass.getResource(ui/vaadin) === "+ this.javaClass.getResource("ui/vaadin"))
+    // null
     println("this.javaClass.getResource(/META-INF/resources/) === "+ this.javaClass.getResource("/META-INF/resources/"))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/META-INF/resources/
     println("this.javaClass.getResource(META-INF/resources/) === "+ this.javaClass.getResource("META-INF/resources/"))
+    // null
     println("this.javaClass.getResource(/) === "+ this.javaClass.getResource("/org/kopi/vkopi/lib/ui/vaadin/resource"))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/
     println("this.javaClass.getResource(/).path === "+ this.javaClass.getResource("/org/kopi/vkopi/lib/ui/vaadin/resource").path)
+    // /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/
     println("this::class.java.classLoader.getResource(.) === "+ this::class.java.classLoader.getResource("."))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/
     println("Thread.currentThread().contextClassLoader.getResource(.) === "+ Thread.currentThread().contextClassLoader.getResource("."))
-    println("Thread.currentThread().contextClassLoader.getResourceAsStream(./$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./$directory/$name"))
-    println("Thread.currentThread().contextClassLoader.getResourceAsStream(/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/$directory/$name"))
-    println("Thread.currentThread().contextClassLoader.getResourceAsStream($directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("$directory/$name"))
-    println("Thread.currentThread().contextClassLoader.getResourceAsStream(/META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/META-INF/resources/$directory/$name"))
-    println("Thread.currentThread().contextClassLoader.getResourceAsStream(./META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./META-INF/resources/$directory/$name"))
-    println("Thread.currentThread().contextClassLoader.getResourceAsStream(META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("META-INF/resources/$directory/$name"))
+    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(./$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./$directory/$name")) // null
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/$directory/$name")) // null
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream($directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("$directory/$name")) // null
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(/META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/META-INF/resources/$directory/$name")) // null
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(./META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./META-INF/resources/$directory/$name")) // null
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("META-INF/resources/$directory/$name")) // null
 
     if (Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/$directory/$name") != null) { // FIXME
       println(Utils::class.java.classLoader.getResourceAsStream("$directory/$name").toString())
@@ -241,7 +264,7 @@ object Utils : Utils() {
 //      return Image("WEB-INF/classes/org/kopi/vkopi/lib/resource/$name")
     }
 
-    return Image("$directory/$name")
+    return Image("./../../../$directory/$name")
 
     //return null
   }
@@ -400,8 +423,9 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
-  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
+//  private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
 //  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
+  private const val VAADIN_RESOURCE_DIR = "ui/vaadin/resource"
   private const val THEME_DIR = "resource"
   private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
