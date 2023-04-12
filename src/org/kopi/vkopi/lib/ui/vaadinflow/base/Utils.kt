@@ -168,22 +168,23 @@ object Utils : Utils() {
     println()
     println("directory/name = $directory/$name") // org/kopi/vkopi/lib/ui/vaadin/resource/*.png
     println("Working Directory = ${System.getProperty("user.dir")}") // /usr/share/gco-kopiright-test
+
     println("Utils::class.classLoader.getResource = ${Utils::class.java.classLoader.getResource("META-INF/resources/$directory/$name")}")
 // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/*.png
-    println("Utils::class.classLoader.getResourceAsStream = ${Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/$directory/$name")}")
-  // java.io.ByteArrayInputStream@26d1769e
+//    println("Utils::class.classLoader.getResourceAsStream = ${Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/$directory/$name")}")
+//  // java.io.ByteArrayInputStream@26d1769e
     println("this.javaClass.classLoader.getResource = ${this.javaClass.classLoader.getResource("META-INF/resources/$directory/$name")}")
    // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/*.png
-    println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("META-INF/resources/$directory/$name")}")
-  // java.io.ByteArrayInputStream@16d46111
-    println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
-   //   /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes
-    println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.toFile().absolutePath}")
-   // /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF
-    println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
-    // /usr/share/gco-kopiright-test/webapps/gco-kopi-test
-    println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
-    // /usr/share/gco-kopiright-test/webapps
+//    println("this.javaClass.classLoader.getResourceAsStream = ${this.javaClass.classLoader.getResourceAsStream("META-INF/resources/$directory/$name")}")
+//  // java.io.ByteArrayInputStream@16d46111
+//    println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
+//   //   /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes
+//    println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.toFile().absolutePath}")
+//   // /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF
+//    println("path 3 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.toFile().absolutePath}")
+//    // /usr/share/gco-kopiright-test/webapps/gco-kopi-test
+//    println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
+//    // /usr/share/gco-kopiright-test/webapps
 
     println()
     println("Utils::class.java.getResourceAsStream(./$directory/$name): "+{Utils::class.java.getResourceAsStream("./$directory/$name")})
@@ -200,6 +201,10 @@ object Utils : Utils() {
 
     println()
     println("================================================================")
+    println("this.javaClass.getResource(.) === "+ this.javaClass.getResource("."))
+    println("this.javaClass.getResource(/) === "+ this.javaClass.getResource("/"))
+    println("this::class.java.classLoader.getResource(.) === "+ this::class.java.classLoader.getResource("."))
+    println("Thread.currentThread().contextClassLoader.getResource(.) === "+ Thread.currentThread().contextClassLoader.getResource("."))
     println("Thread.currentThread().contextClassLoader.getResourceAsStream(./$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./$directory/$name"))
     println("Thread.currentThread().contextClassLoader.getResourceAsStream(/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/$directory/$name"))
     println("Thread.currentThread().contextClassLoader.getResourceAsStream($directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("$directory/$name"))
