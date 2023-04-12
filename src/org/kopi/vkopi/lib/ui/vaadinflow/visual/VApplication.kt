@@ -23,6 +23,24 @@ import java.util.Locale
 import java.util.MissingResourceException
 import java.util.ResourceBundle
 
+import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.dependency.CssImport
+import com.vaadin.flow.component.dialog.Dialog
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.page.AppShellConfigurator
+import com.vaadin.flow.component.page.Push
+import com.vaadin.flow.router.HasDynamicTitle
+import com.vaadin.flow.router.PreserveOnRefresh
+import com.vaadin.flow.server.AppShellRegistry
+import com.vaadin.flow.server.AppShellSettings
+import com.vaadin.flow.server.ServiceInitEvent
+import com.vaadin.flow.server.VaadinServiceInitListener
+import com.vaadin.flow.server.VaadinServlet
+import com.vaadin.flow.server.VaadinSession
+import com.vaadin.flow.shared.communication.PushMode
+
+import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -56,29 +74,10 @@ import org.kopi.vkopi.lib.visual.PropertyException
 import org.kopi.vkopi.lib.visual.Registry
 import org.kopi.vkopi.lib.visual.UIFactory
 import org.kopi.vkopi.lib.visual.VMenuTree
+import org.kopi.vkopi.lib.visual.VRuntimeException
 import org.kopi.vkopi.lib.visual.VerifyConfiguration
 import org.kopi.vkopi.lib.visual.VlibProperties
 import org.kopi.vkopi.lib.visual.WindowController
-
-import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Component
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.dependency.CssImport
-import com.vaadin.flow.component.dialog.Dialog
-import com.vaadin.flow.component.orderedlayout.VerticalLayout
-import com.vaadin.flow.component.page.AppShellConfigurator
-import com.vaadin.flow.component.page.Push
-import com.vaadin.flow.router.HasDynamicTitle
-import com.vaadin.flow.router.PreserveOnRefresh
-import com.vaadin.flow.server.AppShellRegistry
-import com.vaadin.flow.server.AppShellSettings
-import com.vaadin.flow.server.ServiceInitEvent
-import com.vaadin.flow.server.VaadinServiceInitListener
-import com.vaadin.flow.server.VaadinServlet
-import com.vaadin.flow.server.VaadinSession
-import com.vaadin.flow.shared.communication.PushMode
-import org.kopi.vkopi.lib.visual.VRuntimeException
-import org.kopi.xkopi.lib.base.DBContext
 
 /**
  * The entry point for all Galite WEB applications.
@@ -91,8 +90,7 @@ import org.kopi.xkopi.lib.base.DBContext
   CssImport("./styles/galite/common.css")
 ])
 @Suppress("LeakingThis")
-abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener,
-  HasDynamicTitle {
+abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener, HasDynamicTitle {
 
   override fun getRegistry(): Registry = registry
   //---------------------------------------------------
@@ -238,11 +236,12 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
                                      Message.getMessage("confirm_quit"),
                                      notificationLocale,
                                      mainWindow)
-
     dialog.yesIsDefault = false
     dialog.addNotificationListener(object : NotificationListener {
       override fun onClose(yes: Boolean?) {
         if (yes == true) {
+          // close DB connection
+          closeConnection()
           // show welcome screen
           gotoWelcomeView()
         }
@@ -263,6 +262,10 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     mainWindow!!.setBookmarksMenu(DBookmarkMenu(menu!!))
     mainWindow!!.setWorkspaceContextItemMenu(DBookmarkMenu(menu!!))
     mainWindow!!.connectedUser = userName
+    mainWindow!!.addDetachListener {event ->
+      //closing DB connection
+      closeConnection()
+    }
   }
 
   fun remove(mainWindow: MainWindow?) {
@@ -336,9 +339,6 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     }
   }
 
-  // --------------------------------------------------
-  // PRIVATE MEMBERS
-  // --------------------------------------------------
   /**
    * Tries to connect to the database using user name and password
    * provided by the login window.
@@ -368,6 +368,10 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
       setTraceLevel()
     }
   }
+
+  // --------------------------------------------------
+  // PRIVATE MEMBERS
+  // --------------------------------------------------
 
   override fun isNobugReport(): Boolean = java.lang.Boolean.parseBoolean(getInitParameter("nobugreport"))
 
@@ -488,6 +492,21 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    */
   protected fun setTraceLevel() {
 
+  }
+
+  /**
+   * Closes the database connection
+   */
+  fun closeConnection() {
+    try {
+      if (dbContext != null) {
+        dbContext!!.close()
+        dbContext = null
+      }
+    } catch (e: SQLException) {
+      // we don't care, we reinitialize the connection
+      dbContext = null
+    }
   }
 
   /**
