@@ -280,7 +280,7 @@ object Utils : Utils() {
 //
 //   println(Image(this.javaClass.getResource("$directory/$name").path).resource)
 //   println(Image(this.javaClass.getResource("./../../../$directory/$name").path).resource)
-    return Image("/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
+    return Image("/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //    return Image("$directory/$name")
 
