@@ -185,6 +185,28 @@ object Utils : Utils() {
     println("path 4 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).parent.parent.parent.toFile().absolutePath}")
     // /usr/share/gco-kopiright-test/webapps
 
+    println()
+    println("Utils::class.java.getResourceAsStream(./$directory/$name): "+{Utils::class.java.getResourceAsStream("./$directory/$name")})
+    println("Utils::class.java.getResourceAsStream($directory/$name): "+{Utils::class.java.getResourceAsStream("$directory/$name")})
+    println("Utils::class.java.getResourceAsStream(/$directory/$name): "+{Utils::class.java.getResourceAsStream("/$directory/$name")})
+
+    println()
+    println("Utils::class.java.getResourceAsStream(/META-INF/resources/$directory/$name): "+{Utils::class.java.getResourceAsStream("/META-INF/resources/$directory/$name")})
+    println("Utils::class.java.getResourceAsStream(/$directory/$name): "+{Utils::class.java.getResourceAsStream("/$directory/$name")})
+
+    println()
+    println("Utils::class.java.getResourceAsStream(META-INF/resources/$directory/$name): "+{Utils::class.java.getResourceAsStream("META-INF/resources/$directory/$name")})
+    println("Utils::class.java.getResourceAsStream($directory/$name): "+{Utils::class.java.getResourceAsStream("$directory/$name")})
+
+    println()
+    println("================================================================")
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(./$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./$directory/$name"))
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/$directory/$name"))
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream($directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("$directory/$name"))
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(/META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("/META-INF/resources/$directory/$name"))
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(./META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("./META-INF/resources/$directory/$name"))
+    println("Thread.currentThread().contextClassLoader.getResourceAsStream(META-INF/resources/$directory/$name) === "+ Thread.currentThread().contextClassLoader.getResourceAsStream("META-INF/resources/$directory/$name"))
+
     if (Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/$directory/$name") != null) { // FIXME
       println(Utils::class.java.classLoader.getResourceAsStream("$directory/$name").toString())
 
