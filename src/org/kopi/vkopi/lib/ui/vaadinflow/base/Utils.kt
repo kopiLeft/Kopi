@@ -235,6 +235,11 @@ object Utils : Utils() {
     // null
     println("this.javaClass.getResource(/org/kopi/vkopi/lib/ui/vaadin/resource).path === "+ this.javaClass.getResource("/org/kopi/vkopi/lib/ui/vaadin/resource").path)
     // /usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/
+    println("this::class.java.classLoader.getResource(/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name) === "+ this::class.java.classLoader.getResource("/WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name"))
+    println("this::class.java.classLoader.getResource(./WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name) === "+ this::class.java.classLoader.getResource("./WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name"))
+
+
+
     println("this::class.java.classLoader.getResource(.) === "+ this::class.java.classLoader.getResource("."))
     // file:/usr/share/gco-kopiright-test/webapps/gco-kopi-test/WEB-INF/classes/
     println("Thread.currentThread().contextClassLoader.getResource(.) === "+ Thread.currentThread().contextClassLoader.getResource("."))
