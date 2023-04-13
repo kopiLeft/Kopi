@@ -222,6 +222,7 @@ tasks {
         val galiteBuildDirVaadin = "$galiteBuildDir/galite-core/src/main/kotlin/org/kopi/galite/visual/ui/vaadin"
         val vaadinDir = file("./src/org/kopi/vkopi/lib/ui/vaadinflow")
         val frontendDir = "./src/resources/META-INF/resources/frontend"
+      //  val resourcesDir = "./src/resources/META-INF/resources/org/kopi/vkopi/lib/resource"
 
         file(galiteBuildDir).deleteRecursively()
         vaadinDir.deleteRecursively()
@@ -325,6 +326,13 @@ tasks {
           from("$galiteBuildDir/galite-core/src/main/resources/META-INF/resources/frontend")
           into(frontendDir)
         }
+//
+//        file(resourcesDir).deleteRecursively()
+//        // Copy resources
+//        copy {
+//          from("$galiteBuildDir/galite-core/src/main/resources/org/kopi/galite/visual")
+//          into(resourcesDir)
+//        }
 
         // cleanup build dir
         file(galiteBuildDir).deleteRecursively()
