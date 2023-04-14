@@ -212,7 +212,7 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
 
   private static final String			VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource";
   private static final String			THEME_DIR = "resource";
-  private static final String			APPLICATION_DIR = "resourcess";
+  private static final String			APPLICATION_DIR = "resources";
   private static final String			RESOURCE_DIR	= "org/kopi/vkopi/lib/resource";
   public  static final Image			UKN_IMAGE = new Image(new ThemeResource(THEME_DIR + "/" + "unknown.png"));
 	  

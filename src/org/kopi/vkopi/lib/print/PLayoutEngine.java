@@ -236,7 +236,7 @@ class PLayoutEngine {
 
 
 
-      URL url = Utils.getURLFromResource(ttfName+".TTF", "resourcess");
+      URL url = Utils.getURLFromResource(ttfName+".TTF", "resources");
 
       if (url != null) {
         BaseFont base = BaseFont.createFont(url.toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);

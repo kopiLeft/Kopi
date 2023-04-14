@@ -54,7 +54,7 @@ public class ImageFieldConnector extends ObjectFieldConnector {
   /**
    * Sets the image of the field.
    */
-  @OnStateChange("resourcess")
+  @OnStateChange("resources")
   /*package*/ void setImage() {
     if (getIcon() != null) {
       getWidget().setImage(getIconUri());

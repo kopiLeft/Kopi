@@ -81,7 +81,7 @@ public class MainWindowConnector extends AbstractComponentContainerConnector imp
     return (MainWindowState) super.getState();
   }
   
-  @OnStateChange("resourcess")
+  @OnStateChange("resources")
   /*package*/ void setLogo() {
     String		uri = getIconUri();
     

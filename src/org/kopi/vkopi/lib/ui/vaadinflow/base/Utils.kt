@@ -450,7 +450,7 @@ object Utils : Utils() {
 //  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val VAADIN_RESOURCE_DIR = ""
   private const val THEME_DIR = "resource"
-  private const val APPLICATION_DIR = "resourcess"
+  private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()

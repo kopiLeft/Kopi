@@ -52,7 +52,7 @@ public class EditorImageFieldConnector extends EditorFieldConnector implements C
   /**
    * Sets the image of the field.
    */
-  @OnStateChange("resourcess")
+  @OnStateChange("resources")
   /*package*/ void setImage() {
     if (getIcon() != null) {
       getWidget().setImage(getIconUri());
