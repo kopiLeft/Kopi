@@ -74,7 +74,7 @@ public class WelcomeViewConnector extends AbstractComponentConnector implements 
     getWidget().clear();
   }
   
-  @OnStateChange("resources")
+  @OnStateChange("resourcess")
   /*package*/ void setResources() {
     String		logo = getResourceUrl("logo");
     String              slogan = getResourceUrl("slogan");

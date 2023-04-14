@@ -285,7 +285,7 @@ object Utils : Utils() {
     println("========getResource=======META-INF/resources/ui/vaadin/$name================"+Utils::class.java.classLoader.getResource("META-INF/resources/ui/vaadin/$name"))
     println("=======getResourceAsStream========META-INF/resources/org/kopi/vkopi/lib/resource/$name================"+Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/org/kopi/vkopi/lib/resource/$name"))
     println("======getResourceAsStream=========META-INF/resources/ui/vaadin/$name================"+Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/ui/vaadin/$name"))
-    return Image("org/kopi/vkopi/lib/resource/$name")
+    return Image("org/kopi/vkopi/lib/$name")
 //    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //    return Image("$directory/$name")
 
@@ -450,7 +450,7 @@ object Utils : Utils() {
 //  private const val VAADIN_RESOURCE_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val VAADIN_RESOURCE_DIR = ""
   private const val THEME_DIR = "resource"
-  private const val APPLICATION_DIR = "resources"
+  private const val APPLICATION_DIR = "resourcess"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
   private val cache = Hashtable<String, Image>()

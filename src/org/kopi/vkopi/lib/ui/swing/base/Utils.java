@@ -108,7 +108,7 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
 
   private static Hashtable<String, ImageIcon>	cache = new Hashtable<String, ImageIcon>();
 
-  public static final String    APPLICATION_DIR = "resources";
+  public static final String    APPLICATION_DIR = "resourcess";
   public static final ImageIcon UKN_IMAGE = new ImageIcon("unknown");
   public static final String	RESOURCE_DIR	= "org/kopi/vkopi/lib/resource";
 }

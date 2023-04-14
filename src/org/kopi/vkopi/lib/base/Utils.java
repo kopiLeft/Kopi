@@ -285,7 +285,7 @@ public class Utils extends org.kopi.util.base.Utils {
   // PRIVATE DATA
   // ----------------------------------------------------------------------
 
-  public static final String    APPLICATION_DIR = "resources";
+  public static final String    APPLICATION_DIR = "resourcess";
   public static final String	RESOURCE_DIR	= "org/kopi/vkopi/lib/resource";
   private static final String[] DEFAULT_VERSION = new String[] {
     "No version information available.",
