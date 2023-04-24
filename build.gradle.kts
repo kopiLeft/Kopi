@@ -22,17 +22,7 @@ import org.kopi.gradle.common.clean
 import org.kopi.gradle.common.withExtension
 import org.kopi.gradle.dsl.modules
 import org.kopi.gradle.dsl.topDir
-import org.kopi.gradle.tasks.copyProperties
-import org.kopi.gradle.tasks.javac
-import org.kopi.gradle.tasks.jcc
-import org.kopi.gradle.tasks.jflex
-import org.kopi.gradle.tasks.lexinc
-import org.kopi.gradle.tasks.messageGen
-import org.kopi.gradle.tasks.optionGen
-import org.kopi.gradle.tasks.resources
-import org.kopi.gradle.tasks.scriptExecutor
-import org.kopi.gradle.tasks.tokenGen
-import org.kopi.gradle.tasks.xkjc
+import org.kopi.gradle.tasks.*
 
 // Passing project variable to buildSrc
 
@@ -195,6 +185,7 @@ tasks {
   }
 
   named("jar") {
+    dependsOn("copyResources")
     dependsOn("run")
     mustRunAfter("run")
   }
@@ -765,6 +756,11 @@ tasks {
 
     }
   }
+}
+
+// Copier les resources dans la répertoire de compilation
+copyResources {
+  this.dest = project.the<SourceSetContainer>()["main"].output.resourcesDir!!.path
 }
 
 /** ------ Global error handling message ------ */

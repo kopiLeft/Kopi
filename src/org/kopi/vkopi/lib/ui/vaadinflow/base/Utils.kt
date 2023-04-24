@@ -24,6 +24,7 @@ import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.dom.Element
+import com.vaadin.flow.server.VaadinService
 import org.kopi.vkopi.lib.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.PopupWindow
@@ -285,7 +286,8 @@ object Utils : Utils() {
     println("========getResource=======META-INF/resources/ui/vaadin/$name================"+Utils::class.java.classLoader.getResource("META-INF/resources/ui/vaadin/$name"))
     println("=======getResourceAsStream========META-INF/resources/org/kopi/vkopi/lib/resource/$name================"+Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/org/kopi/vkopi/lib/resource/$name"))
     println("======getResourceAsStream=========META-INF/resources/ui/vaadin/$name================"+Utils::class.java.classLoader.getResourceAsStream("META-INF/resources/ui/vaadin/$name"))
-    return Image(name)
+//    return Image(VaadinService.getCurrent().getBaseDirectory().getAbsolutePath()+"WEB-INF/classes/org/kopi/vkopi/lib/resource/"+name)
+    return Image("ui/vaadin/$name")
 //    return Image("WEB-INF/classes/org/kopi/vkopi/lib/ui/vaadin/resource/$name")
 //    return Image("$directory/$name")
 
