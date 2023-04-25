@@ -185,7 +185,6 @@ tasks {
   }
 
   named("jar") {
-    dependsOn("copyResources")
     dependsOn("run")
     mustRunAfter("run")
   }
@@ -213,7 +212,6 @@ tasks {
         val galiteBuildDirVaadin = "$galiteBuildDir/galite-core/src/main/kotlin/org/kopi/galite/visual/ui/vaadin"
         val vaadinDir = file("./src/org/kopi/vkopi/lib/ui/vaadinflow")
         val frontendDir = "./src/resources/META-INF/resources/frontend"
-      //  val resourcesDir = "./src/resources/META-INF/resources/org/kopi/vkopi/lib/resource"
 
         file(galiteBuildDir).deleteRecursively()
         vaadinDir.deleteRecursively()
@@ -756,11 +754,6 @@ tasks {
 
     }
   }
-}
-
-// Copier les resources dans la répertoire de compilation
-copyResources {
-  this.dest = project.the<SourceSetContainer>()["main"].output.resourcesDir!!.path
 }
 
 /** ------ Global error handling message ------ */
