@@ -59,7 +59,7 @@ object BackgroundThreadHandler {
     println("========== IN ACCESS METHOD ===========  ")
     if (UI.getCurrent() != null) {
       println("**** **** ***** UI.getCurrent() is not null here is the value : ${UI.getCurrent().page}")
-      println(" ====== currentUI is attached ? =+>  ${currentUI.isAttached}")
+      println(" ====== currentUI is attached ? =+>  ${UI.getCurrent().isAttached}")
 
       UI.getCurrent().access {
         command()
