@@ -58,7 +58,7 @@ object BackgroundThreadHandler {
   fun accessAndPush(currentUI: UI? = null, command: () -> Unit) {
     println("========== IN ACCESS METHOD ===========  ")
     if (UI.getCurrent() != null) {
-      println(UI.getCurrent().toString())
+      println("**** **** ***** UI.getCurrent() is not null here is the value : ${UI.getCurrent().page}")
       UI.getCurrent().access {
         command()
         UI.getCurrent().push()
@@ -68,16 +68,19 @@ object BackgroundThreadHandler {
     }
 
     val currentUI = currentUI ?: locateUI()
-    println("######### in case the  initial value is null")
-    println(" =======+>  $currentUI")
+    println("######### in case the UI.getCurrent() is null")
     if (currentUI == null) {
       command()
     } else {
+      println(" =======+>  ${currentUI.page}")
       currentUI.access {
         try {
           command()
         } finally {
           currentUI.push()
+          println(" ************* push config ************ ${currentUI.pushConfiguration.pushUrl} ")
+          println( " ************* push config ************ ${currentUI.pushConfiguration.fallbackTransport}")
+
         }
       }
     }
@@ -163,6 +166,7 @@ object BackgroundThreadHandler {
   fun releaseLock(lock: Object) {
     synchronized(lock) {
       lock.notifyAll()
+      println("notifying all => lock released #######")
     }
   }
 

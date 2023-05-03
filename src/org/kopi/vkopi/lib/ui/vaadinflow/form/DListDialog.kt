@@ -360,7 +360,10 @@ class DListDialog(
    * Shows the dialog and wait until it is closed from client side.
    */
   internal fun showDialogAndWait() {
+    println("______________ IN showDialogAndWait _________________ ")
     startAndWaitAndPush(lock, currentUI) {
+      println("///////////// showListDialog  //////////////")
+
       showListDialog()
     }
   }
@@ -377,6 +380,7 @@ class DListDialog(
    * This will show a user notification.
    */
   private fun handleTooManyRows() {
+    println("___________________ In handleTooManyRows() _________________")
     val lock = Object()
     val application = application
     val notice = InformationNotification(
@@ -392,6 +396,7 @@ class DListDialog(
       }
     })
     startAndWaitAndPush(lock, currentUI) {
+      println("///////////// methode notice dans start and waait and push  //////////////")
       notice.show()
     }
   }
