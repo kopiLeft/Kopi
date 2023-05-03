@@ -361,9 +361,12 @@ class DListDialog(
    */
   internal fun showDialogAndWait() {
     println("______________ IN showDialogAndWait _________________ ")
+    println("====== ====== lock : ====> $lock")
+    if (currentUI != null) {
+      println("====== ====== cuurentUI : ====> ${currentUI!!.page}")
+    }
     startAndWaitAndPush(lock, currentUI) {
       println("///////////// showListDialog  //////////////")
-
       showListDialog()
     }
   }
@@ -440,6 +443,9 @@ class DListDialog(
   var currentUI: UI? = null
 
   override fun onAttach(attachEvent: AttachEvent) {
+    println("=====  ======  ===== onAttach method of the DlistDialog ===== ===== ===== ")
     currentUI = attachEvent.ui
+    println("this is the current ui of the attach event ${currentUI!!.page}")
+    println("===========================================================================")
   }
 }

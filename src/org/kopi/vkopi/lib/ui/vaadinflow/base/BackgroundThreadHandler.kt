@@ -59,6 +59,8 @@ object BackgroundThreadHandler {
     println("========== IN ACCESS METHOD ===========  ")
     if (UI.getCurrent() != null) {
       println("**** **** ***** UI.getCurrent() is not null here is the value : ${UI.getCurrent().page}")
+      println(" ====== currentUI is attached ? =+>  ${currentUI.isAttached}")
+
       UI.getCurrent().access {
         command()
         UI.getCurrent().push()
@@ -68,19 +70,18 @@ object BackgroundThreadHandler {
     }
 
     val currentUI = currentUI ?: locateUI()
-    println("######### in case the UI.getCurrent() is null")
     if (currentUI == null) {
       command()
     } else {
-      println(" =======+>  ${currentUI.page}")
+      println(" ====== currentUI is attached ? =+>  ${currentUI.isAttached}")
+      println(" ====== currentUI element text ? =+>  ${currentUI.element.text}")
       currentUI.access {
         try {
           command()
         } finally {
+          println("before pushing the ui")
           currentUI.push()
-          println(" ************* push config ************ ${currentUI.pushConfiguration.pushUrl} ")
           println( " ************* push config ************ ${currentUI.pushConfiguration.fallbackTransport}")
-
         }
       }
     }
@@ -148,11 +149,13 @@ object BackgroundThreadHandler {
    * @param command   The command which accesses the UI.
    */
   fun startAndWaitAndPush(lock: Object, currentUI: UI? = null, command: () -> Unit) {
+    println("==== ==== ==== In startAndWaitAndPush() ==== ==== ==== ")
     accessAndPush(currentUI = currentUI, command = command)
-
+    println("======= lock =====> $lock")
     synchronized(lock) {
       try {
         lock.wait()
+        println("=============================== after lock.wait() ========================")
       } catch (e: InterruptedException) {
         e.printStackTrace()
       }
@@ -164,6 +167,8 @@ object BackgroundThreadHandler {
    * @param lock The lock object.
    */
   fun releaseLock(lock: Object) {
+    println("=========== ============ releaseLock ========== ==========")
+    println("====== lock: =====$lock")
     synchronized(lock) {
       lock.notifyAll()
       println("notifying all => lock released #######")

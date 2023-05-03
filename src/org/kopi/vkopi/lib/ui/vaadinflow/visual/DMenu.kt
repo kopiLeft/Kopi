@@ -208,6 +208,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
   override fun setWaitDialog(message: String, maxtime: Int) {}
   override fun unsetWaitDialog() {}
   override fun setWaitInfo(message: String?) {
+    println("===== ==== ===== In setWaitInfo() === ===== ===== ")
     accessAndPush(currentUI) {
       waitIndicator.setText(message)
       waitIndicator.show()
@@ -215,6 +216,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
   }
 
   override fun unsetWaitInfo() {
+    println("===== ==== ===== In unsetWaitInfo() === ===== ===== ")
     accessAndPush(currentUI) {
       waitIndicator.setText(null)
       waitIndicator.close()
