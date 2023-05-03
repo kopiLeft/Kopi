@@ -38,9 +38,6 @@ object BackgroundThreadHandler {
   fun access(currentUI: UI? = null, command: () -> Unit) {
     if (UI.getCurrent() != null) {
       command()
-      UI.getCurrent().access {
-        UI.getCurrent().push()
-      }
 
       return
     }
@@ -59,14 +56,20 @@ object BackgroundThreadHandler {
    * @param command the command which accesses the UI.
    */
   fun accessAndPush(currentUI: UI? = null, command: () -> Unit) {
+    println("========== IN ACCESS METHOD ===========  ")
+    println(UI.getCurrent().toString())
     if (UI.getCurrent() != null) {
       command()
+      UI.getCurrent().access {
+        UI.getCurrent().push()
+      }
 
       return
     }
 
     val currentUI = currentUI ?: locateUI()
-
+    println("######### in case the  initial value is null")
+    println(" =======+>  $currentUI")
     if (currentUI == null) {
       command()
     } else {
