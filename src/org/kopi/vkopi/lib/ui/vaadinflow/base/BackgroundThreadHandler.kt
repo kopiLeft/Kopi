@@ -38,6 +38,9 @@ object BackgroundThreadHandler {
   fun access(currentUI: UI? = null, command: () -> Unit) {
     if (UI.getCurrent() != null) {
       command()
+      UI.getCurrent().access {
+        UI.getCurrent().push()
+      }
 
       return
     }
