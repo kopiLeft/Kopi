@@ -57,10 +57,10 @@ object BackgroundThreadHandler {
    */
   fun accessAndPush(currentUI: UI? = null, command: () -> Unit) {
     println("========== IN ACCESS METHOD ===========  ")
-    println(UI.getCurrent().toString())
     if (UI.getCurrent() != null) {
-      command()
+      println(UI.getCurrent().toString())
       UI.getCurrent().access {
+        command()
         UI.getCurrent().push()
       }
 
