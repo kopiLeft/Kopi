@@ -91,6 +91,8 @@ class FileUploader : Receiver {
    * Closes the uploader dialog containing the uploader.
    */
   fun close() {
+    println("   * Closes the uploader dialog containing the uploader.    *")
+    println("*************** in close() *************** ")
     accessAndPush {
       uploadDialog.close()
     }

@@ -215,6 +215,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    * @param notification The notification to be shown
    */
   protected open fun showNotification(notification: AbstractNotification) {
+    println("***************** showNotification() ***************")
     accessAndPush(currentUI) {
       notification.show()
     }
@@ -541,6 +542,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
       welcomeView!!.setSizeFull() // important to get the full screen size.
       welcomeView!!.addWelcomeViewListener { event: WelcomeViewEvent ->
         welcomeView!!.setWaitInfo()
+        println("**************** in  gotoWelcomeView() ****************")
         Thread {
           accessAndPush(currentUI) {
             try {

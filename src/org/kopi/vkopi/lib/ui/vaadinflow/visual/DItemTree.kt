@@ -282,6 +282,7 @@ class DItemTree(model: VItemTree) : DWindow(model), UItemTree {
     if (inputDialog == null) {
       createInputDialog(localisation)
     }
+    println(" ################### showInputDialog() #################### ")
     accessAndPush(currentUI) {
       editTextField.value = if (newItem) "" else if (localisation) if (item.localisedName != null) item.localisedName else "" else item.name
       editTextField.maxLength = maxLength

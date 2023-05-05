@@ -104,6 +104,7 @@ class DReport(private val report: VReport) : DWindow(report), UReport {
    */
   fun reorder(newOrder: IntArray) {
     model.columnMoved(newOrder)
+    println("****************** ")
     accessAndPush(currentUI) {
       table.setColumnOrder(
         newOrder.map { table.getColumnByKey(it.toString()) }

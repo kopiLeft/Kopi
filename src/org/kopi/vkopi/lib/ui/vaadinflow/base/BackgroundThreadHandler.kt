@@ -59,7 +59,6 @@ object BackgroundThreadHandler {
     println(" ========== IN accessAndPush() =========== ")
     if (UI.getCurrent() != null) {
       println("**** **** ***** UI.getCurrent() is not null here is the value : ${UI.getCurrent().page}")
-      println(" ====== currentUI is attached  =+>  ${UI.getCurrent().isAttached}")
       command()
 
       return
@@ -69,8 +68,7 @@ object BackgroundThreadHandler {
     if (currentUI == null) {
       command()
     } else {
-      println(" ====== currentUI is attached  =+>  ${currentUI.isAttached}")
-      println(" ====== currentUI element text  =+>  ${currentUI.element.text}")
+      println(" ====== currentUI page =+>  ${currentUI.page}")
       currentUI.access {
         try {
           command()

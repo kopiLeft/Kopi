@@ -96,6 +96,7 @@ class VWindowController : WindowController() {
           title: String,
   ) {
     val popup = PopupWindow(getApplication()?.mainWindow)
+    println("***************** in showNotModalPopupWindow() *******************")
     accessAndPush {
       popup.isModal = false
       popup.setContent(view)
