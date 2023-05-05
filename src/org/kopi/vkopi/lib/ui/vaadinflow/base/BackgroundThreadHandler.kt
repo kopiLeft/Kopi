@@ -56,15 +56,11 @@ object BackgroundThreadHandler {
    * @param command the command which accesses the UI.
    */
   fun accessAndPush(currentUI: UI? = null, command: () -> Unit) {
-    println("========== IN ACCESS METHOD ===========  ")
+    println(" ========== IN accessAndPush() =========== ")
     if (UI.getCurrent() != null) {
       println("**** **** ***** UI.getCurrent() is not null here is the value : ${UI.getCurrent().page}")
-      println(" ====== currentUI is attached ? =+>  ${UI.getCurrent().isAttached}")
-
-      UI.getCurrent().access {
-        command()
-        UI.getCurrent().push()
-      }
+      println(" ====== currentUI is attached  =+>  ${UI.getCurrent().isAttached}")
+      command()
 
       return
     }
@@ -73,15 +69,15 @@ object BackgroundThreadHandler {
     if (currentUI == null) {
       command()
     } else {
-      println(" ====== currentUI is attached ? =+>  ${currentUI.isAttached}")
-      println(" ====== currentUI element text ? =+>  ${currentUI.element.text}")
+      println(" ====== currentUI is attached  =+>  ${currentUI.isAttached}")
+      println(" ====== currentUI element text  =+>  ${currentUI.element.text}")
       currentUI.access {
         try {
           command()
         } finally {
           println("before pushing the ui")
           currentUI.push()
-          println( " ************* push config ************ ${currentUI.pushConfiguration.fallbackTransport}")
+          println("after pushing the ui")
         }
       }
     }

@@ -39,6 +39,8 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
+import com.vaadin.shared.ui.ui.Transport
+import com.vaadin.shared.ui.ui.Transport.WEBSOCKET
 
 import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
@@ -710,7 +712,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   }
 }
 
-@Push(PushMode.MANUAL)
+@Push(PushMode.MANUAL, transport = com.vaadin.flow.shared.ui.Transport.WEBSOCKET)
 class GaliteAppShellConfigurator: AppShellConfigurator {
 
   override fun configurePage(settings: AppShellSettings) {
