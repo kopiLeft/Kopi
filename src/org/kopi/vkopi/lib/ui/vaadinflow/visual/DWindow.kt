@@ -430,6 +430,7 @@ abstract class DWindow protected constructor(private var model: VWindow?) : Wind
 
   override fun setTitle(title: String) {
     println("************* IN  setTitle *******************")
+    println("****** title ***** $title")
     accessAndPush(currentUI) {
       setCaption(title)
     }
