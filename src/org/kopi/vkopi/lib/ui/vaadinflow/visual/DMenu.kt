@@ -217,21 +217,10 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
 
   override fun unsetWaitInfo() {
     println("===== ==== ===== In unsetWaitInfo() === ===== ===== ")
-    println("========== currentUI ============== ${currentUI?.id}")
-    if (application.currentUI != null)
-      application.currentUI!!.access {
-        println("detaching componenent")
-        waitIndicator.setText(null)
-        waitIndicator.close()
-        println("before pushing ui")
-        application.currentUI!!.push()
-        println("after pushing ui")
-
-      }
-//    accessAndPush(currentUI) {
-//      waitIndicator.setText(null)
-//      waitIndicator.close()
-//    }
+    accessAndPush(currentUI) {
+      waitIndicator.setText(null)
+      waitIndicator.close()
+    }
   }
 
 

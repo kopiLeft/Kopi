@@ -17,9 +17,8 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
-import java.util.concurrent.ExecutionException
-
 import com.vaadin.flow.component.UI
+import java.util.concurrent.ExecutionException
 
 /**
  * Collects some utilities for background threads in a vaadin application.
@@ -51,6 +50,23 @@ object BackgroundThreadHandler {
     }
   }
 
+  @Throws(Throwable::class)
+  fun launderThrowable(ex: Throwable) {
+    if (ex is ExecutionException) {
+      val cause = ex.cause
+
+      if (cause is RuntimeException) {
+        // Do not handle RuntimeExceptions
+        throw cause
+      } else {
+        println("******************* this the cause of the previous Exception *********************")
+        println(cause!!.stackTrace)
+      }
+    }
+
+  }
+
+
   /**
    * Exclusive access to the UI from a background thread to perform some updates.
    * @param command the command which accesses the UI.
@@ -74,7 +90,11 @@ object BackgroundThreadHandler {
           command()
         } finally {
           println("before pushing the ui")
-          currentUI.push()
+          try {
+            currentUI.push()
+          } catch (e: Throwable) {
+            launderThrowable(e)
+          }
           println("after pushing the ui")
         }
       }
