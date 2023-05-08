@@ -189,7 +189,7 @@ public class VMenuTree extends VWindow {
 
     switch (key) {
     case CMD_QUIT:
-      currentDisplay.closeWindow();
+      close(0);
       break;
     case CMD_OPEN:
       currentDisplay.launchSelectedForm();

@@ -119,8 +119,10 @@ object Utils : Utils() {
     println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
 
     if (Utils::class.java.classLoader.getResource("/$directory/$name") != null) { // FIXME
+      println("/$directory/$name : ${Image("$directory/$name")}")
       return Image("$directory/$name")
     } else if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
+      println("$directory/$name : ${Image("WEB-INF/classes/$directory/$name")}")
       return Image("WEB-INF/classes/$directory/$name")
     }
 
