@@ -57,6 +57,8 @@ object BackgroundThreadHandler {
 
       if (cause is RuntimeException) {
         // Do not handle RuntimeExceptions
+        println("******************* throwing RuntimeException  *********************")
+
         throw cause
       } else {
         println("******************* this the cause of the previous Exception *********************")
@@ -90,11 +92,11 @@ object BackgroundThreadHandler {
           command()
         } finally {
           println("before pushing the ui")
-          try {
-            currentUI.push()
-          } catch (e: Throwable) {
-            launderThrowable(e)
-          }
+//          try {
+          currentUI.push()
+//          } catch (e: Throwable) {
+//            launderThrowable(e)
+//          }
           println("after pushing the ui")
         }
       }
