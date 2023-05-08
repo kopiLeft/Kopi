@@ -117,6 +117,7 @@ object Utils : Utils() {
    */
   fun getImageFromResource(directory: String, name: String): Image? {
     println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
+    println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource("/").path).toFile().absolutePath}")
 
     if (Utils::class.java.classLoader.getResource("/$directory/$name") != null) { // FIXME
       println("/$directory/$name : ${Image("$directory/$name")}")
