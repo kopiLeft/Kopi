@@ -39,6 +39,8 @@ import com.vaadin.flow.server.VaadinServiceInitListener
 import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
+import com.vaadin.shared.ui.ui.Transport
+import com.vaadin.shared.ui.ui.Transport.WEBSOCKET
 
 import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
@@ -90,7 +92,6 @@ import org.kopi.vkopi.lib.visual.WindowController
   CssImport("./styles/galite/common.css")
 ])
 @Suppress("LeakingThis")
-@Push(PushMode.MANUAL, transport = com.vaadin.flow.shared.ui.Transport.WEBSOCKET_XHR)
 abstract class VApplication(private val registry: Registry) : VerticalLayout(), Application, MainWindowListener, HasDynamicTitle {
 
   override fun getRegistry(): Registry = registry
@@ -713,6 +714,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
   }
 }
 
+@Push(PushMode.MANUAL, transport = com.vaadin.flow.shared.ui.Transport.WEBSOCKET_XHR)
 class GaliteAppShellConfigurator: AppShellConfigurator {
 
   override fun configurePage(settings: AppShellSettings) {

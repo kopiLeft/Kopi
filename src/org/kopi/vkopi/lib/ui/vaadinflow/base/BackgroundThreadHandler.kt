@@ -52,6 +52,7 @@ object BackgroundThreadHandler {
 
   @Throws(Throwable::class)
   fun launderThrowable(ex: Throwable) {
+    println("in the launderThrowable")
     if (ex is ExecutionException) {
       val cause = ex.cause
 
@@ -66,7 +67,6 @@ object BackgroundThreadHandler {
         throw cause
       }
     }
-
   }
 
 
@@ -89,17 +89,18 @@ object BackgroundThreadHandler {
     } else {
       println(" ====== currentUI page =+>  ${currentUI.page}")
       currentUI.access {
-//        try {
-        command()
-//        } finally {
-        println("before pushing the ui")
+        try {
+          command()
+        } finally {
+          println(" ## in Finally ## before pushing the ui")
           try {
           currentUI.push()
           } catch (e: Throwable) {
+            println("catching the throwable")
             launderThrowable(e)
           }
           println("after pushing the ui")
-//        }
+        }
       }
     }
   }
