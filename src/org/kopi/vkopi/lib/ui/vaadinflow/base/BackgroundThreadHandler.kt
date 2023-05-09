@@ -63,6 +63,7 @@ object BackgroundThreadHandler {
       } else {
         println("******************* this the cause of the previous Exception *********************")
         println(cause!!.stackTrace)
+        throw cause
       }
     }
 
@@ -88,17 +89,17 @@ object BackgroundThreadHandler {
     } else {
       println(" ====== currentUI page =+>  ${currentUI.page}")
       currentUI.access {
-        try {
-          command()
-        } finally {
-          println("before pushing the ui")
-//          try {
+//        try {
+        command()
+//        } finally {
+        println("before pushing the ui")
+          try {
           currentUI.push()
-//          } catch (e: Throwable) {
-//            launderThrowable(e)
-//          }
+          } catch (e: Throwable) {
+            launderThrowable(e)
+          }
           println("after pushing the ui")
-        }
+//        }
       }
     }
   }
