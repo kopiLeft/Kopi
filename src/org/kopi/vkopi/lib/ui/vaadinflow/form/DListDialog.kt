@@ -367,7 +367,9 @@ class DListDialog(
     }
     startAndWaitAndPush(lock, currentUI) {
       println("///////////// showListDialog  //////////////")
-      showListDialog()
+      if (this != null && application.mainWindow != null )
+      application.mainWindow!!.addWindow(application.mainWindow!!,"test")
+//      showListDialog()
     }
   }
 

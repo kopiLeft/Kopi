@@ -53,6 +53,7 @@ object BackgroundThreadHandler {
   @Throws(Throwable::class)
   fun launderThrowable(ex: Throwable) {
     println("in the launderThrowable")
+    println("type of the throwable ==========> ${ex.printStackTrace()}")
     if (ex is ExecutionException) {
       val cause = ex.cause
 
@@ -66,6 +67,9 @@ object BackgroundThreadHandler {
         println(cause!!.stackTrace)
         throw cause
       }
+    } else {
+      ex.printStackTrace()
+      throw ex
     }
   }
 
