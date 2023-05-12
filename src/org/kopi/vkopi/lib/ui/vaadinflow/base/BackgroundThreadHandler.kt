@@ -18,6 +18,7 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
 import com.vaadin.flow.component.UI
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils.findMainWindow
 import java.util.concurrent.ExecutionException
 
 /**
@@ -81,24 +82,34 @@ object BackgroundThreadHandler {
   fun accessAndPush(currentUI: UI? = null, command: () -> Unit) {
     println(" ========== IN accessAndPush() =========== ")
     if (UI.getCurrent() != null) {
-      println("**** **** ***** UI.getCurrent() is not null here is the value : ${UI.getCurrent().page}")
-      command()
+      println("**** **** ***** UI.getCurrent() is not null here is the id : ${UI.getCurrent().id}")
 
-      return
-    }
-
-    val currentUI = currentUI ?: locateUI()
-    if (currentUI == null) {
-      command()
-    } else {
-      println(" ====== currentUI page =+>  ${currentUI.page}")
-      currentUI.access {
+      UI.getCurrent().access {
         try {
           command()
         } finally {
-          println(" ## in Finally ## before pushing the ui")
           try {
-          currentUI.push()
+            UI.getCurrent().push()
+          } catch (e: Throwable) {
+            println("catching the throwable")
+            launderThrowable(e)
+          }
+        }
+      }
+      println("******************* end of if (UI.getCurrent() != null) ************")
+    }
+
+    val currentui = currentUI ?: locateUI()
+    if (currentui == null) {
+      command()
+    } else {
+      println(" ====== currentUI page =+>  ${currentui.page}")
+      currentui.access {
+        try {
+          command()
+        } finally {
+          try {
+            currentui.push()
           } catch (e: Throwable) {
             println("catching the throwable")
             launderThrowable(e)

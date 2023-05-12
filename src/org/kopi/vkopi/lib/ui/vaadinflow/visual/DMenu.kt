@@ -147,6 +147,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
    * @param module The module to be launched.
    */
   protected fun launchModule(module: Module) {
+    println("***** ***** ***** In launchModule() Method ***** ***** *****")
     performAsyncAction(object : Action("menu_form_started2") {
       override fun execute() {
         try {

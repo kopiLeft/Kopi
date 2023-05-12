@@ -132,7 +132,9 @@ class DMenuTree(model: VMenuTree) : DWindow(model), UMenuTree {
    * but its accessibility will change.
    */
   override fun launchSelectedForm() {
+    println("##### ##### ##### launchSelectedForm() ##### ##### #####")
     val module = getSelectedModule()
+    println("#### ${getSelectedModule()!!.id}")
     if (module != null) {
       if (getModel().isSuperUser) {
         if (tree.dataCommunicator.getParentItem(tree.selectedItem) != null) {
