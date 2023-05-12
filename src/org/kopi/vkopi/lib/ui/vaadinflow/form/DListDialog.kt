@@ -360,6 +360,12 @@ class DListDialog(
    * Shows the dialog and wait until it is closed from client side.
    */
   internal fun showDialogAndWait() {
+    val notice = InformationNotification(
+      VlibProperties.getString("Notice"),
+      MessageCode.getMessage("VIS-00028"),
+      application.defaultLocale.toString(),
+      application.mainWindow
+    )
     println("______________ IN showDialogAndWait _________________ ")
     println("====== ====== lock : ====> $lock")
     if (currentUI != null) {
@@ -367,9 +373,9 @@ class DListDialog(
     }
     startAndWaitAndPush(lock, currentUI) {
       println("///////////// showListDialog  //////////////")
-      if (this != null && application.mainWindow != null )
-      application.mainWindow!!.addWindow(application.mainWindow!!,"test")
-//      showListDialog()
+//      if (this != null && application.mainWindow != null )
+//      application.mainWindow!!.addWindow(application.mainWindow!!,"test")
+      notice.show()
     }
   }
 
