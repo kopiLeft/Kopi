@@ -370,7 +370,8 @@ class DListDialog(
       println("///////////// showListDialog  //////////////")
 //      if (this != null && application.mainWindow != null )
 //      application.mainWindow!!.addWindow(application.mainWindow!!,"test")
-      application.ask("How are u today ?", true)
+//      application.ask("How are u today ?", true)
+      showListDialog()
     }
   }
 
