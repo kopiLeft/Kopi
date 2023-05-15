@@ -37,6 +37,7 @@ import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.dom.Element
+import java.net.URLClassLoader
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -118,12 +119,9 @@ object Utils : Utils() {
   fun getImageFromResource(directory: String, name: String): Image? {
     println("getResource /$directory/$name : " + Utils::class.java.classLoader.getResource("/$directory/$name"))
     println("getResource $directory/$name : " + Utils::class.java.classLoader.getResource("$directory/$name"))
+    println("classpath = " + (Utils::class.java.classLoader as URLClassLoader).urLs)
 
     if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
-      println("$directory/$name : ${Image("WEB-INF/classes/$directory/$name")}")
-      return Image("WEB-INF/classes/$directory/$name")
-    } else if (Utils::class.java.classLoader.getResource("/$directory/$name") != null) {
-      println("/$directory/$name : ${Image("$directory/$name")}")
       return Image("$directory/$name")
     }
 
@@ -281,8 +279,9 @@ object Utils : Utils() {
   // --------------------------------------------------
   // PRIVATE DATA
   // --------------------------------------------------
+
   private const val VAADIN_RESOURCE_DIR = "ui/vaadin"
-  private const val THEME_DIR = "resource"
+  private const val THEME_DIR = "org/kopi/vkopi/lib/ui/vaadin/resource"
   private const val APPLICATION_DIR = "resources"
   private const val RESOURCE_DIR = "org/kopi/vkopi/lib/resource"
   val UKN_IMAGE = Image("$THEME_DIR/unknown.png")
