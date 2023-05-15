@@ -118,8 +118,13 @@ object Utils : Utils() {
   fun getImageFromResource(directory: String, name: String): Image? {
     println("getResource /$directory/$name : " + Utils::class.java.classLoader.getResource("/$directory/$name"))
     println("getResource $directory/$name : " + Utils::class.java.classLoader.getResource("$directory/$name"))
-    if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
+
+    if (Utils::class.java.classLoader.getResource("/$directory/$name") != null) {
+      println("/$directory/$name : ${Image("$directory/$name")}")
       return Image("$directory/$name")
+    } else if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
+      println("$directory/$name : ${Image("WEB-INF/classes/$directory/$name")}")
+      return Image("WEB-INF/classes/$directory/$name")
     }
 
     return null
