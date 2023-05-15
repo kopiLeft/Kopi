@@ -119,6 +119,11 @@ object Utils : Utils() {
     println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
     println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource("/").path).toFile().absolutePath}")
 
+    println("getResource /$directory/$name" + Utils::class.java.classLoader.getResource("/$directory/$name"))
+    println("getResource $directory/$name" + Utils::class.java.classLoader.getResource("$directory/$name"))
+    println("getResourceAsStream /$directory/$name" + Utils::class.java.classLoader.getResourceAsStream("/$directory/$name"))
+    println("getResourceAsStream $directory/$name" + Utils::class.java.classLoader.getResourceAsStream("$directory/$name"))
+
     if (Utils::class.java.classLoader.getResource("/$directory/$name") != null) { // FIXME
       println("/$directory/$name : ${Image("$directory/$name")}")
       return Image("$directory/$name")

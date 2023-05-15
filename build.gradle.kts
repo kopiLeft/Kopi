@@ -47,7 +47,6 @@ apply(from = "declarations.gradle.kts")
 plugins {
   kotlin("jvm") version "1.5.30"
   id("io.spring.dependency-management") version "1.0.10.RELEASE"
-  id("org.gretty") version "3.0.3"
 }
 
 sourceSets.main {
