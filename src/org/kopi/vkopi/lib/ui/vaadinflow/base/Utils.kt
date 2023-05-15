@@ -37,7 +37,6 @@ import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.dom.Element
-import java.net.URLClassLoader
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -117,10 +116,6 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-    println("getResource /$directory/$name : " + Utils::class.java.classLoader.getResource("/$directory/$name"))
-    println("getResource $directory/$name : " + Utils::class.java.classLoader.getResource("$directory/$name"))
-    println("classpath = " + (Utils::class.java.classLoader as URLClassLoader).urLs)
-
     if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
       return Image("$directory/$name")
     }

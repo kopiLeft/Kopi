@@ -198,7 +198,6 @@ class Tree(val root: TreeNode, private val isSuperUser: Boolean) : TreeGrid<Tree
             if (isExpanded(item)) {
               setItemIcon(Utils.getImage("expanded.png").resource)
             } else {
-              println("Image.resource = " + Utils.getImage("collapsed.png").resource)
               setItemIcon(Utils.getImage("collapsed.png").resource)
             }
           } else {
@@ -223,7 +222,6 @@ class Tree(val root: TreeNode, private val isSuperUser: Boolean) : TreeGrid<Tree
             if (isExpanded(item)) {
               setItemIcon(Utils.getImage("expanded_p.png").resource)
             } else {
-              println("Image.resource = " + Utils.getImage("collapsed.png").resource)
               setItemIcon(Utils.getImage("collapsed_p.png").resource)
             }
           }
