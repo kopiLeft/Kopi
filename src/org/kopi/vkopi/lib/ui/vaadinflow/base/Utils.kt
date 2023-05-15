@@ -116,20 +116,10 @@ object Utils : Utils() {
    * @return An Image or null if not found
    */
   fun getImageFromResource(directory: String, name: String): Image? {
-    println("path 1 = ${Paths.get(this.javaClass.classLoader.getResource(".").path).toFile().absolutePath}")
-    println("path 2 = ${Paths.get(this.javaClass.classLoader.getResource("/").path).toFile().absolutePath}")
-
-    println("getResource /$directory/$name" + Utils::class.java.classLoader.getResource("/$directory/$name"))
-    println("getResource $directory/$name" + Utils::class.java.classLoader.getResource("$directory/$name"))
-    println("getResourceAsStream /$directory/$name" + Utils::class.java.classLoader.getResourceAsStream("/$directory/$name"))
-    println("getResourceAsStream $directory/$name" + Utils::class.java.classLoader.getResourceAsStream("$directory/$name"))
-
-    if (Utils::class.java.classLoader.getResource("/$directory/$name") != null) { // FIXME
-      println("/$directory/$name : ${Image("$directory/$name")}")
+    println("getResource /$directory/$name : " + Utils::class.java.classLoader.getResource("/$directory/$name"))
+    println("getResource $directory/$name : " + Utils::class.java.classLoader.getResource("$directory/$name"))
+    if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
       return Image("$directory/$name")
-    } else if (Utils::class.java.classLoader.getResource("$directory/$name") != null) {
-      println("$directory/$name : ${Image("WEB-INF/classes/$directory/$name")}")
-      return Image("WEB-INF/classes/$directory/$name")
     }
 
     return null
