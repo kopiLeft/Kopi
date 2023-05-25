@@ -22,6 +22,7 @@ import java.io.File
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
@@ -60,6 +61,8 @@ open class Resources : DefaultTask() {
     project.copy {
       from(changedFiles)
       into(resourceDestDir)
+
+      duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
   }
 }

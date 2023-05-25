@@ -42,6 +42,7 @@ build
 ## Flex files
 **/*.flex
 ## Other files
+**/*.java~
 /src/org/kopi/vkopi/lib/ui/swing/visual/ApplicationOptions.java
 /src/org/kopi/vkopi/comp/base/BaseFlexRules.txt
 /src/org/kopi/vkopi/comp/base/BaseMessages.java
