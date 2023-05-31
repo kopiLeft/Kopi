@@ -191,6 +191,7 @@ abstract class DMenu protected constructor(private val model: VMenuTree) : Modul
     // Force the current UI in case the thread is started before attaching the menu to the UI.
     if (currentUI == null) {
       currentUI = BackgroundThreadHandler.locateUI()
+      println("********************* ")
     }
     Thread {
       BackgroundThreadHandler.setUI(currentUI)

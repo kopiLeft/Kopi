@@ -104,7 +104,7 @@ class DReport(private val report: VReport) : DWindow(report), UReport {
    */
   fun reorder(newOrder: IntArray) {
     model.columnMoved(newOrder)
-    println("****************** ")
+    println("*******************  reorder() *********************** ")
     accessAndPush(currentUI) {
       table.setColumnOrder(
         newOrder.map { table.getColumnByKey(it.toString()) }
@@ -164,6 +164,8 @@ class DReport(private val report: VReport) : DWindow(report), UReport {
   }
 
   override fun contentChanged() {
+    println("*******************  contentChanged() *********************** ")
+
     if (this::table.isInitialized) {
       accessAndPush(currentUI) {
         table.setItems(buildRows())

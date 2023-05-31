@@ -228,7 +228,7 @@ object Utils : Utils() {
    */
   fun getCursorPos(field: Component): Int {
     val future = CompletableFuture<Int>()
-
+    println("*******************  getCursorPos() *********************** ")
     BackgroundThreadHandler.accessAndPush {
       UI.getCurrent().page
         .executeJs("return $0.shadowRoot.querySelector('[part=\"value\"]').selectionStart;", field.element)

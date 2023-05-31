@@ -85,7 +85,11 @@ object BackgroundThreadHandler {
       println("**** **** ***** UI.getCurrent() is not null here is the id : ${UI.getCurrent().id}")
 
       UI.getCurrent().accessSynchronously {
-        command()
+        try {
+          command()
+        } finally {
+            UI.getCurrent().push()
+        }
       }
       println("******************* end of if (UI.getCurrent() != null) ************")
       return
@@ -97,7 +101,12 @@ object BackgroundThreadHandler {
     } else {
       println(" ====== currentUI page =+>  ${currentui.page}")
       currentui.accessSynchronously {
-        command()
+        try {
+          command()
+        } finally {
+          currentui.push()
+          println("after pushing the ui")
+        }
       }
     }
   }
