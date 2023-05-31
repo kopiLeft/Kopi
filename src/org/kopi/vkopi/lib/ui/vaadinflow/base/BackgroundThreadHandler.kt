@@ -84,19 +84,11 @@ object BackgroundThreadHandler {
     if (UI.getCurrent() != null) {
       println("**** **** ***** UI.getCurrent() is not null here is the id : ${UI.getCurrent().id}")
 
-      UI.getCurrent().access {
-        try {
-          command()
-        } finally {
-          try {
-            UI.getCurrent().push()
-          } catch (e: Throwable) {
-            println("catching the throwable")
-            launderThrowable(e)
-          }
-        }
+      UI.getCurrent().accessSynchronously {
+        command()
       }
       println("******************* end of if (UI.getCurrent() != null) ************")
+      return
     }
 
     val currentui = currentUI ?: locateUI()
@@ -104,18 +96,8 @@ object BackgroundThreadHandler {
       command()
     } else {
       println(" ====== currentUI page =+>  ${currentui.page}")
-      currentui.access {
-        try {
-          command()
-        } finally {
-          try {
-            currentui.push()
-          } catch (e: Throwable) {
-            println("catching the throwable")
-            launderThrowable(e)
-          }
-          println("after pushing the ui")
-        }
+      currentui.accessSynchronously {
+        command()
       }
     }
   }
