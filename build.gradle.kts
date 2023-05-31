@@ -194,9 +194,11 @@ tasks {
     }
   }
 
-  named("jar") {
+  jar {
     dependsOn("run")
     mustRunAfter("run")
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
   }
 
   named("build") { dependsOn("run") }
