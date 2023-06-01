@@ -82,30 +82,26 @@ object BackgroundThreadHandler {
   fun accessAndPush(currentUI: UI? = null, command: () -> Unit) {
     println(" ========== IN accessAndPush() =========== ")
     if (UI.getCurrent() != null) {
-      println("**** **** ***** UI.getCurrent() is not null here is the id : ${UI.getCurrent().id}")
-
-      UI.getCurrent().accessSynchronously {
-        try {
-          command()
-        } finally {
-            UI.getCurrent().push()
-        }
-      }
-      println("******************* end of if (UI.getCurrent() != null) ************")
+      println(" UI.getCurrent()  != null")
+      command()
+      println(" ============= apres Execution de command() ==============")
       return
     }
 
-    val currentui = currentUI ?: locateUI()
-    if (currentui == null) {
+    val currentUI = currentUI ?: locateUI()
+    println(" ========= Recuperation :  currentUI = currentUI ?: locateUI() =================  ")
+
+    if (currentUI == null) {
       command()
     } else {
-      println(" ====== currentUI page =+>  ${currentui.page}")
-      currentui.accessSynchronously {
+      currentUI.access {
         try {
+          println(" ========= in access  avant command()  ")
           command()
         } finally {
-          currentui.push()
-          println("after pushing the ui")
+          println(" ========= avant push =========== ")
+          currentUI.push()
+          println(" ========= Aprés push =========== ")
         }
       }
     }
