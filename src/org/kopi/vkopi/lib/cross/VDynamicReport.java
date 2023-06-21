@@ -158,7 +158,7 @@ public class VDynamicReport extends VReport {
                                          getColumnGroups(fields[i]),
                                          null,
                                          fields[i].getWidth(),
-                                         1,
+                                         fields[i].getHeight(),
                                          null);
       } else if (fields[i] instanceof VBooleanField) {
         columns[col] = new VBooleanColumn(null,
