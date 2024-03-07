@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2024 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -203,12 +203,12 @@ public class VColorField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
-  
+
   @Override
   public String toText(Object o) {
     throw new InconsistencyException("UNEXPECTD GET TEXT");
   }
-  
+
   @Override
   public Object toObject(String s) {
     throw new InconsistencyException("UNEXPECTD GET TEXT");
@@ -224,16 +224,14 @@ public class VColorField extends VField {
   /**
    * Returns the SQL representation of field value of given record.
    */
-  public String getSqlImpl(int r) {
-    return value[r] == null ? "NULL" : "?";
-  }
+  public String getSqlImpl(int r) {return value[r] == null ? "NULL" : colorToRgbString(value[r]) ;}
 
   /**
    * Copies the value of a record to another
    */
   public void copyRecord(int f, int t) {
     Color               oldValue;
-    
+
     oldValue = value[t];
     value[t] = value[f];
     // inform that value has changed for non backup records
@@ -257,6 +255,14 @@ public class VColorField extends VField {
   }
 
   /**
+   * Warning:	This method will become inaccessible to kopi users in next release
+   * @kopi	inaccessible
+   */
+  public boolean hasBinaryLargeObject(int r) {
+    return true;
+  }
+
+  /**
    * Returns the SQL representation of field value of given record.
    * Warning:	This method will become inaccessible to kopi users in next release
    * @kopi	inaccessible
@@ -265,10 +271,10 @@ public class VColorField extends VField {
     if (value[r] == null) {
       return null;
     } else {
-      return new ByteArrayInputStream((byte[])getObjectImpl(r));
+      return new ByteArrayInputStream((byte[]) getByteArrayFromColor((Color)getObjectImpl(r)));
     }
   }
-  
+
   /**
    * Returns the data type handled by this field.
    */
@@ -281,14 +287,6 @@ public class VColorField extends VField {
    * FORMATTING VALUES WRT FIELD TYPE
    * ----------------------------------------------------------------------
    */
-
-  /**
-   * Returns a string representation of a date value wrt the field type.
-   */
-  protected String formatImage(Object value) {
-    return "image";
-  }
-
 
 //   /**
 //    * autofill
@@ -320,7 +318,7 @@ public class VColorField extends VField {
    * Reformat a unsigned int from a byte
    */
   private int reformat(byte b) {
-    return b < 0 ? b + 255 : b;
+    return b < 0 ? b + 256 : b;
   }
 
   /*
@@ -330,4 +328,36 @@ public class VColorField extends VField {
    */
 
   private Color[]		value;
+
+  /*
+   * ----------------------------------------------------------------------
+   * STATIC MEMBERS
+   * ----------------------------------------------------------------------
+   */
+
+  /**
+   * Get byteArray from Color
+   */
+  public static byte[] getByteArrayFromColor(Color color) {
+    int rgb = color.getRGB();
+    int red = (rgb >> 16) & 0xFF;
+    int green = (rgb >> 8) & 0xFF;
+    int blue = rgb & 0xFF;
+
+    return new byte[]{(byte) red, (byte) green, (byte) blue};
+  }
+
+  /**
+   *
+   * @param c    The color to be converted.
+   * @return     Returns the hex string representation of a Color.
+   */
+  public static String colorToRgbString(Color c) {
+    Color color = (c != null) ? c : new Color(0, 0, 0);
+    String redHex = String.format("%02x", color.getRed());
+    String greenHex = String.format("%02x", color.getGreen());
+    String blueHex = String.format("%02x", color.getBlue());
+
+    return redHex + greenHex + blueHex;
+  }
 }
