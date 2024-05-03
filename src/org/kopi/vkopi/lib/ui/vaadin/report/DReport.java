@@ -456,13 +456,14 @@ public class DReport extends DWindow implements UReport {
       public void columnCollapsed(ColumnCollapseEvent event) {
 	for (int i = 0; i < model.getAccessibleColumnCount(); i++) {
 	  model.getAccessibleColumn(i).setFolded(false);
-	 
+		model.getAccessibleColumn(i).setVisible(true);
 	}
 
 	for (Object propertyId : event.getPropertyIds()) {
 	  int	col = Integer.parseInt((String) propertyId) - 1;
 
 	  model.getAccessibleColumn(col).setFolded(true);
+		model.getAccessibleColumn(col).setVisible(false);
 	}
 	
 	table.fireStructureChanged();
