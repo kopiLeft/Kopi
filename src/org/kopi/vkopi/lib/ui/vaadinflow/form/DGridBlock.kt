@@ -44,6 +44,7 @@ import com.vaadin.flow.component.grid.GridVariant
 import com.vaadin.flow.component.grid.HeaderRow
 import com.vaadin.flow.component.grid.editor.Editor
 import com.vaadin.flow.component.grid.editor.EditorImpl
+import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
@@ -51,10 +52,12 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.event.SortEvent
 import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.provider.Query
+import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.function.SerializableConsumer
 import com.vaadin.flow.function.SerializablePredicate
 import com.vaadin.flow.internal.ExecutionContext
+import org.kopi.vkopi.lib.visual.VColor
 
 /**
  * Grid based chart block implementation.
@@ -486,7 +489,18 @@ open class DGridBlock(parent: DForm, model: VBlock) : DBlock(parent, model) {
 
         if (columnView.hasDisplays()) {
           val label = columnView.editorField.label
-          val column = grid.addColumn { columnView.editorField.format(it.getValue(field)) }
+          val column = grid.addColumn(ComponentRenderer { item: GridBlockItem ->
+            val value = item.getValue(field)
+            val backgroundColor: VColor? = field.getBackground(item.record)
+            val foregroundColor = field.getForeground(item.record)
+
+            // Create a div element and set its background and foreground colors
+            val div = Div()
+            div.text = columnView.editorField.format(value).toString()
+            backgroundColor?.let { div.style.set("background-color", "rgb(${it.red}, ${it.green}, ${it.blue})") }
+            foregroundColor?.let { div.style.set("color", "rgb(${it.red}, ${it.green}, ${it.blue})") }
+            div
+          })
                   .setKey(i.toString())
                   .setHeader(label)
                   .setEditorComponent(columnView.editor)
