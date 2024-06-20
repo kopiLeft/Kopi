@@ -21,14 +21,19 @@ package org.kopi.vkopi.lib.form;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.SQLException;
 
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.list.VColorColumn;
 import org.kopi.vkopi.lib.list.VListColumn;
+import org.kopi.vkopi.lib.visual.VRuntimeException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.VException;
+import org.kopi.xkopi.lib.base.PostgresDriverInterface;
 import org.kopi.xkopi.lib.base.Query;
 
 @SuppressWarnings("serial")
@@ -174,12 +179,30 @@ public class VColorField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    if (query.isNull(column)) {
-      return null;
-    } else {
-      byte[]  b = (byte[])query.getObject(column);
-
+    if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
+      byte[]  b = query.getByteArray(column);
       return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
+    } else {
+      Blob blob = query.getBlob(column);
+
+      if (blob != null) {
+        InputStream               is = blob.getBinaryStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[]                    buf = new byte[8];
+        int                       nread;
+
+        try {
+          while ((nread = is.read(buf)) != -1) {
+            out.write(buf, 0, nread);
+          }
+        } catch (IOException e) {
+          throw new VRuntimeException(e);
+        }
+        byte[]  b = out.toByteArray();
+        return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
+      } else {
+        return null;
+      }
     }
   }
 
