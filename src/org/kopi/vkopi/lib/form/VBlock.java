@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.lib.form;
 
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
 import java.sql.SQLException;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -49,6 +51,8 @@ import org.kopi.xkopi.lib.base.DBForeignKeyException;
 import org.kopi.xkopi.lib.base.DBInterruptionException;
 import org.kopi.xkopi.lib.base.KopiUtils;
 import org.kopi.xkopi.lib.base.Query;
+
+import static org.kopi.vkopi.lib.form.VColorField.getByteArrayFromColor;
 
 
 public abstract class VBlock implements VConstants, DBContextHandler, ActionHandler {
@@ -3574,10 +3578,19 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
               tailbuff += col;
               if (fld.getSql(recno).equals(org.kopi.xkopi.lib.base.KopiUtils.NULL_LITERAL)) {
                 tailbuff += " IS ";
+                tailbuff += fld.getSql(recno);
               } else {
                 tailbuff += " = ";
+                if ( fld instanceof VColorField) {
+                  if (fld.getObjectImpl(recno) != null) {
+                    Color fieldColor = (Color)fld.getObjectImpl(recno);
+                    byte[] fieldValue = getByteArrayFromColor(fieldColor);
+                    tailbuff += fieldValue;
+                  }
+                } else {
+                  tailbuff += fld.getSql();
+                }
               }
-              tailbuff += fld.getSql(recno);
             }
           }
         }

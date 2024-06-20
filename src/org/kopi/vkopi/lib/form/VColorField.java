@@ -271,7 +271,7 @@ public class VColorField extends VField {
     if (value[r] == null) {
       return null;
     } else {
-      return new ByteArrayInputStream((byte[]) getByteArrayFromColor((Color)getObjectImpl(r)));
+      return new ByteArrayInputStream(getByteArrayFromColor((Color)getObjectImpl(r)));
     }
   }
 
