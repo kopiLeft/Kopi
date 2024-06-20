@@ -163,7 +163,9 @@ public class VColorField extends VField {
    * @kopi	inaccessible
    */
   public void setObject(int r, Object v) {
-    if (v instanceof byte[]) {
+    if (v == null) {
+      setColor(r, Color.BLACK);
+    } else if (v instanceof byte[]) {
       byte[]  b = (byte[])v;
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
@@ -181,7 +183,9 @@ public class VColorField extends VField {
   {
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
       byte[]  b = query.getByteArray(column);
-      return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
+      if (b != null) {
+        return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
+      }
     } else {
       Blob blob = query.getBlob(column);
 
@@ -204,6 +208,7 @@ public class VColorField extends VField {
         return null;
       }
     }
+    return null;
   }
 
   /**
