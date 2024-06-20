@@ -167,8 +167,14 @@ public class VColorField extends VField {
       setColor(r, Color.BLACK);
     } else if (v instanceof byte[]) {
       byte[]  b = (byte[])v;
+      System.out.println("**************** byte array value ****** :" + b[0] + "******* formated value ****** " + reformat(b[0])) ;
+      System.out.println("**************** byte array value ****** :" + b[1] + "******* formated value ****** " + reformat(b[1]) );
+      System.out.println("**************** byte array value ****** :" + b[2] + "******* formated value ****** " + reformat(b[2]));
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
+      System.out.println("********* in else of SetObject ************** ");
+      System.out.println("********* object type ? ************** :  " + v.getClass());
+
       setColor(r, (Color)v);
     }
   }
@@ -184,6 +190,9 @@ public class VColorField extends VField {
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
       byte[]  b = query.getByteArray(column);
       if (b != null) {
+        System.out.println("****** in retrieveQuery - b[0]:" + b[0] + "******* reformat(b[0]) : " + reformat(b[0])) ;
+        System.out.println("*******  in retrieveQuery - b[1]:" + b[1] + "******* reformat(b[1]) :  " + reformat(b[1]));
+        System.out.println("********  in retrieveQuery - b[2]:" + b[2] + "******* reformat(b[2]) : " + reformat(b[2]));
         return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
       }
     } else {
@@ -192,7 +201,7 @@ public class VColorField extends VField {
       if (blob != null) {
         InputStream               is = blob.getBinaryStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        byte[]                    buf = new byte[8];
+        byte[]                    buf = new byte[3];
         int                       nread;
 
         try {
@@ -203,6 +212,9 @@ public class VColorField extends VField {
           throw new VRuntimeException(e);
         }
         byte[]  b = out.toByteArray();
+        System.out.println("****** in retrieveQuery  ********** byte array value ** from blob **** :" + b[0] + "******* formated value ****** " + reformat(b[0])) ;
+        System.out.println("*******  in retrieveQuery ********* byte array value *** from blob  *** :" + b[1] + "******* formated value ****** " + reformat(b[1]) );
+        System.out.println("********  in retrieveQuery ******** byte array value *** from blob  *** :" + b[2] + "******* formated value ****** " + reformat(b[2]));
         return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
       } else {
         return null;
