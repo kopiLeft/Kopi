@@ -224,7 +224,8 @@ public class VColorField extends VField {
   /**
    * Returns the SQL representation of field value of given record.
    */
-  public String getSqlImpl(int r) {return value[r] == null ? "NULL" : colorToRgbString(value[r]) ;}
+  public String getSqlImpl(int r) {return value[r] == null ? "NULL" :  "?" ; //colorToRgbString(value[r]);
+  }
 
   /**
    * Copies the value of a record to another

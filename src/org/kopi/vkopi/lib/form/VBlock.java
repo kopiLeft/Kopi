@@ -3581,15 +3581,16 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
                 tailbuff += fld.getSql(recno);
               } else {
                 tailbuff += " = ";
-                if ( fld instanceof VColorField) {
-                  if (fld.getObjectImpl(recno) != null) {
-                    Color fieldColor = (Color)fld.getObjectImpl(recno);
-                    byte[] fieldValue = getByteArrayFromColor(fieldColor);
-                    tailbuff += fieldValue;
-                  }
-                } else {
-                  tailbuff += fld.getSql();
-                }
+                tailbuff += fld.getSql();
+//                if ( fld instanceof VColorField) {
+//                  if (fld.getObjectImpl(recno) != null) {
+//                    Color fieldColor = (Color)fld.getObjectImpl(recno);
+//                    byte[] fieldValue = getByteArrayFromColor(fieldColor);
+//                    tailbuff += fieldValue;
+//                  }
+//                } else {
+//                  tailbuff += fld.getSql();
+//                }
               }
             }
           }
