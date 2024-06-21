@@ -168,7 +168,7 @@ public class VColorField extends VField {
     } else if (v instanceof byte[]) {
       byte[]  b = (byte[])v;
       System.out.println("**************** byte array value ****** :" + b[0] + "******* formated value ****** " + reformat(b[0])) ;
-      System.out.println("**************** byte array value ****** :" + b[1] + "******* formated value ****** " + reformat(b[1]) );
+      System.out.println("**************** byte array value ****** :" + b[1] + "******* formated value ****** " + reformat(b[1]));
       System.out.println("**************** byte array value ****** :" + b[2] + "******* formated value ****** " + reformat(b[2]));
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
@@ -187,6 +187,16 @@ public class VColorField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
+    byte[] test = query.getBytes(column);
+    for( int i = 0; i<test.length; i++) {
+      System.out.println("**** test[" + i + "] : " + test[i]);
+    }
+
+    byte[] test1 = query.getByteFromBlob(column);
+
+    for( int i = 0; i<test1.length; i++) {
+      System.out.println("**** test1[" + i + "] : " + test1[i]);
+    }
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
       byte[]  b = query.getByteArray(column);
       if (b != null) {
