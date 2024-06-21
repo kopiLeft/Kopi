@@ -738,11 +738,6 @@ public class Query {
     return rset.getBlob(pos);
   }
 
-  public byte[] getByteFromBlob(int pos) throws SQLException{
-    Blob b = getBlob(pos);
-    return b.getBytes(0,3);
-  }
-
   public Clob getClob(int pos) throws SQLException {
     return rset.getClob(pos);
   }

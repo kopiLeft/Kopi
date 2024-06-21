@@ -167,14 +167,11 @@ public class VColorField extends VField {
       setColor(r, Color.BLACK);
     } else if (v instanceof byte[]) {
       byte[]  b = (byte[])v;
-      System.out.println("**************** byte array value ****** :" + b[0] + "******* formated value ****** " + reformat(b[0])) ;
-      System.out.println("**************** byte array value ****** :" + b[1] + "******* formated value ****** " + reformat(b[1]));
-      System.out.println("**************** byte array value ****** :" + b[2] + "******* formated value ****** " + reformat(b[2]));
+      for( int i = 0; i<b.length; i++) {
+        System.out.println("**** b[" + i + "] : " + b[i] +  "reformat(b[" + i + "] : " + reformat(b[i]));
+      }
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
-      System.out.println("********* in else of SetObject ************** ");
-      System.out.println("********* object type ? ************** :  " + v.getClass());
-
       setColor(r, (Color)v);
     }
   }
@@ -189,20 +186,16 @@ public class VColorField extends VField {
   {
     byte[] test = query.getBytes(column);
     for( int i = 0; i<test.length; i++) {
-      System.out.println("**** test[" + i + "] : " + test[i]);
+      System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));
     }
 
-    byte[] test1 = query.getByteFromBlob(column);
-
-    for( int i = 0; i<test1.length; i++) {
-      System.out.println("**** test1[" + i + "] : " + test1[i]);
-    }
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      byte[]  b = query.getByteArray(column);
+      byte[] b = query.getByteArray(column);
       if (b != null) {
-        System.out.println("****** in retrieveQuery - b[0]:" + b[0] + "******* reformat(b[0]) : " + reformat(b[0])) ;
-        System.out.println("*******  in retrieveQuery - b[1]:" + b[1] + "******* reformat(b[1]) :  " + reformat(b[1]));
-        System.out.println("********  in retrieveQuery - b[2]:" + b[2] + "******* reformat(b[2]) : " + reformat(b[2]));
+        System.out.println("*** length **** : " + b.length);
+        for( int i = 0; i<b.length; i++) {
+          System.out.println("**** b[" + i + "] : " + b[i] +  " -- reformat(b[" + i + "] : " + reformat(b[i]));
+        }
         return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
       }
     } else {
