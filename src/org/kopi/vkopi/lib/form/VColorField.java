@@ -189,7 +189,15 @@ public class VColorField extends VField {
       System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));
     }
 
+    String s = query.getString(column);
+    if (s != null) {
+      System.out.println("************* asString ***********" + s);
+
+    }
     Object obj = query.getObject(column);
+    if (obj != null) {
+      System.out.println("************* obj ***********" + obj);
+    }
     if (obj instanceof Color) {
       Color c = (Color) obj;
       System.out.print("** Color: " + c.getRed() +", " + c.getGreen() + ", " + c.getBlue());
