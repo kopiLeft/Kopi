@@ -193,7 +193,7 @@ public class Query {
       }
       traceQuery(TRL_QUERY, "OPEN " + name);
       rset = stmt.executeQuery(convertedSql);
-      System.out.println("this is the query string" + convertedSql);
+      System.out.println("this is the query string --- " + convertedSql);
       traceTimer(TRL_QUERY, "OPEN " + name);
       //!!! wael 20090306 WORKAROUND FOR SAP DB BUG, this workaround is used also on Cursor.java
       if (conn.getDriverInterface() instanceof SapdbDriverInterface) {

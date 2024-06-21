@@ -189,6 +189,19 @@ public class VColorField extends VField {
       System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));
     }
 
+    Object obj = query.getObject(column);
+    if (obj instanceof Color) {
+      Color c = (Color) obj;
+      System.out.print("** Color: " + c.getRed() +", " + c.getGreen() + ", " + c.getBlue());
+    } else if (obj instanceof byte[]) {
+      for( int i = 0; i<((byte[]) obj).length; i++) {
+        System.out.print("**** obj[" + i + "] : " + ((byte[]) obj)[i] +  " -- reformat(obj[" + i + "] : " + reformat(((byte[]) obj)[i]));
+      }
+    }
+    for( int i = 0; i<test.length; i++) {
+      System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));
+    }
+
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
       byte[] b = query.getByteArray(column);
       if (b != null) {
