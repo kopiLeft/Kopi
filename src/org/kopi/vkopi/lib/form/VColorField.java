@@ -184,6 +184,19 @@ public class VColorField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
+
+    Blob myblob = query.getBlob(column);
+
+    if (myblob != null) {
+      int blobLength = (int) myblob.length();
+      byte[] blobAsBytes = myblob.getBytes(1, blobLength);
+      for( int i = 0; i<blobAsBytes.length; i++) {
+        System.out.println("**** blobAsBytes[" + i + "] : " + blobAsBytes[i] +  " -- reformat(blobAsBytes[" + i + "] : " + reformat(blobAsBytes[i]));
+      }
+
+      InputStream  is2 = myblob.getBinaryStream();
+    }
+
     byte[] test = query.getBytes(column);
     for( int i = 0; i<test.length; i++) {
       System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));

@@ -3791,6 +3791,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query.addString(tables[0]);
       query.addString(colbuf);
       query.addString(valbuf);
+      System.out.println("**** query --  " + query.toString());
       query.run("INSERT INTO $1 ($2) VALUES ($3)");
 
       setRecordFetched(recno, true);
@@ -3905,6 +3906,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query.addString(buffer.toString());
       query.addString(getIdColumn());
       query.addInt(idFld.getInt(recno).intValue());
+      System.out.println("**** query --  " + query.toString());
       query.run("UPDATE $1 SET $2 WHERE $3 = #4");
 
       setRecordChanged(recno, false);
