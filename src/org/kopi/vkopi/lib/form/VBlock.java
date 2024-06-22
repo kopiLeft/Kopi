@@ -52,8 +52,6 @@ import org.kopi.xkopi.lib.base.DBInterruptionException;
 import org.kopi.xkopi.lib.base.KopiUtils;
 import org.kopi.xkopi.lib.base.Query;
 
-import static org.kopi.vkopi.lib.form.VColorField.getByteArrayFromColor;
-
 
 public abstract class VBlock implements VConstants, DBContextHandler, ActionHandler {
 

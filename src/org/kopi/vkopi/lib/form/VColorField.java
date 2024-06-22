@@ -184,54 +184,12 @@ public class VColorField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-
-    Blob myblob = query.getBlob(column);
-
-    if (myblob != null) {
-      int blobLength = (int) myblob.length();
-      byte[] blobAsBytes = myblob.getBytes(1, blobLength);
-      for( int i = 0; i<blobAsBytes.length; i++) {
-        System.out.println("**** blobAsBytes[" + i + "] : " + blobAsBytes[i] +  " -- reformat(blobAsBytes[" + i + "] : " + reformat(blobAsBytes[i]));
-      }
-
-      InputStream  is2 = myblob.getBinaryStream();
-    }
-
-    byte[] test = query.getBytes(column);
-    for( int i = 0; i<test.length; i++) {
-      System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));
-    }
-
-    String s = query.getString(column);
-    if (s != null) {
-      System.out.println("************* asString ***********" + s);
-
-    }
-    Object obj = query.getObject(column);
-    if (obj != null) {
-      System.out.println("************* obj ***********" + obj);
-    }
-    if (obj instanceof Color) {
-      Color c = (Color) obj;
-      System.out.print("** Color: " + c.getRed() +", " + c.getGreen() + ", " + c.getBlue());
-    } else if (obj instanceof byte[]) {
-      for( int i = 0; i<((byte[]) obj).length; i++) {
-        System.out.print("**** obj[" + i + "] : " + ((byte[]) obj)[i] +  " -- reformat(obj[" + i + "] : " + reformat(((byte[]) obj)[i]));
-      }
-    }
-    for( int i = 0; i<test.length; i++) {
-      System.out.println("**** test[" + i + "] : " + test[i] +  " -- reformat(test[" + i + "] : " + reformat(test[i]));
-    }
-
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-      byte[] b = query.getByteArray(column);
-      if (b != null) {
-        System.out.println("*** length **** : " + b.length);
-        for( int i = 0; i<b.length; i++) {
-          System.out.println("**** b[" + i + "] : " + b[i] +  " -- reformat(b[" + i + "] : " + reformat(b[i]));
-        }
-        return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
-      }
+     String colorAsString = query.getString(column);
+     if (colorAsString != null) {
+       System.out.println("colorAsString : " +colorAsString);
+     }
+     return rgbStringToColor(colorAsString);
     } else {
       Blob blob = query.getBlob(column);
 
@@ -249,15 +207,11 @@ public class VColorField extends VField {
           throw new VRuntimeException(e);
         }
         byte[]  b = out.toByteArray();
-        System.out.println("****** in retrieveQuery  ********** byte array value ** from blob **** :" + b[0] + "******* formated value ****** " + reformat(b[0])) ;
-        System.out.println("*******  in retrieveQuery ********* byte array value *** from blob  *** :" + b[1] + "******* formated value ****** " + reformat(b[1]) );
-        System.out.println("********  in retrieveQuery ******** byte array value *** from blob  *** :" + b[2] + "******* formated value ****** " + reformat(b[2]));
         return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
       } else {
-        return null;
+        return new Color(0, 0, 0);
       }
     }
-    return null;
   }
 
   /**
@@ -301,7 +255,7 @@ public class VColorField extends VField {
   /**
    * Returns the SQL representation of field value of given record.
    */
-  public String getSqlImpl(int r) {return value[r] == null ? "NULL" :  "?" ; //colorToRgbString(value[r]);
+  public String getSqlImpl(int r) {return value[r] == null ? "NULL" : colorToRgbString(value[r]);
   }
 
   /**
@@ -329,7 +283,7 @@ public class VColorField extends VField {
    * @kopi	inaccessible
    */
   public boolean hasLargeObject(int r) {
-    return  value[r] != null;
+    return false;
   }
 
   /**
@@ -337,7 +291,7 @@ public class VColorField extends VField {
    * @kopi	inaccessible
    */
   public boolean hasBinaryLargeObject(int r) {
-    return true;
+    return false;
   }
 
   /**
@@ -438,4 +392,22 @@ public class VColorField extends VField {
 
     return redHex + greenHex + blueHex;
   }
+
+  /**
+   *
+   * @param hexString    The hexadecimal color string to be converted.
+   * @return             Returns the Color object representation of a hexadecimal color string.
+   */
+  public static Color rgbStringToColor(String hexString) {
+    if (hexString == null || hexString.length() != 6) {
+      return new Color(0, 0, 0); // Default color if input is invalid
+    }
+
+    int red = Integer.parseInt(hexString.substring(0, 2), 16);
+    int green = Integer.parseInt(hexString.substring(2, 4), 16);
+    int blue = Integer.parseInt(hexString.substring(4, 6), 16);
+
+    return new Color(red, green, blue);
+  }
+
 }
