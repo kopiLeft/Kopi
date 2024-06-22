@@ -255,7 +255,7 @@ public class VColorField extends VField {
   /**
    * Returns the SQL representation of field value of given record.
    */
-  public String getSqlImpl(int r) {return value[r] == null ? "NULL" : colorToRgbString(value[r]);
+  public String getSqlImpl(int r) {return value[r] == null ? "NULL" : org.kopi.xkopi.lib.base.KopiUtils.toSql(colorToRgbString(value[r]));
   }
 
   /**
