@@ -167,9 +167,6 @@ public class VColorField extends VField {
       setColor(r, Color.BLACK);
     } else if (v instanceof byte[]) {
       byte[]  b = (byte[])v;
-      for( int i = 0; i<b.length; i++) {
-        System.out.println("**** b[" + i + "] : " + b[i] +  "reformat(b[" + i + "] : " + reformat(b[i]));
-      }
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
       setColor(r, (Color)v);
@@ -186,9 +183,6 @@ public class VColorField extends VField {
   {
     if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
      String colorAsString = query.getString(column);
-     if (colorAsString != null) {
-       System.out.println("colorAsString : " +colorAsString);
-     }
      return rgbStringToColor(colorAsString);
     } else {
       Blob blob = query.getBlob(column);
@@ -255,7 +249,8 @@ public class VColorField extends VField {
   /**
    * Returns the SQL representation of field value of given record.
    */
-  public String getSqlImpl(int r) {return value[r] == null ? "NULL" : org.kopi.xkopi.lib.base.KopiUtils.toSql(colorToRgbString(value[r]));
+  public String getSqlImpl(int r) {return value[r] == null ? "NULL" :
+    org.kopi.xkopi.lib.base.KopiUtils.toSql(colorToRgbString(value[r]));
   }
 
   /**
@@ -402,12 +397,10 @@ public class VColorField extends VField {
     if (hexString == null || hexString.length() != 6) {
       return new Color(0, 0, 0); // Default color if input is invalid
     }
-
     int red = Integer.parseInt(hexString.substring(0, 2), 16);
     int green = Integer.parseInt(hexString.substring(2, 4), 16);
     int blue = Integer.parseInt(hexString.substring(4, 6), 16);
 
     return new Color(red, green, blue);
   }
-
 }

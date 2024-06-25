@@ -3576,20 +3576,10 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
               tailbuff += col;
               if (fld.getSql(recno).equals(org.kopi.xkopi.lib.base.KopiUtils.NULL_LITERAL)) {
                 tailbuff += " IS ";
-                tailbuff += fld.getSql(recno);
               } else {
                 tailbuff += " = ";
-                tailbuff += fld.getSql();
-//                if ( fld instanceof VColorField) {
-//                  if (fld.getObjectImpl(recno) != null) {
-//                    Color fieldColor = (Color)fld.getObjectImpl(recno);
-//                    byte[] fieldValue = getByteArrayFromColor(fieldColor);
-//                    tailbuff += fieldValue;
-//                  }
-//                } else {
-//                  tailbuff += fld.getSql();
-//                }
               }
+              tailbuff += fld.getSql();
             }
           }
         }
@@ -3789,7 +3779,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query.addString(tables[0]);
       query.addString(colbuf);
       query.addString(valbuf);
-      System.out.println("**** query --  " + query.toString());
       query.run("INSERT INTO $1 ($2) VALUES ($3)");
 
       setRecordFetched(recno, true);
@@ -3904,7 +3893,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       query.addString(buffer.toString());
       query.addString(getIdColumn());
       query.addInt(idFld.getInt(recno).intValue());
-      System.out.println("**** query --  " + query.toString());
       query.run("UPDATE $1 SET $2 WHERE $3 = #4");
 
       setRecordChanged(recno, false);

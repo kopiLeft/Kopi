@@ -616,20 +616,10 @@ public class Query {
   }
 
   /**
-   * Reads the data in byte array
-   */
-  public byte[] getBytes(int pos) throws SQLException {
-    return rset.getBytes(pos);
-  }
-
-  /**
    * Reads the stream in a byte array
    */
   public byte[] getByteArray(int pos) throws SQLException {
-    System.out.println("**** in getByteArray ****  column index *** : " + pos);
     InputStream	is = rset.getBinaryStream(pos);
-    System.out.println("**** in getByteArray ****  InputStream *** : " + is);
-
     if (is == null) {
       return null;
     }
@@ -640,20 +630,9 @@ public class Query {
 
     try {
       while ((nread = is.read(buf)) != -1) {
-        System.out.print("Read bytes: ");
-        for (int i = 0; i < nread; i++) {
-          System.out.printf("%02x ", buf[i]);
-        }
-        System.out.println();
         out.write(buf, 0, nread);
       }
-      byte[] result = out.toByteArray();
-      System.out.print("Final byte array: ");
-      for (byte b : result) {
-        System.out.printf("%02x ", b);
-      }
-      System.out.println();
-      return result;
+      return  out.toByteArray();
     } catch (IOException e) {
       throw new InconsistencyException("INPUT STREAM BROKEN:" + e.getMessage());
     }
