@@ -474,7 +474,7 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
     val trace = getInitParameter("trace")
     if (trace != null) {
       try {
-        val level = getInitParameter("trace")!!.toInt()
+        val level = trace.toInt()
         Query.setTraceLevel(level)
       } catch (e: NumberFormatException) {
         System.err.println("Warning: cannot set query trace level")
