@@ -40,7 +40,6 @@ import com.vaadin.flow.server.VaadinServlet
 import com.vaadin.flow.server.VaadinSession
 import com.vaadin.flow.shared.communication.PushMode
 
-import org.kopi.xkopi.lib.base.DBContext
 import org.kopi.vkopi.lib.base.UComponent
 import org.kopi.vkopi.lib.l10n.LocalizationManager
 import org.kopi.vkopi.lib.print.PrintManager
@@ -78,6 +77,8 @@ import org.kopi.vkopi.lib.visual.VRuntimeException
 import org.kopi.vkopi.lib.visual.VerifyConfiguration
 import org.kopi.vkopi.lib.visual.VlibProperties
 import org.kopi.vkopi.lib.visual.WindowController
+import org.kopi.xkopi.lib.base.DBContext
+import org.kopi.xkopi.lib.base.Query
 
 /**
  * The entry point for all Galite WEB applications.
@@ -491,7 +492,15 @@ abstract class VApplication(private val registry: Registry) : VerticalLayout(), 
    * Sets the query trace level.
    */
   protected fun setTraceLevel() {
-
+    val trace = getInitParameter("trace")
+    if (trace != null) {
+      try {
+        val level = trace.toInt()
+        Query.setTraceLevel(level)
+      } catch (e: NumberFormatException) {
+        System.err.println("Warning: cannot set query trace level")
+      }
+    }
   }
 
   /**
