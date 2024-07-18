@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2024 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2024 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
 import org.kopi.vkopi.lib.ui.vaadinflow.block.SingleComponentBlockLayout
 import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorField
 import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.VColor
 import org.kopi.vkopi.lib.visual.VException
 
 import com.vaadin.flow.component.UI
@@ -58,7 +59,6 @@ import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.function.SerializableConsumer
 import com.vaadin.flow.function.SerializablePredicate
 import com.vaadin.flow.internal.ExecutionContext
-import org.kopi.vkopi.lib.visual.VColor
 
 /**
  * Grid based chart block implementation.

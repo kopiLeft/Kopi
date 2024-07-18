@@ -21,19 +21,14 @@ package org.kopi.vkopi.lib.form;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.SQLException;
 
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.list.VColorColumn;
 import org.kopi.vkopi.lib.list.VListColumn;
-import org.kopi.vkopi.lib.visual.VRuntimeException;
 import org.kopi.vkopi.lib.visual.VlibProperties;
 import org.kopi.vkopi.lib.visual.VException;
-import org.kopi.xkopi.lib.base.PostgresDriverInterface;
 import org.kopi.xkopi.lib.base.Query;
 
 @SuppressWarnings("serial")
@@ -181,31 +176,7 @@ public class VColorField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    if (getBlock().getDBContext().getConnection().getDriverInterface() instanceof PostgresDriverInterface) {
-     String colorAsString = query.getString(column);
-     return rgbStringToColor(colorAsString);
-    } else {
-      Blob blob = query.getBlob(column);
-
-      if (blob != null) {
-        InputStream               is = blob.getBinaryStream();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        byte[]                    buf = new byte[3];
-        int                       nread;
-
-        try {
-          while ((nread = is.read(buf)) != -1) {
-            out.write(buf, 0, nread);
-          }
-        } catch (IOException e) {
-          throw new VRuntimeException(e);
-        }
-        byte[]  b = out.toByteArray();
-        return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
-      } else {
-        return new Color(0, 0, 0);
-      }
-    }
+    return query.getString(column);
   }
 
   /**
@@ -375,7 +346,6 @@ public class VColorField extends VField {
   }
 
   /**
-   *
    * @param c    The color to be converted.
    * @return     Returns the hex string representation of a Color.
    */
@@ -386,21 +356,5 @@ public class VColorField extends VField {
     String blueHex = String.format("%02x", color.getBlue());
 
     return redHex + greenHex + blueHex;
-  }
-
-  /**
-   *
-   * @param hexString    The hexadecimal color string to be converted.
-   * @return             Returns the Color object representation of a hexadecimal color string.
-   */
-  public static Color rgbStringToColor(String hexString) {
-    if (hexString == null || hexString.length() != 6) {
-      return new Color(0, 0, 0); // Default color if input is invalid
-    }
-    int red = Integer.parseInt(hexString.substring(0, 2), 16);
-    int green = Integer.parseInt(hexString.substring(2, 4), 16);
-    int blue = Integer.parseInt(hexString.substring(4, 6), 16);
-
-    return new Color(red, green, blue);
   }
 }

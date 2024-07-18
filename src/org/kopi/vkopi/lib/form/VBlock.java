@@ -3579,7 +3579,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
               } else {
                 tailbuff += " = ";
               }
-              tailbuff += fld.getSql();
+              tailbuff += fld.getSql(recno);
             }
           }
         }
