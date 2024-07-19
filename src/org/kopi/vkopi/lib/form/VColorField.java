@@ -164,7 +164,7 @@ public class VColorField extends VField {
       byte[]  b = (byte[])v;
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
-      setColor(r, (Color)v);
+      setColor(r, new Color((int) v));
     }
   }
 
@@ -176,7 +176,11 @@ public class VColorField extends VField {
   public Object retrieveQuery(Query query, int column)
     throws SQLException
   {
-    return query.getString(column);
+    if (query.isNull(column)) {
+      return null;
+    } else {
+      return query.getInt(column);
+    }
   }
 
   /**
@@ -221,7 +225,7 @@ public class VColorField extends VField {
    * Returns the SQL representation of field value of given record.
    */
   public String getSqlImpl(int r) {return value[r] == null ? "NULL" :
-    org.kopi.xkopi.lib.base.KopiUtils.toSql(colorToRgbString(value[r]));
+    org.kopi.xkopi.lib.base.KopiUtils.toSql(value[r].getRGB());
   }
 
   /**
@@ -343,18 +347,5 @@ public class VColorField extends VField {
     int blue = rgb & 0xFF;
 
     return new byte[]{(byte) red, (byte) green, (byte) blue};
-  }
-
-  /**
-   * @param c    The color to be converted.
-   * @return     Returns the hex string representation of a Color.
-   */
-  public static String colorToRgbString(Color c) {
-    Color color = (c != null) ? c : new Color(0, 0, 0);
-    String redHex = String.format("%02x", color.getRed());
-    String greenHex = String.format("%02x", color.getGreen());
-    String blueHex = String.format("%02x", color.getBlue());
-
-    return redHex + greenHex + blueHex;
   }
 }
