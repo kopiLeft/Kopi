@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2024 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -158,11 +158,13 @@ public class VColorField extends VField {
    * @kopi	inaccessible
    */
   public void setObject(int r, Object v) {
-    if (v instanceof byte[]) {
+    if (v == null) {
+      setColor(r, Color.BLACK);
+    } else if (v instanceof byte[]) {
       byte[]  b = (byte[])v;
       setColor(r, new Color(reformat(b[0]), reformat(b[1]), reformat(b[2])));
     } else {
-      setColor(r, (Color)v);
+      setColor(r, new Color((int) v));
     }
   }
 
@@ -177,9 +179,7 @@ public class VColorField extends VField {
     if (query.isNull(column)) {
       return null;
     } else {
-      byte[]  b = (byte[])query.getObject(column);
-
-      return new Color(reformat(b[0]), reformat(b[1]), reformat(b[2]));
+      return query.getInt(column);
     }
   }
 
@@ -203,12 +203,12 @@ public class VColorField extends VField {
   public Object getObjectImpl(int r) {
     return value[r];
   }
-  
+
   @Override
   public String toText(Object o) {
     throw new InconsistencyException("UNEXPECTD GET TEXT");
   }
-  
+
   @Override
   public Object toObject(String s) {
     throw new InconsistencyException("UNEXPECTD GET TEXT");
@@ -224,8 +224,8 @@ public class VColorField extends VField {
   /**
    * Returns the SQL representation of field value of given record.
    */
-  public String getSqlImpl(int r) {
-    return value[r] == null ? "NULL" : "?";
+  public String getSqlImpl(int r) {return value[r] == null ? "NULL" :
+    org.kopi.xkopi.lib.base.KopiUtils.toSql(value[r].getRGB());
   }
 
   /**
@@ -233,7 +233,7 @@ public class VColorField extends VField {
    */
   public void copyRecord(int f, int t) {
     Color               oldValue;
-    
+
     oldValue = value[t];
     value[t] = value[f];
     // inform that value has changed for non backup records
@@ -253,7 +253,15 @@ public class VColorField extends VField {
    * @kopi	inaccessible
    */
   public boolean hasLargeObject(int r) {
-    return  value[r] != null;
+    return false;
+  }
+
+  /**
+   * Warning:	This method will become inaccessible to kopi users in next release
+   * @kopi	inaccessible
+   */
+  public boolean hasBinaryLargeObject(int r) {
+    return false;
   }
 
   /**
@@ -265,10 +273,10 @@ public class VColorField extends VField {
     if (value[r] == null) {
       return null;
     } else {
-      return new ByteArrayInputStream((byte[])getObjectImpl(r));
+      return new ByteArrayInputStream(getByteArrayFromColor((Color)getObjectImpl(r)));
     }
   }
-  
+
   /**
    * Returns the data type handled by this field.
    */
@@ -281,14 +289,6 @@ public class VColorField extends VField {
    * FORMATTING VALUES WRT FIELD TYPE
    * ----------------------------------------------------------------------
    */
-
-  /**
-   * Returns a string representation of a date value wrt the field type.
-   */
-  protected String formatImage(Object value) {
-    return "image";
-  }
-
 
 //   /**
 //    * autofill
@@ -309,7 +309,7 @@ public class VColorField extends VField {
   public boolean fillField(PredefinedValueHandler handler) throws VException {
     if (handler != null) {
       setColor(block.getActiveRecord(),
-               handler.selectColor(getColor(getBlock().getActiveRecord())));
+          handler.selectColor(getColor(getBlock().getActiveRecord())));
       return true;
     } else {
       return false;
@@ -320,7 +320,7 @@ public class VColorField extends VField {
    * Reformat a unsigned int from a byte
    */
   private int reformat(byte b) {
-    return b < 0 ? b + 255 : b;
+    return b < 0 ? b + 256 : b;
   }
 
   /*
@@ -330,4 +330,22 @@ public class VColorField extends VField {
    */
 
   private Color[]		value;
+
+  /*
+   * ----------------------------------------------------------------------
+   * STATIC MEMBERS
+   * ----------------------------------------------------------------------
+   */
+
+  /**
+   * Get byteArray from Color
+   */
+  public static byte[] getByteArrayFromColor(Color color) {
+    int rgb = color.getRGB();
+    int red = (rgb >> 16) & 0xFF;
+    int green = (rgb >> 8) & 0xFF;
+    int blue = rgb & 0xFF;
+
+    return new byte[]{(byte) red, (byte) green, (byte) blue};
+  }
 }

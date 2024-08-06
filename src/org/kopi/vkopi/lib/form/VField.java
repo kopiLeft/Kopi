@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1990-2016 kopiRight Managed Solutions GmbH
+ * Copyright (c) 1990-2024 kopiRight Managed Solutions GmbH
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -130,14 +130,14 @@ public abstract class VField implements VConstants, VModel {
     this.alias = alias;
     if (alias != null) {
       alias.addFieldChangeListener(new FieldChangeListener() {
-          public void labelChanged() {}
-          public void searchOperatorChanged() {}
-          public void valueChanged(int r) {
-            fireValueChanged(r);
-          }
-          public void accessChanged(int r) {}
-          public void colorChanged(int r) {}
-        });
+        public void labelChanged() {}
+        public void searchOperatorChanged() {}
+        public void valueChanged(int r) {
+          fireValueChanged(r);
+        }
+        public void accessChanged(int r) {}
+        public void colorChanged(int r) {}
+      });
     }
   }
 
@@ -152,7 +152,7 @@ public abstract class VField implements VConstants, VModel {
   public String getName() {
     return name;
   }
-  
+
   /**
    * The name displayed on the left of this field
    */
@@ -249,7 +249,7 @@ public abstract class VField implements VConstants, VModel {
   public boolean hasAutofill() {
     return list != null;
   }
-  
+
   /**
    * Returns true if the field has an action trigger.
    * @return True if the field has an action trigger.
@@ -257,14 +257,14 @@ public abstract class VField implements VConstants, VModel {
   public boolean hasAction() {
     return hasTrigger(VConstants.TRG_ACTION);
   }
-  
+
   /**
    * Returns <code>true</code> if the field has the auto complete feature.
    */
   public boolean hasAutocomplete() {
     return list != null && list.hasAutocomplete();
   }
-  
+
   /**
    * Returns the auto complete length.
    * @return The auto complete length.
@@ -272,7 +272,7 @@ public abstract class VField implements VConstants, VModel {
   public int getAutocompleteLength() {
     return list != null ? list.getAutocompleteLength() : 0;
   }
-  
+
   /**
    * Returns the auto complete type.
    * @return The auto complete type.
@@ -339,7 +339,7 @@ public abstract class VField implements VConstants, VModel {
     }
     return false;
   }
-  
+
   /**
    * Returns true if it is a numeric field.
    */
@@ -373,7 +373,7 @@ public abstract class VField implements VConstants, VModel {
   /**
    * Localizes this field
    *
-   * @param     parent         the caller localizer
+   * @param     loc         the caller localizer
    */
   protected void localize(FieldLocalizer loc) {
     // by default nothing to do
@@ -427,7 +427,7 @@ public abstract class VField implements VConstants, VModel {
    * @return    true if the text is valid
    */
   public abstract boolean checkText(String s);
-  
+
   /**
    * verify that value is valid (on exit)
    *
@@ -436,7 +436,7 @@ public abstract class VField implements VConstants, VModel {
    * @exception VException      an exception is raised if text is bad
    */
   public abstract void checkType(int rec, Object s) throws VException;
-  
+
   /**
    * Returns the data type handled by this field.
    * @return The data type handled by this field.
@@ -478,14 +478,14 @@ public abstract class VField implements VConstants, VModel {
 
     if (autoleave) {
       KopiAction action = new KopiAction("autoleave") {
-          public void execute() throws VException {
-            getBlock().getForm().getActiveBlock().gotoNextField();
-          }
-        };
+        public void execute() throws VException {
+          getBlock().getForm().getActiveBlock().gotoNextField();
+        }
+      };
       ((UField) getDisplay()).getBlockView().getFormView().performAsyncAction(action);
     }
   }
-  
+
   /**
    * @Override
    */
@@ -911,44 +911,44 @@ public abstract class VField implements VConstants, VModel {
         // nothing to change: standard case
       } else {
         switch (getSearchOperator()) {
-        case SOP_EQ:
-          operator = "LIKE ";
-          operand = operand.replace('*', '%');
-          break;
+          case SOP_EQ:
+            operator = "LIKE ";
+            operand = operand.replace('*', '%');
+            break;
 
-        case SOP_NE:
-          operator = "NOT LIKE ";
-          operand = operand.replace('*', '%');
-          break;
+          case SOP_NE:
+            operator = "NOT LIKE ";
+            operand = operand.replace('*', '%');
+            break;
 
-        case SOP_GE:
-        case SOP_GT:
-          // remove everything after at '*'
-          operand = operand.substring(0, operand.indexOf('*')) + "'";
-          break;
+          case SOP_GE:
+          case SOP_GT:
+            // remove everything after at '*'
+            operand = operand.substring(0, operand.indexOf('*')) + "'";
+            break;
 
-        case SOP_LE:
-        case SOP_LT:
-          // replace substring starting at '*' by highest (ascii) char
-          operand = operand.substring(0, operand.indexOf('*')) + "\377'";
-          break;
+          case SOP_LE:
+          case SOP_LT:
+            // replace substring starting at '*' by highest (ascii) char
+            operand = operand.substring(0, operand.indexOf('*')) + "\377'";
+            break;
 
-        default:
-          throw new InconsistencyException();
+          default:
+            throw new InconsistencyException();
         }
       }
 
       switch (options & FDO_SEARCH_MASK) {
-      case FDO_SEARCH_NONE:
-        break;
-      case FDO_SEARCH_UPPER:
-        operand = "{fn UPPER(" + operand + ")}";
-        break;
-      case FDO_SEARCH_LOWER:
-        operand = "{fn LOWER(" + operand + ")}";
-        break;
-      default:
-        throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
+        case FDO_SEARCH_NONE:
+          break;
+        case FDO_SEARCH_UPPER:
+          operand = "{fn UPPER(" + operand + ")}";
+          break;
+        case FDO_SEARCH_LOWER:
+          operand = "{fn LOWER(" + operand + ")}";
+          break;
+        default:
+          throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
       }
 
       return operator + " " + operand;
@@ -1271,7 +1271,7 @@ public abstract class VField implements VConstants, VModel {
    * @param     column          the index of the column in the tuple
    */
   public void setQuery(int record, Query query, int column)
-    throws SQLException
+      throws SQLException
   {
     setObject(record, retrieveQuery(query, column));
   }
@@ -1592,9 +1592,9 @@ public abstract class VField implements VConstants, VModel {
 
     return getTextImpl(r);
   }
-  
+
   public abstract String toText(Object o);
-  
+
   public abstract Object toObject(String s) throws VException;
 
   /**
@@ -1655,7 +1655,7 @@ public abstract class VField implements VConstants, VModel {
   // ----------------------------------------------------------------------
   // FOREGROUND AND BACKGROUND COLOR MANAGEMENT
   // ----------------------------------------------------------------------
-  
+
   /**
    * Sets the foreground and the background colors for the current record.
    * @param foreground The foreground color.
@@ -1664,14 +1664,14 @@ public abstract class VField implements VConstants, VModel {
   public void setColor(VColor foreground, VColor background) {
     setColor(block.getCurrentRecord(), foreground, background);
   }
-  
+
   /**
    * Resets the foreground and the background colors the current record.
    */
   public void resetColor() {
     resetColor(block.getCurrentRecord());
   }
-  
+
   /**
    *  Sets the foreground and the background colors.
    * @param r The record number.
@@ -1680,7 +1680,7 @@ public abstract class VField implements VConstants, VModel {
    */
   public void setColor(int r, VColor foreground, VColor background) {
     boolean             fireColorChanged;
-    
+
     fireColorChanged = false;
     if ((this.foreground[r] == null && foreground != null)
         || (this.foreground[r] != null && !this.foreground[r].equals(foreground)))
@@ -1698,7 +1698,7 @@ public abstract class VField implements VConstants, VModel {
       fireColorChanged(r);
     }
   }
-  
+
   /**
    * Resets the foreground and the background colors.
    * @param r The record number.
@@ -1706,7 +1706,7 @@ public abstract class VField implements VConstants, VModel {
   public void resetColor(int r) {
     setColor(r, null, null);
   }
-  
+
   /**
    * Update the foreground and the background colors.
    * @param r The record number.
@@ -1714,11 +1714,11 @@ public abstract class VField implements VConstants, VModel {
   public void updateColor(int r) {
     setColor(r, getForeground(r), getBackground(r));
   }
-  
+
   public VColor getForeground(int r) {
     return foreground[r];
   }
-  
+
   public VColor getBackground(int r) {
     return background[r];
   }
@@ -1726,7 +1726,7 @@ public abstract class VField implements VConstants, VModel {
   // ----------------------------------------------------------------------
   // DRAG AND DROP HANDLIN
   // ----------------------------------------------------------------------
-  
+
   /**
    * Call before a drop starts on this field.
    * @throws VException Visual erros occuring.
@@ -1736,7 +1736,7 @@ public abstract class VField implements VConstants, VModel {
       callTrigger(TRG_PREDROP);
     }
   }
-  
+
   /**
    * Called after a drop ends on this field.
    * @throws VException Visual erros occuring.
@@ -1817,7 +1817,7 @@ public abstract class VField implements VConstants, VModel {
   public boolean isChangedUI() {
     return changedUI;
   }
-  
+
   /**
    * Sets this field to be changed by the UI.
    * @param changedUI changed UI.
@@ -1994,44 +1994,44 @@ public abstract class VField implements VConstants, VModel {
       }
 
       switch (count) {
-      case 0:
-        throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
+        case 0:
+          throw new VFieldException(this, MessageCode.getMessage("VIS-00001"));
 
-      case 1:
-        if (! result.equals(getString(block.getActiveRecord()))) {
-          setString(block.getActiveRecord(), result);
-        }
-        return;
-
-      case 2:
-        if (result.equals(getString(block.getActiveRecord()))) {
-          return;
-        } else {
-          String        qrybuf;
-          String        colbuf = "";
-
-          for (int i = 0; i < list.columnCount(); i++) {
-            if (i != 0) {
-              colbuf += ", ";
-            }
-            colbuf += list.getColumn(i).getColumn();
-          }
-
-          qrybuf =
-            " SELECT   " + colbuf +
-            " FROM     " + evalListTable() +
-            " WHERE    {fn SUBSTRING(" + list.getColumn(0).getColumn() + ", 1, {fn LENGTH(" + fldbuf + ")})} = " + fldbuf +
-            " ORDER BY 1";
-
-          result = (String)displayQueryList(qrybuf, list.getColumns());
-
-          if (result == null) {
-            throw new VExecFailedException();   // no message to display
-          } else {
+        case 1:
+          if (! result.equals(getString(block.getActiveRecord()))) {
             setString(block.getActiveRecord(), result);
-            return;
           }
-        }
+          return;
+
+        case 2:
+          if (result.equals(getString(block.getActiveRecord()))) {
+            return;
+          } else {
+            String        qrybuf;
+            String        colbuf = "";
+
+            for (int i = 0; i < list.columnCount(); i++) {
+              if (i != 0) {
+                colbuf += ", ";
+              }
+              colbuf += list.getColumn(i).getColumn();
+            }
+
+            qrybuf =
+                " SELECT   " + colbuf +
+                    " FROM     " + evalListTable() +
+                    " WHERE    {fn SUBSTRING(" + list.getColumn(0).getColumn() + ", 1, {fn LENGTH(" + fldbuf + ")})} = " + fldbuf +
+                    " ORDER BY 1";
+
+            result = (String)displayQueryList(qrybuf, list.getColumns());
+
+            if (result == null) {
+              throw new VExecFailedException();   // no message to display
+            } else {
+              setString(block.getActiveRecord(), result);
+              return;
+            }
+          }
 
       default:
         throw new InconsistencyException(threadInfo() + "count = " + count);
@@ -2112,7 +2112,7 @@ public abstract class VField implements VConstants, VModel {
       newForm = null; // should never happen.
     }
     SHOW_SINGLE_ENTRY = newForm != null;
-    
+
     try {
       for (;;) {
         try {
@@ -2234,21 +2234,21 @@ public abstract class VField implements VConstants, VModel {
     if (getSearchType() == STY_MANY) {
       qrybuf.append(" WHERE ");
       switch (options & FDO_SEARCH_MASK) {
-      case FDO_SEARCH_NONE:
-        qrybuf.append(list.getColumn(0).getColumn());
-        break;
-      case FDO_SEARCH_UPPER:
-        qrybuf.append("{fn UPPER(");
-        qrybuf.append(list.getColumn(0).getColumn());
-        qrybuf.append(")}");
-        break;
-      case FDO_SEARCH_LOWER:
-        qrybuf.append("{fn LOWER(");
-        qrybuf.append(list.getColumn(0).getColumn());
-        qrybuf.append(")}");
-        break;
-      default:
-        throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
+        case FDO_SEARCH_NONE:
+          qrybuf.append(list.getColumn(0).getColumn());
+          break;
+        case FDO_SEARCH_UPPER:
+          qrybuf.append("{fn UPPER(");
+          qrybuf.append(list.getColumn(0).getColumn());
+          qrybuf.append(")}");
+          break;
+        case FDO_SEARCH_LOWER:
+          qrybuf.append("{fn LOWER(");
+          qrybuf.append(list.getColumn(0).getColumn());
+          qrybuf.append(")}");
+          break;
+        default:
+          throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
       }
       qrybuf.append(" ");
       qrybuf.append(getSearchCondition());
@@ -2322,7 +2322,7 @@ public abstract class VField implements VConstants, VModel {
       setObject(block.getActiveRecord(), value);
     }
   }
-  
+
   /**
    * Returns the suggestion list of this field.
    * @param query The field content to be taken into consideration when looking for suggestions.
@@ -2336,10 +2336,10 @@ public abstract class VField implements VConstants, VModel {
     } else {
       StringBuffer      		qrybuf;
       List<String[]>			suggestions;
-      
+
       qrybuf = new StringBuffer();
       suggestions = new ArrayList<String[]>();
-      
+
       qrybuf.append("SELECT ");
       for (int i = 0; i < list.columnCount(); i++) {
         if (i != 0) {
@@ -2354,64 +2354,64 @@ public abstract class VField implements VConstants, VModel {
       qrybuf.append(list.getColumn(0).getColumn());
       qrybuf.append(")}");
       switch (getAutocompleteType()) {
-      case VList.AUTOCOMPLETE_CONTAINS:
-	qrybuf.append(" LIKE ");
-	qrybuf.append(KopiUtils.toSql("%" + query.toLowerCase() + "%"));
-	break;
-      case VList.AUTOCOMPLETE_STARTSWITH:
-	qrybuf.append(" LIKE ");
-	qrybuf.append(KopiUtils.toSql(query.toLowerCase() + "%"));
-	break;
-      default:
-	// default should never reached
-	qrybuf.append(" = ");
-	qrybuf.append(KopiUtils.toSql(query));
+        case VList.AUTOCOMPLETE_CONTAINS:
+          qrybuf.append(" LIKE ");
+          qrybuf.append(KopiUtils.toSql("%" + query.toLowerCase() + "%"));
+          break;
+        case VList.AUTOCOMPLETE_STARTSWITH:
+          qrybuf.append(" LIKE ");
+          qrybuf.append(KopiUtils.toSql(query.toLowerCase() + "%"));
+          break;
+        default:
+          // default should never reached
+          qrybuf.append(" = ");
+          qrybuf.append(KopiUtils.toSql(query));
       }
 
       qrybuf.append(" ORDER BY 1");
-      
+
       for (;;) {
-	try {
-	  getForm().startProtected(null);
+        try {
+          getForm().startProtected(null);
 
-	  Query           sqlQuery = new Query(getForm().getDBContext().getConnection());
-	  
-	  sqlQuery.open(qrybuf.toString());
-	  while (sqlQuery.next()) {
-	    List<String>		columns;
-	      
-	      
-	    columns = new ArrayList<String>();
-	    for (int i = 0; i < list.columnCount(); i++) {
-	      columns.add((String)list.getColumn(i).formatObject(sqlQuery.getObject(i + 1)));
-	    }
-	    suggestions.add(columns.toArray(new String[columns.size()]));
-	  }
-	  sqlQuery.close();
+          Query           sqlQuery = new Query(getForm().getDBContext().getConnection());
 
-	  getForm().commitProtected();
-	  break;
-	} catch (SQLException e) {
-	  try {
-	    getForm().abortProtected(e);
-	  } catch(SQLException abortEx) {
-	    throw new VExecFailedException(abortEx);
-	  }
-	} catch (Error error) {
-	  try {
-	    getForm().abortProtected(error);
-	  } catch(Error abortEx) {
-	    throw new VExecFailedException(abortEx);
-	  }
-	} catch (RuntimeException rte) {
-	  try {
-	    getForm().abortProtected(rte);
-	  } catch(RuntimeException abortEx) {
-	    throw new VExecFailedException(abortEx);
-	  }
-	}
+          sqlQuery.open(qrybuf.toString());
+          while (sqlQuery.next()) {
+            List<String>		columns;
+
+
+            columns = new ArrayList<String>();
+            for (int i = 0; i < list.columnCount(); i++) {
+              columns.add((String)list.getColumn(i).formatObject(sqlQuery.getObject(i + 1)));
+            }
+            suggestions.add(columns.toArray(new String[columns.size()]));
+          }
+          sqlQuery.close();
+
+          getForm().commitProtected();
+          break;
+        } catch (SQLException e) {
+          try {
+            getForm().abortProtected(e);
+          } catch(SQLException abortEx) {
+            throw new VExecFailedException(abortEx);
+          }
+        } catch (Error error) {
+          try {
+            getForm().abortProtected(error);
+          } catch(Error abortEx) {
+            throw new VExecFailedException(abortEx);
+          }
+        } catch (RuntimeException rte) {
+          try {
+            getForm().abortProtected(rte);
+          } catch(RuntimeException abortEx) {
+            throw new VExecFailedException(abortEx);
+          }
+        }
       }
-        
+
       return suggestions.toArray(new String[suggestions.size()][]);
     }
   }
@@ -2688,7 +2688,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
-  
+
   public void fireSearchOperatorChanged() {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2700,7 +2700,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
-  
+
   public void fireLabelChanged() {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2712,7 +2712,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
-  
+
   public void fireAccessChanged(int r) {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2724,7 +2724,7 @@ public abstract class VField implements VConstants, VModel {
       }
     }
   }
-  
+
   public void fireColorChanged(int r) {
     if (hasListener) {
       Object[]          listeners = fieldListener.getListenerList();
@@ -2877,7 +2877,7 @@ public abstract class VField implements VConstants, VModel {
 
   private       VPosition       pos;
   private       VCommand[]      cmd;
-  
+
   private       VColor[]        foreground;    // foreground colors for this field.
   private       VColor[]        background;    // background colors for this field.
 

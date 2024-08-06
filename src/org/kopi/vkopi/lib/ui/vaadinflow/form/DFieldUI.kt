@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2013-2022 kopiLeft Services SARL, Tunis TN
- * Copyright (c) 1990-2022 kopiRight Managed Solutions GmbH, Wien AT
+ * Copyright (c) 2013-2024 kopiLeft Services SARL, Tunis TN
+ * Copyright (c) 1990-2024 kopiRight Managed Solutions GmbH, Wien AT
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -67,6 +67,8 @@ open class DFieldUI(blockView: UBlock, model: VField, index: Int) : VFieldUI(blo
       VField.MDL_FLD_IMAGE -> DImageField(this, label as? DLabel, model.align,
                                           0, (model as VImageField).iconWidth,
                                           model.iconHeight, detail)
+      VField.MDL_FLD_COLOR -> DColorField(this, label as? DLabel, model.align,
+                                          0, detail)
       VField.MDL_FLD_ACTOR -> DActorField(this, label as? DLabel, model.align,
                                           model.options, detail)
       else -> throw InconsistencyException("Type of model " + model.getType().toString() + " not supported.")
@@ -108,7 +110,7 @@ open class DFieldUI(blockView: UBlock, model: VField, index: Int) : VFieldUI(blo
       }
       // fire color changed for non empty colors
       if (Utils.toString(model.getForeground(r)).isNotEmpty() || Utils.toString(
-                      model.getBackground(r)).isNotEmpty()) {
+          model.getBackground(r)).isNotEmpty()) {
         (blockView as DBlock).fireColorChanged(index,
                                                r,
                                                Utils.toString(model.getForeground(r)),
