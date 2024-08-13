@@ -23,6 +23,7 @@ import java.awt.Color
 import org.kopi.vkopi.lib.form.VColorField
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Utils
 import org.kopi.vkopi.lib.ui.vaadinflow.field.ColorField
 
 class DColorField(model: VFieldUI,
@@ -75,7 +76,7 @@ class DColorField(model: VFieldUI,
    * @param s The object to set in
    */
   fun setObject(s: Color?) {
-    val stringColor = s?.let { colorToRgbString(s) }
+    val stringColor = s?.let { Utils.colorToRgbString(s) }
     BackgroundThreadHandler.access(currentUI) {
       field.setData(stringColor)
     }
@@ -110,16 +111,5 @@ class DColorField(model: VFieldUI,
     val blue = blueHex.toInt(16)
 
     return Color(red, green, blue)
-  }
-
-  /**
-   * Convert a Java.awt.Color object to Hexadecimal String.
-   */
-  fun colorToRgbString(color: Color): String {
-    val redHex = String.format("%02x", color.red)
-    val greenHex = String.format("%02x", color.green)
-    val blueHex = String.format("%02x", color.blue)
-
-    return "$redHex$greenHex$blueHex"
   }
 }
