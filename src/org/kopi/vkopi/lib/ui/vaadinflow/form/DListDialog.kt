@@ -24,6 +24,7 @@ import org.kopi.vkopi.lib.form.VForm
 import org.kopi.vkopi.lib.form.VListDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
+import org.kopi.vkopi.lib.ui.vaadinflow.base.VInputButton
 import org.kopi.vkopi.lib.ui.vaadinflow.list.GridListDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.list.ListTable
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.InformationNotification
@@ -166,9 +167,7 @@ class DListDialog(
         table!!.select(nextPageItemId)
       }
       Key.SPACE -> if (newForm != null) {
-        if (newForm != null) {
-          doSelectFromDialog(-1, false, true)
-        }
+        doSelectFromDialog(-1, false, true)
       }
       Key.ENTER -> {
         doSelectFromDialog(tableItems.indexOf(table!!.selectedItems.first()), false, false)
@@ -325,6 +324,9 @@ class DListDialog(
    */
   private fun prepareDialog() {
     val table = ListTable(model)
+    if (model.newForm != null || model.isForceNew) {
+      this.newForm = VInputButton(VlibProperties.getString("new-record"))
+    }
     super.table = table
     table.select(tableItems.first())
     (table.selectionModel as GridSingleSelectionModel).addSingleSelectionListener {
@@ -353,7 +355,6 @@ class DListDialog(
     table.addColumnReorderListener {
       sort(it.columns)
     }
-    // TODO
   }
 
   /**
