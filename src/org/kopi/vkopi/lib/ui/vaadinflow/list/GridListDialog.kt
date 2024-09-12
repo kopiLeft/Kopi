@@ -17,18 +17,18 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.list
 
-import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
-import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
-import org.kopi.vkopi.lib.ui.vaadinflow.base.VInputButton
-import org.kopi.vkopi.lib.ui.vaadinflow.common.Dialog
-import org.kopi.vkopi.lib.visual.ApplicationContext
-
 import com.vaadin.flow.component.HasEnabled
 import com.vaadin.flow.component.HasStyle
 import com.vaadin.flow.component.KeyNotifier
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+
+import org.kopi.vkopi.lib.ui.vaadinflow.base.LocalizedProperties
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.ui.vaadinflow.common.Dialog
+import org.kopi.vkopi.lib.visual.ApplicationContext
+import org.kopi.vkopi.lib.visual.VlibProperties
 
 /**
  * A list dialog
@@ -40,7 +40,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 ])
 open class GridListDialog : Dialog(), HasEnabled, KeyNotifier, HasStyle {
 
-  protected var newForm: VInputButton? = null
+  protected var newForm: Boolean = false
+  protected var newFormButton: Button = Button(VlibProperties.getString("new-record"))
   protected val close = Button(LocalizedProperties.getString(locale, "CLOSE"))
   private var content: VerticalLayout = VerticalLayout()
   protected var pattern: String? = null
@@ -78,11 +79,12 @@ open class GridListDialog : Dialog(), HasEnabled, KeyNotifier, HasStyle {
       field!!.className = Styles.LIST_DIALOG_TABLE
       field!!.addThemeName(Styles.LIST_DIALOG_TABLE)
       content.add(field) // put table inside the focus panel
-      if (newForm != null) {
-        content.add(newForm)
-      }
       add(field!!.widthStyler, content)
-      addToFooter(close)
+      if (!newForm) {
+        addToFooter(close)
+      } else {
+        addToFooter(newFormButton)
+      }
     }
 
   private val locale get() = ApplicationContext.getApplicationContext().getApplication().defaultLocale.toString()

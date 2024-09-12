@@ -17,6 +17,16 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
+import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.Key
+import com.vaadin.flow.component.KeyDownEvent
+import com.vaadin.flow.component.KeyPressEvent
+import com.vaadin.flow.component.Shortcuts
+import com.vaadin.flow.component.UI
+import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridSingleSelectionModel
+import com.vaadin.flow.data.provider.ListDataProvider
+
 import org.kopi.vkopi.lib.form.UField
 import org.kopi.vkopi.lib.form.UListDialog
 import org.kopi.vkopi.lib.form.VDictionary
@@ -24,7 +34,6 @@ import org.kopi.vkopi.lib.form.VForm
 import org.kopi.vkopi.lib.form.VListDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.releaseLock
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.startAndWaitAndPush
-import org.kopi.vkopi.lib.ui.vaadinflow.base.VInputButton
 import org.kopi.vkopi.lib.ui.vaadinflow.list.GridListDialog
 import org.kopi.vkopi.lib.ui.vaadinflow.list.ListTable
 import org.kopi.vkopi.lib.ui.vaadinflow.notif.InformationNotification
@@ -36,16 +45,6 @@ import org.kopi.vkopi.lib.visual.UWindow
 import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VRuntimeException
 import org.kopi.vkopi.lib.visual.VlibProperties
-
-import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Key
-import com.vaadin.flow.component.KeyDownEvent
-import com.vaadin.flow.component.KeyPressEvent
-import com.vaadin.flow.component.Shortcuts
-import com.vaadin.flow.component.UI
-import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridSingleSelectionModel
-import com.vaadin.flow.data.provider.ListDataProvider
 
 /**
  * The `DListDialog` is the vaadin implementation of the
@@ -69,7 +68,10 @@ class DListDialog(
     // addSelectionListener(this) TODO
     // addSearchListener(this) TODO
     close.addClickListener {
-      doSelectFromDialog(-1, true, false)
+      doSelectFromDialog(-1, escaped = true, doNewForm = false)
+    }
+    newFormButton.addClickListener {
+      doSelectFromDialog(-1, escaped = false, doNewForm = true)
     }
   }
 
@@ -100,7 +102,7 @@ class DListDialog(
   }
 
   override fun selectFromDialog(window: UWindow?, showSingleEntry: Boolean): Int =
-          selectFromDialog(window, null, showSingleEntry)
+    selectFromDialog(window, null, showSingleEntry)
 
   /**
    * invoked when the user clicks outside the overlay or presses the escape key.
@@ -166,8 +168,8 @@ class DListDialog(
         pattern = ""
         table!!.select(nextPageItemId)
       }
-      Key.SPACE -> if (newForm != null) {
-        doSelectFromDialog(-1, false, true)
+      Key.SPACE -> if (model.newForm != null || model.isForceNew) {
+        doSelectFromDialog(-1, escaped = false, doNewForm = true)
       }
       Key.ENTER -> {
         doSelectFromDialog(tableItems.indexOf(table!!.selectedItems.first()), false, false)
@@ -291,20 +293,20 @@ class DListDialog(
    * Handles the client response after thread release.
    * @return The selected position.
    */
-  private fun handleClientResponse(): Int =
-          when {
-            escaped -> -1
-            doNewForm -> {
-              try {
-                doNewForm(model.form, model.newForm)
-              } catch (e: VException) {
-                throw VRuntimeException(e)
-              }
-            }
-            selectedPos != -1 -> model.convert(selectedPos)
-            else -> -1 // in all other cases return -1 indicating no choice.
-          }
-
+  private fun handleClientResponse(): Int {
+    return when {
+      escaped           -> -1
+      doNewForm         -> {
+        try {
+          doNewForm(model.form, model.newForm)
+        } catch (e: VException) {
+          throw VRuntimeException(e)
+        }
+      }
+      selectedPos != -1 -> model.convert(selectedPos)
+      else              -> -1 // in all other cases return -1 indicating no choice.
+    }
+  }
   /**
    * Displays a window to insert a new record
    * @param form The [VForm] instance.
@@ -312,21 +314,21 @@ class DListDialog(
    * @return The selected item.
    * @throws VException Visual errors.
    */
-  private fun doNewForm(form: VForm?, cstr: VDictionary?): Int =
-          if (form != null && cstr != null) {
-            cstr.add(form)
-          } else {
-            VListDialog.NEW_CLICKED
-          }
+  private fun doNewForm(form: VForm?, cstr: VDictionary?): Int {
+    return if (form != null && cstr != null) {
+      cstr.add(form)
+    } else {
+      VListDialog.NEW_CLICKED
+    }
+  }
+
 
   /**
    * Prepares the dialog content.
    */
   private fun prepareDialog() {
     val table = ListTable(model)
-    if (model.newForm != null || model.isForceNew) {
-      this.newForm = VInputButton(VlibProperties.getString("new-record"))
-    }
+    this.newForm = model.newForm != null || model.isForceNew
     super.table = table
     table.select(tableItems.first())
     (table.selectionModel as GridSingleSelectionModel).addSingleSelectionListener {
