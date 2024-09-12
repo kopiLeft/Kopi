@@ -52,10 +52,7 @@ import org.kopi.vkopi.lib.visual.VlibProperties
  *
  * @param model The list dialog model.
  */
-class DListDialog(
-        private val model: VListDialog
-) : GridListDialog(), UListDialog/*, CloseListener, SelectionListener, SearchListener TODO*/ {
-
+class DListDialog(private val model: VListDialog) : GridListDialog(), UListDialog { /*, CloseListener, SelectionListener, SearchListener TODO*/
   private var escaped = true
   private var doNewForm = false
   private var selectedPos = -1
@@ -337,26 +334,12 @@ class DListDialog(
       }
     }
     Shortcuts.addShortcutListener(this,
-                                  { _ ->
-                                    doSelectFromDialog(tableItems.indexOf(table.selectedItem), false, false)
-                                  },
-                                  Key.ENTER
-    )
-    Shortcuts.addShortcutListener(this,
-                                  { _ ->
-                                    table.select(nextItem)
-                                  },
-                                  Key.ARROW_DOWN
-    )
-    Shortcuts.addShortcutListener(this,
-                                  { _ ->
-                                    table.select(previousItem)
-                                  },
-                                  Key.ARROW_UP
-    )
-    table.addColumnReorderListener {
-      sort(it.columns)
-    }
+                                  { _ -> doSelectFromDialog(tableItems.indexOf(table.selectedItem), escaped = false, doNewForm = false) },
+                                  Key.ENTER)
+    Shortcuts.addShortcutListener(this, { _ -> doSelectFromDialog(-1, escaped = false, doNewForm = true) }, Key.SPACE)
+    Shortcuts.addShortcutListener(this, { _ -> table.select(nextItem) }, Key.ARROW_DOWN)
+    Shortcuts.addShortcutListener(this, { _ -> table.select(previousItem) }, Key.ARROW_UP)
+    table.addColumnReorderListener { sort(it.columns) }
   }
 
   /**
@@ -440,4 +423,8 @@ class DListDialog(
   override fun onAttach(attachEvent: AttachEvent) {
     currentUI = attachEvent.ui
   }
+
+  override fun isEnabled(): Boolean { return super.isEnabled() }
+
+  override fun setEnabled(enabled: Boolean) { super.setEnabled(enabled) }
 }
