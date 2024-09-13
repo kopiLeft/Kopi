@@ -22,6 +22,7 @@ import java.util.Arrays
 import com.vaadin.flow.component.KeyNotifier
 import com.vaadin.flow.component.combobox.ComboBox
 import com.vaadin.flow.component.dependency.CssImport
+import com.vaadin.flow.data.provider.DataProvider
 
 /**
  * An Code field.
@@ -34,7 +35,7 @@ import com.vaadin.flow.component.dependency.CssImport
 class VCodeField(enumerations : Array<String>?) : InputTextField<ComboBox<String>>(ComboBox<String>()), KeyNotifier {
 
   init {
-    internalField.setItems(Arrays.stream(enumerations))
+    internalField.setItems(DataProvider.fromStream(Arrays.stream(enumerations)))
     element.themeList.add("galite-combobox")
   }
 

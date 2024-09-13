@@ -16,11 +16,12 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
-import org.kopi.vkopi.lib.ui.vaadinflow.field.VTimeField
-import org.kopi.vkopi.lib.ui.vaadinflow.field.VTimeStampField
-
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.KeyModifier
+
+import org.kopi.vkopi.lib.ui.vaadinflow.field.VCodeField
+import org.kopi.vkopi.lib.ui.vaadinflow.field.VTimeField
+import org.kopi.vkopi.lib.ui.vaadinflow.field.VTimeStampField
 
 fun Component.addJSKeyDownListener(shortCuts: MutableMap<String, ShortcutAction<*>>) {
   val jsCall = """
@@ -60,9 +61,10 @@ private fun Component.keysConditions(shortCuts: MutableMap<String, ShortcutActio
 
 fun Component.inputValueExpression(): String {
   return when (this) {
-    is VTimeField -> "this.inputElement.value"
+    is VTimeField      -> "this.inputElement.value"
     is VTimeStampField -> "this.__datePicker.inputElement.value + ' ' + this.__timePicker.inputElement.value"
-    else -> "this.value"
+    is VCodeField      -> "this.$.input.value"
+    else               -> "this.value"
   }
 }
 
