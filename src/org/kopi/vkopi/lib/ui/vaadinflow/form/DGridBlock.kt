@@ -20,22 +20,6 @@ package org.kopi.vkopi.lib.ui.vaadinflow.form
 import java.awt.Color
 import java.util.stream.Stream
 
-import org.kopi.vkopi.lib.base.UComponent
-import org.kopi.vkopi.lib.form.Alignment
-import org.kopi.vkopi.lib.form.VActorField
-import org.kopi.vkopi.lib.form.VBlock
-import org.kopi.vkopi.lib.form.VBooleanField
-import org.kopi.vkopi.lib.form.VConstants
-import org.kopi.vkopi.lib.form.VField
-import org.kopi.vkopi.lib.form.VFieldUI
-import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
-import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
-import org.kopi.vkopi.lib.ui.vaadinflow.block.SingleComponentBlockLayout
-import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorField
-import org.kopi.vkopi.lib.visual.Action
-import org.kopi.vkopi.lib.visual.VColor
-import org.kopi.vkopi.lib.visual.VException
-
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.grid.ColumnResizeEvent
@@ -59,6 +43,22 @@ import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.function.SerializableConsumer
 import com.vaadin.flow.function.SerializablePredicate
 import com.vaadin.flow.internal.ExecutionContext
+
+import org.kopi.vkopi.lib.base.UComponent
+import org.kopi.vkopi.lib.form.Alignment
+import org.kopi.vkopi.lib.form.VActorField
+import org.kopi.vkopi.lib.form.VBlock
+import org.kopi.vkopi.lib.form.VBooleanField
+import org.kopi.vkopi.lib.form.VConstants
+import org.kopi.vkopi.lib.form.VField
+import org.kopi.vkopi.lib.form.VFieldUI
+import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
+import org.kopi.vkopi.lib.ui.vaadinflow.block.BlockLayout
+import org.kopi.vkopi.lib.ui.vaadinflow.block.SingleComponentBlockLayout
+import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorField
+import org.kopi.vkopi.lib.visual.Action
+import org.kopi.vkopi.lib.visual.VColor
+import org.kopi.vkopi.lib.visual.VException
 
 /**
  * Grid based chart block implementation.
