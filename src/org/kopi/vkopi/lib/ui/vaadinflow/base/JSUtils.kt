@@ -63,7 +63,7 @@ fun Component.inputValueExpression(): String {
   return when (this) {
     is VTimeField      -> "this.inputElement.value"
     is VTimeStampField -> "this.__datePicker.inputElement.value + ' ' + this.__timePicker.inputElement.value"
-    is VCodeField      -> "this.$.input.value"
+    is VCodeField      -> "this.inputElement.value"
     else               -> "this.value"
   }
 }

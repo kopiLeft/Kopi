@@ -19,7 +19,6 @@ package org.kopi.vkopi.lib.ui.vaadinflow.list
 
 import com.vaadin.flow.component.HasEnabled
 import com.vaadin.flow.component.HasStyle
-import com.vaadin.flow.component.KeyNotifier
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
@@ -38,7 +37,7 @@ import org.kopi.vkopi.lib.visual.VlibProperties
   CssImport("./styles/galite/list.css" , themeFor = "vaadin-grid"),
   CssImport("./styles/galite/list.css" , themeFor = "vcf-enhanced-dialog-overlay")
 ])
-open class GridListDialog : Dialog(), HasEnabled, KeyNotifier, HasStyle {
+open class GridListDialog : Dialog(), HasEnabled, HasStyle {
 
   protected var newForm: Boolean = false
   protected var newFormButton: Button = Button(VlibProperties.getString("new-record"))
