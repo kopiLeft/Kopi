@@ -258,7 +258,9 @@ public class Connection {
    * Sets the transaction isolation level for the connection.
    */
   public void setTransactionIsolation(int isolation) throws SQLException {
+    conn.setAutoCommit(true);
     conn.setTransactionIsolation(isolation);
+    conn.setAutoCommit(false);
   }
 
   /**
