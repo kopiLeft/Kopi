@@ -89,7 +89,7 @@ public class VStringField extends VField {
   public int getVisibleHeight() {
     return visibleHeight == 0 ? height : visibleHeight;
   }
-  
+
   /**
    * Returns true if the text field supports styled content.
    */
@@ -115,6 +115,8 @@ public class VStringField extends VField {
     int		end   = 0;
 
     end = textToModel(s, getWidth(), Integer.MAX_VALUE).length();
+    System.err.println("Max length = " + width + " * " + height + " = " + (width * height));
+    System.err.println("Text length = " + LineBreaker.textToModel(s, getWidth(), Integer.MAX_VALUE).length());
     return end <= width * height;
   }
 
@@ -254,12 +256,12 @@ public class VStringField extends VField {
     // TODO Auto-generated method stub
     return o == null ? "" : (String)o;
   }
-  
+
   @Override
   public Object toObject(String s) throws VException {
     return s.equals("") ? null : s;
   }
-  
+
   /**
    * Returns the display representation of field value of given record.
    */
@@ -279,7 +281,7 @@ public class VStringField extends VField {
    */
   public void copyRecord(int f, int t) {
     String              oldValue;
-    
+
     oldValue = value[t];
     value[t] = value[f];
     // inform that value has changed for non backup records
@@ -292,7 +294,7 @@ public class VStringField extends VField {
       fireValueChanged(t);
     }
   }
-  
+
   /**
    * Returns the data type handled by this field.
    */
@@ -315,7 +317,6 @@ public class VStringField extends VField {
    * Replaces new-lines by blanks
    *
    * @param	source	the source text with carriage return
-   * @param	col	the width of the text
    */
   public String textToModel(String source) {
     return textToModel(source, getWidth(), getHeight());

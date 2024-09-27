@@ -58,22 +58,23 @@ open class DTextField(
   protected var transformer: ModelTransformer? = null
 
   init {
-    transformer = if (getModel().height == 1
-            || !scanner && getModel().getTypeOptions() and VConstants.FDO_DYNAMIC_NL > 0) {
-      DefaultTransformer(getModel().width,
-                         getModel().height)
+    System.err.println("DTextField INIT " + getModel().label)
+
+    transformer = if (getModel().height == 1 || (!scanner && ((getModel().typeOptions and VConstants.FDO_DYNAMIC_NL) > 0))) {
+      DefaultTransformer(getModel().width, getModel().height)
     } else if (!scanner) {
-      NewlineTransformer(
-        getModel().width,
-        getModel().height
-      )
+      NewlineTransformer(getModel().width, getModel().height)
     } else {
       ScannerTransformer(this)
     }
     field = createFieldGUI(options and VConstants.FDO_NOECHO != 0, scanner, align)
 
-    field.inputField.addTextValueChangeListener {
+    field.inputField.internalField.addValueChangeListener {
       if (it.isFromClient) {
+//        if (text != null && text!!.length > getModel().width * getModel().height) {
+//          val value = text?.substring(0, getModel().width * getModel().height)
+//          field.value = transformer!!.toGui(value)
+//        }
         valueChanged()
       }
     }
@@ -85,6 +86,7 @@ open class DTextField(
   override fun valueChanged() {
     val value = text
 
+    System.err.println("isChanged = ${isChanged(getModel().getText(), value)}")
     if (isChanged(getModel().getText(), value)) {
       checkText(value)
     }
@@ -210,6 +212,7 @@ open class DTextField(
     }
     getModel().onTextChange(text!!)
 
+    System.err.println("getModel().checkText(text) = " + getModel().checkText(text))
     if (getModel().checkText(text)) {
       // affect value directly to the model.
       getModel().getForm().performAsyncAction(object : Action("check_type") {
@@ -324,6 +327,10 @@ open class DTextField(
     // IMPLEMENTATIONS
     //---------------------------------------
     override fun toModel(guiTxt: String?): String {
+      System.err.println("!!!!!!!!!!!! CALL TO MODEL !!!!!!!!!!!!!!!")
+      System.err.println("guiTxt = '$guiTxt'")
+      System.err.println("convertFixedTextToSingleLine = '${convertFixedTextToSingleLine(guiTxt, col, row)}'")
+
       return convertFixedTextToSingleLine(guiTxt, col, row)
     }
 

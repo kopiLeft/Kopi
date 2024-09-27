@@ -22,15 +22,15 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 
+import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.type.format
+import org.kopi.vkopi.lib.ui.vaadinflow.base.DecimalFormatSymbols
 import org.kopi.vkopi.lib.ui.vaadinflow.base.JSKeyDownHandler
 import org.kopi.vkopi.lib.ui.vaadinflow.base.ShortcutAction
 import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
 import org.kopi.vkopi.lib.ui.vaadinflow.form.DField
 import org.kopi.vkopi.lib.ui.vaadinflow.main.MainWindow
 import org.kopi.vkopi.lib.ui.vaadinflow.window.Window
-import org.kopi.vkopi.lib.ui.vaadinflow.base.DecimalFormatSymbols
-import org.kopi.vkopi.lib.form.VConstants
 
 import com.vaadin.flow.component.AbstractCompositeField
 import com.vaadin.flow.component.AbstractField
@@ -49,7 +49,9 @@ import com.vaadin.flow.component.KeyUpEvent
 import com.vaadin.flow.component.textfield.Autocomplete
 import com.vaadin.flow.component.textfield.HasAutocomplete
 import com.vaadin.flow.component.textfield.HasPrefixAndSuffix
+import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.component.textfield.TextFieldVariant
+import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.dom.DomEvent
 
 /**
@@ -58,7 +60,7 @@ import com.vaadin.flow.dom.DomEvent
  *
  * Protected constructor to use to create other types of fields.
  */
-open class InputTextField<C> internal constructor(protected val internalField: C)
+open class InputTextField<C> internal constructor(val internalField: C)
   : HasSize, AbstractCompositeField<C, InputTextField<C>, String>(null),
       KeyNotifier, HasStyle, BlurNotifier<InputTextField<C>>, Focusable<InputTextField<C>>,
       HasAutocomplete, HasPrefixAndSuffix, JSKeyDownHandler
@@ -91,6 +93,9 @@ open class InputTextField<C> internal constructor(protected val internalField: C
     addFocusListener(::onFocus)
     //addBlurListener(::onBlur)
     // TODO : disable context menu from showing up.
+    if (internalField is TextArea) {
+      internalField.valueChangeMode = ValueChangeMode.EAGER
+    }
     // Autoselection on focus
     element.setProperty("autoselect", true)
   }
