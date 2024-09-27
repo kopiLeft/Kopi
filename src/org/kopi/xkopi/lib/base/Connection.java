@@ -258,6 +258,8 @@ public class Connection {
    * Sets the transaction isolation level for the connection.
    */
   public void setTransactionIsolation(int isolation) throws SQLException {
+    // Workaround: Using pgjdbc-ng 8, a new transaction is opened at this level except when autocommit is true.
+    // Set autocommit to true just before setting the transaction isolation and to false just after.
     conn.setAutoCommit(true);
     conn.setTransactionIsolation(isolation);
     conn.setAutoCommit(false);
