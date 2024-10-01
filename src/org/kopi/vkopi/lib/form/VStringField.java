@@ -271,7 +271,11 @@ public class VStringField extends VField {
    * Returns the SQL representation of field value of given record.
    */
   public String getSqlImpl(int r) {
-    return org.kopi.xkopi.lib.base.KopiUtils.toSql(modelToText(r));
+    if (value[r] != null && value[r].contains("%")) {
+      return org.kopi.xkopi.lib.base.KopiUtils.toSql(modelToText(r));
+    } else {
+      return org.kopi.xkopi.lib.base.KopiUtils.toSql(value[r]);
+    }
   }
 
   /**
