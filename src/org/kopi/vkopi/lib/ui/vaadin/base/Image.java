@@ -42,39 +42,39 @@ public class Image implements org.kopi.vkopi.lib.base.Image {
   //---------------------------------------------------
   // IMAGE IMPLEMENTATION
   //---------------------------------------------------
-  
-  /**
-   * @Override
-   */  
-  public int getWidth() {
-    return -1;
-  }
-  
+
   /**
    * @Override
    */
-  public int getHeight() {
+  public int getImageWidth() {
     return -1;
   }
-  
+
+  /**
+   * @Override
+   */
+  public int getImageHeight() {
+    return -1;
+  }
+
   /**
    * @Override
    */
   public String getDescription() {
     return resource.getMIMEType();
   }
-  
+
   /**
    * @Override
    */
   public org.kopi.vkopi.lib.base.Image getScaledInstance(int width,
-	                                                      int height,
-	                                                      int hints)
+                                                         int height,
+                                                         int hints)
   {
     // FIXME: return the scaled image from theme images
     return this;
   }
-	  
+
   public Resource getResource() {
     return resource;
   }
@@ -82,6 +82,6 @@ public class Image implements org.kopi.vkopi.lib.base.Image {
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
-	  
+
   private final Resource			resource;
 }

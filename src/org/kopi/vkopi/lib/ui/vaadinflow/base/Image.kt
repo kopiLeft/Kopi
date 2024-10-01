@@ -17,23 +17,27 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import org.kopi.vkopi.lib.base.Image
+import org.kopi.vkopi.lib.ui.vaadinflow.common.VImage
 
 /**
  * The vaadin implementation of an image model.
  *
  * @param resource The resource file attached to this image.
  */
-class Image(val resource: String) : Image {
+class Image(val resource: String = "image", val source: ByteArray? = null) : VImage(), Image {
   //---------------------------------------------------
   // IMAGE IMPLEMENTATION
   //---------------------------------------------------
 
-  override fun getWidth(): Int {
+  override fun getImageWidth(): Int {
     return -1
   }
 
-  override fun getHeight(): Int {
+  override fun getImageHeight(): Int {
     return -1
   }
 

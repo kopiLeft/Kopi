@@ -18,13 +18,13 @@
 
 package org.kopi.vkopi.lib.ui.vaadinflow.visual
 
-import org.kopi.vkopi.lib.base.Image
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Image
 import org.kopi.vkopi.lib.visual.ImageHandler
 
 class VImageHandler : ImageHandler() {
   override fun getImage(image: String): Image? =  null
 
-  override fun getImage(image: ByteArray): Image? = null
+  override fun getImage(image: ByteArray): Image = Image(source = image)
 
   override fun getURL(image: String): String = "ui/vaadin/$image" // FIXME
 }
