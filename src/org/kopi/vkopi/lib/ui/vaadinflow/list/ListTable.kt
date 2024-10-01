@@ -152,10 +152,10 @@ class ListTable(val model: VListDialog) : Grid<ListTable.ListDialogItem>() {
     var width: Int
     width = 0
     for (row in 0 until model.count) {
-      val value = model.columns[col]!!.formatObject(model.getValueAt(row, col)).toString()
       width = if (model.columns[col]!! is VImageColumn) {
         model.columns[col]!!.width
       } else {
+        val value = model.columns[col]!!.formatObject(model.getValueAt(row, col)).toString()
         width.coerceAtLeast(value.length.coerceAtLeast(model.titles[col]!!.length))
       }
     }
