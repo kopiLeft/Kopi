@@ -29,21 +29,21 @@ import org.kopi.vkopi.lib.visual.ImageHandler;
 public class JImageHandler extends ImageHandler {
 
   /**
-   * 
+   *
    */
   public Image getImage(String image) {
     return new JImage(Utils.getImage(image).getImage());
   }
 
   /**
-   * 
+   *
    */
   public Image getImage(byte[] image) {
     return new JImage(image);
   }
 
   /**
-   * 
+   *
    */
   public String getURL(String image) {
     return Utils.getURLFromResource(image).toString();
@@ -100,28 +100,28 @@ public class JImageHandler extends ImageHandler {
     //------------------------------------------------------------------
 
     /**
-     * 
+     *
      */
-    public int getWidth() {
+    public int getImageWidth() {
       return getIconWidth();
     }
 
     /**
-     * 
+     *
      */
-    public int getHeight() {
+    public int getImageHeight() {
       return getIconHeight();
     }
 
     /**
-     * 
+     *
      */
     public String getDescription() {
       return super.getDescription();
     }
 
     /**
-     * 
+     *
      */
     public Image getScaledInstance(int width, int height, int hints) {
       return new JImage(getImage().getScaledInstance(width, height, hints));

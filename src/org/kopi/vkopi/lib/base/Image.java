@@ -32,13 +32,13 @@ public interface Image extends Serializable {
    * Returns the <code>Image</code> width
    * @return The image width
    */
-  public int getWidth();
+  public int getImageWidth();
 
   /**
    * Returns the <code>Image</code> height
    * @return The image height
    */
-  public int getHeight();
+  public int getImageHeight();
 
   /**
    * Returns the <code>Image</code> description
