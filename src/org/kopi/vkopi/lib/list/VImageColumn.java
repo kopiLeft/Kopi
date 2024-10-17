@@ -32,20 +32,20 @@ public class VImageColumn extends VListColumn {
    * Constructs a list column.
    */
   public VImageColumn(String title, String column, boolean sortAscending) {
-    super(title, column, ALG_LEFT, 7, sortAscending);
+    super(title, column, ALG_LEFT, 12, sortAscending);
   }
 
   // --------------------------------------------------------------------
   // IMPLEMENTATION
   // --------------------------------------------------------------------
-  
+
   /**
    * Returns a string representation of value
    */
   public Object formatObject(Object value) {
-    return value == null ? VConstants.EMPTY_TEXT : (Object)ImageHandler.getImageHandler().getImage((byte[])value);
+    return value == null ? VConstants.EMPTY_TEXT : ImageHandler.getImageHandler().getImage((byte[])value);
   }
-  
+
   public Class getDataType() {
     return byte[].class;
   }
