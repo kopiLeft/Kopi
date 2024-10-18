@@ -78,6 +78,7 @@ class DTable(val model: VTable) : Grid<DReport.ReportModelItem>(), UTable {
   lateinit var browserWindowResizeListener: Registration
 
   init {
+    setSelectionMode(SelectionMode.SINGLE)
     setItems(model)
     buildColumns()
     addThemeVariants(GridVariant.LUMO_COMPACT, GridVariant.LUMO_COLUMN_BORDERS)
@@ -85,6 +86,9 @@ class DTable(val model: VTable) : Grid<DReport.ReportModelItem>(), UTable {
     classNames.add("small")
     classNames.add("borderless")
     classNames.add("report")
+    addItemClickListener { event ->
+      select(event.item)  // Explicitly select the clicked item
+    }
     setWidthFull()
   }
 
