@@ -2564,6 +2564,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    */
 
   public VListDialog buildQueryDialog() throws SQLException {
+    System.err.println("buildQueryDialog");
     VField[]            query_tab = new VField[fields.length];
     int                 query_cnt = 0;
 
