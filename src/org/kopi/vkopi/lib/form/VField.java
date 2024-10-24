@@ -910,6 +910,9 @@ public abstract class VField implements VConstants, VModel {
       if (operand.indexOf('*') == -1) {
         // nothing to change: standard case
       } else {
+        // WORKAROUND for text area fields: Remove trailing spaces after '*' from operand
+        operand = operand.replaceAll("\\*\\s+'$", "*'");
+
         switch (getSearchOperator()) {
           case SOP_EQ:
             operator = "LIKE ";
