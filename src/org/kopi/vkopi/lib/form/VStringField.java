@@ -115,8 +115,6 @@ public class VStringField extends VField {
     int		end   = 0;
 
     end = textToModel(s, getWidth(), Integer.MAX_VALUE).length();
-    System.err.println("Max length = " + width + " * " + height + " = " + (width * height));
-    System.err.println("Text length = " + LineBreaker.textToModel(s, getWidth(), Integer.MAX_VALUE).length());
     return end <= width * height;
   }
 

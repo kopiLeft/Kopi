@@ -894,9 +894,7 @@ public abstract class VField implements VConstants, VModel {
    */
   @SuppressWarnings("deprecation")
   public String getSearchCondition() {
-    System.err.println("Field label = " + this.getLabel() + ", active record = " + block.getActiveRecord());
     if (isNull(block.getActiveRecord())) {
-      System.err.println("search conditions isNull");
       if (getSearchOperator() == SOP_EQ) {
         return null;
       } else if (getSearchOperator() == SOP_NE) {
@@ -905,7 +903,6 @@ public abstract class VField implements VConstants, VModel {
         return "IS NULL";
       }
     } else {
-      System.err.println("search conditions isNOTNull");
       String    operator = OPERATOR_NAMES[getSearchOperator()];
       String    operand = getSql(block.getActiveRecord());
 
@@ -957,7 +954,6 @@ public abstract class VField implements VConstants, VModel {
           throw new InconsistencyException("FATAL ERROR: bad search code: " + options);
       }
 
-      System.err.println("Search conditions = " + operator + " " + operand);
       return operator + " " + operand;
     }
   }

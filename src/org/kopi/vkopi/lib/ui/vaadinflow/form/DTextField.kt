@@ -28,6 +28,7 @@ import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.contextmenu.ContextMenu
+import com.vaadin.flow.component.textfield.TextArea
 
 /**
  * The `DTextField` is the vaadin implementation
@@ -58,8 +59,6 @@ open class DTextField(
   protected var transformer: ModelTransformer? = null
 
   init {
-    System.err.println("DTextField INIT " + getModel().label)
-
     transformer = if (getModel().height == 1 || (!scanner && ((getModel().typeOptions and VConstants.FDO_DYNAMIC_NL) > 0))) {
       DefaultTransformer(getModel().width, getModel().height)
     } else if (!scanner) {
@@ -69,12 +68,9 @@ open class DTextField(
     }
     field = createFieldGUI(options and VConstants.FDO_NOECHO != 0, scanner, align)
 
-    field.inputField.internalField.addValueChangeListener {
-      if (it.isFromClient) {
-//        if (text != null && text!!.length > getModel().width * getModel().height) {
-//          val value = text?.substring(0, getModel().width * getModel().height)
-//          field.value = transformer!!.toGui(value)
-//        }
+    field.inputField.internalField.addValueChangeListener { event ->
+      if (event.isFromClient) {
+        setGUIMaxLength(event.oldValue as? String, event.value as? String)
         valueChanged()
       }
     }
@@ -86,7 +82,6 @@ open class DTextField(
   override fun valueChanged() {
     val value = text
 
-    System.err.println("isChanged = ${isChanged(getModel().getText(), value)}")
     if (isChanged(getModel().getText(), value)) {
       checkText(value)
     }
@@ -125,6 +120,24 @@ open class DTextField(
                      this)
   }
 
+  /**
+   * Update dynamically the max length of the GUI text
+   */
+  private fun setGUIMaxLength(oldValue: String?, newValue: String?) {
+    if (field.inputField.internalField is TextArea) {
+      val guiText = newValue ?: ""
+      val modelText = text.orEmpty()
+      val maxModelLength = getModel().width * getModel().height
+      val currentModelLength = modelText.trimEnd().length
+      val maxLength = guiText.length + maxModelLength - currentModelLength
+
+      field.inputField.internalField.element.setProperty("maxlength", "$maxLength")
+      if (modelText.length > maxModelLength) {
+        field.inputField.internalField.value = oldValue
+      }
+    }
+  }
+
   // ----------------------------------------------------------------------
   // DRAWING
   // ----------------------------------------------------------------------7
@@ -140,7 +153,7 @@ open class DTextField(
   override fun updateText() {
     val newModelTxt = getModel().getText(rowController.blockView.getRecordFromDisplayLine(position))
     access(currentUI) {
-      field.value = transformer!!.toGui(newModelTxt)?.trim() // FIXME
+      field.value = transformer!!.toGui(newModelTxt)
     }
     super.updateText()
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {
@@ -212,7 +225,6 @@ open class DTextField(
     }
     getModel().onTextChange(text!!)
 
-    System.err.println("getModel().checkText(text) = " + getModel().checkText(text))
     if (getModel().checkText(text)) {
       // affect value directly to the model.
       getModel().getForm().performAsyncAction(object : Action("check_type") {
@@ -327,10 +339,6 @@ open class DTextField(
     // IMPLEMENTATIONS
     //---------------------------------------
     override fun toModel(guiTxt: String?): String {
-      System.err.println("!!!!!!!!!!!! CALL TO MODEL !!!!!!!!!!!!!!!")
-      System.err.println("guiTxt = '$guiTxt'")
-      System.err.println("convertFixedTextToSingleLine = '${convertFixedTextToSingleLine(guiTxt, col, row)}'")
-
       return convertFixedTextToSingleLine(guiTxt, col, row)
     }
 

@@ -375,9 +375,7 @@ public abstract class VForm extends VWindow implements VConstants {
   public void gotoPage(int target) throws VException {
     VBlock      block = null;
 
-    System.err.println("gotoPage(" + target + ")");
     for (int i = 0; block == null && i < blocks.length; i++) {
-      System.err.println("blocks[i].getPageNumber() = " + blocks[i].getPageNumber());
       if (blocks[i].getPageNumber() == target && blocks[i].isAccessible()) {
         block = blocks[i];
       }
