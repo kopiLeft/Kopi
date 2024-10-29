@@ -28,6 +28,7 @@ import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VlibProperties
 
 import com.vaadin.flow.component.contextmenu.ContextMenu
+import com.vaadin.flow.component.textfield.TextArea
 
 /**
  * The `DTextField` is the vaadin implementation
@@ -58,22 +59,18 @@ open class DTextField(
   protected var transformer: ModelTransformer? = null
 
   init {
-    transformer = if (getModel().height == 1
-            || !scanner && getModel().getTypeOptions() and VConstants.FDO_DYNAMIC_NL > 0) {
-      DefaultTransformer(getModel().width,
-                         getModel().height)
+    transformer = if (getModel().height == 1 || (!scanner && ((getModel().typeOptions and VConstants.FDO_DYNAMIC_NL) > 0))) {
+      DefaultTransformer(getModel().width, getModel().height)
     } else if (!scanner) {
-      NewlineTransformer(
-        getModel().width,
-        getModel().height
-      )
+      NewlineTransformer(getModel().width, getModel().height)
     } else {
       ScannerTransformer(this)
     }
     field = createFieldGUI(options and VConstants.FDO_NOECHO != 0, scanner, align)
 
-    field.inputField.addTextValueChangeListener {
-      if (it.isFromClient) {
+    field.inputField.internalField.addValueChangeListener { event ->
+      if (event.isFromClient) {
+        setGUIMaxLength(event.oldValue as? String, event.value as? String)
         valueChanged()
       }
     }
@@ -123,6 +120,24 @@ open class DTextField(
                      this)
   }
 
+  /**
+   * Update dynamically the max length of the GUI text
+   */
+  private fun setGUIMaxLength(oldValue: String?, newValue: String?) {
+    if (field.inputField.internalField is TextArea) {
+      val guiText = newValue ?: ""
+      val modelText = text.orEmpty()
+      val maxModelLength = getModel().width * getModel().height
+      val currentModelLength = modelText.trimEnd().length
+      val maxLength = guiText.length + maxModelLength - currentModelLength
+
+      field.inputField.internalField.element.setProperty("maxlength", "$maxLength")
+      if (modelText.length > maxModelLength) {
+        field.inputField.internalField.value = oldValue
+      }
+    }
+  }
+
   // ----------------------------------------------------------------------
   // DRAWING
   // ----------------------------------------------------------------------7
@@ -138,7 +153,7 @@ open class DTextField(
   override fun updateText() {
     val newModelTxt = getModel().getText(rowController.blockView.getRecordFromDisplayLine(position))
     access(currentUI) {
-      field.value = transformer!!.toGui(newModelTxt)?.trim() // FIXME
+      field.value = transformer!!.toGui(newModelTxt)
     }
     super.updateText()
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {

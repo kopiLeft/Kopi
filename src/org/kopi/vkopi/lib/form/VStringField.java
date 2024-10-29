@@ -315,7 +315,6 @@ public class VStringField extends VField {
    * Replaces new-lines by blanks
    *
    * @param	source	the source text with carriage return
-   * @param	col	the width of the text
    */
   public String textToModel(String source) {
     return textToModel(source, getWidth(), getHeight());
