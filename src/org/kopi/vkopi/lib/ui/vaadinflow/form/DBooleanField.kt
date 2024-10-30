@@ -17,14 +17,14 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
+import com.vaadin.flow.component.AbstractField
+import com.vaadin.flow.component.HasValue
+
 import org.kopi.vkopi.lib.form.UTextField
 import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.field.BooleanField
-
-import com.vaadin.flow.component.AbstractField
-import com.vaadin.flow.component.HasValue
 
 /**
  * Boolean field.
@@ -36,14 +36,13 @@ import com.vaadin.flow.component.HasValue
  * @param detail is it a detail field view ?
  */
 class DBooleanField(
-        model: VFieldUI,
-        label: DLabel?,
-        align: Int,
-        options: Int,
-        detail: Boolean
-) : DObjectField(model, label, align, options, detail),
-        UTextField,
-        HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField<Boolean?>, Boolean?>> {
+  model: VFieldUI,
+  label: DLabel?,
+  align: Int,
+  options: Int,
+  detail: Boolean
+) : DField(model, label, align, options, detail),
+    HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField<Boolean?>, Boolean?>> {
 
   // --------------------------------------------------
   // DATA MEMBERS
@@ -56,15 +55,17 @@ class DBooleanField(
   // --------------------------------------------------
   init {
     field.addValueChangeListener(this)
-    field.addObjectFieldListener(this)
+    field.addFocusListener {}
+    field.addBlurListener { gotoNextField() }
     setFieldContent(field)
   }
 
   // --------------------------------------------------
   // IMPLEMENTATION
   // --------------------------------------------------
-  override fun blinkOnFocus(): Boolean {
-    return false
+
+  override fun valueChanged() {
+    // Nothing to do
   }
 
   override fun updateColor() {
@@ -93,7 +94,6 @@ class DBooleanField(
     super.updateFocus()
   }
 
-
   override fun valueChanged(event: AbstractField.ComponentValueChangeEvent<org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField<Boolean?>, Boolean?>) {
     val text = getModel().toText(event.value)
 
@@ -115,40 +115,32 @@ class DBooleanField(
 
   override fun getObject(): Any? = wrappedField.value
 
-  override fun setBlink(b: Boolean) {
+  override fun setBlink(blink: Boolean) {
     access(currentUI) {
-      field.setBlink(b)
+      field.setBlink(blink)
     }
   }
 
   override fun getText(): String? = getModel().toText(field.value)
 
-  override fun setHasCriticalValue(b: Boolean) {}
-
-  override fun addSelectionFocusListener() {}
-
-  override fun removeSelectionFocusListener() {}
-
-  override fun setSelectionAfterUpdateDisabled(disable: Boolean) {}
-
   /**
    * Returns the true representation of this boolean field.
    * @return The true representation of this boolean field.
    */
-  internal val trueRepresentation: String?
+  private val trueRepresentation: String?
     get() = getModel().toText(true)
 
   /**
    * Returns the false representation of this boolean field.
    * @return The false representation of this boolean field.
    */
-  internal val falseRepresentation: String?
+  private val falseRepresentation: String?
     get() = getModel().toText(false)
 
   /**
    * Gets the focus to this field.
    */
-  internal fun enterMe() {
+  private fun enterMe() {
     access(currentUI) {
       field.setFocus(true)
     }
