@@ -20,7 +20,7 @@ package org.kopi.vkopi.lib.ui.vaadinflow.form
 import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.component.HasValue
 
-import org.kopi.vkopi.lib.form.UTextField
+import org.kopi.vkopi.lib.form.UField
 import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
@@ -42,6 +42,7 @@ class DBooleanField(
   options: Int,
   detail: Boolean
 ) : DField(model, label, align, options, detail),
+    UField,
     HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<org.kopi.vkopi.lib.ui.vaadinflow.field.AbstractField<Boolean?>, Boolean?>> {
 
   // --------------------------------------------------
@@ -75,8 +76,15 @@ class DBooleanField(
   override fun updateText() {
     access(currentUI) {
       field.value = getModel().getBoolean(getBlockView().getRecordFromDisplayLine(position))
+      println(">>>>>>>>>>>>>> field.value = ${field.value}")
     }
     super.updateText()
+
+    try {
+      throw Exception("DEBUG")
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
   }
 
   override fun updateFocus() {

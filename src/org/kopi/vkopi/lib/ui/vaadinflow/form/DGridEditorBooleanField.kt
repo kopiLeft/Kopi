@@ -25,6 +25,7 @@ import com.vaadin.flow.data.binder.ValueContext
 import com.vaadin.flow.data.converter.Converter
 import com.vaadin.flow.data.renderer.Renderer
 
+import org.kopi.vkopi.lib.form.UField
 import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
@@ -37,6 +38,7 @@ class DGridEditorBooleanField(
   align: Int,
   options: Int
 ) : DGridEditorField<Boolean?>(columnView, label, align, options),
+    UField,
     HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<GridEditorField<Boolean?>, Boolean?>> {
 
   //---------------------------------------------------

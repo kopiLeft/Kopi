@@ -19,22 +19,51 @@
 /*
  * Boolean field style for CheckboxGroup
  */
+.k-boolean-field vaadin-checkbox-group {
+    border-bottom: 1px solid #dadada;
+}
+
+.k-boolean-field vaadin-checkbox-group:focus-within {
+    border-bottom: 1px solid var(--background-color);
+}
+
 .k-boolean-field vaadin-checkbox::part(checkbox) {
     width: 1em;
     height: 1em;
     border-radius: 50%;
     vertical-align: middle;
     font-size: 14px !important;
+    font-weight: bold;
 }
 
+.k-boolean-field vaadin-checkbox::part(checkbox)::after {
+    border-width: 0.3em 0 0 0.3em;
+    transform-origin: -1px -0.5px
+}
+
+/* 
+ * Add custom "✕" icon to the second checkbox when checked
+ */
 .k-boolean-field vaadin-checkbox:nth-child(2)::part(checkbox)::after {
-    content: "✕"; /* Adds the 'x' mark to the second checkbox */
+    opacity: none;
+    transform: none;
     font-size: 13px;
     font-weight: bold;
     position: absolute;
     top: 0em;
     left: 0.09em;
+    box-sizing: border-box;
+    transform-origin: 0 0;
+    border-width: 0;
+    content: "\2715";
+    display: inline-block;
+    width: 0;
+    height: 0;
     color: white;
+}
+
+.editor-booleanfield, .k-boolean-field {
+    --lumo-primary-color: var(--background-color);
 }
 
 .k-boolean-field-blink {

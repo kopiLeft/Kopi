@@ -64,7 +64,7 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
         value = event.oldValue
       }
       // Update internal model and fire change event
-      setModelValue(getBooleanValue(value), true)
+      setModelValue(getBooleanValue(value), event.isFromClient)
     }
   }
 
