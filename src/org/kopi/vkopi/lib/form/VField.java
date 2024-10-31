@@ -1801,6 +1801,7 @@ public abstract class VField implements VConstants, VModel {
    * Marks the field changed, trails the record if necessary
    */
   protected final void setChanged(int r) {
+    System.err.println("block.setRecordChanged = " + (!isTransient() && !hasTrigger(TRG_VALUE) && alias == null) + " : " + !isTransient() + " && " +  !hasTrigger(TRG_VALUE) + " && " + alias == null);
     if (!isTransient() && !hasTrigger(TRG_VALUE) && alias == null) {
       block.setRecordChanged(r, true);
     } else {

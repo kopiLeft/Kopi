@@ -305,7 +305,6 @@ public abstract class VCodeField extends VField {
    *
    */
   protected void setCode(int r, int v) {
-    System.err.println("is changed UI = " + isChangedUI());
     if (isChangedUI() || value[r] != v) {
       // trails (backup) the record if necessary
       trail(r);
