@@ -75,7 +75,7 @@ class DBooleanField(
 
   override fun updateText() {
     access(currentUI) {
-      field.value = getModel().getBoolean(getBlockView().getRecordFromDisplayLine(position))
+      field.setValue(getModel().getBoolean(getBlockView().getRecordFromDisplayLine(position)))
       println(">>>>>>>>>>>>>> field.value = ${field.value}")
     }
     super.updateText()

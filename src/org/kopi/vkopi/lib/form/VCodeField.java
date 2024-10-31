@@ -55,17 +55,17 @@ public abstract class VCodeField extends VField {
   public boolean hasAutofill() {
     return true;
   }
-
+  
   @Override
   public boolean hasAutocomplete() {
     return true;
   }
-
+  
   @Override
   public int getAutocompleteLength() {
     return 0;
   }
-
+  
   @Override
   public int getAutocompleteType() {
     return VList.AUTOCOMPLETE_CONTAINS;
@@ -258,7 +258,7 @@ public abstract class VCodeField extends VField {
       setCode(getBlock().getActiveRecord(), pos);
     }
   }
-
+  
   @Override
   public String[][] getSuggestions(String query) throws VException {
     if (query == null) {
@@ -361,7 +361,7 @@ public abstract class VCodeField extends VField {
   public String getString(int r) {
     throw new InconsistencyException();
   }
-
+  
   @Override
   public String toText(Object o) {
     for (int i = 0; i < getCodes().length; i++) {
@@ -371,7 +371,7 @@ public abstract class VCodeField extends VField {
     }
     return "";
   }
-
+  
   @Override
   public Object toObject(String s) {
     for (int i = 0; i < labels.length; i++) {
@@ -399,7 +399,7 @@ public abstract class VCodeField extends VField {
    */
   public void copyRecord(int f, int t) {
     int                 oldValue;
-
+    
     oldValue = value[t];
     value[t] = value[f];
     // inform that value has changed for non backup records

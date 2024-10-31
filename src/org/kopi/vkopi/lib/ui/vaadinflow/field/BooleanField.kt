@@ -52,26 +52,13 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
     // Define the items for true, false, and optionally an empty state
     setItems(trueRepresentation.orEmpty(), falseRepresentation.orEmpty())
     value = setOf() // Initialize with no selection
-    addValueChangeListener { event ->
-      // Ensure only one item is selected, or none at all
-      if (event.value.size > 1) {
-        // Keep only the last selected item
-        val lastSelected = event.value
-        lastSelected.remove(event.oldValue.iterator().next())
-        value = setOf(lastSelected.iterator().next())
-      } else if (event.value.isEmpty() && mandatory) {
-        // If mandatory, remove the null option choice
-        value = event.oldValue
-      }
-      // Update internal model and fire change event
-      setModelValue(getBooleanValue(value), event.isFromClient)
-    }
   }
 
   init {
     // Remove the "Yes" and "No" labels
     checkboxGroup.setItemLabelGenerator { "" }
     checkboxGroup.addClassName(Styles.BOOLEAN_FIELD)
+    checkboxGroup.addValueChangeListener(::onValueChange)
 
     add(checkboxGroup)
   }
@@ -105,6 +92,24 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
   }
 
   /**
+   * Ensure only one item is selected, or none at all when value changed
+   */
+  private fun onValueChange(event: com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent<CheckboxGroup<String>, MutableSet<String>>) {
+    // Ensure only one item is selected, or none at all
+    if (event.value.size > 1) {
+      // Keep only the last selected item
+      val lastSelected = event.value
+      lastSelected.remove(event.oldValue.iterator().next())
+      checkboxGroup.value = setOf(lastSelected.iterator().next())
+    } else if (event.value.isEmpty() && mandatory) {
+      // If mandatory, remove the null option choice
+      checkboxGroup.value = event.oldValue
+    }
+    // Update internal model and fire change event
+    setModelValue(getBooleanValue(checkboxGroup.value), event.isFromClient)
+  }
+
+  /**
    * Gets the field's boolean value
    */
   private fun getBooleanValue(selectedValues: Set<String>): Boolean? {
@@ -127,11 +132,19 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
    * Sets the component value from a boolean value
    */
   override fun setValue(value: Boolean?) {
-    checkboxGroup.value = when (value) {
-      true -> setOf(trueRepresentation)
-      false -> setOf(falseRepresentation)
-      else -> emptySet()
+    println("set boolean field value = $value")
+    println("checkboxGroup.value (before change) = ${checkboxGroup.value}")
+
+    when (value) {
+      null  -> {
+        println("NULL FOUND : CLEAR ")
+        checkboxGroup.clear()
+        checkboxGroup.setValue(setOf())  // Reset to empty
+      }
+      true  -> { println("TRUE FOUND") ; checkboxGroup.setValue(setOf(trueRepresentation)) }
+      false -> { println("FALSE FOUND") ; checkboxGroup.setValue(setOf(falseRepresentation)) }
     }
+    println("checkboxGroup.value = ${checkboxGroup.value}")
   }
 
   /**
@@ -145,7 +158,7 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
    * Checks if the component value is null
    */
   override val isNull: Boolean
-    get() = checkboxGroup.value.isEmpty()
+    get() = checkboxGroup.value.isNullOrEmpty()
 
   /**
    * @return the field's checkbox group component
