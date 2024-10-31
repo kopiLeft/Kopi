@@ -80,6 +80,7 @@ class DBooleanField(
     }
     super.updateText()
 
+    println(">>>>>>>>>>>>>> model value = ${getModel().getBoolean(getBlockView().getRecordFromDisplayLine(position))}")
     try {
       throw Exception("DEBUG")
     } catch (e: Exception) {
