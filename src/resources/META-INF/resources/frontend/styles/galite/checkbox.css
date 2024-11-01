@@ -19,11 +19,28 @@
 /*
  * Boolean field style for CheckboxGroup
  */
-.k-boolean-field vaadin-checkbox-group {
-    border-bottom: 1px solid #dadada;
+
+.vaadin-group-field-container {
+    display: flex;
+    flex-direction: column; /* This is fine, just ensure items don't have extra spacing */
+    align-items: flex-start; /* Ensures items start from the top */
+    margin: 0; /* Remove margins */
+    padding: 0; /* Remove padding */
+    height: 1em; /* Match this with the checkbox height */
 }
 
-.k-boolean-field vaadin-checkbox-group:focus-within {
+[part='label'] {
+    margin: 0; /* No margin */
+    padding: 0; /* No padding */
+}
+
+.k-boolean-field vaadin-checkbox {
+    border-bottom: 1px solid #dadada;
+    padding: 0; /* Remove padding to reduce total height */
+    margin: 0; /* Remove margin to reduce total height */
+}
+
+.k-boolean-field vaadin-checkbox:focus-within {
     border-bottom: 1px solid var(--background-color);
 }
 
@@ -34,6 +51,12 @@
     vertical-align: middle;
     font-size: 14px !important;
     font-weight: bold;
+    padding: 0em; /* Adjust padding as needed to control size */
+}
+
+.k-boolean-field vaadin-checkbox::part(label) {
+    margin: 0;
+    padding: 0em 0; /* Adjust padding to further control height */
 }
 
 .k-boolean-field vaadin-checkbox::part(checkbox)::after {
@@ -64,13 +87,6 @@
 
 .editor-booleanfield, .k-boolean-field {
     --lumo-primary-color: var(--background-color);
-}
-
-.k-boolean-field-blink {
-  animation: blinkEffect 0.3s ease-in-out 2;
-}
-
-@keyframes blinkEffect {
-  0%, 100% { background-color: inherit; }
-  50% { background-color: #ffdddd; }
+    margin: 0; /* Remove margin around the checkbox group */
+    height: 1em; /* Checkbox height */
 }
