@@ -15,15 +15,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
-import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
-import org.kopi.vkopi.lib.visual.VColor
+package org.kopi.vkopi.lib.ui.vaadinflow.grid
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.Focusable
 import com.vaadin.flow.component.KeyNotifier
 import com.vaadin.flow.component.checkbox.CheckboxGroup
+
+import org.kopi.vkopi.lib.ui.vaadinflow.base.Styles
+import org.kopi.vkopi.lib.visual.VColor
 
 /**
  * An editor for boolean field.
@@ -50,26 +51,13 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
     // Define the items for true, false, and optionally an empty state
     setItems(trueRepresentation.orEmpty(), falseRepresentation.orEmpty())
     value = setOf() // Initialize with no selection
-    addValueChangeListener { event ->
-      // Ensure only one item is selected, or none at all
-      if (event.value.size > 1) {
-        // Keep only the last selected item
-        val lastSelected = event.value
-        lastSelected.remove(event.oldValue.iterator().next())
-        value = setOf(lastSelected.iterator().next())
-      } else if (event.value.isEmpty() && mandatory) {
-        // If mandatory, remove the null option choice
-        value = event.oldValue
-      }
-      // Update internal model and fire change event
-      setModelValue(getBooleanValue(value), true)
-    }
   }
 
   init {
     // Remove the "Yes" and "No" labels
     checkboxGroup.setItemLabelGenerator { "" }
     checkboxGroup.addClassNames(Styles.BOOLEAN_FIELD, "editor-field")
+    checkboxGroup.addValueChangeListener(::onValueChange)
 
     setWidthFull()
   }
@@ -88,6 +76,26 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
     } else {
       blur()
     }
+  }
+
+  /**
+   * Ensure only one item is selected, or none at all when value changed
+   */
+  private fun onValueChange(event: com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent<CheckboxGroup<String>, MutableSet<String>>) {
+    if (event.isFromClient) {
+      // Ensure only one item is selected, or none at all
+      if (event.value.size > 1) {
+        // Keep only the last selected item
+        val lastSelected = event.value
+        lastSelected.remove(event.oldValue.iterator().next())
+        checkboxGroup.value = setOf(lastSelected.iterator().next())
+      } else if (event.value.isEmpty() && mandatory) {
+        // If mandatory, remove the null option choice
+        checkboxGroup.value = event.oldValue
+      }
+    }
+    // Update internal model and fire change event
+    setModelValue(getBooleanValue(checkboxGroup.value), event.isFromClient)
   }
 
   /**
@@ -129,10 +137,10 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
    * Sets the component value from a boolean value
    */
   override fun setValue(value: Boolean?) {
-    checkboxGroup.value = when (value) {
-      true -> setOf(trueRepresentation)
-      false -> setOf(falseRepresentation)
-      else -> emptySet()
+    when (value) {
+      true  -> checkboxGroup.setValue(setOf(trueRepresentation))
+      false -> checkboxGroup.setValue(setOf(falseRepresentation))
+      else  -> { checkboxGroup.deselectAll() ; checkboxGroup.clear() }
     }
   }
 

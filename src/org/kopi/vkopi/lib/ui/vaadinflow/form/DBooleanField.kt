@@ -15,6 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import com.vaadin.flow.component.AbstractField
@@ -74,17 +75,9 @@ class DBooleanField(
   }
 
   override fun updateText() {
+    super.updateText()
     access(currentUI) {
       field.setValue(getModel().getBoolean(getBlockView().getRecordFromDisplayLine(position)))
-      println(">>>>>>>>>>>>>> field.value = ${field.value}")
-    }
-    super.updateText()
-
-    println(">>>>>>>>>>>>>> model value = ${getModel().getBoolean(getBlockView().getRecordFromDisplayLine(position))}")
-    try {
-      throw Exception("DEBUG")
-    } catch (e: Exception) {
-      e.printStackTrace()
     }
   }
 
@@ -131,6 +124,15 @@ class DBooleanField(
   }
 
   override fun getText(): String? = getModel().toText(field.value)
+
+  override fun isEnabled(): Boolean {
+    return field.isEnabled
+  }
+
+  override fun setEnabled(enabled: Boolean) {
+    super.setEnabled(enabled)
+    field.setEnabled(enabled)
+  }
 
   /**
    * Returns the true representation of this boolean field.

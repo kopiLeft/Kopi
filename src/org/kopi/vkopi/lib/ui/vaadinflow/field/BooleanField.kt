@@ -95,15 +95,17 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
    * Ensure only one item is selected, or none at all when value changed
    */
   private fun onValueChange(event: com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent<CheckboxGroup<String>, MutableSet<String>>) {
-    // Ensure only one item is selected, or none at all
-    if (event.value.size > 1) {
-      // Keep only the last selected item
-      val lastSelected = event.value
-      lastSelected.remove(event.oldValue.iterator().next())
-      checkboxGroup.value = setOf(lastSelected.iterator().next())
-    } else if (event.value.isEmpty() && mandatory) {
-      // If mandatory, remove the null option choice
-      checkboxGroup.value = event.oldValue
+    if (event.isFromClient) {
+      // Ensure only one item is selected, or none at all
+      if (event.value.size > 1) {
+        // Keep only the last selected item
+        val lastSelected = event.value
+        lastSelected.remove(event.oldValue.iterator().next())
+        checkboxGroup.value = setOf(lastSelected.iterator().next())
+      } else if (event.value.isEmpty() && mandatory) {
+        // If mandatory, remove the null option choice
+        checkboxGroup.value = event.oldValue
+      }
     }
     // Update internal model and fire change event
     setModelValue(getBooleanValue(checkboxGroup.value), event.isFromClient)
@@ -132,19 +134,11 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
    * Sets the component value from a boolean value
    */
   override fun setValue(value: Boolean?) {
-    println("set boolean field value = $value")
-    println("checkboxGroup.value (before change) = ${checkboxGroup.value}")
-
     when (value) {
-      null  -> {
-        println("NULL FOUND : CLEAR ")
-        checkboxGroup.clear()
-        checkboxGroup.setValue(setOf())  // Reset to empty
-      }
-      true  -> { println("TRUE FOUND") ; checkboxGroup.setValue(setOf(trueRepresentation)) }
-      false -> { println("FALSE FOUND") ; checkboxGroup.setValue(setOf(falseRepresentation)) }
+      true  -> checkboxGroup.setValue(setOf(trueRepresentation))
+      false -> checkboxGroup.setValue(setOf(falseRepresentation))
+      else  -> { checkboxGroup.deselectAll() ; checkboxGroup.clear() }
     }
-    println("checkboxGroup.value = ${checkboxGroup.value}")
   }
 
   /**
