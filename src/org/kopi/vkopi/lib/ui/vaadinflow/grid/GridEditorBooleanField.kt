@@ -107,10 +107,10 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
    */
   private fun getBooleanValue(selectedValues: Set<String>): Boolean? {
     return when {
-      selectedValues.isEmpty()                    -> null
-      selectedValues.contains(trueRepresentation) -> true
+      selectedValues.isEmpty()                     -> null
+      selectedValues.contains(trueRepresentation)  -> true
       selectedValues.contains(falseRepresentation) -> false
-      else -> null
+      else                                         -> null
     }
   }
 
