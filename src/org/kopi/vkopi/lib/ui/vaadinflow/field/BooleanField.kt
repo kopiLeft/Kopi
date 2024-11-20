@@ -18,10 +18,14 @@
 
 package org.kopi.vkopi.lib.ui.vaadinflow.field
 
+import kotlin.streams.toList
+
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.BlurNotifier
 import com.vaadin.flow.component.Focusable
+import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.KeyNotifier
+import com.vaadin.flow.component.checkbox.Checkbox
 import com.vaadin.flow.component.checkbox.CheckboxGroup
 import com.vaadin.flow.component.dependency.CssImport
 
@@ -94,7 +98,7 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
   /**
    * Ensure only one item is selected, or none at all when value changed
    */
-  private fun onValueChange(event: com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent<CheckboxGroup<String>, MutableSet<String>>) {
+  private fun onValueChange(event: ComponentValueChangeEvent<CheckboxGroup<String>, MutableSet<String>>) {
     if (event.isFromClient) {
       // Ensure only one item is selected, or none at all
       if (event.value.size > 1) {
@@ -116,10 +120,10 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
    */
   private fun getBooleanValue(selectedValues: Set<String>): Boolean? {
     return when {
-      selectedValues.isEmpty()                    -> null
-      selectedValues.contains(trueRepresentation) -> true
+      selectedValues.isEmpty()                     -> null
+      selectedValues.contains(trueRepresentation)  -> true
       selectedValues.contains(falseRepresentation) -> false
-      else -> null
+      else                                         -> null
     }
   }
 
@@ -188,20 +192,33 @@ class BooleanField(val trueRepresentation: String?, val falseRepresentation: Str
   }
 
   /**
-   * Adds custom blur listener for BooleanField : the triggered function is only executed when leaving the field
+   * Adds custom Key Down listener for BooleanField.
    */
-  fun addBlurListener(function: () -> Unit) {
-    checkboxGroup.element.addEventListener("focusout") {
-      if (isLastItemFocused(focusedIndex)) {
-        function()
-      } else {
-        focusedIndex++
+  fun addKeyDownListener(gotoNext: () -> Unit, gotoPrevious: () -> Unit) {
+    checkboxGroup.addKeyDownListener { event ->
+      val items = checkboxGroup.getChildren().toList() // Retrieve child components (checkboxes)
+
+      when (event.key) {
+        Key.TAB              -> {
+          val modifier = event.modifiers.singleOrNull()
+
+          if (modifier != null && modifier.name == "SHIFT") {
+            if (focusedIndex <= 1) { gotoPrevious() } else { focusedIndex-- }
+          } else {
+            if (isLastItemFocused(focusedIndex)) { gotoNext() } else { focusedIndex++ }
+          }
+        }
+        Key.ENTER, Key.SPACE -> { // Change the value of the currently focused checkbox
+          val checkbox = items.getOrNull(focusedIndex - 1) as? Checkbox
+
+          checkbox?.value = !(checkbox?.value ?: false)
+        }
       }
     }
   }
 
   // Inner class to encapsulate CheckboxGroup component and make it focusable
-  inner class FocusableCheckboxGroup<T> : CheckboxGroup<T>(), Focusable<CheckboxGroup<T>>, BlurNotifier<CheckboxGroup<T>> {
+  inner class FocusableCheckboxGroup<T> : CheckboxGroup<T>(), Focusable<CheckboxGroup<T>>, KeyNotifier {
     init {
       // Make the component part of the tab order by setting tab index
       element.setAttribute("tabindex", "0")

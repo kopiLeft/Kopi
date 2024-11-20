@@ -58,7 +58,7 @@ class DBooleanField(
   init {
     field.addValueChangeListener(this)
     field.addFocusListener {}
-    field.addBlurListener { gotoNextField() }
+    field.addKeyDownListener(gotoNext = { gotoNextField() }, gotoPrevious = { gotoPrevField() })
     setFieldContent(field)
   }
 
