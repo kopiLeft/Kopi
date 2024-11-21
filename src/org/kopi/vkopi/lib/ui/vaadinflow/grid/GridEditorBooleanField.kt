@@ -49,6 +49,7 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
   var mandatory = false
   // Variable to keep track of the last focused checkbox item
   private var focusedIndex = 0
+  private var focusOnFirst = true
   // Initialize the field checkboxGroup Component
   private val checkboxGroup: FocusableCheckboxGroup<String> = FocusableCheckboxGroup<String>().apply {
     label = null
@@ -74,8 +75,9 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
    * Sets the field focus.
    * @param focus The field focus
    */
-  fun setFocus(focus: Boolean) {
+  fun setFocus(focus: Boolean, focusOnFirst: Boolean) {
     if (focus) {
+      this.focusOnFirst = focusOnFirst
       focus()
     } else {
       blur()
@@ -100,6 +102,7 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
     }
     // Update internal model and fire change event
     setModelValue(getBooleanValue(checkboxGroup.value), event.isFromClient)
+    (checkboxGroup.getChildren().toList().getOrNull(focusedIndex) as? Checkbox)?.focus()
   }
 
   /**
@@ -112,13 +115,6 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
       selectedValues.contains(falseRepresentation) -> false
       else                                         -> null
     }
-  }
-
-  /**
-   * Function to check if the last item is currently focused
-   */
-  private fun isLastItemFocused(currentIndex: Int, itemCount: Int = 2): Boolean {
-    return currentIndex == itemCount
   }
 
   /**
@@ -174,19 +170,19 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
    */
   override fun getValue(): Boolean? = getBooleanValue(checkboxGroup.value)
 
+  /**
+   * Focus on the appropriate checkbox element
+   */
   override fun doFocus() {
-    checkboxGroup.focus()
+    focusedIndex = if (focusOnFirst) 0 else 1
+    val focusedCheckbox = checkboxGroup.getChildren().toList()[focusedIndex] as? Checkbox
+    focusedCheckbox?.focus()
   }
 
   /**
    * Adds Custom focus listener for BooleanField
    */
-  override fun addFocusListener(focusFunction: () -> Unit) {
-    checkboxGroup.element.addEventListener("focus") {
-      focusedIndex = 0
-      focusFunction()
-    }
-  }
+  override fun addFocusListener(focusFunction: () -> Unit) {}
 
   /**
    * Adds custom Key Down listener for BooleanField.
@@ -200,13 +196,13 @@ class GridEditorBooleanField(val trueRepresentation: String?,val falseRepresenta
           val modifier = event.modifiers.singleOrNull()
 
           if (modifier != null && modifier.name == "SHIFT") {
-            if (focusedIndex <= 1) { gotoPrevious() } else { focusedIndex-- }
+            if (focusedIndex <= 0) { gotoPrevious() } else { focusedIndex-- }
           } else {
-            if (isLastItemFocused(focusedIndex)) { gotoNext() } else { focusedIndex++ }
+            if (focusedIndex >= 1) { gotoNext() } else { focusedIndex++ }
           }
         }
         Key.ENTER, Key.SPACE -> { // Change the value of the currently focused checkbox
-          val checkbox = items.getOrNull(focusedIndex - 1) as? Checkbox
+          val checkbox = items.getOrNull(focusedIndex) as? Checkbox
 
           checkbox?.value = !(checkbox?.value ?: false)
         }

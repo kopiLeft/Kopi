@@ -22,6 +22,7 @@ import com.vaadin.flow.component.AbstractField
 import com.vaadin.flow.component.HasValue
 
 import org.kopi.vkopi.lib.form.UField
+import org.kopi.vkopi.lib.form.VBooleanField
 import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
@@ -57,7 +58,6 @@ class DBooleanField(
   // --------------------------------------------------
   init {
     field.addValueChangeListener(this)
-    field.addFocusListener {}
     field.addKeyDownListener(gotoNext = { gotoNextField() }, gotoPrevious = { gotoPrevField() })
     setFieldContent(field)
   }
@@ -90,7 +90,7 @@ class DBooleanField(
     } else {
       if (!inside) {
         inside = true
-        enterMe()
+        enterMe((getModel() as? VBooleanField)?.focusOnFirst ?: true)
       }
     }
     super.updateFocus()
@@ -151,9 +151,9 @@ class DBooleanField(
   /**
    * Gets the focus to this field.
    */
-  private fun enterMe() {
+  private fun enterMe(focusOnFirst: Boolean) {
     access(currentUI) {
-      field.setFocus(true)
+      field.setFocus(true, focusOnFirst)
     }
   }
 }
