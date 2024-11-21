@@ -81,7 +81,10 @@ import java.util.Vector;
     if (options.bindSourcePort) {
       for (int port = SOURCE_PORT_LOW; connection == null && port <= SOURCE_PORT_HIGH; port++) {
 	try {
-	  connection = new Socket(remoteHost,
+      System.out.println("====[INFO] options.remoteHost: " + remoteHost);
+      System.out.println("====[INFO] options.proxyHost: " + options.printHost);
+
+      connection = new Socket(remoteHost,
 				  options.remotePort,
 				  InetAddress.getLocalHost(),
 				  port);
@@ -94,6 +97,8 @@ import java.util.Vector;
 	}
       }
     } else {
+      System.out.println("====[INFO] options.printHost: " + options.printHost);
+      System.out.println("====[INFO] options.remotePort: " + options.remotePort);
       connection = new Socket(options.printHost, options.remotePort);
       options.sourcePort = connection.getLocalPort();
     }

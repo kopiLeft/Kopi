@@ -53,6 +53,8 @@ import org.kopi.xkopi.lib.type.Time;
 import org.kopi.xkopi.lib.type.Timestamp;
 import org.kopi.xkopi.lib.type.Week;
 
+import static org.kopi.vkopi.lib.ui.vaadin.base.Utils.isWebApplication;
+
 /**
  * A field is a column in the the database (a list of rows)
  * it provides an access to data both programmatically or via a UI
@@ -1801,6 +1803,7 @@ public abstract class VField implements VConstants, VModel {
    * Marks the field changed, trails the record if necessary
    */
   protected final void setChanged(int r) {
+    isWebApplication();
     if (!isTransient() && !hasTrigger(TRG_VALUE) && alias == null) {
       block.setRecordChanged(r, true);
     } else {

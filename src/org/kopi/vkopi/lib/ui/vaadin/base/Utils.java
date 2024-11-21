@@ -25,11 +25,15 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import org.kopi.vkopi.lib.visual.VColor;
 
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.UI;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Some vaadin version utilities to obtain images and resources.
@@ -195,6 +199,21 @@ public class Utils extends org.kopi.vkopi.lib.base.Utils {
     } else {
       return o1.equals(o2);
     }
+  }
+
+  public static boolean isWebApplication() {
+    boolean isWebApp = false;
+    try {
+      VaadinRequest request = VaadinService.getCurrentRequest();
+      HttpServletRequest httpRequest = (HttpServletRequest) request;
+      String clientIpAddress = httpRequest.getRemoteAddr();
+      System.out.println("Client IP Address: " + clientIpAddress);
+      isWebApp = request != null;
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("Request is defined outside common");
+    }
+    return isWebApp;
   }
   
   /**
