@@ -88,5 +88,5 @@
 .editor-booleanfield, .k-boolean-field {
     --lumo-primary-color: var(--background-color);
     margin: 0; /* Remove margin around the checkbox group */
-    height: 1em; /* Checkbox height */
+    height: 2.4em; /* Checkbox height */
 }
