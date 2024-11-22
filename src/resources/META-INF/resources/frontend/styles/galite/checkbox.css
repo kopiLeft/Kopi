@@ -16,23 +16,58 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-/**
- * Boolean field style
+/*
+ * Boolean field style for CheckboxGroup
  */
-.true::part(checkbox), .false::part(checkbox) {
+
+.vaadin-group-field-container {
+    display: flex;
+    flex-direction: column; /* This is fine, just ensure items don't have extra spacing */
+    align-items: flex-start; /* Ensures items start from the top */
+    margin: 0; /* Remove margins */
+    padding: 0; /* Remove padding */
+    height: 1em; /* Match this with the checkbox height */
+}
+
+[part='label'] {
+    margin: 0; /* No margin */
+    padding: 0; /* No padding */
+}
+
+.k-boolean-field vaadin-checkbox {
+    border-bottom: 1px solid #dadada;
+    padding: 0; /* Remove padding to reduce total height */
+    margin: 0; /* Remove margin to reduce total height */
+}
+
+.k-boolean-field vaadin-checkbox:focus-within {
+    border-bottom: 1px solid var(--background-color);
+}
+
+.k-boolean-field vaadin-checkbox::part(checkbox) {
     width: 1em;
     height: 1em;
     border-radius: 50%;
     vertical-align: middle;
     font-size: 14px !important;
+    font-weight: bold;
+    padding: 0em; /* Adjust padding as needed to control size */
 }
 
-.true::part(checkbox)::after, .false::part(checkbox)::after {
+.k-boolean-field vaadin-checkbox::part(label) {
+    margin: 0;
+    padding: 0em 0; /* Adjust padding to further control height */
+}
+
+.k-boolean-field vaadin-checkbox::part(checkbox)::after {
     border-width: 0.3em 0 0 0.3em;
     transform-origin: -1px -0.5px
 }
 
-.false::part(checkbox)::after {
+/* 
+ * Add custom "✕" icon to the second checkbox when checked
+ */
+.k-boolean-field vaadin-checkbox:nth-child(2)::part(checkbox)::after {
     opacity: none;
     transform: none;
     font-size: 13px;
@@ -50,22 +85,8 @@
     color: white;
 }
 
-.multiple .k-boolean-field-content {
-    display: flex;
-    background-color: #ffffff;
-    align-items: center;
-    justify-content: center;
-}
-
 .editor-booleanfield, .k-boolean-field {
     --lumo-primary-color: var(--background-color);
-}
-
-.k-boolean-field-content {
-    display: table;
-    border-bottom: 1px solid #dadada;
-}
-
-.k-boolean-field-content:focus-within {
-    border-bottom: 1px solid var(--background-color);
+    margin: 0; /* Remove margin around the checkbox group */
+    height: 2.4em; /* Checkbox height */
 }

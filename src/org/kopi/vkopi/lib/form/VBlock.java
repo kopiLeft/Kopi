@@ -987,6 +987,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (target == null) {
       old.enter();
       throw new VExecFailedException();
+    } else if (target instanceof VBooleanField) {
+      ((VBooleanField)target).focusOnFirst = true;
     }
     target.enter();
   }
@@ -1021,6 +1023,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     if (target == null) {
       old.enter();
       throw new VExecFailedException();
+    } else if (target instanceof VBooleanField) {
+      ((VBooleanField)target).focusOnFirst = false;
     }
     target.enter();
   }
@@ -4204,7 +4208,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  
+
   protected void fireOrderChanged() {
     Object[]            listeners = blockListener.getListenerList();
 
@@ -4214,7 +4218,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  
+
   protected void filterShown() {
     Object[]            listeners = blockListener.getListenerList();
 
@@ -4224,7 +4228,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  
+
   protected void filterHidden() {
     Object[]            listeners = blockListener.getListenerList();
 
@@ -4234,7 +4238,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       }
     }
   }
-  
+
   // ----------------------------------------------------------------------
   // SORTING AND LABELS
   // ----------------------------------------------------------------------
@@ -4511,7 +4515,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   protected int                 	maxRowPos;
   protected int                 	maxColumnPos;
   protected int                 	displayedFields;
-  
+
   private boolean                       isFilterVisible;
 
   protected HashMap		        dropListMap;

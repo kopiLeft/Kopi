@@ -20,5 +20,5 @@ package org.kopi.vkopi.lib.ui.vaadinflow.common
 import com.vaadin.componentfactory.EnhancedDialog
 import com.vaadin.flow.component.dependency.NpmPackage
 
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-dialog", version = "22.0.6")
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-dialog", version = "22.0.7")
 open class Dialog : EnhancedDialog()

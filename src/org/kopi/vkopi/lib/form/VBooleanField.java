@@ -65,12 +65,14 @@ public class VBooleanField extends VBooleanCodeField {
   protected VListColumn getListColumn() {
     return new VBooleanColumn(getHeader(), null, getPriority() >= 0);
   }
-  
+
   /*
    * ----------------------------------------------------------------------
    * DATA MEMBERS
    * ----------------------------------------------------------------------
    */
+  public boolean                focusOnFirst = true;
+
   private static final String   GENERAL_LOCALIZATION_RESOURCE = "org/kopi/vkopi/lib/resource/General";
   private static String[]	booleanNames = { "true", "false" };
   private static Boolean[]	booleanCodes = { Boolean.TRUE, Boolean.FALSE };
