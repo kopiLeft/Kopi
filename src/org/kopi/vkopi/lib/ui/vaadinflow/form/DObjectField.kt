@@ -41,6 +41,7 @@ abstract class DObjectField(model: VFieldUI,
   // UI MANAGEMENT
   // --------------------------------------------------
   override fun enter(refresh: Boolean) {
+    println("ENTER in DObjectField")
     super.enter(refresh)
     if (blinkOnFocus()) {
       setBlink(true)

@@ -166,6 +166,8 @@ open class DTextField(
   }
 
   override fun updateFocus() {
+    println("override fun updateFocus in DTextField (line 184) ")
+    Thread.sleep(5000)
     label!!.update(model, position)
     if (!modelHasFocus()) {
       if (inside) {

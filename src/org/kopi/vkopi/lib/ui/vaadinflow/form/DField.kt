@@ -82,6 +82,8 @@ abstract class DField(internal var model: VFieldUI,
     className = Styles.FIELD
     visibleHeight = when {
       getModel() is VStringField -> {
+        println("getModel() is VStringField")
+        Thread.sleep(5000)
         (getModel() as VStringField).getVisibleHeight()
       }
       getModel() is VImageField -> {
@@ -119,6 +121,16 @@ abstract class DField(internal var model: VFieldUI,
    * @param refresh Should we refresh GUI ?
    */
   open fun enter(refresh: Boolean) {
+    println("ENTER function  in DFIELD.kt")
+    Thread.sleep(5000)
+    if (currentUI == null) {
+      println("currentUI is null")
+    } else {
+      println("currentUI is not null")
+      val propertyNames = currentUI!!.element.propertyNames
+      println("Property Names:")
+      propertyNames.forEach { println(it) }
+    }
     updateFocus()
   }
 
@@ -179,6 +191,8 @@ abstract class DField(internal var model: VFieldUI,
   }
 
   override fun updateFocus() {
+    println("override fun updateFocus in DField (line 184) ")
+    Thread.sleep(5000)
     if (modelHasFocus()) {
       val form: VForm = getModel().getForm()
       form.setInformationText(getModel().toolTip)

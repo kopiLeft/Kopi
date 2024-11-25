@@ -801,6 +801,7 @@ public abstract class VField implements VConstants, VModel {
   public void setDefault() {
     if (isNull(block.getActiveRecord())) {
       try {
+//        System.out.println("TRG_DEFAULT");
         callTrigger(TRG_DEFAULT);
       } catch (VException e) {
         throw new InconsistencyException(); // !!! NO, Just a VExc...
@@ -1803,7 +1804,7 @@ public abstract class VField implements VConstants, VModel {
    * Marks the field changed, trails the record if necessary
    */
   protected final void setChanged(int r) {
-    isWebApplication();
+    //isWebApplication();
     if (!isTransient() && !hasTrigger(TRG_VALUE) && alias == null) {
       block.setRecordChanged(r, true);
     } else {
