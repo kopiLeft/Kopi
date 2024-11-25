@@ -801,7 +801,7 @@ public abstract class VField implements VConstants, VModel {
   public void setDefault() {
     if (isNull(block.getActiveRecord())) {
       try {
-//        System.out.println("TRG_DEFAULT");
+        System.out.println("TRG_DEFAULT");
         callTrigger(TRG_DEFAULT);
       } catch (VException e) {
         throw new InconsistencyException(); // !!! NO, Just a VExc...

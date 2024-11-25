@@ -166,7 +166,7 @@ open class DTextField(
   }
 
   override fun updateFocus() {
-    println("----------------------------------------- override fun updateFocus in DTextField (line 184) ")
+    println("----------------------------------------- override fun updateFocus in DTextField (line 168) ")
     Thread.sleep(1000)
     label!!.update(model, position)
     if (!modelHasFocus()) {
@@ -194,6 +194,7 @@ open class DTextField(
     println("enterMe in DTextField.kt")
     access(currentUI) {
       if (scanner) {
+        println("|-->transformer!!.toGui : ${transformer!!.toGui("")}")
         field.value = transformer!!.toGui("")
       }
       field.focus()

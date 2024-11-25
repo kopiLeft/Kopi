@@ -3451,6 +3451,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       // but should not change the currentRecord for further calculations.
       setCurrentRecord(oldCurrentRecord);
     }
+    System.out.println("**********************************************");
+    if (returnValue instanceof Integer) {
+      System.out.println("Return value is an Integer: " + returnValue);
+    } else if (returnValue != null) {
+      System.out.println("Return value is of type: " + returnValue.getClass().getName());
+    } else {
+      System.out.println("Return value is null.");
+    }
     return returnValue;
   }
 
