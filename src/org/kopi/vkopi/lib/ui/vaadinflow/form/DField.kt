@@ -121,7 +121,7 @@ abstract class DField(internal var model: VFieldUI,
    * @param refresh Should we refresh GUI ?
    */
   open fun enter(refresh: Boolean) {
-    println("ENTER function  in DFIELD.kt")
+    println("enter function  in DField.kt")
     Thread.sleep(5000)
     if (currentUI == null) {
       println("currentUI is null")
@@ -191,8 +191,8 @@ abstract class DField(internal var model: VFieldUI,
   }
 
   override fun updateFocus() {
-    println("override fun updateFocus in DField (line 184) ")
-    Thread.sleep(5000)
+    println("----------------------------------------- override fun updateFocus in DField (line 184) ")
+    Thread.sleep(1000)
     if (modelHasFocus()) {
       val form: VForm = getModel().getForm()
       form.setInformationText(getModel().toolTip)

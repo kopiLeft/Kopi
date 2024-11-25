@@ -166,8 +166,8 @@ open class DTextField(
   }
 
   override fun updateFocus() {
-    println("override fun updateFocus in DTextField (line 184) ")
-    Thread.sleep(5000)
+    println("----------------------------------------- override fun updateFocus in DTextField (line 184) ")
+    Thread.sleep(1000)
     label!!.update(model, position)
     if (!modelHasFocus()) {
       if (inside) {
@@ -191,6 +191,7 @@ open class DTextField(
    * Gets the focus to this field.
    */
   private fun enterMe() {
+    println("enterMe in DTextField.kt")
     access(currentUI) {
       if (scanner) {
         field.value = transformer!!.toGui("")
