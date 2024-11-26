@@ -127,10 +127,12 @@ abstract class DField(internal var model: VFieldUI,
       println("currentUI is null")
     } else {
       println("currentUI is not null")
-      val propertyNames = currentUI!!.element.propertyNames
-      logRequestParameters(currentUI)
-      println("Property Names:")
-      propertyNames.forEach { println(it) }
+      currentUI!!.access {
+        val propertyNames = currentUI!!.element.propertyNames
+        logRequestParameters(currentUI)
+        println("Property Names:")
+        propertyNames.forEach { println(it) }
+      }
     }
     updateFocus()
   }

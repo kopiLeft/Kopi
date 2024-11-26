@@ -1553,13 +1553,13 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Sets defaults for block.
    */
   public void setDefault() {
-    try {
-      callTrigger(TRG_DEFAULT);
-    } catch (VException e) {
-      if (e.getMessage() != null) {
-        getForm().notice(e.getMessage());
-      }
-    }
+//    try {
+//      callTrigger(TRG_DEFAULT);
+//    } catch (VException e) {
+//      if (e.getMessage() != null) {
+//        getForm().notice(e.getMessage());
+//      }
+//    }
 
     for (int i = 0; i < getBufferSize(); i++) {
       setActiveRecord(i);               // also valid for single blocks
@@ -3450,14 +3450,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
       // Triggers like ACCESS or VALUE trigger can be called anywhere
       // but should not change the currentRecord for further calculations.
       setCurrentRecord(oldCurrentRecord);
-    }
-    System.out.println("**********************************************");
-    if (returnValue instanceof Integer) {
-      System.out.println("Return value is an Integer: " + returnValue);
-    } else if (returnValue != null) {
-      System.out.println("Return value is of type: " + returnValue.getClass().getName());
-    } else {
-      System.out.println("Return value is null.");
     }
     return returnValue;
   }
