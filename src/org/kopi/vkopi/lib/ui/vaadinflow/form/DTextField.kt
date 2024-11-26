@@ -194,8 +194,9 @@ open class DTextField(
     println("enterMe in DTextField.kt")
     access(currentUI) {
       if (scanner) {
-        println("|-->transformer!!.toGui : ${transformer!!.toGui("")}")
         field.value = transformer!!.toGui("")
+        println("|-->field.value : ${field.value}")
+
       }
       field.focus()
     }

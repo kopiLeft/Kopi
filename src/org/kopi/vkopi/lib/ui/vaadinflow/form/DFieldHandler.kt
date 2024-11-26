@@ -49,6 +49,7 @@ open class DFieldHandler internal constructor(rowController: VFieldUI) : Abstrac
   }
 
   override fun enter() {
+    System.out.println("enter from DFieldHandler")
     val enterMe = getCurrentDisplay() as? DField
     if (enterMe != null) {
       getRowController().resetCommands()

@@ -203,7 +203,7 @@ public class VStringField extends VField {
       trail(r);
       System.out.println("trail(r) is Done");
       try {
-        Thread.sleep(5000);
+        Thread.sleep(1000);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
@@ -211,7 +211,7 @@ public class VStringField extends VField {
       value[r] = modelVal;
       System.out.println("value[r] = modelVal  is Done");
       try {
-        Thread.sleep(5000);
+        Thread.sleep(1000);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
@@ -220,7 +220,7 @@ public class VStringField extends VField {
       System.out.println("setChanged(r) is Done");
 
       try {
-        Thread.sleep(5000);
+        Thread.sleep(1000);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }

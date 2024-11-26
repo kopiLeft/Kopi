@@ -39,6 +39,8 @@ import org.kopi.vkopi.lib.visual.VColor
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.UI
+import com.vaadin.server.VaadinRequest
+import com.vaadin.server.VaadinService
 
 /**
  * The `DField` is the vaadin [UField] implementation.
@@ -82,8 +84,6 @@ abstract class DField(internal var model: VFieldUI,
     className = Styles.FIELD
     visibleHeight = when {
       getModel() is VStringField -> {
-        println("getModel() is VStringField")
-        Thread.sleep(5000)
         (getModel() as VStringField).getVisibleHeight()
       }
       getModel() is VImageField -> {
@@ -122,16 +122,35 @@ abstract class DField(internal var model: VFieldUI,
    */
   open fun enter(refresh: Boolean) {
     println("enter function  in DField.kt")
-    Thread.sleep(5000)
+    Thread.sleep(1000)
     if (currentUI == null) {
       println("currentUI is null")
     } else {
       println("currentUI is not null")
       val propertyNames = currentUI!!.element.propertyNames
+      logRequestParameters(currentUI)
       println("Property Names:")
       propertyNames.forEach { println(it) }
     }
     updateFocus()
+  }
+
+  open fun logRequestParameters(currentUI: UI?) {
+    // Access the current request
+    val vaadinRequest = VaadinService.getCurrentRequest()
+
+    if (vaadinRequest != null) {
+      // Access query parameters from the request URL
+      val queryString = vaadinRequest.parameterMap
+
+      // Print query parameters to the console
+      println("Query parameters:")
+      for ((key, values) in queryString) {
+        println("$key: ${values.joinToString(", ")}")
+      }
+    } else {
+      println("No current request found.")
+    }
   }
 
   /**
@@ -196,6 +215,9 @@ abstract class DField(internal var model: VFieldUI,
     if (modelHasFocus()) {
       val form: VForm = getModel().getForm()
       form.setInformationText(getModel().toolTip)
+      System.out.println("----------------------------------------- form.setInformationText")
+      Thread.sleep(2000)
+      System.out.println("----------------------------------------- form.setFieldSearchOperator")
       form.setFieldSearchOperator(getModel().getSearchOperator())
     }
   }
