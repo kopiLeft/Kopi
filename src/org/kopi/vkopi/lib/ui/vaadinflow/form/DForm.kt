@@ -18,7 +18,6 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
 import java.io.File
-import java.time.LocalDate
 
 import org.kopi.vkopi.lib.form.BlockListener
 import org.kopi.vkopi.lib.form.BlockRecordListener
@@ -61,12 +60,13 @@ class DForm(model: VForm) : DWindow(model), UForm, FormListener {
     blockViews = arrayOfNulls(blockCount)
     for (i in 0 until blockCount) {
       val blockModel = vForm!!.getBlock(i)
+
+      blockModel.addBlockListener(blockListener)
       if (!blockModel.isInternal) {
         val blockView = createViewForBlock(blockModel)
         blockViews[i] = blockView
         addBlock(blockView, blockModel.pageNumber)
       }
-      blockModel.addBlockListener(blockListener)
     }
     setContent(content)
     getModel()!!.enableCommands()
@@ -85,8 +85,7 @@ class DForm(model: VForm) : DWindow(model), UForm, FormListener {
       blockView = DBlock(this, blockModel)
     } else {
       if (blockModel.noChart() && blockModel.noDetail()) {
-        throw InconsistencyException(
-                "Block " + blockModel.name + " is \"NO DEATIL\" and \"NO CHART\" at the same time")
+        throw InconsistencyException("Block ${blockModel.name} is \"NO DEATIL\" and \"NO CHART\" at the same time")
       }
       blockView = when {
         blockModel.noChart() -> {
