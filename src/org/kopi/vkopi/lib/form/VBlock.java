@@ -1553,13 +1553,14 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
    * Sets defaults for block.
    */
   public void setDefault() {
-//    try {
-//      callTrigger(TRG_DEFAULT);
-//    } catch (VException e) {
-//      if (e.getMessage() != null) {
-//        getForm().notice(e.getMessage());
-//      }
-//    }
+    try {
+      System.out.println("TRG_DEFAULT");
+      callTrigger(TRG_DEFAULT);
+    } catch (VException e) {
+      if (e.getMessage() != null) {
+        getForm().notice(e.getMessage());
+      }
+    }
 
     for (int i = 0; i < getBufferSize(); i++) {
       setActiveRecord(i);               // also valid for single blocks

@@ -195,11 +195,11 @@ open class DTextField(
     access(currentUI) {
       if (scanner) {
         field.value = transformer!!.toGui("")
-        println("|-->field.value : ${field.value}")
 
       }
       field.focus()
     }
+    println("|-->field.value : ${field.value}")
   }
 
   /**
