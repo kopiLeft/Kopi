@@ -27,6 +27,8 @@ import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
 
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinService;
 import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.l10n.BlockLocalizer;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
@@ -1556,6 +1558,19 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     try {
       System.out.println("TRG_DEFAULT");
       callTrigger(TRG_DEFAULT);
+      VaadinRequest request = VaadinService.getCurrentRequest();
+      String clientIp = null;
+      if (request != null) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+          clientIp = xForwardedFor.split(",")[0].trim();
+        } else {
+          clientIp = request.getRemoteAddr();
+        }
+      }
+
+      System.out.println("Client IP: " + clientIp);
+
     } catch (VException e) {
       if (e.getMessage() != null) {
         getForm().notice(e.getMessage());

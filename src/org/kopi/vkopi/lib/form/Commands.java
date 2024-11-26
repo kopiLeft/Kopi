@@ -401,6 +401,7 @@ public class Commands implements VConstants {
     boolean changed = b.isRecordChanged(0);
 
     b.setMode(MOD_INSERT);
+    System.out.println("setDefault in insertMode in Commands.java ");
     b.setDefault();
     b.setRecordFetched(0, false);
     b.setRecordChanged(0, changed);
@@ -507,6 +508,7 @@ public class Commands implements VConstants {
     case MOD_INSERT:
       if (single) {
 	b.clear();
+    System.out.println("setDefault in saveDone in Commands.java ");
 	b.setDefault();
 	b.gotoFirstUnfilledField();
       } else {
