@@ -58,36 +58,38 @@ public class VInputButton extends ButtonBase {
   public void onBrowserEvent(Event event) {
     super.onBrowserEvent(event);
     if (event.getTypeInt() == Event.ONCLICK) {
-      fetchClientIp();
+      System.out.println("onBrowserEvent: Button clicked! Fetching client IP...");
+      fetchClientIp(); // Call the IP fetch method
+    } else {
+      System.out.println("onBrowserEvent: Unhandled event type - " + event.getType());
     }
   }
 
-  /**
-   * Fetches the client IP address from the server.
-   */
   private void fetchClientIp() {
-    String url = URL.encode("/getClientIp"); // Endpoint to retrieve client IP
+    String url = URL.encode("/getClientIp");
+    System.out.println("fetchClientIp: Sending request to " + url);
+
     RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 
     try {
       builder.sendRequest(null, new RequestCallback() {
         @Override
         public void onResponseReceived(Request request, Response response) {
+          System.out.println("fetchClientIp: Response received. Status = " + response.getStatusCode());
           if (response.getStatusCode() == 200) {
-            String clientIp = response.getText();
-            System.out.println("Client IP: " + clientIp);
+            System.out.println("Client IP: " + response.getText());
           } else {
-            System.err.println("Failed to fetch client IP: " + response.getStatusText());
+            System.err.println("fetchClientIp: Failed to fetch IP. Status: " + response.getStatusText());
           }
         }
 
         @Override
         public void onError(Request request, Throwable exception) {
-          System.err.println("Error fetching client IP: " + exception.getMessage());
+          System.err.println("fetchClientIp: Error making request: " + exception.getMessage());
         }
       });
     } catch (Exception e) {
-      System.err.println("Error initiating request to fetch client IP: " + e.getMessage());
+      System.err.println("fetchClientIp: Exception caught: " + e.getMessage());
     }
   }
 
