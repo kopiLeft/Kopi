@@ -61,7 +61,7 @@ public class VInputButton extends ButtonBase {
       System.out.println("onBrowserEvent: Button clicked! Fetching client IP...");
       fetchClientIp(); // Call the IP fetch method
     } else {
-      System.out.println("onBrowserEvent: Unhandled event type - " + event.getType());
+        System.out.println("onBrowserEvent: Unhandled event type - " + event.getType());
     }
   }
 

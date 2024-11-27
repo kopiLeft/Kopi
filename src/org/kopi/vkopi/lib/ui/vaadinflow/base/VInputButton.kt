@@ -21,6 +21,7 @@ import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.ClickNotifier
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.html.Input
+import com.vaadin.flow.server.VaadinService
 
 /**
  * An input element type button that cannot handle icons.
@@ -42,6 +43,8 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
     className = Styles.INPUT_BUTTON
     element.setAttribute("hideFocus", "true")
     element.style["outline"] = "0px"
+
+    addClickListener { event -> handleClientIpRetrieval(event) }
   }
 
   /**
@@ -80,5 +83,35 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
    */
   fun setName(name: String?) {
     element.setAttribute("name", name)
+  }
+
+  /**
+   * Handles client IP retrieval during a button click.
+   */
+  private fun handleClientIpRetrieval(event: ClickEvent<VInputButton>) {
+    println("Button clicked: ${event.source.caption}")
+    val clientIp = getClientIp()
+    if (clientIp != null) {
+      println("Client IP: $clientIp")
+    } else {
+      println("Failed to retrieve client IP.")
+    }
+  }
+
+  /**
+   * Retrieves the client's IP address using Vaadin's request.
+   *
+   * @return The client IP address or null if unavailable.
+   */
+  private fun getClientIp(): String? {
+    val request = VaadinService.getCurrentRequest()
+    return request?.let {
+      val forwardedFor = it.getHeader("X-Forwarded-For")
+      if (!forwardedFor.isNullOrEmpty()) {
+        forwardedFor.split(",").first().trim()
+      } else {
+        it.remoteAddr
+      }
+    }
   }
 }
