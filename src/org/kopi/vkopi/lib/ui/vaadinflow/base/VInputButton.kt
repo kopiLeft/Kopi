@@ -119,6 +119,7 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
 
   private fun getClientHostname(): String? {
     val clientIp = getClientIp() // Reuse the getClientIp() function to get the IP
+    println("clientIp : $clientIp")
     return if (clientIp != null) {
       try {
         // Use InetAddress to resolve the IP to a hostname
