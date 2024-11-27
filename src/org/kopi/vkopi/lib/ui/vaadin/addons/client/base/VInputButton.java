@@ -51,49 +51,6 @@ public class VInputButton extends ButtonBase {
     addClickHandler(clickHandler);
   }
 
-  /**
-   * Override onClick to capture client IP address.
-   */
-  @Override
-  public void onBrowserEvent(Event event) {
-    super.onBrowserEvent(event);
-    if (event.getTypeInt() == Event.ONCLICK) {
-      System.out.println("onBrowserEvent: Button clicked! Fetching client IP...");
-      fetchClientIp(); // Call the IP fetch method
-    } else {
-        System.out.println("onBrowserEvent: Unhandled event type - " + event.getType());
-    }
-  }
-
-  private void fetchClientIp() {
-    String url = URL.encode("/getClientIp");
-    System.out.println("fetchClientIp: Sending request to " + url);
-
-    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-
-    try {
-      builder.sendRequest(null, new RequestCallback() {
-        @Override
-        public void onResponseReceived(Request request, Response response) {
-          System.out.println("fetchClientIp: Response received. Status = " + response.getStatusCode());
-          if (response.getStatusCode() == 200) {
-            System.out.println("Client IP: " + response.getText());
-          } else {
-            System.err.println("fetchClientIp: Failed to fetch IP. Status: " + response.getStatusText());
-          }
-        }
-
-        @Override
-        public void onError(Request request, Throwable exception) {
-          System.err.println("fetchClientIp: Error making request: " + exception.getMessage());
-        }
-      });
-    } catch (Exception e) {
-      System.err.println("fetchClientIp: Exception caught: " + e.getMessage());
-    }
-  }
-
-
   //---------------------------------------------------
   // IMPLEMENTATIONS
   //---------------------------------------------------

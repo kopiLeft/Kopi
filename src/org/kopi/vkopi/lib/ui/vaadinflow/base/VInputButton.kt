@@ -22,6 +22,8 @@ import com.vaadin.flow.component.ClickNotifier
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.html.Input
 import com.vaadin.flow.server.VaadinService
+import java.net.InetAddress
+import java.net.UnknownHostException
 
 /**
  * An input element type button that cannot handle icons.
@@ -90,11 +92,11 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
    */
   private fun handleClientIpRetrieval(event: ClickEvent<VInputButton>) {
     println("Button clicked: ${event.source.caption}")
-    val clientIp = getClientIp()
-    if (clientIp != null) {
-      println("Client IP: $clientIp")
+    val clientHostname = getClientHostname()
+    if (clientHostname != null) {
+      println("Client Hostname/IP: $clientHostname")
     } else {
-      println("Failed to retrieve client IP.")
+      println("Failed to retrieve client Hostname/IP.")
     }
   }
 
@@ -112,6 +114,21 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
       } else {
         it.remoteAddr
       }
+    }
+  }
+
+  private fun getClientHostname(): String? {
+    val clientIp = getClientIp() // Reuse the getClientIp() function to get the IP
+    return if (clientIp != null) {
+      try {
+        // Use InetAddress to resolve the IP to a hostname
+        val inetAddress = InetAddress.getByName(clientIp)
+        inetAddress.hostName
+      } catch (e: UnknownHostException) {
+        clientIp // Return clientIp if DNS resolution fails
+      }
+    } else {
+      null
     }
   }
 }
