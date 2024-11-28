@@ -1558,19 +1558,6 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
     try {
       System.out.println("TRG_DEFAULT");
       callTrigger(TRG_DEFAULT);
-      VaadinRequest request = VaadinService.getCurrentRequest();
-      String clientIp = null;
-      if (request != null) {
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
-          clientIp = xForwardedFor.split(",")[0].trim();
-        } else {
-          clientIp = request.getRemoteAddr();
-        }
-      }
-
-      System.out.println("Client IP: " + clientIp);
-
     } catch (VException e) {
       if (e.getMessage() != null) {
         getForm().notice(e.getMessage());
