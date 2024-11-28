@@ -47,8 +47,8 @@ object ClientRequest {
   }
 
   @JvmStatic
-  fun isRequest(): Boolean {
-    return request == null
+  fun hasRequest(): Boolean {
+    return request != null
   }
 
   //---------------------------------------------------

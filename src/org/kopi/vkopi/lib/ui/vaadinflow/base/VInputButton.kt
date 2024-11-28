@@ -46,6 +46,7 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
 
     addClickListener {
       ClientRequest.request = VaadinService.getCurrentRequest()
+      println("(VInputButton)Request is Null ? :${ClientRequest.request == null}")
     }
   }
 
