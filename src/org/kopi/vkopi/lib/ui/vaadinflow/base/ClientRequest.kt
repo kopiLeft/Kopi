@@ -55,12 +55,6 @@ object ClientRequest {
   // DATA MEMBERS
   //---------------------------------------------------
 
-  private val requestThreadLocal = ThreadLocal<VaadinRequest?>()
-
-  var request: VaadinRequest?
-    get() = requestThreadLocal.get()
-    set(value) {
-      requestThreadLocal.set(value)
-    }
+  var request: VaadinRequest? = null
 
 }
