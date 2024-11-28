@@ -47,6 +47,9 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
     addClickListener {
       ClientRequest.request = VaadinService.getCurrentRequest()
       println("(VInputButton)Request is Null ? :${ClientRequest.request == null}")
+      println("(VInputButton)ClientRequest.getClientHostname() : ${ClientRequest.getClientHostname()}")
+      println("(VInputButton)ClientRequest.getClientIp() : ${ClientRequest.getClientIp()}")
+
     }
   }
 

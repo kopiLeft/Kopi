@@ -201,29 +201,11 @@ public class VStringField extends VField {
         || (value[r] != null && !value[r].equals(modelVal))) {
       // trails (backup) the record if necessary
       trail(r);
-      System.out.println("trail(r) is Done");
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      }
       // set value in the defined row
       value[r] = modelVal;
-      System.out.println("value[r] = modelVal  is Done");
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      }
       // inform that value has changed
       setChanged(r);
       System.out.println("setChanged(r) is Done");
-
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      }
     }
   }
 

@@ -33,6 +33,7 @@ import org.kopi.util.base.InconsistencyException;
 import org.kopi.vkopi.lib.l10n.BlockLocalizer;
 import org.kopi.vkopi.lib.l10n.LocalizationManager;
 import org.kopi.vkopi.lib.list.VListColumn;
+import org.kopi.vkopi.lib.ui.vaadinflow.base.ClientRequest;
 import org.kopi.vkopi.lib.visual.ActionHandler;
 import org.kopi.vkopi.lib.visual.ApplicationContext;
 import org.kopi.vkopi.lib.visual.KopiAction;
@@ -1557,6 +1558,8 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public void setDefault() {
     try {
       System.out.println("TRG_DEFAULT");
+      System.out.println("(VBlock)ClientRequest.getClientHostname() : " +  ClientRequest.getClientHostname());
+      System.out.println("(VBlock)ClientRequest.getClientIp() : " + ClientRequest.getClientIp());
       callTrigger(TRG_DEFAULT);
     } catch (VException e) {
       if (e.getMessage() != null) {
