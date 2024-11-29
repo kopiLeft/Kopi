@@ -18,7 +18,11 @@ object ClientRequest {
    */
   @JvmStatic
   fun getClientIp(): String? {
-    println("Request  :$request")
+    println("Request in getClientIp(): $request")
+    request?.let {
+      println("Remote address: ${it.remoteAddr}")
+      println("X-Forwarded-For header: ${it.getHeader("X-Forwarded-For")}")
+    }
     return request?.let {
       val forwardedFor = it.getHeader("X-Forwarded-For")
       if (!forwardedFor.isNullOrEmpty()) {
