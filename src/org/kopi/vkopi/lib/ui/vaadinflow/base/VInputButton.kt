@@ -21,6 +21,7 @@ import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.ClickNotifier
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.html.Input
+import com.vaadin.flow.server.VaadinService
 
 /**
  * An input element type button that cannot handle icons.
@@ -42,6 +43,10 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
     className = Styles.INPUT_BUTTON
     element.setAttribute("hideFocus", "true")
     element.style["outline"] = "0px"
+    addClickListener {
+      ClientRequest.request = VaadinService.getCurrentRequest()
+      ClientRequest.ipAdress = ClientRequest.getClientHostname()
+    }
   }
 
   /**
