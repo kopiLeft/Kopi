@@ -18,6 +18,7 @@ object ClientRequest {
    */
   @JvmStatic
   fun getClientIp(): String? {
+    println("Request is null ? :${hasRequest()}")
     return request?.let {
       val forwardedFor = it.getHeader("X-Forwarded-For")
       if (!forwardedFor.isNullOrEmpty()) {
