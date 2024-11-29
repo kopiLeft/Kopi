@@ -45,7 +45,7 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
     element.style["outline"] = "0px"
     addClickListener {
       ClientRequest.request = VaadinService.getCurrentRequest()
-      ClientRequest.ipAdress = ClientRequest.getClientHostname()
+      ClientRequest.hostnameOrIp = ClientRequest.getClientHostname()
     }
   }
 

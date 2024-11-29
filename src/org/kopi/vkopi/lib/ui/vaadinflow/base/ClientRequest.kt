@@ -8,41 +8,14 @@ import com.vaadin.flow.server.VaadinRequest
 
 object ClientRequest {
 
-  init {
-    println("ClientRequest initialized: ${this.hashCode()}")
-  }
-  /**
-   * Retrieves the client's IP address using Vaadin's request.
-   *
-   * @return The client IP address or null if unavailable.
-   */
-  @JvmStatic
-  fun getClientIp(): String? {
-    println("Request in getClientIp(): $request")
-    request?.let {
-      println("Remote address: ${it.remoteAddr}")
-      println("X-Forwarded-For header: ${it.getHeader("X-Forwarded-For")}")
-    }
-    return request?.let {
-      val forwardedFor = it.getHeader("X-Forwarded-For")
-      if (!forwardedFor.isNullOrEmpty()) {
-        forwardedFor.split(",").first().trim()
-      } else {
-        it.remoteAddr
-      }
-    }
-  }
-
   /**
    * Retrieves the client's Hostname using Vaadin's request.
    *
-   * @return The client Hostname or getClientIp() if unavailable.
+   * @return The client Hostname or null if unavailable.
    */
   @JvmStatic
   fun getClientHostname(): String? {
-    println("ipAdress: $ipAdress")
-    println("getClientIp(): ${getClientIp()}")
-    val clientIp = if (ipAdress.isNullOrEmpty()) getClientIp() else ipAdress
+    val clientIp = if (hostnameOrIp.isNullOrEmpty()) null else hostnameOrIp
     return if (clientIp != null) {
       try {
         val inetAddress = InetAddress.getByName(clientIp)
@@ -55,6 +28,28 @@ object ClientRequest {
     }
   }
 
+  /**
+   * Retrieves the client's IP address using Vaadin's request.
+   *
+   * @return The client IP address or null if unavailable.
+   */
+  @JvmStatic
+  fun getClientIp(): String? {
+    return request?.let {
+      val forwardedFor = it.getHeader("X-Forwarded-For")
+      if (!forwardedFor.isNullOrEmpty()) {
+        forwardedFor.split(",").first().trim()
+      } else {
+        it.remoteAddr
+      }
+    }
+  }
+
+  /**
+   * Retrieves request Status.
+   *
+   * @return true if request is detected else false.
+   */
   @JvmStatic
   fun hasRequest(): Boolean {
     return request != null
@@ -63,12 +58,9 @@ object ClientRequest {
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
+
   @JvmStatic
   var request: VaadinRequest? = null
-    set(value) {
-      println("Request is being set: $value")
-      field = value
-    }
   @JvmStatic
-  var ipAdress : String? = null
+  var hostnameOrIp : String? = null
 }
