@@ -57,7 +57,7 @@ object ClientRequest {
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
-  private var request: VaadinRequest? = null
+  var request: VaadinRequest? = null
     set(value) {
       println("Request is being set: $value")
       field = value
