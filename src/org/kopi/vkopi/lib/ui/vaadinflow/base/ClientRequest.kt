@@ -8,6 +8,9 @@ import com.vaadin.flow.server.VaadinRequest
 
 object ClientRequest {
 
+  init {
+    println("ClientRequest initialized: ${this.hashCode()}")
+  }
   /**
    * Retrieves the client's IP address using Vaadin's request.
    *
