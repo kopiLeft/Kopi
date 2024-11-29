@@ -800,11 +800,11 @@ public abstract class VField implements VConstants, VModel {
   @SuppressWarnings("deprecation")
   public void setDefault() {
     if (isNull(block.getActiveRecord())) {
-//      try {
-//        callTrigger(TRG_DEFAULT);
-//      } catch (VException e) {
-//        throw new InconsistencyException(); // !!! NO, Just a VExc...
-//      }
+      try {
+        callTrigger(TRG_DEFAULT);
+      } catch (VException e) {
+        throw new InconsistencyException(); // !!! NO, Just a VExc...
+      }
     }
   }
 
