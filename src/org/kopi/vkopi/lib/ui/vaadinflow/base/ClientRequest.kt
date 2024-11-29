@@ -40,8 +40,9 @@ object ClientRequest {
    */
   @JvmStatic
   fun getClientHostname(): String? {
-    val clientIp = getClientIp()
-    println("clientIp: $clientIp")
+    println("ipAdress: $ipAdress")
+    println("getClientIp(): ${getClientIp()}")
+    val clientIp = if (ipAdress.isNullOrEmpty()) getClientIp() else ipAdress
     return if (clientIp != null) {
       try {
         val inetAddress = InetAddress.getByName(clientIp)
@@ -62,9 +63,12 @@ object ClientRequest {
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
+  @JvmStatic
   var request: VaadinRequest? = null
     set(value) {
       println("Request is being set: $value")
       field = value
     }
+  @JvmStatic
+  var ipAdress : String? = null
 }

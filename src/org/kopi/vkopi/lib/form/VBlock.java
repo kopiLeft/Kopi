@@ -1558,7 +1558,7 @@ public abstract class VBlock implements VConstants, DBContextHandler, ActionHand
   public void setDefault() {
     try {
       System.out.println("TRG_DEFAULT");
-      System.out.println("(VBlock)ClientRequest.getClientHostname() : " +  ClientRequest.getClientHostname());
+      System.out.println("(VBlock)ClientRequest.getIpAdress() : " + ClientRequest.getIpAdress());
       System.out.println("(VBlock)ClientRequest.getClientIp() : " + ClientRequest.getClientIp());
       callTrigger(TRG_DEFAULT);
     } catch (VException e) {

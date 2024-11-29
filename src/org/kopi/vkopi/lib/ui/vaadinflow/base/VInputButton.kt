@@ -48,11 +48,8 @@ open class VInputButton(caption: String? = null) : Input(), ClickNotifier<VInput
       //println("ClientRequest Object : $ClientRequest")
       //println("ClientRequest.request Object Before affectation : ${ClientRequest.request}")
       ClientRequest.request = VaadinService.getCurrentRequest()
-      println("ClientRequest.request Object After affectation : ${ClientRequest.request}")
-
-      println("(VInputButton)Request is Null ? :${ClientRequest.request == null}")
-      println("(VInputButton)ClientRequest.getClientHostname() : ${ClientRequest.getClientHostname()}")
-      println("(VInputButton)ClientRequest.getClientIp() : ${ClientRequest.getClientIp()}")
+      ClientRequest.ipAdress = ClientRequest.getClientHostname()
+      println("ClientRequest.ipAdress Object After affectation : ${ClientRequest.ipAdress}")
 
     }
   }
