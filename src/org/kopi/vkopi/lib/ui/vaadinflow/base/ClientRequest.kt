@@ -19,7 +19,7 @@ object ClientRequest {
   @JvmStatic
   fun getClientIp(): String? {
     println("Request is null ? :${hasRequest()}")
-    return request?.let {
+    return request.let {
       val forwardedFor = it.getHeader("X-Forwarded-For")
       if (!forwardedFor.isNullOrEmpty()) {
         forwardedFor.split(",").first().trim()
@@ -58,9 +58,6 @@ object ClientRequest {
   //---------------------------------------------------
   // DATA MEMBERS
   //---------------------------------------------------
-  var request: VaadinRequest? = null
-    set(value) {
-      println("Request is being set: $value")
-      field = value
-    }
+  lateinit  var request: VaadinRequest
+
 }
