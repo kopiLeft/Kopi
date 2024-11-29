@@ -15,7 +15,7 @@ object ClientRequest {
    */
   @JvmStatic
   fun getClientHostname(): String? {
-    val clientIp = if (hostnameOrIp.isNullOrEmpty()) null else hostnameOrIp
+    val clientIp = if (hostnameOrIp.isNullOrEmpty()) getClientIp() else hostnameOrIp
     return if (clientIp != null) {
       try {
         val inetAddress = InetAddress.getByName(clientIp)
