@@ -17,6 +17,9 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.form
 
+import com.vaadin.flow.component.contextmenu.ContextMenu
+import com.vaadin.flow.component.textfield.TextArea
+
 import org.kopi.vkopi.lib.form.ModelTransformer
 import org.kopi.vkopi.lib.form.UTextField
 import org.kopi.vkopi.lib.form.VConstants
@@ -26,9 +29,6 @@ import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
 import org.kopi.vkopi.lib.visual.Action
 import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VlibProperties
-
-import com.vaadin.flow.component.contextmenu.ContextMenu
-import com.vaadin.flow.component.textfield.TextArea
 
 /**
  * The `DTextField` is the vaadin implementation
@@ -70,6 +70,9 @@ open class DTextField(
 
     field.inputField.internalField.addValueChangeListener { event ->
       if (event.isFromClient) {
+        if (!getModel().hasFocus()) {
+          getModel().block!!.gotoField(getModel())
+        }
         setGUIMaxLength(event.oldValue as? String, event.value as? String)
         valueChanged()
       }
