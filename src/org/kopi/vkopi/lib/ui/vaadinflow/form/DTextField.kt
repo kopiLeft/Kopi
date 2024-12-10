@@ -68,13 +68,21 @@ open class DTextField(
     }
     field = createFieldGUI(options and VConstants.FDO_NOECHO != 0, scanner, align)
 
-    field.inputField.internalField.addValueChangeListener { event ->
-      if (event.isFromClient) {
-        if (!getModel().hasFocus()) {
-          getModel().block!!.gotoField(getModel())
+    if (field.inputField.internalField is TextArea) {
+      field.inputField.internalField.addValueChangeListener { event ->
+        if (event.isFromClient) {
+          setGUIMaxLength(event.oldValue, event.value)
+          valueChanged()
         }
-        setGUIMaxLength(event.oldValue as? String, event.value as? String)
-        valueChanged()
+      }
+    } else {
+      field.inputField.addTextValueChangeListener {
+        if (it.isFromClient) {
+          if (!getModel().hasFocus()) {
+            getModel().block!!.gotoField(getModel())
+          }
+          valueChanged()
+        }
       }
     }
 
