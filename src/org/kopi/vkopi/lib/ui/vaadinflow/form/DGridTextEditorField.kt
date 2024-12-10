@@ -22,6 +22,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+import com.vaadin.flow.component.AbstractField
+import com.vaadin.flow.data.binder.Result
+import com.vaadin.flow.data.binder.ValueContext
+import com.vaadin.flow.data.converter.Converter
+import com.vaadin.flow.data.renderer.Renderer
+import com.vaadin.flow.data.renderer.TextRenderer
+
 import org.kopi.vkopi.lib.form.ModelTransformer
 import org.kopi.vkopi.lib.form.UTextField
 import org.kopi.vkopi.lib.form.VCodeField
@@ -50,13 +57,6 @@ import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorTimestampField
 import org.kopi.vkopi.lib.ui.vaadinflow.grid.GridEditorWeekField
 import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VlibProperties
-
-import com.vaadin.flow.component.AbstractField
-import com.vaadin.flow.data.binder.Result
-import com.vaadin.flow.data.binder.ValueContext
-import com.vaadin.flow.data.converter.Converter
-import com.vaadin.flow.data.renderer.Renderer
-import com.vaadin.flow.data.renderer.TextRenderer
 
 /**
  * A grid text editor based on custom components.
@@ -93,6 +93,9 @@ class DGridTextEditorField(
 
   fun valueChanged(event: AbstractField.ComponentValueChangeEvent<GridEditorField<String>, String>) {
     if (event.isFromClient) {
+      if (!getModel().hasFocus()) {
+        getModel().block!!.gotoField(getModel())
+      }
       checkText(event.value.toString(), true)
     }
   }
