@@ -24,94 +24,163 @@ import java.text.BreakIterator;
 public class LineBreaker extends org.kopi.util.base.Utils {
 
   /**
-   * Replaces new-lines by blanks
-   *
-   * @param	source	the source text with carriage return
-   * @param	col	the width of the text
-   * @param	fixed	is it a fixed text ?
+   * @deprecated Replace with the use of textToModel(String, int, int)
    */
-  public static String textToModel(String source, int col, int lin) {
-    return textToModel(source, col, lin, false);
+  public static String textToModel(String source, int col, int lin, boolean fixed) {
+    // Deprecated method : the parameter [fixed] is not used.
+    return textToModel(source, col, lin);
   }
+
   /**
    * Replaces new-lines by blanks
    *
    * @param	source	the source text with carriage return
    * @param	col	the width of the text
-   * @param	fixed	is it a fixed text ?
    */
-  public static String textToModel(String source, int col, int lin, boolean fixed) {
-    StringBuffer        target = new StringBuffer();
-    int                 length = source.length();
-    int                 start = 0;
-    int                 lines = 0;
-    
+  public static String textToModel(String source, int col) {
+    return textToModel(source, col, Integer.MAX_VALUE);
+  }
+
+  /**
+   * Replaces new-lines by blanks
+   *
+   * @param	source	the source text with carriage return
+   * @param	col	the width of the text
+   * @param	lin	the height of the text
+   */
+  public static String textToModel(String source, int col, int lin) {
+    StringBuilder result = new StringBuilder();
+    int length = source.length();
+    int start = 0;
+    int addedSpaces = 0;
+    int lines = 0;
+
     while (start < length && lines < lin) {
-      int       index;
-      
-      index = source.indexOf('\n', start);
-      if (index == -1) {
-        target.append(source.substring(start, length));
-        start = length;
+      int newlineIndex = source.indexOf('\n', start); // Find the next newline or the maximum segment length
+      int wrapEnd; // Determine the end of the current line segment
+      int segmentEnd = newlineIndex >= start && newlineIndex <= start + col ? newlineIndex : Math.min(start + col, length);
+      boolean startsWithBlank = result.length() > 0 &&
+                                Character.isWhitespace(result.charAt(result.length() - 1)) &&
+                                Character.isWhitespace(source.charAt(start));
+
+      segmentEnd = startsWithBlank ? segmentEnd + 1 : segmentEnd;
+      start = startsWithBlank ? start + 1 : start;
+      if (segmentEnd < length && segmentEnd != newlineIndex) {
+        int lastSpace = source.lastIndexOf(' ', start + col);
+
+        wrapEnd = lastSpace >= start && lastSpace < segmentEnd ? lastSpace : segmentEnd;
       } else {
-        target.append(source.substring(start, index));
-        if (fixed) {
-          for (int i = (index - start); i < col; i++) {
-            target.append(' ');
-          }
+        wrapEnd = segmentEnd;
+      }
+      // Append the segment.
+      result.append(source.substring(start, wrapEnd));
+
+      // Handle newline replacement and padding
+      if (wrapEnd == newlineIndex) {
+        if (wrapEnd - start == col && wrapEnd < length - 1 && !Character.isWhitespace(source.charAt(wrapEnd + 1))) {
+          // Replace newline with a space
+          result.append(' ');
+          addedSpaces++;
         } else {
-          for (int i = (index - start)%col; i != 0 && i < col; i++) {
-            target.append(' ');
+          if (wrapEnd != length) {
+            int padding = col - (wrapEnd - start);
+
+            if (addedSpaces > 0 && padding > addedSpaces) {
+              result.append(repeat(' ', padding - addedSpaces)); // Pad the line
+            } else {
+              result.append(repeat(' ', padding)); // Pad the line
+            }
           }
         }
-        start = index + 1;
-        lines++;
+      } else {
+        result.append(repeat(' ', col - (wrapEnd - start))); // Pad the line
       }
+
+      // Update the start index
+      start = wrapEnd == newlineIndex ? wrapEnd + 1 : wrapEnd;
+      lines++;
     }
-    
-    return target.toString();
+
+    return result.toString();
   }
-  
+
+  private static boolean isBlank(String source) {
+    boolean isBlank = true;
+
+    for (int i = 0; i < source.length(); i++) {
+      isBlank = isBlank && Character.isWhitespace(source.charAt(i));
+    }
+    return isBlank;
+  }
+
+  /**
+   * Repeat a character
+   *
+   * @param ch      The repeated character
+   * @param count   The number of repeated times
+   *
+   * @return        A string of the character 'ch' repeated 'count' times
+   */
+  private static String repeat(char ch, int count) {
+    if (count <= 0) return "";
+    StringBuilder builder = new StringBuilder(count);
+
+    for (int i = 0; i < count; i++) {
+      builder.append(ch);
+    }
+
+    return builder.toString();
+  }
+
   /**
    * Replaces blanks by new-lines
    *
    * @param	source		the source text with white space
    * @param	col		the width of the text area
    */
-  public static String modelToText(String source, int col) {
-    if (source != null) {
-      StringBuffer      target = new StringBuffer();
-      int               length = source.length();
+  public static String modelToText(String source, int col/*, boolean isWhiteSpace*/) {
+    return modelToText(source, col, Integer.MAX_VALUE/*, isWhiteSpace*/);
+  }
 
-      for (int start = 0; start < length; start += col) {
-        String  line = source.substring(start, Math.min(start + col, length));
-        int     last = -1;
+  /**
+   * Replaces blanks by new-lines
+   *
+   * @param source		the source text with white space
+   * @param col		the width of the text area
+   * @param row		the width of the text area
+   * @return
+   */
+  public static String modelToText(String source, int col, int row/*, boolean isWhiteSpace*/) {
+    StringBuilder result = new StringBuilder();
+    int length = source.length();
+    int usedRows = 0;
+    int start = 0;
 
-        for (int i = line.length() - 1; last == -1 && i >= 0; --i) {
-          if (! Character.isWhitespace(line.charAt(i))) {
-            last = i;
-          }
-        }
+    while (start < length && usedRows < row) {
+      // Extract a line of the given column width
+      int end = Math.min(start + col, length);
+      String line = source.substring(start, end);
 
-        if (start != 0) {
-          target.append('\n');
-        }
-        if (last != -1) {
-          target.append(line.substring(0, last + 1));
-        }
+      // Trim trailing spaces from the line and append to the result
+      result.append(line.trim());
+
+      // Add a newline if more rows are allowed
+      usedRows++;
+      if (usedRows < row && end < length) {
+        result.append('\n');
       }
 
-      return target.toString();
-    } else {
-      return "";
+      start = end;
     }
+
+    return result.toString();
   }
 
   public static String addBreakForWidth(String source, int width) {
     BreakIterator       boundary;
     int                 start;
     int                 length;
-    StringBuffer        buffer;
+    StringBuilder       buffer;
 
     if (source == null) {
       source = "";
@@ -120,8 +189,8 @@ public class LineBreaker extends org.kopi.util.base.Utils {
     boundary.setText(source);
     start = boundary.first();
     length = 0;
-    buffer = new StringBuffer(source.length());
-    
+    buffer = new StringBuilder(source.length());
+
     for (int end = boundary.next();
          end != BreakIterator.DONE;
          start = end, end = boundary.next()) {
@@ -130,7 +199,7 @@ public class LineBreaker extends org.kopi.util.base.Utils {
         length = (end - start);
         buffer.append("\n");
       }
-      buffer.append(source.substring(start, end));
+      buffer.append(source, start, end);
       if (source.substring(start, end).endsWith("\n")) {
         length = 0;
       }

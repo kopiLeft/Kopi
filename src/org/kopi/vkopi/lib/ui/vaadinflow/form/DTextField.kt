@@ -26,6 +26,7 @@ import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
+import org.kopi.vkopi.lib.util.LineBreaker
 import org.kopi.vkopi.lib.visual.Action
 import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VlibProperties
@@ -71,6 +72,9 @@ open class DTextField(
     if (field.inputField.internalField is TextArea) {
       field.inputField.internalField.addValueChangeListener { event ->
         if (event.isFromClient) {
+          if (!getModel().hasFocus()) {
+            getModel().block!!.gotoField(getModel())
+          }
           setGUIMaxLength(event.oldValue, event.value)
           valueChanged()
         }
@@ -136,15 +140,20 @@ open class DTextField(
    */
   private fun setGUIMaxLength(oldValue: String?, newValue: String?) {
     if (field.inputField.internalField is TextArea) {
-      val guiText = newValue ?: ""
-      val modelText = text.orEmpty()
+      val guiText = newValue.orEmpty()
+      var modelText = text.orEmpty()
       val maxModelLength = getModel().width * getModel().height
       val currentModelLength = modelText.trimEnd().length
       val maxLength = guiText.length + maxModelLength - currentModelLength
 
       field.inputField.internalField.element.setProperty("maxlength", "$maxLength")
       if (modelText.length > maxModelLength) {
-        field.inputField.internalField.value = oldValue
+        modelText = modelText.take(maxModelLength)
+        if (oldValue.isNullOrBlank()) {
+          field.inputField.internalField.value = transformer!!.toGui(modelText)
+        } else {
+          field.inputField.internalField.value = oldValue
+        }
       }
     }
   }
@@ -350,36 +359,11 @@ open class DTextField(
     // IMPLEMENTATIONS
     //---------------------------------------
     override fun toModel(guiTxt: String?): String {
-      return convertFixedTextToSingleLine(guiTxt, col, row)
+      return LineBreaker.textToModel(guiTxt, col)
     }
 
     override fun toGui(modelTxt: String?): String {
-      val target = StringBuffer()
-      val length = modelTxt!!.length
-      var usedRows = 1
-      var start = 0
-      while (start < length) {
-        val line = modelTxt.substring(start, (start + col).coerceAtMost(length))
-        var last = -1
-        var i = line.length - 1
-        while (last == -1 && i >= 0) {
-          if (!Character.isWhitespace(line[i])) {
-            last = i
-          }
-          --i
-        }
-        if (last != -1) {
-          target.append(line.substring(0, last + 1))
-        }
-        if (usedRows < row) {
-          if (start + col < length) {
-            target.append('\n')
-          }
-          usedRows++
-        }
-        start += col
-      }
-      return target.toString()
+      return modelTxt?.let { LineBreaker.modelToText(modelTxt, col, row) }.orEmpty()
     }
 
     override fun checkFormat(guiTxt: String?): Boolean = guiTxt!!.length <= row * col
@@ -408,111 +392,56 @@ open class DTextField(
      * @param row The row index.
      * @return The converted string.
      */
-    private fun convertToSingleLine(source: String?, col: Int, row: Int): String =
-            buildString {
-              val length = source!!.length
-              var start = 0
-              while (start < length) {
-                var index = source.indexOf('\n', start)
-                if (index - start < col && index != -1) {
-                  append(source.substring(start, index))
-                  for (j in index - start until col) {
-                    append(' ')
-                  }
-                  start = index + 1
-                  if (start == length) {
-                    // last line ends with a "new line" -> add an empty line
-                    for (j in 0 until col) {
-                      append(' ')
-                    }
-                  }
-                } else {
-                  if (start + col >= length) {
-                    append(source.substring(start, length))
-                    for (j in length until start + col) {
-                      append(' ')
-                    }
-                    start = length
-                  } else {
-                    // find white space to break line
-                    var i = start + col - 1
-                    while (i > start) {
-                      if (Character.isWhitespace(source[i])) {
-                        break
-                      }
-                      i--
-                    }
-                    index = if (i == start) {
-                      start + col
-                    } else {
-                      i + 1
-                    }
-                    append(source.substring(start, index))
-                    var j = (index - start) % col
-                    while (j != 0 && j < col) {
-                      append(' ')
-                      j++
-                    }
-                    start = index
-                  }
-                }
+    private fun convertToSingleLine(source: String?, col: Int, row: Int): String = source?.let {
+      buildString {
+        val length = source.length
+        var start = 0
+        while (start < length) {
+          var index = source.indexOf('\n', start)
+          if (index - start < col && index != -1) {
+            append(source.substring(start, index))
+            for (j in index - start until col) {
+              append(' ')
+            }
+            start = index + 1
+            if (start == length) {
+              // last line ends with a "new line" -> add an empty line
+              for (j in 0 until col) {
+                append(' ')
               }
             }
-
-    /**
-     * Converts a given string to a fixed line string.
-     * @param source The source text.
-     * @param col The column index.
-     * @param row The row index.
-     * @return The converted string.
-     */
-    private fun convertFixedTextToSingleLine(source: String?, col: Int, row: Int): String =
-            buildString {
-              val length = source!!.length
-              var start = 0
-              while (start < length) {
-                var index = source.indexOf('\n', start)
-                if (index - start < col && index != -1) {
-                  append(source.substring(start, index))
-                  for (j in index - start until col) {
-                    append(' ')
-                  }
-                  start = index + 1
-                  if (start == length) {
-                    // last line ends with a "new line" -> add an empty line
-                    for (j in 0 until col) {
-                      append(' ')
-                    }
-                  }
-                } else {
-                  if (start + col >= length) {
-                    append(source.substring(start, length))
-                    for (j in length until start + col) {
-                      append(' ')
-                    }
-                    start = length
-                  } else {
-                    // find white space to break line
-                    var i = start + col
-                    while (i > start) {
-                      if (Character.isWhitespace(source[i])) {
-                        break
-                      }
-                      i--
-                    }
-                    index = if (i == start) {
-                      start + col
-                    } else {
-                      i
-                    }
-                    append(source.substring(start, index))
-                    for (j in index - start until col) {
-                      append(' ')
-                    }
-                    start = index + 1
-                  }
-                }
+          } else {
+            if (start + col >= length) {
+              append(source.substring(start, length))
+              for (j in length until start + col) {
+                append(' ')
               }
+              start = length
+            } else {
+              // find white space to break line
+              var i = start + col - 1
+              while (i > start) {
+                if (Character.isWhitespace(source[i])) {
+                  break
+                }
+                i--
+              }
+              index = if (i == start) {
+                start + col
+              } else {
+                i + 1
+              }
+              append(source.substring(start, index))
+              var j = (index - start) % col
+              while (j != 0 && j < col) {
+                append(' ')
+                j++
+              }
+              start = index
             }
+          }
+        }
+      }
+    }.orEmpty()
   }
 }

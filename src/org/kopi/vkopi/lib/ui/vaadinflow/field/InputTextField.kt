@@ -94,10 +94,6 @@ open class InputTextField<C> internal constructor(val internalField: C)
     //addBlurListener(::onBlur)
     // TODO : disable context menu from showing up.
     // Set value change mode to EAGER in multi line text fields to be able
-    // to dynamically calculate the field size limit
-    if (internalField is TextArea) {
-      internalField.valueChangeMode = ValueChangeMode.EAGER
-    }
     // Autoselection on focus
     element.setProperty("autoselect", true)
   }
