@@ -34,8 +34,8 @@ public class LineBreaker extends org.kopi.util.base.Utils {
   /**
    * Replaces new-lines by blanks
    *
-   * @param	source	the source text with carriage return
-   * @param	col	the width of the text
+   * @param     source  the source text with carriage return
+   * @param     col     the width of the text
    */
   public static String textToModel(String source, int col) {
     return textToModel(source, col, Integer.MAX_VALUE);
@@ -44,9 +44,9 @@ public class LineBreaker extends org.kopi.util.base.Utils {
   /**
    * Replaces new-lines by blanks
    *
-   * @param	source	the source text with carriage return
-   * @param	col	the width of the text
-   * @param	lin	the height of the text
+   * @param     source  the source text with carriage return
+   * @param     col     the width of the text
+   * @param     lin     the height of the text
    */
   public static String textToModel(String source, int col, int lin) {
     StringBuilder result = new StringBuilder();
@@ -56,15 +56,21 @@ public class LineBreaker extends org.kopi.util.base.Utils {
     int lines = 0;
 
     while (start < length && lines < lin) {
+      String line;
       int newlineIndex = source.indexOf('\n', start); // Find the next newline or the maximum segment length
       int wrapEnd; // Determine the end of the current line segment
+      // Calculate the end of the current segment : can be one of 3 values : [new line index] or [start + col] or [length]
       int segmentEnd = newlineIndex >= start && newlineIndex <= start + col ? newlineIndex : Math.min(start + col, length);
+      // Check to remove exceeding whitespaces if found
       boolean startsWithBlank = result.length() > 0 &&
                                 Character.isWhitespace(result.charAt(result.length() - 1)) &&
                                 Character.isWhitespace(source.charAt(start));
 
-      segmentEnd = startsWithBlank ? segmentEnd + 1 : segmentEnd;
+      // If the current segment starts with a blank, remove the said blank form the segment
+      segmentEnd = (startsWithBlank && segmentEnd < length) ? segmentEnd + 1 : segmentEnd;
       start = startsWithBlank ? start + 1 : start;
+
+      // Calculate the wrap index : index of the last space to prevent word cutting
       if (segmentEnd < length && segmentEnd != newlineIndex) {
         int lastSpace = source.lastIndexOf(' ', start + col);
 
@@ -72,24 +78,27 @@ public class LineBreaker extends org.kopi.util.base.Utils {
       } else {
         wrapEnd = segmentEnd;
       }
+      line = source.substring(start, wrapEnd);
       // Append the segment.
-      result.append(source.substring(start, wrapEnd));
-
+      result.append(line);
+      if (isBlank(line)) {
+        // Reset [addedSpaces] : if a blank line exists, there is no need to carry blank spaces
+        addedSpaces = 0;
+      }
       // Handle newline replacement and padding
       if (wrapEnd == newlineIndex) {
         if (wrapEnd - start == col && wrapEnd < length - 1 && !Character.isWhitespace(source.charAt(wrapEnd + 1))) {
-          // Replace newline with a space
+          // If the segment ends with a new line, and the next segment does not end with a white space, add the missing space
           result.append(' ');
           addedSpaces++;
         } else {
-          if (wrapEnd != length) {
-            int padding = col - (wrapEnd - start);
+          // If the segment ends with a new line, pad segment with spaces to reach length = [col]
+          int padding = col - (wrapEnd - start);
 
-            if (addedSpaces > 0 && padding > addedSpaces) {
-              result.append(repeat(' ', padding - addedSpaces)); // Pad the line
-            } else {
-              result.append(repeat(' ', padding)); // Pad the line
-            }
+          if (!isBlank(line) && addedSpaces > 0 && padding > addedSpaces) {
+            result.append(repeat(' ', padding - addedSpaces)); // Pad the line
+          } else {
+            result.append(repeat(' ', padding)); // Pad the line
           }
         }
       } else {
@@ -104,20 +113,11 @@ public class LineBreaker extends org.kopi.util.base.Utils {
     return result.toString();
   }
 
-  private static boolean isBlank(String source) {
-    boolean isBlank = true;
-
-    for (int i = 0; i < source.length(); i++) {
-      isBlank = isBlank && Character.isWhitespace(source.charAt(i));
-    }
-    return isBlank;
-  }
-
   /**
    * Repeat a character
    *
-   * @param ch      The repeated character
-   * @param count   The number of repeated times
+   * @param     ch      The repeated character
+   * @param     count   The number of repeated times
    *
    * @return        A string of the character 'ch' repeated 'count' times
    */
@@ -135,22 +135,23 @@ public class LineBreaker extends org.kopi.util.base.Utils {
   /**
    * Replaces blanks by new-lines
    *
-   * @param	source		the source text with white space
-   * @param	col		the width of the text area
+   * @param     source  the source text with white space
+   * @param     col     the width of the text area
    */
-  public static String modelToText(String source, int col/*, boolean isWhiteSpace*/) {
-    return modelToText(source, col, Integer.MAX_VALUE/*, isWhiteSpace*/);
+  public static String modelToText(String source, int col) {
+    return modelToText(source, col, Integer.MAX_VALUE);
   }
 
   /**
    * Replaces blanks by new-lines
    *
-   * @param source		the source text with white space
-   * @param col		the width of the text area
-   * @param row		the width of the text area
-   * @return
+   * @param     source  the source text with white space
+   * @param     col     the width of the text area
+   * @param     row     the width of the text area
+   *
+   * @return            formatted text
    */
-  public static String modelToText(String source, int col, int row/*, boolean isWhiteSpace*/) {
+  public static String modelToText(String source, int col, int row) {
     StringBuilder result = new StringBuilder();
     int length = source.length();
     int usedRows = 0;
@@ -161,7 +162,7 @@ public class LineBreaker extends org.kopi.util.base.Utils {
       int end = Math.min(start + col, length);
       String line = source.substring(start, end);
 
-      // Trim trailing spaces from the line and append to the result
+      // Trim leading and trailing spaces from the line and append to the result
       result.append(line.trim());
 
       // Add a newline if more rows are allowed
@@ -209,9 +210,21 @@ public class LineBreaker extends org.kopi.util.base.Utils {
   }
 
   /**
+   * Check if a string is blank
+   */
+  private static boolean isBlank(String source) {
+    boolean isBlank = true;
+
+    for (int i = 0; i < source.length(); i++) {
+      isBlank = isBlank && Character.isWhitespace(source.charAt(i));
+    }
+    return isBlank;
+  }
+
+  /**
    * Splits specified string into an array of strings where each element
    * represents a single line fitting the specified width (except if a
-   * single word is longer than the specified width.
+   * single word is longer than the specified width).
    */
   public static String[] splitForWidth(String source, int width) {
     return addBreakForWidth(source, width).split("\n");

@@ -57,6 +57,7 @@ open class DTextField(
   protected var noEdit = options and VConstants.FDO_NOEDIT != 0
   protected var scanner = options and VConstants.FDO_NOECHO != 0 && getModel().height > 1
   private var selectionAfterUpdateDisabled = false
+  private var updatedFromClient = false
   protected var transformer: ModelTransformer? = null
 
   init {
@@ -72,11 +73,13 @@ open class DTextField(
     if (field.inputField.internalField is TextArea) {
       field.inputField.internalField.addValueChangeListener { event ->
         if (event.isFromClient) {
+          updatedFromClient = true
           if (!getModel().hasFocus()) {
             getModel().block!!.gotoField(getModel())
           }
           setGUIMaxLength(event.oldValue, event.value)
           valueChanged()
+          updatedFromClient = false
         }
       }
     } else {
@@ -172,8 +175,10 @@ open class DTextField(
 
   override fun updateText() {
     val newModelTxt = getModel().getText(rowController.blockView.getRecordFromDisplayLine(position))
-    access(currentUI) {
-      field.value = transformer!!.toGui(newModelTxt)
+    if (!updatedFromClient && field.value != transformer!!.toGui(newModelTxt)) {
+      access(currentUI) {
+        field.value = transformer!!.toGui(newModelTxt)
+      }
     }
     super.updateText()
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {
