@@ -63,11 +63,12 @@ public class LineBreaker extends org.kopi.util.base.Utils {
       int segmentEnd = newlineIndex >= start && newlineIndex <= start + col ? newlineIndex : Math.min(start + col, length);
       // Check to remove exceeding whitespaces if found
       boolean startsWithBlank = result.length() > 0 &&
+                                !isBlank(source.substring(start, segmentEnd)) &&
                                 Character.isWhitespace(result.charAt(result.length() - 1)) &&
                                 Character.isWhitespace(source.charAt(start));
 
       // If the current segment starts with a blank, remove the said blank form the segment
-      segmentEnd = (startsWithBlank && segmentEnd < length) ? segmentEnd + 1 : segmentEnd;
+      segmentEnd = (startsWithBlank && segmentEnd < length && segmentEnd != newlineIndex) ? segmentEnd + 1 : segmentEnd;
       start = startsWithBlank ? start + 1 : start;
 
       // Calculate the wrap index : index of the last space to prevent word cutting
@@ -93,15 +94,16 @@ public class LineBreaker extends org.kopi.util.base.Utils {
           addedSpaces++;
         } else {
           // If the segment ends with a new line, pad segment with spaces to reach length = [col]
-          int padding = col - (wrapEnd - start);
+          result.append(repeat(' ', col - (wrapEnd - start))); // Pad the line
 
-          if (!isBlank(line) && addedSpaces > 0 && padding > addedSpaces) {
-            result.append(repeat(' ', padding - addedSpaces)); // Pad the line
-          } else {
-            result.append(repeat(' ', padding)); // Pad the line
-          }
         }
       } else {
+        if (wrapEnd - start == col  && wrapEnd < length && !Character.isWhitespace(source.charAt(wrapEnd - 1))) {
+          // If the last character in the line is not a whitespace, include the next whitespace in the calculations
+          result.append(' ');
+          addedSpaces++;
+          wrapEnd = wrapEnd + 1;
+        }
         result.append(repeat(' ', col - (wrapEnd - start))); // Pad the line
       }
 
@@ -159,9 +161,14 @@ public class LineBreaker extends org.kopi.util.base.Utils {
 
     while (start < length && usedRows < row) {
       // Extract a line of the given column width
+      String line;
       int end = Math.min(start + col, length);
-      String line = source.substring(start, end);
 
+      if (Character.isWhitespace(source.charAt(start)) && !isBlank(source.substring(start, end))) {
+        start = start + 1;
+        end = Math.min(start + col, length);
+      }
+      line = source.substring(start, end);
       // Trim leading and trailing spaces from the line and append to the result
       result.append(line.trim());
 
