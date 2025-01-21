@@ -144,19 +144,34 @@ open class DTextField(
   private fun setGUIMaxLength(oldValue: String?, newValue: String?) {
     if (field.inputField.internalField is TextArea) {
       val guiText = newValue.orEmpty()
-      var modelText = text.orEmpty()
+      var modelText = transformer!!.toModel(newValue.orEmpty())
       val maxModelLength = getModel().width * getModel().height
-      val currentModelLength = modelText.trimEnd().length
-      val maxLength = guiText.length + maxModelLength - currentModelLength
+      val currentModelLength = modelText.trimEnd(getModel().width + 1).length
+      val maxLength = guiText.length + maxModelLength - currentModelLength - 1
 
       field.inputField.internalField.element.setProperty("maxlength", "$maxLength")
-      if (modelText.length > maxModelLength) {
-        modelText = modelText.take(maxModelLength)
-        if (oldValue.isNullOrBlank()) {
-          field.inputField.internalField.value = transformer!!.toGui(modelText)
-        } else {
+      println("maxlength = $maxLength, currentModelLength = ${currentModelLength}, max model length = $maxModelLength")
+      if (currentModelLength >= maxModelLength) {
+        if (!oldValue.isNullOrBlank()) {
+          println("old value = $oldValue")
           field.inputField.internalField.value = oldValue
+        } else {
+          modelText = modelText.take(maxModelLength)
+          println("new value = $modelText")
+          field.inputField.internalField.value = transformer!!.toGui(modelText)
         }
+      }
+    }
+  }
+
+  private fun String.trimEnd(width: Int): String {
+    return if (width >= this.length) {
+      this.trimEnd()
+    } else {
+      if (this.takeLast(width).isBlank()) {
+        this.substring(0, this.length - width)
+      } else {
+        this.trimEnd()
       }
     }
   }
@@ -175,7 +190,7 @@ open class DTextField(
 
   override fun updateText() {
     val newModelTxt = getModel().getText(rowController.blockView.getRecordFromDisplayLine(position))
-    if (!updatedFromClient && field.value != transformer!!.toGui(newModelTxt)) {
+    if (!updatedFromClient && field.value?.trimEnd() != transformer!!.toGui(newModelTxt)?.trimEnd()) {
       access(currentUI) {
         field.value = transformer!!.toGui(newModelTxt)
       }

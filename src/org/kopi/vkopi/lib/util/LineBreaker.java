@@ -95,7 +95,6 @@ public class LineBreaker extends org.kopi.util.base.Utils {
         } else {
           // If the segment ends with a new line, pad segment with spaces to reach length = [col]
           result.append(repeat(' ', col - (wrapEnd - start))); // Pad the line
-
         }
       } else {
         if (wrapEnd - start == col  && wrapEnd < length && !Character.isWhitespace(source.charAt(wrapEnd - 1))) {
@@ -112,7 +111,11 @@ public class LineBreaker extends org.kopi.util.base.Utils {
       lines++;
     }
 
-    return result.toString();
+    if (addedSpaces != 0 && result.substring(result.length() - addedSpaces).trim().isEmpty()) {
+      return result.substring(0, result.length() - addedSpaces);
+    } else {
+      return result.toString();
+    }
   }
 
   /**
