@@ -19,6 +19,7 @@ package org.kopi.vkopi.lib.ui.vaadinflow.field
 
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.textfield.TextArea
+import com.vaadin.flow.data.value.ValueChangeMode
 
 /**
  * A text area input zone.
@@ -27,6 +28,8 @@ class VTextAreaField : InputTextField<TextArea>(TextArea()) {
 
   init {
     className = "textarea"
+    // Set value change mode to EAGER to be able dynamically calculate the field size limit
+    internalField.valueChangeMode = ValueChangeMode.EAGER
   }
 
   var cols: Int = 0

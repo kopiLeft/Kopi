@@ -28,7 +28,7 @@ public class LineBreaker extends org.kopi.util.base.Utils {
    *
    * @param	source	the source text with carriage return
    * @param	col	the width of the text
-   * @param	fixed	is it a fixed text ?
+   * @param	lin	the number of lines of the text
    */
   public static String textToModel(String source, int col, int lin) {
     return textToModel(source, col, lin, false);
@@ -38,6 +38,7 @@ public class LineBreaker extends org.kopi.util.base.Utils {
    *
    * @param	source	the source text with carriage return
    * @param	col	the width of the text
+   * @param	lin	the number of lines of the text
    * @param	fixed	is it a fixed text ?
    */
   public static String textToModel(String source, int col, int lin, boolean fixed) {
@@ -45,10 +46,10 @@ public class LineBreaker extends org.kopi.util.base.Utils {
     int                 length = source.length();
     int                 start = 0;
     int                 lines = 0;
-    
+
     while (start < length && lines < lin) {
       int       index;
-      
+
       index = source.indexOf('\n', start);
       if (index == -1) {
         target.append(source.substring(start, length));
@@ -63,15 +64,20 @@ public class LineBreaker extends org.kopi.util.base.Utils {
           for (int i = (index - start)%col; i != 0 && i < col; i++) {
             target.append(' ');
           }
+          if (index == start) {
+            for (int i = 0; i < col; i++) {
+              target.append(' ');
+            }
+          }
         }
         start = index + 1;
         lines++;
       }
     }
-    
+
     return target.toString();
   }
-  
+
   /**
    * Replaces blanks by new-lines
    *
@@ -82,22 +88,29 @@ public class LineBreaker extends org.kopi.util.base.Utils {
     if (source != null) {
       StringBuffer      target = new StringBuffer();
       int               length = source.length();
+      boolean           wholeLine = false; // Is true if the whole line is appended : line does not end with a whitespace
 
       for (int start = 0; start < length; start += col) {
         String  line = source.substring(start, Math.min(start + col, length));
         int     last = -1;
+        boolean changedLine = false;
 
         for (int i = line.length() - 1; last == -1 && i >= 0; --i) {
-          if (! Character.isWhitespace(line.charAt(i))) {
+          if (!Character.isWhitespace(line.charAt(i))) {
             last = i;
           }
         }
-
         if (start != 0) {
           target.append('\n');
+          if (line.length() > 1 && Character.isWhitespace(line.charAt(0)) && !Character.isWhitespace(line.charAt(1)) && wholeLine) {
+            line = line.substring(1) + " ";
+            changedLine = true;
+          }
         }
+        wholeLine = (last == line.length() - 1);
+
         if (last != -1) {
-          target.append(line.substring(0, last + 1));
+          target.append(line.substring(0, changedLine ? last : last + 1));
         }
       }
 
@@ -121,7 +134,7 @@ public class LineBreaker extends org.kopi.util.base.Utils {
     start = boundary.first();
     length = 0;
     buffer = new StringBuffer(source.length());
-    
+
     for (int end = boundary.next();
          end != BreakIterator.DONE;
          start = end, end = boundary.next()) {
