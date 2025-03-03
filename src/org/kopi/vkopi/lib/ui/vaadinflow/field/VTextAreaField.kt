@@ -29,7 +29,7 @@ class VTextAreaField : InputTextField<TextArea>(TextArea()) {
   init {
     className = "textarea"
     // Set value change mode to EAGER to be able dynamically calculate the field size limit
-    internalField.valueChangeMode = ValueChangeMode.EAGER
+    setValueChangeMode()
   }
 
   var cols: Int = 0
@@ -39,6 +39,10 @@ class VTextAreaField : InputTextField<TextArea>(TextArea()) {
   fun setRows(visibleRows: Int) {
     internalField.element.executeJs("this.querySelector('textarea').rows = $0;", visibleRows)
     this.visibleRows = visibleRows
+  }
+
+  override fun setValueChangeMode() {
+    internalField.valueChangeMode = ValueChangeMode.EAGER
   }
 
   override fun onAttach(attachEvent: AttachEvent?) {

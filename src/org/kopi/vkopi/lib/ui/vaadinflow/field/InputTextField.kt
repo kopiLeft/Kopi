@@ -93,10 +93,7 @@ open class InputTextField<C> internal constructor(val internalField: C)
     //addBlurListener(::onBlur)
     // TODO : disable context menu from showing up.
     // Set value change mode to EAGER in multi line text fields to be able
-    if (internalField is com.vaadin.flow.component.textfield.TextField) {
-      internalField.valueChangeMode = ValueChangeMode.LAZY
-      internalField.setValueChangeTimeout(200)
-    }
+    setValueChangeMode()
     // Autoselection on focus
     element.setProperty("autoselect", true)
   }
@@ -113,6 +110,13 @@ open class InputTextField<C> internal constructor(val internalField: C)
 
   open fun addTextValueChangeListener(listener: HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<*, *>>) {
     internalField.addValueChangeListener(listener)
+  }
+
+  open fun setValueChangeMode() {
+    if (internalField is com.vaadin.flow.component.textfield.TextField) {
+      internalField.valueChangeMode = ValueChangeMode.LAZY
+      internalField.setValueChangeTimeout(200)
+    }
   }
 
   override fun getValue(): String? {
