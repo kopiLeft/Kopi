@@ -17,6 +17,7 @@
  */
 package org.kopi.vkopi.lib.ui.vaadinflow.base
 
+import java.awt.Color
 import java.util.Hashtable
 import java.util.concurrent.CompletableFuture
 
@@ -133,6 +134,17 @@ object Utils : Utils() {
     } else {
       "rgb(" + color.red.toString() + "," + color.green.toString() + "," + color.blue.toString() + ")"
     }
+  }
+
+  /**
+   * Convert a Java.awt.Color object to Hexadecimal String.
+   */
+  fun colorToRgbString(color: Color): String {
+    val redHex = String.format("%02x", color.red)
+    val greenHex = String.format("%02x", color.green)
+    val blueHex = String.format("%02x", color.blue)
+
+    return "$redHex$greenHex$blueHex"
   }
 
   /**
