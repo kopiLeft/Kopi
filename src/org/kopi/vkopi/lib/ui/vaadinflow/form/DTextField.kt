@@ -26,6 +26,7 @@ import org.kopi.vkopi.lib.form.VConstants
 import org.kopi.vkopi.lib.form.VFieldUI
 import org.kopi.vkopi.lib.ui.vaadinflow.base.BackgroundThreadHandler.access
 import org.kopi.vkopi.lib.ui.vaadinflow.field.TextField
+import org.kopi.vkopi.lib.util.LineBreaker
 import org.kopi.vkopi.lib.visual.Action
 import org.kopi.vkopi.lib.visual.VException
 import org.kopi.vkopi.lib.visual.VlibProperties
@@ -56,6 +57,7 @@ open class DTextField(
   protected var noEdit = options and VConstants.FDO_NOEDIT != 0
   protected var scanner = options and VConstants.FDO_NOECHO != 0 && getModel().height > 1
   private var selectionAfterUpdateDisabled = false
+  private var updatedFromClient = false
   protected var transformer: ModelTransformer? = null
 
   init {
@@ -71,8 +73,13 @@ open class DTextField(
     if (field.inputField.internalField is TextArea) {
       field.inputField.internalField.addValueChangeListener { event ->
         if (event.isFromClient) {
-          setGUIMaxLength(event.oldValue, event.value)
+          updatedFromClient = true
+          if (!getModel().hasFocus()) {
+            getModel().block!!.gotoField(getModel())
+          }
+          checkTextSize(event.oldValue, event.value)
           valueChanged()
+          updatedFromClient = false
         }
       }
     } else {
@@ -132,19 +139,23 @@ open class DTextField(
   }
 
   /**
-   * Update dynamically the max length of the GUI text
+   * Check the Gui Text size to ensure its compatibility with the model requirements
    */
-  private fun setGUIMaxLength(oldValue: String?, newValue: String?) {
+  private fun checkTextSize(oldValue: String?, newValue: String?) {
     if (field.inputField.internalField is TextArea) {
-      val guiText = newValue ?: ""
-      val modelText = text.orEmpty()
       val maxModelLength = getModel().width * getModel().height
-      val currentModelLength = modelText.trimEnd().length
-      val maxLength = guiText.length + maxModelLength - currentModelLength
+      var modelText = transformer!!.toModel(newValue.orEmpty())
+      val guiText = transformer!!.toGui(modelText)
+      val textLines = guiText.split("\n").size
 
-      field.inputField.internalField.element.setProperty("maxlength", "$maxLength")
-      if (modelText.length > maxModelLength) {
-        field.inputField.internalField.value = oldValue
+      println("DEBUG : GUI TXT lines = $textLines, MAX LINES = ${getModel().height}")
+      if (textLines > getModel().height) {
+        if (oldValue.isNullOrEmpty()) {
+          modelText = modelText.take(maxModelLength)
+          field.inputField.internalField.value = transformer!!.toGui(modelText)
+        } else {
+          field.inputField.internalField.value = oldValue
+        }
       }
     }
   }
@@ -163,8 +174,10 @@ open class DTextField(
 
   override fun updateText() {
     val newModelTxt = getModel().getText(rowController.blockView.getRecordFromDisplayLine(position))
-    access(currentUI) {
-      field.value = transformer!!.toGui(newModelTxt)
+    if (!updatedFromClient && field.value?.trimEnd() != transformer!!.toGui(newModelTxt)?.trimEnd()) {
+      access(currentUI) {
+        field.value = transformer!!.toGui(newModelTxt)
+      }
     }
     super.updateText()
     if (modelHasFocus() && !selectionAfterUpdateDisabled) {
@@ -350,36 +363,11 @@ open class DTextField(
     // IMPLEMENTATIONS
     //---------------------------------------
     override fun toModel(guiTxt: String?): String {
-      return convertFixedTextToSingleLine(guiTxt, col, row)
+      return LineBreaker.textToModel(guiTxt, col, Int.MAX_VALUE)
     }
 
     override fun toGui(modelTxt: String?): String {
-      val target = StringBuffer()
-      val length = modelTxt!!.length
-      var usedRows = 1
-      var start = 0
-      while (start < length) {
-        val line = modelTxt.substring(start, (start + col).coerceAtMost(length))
-        var last = -1
-        var i = line.length - 1
-        while (last == -1 && i >= 0) {
-          if (!Character.isWhitespace(line[i])) {
-            last = i
-          }
-          --i
-        }
-        if (last != -1) {
-          target.append(line.substring(0, last + 1))
-        }
-        if (usedRows < row) {
-          if (start + col < length) {
-            target.append('\n')
-          }
-          usedRows++
-        }
-        start += col
-      }
-      return target.toString()
+      return modelTxt?.let { LineBreaker.modelToText(modelTxt, col) }.orEmpty()
     }
 
     override fun checkFormat(guiTxt: String?): Boolean = guiTxt!!.length <= row * col

@@ -22,6 +22,7 @@ import org.kopi.vkopi.lib.ui.vaadinflow.base.DecimalFormatSymbols
 
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.dependency.JsModule
+import com.vaadin.flow.data.value.ValueChangeMode
 
 /**
  * A decimal field.
@@ -45,5 +46,10 @@ class VDecimalField(col: Int,
         dfs.decimalSeparator.toString()
       )
     }
+    setValueChangeMode()
+  }
+
+  override fun setValueChangeMode() {
+    internalField.valueChangeMode = ValueChangeMode.ON_CHANGE
   }
 }

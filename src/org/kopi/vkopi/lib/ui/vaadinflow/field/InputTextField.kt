@@ -49,7 +49,6 @@ import com.vaadin.flow.component.KeyUpEvent
 import com.vaadin.flow.component.textfield.Autocomplete
 import com.vaadin.flow.component.textfield.HasAutocomplete
 import com.vaadin.flow.component.textfield.HasPrefixAndSuffix
-import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.component.textfield.TextFieldVariant
 import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.dom.DomEvent
@@ -94,10 +93,7 @@ open class InputTextField<C> internal constructor(val internalField: C)
     //addBlurListener(::onBlur)
     // TODO : disable context menu from showing up.
     // Set value change mode to EAGER in multi line text fields to be able
-    // to dynamically calculate the field size limit
-    if (internalField is TextArea) {
-      internalField.valueChangeMode = ValueChangeMode.EAGER
-    }
+    setValueChangeMode()
     // Autoselection on focus
     element.setProperty("autoselect", true)
   }
@@ -114,6 +110,13 @@ open class InputTextField<C> internal constructor(val internalField: C)
 
   open fun addTextValueChangeListener(listener: HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<*, *>>) {
     internalField.addValueChangeListener(listener)
+  }
+
+  open fun setValueChangeMode() {
+    if (internalField is com.vaadin.flow.component.textfield.TextField) {
+      internalField.valueChangeMode = ValueChangeMode.LAZY
+      internalField.setValueChangeTimeout(200)
+    }
   }
 
   override fun getValue(): String? {

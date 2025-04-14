@@ -40,6 +40,7 @@ import com.vaadin.flow.component.dependency.CssImport
 import com.vaadin.flow.component.dependency.JsModule
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.shared.Registration
 
 /**
@@ -62,6 +63,11 @@ class VDateField : InputTextField<DateField>(DateField()), KeyNotifier {
 
     internalField.picker.value = date
     internalField.value = date?.format() ?: newPresentationValue.orEmpty()
+    setValueChangeMode()
+  }
+
+  override fun setValueChangeMode() {
+    internalField.valueChangeMode = ValueChangeMode.ON_CHANGE
   }
 }
 

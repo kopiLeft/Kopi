@@ -18,6 +18,7 @@
 package org.kopi.vkopi.lib.ui.vaadinflow.field
 
 import com.vaadin.flow.component.textfield.TextField
+import com.vaadin.flow.data.value.ValueChangeMode
 
 /**
  * An integer field.
@@ -30,6 +31,7 @@ class VIntegerField(width : Int, minval : Double, maxval : Double) : InputTextFi
     internalField.element.setProperty("min", minval)
     internalField.element.setProperty("max", maxval)
     this.width = width.toString()
+    setValueChangeMode()
   }
 
   override fun setMaxLength(maxLength: Int) {
@@ -37,4 +39,8 @@ class VIntegerField(width : Int, minval : Double, maxval : Double) : InputTextFi
   }
 
   override fun getMaxLength(): Double = internalField.maxLength.toDouble()
+
+  override fun setValueChangeMode() {
+    internalField.valueChangeMode = ValueChangeMode.ON_CHANGE
+  }
 }
