@@ -98,7 +98,7 @@ class DGridEditorBooleanField(
     super.updateAccess()
     label!!.update(columnView, getBlockView().getRecordFromDisplayLine(position))
     access {
-      (editor as GridEditorBooleanField).mandatory = getAccess() == VConstants.ACS_MUSTFILL
+      (editor as GridEditorBooleanField).mandatory = (getAccess() == VConstants.ACS_MUSTFILL) && !getModel().noDetail()
     }
   }
 
