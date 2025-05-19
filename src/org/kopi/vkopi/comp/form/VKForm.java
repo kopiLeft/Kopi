@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import org.kopi.compiler.base.Compiler;
+import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.CParseClassContext;
@@ -425,6 +426,20 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
+      Vector commandsVector = new Vector();
+      Vector triggersVector = new Vector();
+      Vector blocksVector = new Vector();
+
+      for (int i = 0; i < commands.length; i++) {
+          commandsVector.add(commands[i]);
+      }
+      for (int i = 0; i < triggers.length; i++) {
+          triggersVector.add(triggers[i]);
+      }
+      for (int i = 0; i < blocks.length; i++) {
+          blocksVector.add(blocks[i]);
+      }
+      ((VKFormPrettyPrinter)p).printForm(getTitle(), superForm.toString(), coll, 0, commandsVector, triggersVector, blocksVector, JavaStyleComment.EMPTY);
   }
 
   // ----------------------------------------------------------------------

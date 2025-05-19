@@ -70,13 +70,13 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
    */
   public void printForm(String name,
 			String superForm,
-			JCompilationUnit unit,
+			/*JCompilationUnit unit,*/
 			VKDefinitionCollector coll,
 			int options,
 			Vector commands,
 			Vector triggers,
 			Vector blocks,
-			JClassDeclaration decl,
+			/* JClassDeclaration decl,*/
 			JavaStyleComment[] comment)
   {
     printCopyright(name);
@@ -91,7 +91,7 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
     newLine();
     newLine();
 
-    printCUnit(unit);
+    // printCUnit(unit);
 
     newLine();
 
