@@ -405,7 +405,7 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
     if (destination == null || destination.equals("")) {
       fileName = getTokenReference().getFile();
     } else {
-      fileName = destination + File.separatorChar + getTokenReference().getFile();
+      fileName = destination + File.separatorChar + getTokenReference().getFile().substring(getTokenReference().getFile().lastIndexOf("/") + 1);
     }
 
     try {
