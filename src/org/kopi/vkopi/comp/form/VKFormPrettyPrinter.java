@@ -86,7 +86,7 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
     printComment(comment);
 
     newLine();
-    print("FORM \"" + name + "\"");
+    print("FORM /* le petit texte */ \"" + name + "\"");
     if (superForm != null) {
       print(" IS " + superForm.replace('/', '.'));
     }
