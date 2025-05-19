@@ -112,6 +112,10 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
     this.blocks = blocks;
     this.pages = pages;
     this.environment = environment;
+    this.commands = commands;
+    this.triggers = triggers;
+    this.coll = coll;
+    this.superForm = superForm;
   }
 
   // ----------------------------------------------------------------------
@@ -469,7 +473,11 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
   // ----------------------------------------------------------------------
 
   private final String                  pkg;
-  private VKFormElement[]		blocks;
-  private VKPage[]			pages;
   private final KjcEnvironment          environment;
+  private final CReferenceType          superForm;
+  private VKFormElement[]		            blocks;
+  private VKPage[]			                pages;
+  private VKCommand[]                   commands;
+  private VKTrigger[]                   triggers;
+  private VKDefinitionCollector         coll;
 }
