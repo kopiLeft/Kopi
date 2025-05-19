@@ -146,10 +146,17 @@ public class VKBlockAlign extends VKPhylum {
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
-    /*
+    Vector sourceVector = new Vector();
+    Vector targetVector = new Vector();
+
+    for (int i = 0; i < source.length; i++) {
+      sourceVector.add(source[i]);
+    }
+    for (int i = 0; i < target.length; i++) {
+      targetVector.add(target[i]);
+    }
     genComments(p);
-    ((VKFormPrettyPrinter)p).printBlockAlign(block, source, target);
-    */
+    ((VKFormPrettyPrinter)p).printBlockAlign(block, sourceVector, targetVector);
   }
 
   // ----------------------------------------------------------------------

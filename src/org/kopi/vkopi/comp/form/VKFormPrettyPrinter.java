@@ -215,8 +215,8 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
 			 Vector commands,
 			 Vector triggers,
 			 Vector objects,
-			 String page,
-			 JClassDeclaration decl)
+			 String page
+			 /*JClassDeclaration decl*/)
   {
     if (page != null && !page.equals(current_page)) {
       current_page = page;

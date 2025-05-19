@@ -829,12 +829,32 @@ public class VKBlock
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
-    /*
+    Vector commandsVector = new Vector();
+    Vector triggersVector = new Vector();
+    Vector fieldsVector = new Vector();
+    Vector tablesVector = new Vector();
+    Vector indicesVector = new Vector();
+
+    for (int i = 0; i < commands.length; i++) {
+      commandsVector.add(commands[i]);
+    }
+    for (int i = 0; i < triggers.length; i++) {
+      triggersVector.add(triggers[i]);
+    }
+    for (int i = 0; i < fields.length; i++) {
+      fieldsVector.add(fields[i]);
+    }
+    for (int i = 0; i < tables.length; i++) {
+      tablesVector.add(tables[i]);
+    }
+    for (int i = 0; i < indices.length; i++) {
+      indicesVector.add(indices[i]);
+    }
     genComments(p);
     ((VKFormPrettyPrinter)p).printBlock(getIdent(), getShortcut(), visible, buffer, title,
-					, border, alignment, align, help, tables, indices, access,
-					options, commands, triggers, objects, page, getDeclaration());
-					*/
+            null, border, getAlignment(), align, help, tablesVector, indicesVector, access,
+					options, commandsVector, triggersVector, fieldsVector, ""/*, getDeclaration()*/);
+
   }
 
   // ----------------------------------------------------------------------

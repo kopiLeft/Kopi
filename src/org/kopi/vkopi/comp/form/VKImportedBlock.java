@@ -111,10 +111,8 @@ public class VKImportedBlock
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
-    /*
     genComments(p);
-    ((VKFormPrettyPrinter)p).printImporterBlock(getIdent(), getShortcut(), page);
-    */
+    ((VKFormPrettyPrinter)p).printImporterBlock(getIdent(), getShortcut(), null);
   }
 
   // ----------------------------------------------------------------------
