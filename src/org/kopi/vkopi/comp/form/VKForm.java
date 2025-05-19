@@ -429,6 +429,7 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
       Vector commandsVector = new Vector();
       Vector triggersVector = new Vector();
       Vector blocksVector = new Vector();
+      Vector pagesVector = new Vector();
 
       for (int i = 0; i < commands.length; i++) {
           commandsVector.add(commands[i]);
@@ -439,7 +440,10 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
       for (int i = 0; i < blocks.length; i++) {
           blocksVector.add(blocks[i]);
       }
-      ((VKFormPrettyPrinter)p).printForm(getTitle(), superForm.toString(), coll, 0, commandsVector, triggersVector, blocksVector, JavaStyleComment.EMPTY);
+      for (int i = 0; i < pages.length; i++) {
+          pagesVector.add(pages[i]);
+      }
+      ((VKFormPrettyPrinter)p).printForm(getTitle(), superForm.toString(), coll, 0, commandsVector, triggersVector, blocksVector, pagesVector, JavaStyleComment.EMPTY);
   }
 
   // ----------------------------------------------------------------------

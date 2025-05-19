@@ -112,7 +112,7 @@ public class VKImportedBlock
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    ((VKFormPrettyPrinter)p).printImporterBlock(getIdent(), getShortcut(), null);
+    ((VKFormPrettyPrinter)p).printImporterBlock(getIdent(), getShortcut(), getPageNumber());
   }
 
   // ----------------------------------------------------------------------

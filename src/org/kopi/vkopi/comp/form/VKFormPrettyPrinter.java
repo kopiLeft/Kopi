@@ -21,6 +21,8 @@ package org.kopi.vkopi.comp.form;
 
 import java.io.IOException;
 import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.kopi.compiler.base.JavaStyleComment;
 import org.kopi.compiler.base.TabbedPrintWriter;
@@ -76,7 +78,8 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
 			Vector commands,
 			Vector triggers,
 			Vector blocks,
-			/* JClassDeclaration decl,*/
+      Vector pages,
+			/* JClassDeclaration decl, */
 			JavaStyleComment[] comment)
   {
     printCopyright(name);
@@ -124,6 +127,16 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
       for (int i = 0; i < triggers.size(); i++) {
 	((VKTrigger)triggers.elementAt(i)).genVKCode(this);
 	newLine();
+      }
+    }
+
+    // PAGES
+    if (pages != null) {
+      for (int i =0; i < pages.size(); i++) {
+        int pageNumber = Integer.parseInt(((VKPage)pages.elementAt(i)).getIdent().substring(((VKPage)pages.elementAt(i)).getIdent().indexOf('$') + 1));
+        String pageTitle = ((VKPage)pages.elementAt(i)).getTitle();
+
+        pageMap.put(pageNumber, pageTitle);
       }
     }
 
@@ -215,15 +228,19 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
 			 Vector commands,
 			 Vector triggers,
 			 Vector objects,
-			 String page
-			 /*JClassDeclaration decl*/)
+			 int page /* ,
+			 JClassDeclaration decl*/)
   {
-    if (page != null && !page.equals(current_page)) {
-      current_page = page;
-      //!!!page.genVKCode(this);
-      newLine();
-      print("NEW PAGE \"" + page + '"');
-      newLine();
+    if (pageMap.containsKey(page)) {
+      String mappedPage = pageMap.get(page);
+
+      if (mappedPage != null && !mappedPage.equals(current_page)) {
+        current_page = mappedPage;
+        //!!!page.genVKCode(this);
+        newLine();
+        print("NEW PAGE \"" + mappedPage + '"');
+        newLine();
+      }
     }
 
     printBlockBanner(name, shortCut);
@@ -403,13 +420,17 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
   /**
    * Prints imported block
    */
-  public void printImporterBlock(String name, String shortcut, String page) {
-    if (page != null && !page.equals(current_page)) {
-      current_page = page;
-      //!!!page.genVKCode(this);
-      newLine();
-      print("NEW PAGE \"" + page + '"');
-      newLine();
+  public void printImporterBlock(String name, String shortcut, int page) {
+    if (pageMap.containsKey(page)) {
+      String mappedPage = pageMap.get(page);
+
+      if (mappedPage!= null && !mappedPage.equals(current_page)) {
+        current_page = mappedPage;
+        //!!!page.genVKCode(this);
+        newLine();
+        print("NEW PAGE \"" + mappedPage + '"');
+        newLine();
+      }
     }
 
 
@@ -629,4 +650,5 @@ public class VKFormPrettyPrinter extends VKPrettyPrinter {
   // ----------------------------------------------------------------------
 
   private String current_page;
+  private Map<Integer, String> pageMap = new HashMap<>();
 }

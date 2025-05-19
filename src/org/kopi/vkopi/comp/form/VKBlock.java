@@ -853,7 +853,7 @@ public class VKBlock
     genComments(p);
     ((VKFormPrettyPrinter)p).printBlock(getIdent(), getShortcut(), visible, buffer, title,
             null, border, getAlignment(), align, help, tablesVector, indicesVector, access,
-					options, commandsVector, triggersVector, fieldsVector, ""/*, getDeclaration()*/);
+					options, commandsVector, triggersVector, fieldsVector, getPageNumber()/*, getDeclaration()*/);
 
   }
 
