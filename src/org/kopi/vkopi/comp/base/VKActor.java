@@ -203,7 +203,7 @@ public class VKActor extends VKDefinition {
    */
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
-    p.printActor(menuDef.getIdent(), getIdent(), label, key, icon, help);
+    p.printActor(getIdent(), menu, label, help, key, icon);
   }
 
   // ----------------------------------------------------------------------

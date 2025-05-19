@@ -253,6 +253,7 @@ public class VKPrettyPrinter {
     print("ACTOR ");
     print(ident);
     pos += TAB_SIZE;
+    newLine();
     print("MENU    " + menu);
     if (label != null) {
       newLine();
