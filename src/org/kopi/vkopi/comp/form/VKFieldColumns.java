@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.comp.form;
 
+import java.util.Vector;
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
@@ -129,10 +131,13 @@ public class VKFieldColumns extends VKPhylum {
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
-    /*
+    Vector fieldColumnVector = new Vector();
+
+    for (int i = 0; i < columns.length; i++) {
+      fieldColumnVector.add(columns[i]);
+    }
     genComments(p);
-    ((VKFormPrettyPrinter)p).printFieldColumns(columns, indices, priority);
-    */
+    ((VKFormPrettyPrinter)p).printFieldColumns(fieldColumnVector, indices, priority);
   }
 
   public VKFieldColumn[] getColumns() {

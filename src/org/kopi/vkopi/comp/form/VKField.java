@@ -19,6 +19,8 @@
 
 package org.kopi.vkopi.comp.form;
 
+import java.util.Vector;
+
 import org.kopi.compiler.base.CWarning;
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
@@ -468,10 +470,17 @@ public class VKField
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
-    /*
+    Vector commandsVector = new Vector();
+    Vector triggersVector = new Vector();
+
+    for (int i = 0; i < commands.length; i++) {
+      commandsVector.add(commands[i]);
+    }
+    for (int i = 0; i < triggers.length; i++) {
+      triggersVector.add(triggers[i]);
+    }
     genComments(p);
-    ((VKFormPrettyPrinter)p).printField(getIdent(), label, help, detailedPos, type, align, options, columns, access, commands, triggers);
-    */
+    ((VKFormPrettyPrinter)p).printField(getIdent(), label, help, detailedPos, type, align, options, columns, access, commandsVector, triggersVector);
   }
 
   // ----------------------------------------------------------------------
