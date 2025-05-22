@@ -130,4 +130,15 @@ public class VKTimestampType extends VKType {
     genComments(p);
     p.printTimestampType();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 }

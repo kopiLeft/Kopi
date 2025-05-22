@@ -64,6 +64,7 @@ import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * This class represents the definition of a page
@@ -489,6 +490,17 @@ public class PRPage
   public void genVKCode(VKPrettyPrinter p) {
     throw new NotImplementedException();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION

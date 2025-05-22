@@ -41,6 +41,7 @@ import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 import org.kopi.vkopi.comp.base.VKLocalizationWriter;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKTrigger;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.vkopi.comp.base.VKWindow;
 
 /**
@@ -172,6 +173,18 @@ class VKBlockInsert extends VKWindow {
   public VKBlock getBlock() {
     return block;
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------

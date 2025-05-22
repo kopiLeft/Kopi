@@ -19,6 +19,7 @@
 
 package org.kopi.vkopi.comp.form;
 
+
 import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.kopi.comp.kjc.JExpression;
@@ -27,6 +28,7 @@ import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKStdType;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * This class define a column list information
@@ -129,7 +131,7 @@ public class VKFieldColumns extends VKPhylum {
    * @param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {
-    /*
+   /*
     genComments(p);
     ((VKFormPrettyPrinter)p).printFieldColumns(columns, indices, priority);
     */
@@ -138,6 +140,18 @@ public class VKFieldColumns extends VKPhylum {
   public VKFieldColumn[] getColumns() {
     return columns;
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
   // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------

@@ -35,6 +35,7 @@ import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * This class represents the definition of a block in a page
@@ -148,6 +149,17 @@ public class PRProlog extends VKPhylum {
   public void genVKCode(VKPrettyPrinter p) {
     throw new NotImplementedException();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

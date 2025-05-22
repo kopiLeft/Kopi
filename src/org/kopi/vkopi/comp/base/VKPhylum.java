@@ -146,6 +146,16 @@ public abstract class VKPhylum extends org.kopi.util.base.Utils implements VKCon
   }
 
   // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  public abstract void accept(VKVisitor visitor);
+
+  // ----------------------------------------------------------------------
   // DATA MEMBERS
   // ----------------------------------------------------------------------
 

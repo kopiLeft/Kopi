@@ -131,7 +131,18 @@ public class VKCommandBody extends VKPhylum {
     genComments(p);
     p.printCommandBody(actor, action);
   }
-  
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
   // ---------------------------------------------------------------------
   // ACCESSORS
   // ---------------------------------------------------------------------

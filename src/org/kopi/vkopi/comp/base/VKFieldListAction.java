@@ -78,7 +78,18 @@ public class VKFieldListAction extends VKPhylum implements org.kopi.kopi.comp.kj
   public void genVKCode(VKPrettyPrinter p) {
     p.printBlockAction(stmt);
   }
-  
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
   // ----------------------------------------------------------------------
   // ACCESSORS
   // ----------------------------------------------------------------------

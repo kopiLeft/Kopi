@@ -129,4 +129,15 @@ public class VKWeekType extends VKType {
     genComments(p);
     p.printWeekType();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 }

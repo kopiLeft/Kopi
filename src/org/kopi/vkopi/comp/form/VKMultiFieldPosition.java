@@ -30,6 +30,7 @@ import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKStdType;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * A position within a block given by x and y location
@@ -180,6 +181,17 @@ public class VKMultiFieldPosition extends VKPosition {
     genComments(p);
     //p.printCoordinatePosition(line, column, columnEnd);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

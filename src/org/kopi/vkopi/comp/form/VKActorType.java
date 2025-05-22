@@ -27,6 +27,7 @@ import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKType;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.xkopi.comp.database.DatabaseColumn;
 
 public class VKActorType extends VKType {
@@ -105,4 +106,15 @@ public class VKActorType extends VKType {
   public void genVKCode(VKPrettyPrinter p) {
     genComments(p);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 }

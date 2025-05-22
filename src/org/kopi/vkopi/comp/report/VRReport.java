@@ -60,6 +60,7 @@ import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKStdType;
 import org.kopi.vkopi.comp.base.VKTrigger;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.vkopi.comp.base.VKWindow;
 
 class VRReport
@@ -438,6 +439,17 @@ class VRReport
    */
   public void genVKCode(VKPrettyPrinter p) {
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION

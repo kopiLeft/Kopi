@@ -29,6 +29,7 @@ import org.kopi.vkopi.comp.base.VKIntegerType;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKType;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * This class represents a type for a field (an link to a typer defintition)
@@ -116,6 +117,17 @@ public class VRSeparatorFieldType extends VRFieldType {
   public void genVKCode(VKPrettyPrinter p) {
     throw new NotImplementedException();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

@@ -24,6 +24,7 @@ import org.kopi.compiler.base.TokenReference;
 import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKType;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 public class VRDefinitionType extends VRFieldType {
 
@@ -77,6 +78,17 @@ public class VRDefinitionType extends VRFieldType {
   public void genVKCode(VKPrettyPrinter p) {
     throw new NotImplementedException();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

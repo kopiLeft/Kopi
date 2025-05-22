@@ -139,4 +139,15 @@ public class VKImageType extends VKType {
     genComments(p);
     p.printImageType(getWidth(), getHeight());
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 }

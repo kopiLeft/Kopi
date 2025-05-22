@@ -136,4 +136,15 @@ public class VKIntegerCodeType extends VKCodeType {
     genComments(p);
     p.printCodeType("LONG", codes);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 }

@@ -34,6 +34,7 @@ import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * This class describe the alignment of multi blocks
@@ -151,6 +152,17 @@ public class VKBlockAlign extends VKPhylum {
     ((VKFormPrettyPrinter)p).printBlockAlign(block, source, target);
     */
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // PRIVATE DATA MEMBER

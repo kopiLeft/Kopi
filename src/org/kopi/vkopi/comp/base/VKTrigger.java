@@ -120,6 +120,17 @@ public class VKTrigger extends VKPhylum implements org.kopi.vkopi.lib.form.VCons
     p.printTrigger(events, action);
   }
 
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
   // ---------------------------------------------------------------------
   // DATA MEMBERS
   // ---------------------------------------------------------------------

@@ -183,6 +183,17 @@ public class VKInsert
   }
 
   // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
+  // ----------------------------------------------------------------------
   // VK XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------
 

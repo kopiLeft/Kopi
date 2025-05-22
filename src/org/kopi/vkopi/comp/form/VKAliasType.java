@@ -24,6 +24,7 @@ import org.kopi.compiler.base.TokenReference;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKType;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 public class VKAliasType extends VKFieldType {
 
@@ -82,6 +83,17 @@ public class VKAliasType extends VKFieldType {
     genComments(p);
     p.printAlias(name);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

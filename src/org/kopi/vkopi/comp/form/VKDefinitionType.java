@@ -23,6 +23,7 @@ import org.kopi.compiler.base.PositionedError;
 import org.kopi.compiler.base.TokenReference;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKType;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 public class VKDefinitionType extends VKFieldType {
 
@@ -77,6 +78,17 @@ public class VKDefinitionType extends VKFieldType {
     genComments(p);
     def.genVKCode(p);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

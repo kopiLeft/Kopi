@@ -61,6 +61,7 @@ import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKStdType;
 import org.kopi.vkopi.comp.base.VKTrigger;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.vkopi.comp.base.VKWindow;
 
 public class VCChart extends VKWindow implements org.kopi.vkopi.lib.chart.CConstants, org.kopi.kopi.comp.kjc.Constants {
@@ -501,6 +502,18 @@ public class VCChart extends VKWindow implements org.kopi.vkopi.lib.chart.CConst
    * @@param p		the printwriter into the code is generated
    */
   public void genVKCode(VKPrettyPrinter p) {}
+
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION

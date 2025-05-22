@@ -31,6 +31,7 @@ import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKStdType;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.xkopi.comp.xkjc.XDatabaseColumn;
 import org.kopi.xkopi.comp.xkjc.XUtils;
 
@@ -147,6 +148,18 @@ public class VKFieldColumn extends VKPhylum {
   public String getCorr() {
     return corr;
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
+
   // ----------------------------------------------------------------------
   // PRIVATE DATA
   // ----------------------------------------------------------------------

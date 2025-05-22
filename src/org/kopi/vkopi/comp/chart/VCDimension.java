@@ -38,6 +38,7 @@ import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKFixnumType;
 import org.kopi.vkopi.comp.base.VKTrigger;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 public class VCDimension extends VCField {
 
@@ -140,6 +141,17 @@ public class VCDimension extends VCField {
 
     return VKUtils.toExpression(ref, (String)null);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

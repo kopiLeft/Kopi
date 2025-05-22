@@ -26,6 +26,7 @@ import org.kopi.kopi.comp.kjc.JStringLiteral;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * A block table information
@@ -105,6 +106,17 @@ public class VKBlockTable extends VKPhylum {
     genComments(p);
     p.printBlockTable(name, corr);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // PRIVATE DATA MEMBER

@@ -30,6 +30,7 @@ import org.kopi.vkopi.comp.base.VKDefinitionCollector;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
 import org.kopi.vkopi.comp.base.VKType;
 import org.kopi.vkopi.comp.base.VKTypeDefinition;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * A field type defined by a name
@@ -92,6 +93,17 @@ public class VRFieldTypeName extends VRFieldType {
   public void genVKCode(VKPrettyPrinter p) {
     throw new NotImplementedException();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

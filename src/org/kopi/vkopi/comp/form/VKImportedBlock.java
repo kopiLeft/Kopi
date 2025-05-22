@@ -30,6 +30,7 @@ import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKLocalizationWriter;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.vkopi.comp.base.VKWindow;
 
 /**
@@ -116,6 +117,17 @@ public class VKImportedBlock
     ((VKFormPrettyPrinter)p).printImporterBlock(getIdent(), getShortcut(), page);
     */
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION

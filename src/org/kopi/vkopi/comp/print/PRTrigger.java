@@ -35,6 +35,7 @@ import org.kopi.util.base.NotImplementedException;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKVisitor;
 import org.kopi.vkopi.lib.print.PSPrintException;
 
 /**
@@ -142,6 +143,17 @@ public class PRTrigger extends VKPhylum implements org.kopi.kopi.comp.kjc.Consta
   public void genVKCode(VKPrettyPrinter p) {
     throw new NotImplementedException();
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS

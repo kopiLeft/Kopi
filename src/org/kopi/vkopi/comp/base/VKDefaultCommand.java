@@ -69,4 +69,15 @@ public class VKDefaultCommand extends VKCommand {
     genComments(p);
     p.printDefaultCommand(modes, getBody());
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 }

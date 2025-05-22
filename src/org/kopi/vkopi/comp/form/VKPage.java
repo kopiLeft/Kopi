@@ -24,6 +24,7 @@ import org.kopi.compiler.base.TokenReference;
 import org.kopi.vkopi.comp.base.VKLocalizationWriter;
 import org.kopi.vkopi.comp.base.VKPhylum;
 import org.kopi.vkopi.comp.base.VKPrettyPrinter;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * 
@@ -87,6 +88,17 @@ public class VKPage extends VKPhylum {
     genComments(p);
     ((VKFormPrettyPrinter)p).printPage(ident, title);
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION

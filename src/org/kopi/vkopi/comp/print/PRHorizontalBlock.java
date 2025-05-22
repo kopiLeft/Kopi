@@ -31,6 +31,7 @@ import org.kopi.kopi.comp.kjc.JNullLiteral;
 import org.kopi.kopi.comp.kjc.JUnqualifiedInstanceCreation;
 import org.kopi.vkopi.comp.base.VKContext;
 import org.kopi.vkopi.comp.base.VKUtils;
+import org.kopi.vkopi.comp.base.VKVisitor;
 
 /**
  * This class represents the definition of a block in a page
@@ -109,6 +110,17 @@ public class PRHorizontalBlock extends PRBlock {
   public JExpressionStatement genDefinition(JClassDeclaration decl) {
     return null;
   }
+
+  // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Accepts the specified visitor
+   * @param visitor the visitor
+   */
+  @Override
+  public void accept(VKVisitor visitor) {}
 
   // ----------------------------------------------------------------------
   // DATA MEMBERS
