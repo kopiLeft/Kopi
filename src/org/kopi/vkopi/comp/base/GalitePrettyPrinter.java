@@ -82,7 +82,9 @@ public class GalitePrettyPrinter implements VKVisitor {
    * @param vkForm the VKForm element to visit
    */
   @Override
-  public void visitVKForm(VKForm vkForm) {}
+  public void visitVKForm(VKForm vkForm) {
+    printComment();
+  }
 
   /**
    * Visits a VKCommand element.
@@ -151,6 +153,13 @@ public class GalitePrettyPrinter implements VKVisitor {
    */
   protected void newLine() {
     p.println();
+  }
+
+  /**
+   * Prints a comment.
+   */
+  protected void printComment() {
+    print("// Hello From Galite Code");
   }
 
   /**
