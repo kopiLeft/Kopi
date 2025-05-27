@@ -82,7 +82,9 @@ public class GalitePrettyPrinter implements VKVisitor {
    * @param vkForm the VKForm element to visit
    */
   @Override
-  public void visitVKForm(VKForm vkForm) {}
+  public void visitVKForm(VKForm vkForm) {
+    printCopyright();
+  }
 
   /**
    * Visits a VKCommand element.
@@ -127,6 +129,24 @@ public class GalitePrettyPrinter implements VKVisitor {
   // ----------------------------------------------------------------------
   //  METHODS FOR PRINTING
   // ----------------------------------------------------------------------
+
+  /**
+   * Prints the copyright header for the generated file.
+   */
+  protected void printCopyright() {
+    print("// ----------------------------------------------------------------------");
+    newLine();
+    print("// Copyright (c) 2013-2025 kopiLeft Services SARL, Tunisie");
+    newLine();
+    print("// Copyright (c) 2018-2025 ProGmag SAS, France");
+    newLine();
+    print("// ----------------------------------------------------------------------");
+    newLine();
+    print("// All rights reserved - tous droits réservés.");
+    newLine();
+    print("// ----------------------------------------------------------------------");
+    newLine();
+  }
 
   /**
    * Prints an integer as a string.
