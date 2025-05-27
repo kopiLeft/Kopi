@@ -436,11 +436,12 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
   @Override
   public void genGaliteCode(String destination, TypeFactory factory) {
     final String fileName;
+    String sourceFile = getTokenReference().getFile();
 
-    if (destination == null || destination.equals("")) {
-      fileName = getTokenReference().getFile();
+    if (destination == null || destination.isEmpty()) {
+      fileName = sourceFile.replace("vf", "kt");
     } else {
-      fileName = destination + File.separatorChar + getTokenReference().getFile().substring(getTokenReference().getFile().lastIndexOf("/") + 1).replace("vf", "kt");
+      fileName = destination + File.separator + sourceFile.substring(sourceFile.lastIndexOf('/') + 1).replace("vf", "kt");
     }
     try {
       final GalitePrettyPrinter galitePrettyPrinter = new GalitePrettyPrinter(fileName, factory);

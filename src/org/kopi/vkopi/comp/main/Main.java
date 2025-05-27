@@ -225,8 +225,7 @@ public class Main extends Compiler implements VKInsertParser {
 
    if (options.beautify) {
      for (int count = 0; count < tree.length; count++) {
-       //tree[count].genVKCode(options.destination, environment.getTypeFactory());
-       tree[count].genGaliteCode(options.destination, environment.getTypeFactory());
+       tree[count].genVKCode(options.destination, environment.getTypeFactory());
      }
    }
 
