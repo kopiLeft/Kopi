@@ -61,6 +61,18 @@ public interface VKCompilationUnit {
   void genVKCode(String destination, TypeFactory factory);
 
   // ----------------------------------------------------------------------
+  // Galite CODE GENERATION
+  // ----------------------------------------------------------------------
+
+  /**
+   * Generate the code in galite form
+   * It is useful to debug and tune compilation process
+   * @param destination the target path where the code will be generated
+   * @param factory     the type factory used during code generation
+   */
+  void genGaliteCode(String destination, TypeFactory factory);
+
+  // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------
 

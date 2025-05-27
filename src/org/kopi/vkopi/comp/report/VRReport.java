@@ -451,6 +451,15 @@ class VRReport
   @Override
   public void accept(VKVisitor visitor) {}
 
+  /**
+   * Generates Galite code for this VK element.
+   *
+   * @param destination the target path for code generation
+   * @param factory     the factory used during generation
+   */
+  @Override
+  public void genGaliteCode(String destination, TypeFactory factory) {}
+
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION
   // ----------------------------------------------------------------------

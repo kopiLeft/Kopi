@@ -55,17 +55,7 @@ import org.kopi.kopi.comp.kjc.JTypeNameExpression;
 import org.kopi.kopi.comp.kjc.KjcEnvironment;
 import org.kopi.kopi.comp.kjc.TypeFactory;
 import org.kopi.util.base.Utils;
-import org.kopi.vkopi.comp.base.VKCommand;
-import org.kopi.vkopi.comp.base.VKConstants;
-import org.kopi.vkopi.comp.base.VKContext;
-import org.kopi.vkopi.comp.base.VKDefinitionCollector;
-import org.kopi.vkopi.comp.base.VKLocalizationWriter;
-import org.kopi.vkopi.comp.base.VKPrettyPrinter;
-import org.kopi.vkopi.comp.base.VKStdType;
-import org.kopi.vkopi.comp.base.VKTrigger;
-import org.kopi.vkopi.comp.base.VKUtils;
-import org.kopi.vkopi.comp.base.VKVisitor;
-import org.kopi.vkopi.comp.base.VKWindow;
+import org.kopi.vkopi.comp.base.*;
 
 /**
  * This class represents the definition of a form
@@ -434,6 +424,15 @@ public class VKForm extends VKWindow implements org.kopi.kopi.comp.kjc.Constants
    */
   @Override
   public void accept(VKVisitor visitor) {}
+
+  /**
+   * Generates Galite code for this VK element.
+   *
+   * @param destination the target path for code generation
+   * @param factory     the factory used during generation
+   */
+  @Override
+  public void genGaliteCode(String destination, TypeFactory factory) {}
 
   // ----------------------------------------------------------------------
   // XML LOCALIZATION GENERATION
