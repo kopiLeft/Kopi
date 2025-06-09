@@ -493,25 +493,30 @@ open class DGridBlock(parent: DForm, model: VBlock) : DBlock(parent, model) {
         if (columnView.hasDisplays()) {
           val label = columnView.editorField.label
           val column = grid.addColumn(ComponentRenderer { item: GridBlockItem ->
-            val value = item.getValue(field)
-            val backgroundColor: VColor? = field.getBackground(item.record)
-            val foregroundColor = field.getForeground(item.record)
-
-            // Create a div element and set its background and foreground colors
-            val div = Div()
-            if (value is Color) {
-              val input = Input()
-
-              input.type = "color"
-              input.value = "#" + Utils.colorToRgbString(value)
-              input.isReadOnly = true
-              div.add(input)
+            val access = field.getAccess(item.record)
+            if (access == VConstants.ACS_HIDDEN) {
+              Div()
             } else {
-              div.text = columnView.editorField.format(value)?.toString() ?: ""
-              backgroundColor?.let { div.style.set("background-color", "rgb(${it.red}, ${it.green}, ${it.blue})") }
-              foregroundColor?.let { div.style.set("color", "rgb(${it.red}, ${it.green}, ${it.blue})") }
+              val value = item.getValue(field)
+              val backgroundColor: VColor? = field.getBackground(item.record)
+              val foregroundColor = field.getForeground(item.record)
+
+              // Create a div element and set its background and foreground colors
+              val div = Div()
+              if (value is Color) {
+                val input = Input()
+
+                input.type = "color"
+                input.value = "#" + Utils.colorToRgbString(value)
+                input.isReadOnly = true
+                div.add(input)
+              } else {
+                div.text = columnView.editorField.format(value)?.toString() ?: ""
+                backgroundColor?.let { div.style.set("background-color", "rgb(${it.red}, ${it.green}, ${it.blue})") }
+                foregroundColor?.let { div.style.set("color", "rgb(${it.red}, ${it.green}, ${it.blue})") }
+              }
+              div
             }
-            div
           })
             .setKey(i.toString())
             .setHeader(label)
@@ -618,7 +623,13 @@ open class DGridBlock(parent: DForm, model: VBlock) : DBlock(parent, model) {
       val column = grid.getColumnByKey(model.getFieldIndex(f).toString())
 
       if (::grid.isInitialized && column != null) {
-        column.isVisible = f.getAccess(rec) != VConstants.ACS_HIDDEN
+        val provider = grid.dataProvider
+        if (provider is ListDataProvider) {
+          val item = provider.items.find { it.record == rec }
+          if (item != null) {
+            provider.refreshItem(item)
+          }
+        }
       }
     }
   }
